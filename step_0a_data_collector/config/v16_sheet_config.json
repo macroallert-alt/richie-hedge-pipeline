@@ -1,0 +1,77 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-02-28",
+        "sheet_id": "11xoZ-E-W0eG23V_HSKloqzC4ubLYg9pfcf6k7HJ0oSE",
+        "notes": "Definiert wie der Data Collector die V16 Sheet DATA-Tabs befuellt. Zeilen werden oben eingefuegt (neueste zuerst)."
+    },
+    "DATA_Prices": {
+        "tab_name": "DATA_Prices",
+        "insert_mode": "prepend_row",
+        "date_col": "A",
+        "columns": {
+            "A": {"name": "Date", "format": "YYYY-MM-DD"},
+            "B": {"name": "GLD", "source": "yfinance", "ticker": "GLD"},
+            "C": {"name": "SLV", "source": "yfinance", "ticker": "SLV"},
+            "D": {"name": "GDX", "source": "yfinance", "ticker": "GDX"},
+            "E": {"name": "GDXJ", "source": "yfinance", "ticker": "GDXJ"},
+            "F": {"name": "SIL", "source": "yfinance", "ticker": "SIL"},
+            "G": {"name": "SPY", "source": "yfinance", "ticker": "SPY"},
+            "H": {"name": "XLY", "source": "yfinance", "ticker": "XLY"},
+            "I": {"name": "XLI", "source": "yfinance", "ticker": "XLI"},
+            "J": {"name": "XLF", "source": "yfinance", "ticker": "XLF"},
+            "K": {"name": "XLE", "source": "yfinance", "ticker": "XLE"},
+            "L": {"name": "IWM", "source": "yfinance", "ticker": "IWM"},
+            "M": {"name": "XLV", "source": "yfinance", "ticker": "XLV"},
+            "N": {"name": "XLP", "source": "yfinance", "ticker": "XLP"},
+            "O": {"name": "XLU", "source": "yfinance", "ticker": "XLU"},
+            "P": {"name": "VNQ", "source": "yfinance", "ticker": "VNQ"},
+            "Q": {"name": "XLK", "source": "yfinance", "ticker": "XLK"},
+            "R": {"name": "EEM", "source": "yfinance", "ticker": "EEM"},
+            "S": {"name": "VGK", "source": "yfinance", "ticker": "VGK"},
+            "T": {"name": "TLT", "source": "yfinance", "ticker": "TLT"},
+            "U": {"name": "TIP", "source": "yfinance", "ticker": "TIP"},
+            "V": {"name": "LQD", "source": "yfinance", "ticker": "LQD"},
+            "W": {"name": "HYG", "source": "yfinance", "ticker": "HYG"},
+            "X": {"name": "DBC", "source": "yfinance", "ticker": "DBC"},
+            "Y": {"name": "PLATINUM", "source": "yfinance", "ticker": "PL=F"},
+            "Z": {"name": "COPPER", "source": "yfinance", "ticker": "HG=F"},
+            "AA": {"name": "BTC", "source": "yfinance", "ticker": "BTC-USD"},
+            "AB": {"name": "ETH", "source": "yfinance", "ticker": "ETH-USD"}
+        },
+        "number_format": "de_DE",
+        "notes": "Sheet nutzt deutsches Zahlenformat (Komma als Dezimal, Punkt als Tausender). Data Collector muss entsprechend formatieren."
+    },
+    "DATA_Liquidity": {
+        "tab_name": "DATA_Liquidity",
+        "insert_mode": "prepend_row",
+        "date_col": "A",
+        "columns": {
+            "A": {"name": "Date", "format": "YYYY-MM-DD"},
+            "B": {"name": "Fed_Net_Liq", "formula": "WALCL - RRP - TGA", "unit": "Mio USD", "sources": {"WALCL": "FRED:WALCL", "TGA": "FRED:WTREGEN", "RRP": "FRED:RRPONTSYD"}},
+            "C": {"name": "ECB_USD", "source": "FRED or ECB", "series": "ECBASSETSW", "notes": "ECB Total Assets in EUR, converted to USD"},
+            "D": {"name": "BOJ_USD", "source": "FRED or BOJ", "series": "JPNASSETS", "notes": "BOJ Total Assets in JPY, converted to USD"},
+            "E": {"name": "China_M2_USD", "source": "FRED", "series": "MYAGM2CNM189N", "notes": "China M2 in CNY, converted to USD"},
+            "F": {"name": "US_M2", "source": "FRED", "series": "WM2NS", "notes": "US M2 in Bil USD"}
+        },
+        "derived_columns": {
+            "G-T": "Sheet-Formeln berechnen: Fed_Index, ECB_Index, BOJ_Index, China_Index, M2_Index, Global_Liq_Proxy, MA_12M, MA_36M, Trend, Momentum_6M, Acceleration, Howell_Phase, Howell_RiskOn_Mult, Howell_RiskOff_Mult"
+        },
+        "notes": "Nur Spalten A-F werden vom DC geschrieben. G-T sind Sheet-Formeln."
+    },
+    "DATA_K16_K17": {
+        "tab_name": "DATA_K16_K17",
+        "insert_mode": "prepend_row",
+        "date_col": "A",
+        "columns": {
+            "A": {"name": "Date", "format": "YYYY-MM-DD"},
+            "B": {"name": "Cu/Au_Ratio", "formula": "HG=F / GC=F", "source": "yfinance"},
+            "E": {"name": "Credit_Impulse", "source": "FRED", "notes": "Berechnet aus BUSLOANS oder Proxy"},
+            "G": {"name": "GLI_Accel", "source": "derived", "notes": "Global Liquidity Index Acceleration - from DATA_Liquidity"}
+        },
+        "derived_columns": {
+            "C,D,F,H-Q": "Sheet-Formeln berechnen: Cu/Au_Mom6M, K16_Vote, K17_Vote, K4_Vote, Howell_Phase, Howell_Mom6M, Howell_Vote, Vote_Sum, Liq_Dir_Raw/Final/Confirmed etc."
+        },
+        "notes": "Nur A, B, E, G werden vom DC geschrieben. Rest sind Sheet-Formeln."
+    }
+}

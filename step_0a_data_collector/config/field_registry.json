@@ -1,0 +1,2634 @@
+{
+  "_meta": {
+    "version": "2.0",
+    "date": "2026-02-28",
+    "spec_source": "DATA_COLLECTOR_SPEC_V2 Teil A-F",
+    "total_fields": 64,
+    "output_fields": 58,
+    "helper_fields": 6,
+    "tiers": {
+      "T1": 17,
+      "T2": 19,
+      "T3": 16,
+      "SYSTEM": 6,
+      "HELPER": 6
+    },
+    "notes": "58 output fields (is_output=true) match Spec D.4 exactly. 6 helper fields (is_output=false) are fetched as dependencies but not counted in output."
+  },
+  "fields": [
+    {
+      "id": 1,
+      "name": "net_liquidity",
+      "display_name": "Net Liquidity",
+      "category": "liquidity",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "walcl - tga - rrp",
+      "depends_on": [
+        "walcl",
+        "tga",
+        "rrp"
+      ],
+      "unit": "Mrd USD",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 20.0,
+      "plausibility": {
+        "min": 1000000,
+        "max": 10000000,
+        "non_negative": true,
+        "max_daily_move_pct": 0.05
+      },
+      "timing_class": "DELAYED",
+      "ic_divergence_theme": "LIQUIDITY",
+      "v16_layer_relevance": [
+        "L1",
+        "L7"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Berechnet aus WALCL - TGA - RRP. WALCL/TGA nur woechentlich. RRP taeglich."
+    },
+    {
+      "id": 2,
+      "name": "walcl",
+      "display_name": "Fed Balance Sheet (WALCL)",
+      "category": "liquidity",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "WALCL",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Mrd USD",
+      "update_freq": "weekly",
+      "halflife_days": 7,
+      "direction_threshold": 10.0,
+      "plausibility": {
+        "min": 3000000,
+        "max": 12000000,
+        "non_negative": true,
+        "max_daily_move_pct": 0.02
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L1"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Total Assets Federal Reserve. Updated Mi. Subject to FRED revisions."
+    },
+    {
+      "id": 3,
+      "name": "tga",
+      "display_name": "Treasury General Account",
+      "category": "liquidity",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "WTREGEN",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Mrd USD",
+      "update_freq": "weekly",
+      "halflife_days": 7,
+      "direction_threshold": 15.0,
+      "plausibility": {
+        "min": 0,
+        "max": 2000000,
+        "non_negative": true,
+        "max_daily_move_pct": 0.3
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L1"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Treasury-Konto. Faellt bei Ausgaben, steigt bei Auktionen. Volatile."
+    },
+    {
+      "id": 4,
+      "name": "rrp",
+      "display_name": "Reverse Repo (RRP)",
+      "category": "liquidity",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "RRPONTSYD",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Mrd USD",
+      "update_freq": "daily",
+      "halflife_days": 5,
+      "direction_threshold": 10.0,
+      "plausibility": {
+        "min": 0,
+        "max": 3000000,
+        "non_negative": true,
+        "max_daily_move_pct": 1.0
+      },
+      "timing_class": "DELAYED",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L1"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Overnight Reverse Repo. Faellt von >2T auf <500B = Liquiditaets-Freisetzung."
+    },
+    {
+      "id": 5,
+      "name": "mmf_assets",
+      "display_name": "Money Market Fund Assets",
+      "category": "liquidity",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "WRMFNS",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Mrd USD",
+      "update_freq": "weekly",
+      "halflife_days": 14,
+      "direction_threshold": 20.0,
+      "plausibility": {
+        "min": 1000,
+        "max": 15000,
+        "non_negative": true,
+        "max_daily_move_pct": 0.1
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L1"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Dry Powder an der Seitenlinie. Sinkend = Geld fliesst in Risk Assets."
+    },
+    {
+      "id": 6,
+      "name": "spread_2y10y",
+      "display_name": "2Y10Y Yield Curve Spread",
+      "category": "rates",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "T10Y2Y",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": -3.0,
+        "max": 4.0,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Markt-Konsens YC. max_daily_move_pct=999 weil Feld um 0 schwankt."
+    },
+    {
+      "id": 7,
+      "name": "spread_3m10y",
+      "display_name": "3M10Y Yield Curve Spread",
+      "category": "rates",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "T10Y3M",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": -3.0,
+        "max": 5.0,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Akademisch staerkerer Rezessions-Indikator. Jede Rezession seit 1960."
+    },
+    {
+      "id": 8,
+      "name": "real_10y_yield",
+      "display_name": "Real 10Y Yield (TIPS)",
+      "category": "rates",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "DFII10",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": -3.0,
+        "max": 5.0,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2",
+        "L7"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Treibt Gold invers, Tech-Bewertungen invers, Duration-Assets."
+    },
+    {
+      "id": 9,
+      "name": "hy_oas",
+      "display_name": "HY OAS Spread",
+      "category": "rates",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "BAMLH0A0HYM2",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "bps",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 5.0,
+      "plausibility": {
+        "min": 1.0,
+        "max": 25.0,
+        "non_negative": true,
+        "max_daily_move_pct": 0.5
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "CREDIT",
+      "v16_layer_relevance": [
+        "L2",
+        "L5"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "High Yield Option-Adjusted Spread. Kernindikator fuer Credit Stress."
+    },
+    {
+      "id": 10,
+      "name": "ig_oas",
+      "display_name": "IG OAS Spread",
+      "category": "rates",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "BAMLC0A4CBBB",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "bps",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 3.0,
+      "plausibility": {
+        "min": 0.3,
+        "max": 10.0,
+        "non_negative": true,
+        "max_daily_move_pct": 0.5
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "CREDIT",
+      "v16_layer_relevance": [
+        "L2",
+        "L5"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "IG reagiert FRUEHER als HY. SVB 2023: IG bewegte sich vor HY."
+    },
+    {
+      "id": 11,
+      "name": "nfci",
+      "display_name": "NFCI (Chicago Fed)",
+      "category": "fincond",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "NFCI",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index",
+      "update_freq": "weekly",
+      "halflife_days": 5,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": -2.0,
+        "max": 5.0,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2",
+        "L5"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Composite aus 105 Financial Indicators. Negativ=loose, Positiv=tight."
+    },
+    {
+      "id": 12,
+      "name": "anfci",
+      "display_name": "ANFCI (Adjusted NFCI)",
+      "category": "fincond",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "ANFCI",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index",
+      "update_freq": "weekly",
+      "halflife_days": 5,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": -2.0,
+        "max": 5.0,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "DEGRADIERT von T1 auf T3. >0.9 Korrelation mit NFCI. Weiterhin abrufen, nicht gescored."
+    },
+    {
+      "id": 13,
+      "name": "discount_window",
+      "display_name": "Discount Window Borrowing",
+      "category": "fincond",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "WDFOL",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Mio USD",
+      "update_freq": "weekly",
+      "halflife_days": 14,
+      "direction_threshold": 100.0,
+      "plausibility": {
+        "min": 0,
+        "max": 500000,
+        "non_negative": true,
+        "max_daily_move_pct": 5.0
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2",
+        "L8"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "SVB-Fruehwarnung 2 Tage vor Bank Run. Sprung = Banken-Funding-Stress."
+    },
+    {
+      "id": 14,
+      "name": "vix",
+      "display_name": "VIX",
+      "category": "vol",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "yfinance",
+        "ticker_or_series": "^VIX",
+        "method": "API"
+      },
+      "source_secondary": {
+        "provider": "FRED",
+        "ticker_or_series": "VIXCLS",
+        "method": "API"
+      },
+      "source_scrape": null,
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "CBOE VIX index close today",
+        "extraction_prompt": "Find the CURRENT CBOE VIX index closing level. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 10-30. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 5,
+          "max": 100
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 1.0,
+      "plausibility": {
+        "min": 5,
+        "max": 100,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 1.0
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "VOLATILITY",
+      "v16_layer_relevance": [
+        "L5",
+        "L8"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "CBOE Volatility Index. VIX = 65 bei JPY-Crash Aug 2024."
+    },
+    {
+      "id": 15,
+      "name": "vix_term_ratio",
+      "display_name": "VIX Term Structure (VIX3M/VIX)",
+      "category": "vol",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "vix3m / vix",
+      "depends_on": [
+        "vix"
+      ],
+      "unit": "Ratio",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 0.02,
+      "plausibility": {
+        "min": 0.5,
+        "max": 1.5,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.3
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "VOLATILITY",
+      "v16_layer_relevance": [
+        "L5",
+        "L8"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": ">1.0=Contango (normal). <1.0=Backwardation (Panik)."
+    },
+    {
+      "id": 16,
+      "name": "pc_ratio_equity",
+      "display_name": "Put/Call Ratio (Equity Only)",
+      "category": "vol",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CBOE",
+        "ticker_or_series": "equity_pc_ratio.csv",
+        "method": "SCRAPE"
+      },
+      "source_secondary": {
+        "provider": "FRED",
+        "ticker_or_series": "PCCE",
+        "method": "API"
+      },
+      "source_scrape": {
+        "url": "https://www.cboe.com/us/options/market_statistics/daily/",
+        "parse_method": "csv_download",
+        "notes": "Equity Only - NICHT Total, nicht Index."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "CBOE equity put call ratio today",
+        "extraction_prompt": "Find the CURRENT CBOE equity-only put/call ratio. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 0.5-1.2. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 0.1,
+          "max": 3.0
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": 0.1,
+        "max": 3.0,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.5
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "POSITIONING",
+      "v16_layer_relevance": [
+        "L5",
+        "L8"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "T1 mit fragiler Quelle. FRED PCCE als Sekundaer (1d Lag). LLM als Stufe 4."
+    },
+    {
+      "id": 17,
+      "name": "iv_rv_spread",
+      "display_name": "IV-RV Spread (VIX - Realized Vol)",
+      "category": "vol",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "vix - (spy_21d_std * sqrt(252) * 100)",
+      "depends_on": [
+        "vix"
+      ],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 1.0,
+      "plausibility": {
+        "min": -20,
+        "max": 50,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Positiv=normale Angstpraemie. Negativ=Komplacenz (GEFAHR)."
+    },
+    {
+      "id": 18,
+      "name": "pct_above_200dma",
+      "display_name": "% S&P500 Stocks > 200 DMA",
+      "category": "breadth",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "count(sp500_price > sp500_sma200) / count(sp500) * 100",
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 5,
+      "direction_threshold": 2.0,
+      "plausibility": {
+        "min": 0,
+        "max": 100,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 0.15
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L3",
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "FRAGILSTES Feld. 500 Ticker via yfinance. Batch: 10x50, 2s Pause."
+    },
+    {
+      "id": 19,
+      "name": "nh_nl",
+      "display_name": "New Highs - New Lows (S&P500)",
+      "category": "breadth",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "count(price >= 52w_high * 0.98) - count(price <= 52w_low * 1.02)",
+      "depends_on": [],
+      "unit": "Anzahl",
+      "update_freq": "daily",
+      "halflife_days": 5,
+      "direction_threshold": 10.0,
+      "plausibility": {
+        "min": -500,
+        "max": 500,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L3",
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "S&P500-basiert. Nutzt gleiche Ticker-Daten wie #18."
+    },
+    {
+      "id": 20,
+      "name": "spy_tlt_corr_21d",
+      "display_name": "SPY-TLT 21d Korrelation",
+      "category": "breadth",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "corr(spy_returns_21d, tlt_returns_21d)",
+      "depends_on": [],
+      "unit": "Korrelation",
+      "update_freq": "daily",
+      "halflife_days": 5,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": -1.0,
+        "max": 1.0,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L5",
+        "L6",
+        "L8"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "EXISTENZIELL fuer V16. >0=Diversifikation bricht. 2022: SPY+TLT beide -20%."
+    },
+    {
+      "id": 21,
+      "name": "naaim_exposure",
+      "display_name": "NAAIM Exposure Index",
+      "category": "sentiment",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "NAAIM",
+        "ticker_or_series": null,
+        "method": "SCRAPE"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.naaim.org/programs/naaim-exposure-index/",
+        "parse_method": "html_table",
+        "notes": "FRAGIL. Website kann sich aendern."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "NAAIM exposure index latest reading",
+        "extraction_prompt": "Find the latest NAAIM Exposure Index reading. Return ONLY: {\"value\": <number>, \"survey_date\": \"<date>\", \"source_url\": \"<url>\"}. Range: typically 20-120. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": -50,
+          "max": 200
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index 0-200",
+      "update_freq": "weekly",
+      "halflife_days": 7,
+      "direction_threshold": 5.0,
+      "plausibility": {
+        "min": -50,
+        "max": 200,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 0.5
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": "POSITIONING",
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": ">90=Crowding-Risiko. <30=Kapitulation (contrarian bullish)."
+    },
+    {
+      "id": 22,
+      "name": "aaii_bull_bear",
+      "display_name": "AAII Bull-Bear Spread",
+      "category": "sentiment",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "AAII",
+        "ticker_or_series": null,
+        "method": "SCRAPE"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.aaii.com/sentimentsurvey",
+        "parse_method": "html_or_json",
+        "notes": "FRAGIL. Website kann sich aendern."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "AAII sentiment survey latest bull bear spread",
+        "extraction_prompt": "Find the latest AAII Investor Sentiment Survey bull-bear spread (% Bullish minus % Bearish). Return ONLY: {\"value\": <number>, \"survey_date\": \"<date>\", \"source_url\": \"<url>\"}. Range: -50 to +50 typically. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": -60,
+          "max": 60
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "weekly",
+      "halflife_days": 7,
+      "direction_threshold": 3.0,
+      "plausibility": {
+        "min": -60,
+        "max": 60,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": "POSITIONING",
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": ">+30=Euphorie. <-20=Angst (contrarian bullish). Allein schwach, mit NAAIM stark."
+    },
+    {
+      "id": 23,
+      "name": "cot_es_leveraged",
+      "display_name": "COT Net Leveraged (ES/S&P)",
+      "category": "positioning",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CFTC",
+        "ticker_or_series": "13874A",
+        "method": "DOWNLOAD"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.cftc.gov/dea/newcot/deafut.txt",
+        "parse_method": "fixed_width_or_csv",
+        "notes": "Disaggregated Futures Only. Leveraged Funds Kategorie."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "CFTC COT S&P 500 E-mini leveraged funds net position latest",
+        "extraction_prompt": "Find the latest CFTC Commitments of Traders leveraged funds net position for S&P 500 E-mini futures (contract 13874A). Can be positive or negative. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": -500000,
+          "max": 500000
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Kontrakte",
+      "update_freq": "weekly",
+      "halflife_days": 7,
+      "direction_threshold": 5000.0,
+      "plausibility": {
+        "min": -500000,
+        "max": 500000,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": "POSITIONING",
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Leveraged Funds = HF/CTA. Zeigt Fast-Money-Crowding."
+    },
+    {
+      "id": 24,
+      "name": "cot_zn_leveraged",
+      "display_name": "COT Net Leveraged (ZN/10Y T-Note)",
+      "category": "positioning",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CFTC",
+        "ticker_or_series": "043602",
+        "method": "DOWNLOAD"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.cftc.gov/dea/newcot/deafut.txt",
+        "parse_method": "fixed_width_or_csv",
+        "notes": "Gleiche Quelle wie #23, anderer Contract Code."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "CFTC COT 10-Year Treasury Note leveraged funds net position latest",
+        "extraction_prompt": "Find the latest CFTC Commitments of Traders leveraged funds net position for 10-Year Treasury Note futures (contract 043602). Can be positive or negative. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": -1000000,
+          "max": 1000000
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Kontrakte",
+      "update_freq": "weekly",
+      "halflife_days": 7,
+      "direction_threshold": 5000.0,
+      "plausibility": {
+        "min": -500000,
+        "max": 500000,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": "POSITIONING",
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Duration-Positioning der Fast Money. ES+ZN decken Equity+Rates ab."
+    },
+    {
+      "id": 25,
+      "name": "dxy",
+      "display_name": "DXY (US Dollar Index)",
+      "category": "global",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "yfinance",
+        "ticker_or_series": "DX-Y.NYB",
+        "method": "API"
+      },
+      "source_secondary": {
+        "provider": "EODHD",
+        "ticker_or_series": "DX-Y.NYB",
+        "method": "API"
+      },
+      "source_scrape": null,
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "DXY US dollar index today",
+        "extraction_prompt": "Find the CURRENT US Dollar Index (DXY) level. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 90-115. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 70,
+          "max": 130
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.3,
+      "plausibility": {
+        "min": 70,
+        "max": 130,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.03
+      },
+      "timing_class": "LIVE",
+      "ic_divergence_theme": "DOLLAR",
+      "v16_layer_relevance": [
+        "L4",
+        "L6",
+        "L7"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "EUR 57.6% Gewicht. DXY zeigt JPY-Events NICHT gut. Daher USDJPY zusaetzlich."
+    },
+    {
+      "id": 26,
+      "name": "cu_au_ratio",
+      "display_name": "Copper/Gold Ratio",
+      "category": "global",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "(HG=F / GC=F) * 1000",
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.5,
+      "plausibility": {
+        "min": 0.3,
+        "max": 5.0,
+        "non_negative": true,
+        "max_daily_move_pct": 0.1
+      },
+      "timing_class": "LIVE",
+      "ic_divergence_theme": "COMMODITIES",
+      "v16_layer_relevance": [
+        "L3",
+        "L6"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Steigend=Growth-Optimismus. Fallend=Safety-Flucht. In Teil B als T1 gelistet, in D.4 Global T1=2 (DXY+USDJPY) impliziert T2."
+    },
+    {
+      "id": 27,
+      "name": "china_10y",
+      "display_name": "China 10Y Government Bond Yield",
+      "category": "global",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "yfinance",
+        "ticker_or_series": "CN10Y",
+        "method": "API"
+      },
+      "source_secondary": {
+        "provider": "EODHD",
+        "ticker_or_series": "CN10Y",
+        "method": "API"
+      },
+      "source_scrape": {
+        "url": "https://www.investing.com/rates-bonds/china-10-year-bond-yield",
+        "parse_method": "html",
+        "notes": "Investing.com als Fallback. yfinance INSTABIL."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "China 10 year government bond yield today",
+        "extraction_prompt": "Find the CURRENT China 10-year government bond yield. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 2.0-4.0%. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 0.5,
+          "max": 6.0
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 7,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": 0.5,
+        "max": 6.0,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.1
+      },
+      "timing_class": "LIVE",
+      "ic_divergence_theme": "CHINA_EM",
+      "v16_layer_relevance": [
+        "L4",
+        "L7"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "FRAGIL. yfinance instabil. EODHD oder investing.com als Backup."
+    },
+    {
+      "id": 28,
+      "name": "usdcnh",
+      "display_name": "USDCNH (Offshore Yuan)",
+      "category": "global",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "yfinance",
+        "ticker_or_series": "USDCNH=X",
+        "method": "API"
+      },
+      "source_secondary": {
+        "provider": "EODHD",
+        "ticker_or_series": "USDCNH=X",
+        "method": "API"
+      },
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Rate",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.02,
+      "plausibility": {
+        "min": 5.0,
+        "max": 10.0,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.03
+      },
+      "timing_class": "LIVE",
+      "ic_divergence_theme": "CHINA_EM",
+      "v16_layer_relevance": [
+        "L4",
+        "L6"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Steigend=Yuan-Schwaeche/Kapitalflucht. China 10Y=Policy, USDCNH=Kapitalfluss."
+    },
+    {
+      "id": 29,
+      "name": "usdjpy",
+      "display_name": "USDJPY (Yen)",
+      "category": "global",
+      "tier": "T1",
+      "is_output": true,
+      "source_primary": {
+        "provider": "yfinance",
+        "ticker_or_series": "USDJPY=X",
+        "method": "API"
+      },
+      "source_secondary": {
+        "provider": "EODHD",
+        "ticker_or_series": "USDJPY=X",
+        "method": "API"
+      },
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Rate",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.5,
+      "plausibility": {
+        "min": 80,
+        "max": 200,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.05
+      },
+      "timing_class": "LIVE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L4",
+        "L6",
+        "L8"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "NEU in V2. Carry-Trade-Proxy. Aug 2024 JPY-Event war NICHT in DXY sichtbar."
+    },
+    {
+      "id": 30,
+      "name": "wti_curve",
+      "display_name": "WTI Contango/Backwardation",
+      "category": "commodity",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "cl_second_month / cl_front_month",
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "daily",
+      "halflife_days": 5,
+      "direction_threshold": 0.005,
+      "plausibility": {
+        "min": 0.8,
+        "max": 1.2,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.05
+      },
+      "timing_class": "LIVE",
+      "ic_divergence_theme": "ENERGY",
+      "v16_layer_relevance": [
+        "L3",
+        "L6"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": ">1.0=Contango (Ueberangebot). <1.0=Backwardation (Knappheit). Futures-Kalender-Modul noetig."
+    },
+    {
+      "id": 31,
+      "name": "v16_state",
+      "display_name": "V16 State + Confluence",
+      "category": "system",
+      "tier": "SYSTEM",
+      "is_output": true,
+      "source_primary": {
+        "provider": "SHEET",
+        "ticker_or_series": "V16 Production Sheet",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "String + Float",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": null,
+        "max": null,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "ALL"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Liest: state, confluence (0-10), dd_level (%), net_long (%)."
+    },
+    {
+      "id": 32,
+      "name": "v16_state_history_30d",
+      "display_name": "V16 State History (30d)",
+      "category": "system",
+      "tier": "SYSTEM",
+      "is_output": true,
+      "source_primary": {
+        "provider": "SHEET",
+        "ticker_or_series": "V16 Production Sheet",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "JSON",
+      "update_freq": "daily",
+      "halflife_days": 30,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": null,
+        "max": null,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "ALL"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Haeufiges Wechseln = unsicherer Markt, wenig Conviction."
+    },
+    {
+      "id": 33,
+      "name": "f6_positions",
+      "display_name": "F6 Aktive Positionen + Win Rate",
+      "category": "system",
+      "tier": "SYSTEM",
+      "is_output": true,
+      "source_primary": {
+        "provider": "SHEET",
+        "ticker_or_series": "F6 Sheet",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "JSON",
+      "update_freq": "daily",
+      "halflife_days": 7,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": null,
+        "max": null,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L3"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Welche F6 Positionen sind offen und wie ist die Win Rate."
+    },
+    {
+      "id": 34,
+      "name": "agent0_confidence_yesterday",
+      "display_name": "Agent 0 Confidence (gestern)",
+      "category": "system",
+      "tier": "SYSTEM",
+      "is_output": true,
+      "source_primary": {
+        "provider": "SHEET",
+        "ticker_or_series": "DW AGENT_OUTPUT Tab",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Float 0-10",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": 0,
+        "max": 10,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "ALL"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Trend der eigenen Confidence. Fallend = System unsicher."
+    },
+    {
+      "id": 35,
+      "name": "last_ks_trigger",
+      "display_name": "Letzte Kill-Switch-Ausloesung",
+      "category": "system",
+      "tier": "SYSTEM",
+      "is_output": true,
+      "source_primary": {
+        "provider": "SHEET",
+        "ticker_or_series": "DW ALERT_LOG Tab",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Timestamp + KS#",
+      "update_freq": "daily",
+      "halflife_days": 7,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": null,
+        "max": null,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "ALL"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Wann wurde zuletzt ein Kill Switch ausgeloest? Systemstress-Historie."
+    },
+    {
+      "id": 36,
+      "name": "dq_summary",
+      "display_name": "Data Quality Summary",
+      "category": "system",
+      "tier": "SYSTEM",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "Aggregiert aus allen Feld-Ergebnissen",
+      "depends_on": [
+        "ALL"
+      ],
+      "unit": "JSON",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": null,
+        "max": null,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "ALL"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "NEU in V2. fields_ok/stale/failed/anomaly, sources_status, data_quality_level, cache_status, cost_today, alerts."
+    },
+    {
+      "id": 37,
+      "name": "fed_funds_rate",
+      "display_name": "Fed Funds Effective Rate",
+      "category": "rates",
+      "tier": "T3",
+      "is_output": false,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "DFF",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 30,
+      "direction_threshold": 0.25,
+      "plausibility": {
+        "min": 0,
+        "max": 10,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 0.1
+      },
+      "timing_class": "DELAYED",
+      "ic_divergence_theme": "FED_POLICY",
+      "v16_layer_relevance": [
+        "L1",
+        "L2"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "HELPER \u2014 Input fuer fedwatch_cut_prob(#52) und IC FED_POLICY Interface. Nicht eigenstaendig gescored."
+    },
+    {
+      "id": 38,
+      "name": "gdpnow",
+      "display_name": "Atlanta Fed GDPNow",
+      "category": "context",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "SCRAPE",
+        "ticker_or_series": "Atlanta Fed Website",
+        "method": "SCRAPE"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.atlantafed.org/cqer/research/gdpnow",
+        "parse_method": "html",
+        "notes": "Aktualisiert mehrmals pro Woche."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "Atlanta Fed GDPNow latest estimate",
+        "extraction_prompt": "Find the latest Atlanta Fed GDPNow GDP growth estimate. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Value is annualized % growth rate, typically -5 to +10. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": -10,
+          "max": 15
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "weekly",
+      "halflife_days": 7,
+      "direction_threshold": 0.5,
+      "plausibility": {
+        "min": -10,
+        "max": 15,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": "RECESSION",
+      "v16_layer_relevance": [
+        "L3"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Nowcast des laufenden Quartals-GDP. Aktualisiert bei jedem wichtigen Datenrelease."
+    },
+    {
+      "id": 40,
+      "name": "ism_mfg",
+      "display_name": "ISM Manufacturing PMI",
+      "category": "context",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "MANEMP",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "ISM manufacturing PMI latest",
+        "extraction_prompt": "Find the latest ISM Manufacturing PMI reading. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Value typically 30-65, below 50 = contraction. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 20,
+          "max": 70
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index",
+      "update_freq": "monthly",
+      "halflife_days": 30,
+      "direction_threshold": 1.0,
+      "plausibility": {
+        "min": 30,
+        "max": 70,
+        "non_negative": true,
+        "max_daily_move_pct": 0.1
+      },
+      "timing_class": "MONTHLY",
+      "ic_divergence_theme": "RECESSION",
+      "v16_layer_relevance": [
+        "L3"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "IC RECESSION Divergenz braucht es. <50=Kontraktion. FRED MANEMP als Proxy."
+    },
+    {
+      "id": 41,
+      "name": "baltic_dry",
+      "display_name": "Baltic Dry Index",
+      "category": "context",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "SCRAPE",
+        "ticker_or_series": "TradingEconomics",
+        "method": "SCRAPE"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://tradingeconomics.com/commodity/baltic",
+        "parse_method": "html",
+        "notes": "FRAGIL. TradingEconomics kann Scraping blockieren."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "Baltic Dry Index today",
+        "extraction_prompt": "Find the CURRENT Baltic Dry Index (BDI) level. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 500-5000. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 100,
+          "max": 15000
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index",
+      "update_freq": "daily",
+      "halflife_days": 5,
+      "direction_threshold": 50.0,
+      "plausibility": {
+        "min": 100,
+        "max": 15000,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.2
+      },
+      "timing_class": "DELAYED",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L3",
+        "L6"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "FRAGIL. Global Trade Proxy. Steigend=Wirtschaft expandiert."
+    },
+    {
+      "id": 42,
+      "name": "brent_wti_spread",
+      "display_name": "Brent-WTI Spread",
+      "category": "context",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "BZ=F - CL=F",
+      "depends_on": [],
+      "unit": "USD",
+      "update_freq": "daily",
+      "halflife_days": 5,
+      "direction_threshold": 0.5,
+      "plausibility": {
+        "min": -10,
+        "max": 30,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "LIVE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L6"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Steigend=Global Supply Tightness. Fallend=US Shale Ueberschuss."
+    },
+    {
+      "id": 43,
+      "name": "jgb_10y",
+      "display_name": "JGB 10Y (BOJ Watch)",
+      "category": "context",
+      "tier": "T3",
+      "is_output": false,
+      "source_primary": {
+        "provider": "yfinance",
+        "ticker_or_series": "^TNX.JP",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.investing.com/rates-bonds/japan-10-year-bond-yield",
+        "parse_method": "html",
+        "notes": "FRAGIL."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "Japan 10 year government bond yield JGB today",
+        "extraction_prompt": "Find the CURRENT Japan 10-year government bond yield. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 0.0-2.0%. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": -0.5,
+          "max": 3.0
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 7,
+      "direction_threshold": 0.05,
+      "plausibility": {
+        "min": -0.5,
+        "max": 5.0,
+        "non_negative": false,
+        "max_daily_move_pct": 0.3
+      },
+      "timing_class": "LIVE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L4"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "HELPER \u2014 BOJ Policy Monitor. Ergaenzt USDJPY fuer Japan-Exposure. Nicht in 58 Output-Zaehlung."
+    },
+    {
+      "id": 44,
+      "name": "insider_ratio",
+      "display_name": "Insider Buy/Sell Ratio",
+      "category": "context",
+      "tier": "T3",
+      "is_output": false,
+      "source_primary": {
+        "provider": "SCRAPE",
+        "ticker_or_series": "SEC EDGAR Form 4",
+        "method": "SCRAPE"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4&dateb=&owner=include&count=40",
+        "parse_method": "xml_parse",
+        "notes": "SEC EDGAR Form 4 filings. Aufwendig zu parsen."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "insider buying selling ratio this week",
+        "extraction_prompt": "Find the latest aggregate insider buy/sell ratio for US stocks. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Ratio > 1 = more buying. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 0.01,
+          "max": 10.0
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "weekly",
+      "halflife_days": 14,
+      "direction_threshold": 0.1,
+      "plausibility": {
+        "min": 0.01,
+        "max": 10.0,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "HELPER \u2014 Fragiles Parsing. Nicht in 58 Output-Zaehlung. Contrarian-Signal bei Extremen."
+    },
+    {
+      "id": 45,
+      "name": "gpr_index",
+      "display_name": "GPR Index (Geopolitical Risk)",
+      "category": "context",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "SCRAPE",
+        "ticker_or_series": "Caldara-Iacoviello",
+        "method": "DOWNLOAD"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.matteoiacoviello.com/gpr.htm",
+        "parse_method": "csv_download",
+        "notes": "Monatliches Update."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "geopolitical risk index GPR latest monthly",
+        "extraction_prompt": "Find the latest Geopolitical Risk (GPR) Index value. Normal range: 50-250, spikes to 400+ during crises. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 20,
+          "max": 500
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index",
+      "update_freq": "monthly",
+      "halflife_days": 30,
+      "direction_threshold": 10.0,
+      "plausibility": {
+        "min": 0,
+        "max": 500,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "MONTHLY",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L4",
+        "L8"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Geopolitischer Risiko-Index. Spikes bei Kriegen, Terroranschlaegen, etc."
+    },
+    {
+      "id": 46,
+      "name": "spy_fwd_pe",
+      "display_name": "SPY Forward P/E",
+      "category": "context",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "yfinance",
+        "ticker_or_series": "SPY",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "S&P 500 forward PE ratio today",
+        "extraction_prompt": "Find the CURRENT S&P 500 forward P/E ratio. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 15-25. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 8,
+          "max": 40
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "quarterly",
+      "halflife_days": 90,
+      "direction_threshold": 0.5,
+      "plausibility": {
+        "min": 8,
+        "max": 40,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.1
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L3"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "FRAGIL. yfinance .info Feld. Kann sich aendern oder verschwinden."
+    },
+    {
+      "id": 47,
+      "name": "sofr_rate",
+      "display_name": "SOFR Rate",
+      "category": "rates",
+      "tier": "T3",
+      "is_output": false,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "SOFR",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.01,
+      "plausibility": {
+        "min": 0,
+        "max": 10,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 0.05
+      },
+      "timing_class": "DELAYED",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "HELPER \u2014 Input fuer sofr_ff_spread(#61). SOFR - DFF = Funding Stress."
+    },
+    {
+      "id": 48,
+      "name": "days_to_fomc",
+      "display_name": "Days to Next FOMC Decision",
+      "category": "calendar",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": "config/event_calendar.json",
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "next_fomc_date - today",
+      "depends_on": [],
+      "unit": "Tage",
+      "update_freq": "daily",
+      "halflife_days": 999,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": 0,
+        "max": 60,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2",
+        "L7"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Statisch aus Kalender berechnet. CIO braucht dieses Feld."
+    },
+    {
+      "id": 49,
+      "name": "days_to_opex",
+      "display_name": "Days to Next OpEx",
+      "category": "calendar",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": "third_friday_of_month",
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "next_opex_date - today",
+      "depends_on": [],
+      "unit": "Tage",
+      "update_freq": "daily",
+      "halflife_days": 999,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": 0,
+        "max": 35,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "3. Freitag des Monats. Gamma-Exposure beeinflusst Markt nahe OpEx."
+    },
+    {
+      "id": 50,
+      "name": "earnings_season_flag",
+      "display_name": "Earnings Season Flag",
+      "category": "calendar",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": "config/event_calendar.json",
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "True if within earnings season window",
+      "depends_on": [],
+      "unit": "Boolean",
+      "update_freq": "daily",
+      "halflife_days": 999,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": 0,
+        "max": 1,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L3",
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "Earnings Season: ~2. Woche Jan/Apr/Jul/Okt fuer 5-6 Wochen."
+    },
+    {
+      "id": 52,
+      "name": "fedwatch_cut_prob",
+      "display_name": "FedWatch Implied Cut Probability",
+      "category": "rates",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": "ZQ=F (Fed Funds Futures)",
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "CME FedWatch tool probability next FOMC rate cut",
+        "extraction_prompt": "Find the CURRENT CME FedWatch implied probability of a rate CUT at the next FOMC meeting. Return ONLY: {\"value\": <number>, \"meeting_date\": \"<date>\", \"source_url\": \"<url>\"}. Value is percentage 0-100. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 0,
+          "max": 100
+        }
+      },
+      "formula": "Implied Rate = 100 - ZQ Future Price; Prob Cut = (Current FFR - Implied Rate) / 0.25 * 100",
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 3.0,
+      "plausibility": {
+        "min": 0,
+        "max": 100,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 0.5
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "FED_POLICY",
+      "v16_layer_relevance": [
+        "L1",
+        "L2",
+        "L7"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "KRITISCH \u2014 IC FED_POLICY Divergenz ist BLIND ohne dieses Feld."
+    },
+    {
+      "id": 53,
+      "name": "spy_rel_volume",
+      "display_name": "SPY Relative Volume (vs 20d avg)",
+      "category": "volume",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "spy_volume_today / spy_volume_20d_avg",
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 0.1,
+      "plausibility": {
+        "min": 0.1,
+        "max": 5.0,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 3.0
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "NEU. >1.5=ueberdurchschnittlich, <0.5=ungewoehnlich ruhig."
+    },
+    {
+      "id": 54,
+      "name": "trin",
+      "display_name": "TRIN (Arms Index / Up-Down Volume Ratio)",
+      "category": "volume",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "(advancing_issues/declining_issues) / (advancing_volume/declining_volume)",
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 0.2,
+      "plausibility": {
+        "min": 0.1,
+        "max": 10.0,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 5.0
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L5",
+        "L8"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "NEU. >2.0=Kapitulations-Selling. <0.5=Euphorie. Starkes Contrarian-Signal."
+    },
+    {
+      "id": 55,
+      "name": "hyg_tlt_ratio",
+      "display_name": "HYG/TLT Ratio (Risk Appetite Flow)",
+      "category": "rates",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "HYG_close / TLT_close",
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 0.005,
+      "plausibility": {
+        "min": 0.3,
+        "max": 2.0,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.05
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "CREDIT",
+      "v16_layer_relevance": [
+        "L2",
+        "L5",
+        "L6"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "NEU. HY OAS misst SPREAD-Level. HYG/TLT misst FLOW-Direction."
+    },
+    {
+      "id": 56,
+      "name": "spy_intraday_range",
+      "display_name": "SPY Intraday Range (H-L)/C",
+      "category": "vol",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "(SPY_high - SPY_low) / SPY_close * 100",
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 0.2,
+      "plausibility": {
+        "min": 0,
+        "max": 20,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L5"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "NEU. Versteckte Volatilitaet die VIX nicht zeigt."
+    },
+    {
+      "id": 57,
+      "name": "initial_claims",
+      "display_name": "Initial Jobless Claims",
+      "category": "sentiment",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "ICSA",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Tausend",
+      "update_freq": "weekly",
+      "halflife_days": 7,
+      "direction_threshold": 10.0,
+      "plausibility": {
+        "min": 100000,
+        "max": 6000000,
+        "non_negative": true,
+        "max_daily_move_pct": 0.5
+      },
+      "timing_class": "WEEKLY",
+      "ic_divergence_theme": "RECESSION",
+      "v16_layer_relevance": [
+        "L2",
+        "L3"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "UPGRADE von T3 zu T2. Einziges Real-Economy-Feld mit woechentlicher Frequenz. FRED Revision-Detection aktiv."
+    },
+    {
+      "id": 58,
+      "name": "vix_call_put_vol",
+      "display_name": "VIX Options Call/Put Volume Ratio",
+      "category": "vol",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CBOE",
+        "ticker_or_series": null,
+        "method": "SCRAPE"
+      },
+      "source_secondary": null,
+      "source_scrape": {
+        "url": "https://www.cboe.com/us/options/market_statistics/daily/",
+        "parse_method": "csv_download",
+        "notes": "VIX options volume. Gleiche Quelle wie #16 P/C Ratio."
+      },
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "VIX options volume call put ratio today",
+        "extraction_prompt": "Find today's VIX options call-to-put volume ratio. Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 0.5-2.0. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 0.1,
+          "max": 5.0
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Ratio",
+      "update_freq": "daily",
+      "halflife_days": 1,
+      "direction_threshold": 0.2,
+      "plausibility": {
+        "min": 0.1,
+        "max": 5.0,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 2.0
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "VOLATILITY",
+      "v16_layer_relevance": [
+        "L5",
+        "L8"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "NEU. Hohe VIX-Call-Volume = institutionelles Hedging-Demand."
+    },
+    {
+      "id": 59,
+      "name": "breakeven_5y5y",
+      "display_name": "5Y5Y Breakeven Inflation Rate",
+      "category": "rates",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "T5YIFR",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "daily",
+      "halflife_days": 5,
+      "direction_threshold": 0.03,
+      "plausibility": {
+        "min": 0,
+        "max": 6.0,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 0.1
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "INFLATION",
+      "v16_layer_relevance": [
+        "L2",
+        "L7"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "IC INFLATION Divergenz braucht dieses Feld. Fed's bevorzugtes Mass."
+    },
+    {
+      "id": 60,
+      "name": "move_index",
+      "display_name": "MOVE Index (Bond Volatility)",
+      "category": "vol",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "yfinance",
+        "ticker_or_series": "^MOVE",
+        "method": "API"
+      },
+      "source_secondary": {
+        "provider": "EODHD",
+        "ticker_or_series": "MOVE.INDX",
+        "method": "API"
+      },
+      "source_scrape": null,
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "MOVE index bond volatility today level",
+        "extraction_prompt": "Find the CURRENT ICE BofA MOVE Index level (bond market volatility). Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal: 80-120. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": 40,
+          "max": 300
+        }
+      },
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 3.0,
+      "plausibility": {
+        "min": 40,
+        "max": 300,
+        "non_negative": true,
+        "non_zero": true,
+        "max_daily_move_pct": 0.3
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": "VOLATILITY",
+      "v16_layer_relevance": [
+        "L5",
+        "L8"
+      ],
+      "tab": "RAW_MARKET",
+      "notes": "VIX fuer Bonds. SVB Fruehwarnung: MOVE stieg Tage vor VIX."
+    },
+    {
+      "id": 61,
+      "name": "sofr_ff_spread",
+      "display_name": "SOFR - Fed Funds Spread",
+      "category": "rates",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": null,
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "SOFR - DFF (Fed Funds Effective Rate)",
+      "depends_on": [
+        "sofr_rate"
+      ],
+      "unit": "bps",
+      "update_freq": "daily",
+      "halflife_days": 3,
+      "direction_threshold": 2.0,
+      "plausibility": {
+        "min": -50,
+        "max": 100,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "DELAYED",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Normal: 0-5 bps. Bei Stress: >10 bps. Bei Krise (Sep 2019): >25 bps."
+    },
+    {
+      "id": 62,
+      "name": "cpi_yoy",
+      "display_name": "CPI Year-over-Year (Latest)",
+      "category": "rates",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "CPIAUCSL",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": true,
+      "source_llm_config": {
+        "search_query": "US CPI year over year inflation rate latest",
+        "extraction_prompt": "Find the latest US CPI year-over-year inflation rate (percentage). Return ONLY: {\"value\": <number>, \"date\": \"<date>\", \"source_url\": \"<url>\"}. Normal range: 0-10%. If not findable, return {\"value\": null}.",
+        "plausibility_check": {
+          "min": -3,
+          "max": 15
+        }
+      },
+      "formula": "YoY % Change berechnet aus monatlichen CPI-Werten",
+      "depends_on": [],
+      "unit": "%",
+      "update_freq": "monthly",
+      "halflife_days": 30,
+      "direction_threshold": 0.1,
+      "plausibility": {
+        "min": -5,
+        "max": 15,
+        "non_negative": false,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "MONTHLY",
+      "ic_divergence_theme": "INFLATION",
+      "v16_layer_relevance": [
+        "L2",
+        "L7"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "IC INFLATION Divergenz braucht CPI als Markt-Realitaet vs. IC-Konsens."
+    },
+    {
+      "id": 63,
+      "name": "days_to_cpi",
+      "display_name": "Days to Next CPI Release",
+      "category": "calendar",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": "config/event_calendar.json",
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "next_cpi_date - today",
+      "depends_on": [],
+      "unit": "Tage",
+      "update_freq": "daily",
+      "halflife_days": 999,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": 0,
+        "max": 35,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Market Analyst Catalyst-Kalender erwartet dieses Feld."
+    },
+    {
+      "id": 64,
+      "name": "days_to_nfp",
+      "display_name": "Days to Next NFP Release",
+      "category": "calendar",
+      "tier": "T3",
+      "is_output": true,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": "config/event_calendar.json",
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "next_nfp_date - today",
+      "depends_on": [],
+      "unit": "Tage",
+      "update_freq": "daily",
+      "halflife_days": 999,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": 0,
+        "max": 35,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L2",
+        "L3"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Non-Farm Payrolls. Erster Freitag des Monats."
+    },
+    {
+      "id": 65,
+      "name": "days_to_ecb",
+      "display_name": "Days to Next ECB Decision",
+      "category": "calendar",
+      "tier": "T3",
+      "is_output": false,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": "config/event_calendar.json",
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "next_ecb_date - today",
+      "depends_on": [],
+      "unit": "Tage",
+      "update_freq": "daily",
+      "halflife_days": 999,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": 0,
+        "max": 60,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L4"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "HELPER \u2014 ECB Zinsentscheidung. Geholt aber nicht in 58 Output-Zaehlung."
+    },
+    {
+      "id": 66,
+      "name": "days_to_boj",
+      "display_name": "Days to Next BOJ Decision",
+      "category": "calendar",
+      "tier": "T3",
+      "is_output": false,
+      "source_primary": {
+        "provider": "CALC",
+        "ticker_or_series": "config/event_calendar.json",
+        "method": "CALCULATED"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": "next_boj_date - today",
+      "depends_on": [],
+      "unit": "Tage",
+      "update_freq": "daily",
+      "halflife_days": 999,
+      "direction_threshold": 0,
+      "plausibility": {
+        "min": 0,
+        "max": 60,
+        "non_negative": true,
+        "non_zero": false,
+        "max_daily_move_pct": 999
+      },
+      "timing_class": "PREV_CLOSE",
+      "ic_divergence_theme": null,
+      "v16_layer_relevance": [
+        "L4"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "HELPER \u2014 BOJ Zinsentscheidung. Aug 2024 zeigte: BOJ-Events koennen systemisch sein."
+    }
+  ]
+}
