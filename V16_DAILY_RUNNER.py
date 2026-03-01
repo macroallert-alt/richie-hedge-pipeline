@@ -315,7 +315,7 @@ def load_data():
     base = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet="
 
     def load_tab(name):
-        df = pd.read_csv(base + name, decimal=',')
+        df = pd.read_csv(base + name, decimal=',', thousands='.')
         df.columns = df.columns.str.strip()
         df = df.rename(columns={df.columns[0]: 'Date'})
         if not str(df.iloc[0]['Date'])[:4].isdigit():
