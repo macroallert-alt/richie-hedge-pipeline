@@ -380,6 +380,8 @@ def load_data():
             computed += 1
     print(f"{computed} Pairs OK")
     print(f"  DEBUG DATA: SPY dtype={prices['SPY'].dtype}, first5={prices['SPY'].head().tolist()}")
+    print(f"  DEBUG COLS: {list(prices.columns[:10])}")
+    print(f"  DEBUG RAW0: {prices.iloc[0].tolist()[:5]}")
     print("DATEN GELADEN")
     return prices, macro, k16, rv_pct, cm
 
