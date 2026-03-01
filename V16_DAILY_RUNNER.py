@@ -324,6 +324,7 @@ def load_data():
         return df.dropna(subset=['Date']).sort_values('Date').reset_index(drop=True)
 
     prices = load_tab("DATA_Prices")
+    print(f"  DEBUG RAW CSV: cols={list(prices.columns[:6])}, row0={prices.iloc[0].tolist()[:4]}, row0_str={[str(x) for x in prices.iloc[0].tolist()[:4]]}")
     all_tickers = list(set(ASSETS + ['VGK','PLATINUM','PLAT','COPPER']))
     col_rename = {}
     for col in prices.columns:
