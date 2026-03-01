@@ -315,7 +315,7 @@ def load_data():
     base = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet="
 
     def load_tab(name):
-        df = pd.read_csv(base + name, dtype=str)
+        df = pd.read_csv(base + name, decimal=',', thousands='.')
         df.columns = df.columns.str.strip()
         df = df.rename(columns={df.columns[0]: 'Date'})
         if not str(df.iloc[0]['Date'])[:4].isdigit():
@@ -339,10 +339,7 @@ def load_data():
     for a in all_tickers:
         if a in prices.columns:
             if prices[a].dtype == object:
-                sample = prices[a].dropna().astype(str).head(50)
-                has_comma = sample.str.contains(',', regex=False).any()
-                if has_comma:
-                    prices[a] = prices[a].astype(str).str.replace('.','',regex=False).str.replace(',','.',regex=False)
+                prices[a] = prices[a].astype(str).str.replace('.','',regex=False).str.replace(',','.',regex=False)
             prices[a] = pd.to_numeric(prices[a], errors='coerce')
     if 'PLATINUM' in prices.columns and 'PLAT' not in prices.columns:
         prices['PLAT'] = prices['PLATINUM']
