@@ -379,6 +379,7 @@ def load_data():
             rv_pct[pair_z] = (pct - 0.5) * 2
             computed += 1
     print(f"{computed} Pairs OK")
+    print(f"  DEBUG DATA: SPY dtype={prices['SPY'].dtype}, first5={prices['SPY'].head().tolist()}")
     print("DATEN GELADEN")
     return prices, macro, k16, rv_pct, cm
 
@@ -614,6 +615,7 @@ def run_engine(prices, macro, k16, rv, cm):
     dates_s = pd.Series(dates[sl]).reset_index(drop=True)
 
     # Performance metrics
+    print(f"  DEBUG: pr_s len={len(pr_s)}, sum={pr_s.sum()}, cumret={(1+pr_s).cumprod().iloc[-1]}, dd_total={int(dd_prot_active.sum())}")
     m_prod = mets(pr_s)
     m_spy = mets(spy_s)
 
