@@ -339,7 +339,10 @@ def load_data():
     for a in all_tickers:
         if a in prices.columns:
             if prices[a].dtype == object:
-                prices[a] = prices[a].astype(str).str.replace('.','',regex=False).str.replace(',','.',regex=False)
+                sample = prices[a].dropna().astype(str).head(50)
+                has_comma = sample.str.contains(',', regex=False).any()
+                if has_comma:
+                    prices[a] = prices[a].astype(str).str.replace('.','',regex=False).str.replace(',','.',regex=False)
             prices[a] = pd.to_numeric(prices[a], errors='coerce')
     if 'PLATINUM' in prices.columns and 'PLAT' not in prices.columns:
         prices['PLAT'] = prices['PLATINUM']
