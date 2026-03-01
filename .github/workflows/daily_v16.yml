@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: pip install pandas numpy gspread google-auth requests fredapi anthropic yfinance beautifulsoup4 lxml
+        run: pip install pandas numpy gspread google-auth requests fredapi anthropic yfinance beautifulsoup4 lxml scipy
       - name: Write GCP credentials
         run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
       - name: Run Data Collector
