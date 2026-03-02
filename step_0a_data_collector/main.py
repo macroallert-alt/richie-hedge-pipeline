@@ -212,13 +212,15 @@ def run_pipeline():
 
     # 4b: JSON Outputs
     json_writer = JSONWriter(OUTPUT_DIR)
-    json_paths = json_writer.write_all(transformed, dq_summary)
+    # Filter out internal _xxx fields (not real TransformedFields)
+    transformed_for_output = {k: v for k, v in transformed.items() if not k.startswith('_')}
+    json_paths = json_writer.write_all(transformed_for_output, dq_summary)
 
     elapsed_p4 = time.time() - t4
     logger.info(f"Phase 4 took {elapsed_p4:.1f}s")
 
     # ─── UPDATE CACHE ───
-    engine.update_history(transformed, today)
+    engine.update_history(transformed_for_output, today)
     history_cache.data = history_data
     history_cache.prune()
     history_cache.save()
