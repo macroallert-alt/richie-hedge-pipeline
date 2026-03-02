@@ -165,7 +165,9 @@ def run_pipeline():
     t3 = time.time()
     from quality import QualityEngine
     quality = QualityEngine(registry, history_data)
-    dq_summary = quality.run_all(transformed, fetch_results)
+    # Filter out internal _xxx fields from macro_state_transforms (not real TransformedFields)
+    transformed_for_quality = {k: v for k, v in transformed.items() if not k.startswith('_')}
+    dq_summary = quality.run_all(transformed_for_quality, fetch_results)
     elapsed_p3 = time.time() - t3
     logger.info(f"Phase 3 took {elapsed_p3:.1f}s")
 
