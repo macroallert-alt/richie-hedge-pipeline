@@ -3,12 +3,12 @@
     "version": "2.0",
     "date": "2026-02-28",
     "spec_source": "DATA_COLLECTOR_SPEC_V2 Teil A-F",
-    "total_fields": 64,
+    "total_fields": 65,
     "output_fields": 58,
     "helper_fields": 6,
     "tiers": {
       "T1": 17,
-      "T2": 19,
+      "T2": 20,
       "T3": 16,
       "SYSTEM": 6,
       "HELPER": 6
@@ -1510,7 +1510,7 @@
         "L2"
       ],
       "tab": "RAW_MACRO",
-      "notes": "HELPER \u2014 Input fuer fedwatch_cut_prob(#52) und IC FED_POLICY Interface. Nicht eigenstaendig gescored."
+      "notes": "HELPER — Input fuer fedwatch_cut_prob(#52) und IC FED_POLICY Interface. Nicht eigenstaendig gescored."
     },
     {
       "id": 38,
@@ -1734,7 +1734,7 @@
         "L4"
       ],
       "tab": "RAW_MACRO",
-      "notes": "HELPER \u2014 BOJ Policy Monitor. Ergaenzt USDJPY fuer Japan-Exposure. Nicht in 58 Output-Zaehlung."
+      "notes": "HELPER — BOJ Policy Monitor. Ergaenzt USDJPY fuer Japan-Exposure. Nicht in 58 Output-Zaehlung."
     },
     {
       "id": 44,
@@ -1782,7 +1782,7 @@
         "L5"
       ],
       "tab": "RAW_MARKET",
-      "notes": "HELPER \u2014 Fragiles Parsing. Nicht in 58 Output-Zaehlung. Contrarian-Signal bei Extremen."
+      "notes": "HELPER — Fragiles Parsing. Nicht in 58 Output-Zaehlung. Contrarian-Signal bei Extremen."
     },
     {
       "id": 45,
@@ -1912,7 +1912,7 @@
         "L2"
       ],
       "tab": "RAW_MACRO",
-      "notes": "HELPER \u2014 Input fuer sofr_ff_spread(#61). SOFR - DFF = Funding Stress."
+      "notes": "HELPER — Input fuer sofr_ff_spread(#61). SOFR - DFF = Funding Stress."
     },
     {
       "id": 48,
@@ -2071,7 +2071,7 @@
         "L7"
       ],
       "tab": "RAW_MACRO",
-      "notes": "KRITISCH \u2014 IC FED_POLICY Divergenz ist BLIND ohne dieses Feld."
+      "notes": "KRITISCH — IC FED_POLICY Divergenz ist BLIND ohne dieses Feld."
     },
     {
       "id": 53,
@@ -2591,7 +2591,7 @@
         "L4"
       ],
       "tab": "RAW_MACRO",
-      "notes": "HELPER \u2014 ECB Zinsentscheidung. Geholt aber nicht in 58 Output-Zaehlung."
+      "notes": "HELPER — ECB Zinsentscheidung. Geholt aber nicht in 58 Output-Zaehlung."
     },
     {
       "id": 66,
@@ -2628,7 +2628,43 @@
         "L4"
       ],
       "tab": "RAW_MACRO",
-      "notes": "HELPER \u2014 BOJ Zinsentscheidung. Aug 2024 zeigte: BOJ-Events koennen systemisch sein."
+      "notes": "HELPER — BOJ Zinsentscheidung. Aug 2024 zeigte: BOJ-Events koennen systemisch sein."
+    },
+    {
+      "id": 67,
+      "name": "indpro",
+      "display_name": "Industrial Production Index",
+      "category": "growth",
+      "tier": "T2",
+      "is_output": true,
+      "source_primary": {
+        "provider": "FRED",
+        "ticker_or_series": "INDPRO",
+        "method": "API"
+      },
+      "source_secondary": null,
+      "source_scrape": null,
+      "source_llm_eligible": false,
+      "source_llm_config": null,
+      "formula": null,
+      "depends_on": [],
+      "unit": "Index (2017=100)",
+      "update_freq": "monthly",
+      "halflife_days": 30,
+      "direction_threshold": 0.5,
+      "plausibility": {
+        "min": 50,
+        "max": 150,
+        "non_negative": true,
+        "max_daily_move_pct": 0.05
+      },
+      "timing_class": "MONTHLY",
+      "ic_divergence_theme": "RECESSION",
+      "v16_layer_relevance": [
+        "L2"
+      ],
+      "tab": "RAW_MACRO",
+      "notes": "Industrial Production Index. Fuer Growth G4 Vote (10M Momentum, +0.015/-0.005)."
     }
   ]
 }

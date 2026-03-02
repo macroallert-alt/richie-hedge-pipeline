@@ -119,6 +119,47 @@ def run_pipeline():
     logger.info(f"Phase 2 took {elapsed_p2:.1f}s")
 
     # ═════════════════════════════════════════════
+    # PHASE 2b: MACRO STATE V2
+    # ═════════════════════════════════════════════
+    t2b = time.time()
+    macro_row = None
+    k16_row = None
+    try:
+        from macro_state_transforms import MacroStateTransforms
+        from macro_state_engine import MacroStateEngine
+
+        # Berechne abgeleitete Inputs (Momentums, Acceleration)
+        macro_transforms = MacroStateTransforms(history_data)
+        glp_data = macro_transforms.compute_all(transformed, today)
+
+        # Berechne Macro State
+        macro_engine = MacroStateEngine()
+
+        # Lade vorherigen State aus Sheet (optional)
+        sheet_prev = None
+        try:
+            from writers import V16SheetWriter as _SW
+            _sw_tmp = _SW(V16_SHEET_ID)
+            _sw_tmp._connect()
+            _ws = _sw_tmp._workbook.worksheet("CALC_Macro_State_V2")
+            _row2 = _ws.row_values(2)  # Neueste Zeile
+            if _row2 and len(_row2) >= 17:
+                sheet_prev = {
+                    'liq_dir_confirmed': int(float(_row2[3])) if _row2[3] else 0,
+                    'macro_state_num': int(float(_row2[8])) if _row2[8] else 6,
+                    'howell_phase': int(float(_row2[16])) if _row2[16] else 2,
+                }
+        except Exception as e:
+            logger.warning(f"Could not load prev state from sheet: {e}")
+
+        macro_row, k16_row = macro_engine.compute(
+            today, transformed, glp_data, sheet_prev
+        )
+        logger.info(f"Phase 2b (Macro State V2) took {time.time() - t2b:.1f}s")
+    except Exception as e:
+        logger.error(f"Macro State V2 computation failed: {e}")
+
+    # ═════════════════════════════════════════════
     # PHASE 3: QUALITY
     # ═════════════════════════════════════════════
     t3 = time.time()
@@ -156,6 +197,17 @@ def run_pipeline():
     except Exception as e:
         logger.error(f"V16 Sheet write failed: {e}")
 
+    # 4a-2: CALC_Macro_State_V2 + DATA_K16_K17 V2
+    if macro_row:
+        try:
+            from writers_macro_state_v2 import write_macro_state_v2, write_k16_v2
+            ms_ok = write_macro_state_v2(sheet_writer, macro_row, today)
+            k16v2_ok = write_k16_v2(sheet_writer, k16_row, today)
+            sheet_status["CALC_Macro_State_V2"] = ms_ok
+            sheet_status["DATA_K16_K17_V2"] = k16v2_ok
+        except Exception as e:
+            logger.error(f"Macro State V2 write failed: {e}")
+
     # 4b: JSON Outputs
     json_writer = JSONWriter(OUTPUT_DIR)
     json_paths = json_writer.write_all(transformed, dq_summary)
@@ -189,7 +241,7 @@ def run_pipeline():
     logger.info(f"║  Fields: {dq_summary.get('fields_ok', 0)}/{dq_summary.get('fields_total', 0)} OK"
                 f"   Stale: {dq_summary.get('fields_stale', 0)}"
                 f"   Failed: {dq_summary.get('fields_failed', 0)}     ║")
-    logger.info(f"║  Sheet: {sum(1 for v in sheet_status.values() if v)}/3 tabs          ║")
+    logger.info(f"║  Sheet: {sum(1 for v in sheet_status.values() if v)}/{len(sheet_status)} tabs          ║")
     logger.info("╚══════════════════════════════════════════╝")
 
     # Alerts

@@ -1130,6 +1130,8 @@ class MasterFetcher:
             'ig_oas': 'BAMLC0A4CBBB', 'nfci': 'NFCI', 'anfci': 'ANFCI',
             'discount_window': 'WDFOL', 'mmf_assets': 'WRMFNS',
             'initial_claims': 'ICSA', 'breakeven_5y5y': 'T5YIFR',
+            'ism_mfg': 'MANEMP',    # Manufacturing Employment (Growth G1 Vote)
+            'indpro': 'INDPRO',      # Industrial Production (Growth G4 Vote)
         }
         fred_batch = self.fred.fetch_batch(list(fred_fields.values()))
         for field_name, series_id in fred_fields.items():
@@ -1320,8 +1322,8 @@ class MasterFetcher:
             results[field_name] = FetchResult(field_name, value, 'CALC', 'API_PRIMARY')
 
         # ─── 13. Context T3 Fields ───
-        # ISM Manufacturing PMI — No FRED series available, use LLM
-        results['ism_mfg'] = self._try_fallback('ism_mfg', cache)
+        # ISM Manufacturing PMI — now fetched via FRED MANEMP in batch (Patch V2)
+        # (ism_mfg is already in results from FRED batch above)
 
         # GPR Index — LLM fallback
         results['gpr_index'] = self._try_fallback('gpr_index', cache)
