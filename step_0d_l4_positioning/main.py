@@ -486,9 +486,143 @@ def _parse_binance_funding(data):
     return None, None
 
 def pull_options_gex():
-    """STUB — Phase 3: EODHD SPY Options GEX calculation."""
-    log.info("  OPTIONS_GEX: [STUB - Phase 3] Skipping")
-    return {}
+    """Calculate Gamma Exposure (GEX) from SPY options via EODHD Marketplace API.
+
+    GEX = Sum of (OI * Gamma * 100 * Spot * sign) for all contracts 1-7 DTE.
+    Calls contribute positive gamma, Puts contribute negative gamma.
+    Result in $Billion.
+
+    EODHD Marketplace Options API (unicornbay):
+      GET /api/mp/unicornbay/options/contracts
+      Fields: strike, type, open_interest, gamma, delta, exp_date
+      Typically <500 contracts for SPY 1-7 DTE window.
+
+    SPY spot price from EODHD EOD API.
+
+    Returns: {"OPTIONS_GEX": {"raw_value": gex_billions, "age_days": 0, "date": str}}
+    """
+    if not EODHD_API_KEY:
+        log.warning("  OPTIONS_GEX: No EODHD_API_KEY set, skipping")
+        return {}
+
+    results = {}
+    today = date.today()
+
+    # --- Step 1: Get SPY spot price via EODHD EOD API ---
+    spy_spot = None
+    try:
+        eod_url = "https://eodhd.com/api/eod/SPY.US"
+        resp = requests.get(eod_url, params={
+            "api_token": EODHD_API_KEY,
+            "fmt": "json",
+            "from": (today - timedelta(days=5)).strftime("%Y-%m-%d"),
+            "to": today.strftime("%Y-%m-%d"),
+            "order": "d",
+        }, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data and len(data) > 0:
+            spy_spot = float(data[0]["close"])
+            log.info(f"    SPY Spot: ${spy_spot:.2f} (from {data[0].get('date', 'unknown')})")
+        else:
+            log.warning("    SPY Spot: No EOD data returned")
+    except Exception as e:
+        log.warning(f"    SPY Spot: EODHD EOD failed -> {e}")
+
+    if spy_spot is None:
+        log.warning("  OPTIONS_GEX: Cannot calculate without SPY spot price")
+        return {}
+
+    # --- Step 2: Pull SPY options chain 1-7 DTE ---
+    exp_from = (today + timedelta(days=1)).strftime("%Y-%m-%d")
+    exp_to = (today + timedelta(days=7)).strftime("%Y-%m-%d")
+
+    all_contracts = []
+    try:
+        opts_url = "https://eodhd.com/api/mp/unicornbay/options/contracts"
+        params = {
+            "filter[underlying_symbol]": "SPY",
+            "filter[exp_date_from]": exp_from,
+            "filter[exp_date_to]": exp_to,
+            "fields[options-contracts]": "contract,type,strike,exp_date,open_interest,gamma,delta,dte",
+            "sort": "strike",
+            "page[limit]": 500,
+            "compact": 1,
+            "api_token": EODHD_API_KEY,
+        }
+        resp = requests.get(opts_url, params=params, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+
+        contracts = data.get("data", [])
+        if not contracts:
+            log.warning(f"    OPTIONS: No contracts returned for SPY {exp_from} to {exp_to}")
+            return {}
+
+        for c in contracts:
+            attrs = c.get("attributes", c)
+            try:
+                oi = float(attrs.get("open_interest", 0) or 0)
+                gamma = float(attrs.get("gamma", 0) or 0)
+                strike = float(attrs.get("strike", 0) or 0)
+                opt_type = str(attrs.get("type", "")).lower()
+                if oi > 0 and gamma > 0:
+                    all_contracts.append({
+                        "oi": oi,
+                        "gamma": gamma,
+                        "strike": strike,
+                        "type": opt_type,
+                    })
+            except (ValueError, TypeError):
+                continue
+
+        log.info(f"    OPTIONS: {len(all_contracts)} valid contracts loaded ({len(contracts)} total, 1-7 DTE)")
+
+        meta = data.get("meta", {})
+        total = meta.get("total", len(contracts))
+        if total > 500:
+            log.warning(f"    OPTIONS: {total} total contracts, only fetched 500")
+
+    except Exception as e:
+        log.warning(f"    OPTIONS: EODHD options API failed -> {e}")
+        return {}
+
+    if not all_contracts:
+        log.warning("    OPTIONS: No contracts with valid OI and gamma")
+        return {}
+
+    # --- Step 3: Calculate GEX ---
+    # Dealer convention: dealers are net short options
+    # Call GEX positive (dealers buy stock as price rises = stabilizing)
+    # Put GEX negative (dealers sell stock as price drops = destabilizing)
+    total_gex = 0.0
+    call_gex = 0.0
+    put_gex = 0.0
+    call_count = 0
+    put_count = 0
+
+    for c in all_contracts:
+        contract_gex = c["oi"] * c["gamma"] * 100 * spy_spot
+        if c["type"] == "call":
+            total_gex += contract_gex
+            call_gex += contract_gex
+            call_count += 1
+        elif c["type"] == "put":
+            total_gex -= contract_gex
+            put_gex += contract_gex
+            put_count += 1
+
+    gex_billions = total_gex / 1e9
+
+    log.info(f"    GEX: ${gex_billions:.2f}B (Calls: {call_count} @ ${call_gex/1e9:.2f}B, Puts: {put_count} @ -${put_gex/1e9:.2f}B)")
+
+    results["OPTIONS_GEX"] = {
+        "raw_value": round(gex_billions, 4),
+        "age_days": 0,
+        "date": today.strftime("%Y-%m-%d"),
+    }
+
+    return results
 
 
 def pull_fund_flows():
