@@ -279,23 +279,23 @@ def write_data_liquidity(sheet, df, hist_howell_phase=4):
         new_dates_set.add(d)
         rows_to_write.append([
             d,
-            fmt(row["Fed_Net_Liq"], 0),
-            fmt(row["ECB_USD"], 1),
-            fmt(row["BOJ_USD"], 0),
-            fmt(row["China_M2_USD"], 0),
-            fmt(row["US_M2"], 1),
-            fmt(row["Fed_Index"], 6),
-            fmt(row["ECB_Index"], 6),
-            fmt(row["BOJ_Index"], 6),
-            fmt(row["China_Index"], 5),
-            fmt(row["M2_Index"], 5),
-            fmt(row["Global_Liq_Proxy"], 6),
-            fmt(row["MA_12M"], 6),
-            fmt(row["MA_36M"], 5),
-            fmt(row["Trend"], 6),
-            fmt(row["Momentum_6M"], 6),
-            fmt(row["Acceleration"], 6),
-            phase, riskon, riskoff,
+            str(fmt(row["Fed_Net_Liq"], 0)),
+            str(fmt(row["ECB_USD"], 1)),
+            str(fmt(row["BOJ_USD"], 0)),
+            str(fmt(row["China_M2_USD"], 0)),
+            str(fmt(row["US_M2"], 1)),
+            str(fmt(row["Fed_Index"], 6)),
+            str(fmt(row["ECB_Index"], 6)),
+            str(fmt(row["BOJ_Index"], 6)),
+            str(fmt(row["China_Index"], 5)),
+            str(fmt(row["M2_Index"], 5)),
+            str(fmt(row["Global_Liq_Proxy"], 6)),
+            str(fmt(row["MA_12M"], 6)),
+            str(fmt(row["MA_36M"], 5)),
+            str(fmt(row["Trend"], 6)),
+            str(fmt(row["Momentum_6M"], 6)),
+            str(fmt(row["Acceleration"], 6)),
+            str(phase), str(riskon), str(riskoff),
         ])
 
     if not rows_to_write:
@@ -438,8 +438,21 @@ def calc_cycles_howell(liq_df, start_date, end_date):
 
 
 def write_cycles_howell(sheet, df):
-    """Write CYCLES_Howell rows to sheet (newest first, row 3 = first data row)."""
+    """Write CYCLES_Howell rows to sheet (newest first, row 3 = first data row).
+    
+    CRITICAL: All numeric values must be written as STRINGS to prevent
+    Google Sheets German locale from mangling decimals (. as thousands sep,
+    1.2 interpreted as date Dec 31, 0.5 rounded to 0, etc.)
+    """
     ws = sheet.worksheet("CYCLES_Howell")
+    
+    def s(val, decimals=6):
+        """Format numeric value as string for RAW mode."""
+        if pd.isna(val):
+            return ""
+        if decimals == 0:
+            return str(int(round(val)))
+        return f"{float(val):.{decimals}f}"
     
     new_dates_set = set()
     rows_to_write = []
@@ -448,22 +461,22 @@ def write_cycles_howell(sheet, df):
         new_dates_set.add(d)
         rows_to_write.append([
             d,
-            fmt(row["Global_Liq_Proxy"], 6),
-            fmt(row["Trend"], 6),
-            fmt(row["Momentum_6M"], 6),
-            fmt(row["Acceleration"], 6),
+            s(row["Global_Liq_Proxy"], 6),
+            s(row["Trend"], 6),
+            s(row["Momentum_6M"], 6),
+            s(row["Acceleration"], 6),
             int(row["Howell_Phase"]),
             row["Phase_Name"],
-            row["Howell_RiskOn_Mult"],
-            row["Howell_RiskOff_Mult"],
+            s(row["Howell_RiskOn_Mult"], 2),
+            s(row["Howell_RiskOff_Mult"], 2),
             int(row["Months_Since_Trough"]),
-            row["Cycle_Position"],
+            s(row["Cycle_Position"], 1),
             row["Cycle_Interpretation"],
             int(row["Months_To_Trough"]),
-            row["GLI_Normalized"],
-            fmt(row["Sine_Wave"], 6),
-            fmt(row["Phase_Confidence"], 4),
-            row["Sine_Agrees"],
+            s(row["GLI_Normalized"], 2),
+            s(row["Sine_Wave"], 6),
+            s(row["Phase_Confidence"], 4),
+            str(row["Sine_Agrees"]),
             row["Regime"],
             row["Sig_Equities"],
             row["Sig_Credits"],
@@ -498,6 +511,341 @@ def write_cycles_howell(sheet, df):
     ws.insert_rows(rows_to_write, row=3, value_input_option="RAW")
     log.info(f"  Inserted {num} rows at row 3")
 
+
+# --- STUFE 3: DATA_K16_K17 ---
+
+# CBC proprietary values (frozen since Apps Script stopped 2026-02-03)
+GLI_ACCEL_LAST = 2.365346
+HOWELL_MOM6M_LAST = -1.330617
+
+# Credit Impulse coefficients (from BLOCKER 4 / Addendum IV)
+CI_INTERCEPT = -0.00080156
+CI_BETA_US = 0.46845456
+CI_BETA_CN = 0.28075508
+CI_LOOKBACK_PCT = 189   # 9 months
+CI_LOOKBACK_ACC = 252   # 12 months
+
+
+def read_cu_au_from_prices(sheet, start_date, end_date):
+    """Read COPPER and GLD prices from DATA_Prices tab, compute Cu/Au ratio."""
+    ws = sheet.worksheet("DATA_Prices")
+    data = ws.get_all_values()
+    if len(data) < 3:
+        return pd.Series(dtype=float)
+    
+    headers = data[0]
+    rows = data[2:]  # skip sub-header
+    df = pd.DataFrame(rows, columns=headers)
+    
+    if "Date" not in df.columns:
+        log.warning("DATA_Prices: No Date column found")
+        return pd.Series(dtype=float)
+    
+    df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+    df = df.dropna(subset=["Date"]).sort_values("Date").set_index("Date")
+    
+    # Find COPPER and GLD columns
+    copper_col = None
+    gld_col = None
+    for col in df.columns:
+        cl = col.strip().upper()
+        if cl == "COPPER":
+            copper_col = col
+        elif cl == "GLD":
+            gld_col = col
+    
+    if copper_col is None or gld_col is None:
+        log.warning(f"DATA_Prices: COPPER={copper_col}, GLD={gld_col} — missing column(s)")
+        return pd.Series(dtype=float)
+    
+    copper = pd.to_numeric(df[copper_col], errors="coerce")
+    gld = pd.to_numeric(df[gld_col], errors="coerce")
+    
+    ratio = copper / gld
+    ratio = ratio.replace([np.inf, -np.inf], np.nan).dropna()
+    
+    log.info(f"  Cu/Au ratio: {len(ratio)} values, last={ratio.iloc[-1]:.6f} ({ratio.index[-1].date()})")
+    return ratio
+
+
+def calc_credit_impulse(fred_data, china_m2_value):
+    """
+    Credit Impulse = intercept + beta_US * US_accel + beta_CN * CN_accel
+    US: TOTBKCR pct_change(189) acceleration over 252 days
+    CN: China M2 (constant forward-fill) — CN acceleration = 0 when constant
+    """
+    totbkcr = fred_data["TOTBKCR"]
+    
+    # US component
+    us_pct = totbkcr.pct_change(CI_LOOKBACK_PCT)
+    us_accel = us_pct - us_pct.shift(CI_LOOKBACK_ACC)
+    
+    # China component: with constant China M2, pct_change is 0 -> accel is 0
+    # So CI = intercept + beta_US * us_accel + beta_CN * 0
+    ci = CI_INTERCEPT + CI_BETA_US * us_accel
+    
+    return ci
+
+
+def calc_k16_vote(cu_au_mom6m):
+    """K16: Cu/Au Momentum 6M, symmetric +/-0.02 threshold."""
+    if pd.isna(cu_au_mom6m):
+        return 0
+    if cu_au_mom6m > 0.02:
+        return 1
+    elif cu_au_mom6m < -0.02:
+        return -1
+    return 0
+
+
+def calc_k17_vote(credit_impulse):
+    """K17: Credit Impulse, asymmetric +0.02/-0.01 threshold."""
+    if pd.isna(credit_impulse):
+        return 0
+    if credit_impulse > 0.02:
+        return 1
+    elif credit_impulse < -0.01:
+        return -1
+    return 0
+
+
+def calc_k4_vote(gli_accel):
+    """K4: GLI Acceleration, symmetric +/-0.5 threshold."""
+    if pd.isna(gli_accel):
+        return 0
+    if gli_accel > 0.5:
+        return 1
+    elif gli_accel < -0.5:
+        return -1
+    return 0
+
+
+def calc_howell_vote(phase, howell_mom6m):
+    """Howell Vote: Phase-based + Momentum for Phase 3."""
+    if phase in (1, 2):
+        return 1
+    if phase == 4:
+        return -1
+    if phase == 3:
+        if pd.notna(howell_mom6m):
+            if howell_mom6m > 0.5:
+                return 1
+            elif howell_mom6m < -0.5:
+                return -1
+        return 0
+    return 0
+
+
+def apply_veto(liq_dir_raw, howell_vote, howell_phase):
+    """VETO_H1: Phase=1 AND Howell=+1 AND Raw=-1 -> Final=0."""
+    if howell_phase == 1 and howell_vote == 1 and liq_dir_raw == -1:
+        return 0
+    return liq_dir_raw
+
+
+def calc_data_k16_k17(fred_data, sheet, howell_df, start_date, end_date):
+    """
+    Calculate DATA_K16_K17 for new dates.
+    
+    Inputs:
+        fred_data: FRED series (TOTBKCR, DEXCHUS, etc.)
+        sheet: Google Sheet connection (for DATA_Prices Cu/Au)
+        howell_df: CYCLES_Howell results (for Phase)
+        start_date, end_date: calculation range
+    """
+    # --- Cu/Au Ratio from DATA_Prices ---
+    log.info("  Reading Cu/Au from DATA_Prices...")
+    cu_au_ratio = read_cu_au_from_prices(sheet, start_date, end_date)
+    
+    if cu_au_ratio.empty:
+        log.warning("  No Cu/Au data — K16 will be 0")
+        cu_au_mom6m = pd.Series(dtype=float)
+    else:
+        cu_au_mom6m = cu_au_ratio.pct_change(126)
+    
+    # --- Credit Impulse ---
+    log.info("  Calculating Credit Impulse...")
+    ci_series = calc_credit_impulse(fred_data, CHINA_M2_USD_LAST)
+    
+    # --- Build daily rows ---
+    howell_lookup = {}
+    if not howell_df.empty:
+        for _, hr in howell_df.iterrows():
+            d = hr["Date"]
+            key = d.date() if hasattr(d, "date") else d
+            howell_lookup[key] = int(hr["Howell_Phase"])
+    
+    # Read last confirmed state from sheet for 5-Day Confirmation continuity
+    hist_k16 = read_sheet_tab(sheet, "DATA_K16_K17")
+    last_confirmed = -1  # default
+    last_confirm_count = 0
+    last_confirm_dir = -1
+    if not hist_k16.empty:
+        # Find last row with Liq_Dir_Confirmed
+        for _, hr in hist_k16.sort_values("Date", ascending=False).iterrows():
+            try:
+                ldc = float(hr.get("Liq_Dir_Confirmed", np.nan))
+                if not pd.isna(ldc):
+                    last_confirmed = int(ldc)
+                    break
+            except (ValueError, TypeError):
+                continue
+    log.info(f"  5-Day Confirmation seed: confirmed={last_confirmed}")
+    
+    # Generate date range
+    dates = pd.date_range(start=start_date, end=end_date, freq="D")
+    
+    rows = []
+    confirmed = last_confirmed
+    pending_dir = None
+    pending_count = 0
+    
+    for d in dates:
+        d_date = d.date()
+        
+        # Cu/Au
+        cu_au = cu_au_ratio.get(d, np.nan) if not cu_au_ratio.empty else np.nan
+        # Try nearest previous date if exact match missing
+        if pd.isna(cu_au) and not cu_au_ratio.empty:
+            prior = cu_au_ratio[cu_au_ratio.index <= d]
+            if not prior.empty:
+                cu_au = prior.iloc[-1]
+        
+        mom6m = cu_au_mom6m.get(d, np.nan) if not cu_au_mom6m.empty else np.nan
+        if pd.isna(mom6m) and not cu_au_mom6m.empty:
+            prior = cu_au_mom6m[cu_au_mom6m.index <= d]
+            if not prior.empty:
+                mom6m = prior.iloc[-1]
+        
+        # Credit Impulse
+        ci = ci_series.get(d, np.nan) if ci_series is not None else np.nan
+        if pd.isna(ci) and ci_series is not None and not ci_series.empty:
+            prior = ci_series[ci_series.index <= d]
+            if not prior.empty:
+                ci = prior.iloc[-1]
+        
+        # CBC proprietary (forward-fill)
+        gli_accel = GLI_ACCEL_LAST
+        howell_mom6m = HOWELL_MOM6M_LAST
+        
+        # Phase from Howell calc
+        phase = howell_lookup.get(d_date, 4)
+        
+        # 4 Votes
+        k16 = calc_k16_vote(mom6m)
+        k17 = calc_k17_vote(ci)
+        k4 = calc_k4_vote(gli_accel)
+        hv = calc_howell_vote(phase, howell_mom6m)
+        
+        # Vote aggregation
+        vote_sum = k16 + k17 + k4 + hv
+        liq_raw = int(np.sign(vote_sum)) if vote_sum != 0 else 0
+        
+        # Veto
+        liq_final = apply_veto(liq_raw, hv, phase)
+        
+        # Liq Detail
+        liq_detail = f"H:{hv}|A:{k4}|Cu:{k16}|Cr:{k17}={vote_sum}"
+        
+        # 5-Day Confirmation
+        if liq_final == confirmed:
+            # Same as confirmed — reset any pending
+            pending_dir = None
+            pending_count = 0
+            confirm_detail = "CONF"
+        elif pending_dir is not None and liq_final == pending_dir:
+            # Continuing pending direction
+            pending_count += 1
+            if pending_count >= 5:
+                confirmed = liq_final
+                pending_dir = None
+                pending_count = 0
+                confirm_detail = "CONF"
+            else:
+                confirm_detail = f"PEND({liq_final}):{ pending_count}/5"
+        else:
+            # New pending direction
+            pending_dir = liq_final
+            pending_count = 1
+            confirm_detail = f"PEND({liq_final}):{pending_count}/5"
+        
+        # Vote_Sum_Magnitude
+        vsm = abs(vote_sum)
+        
+        rows.append({
+            "Date": d,
+            "Cu/Au_Ratio": cu_au,
+            "Cu/Au_Mom6M": mom6m,
+            "K16_Vote": k16,
+            "Credit_Impulse": ci,
+            "K17_Vote": k17,
+            "GLI_Accel": gli_accel,
+            "K4_Vote": k4,
+            "Howell_Phase": phase,
+            "Howell_Mom6M": howell_mom6m,
+            "Howell_Vote": hv,
+            "Vote_Sum": vote_sum,
+            "Liq_Dir_Raw": liq_raw,
+            "Liq_Dir_Final": liq_final,
+            "Liq_Detail": liq_detail,
+            "Liq_Dir_Confirmed": confirmed,
+            "Liq_Confirm_Detail": confirm_detail,
+            "Vote_Sum_Magnitude": vsm,
+        })
+    
+    return pd.DataFrame(rows)
+
+
+def write_data_k16_k17(sheet, df):
+    """Write DATA_K16_K17 rows to sheet (newest first, row 3)."""
+    ws = sheet.worksheet("DATA_K16_K17")
+    
+    new_dates_set = set()
+    rows_to_write = []
+    for _, row in df.sort_values("Date", ascending=False).iterrows():
+        d = row["Date"].strftime("%Y-%m-%d") if hasattr(row["Date"], "strftime") else str(row["Date"])[:10]
+        new_dates_set.add(d)
+        rows_to_write.append([
+            d,
+            fmt(row["Cu/Au_Ratio"], 6),
+            fmt(row["Cu/Au_Mom6M"], 6),
+            int(row["K16_Vote"]),
+            fmt(row["Credit_Impulse"], 6),
+            int(row["K17_Vote"]),
+            fmt(row["GLI_Accel"], 6),
+            int(row["K4_Vote"]),
+            int(row["Howell_Phase"]),
+            fmt(row["Howell_Mom6M"], 6),
+            int(row["Howell_Vote"]),
+            int(row["Vote_Sum"]),
+            int(row["Liq_Dir_Raw"]),
+            int(row["Liq_Dir_Final"]),
+            row["Liq_Detail"],
+            int(row["Liq_Dir_Confirmed"]),
+            row["Liq_Confirm_Detail"],
+            int(row["Vote_Sum_Magnitude"]),
+        ])
+    
+    if not rows_to_write:
+        log.warning("DATA_K16_K17: No rows to write.")
+        return
+    
+    num = len(rows_to_write)
+    log.info(f"DATA_K16_K17: Writing {num} rows...")
+    
+    # Delete overlapping rows
+    existing_dates = ws.col_values(1)[2:]
+    rows_to_delete = []
+    for i, d in enumerate(existing_dates):
+        if d in new_dates_set:
+            rows_to_delete.append(i + 3)
+    
+    for row_idx in sorted(rows_to_delete, reverse=True):
+        ws.delete_rows(row_idx)
+        log.info(f"  Deleted existing row {row_idx} (overlap)")
+    
+    ws.insert_rows(rows_to_write, row=3, value_input_option="RAW")
+    log.info(f"  Inserted {num} rows at row 3")
 
 
 # --- MAIN ---
@@ -567,6 +915,24 @@ def main():
 
     log.info("=" * 60)
     log.info("Stufe 2 complete")
+    log.info("=" * 60)
+
+    # --- STUFE 3: DATA_K16_K17 ---
+    log.info("STUFE 3: DATA_K16_K17")
+    k16_df = calc_data_k16_k17(fred_data, sheet, howell_df, start_date, end_date)
+    log.info(f"  {len(k16_df)} rows calculated")
+
+    if not k16_df.empty:
+        r = k16_df.iloc[-1]
+        log.info(f"  Latest: {r['Date'].date() if hasattr(r['Date'], 'date') else r['Date']} "
+                 f"K16={r['K16_Vote']} K17={r['K17_Vote']} K4={r['K4_Vote']} HV={r['Howell_Vote']} "
+                 f"VS={r['Vote_Sum']} Conf={r['Liq_Dir_Confirmed']}")
+
+    log.info("Writing DATA_K16_K17...")
+    write_data_k16_k17(sheet, k16_df)
+
+    log.info("=" * 60)
+    log.info("Stufe 3 complete")
     log.info("=" * 60)
 
 
