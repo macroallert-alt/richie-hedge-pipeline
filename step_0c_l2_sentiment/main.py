@@ -165,8 +165,13 @@ def pull_google_trends():
 
 def pull_aaii_sentiment():
     """AAII Bull/Bear Survey.
-    v4: Handle merged cells in XLS. Scan ALL cells in first 10 rows to find
-    column indices for Bullish and Bearish, then read data rows below."""
+    v5: The AAII XLS has merged header cells across rows 0-3.
+    The TRUE data header is the row containing BOTH 'Bullish' AND 'Bearish'
+    AND 'Date' — that's the column name row for the actual data table.
+    From the debug logs we know this is Row 3:
+      Row 3: ['Date', 'Bullish', 'Neutral', 'Bearish', 'Total', 'Mov Avg', ...]
+    We find this row dynamically and use col indices from it.
+    """
     results = {}
 
     try:
@@ -178,131 +183,105 @@ def pull_aaii_sentiment():
         df_raw = pd.read_excel(io.BytesIO(resp.content), header=None)
         log.info(f"    AAII raw shape: {df_raw.shape}")
 
-        # Log first 5 rows for debugging
-        for i in range(min(5, len(df_raw))):
-            log.info(f"    Row {i}: {df_raw.iloc[i].values.tolist()}")
-
-        # Scan first 10 rows to find column indices for Bullish and Bearish
-        # AAII XLS has merged cells: "Bullish" and "Bearish" may appear in
-        # different rows. We need the FIRST column with "Bullish" and the
-        # FIRST column with "Bearish".
+        # Find the TRUE header row: must contain BOTH "Bullish" AND "Bearish"
+        # This distinguishes Row 3 (data headers) from Row 1 (group headers)
+        header_row = None
         bull_col_idx = None
         bear_col_idx = None
-        data_start_row = None
 
-        for row_idx in range(min(10, len(df_raw))):
-            for col_idx in range(len(df_raw.columns)):
-                cell_val = str(df_raw.iloc[row_idx, col_idx]).strip().lower()
-                if cell_val == "bullish" and bull_col_idx is None:
-                    bull_col_idx = col_idx
-                    log.info(f"    Found 'Bullish' at row={row_idx}, col={col_idx}")
-                if cell_val == "bearish" and bear_col_idx is None:
-                    bear_col_idx = col_idx
-                    log.info(f"    Found 'Bearish' at row={row_idx}, col={col_idx}")
-                    # Data starts after this row (or after the next sub-header row)
-                    data_start_row = row_idx + 1
+        for row_idx in range(min(15, len(df_raw))):
+            row_vals = [str(v).strip() for v in df_raw.iloc[row_idx].values]
+            row_lower = [v.lower() for v in row_vals]
 
-        # If we only found Bullish but not Bearish, check if Bearish is in the
-        # same row as a later occurrence of Bullish (merged cell pattern)
-        if bull_col_idx is not None and bear_col_idx is None:
-            # AAII typical layout: Bullish | Neutral | Bearish in adjacent groups
-            # Try col_idx + 2 or +3 as Bearish
-            for offset in [2, 3, 4]:
-                test_col = bull_col_idx + offset
-                if test_col < len(df_raw.columns):
-                    for row_idx in range(min(10, len(df_raw))):
-                        cell_val = str(df_raw.iloc[row_idx, test_col]).strip().lower()
-                        if "bear" in cell_val:
-                            bear_col_idx = test_col
-                            log.info(f"    Found 'Bearish' at row={row_idx}, col={test_col} (offset search)")
-                            break
-                if bear_col_idx is not None:
-                    break
+            # Check if this row has BOTH Bullish AND Bearish
+            has_bull = "bullish" in row_lower
+            has_bear = "bearish" in row_lower
 
-        if bull_col_idx is not None and bear_col_idx is not None:
-            # Find where numeric data starts (first row after headers with a number)
-            if data_start_row is None:
-                data_start_row = 3  # safe default
+            if has_bull and has_bear:
+                header_row = row_idx
+                bull_col_idx = row_lower.index("bullish")
+                bear_col_idx = row_lower.index("bearish")
+                log.info(f"    TRUE header at row {row_idx}: {row_vals}")
+                log.info(f"    Bullish=col {bull_col_idx}, Bearish=col {bear_col_idx}")
+                break
 
-            # Scan for first row with numeric data in the bull column
-            for row_idx in range(data_start_row, min(data_start_row + 5, len(df_raw))):
+        if header_row is not None and bull_col_idx is not None and bear_col_idx is not None:
+            # Data starts right after header row, skip any blank rows
+            data_start = header_row + 1
+
+            # Skip blank rows
+            for r in range(data_start, min(data_start + 5, len(df_raw))):
                 try:
-                    test_val = float(df_raw.iloc[row_idx, bull_col_idx])
-                    if not pd.isna(test_val):
-                        data_start_row = row_idx
+                    test = float(df_raw.iloc[r, bull_col_idx])
+                    if not pd.isna(test):
+                        data_start = r
                         break
                 except (ValueError, TypeError):
                     continue
 
-            log.info(f"    Data starts at row {data_start_row}, bull_col={bull_col_idx}, bear_col={bear_col_idx}")
+            log.info(f"    Data starts at row {data_start}")
 
-            # Get the latest valid data row
-            bull_series = pd.to_numeric(df_raw.iloc[data_start_row:, bull_col_idx], errors="coerce")
-            bear_series = pd.to_numeric(df_raw.iloc[data_start_row:, bear_col_idx], errors="coerce")
+            # Extract numeric series
+            bull_series = pd.to_numeric(df_raw.iloc[data_start:, bull_col_idx], errors="coerce")
+            bear_series = pd.to_numeric(df_raw.iloc[data_start:, bear_col_idx], errors="coerce")
 
             # Find last row where both are valid
             valid_mask = bull_series.notna() & bear_series.notna()
             if valid_mask.any():
-                last_valid_idx = valid_mask[valid_mask].index[-1]
-                bull_val = float(bull_series.loc[last_valid_idx])
-                bear_val = float(bear_series.loc[last_valid_idx])
+                last_idx = valid_mask[valid_mask].index[-1]
+                bull_val = float(bull_series.loc[last_idx])
+                bear_val = float(bear_series.loc[last_idx])
 
-                # Normalize decimals to percent
+                # Decimals to percent
                 if bull_val <= 1.0:
                     bull_val *= 100.0
                 if bear_val <= 1.0:
                     bear_val *= 100.0
 
-                log.info(f"    Latest values: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
+                log.info(f"    Latest: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
 
-                # Sanity check
-                if 5.0 <= bull_val <= 80.0 and 5.0 <= bear_val <= 80.0:
+                # Sanity: both 5-80%, sum < 105%
+                if 5.0 <= bull_val <= 80.0 and 5.0 <= bear_val <= 80.0 and (bull_val + bear_val) < 105.0:
                     results["AAII_BULL_PCT"] = round(bull_val, 2)
                     results["AAII_BEAR_PCT"] = round(bear_val, 2)
                     log.info(f"    OK: AAII_BULL_PCT={bull_val:.2f}%, AAII_BEAR_PCT={bear_val:.2f}%")
                     return results
                 else:
-                    log.warning(f"    Sanity fail: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
+                    log.warning(f"    Sanity fail: bull={bull_val:.2f}%, bear={bear_val:.2f}%, sum={bull_val+bear_val:.2f}%")
             else:
-                log.warning("    No valid numeric data found in bull/bear columns")
+                log.warning("    No valid numeric data in bull/bear columns")
         else:
-            log.warning(f"    Could not find both columns: bull_col={bull_col_idx}, bear_col={bear_col_idx}")
+            log.warning("    Could not find header row with both Bullish+Bearish")
+            for i in range(min(5, len(df_raw))):
+                log.info(f"    Row {i}: {df_raw.iloc[i].values.tolist()}")
 
     except Exception as e:
         log.warning(f"    AAII primary (XLS) failed: {e}")
 
-    # Fallback: scrape website
+    # Fallback: scrape
     try:
         url = "https://www.aaii.com/sentimentsurvey"
         log.info(f"  AAII fallback: Scraping {url}...")
         resp = requests.get(url, headers=SCRAPE_HEADERS, timeout=30)
         resp.raise_for_status()
         text = resp.text
-
-        bull_val = None
-        bear_val = None
-
+        bull_val = bear_val = None
         m = re.search(r'[Bb]ullish\s*:?\s*(\d{1,2}(?:\.\d+)?)\s*%', text)
         if m:
             bull_val = float(m.group(1))
         m = re.search(r'[Bb]earish\s*:?\s*(\d{1,2}(?:\.\d+)?)\s*%', text)
         if m:
             bear_val = float(m.group(1))
-
         if bull_val is not None and (bull_val < 5.0 or bull_val > 80.0):
-            log.warning(f"    AAII scrape: bull={bull_val:.2f}% failed sanity")
             bull_val = None
         if bear_val is not None and (bear_val < 5.0 or bear_val > 80.0):
-            log.warning(f"    AAII scrape: bear={bear_val:.2f}% failed sanity")
             bear_val = None
-
         if bull_val is not None and bear_val is not None:
             results["AAII_BULL_PCT"] = round(bull_val, 2)
             results["AAII_BEAR_PCT"] = round(bear_val, 2)
             log.info(f"    OK (scrape): bull={bull_val:.2f}%, bear={bear_val:.2f}%")
         else:
             log.warning(f"    Scrape incomplete: bull={bull_val}, bear={bear_val}")
-
     except Exception as e:
         log.warning(f"    AAII fallback failed: {e}")
 
@@ -310,7 +289,6 @@ def pull_aaii_sentiment():
 
 
 def pull_cnn_fear_greed():
-    """CNN Fear & Greed Index (daily, 0-100)."""
     results = {}
     try:
         log.info("  CNN F&G: Fetching...")
@@ -326,7 +304,6 @@ def pull_cnn_fear_greed():
             return results
     except Exception as e:
         log.warning(f"    CNN primary failed: {e}")
-
     try:
         log.info("  CNN fallback...")
         resp = requests.get("https://production.dataviz.cnn.io/index/fearandgreed/current",
@@ -335,7 +312,6 @@ def pull_cnn_fear_greed():
         data = resp.json()
         if "score" in data:
             results["CNN_FEAR_GREED"] = round(float(data["score"]), 2)
-            log.info(f"    OK (fallback): {results['CNN_FEAR_GREED']}")
             return results
     except Exception as e:
         log.warning(f"    CNN fallback failed: {e}")
@@ -343,7 +319,6 @@ def pull_cnn_fear_greed():
 
 
 def pull_margin_debt():
-    """FINRA Margin Debt YoY Change (monthly)."""
     results = {}
     try:
         log.info("  MARGIN_DEBT: FINRA...")
@@ -372,11 +347,10 @@ def pull_margin_debt():
                     if year_ago > 0:
                         yoy = ((latest - year_ago) / year_ago) * 100.0
                         results["MARGIN_DEBT_YOY_CHG"] = round(yoy, 2)
-                        log.info(f"    OK: {yoy:.2f}% (latest={latest:.0f}, yr_ago={year_ago:.0f})")
+                        log.info(f"    OK: {yoy:.2f}%")
                         return results
     except Exception as e:
         log.warning(f"    FINRA failed: {e}")
-
     try:
         log.info("  MARGIN_DEBT: FRED proxy...")
         fred = Fred(api_key=FRED_API_KEY)
@@ -398,14 +372,12 @@ def pull_margin_debt():
 
 
 def pull_insider_data():
-    """Insider Buy/Sell Ratio from OpenInsider (last 7d, >$25k)."""
     results = {}
     try:
         log.info("  INSIDER: OpenInsider...")
         base = ("http://openinsider.com/screener?s=&o=&pl=25&ph=&ll=&lh="
                 "&fd=7&fdr=&td=0&tdr=&feession=at&tession=ct&xp=1"
                 "&vl=&vh=&ocl=&och=&session=oi&a={}&v=&cnt=500&page=1")
-
         resp_buy = requests.get(base.format(1), headers=SCRAPE_HEADERS, timeout=30)
         resp_buy.raise_for_status()
         buy_count = len(re.findall(r'P\s*-\s*Purchase', resp_buy.text))
@@ -427,12 +399,12 @@ def pull_insider_data():
         if sell_count > 0 and buy_count >= 0:
             ratio = max(0.05, min(buy_count / sell_count, 2.5))
             results["INSIDER_BUY_SELL"] = round(ratio, 4)
-            log.info(f"    OK: ratio={ratio:.4f} (buys={buy_count}, sells={sell_count})")
-        elif buy_count > 0 and sell_count == 0:
+            log.info(f"    OK: ratio={ratio:.4f}")
+        elif buy_count > 0:
             results["INSIDER_BUY_SELL"] = 2.0
-            log.info(f"    OK: ratio=2.0 (buys={buy_count}, sells=0, capped)")
+            log.info("    OK: ratio=2.0 (capped)")
         else:
-            log.warning(f"    No transactions found (buys={buy_count}, sells={sell_count})")
+            log.warning(f"    No transactions")
     except Exception as e:
         log.warning(f"    INSIDER failed: {e}")
     return results
@@ -476,22 +448,14 @@ def get_direction(current, previous):
     if pd.isna(current) or pd.isna(previous):
         return "n/a"
     diff = current - previous
-    if diff > 0.5:
-        return "Rising"
-    elif diff < -0.5:
-        return "Falling"
-    return "Flat"
+    return "Rising" if diff > 0.5 else "Falling" if diff < -0.5 else "Flat"
 
 
 def get_speed(current, prev_7d):
     if pd.isna(current) or pd.isna(prev_7d):
         return "n/a"
-    weekly_change = abs(current - prev_7d)
-    if weekly_change > 2.0:
-        return "High"
-    elif weekly_change > 0.8:
-        return "Medium"
-    return "Low"
+    wc = abs(current - prev_7d)
+    return "High" if wc > 2.0 else "Medium" if wc > 0.8 else "Low"
 
 
 # ==================== SHEET WRITERS ====================
@@ -504,7 +468,6 @@ def write_raw_market_l2(warehouse, indicator_scores, raw_values):
     for i, row in enumerate(all_data):
         if len(row) >= 3 and row[2] == "L2":
             indicator_row_map[row[1]] = i + 1
-
     source_map = {
         "VIX_LEVEL":           ("CBOE/yfinance", "T1", "index"),
         "VIX_TERM_STRUCTURE":  ("CBOE",          "T1", "ratio"),
@@ -518,11 +481,9 @@ def write_raw_market_l2(warehouse, indicator_scores, raw_values):
         "CNN_FEAR_GREED":      ("CNN",           "T2", "index"),
         "MARGIN_DEBT_YOY_CHG": ("FINRA",         "T1", "pct"),
     }
-
     updates = []
     for ind_name in indicator_scores:
         if ind_name not in indicator_row_map:
-            log.warning(f"  RAW_MARKET: No row for {ind_name}, skipping")
             continue
         row_idx = indicator_row_map[ind_name]
         raw_val = raw_values.get(ind_name)
@@ -533,10 +494,9 @@ def write_raw_market_l2(warehouse, indicator_scores, raw_values):
             raw_str = "---"
         row_data = [today_str, ind_name, "L2", raw_str, "---", "---", "0", source, tier, unit]
         updates.append((f"A{row_idx}:J{row_idx}", [row_data]))
-
     for cell_range, values in updates:
         ws.update(values, cell_range, value_input_option="RAW")
-    log.info(f"  RAW_MARKET: {len(updates)} L2 indicators written")
+    log.info(f"  RAW_MARKET: {len(updates)} written")
 
 
 def write_scores_l2(warehouse, composite, direction, speed, phase, freshness, valid_count, total_count):
@@ -555,29 +515,22 @@ def write_scores_l2(warehouse, composite, direction, speed, phase, freshness, va
     if composite is not None and not pd.isna(composite) and composite < 5.0:
         asym_adj = min(round(composite * 1.3, 2), 10.0)
     row_data = [
-        "L2 Sentiment",
-        str(composite) if not pd.isna(composite) else "---",
-        "---", "---", "n/a",
-        direction, speed, signal,
-        f"{freshness:.0f}",
-        str(asym_adj), str(asym_adj),
-        "---", "---",
+        "L2 Sentiment", str(composite) if not pd.isna(composite) else "---",
+        "---", "---", "n/a", direction, speed, signal,
+        f"{freshness:.0f}", str(asym_adj), str(asym_adj), "---", "---",
     ]
     ws.update([row_data], "A3:M3", value_input_option="RAW")
-    log.info(f"  SCORES L2: {composite} ({signal}) | Phase: {phase} | {valid_count}/{total_count}")
+    log.info(f"  SCORES: {composite} ({signal}) | {phase} | {valid_count}/{total_count}")
 
 
 def write_dashboard_l2(warehouse, composite, direction, signal, phase, freshness, speed):
     ws = warehouse.worksheet("DASHBOARD")
     row_data = [
-        "L2 Sentiment",
-        str(composite) if not pd.isna(composite) else "---",
-        direction, signal,
-        f"{freshness:.0f}",
-        "n/a", speed,
+        "L2 Sentiment", str(composite) if not pd.isna(composite) else "---",
+        direction, signal, f"{freshness:.0f}", "n/a", speed,
     ]
     ws.update([row_data], "A18:G18", value_input_option="RAW")
-    log.info(f"  DASHBOARD L2: Score={composite}, Signal={signal}, Phase={phase}")
+    log.info(f"  DASHBOARD: {composite}, {signal}, {phase}")
 
 
 # ==================== MAIN ====================
@@ -594,7 +547,6 @@ def main():
     fred = Fred(api_key=FRED_API_KEY)
     log.info("  OK")
 
-    # --- Pull ---
     log.info("--- PULL PHASE ---")
     log.info("Pulling FRED...")
     fred_data = pull_fred_sentiment(fred)
@@ -611,15 +563,12 @@ def main():
     log.info("Pulling Insider Buy/Sell...")
     insider_data = pull_insider_data()
 
-    # --- Merge ---
     log.info("--- MERGE PHASE ---")
     raw_values = {}
 
     raw_values["VIX_LEVEL"] = fred_data.get("VIX_LEVEL")
     if pd.isna(raw_values.get("VIX_LEVEL")):
         raw_values["VIX_LEVEL"] = yf_data.get("VIX_LEVEL_YF")
-        if raw_values.get("VIX_LEVEL") is not None:
-            log.info("  VIX: using yfinance fallback")
 
     vix3m = fred_data.get("VIX3M")
     if pd.isna(vix3m) or vix3m is None:
@@ -627,7 +576,7 @@ def main():
     vix_val = raw_values.get("VIX_LEVEL")
     if vix_val and vix3m and not pd.isna(vix_val) and not pd.isna(vix3m) and vix3m > 0:
         raw_values["VIX_TERM_STRUCTURE"] = round(vix_val / vix3m, 4)
-        log.info(f"  VIX_TERM_STRUCTURE: {vix_val:.2f} / {vix3m:.2f} = {raw_values['VIX_TERM_STRUCTURE']:.4f}")
+        log.info(f"  VIX_TS: {vix_val:.2f}/{vix3m:.2f} = {raw_values['VIX_TERM_STRUCTURE']:.4f}")
     else:
         raw_values["VIX_TERM_STRUCTURE"] = np.nan
 
@@ -649,9 +598,8 @@ def main():
 
     for key in ["AAII_BULL_PCT", "AAII_BEAR_PCT", "CNN_FEAR_GREED", "MARGIN_DEBT_YOY_CHG", "INSIDER_BUY_SELL"]:
         if pd.isna(raw_values[key]):
-            log.warning(f"  {key}: no data available")
+            log.warning(f"  {key}: no data")
 
-    # --- Normalize ---
     log.info("--- NORMALIZE PHASE ---")
     indicator_scores = {}
     for name, value in raw_values.items():
@@ -659,9 +607,8 @@ def main():
         indicator_scores[name] = score
         raw_str = f"{value:.4f}" if isinstance(value, float) and not pd.isna(value) else "n/a"
         score_str = f"{score:.2f}" if not pd.isna(score) else "n/a"
-        log.info(f"  {name}: raw={raw_str} -> score={score_str}/10")
+        log.info(f"  {name}: {raw_str} -> {score_str}/10")
 
-    # --- Composite ---
     log.info("--- COMPOSITE PHASE ---")
     composite, valid_indicators = calc_composite_score(indicator_scores)
     valid_count = len(valid_indicators)
@@ -669,18 +616,16 @@ def main():
     phase = get_sentiment_phase(composite)
     freshness = (valid_count / total_count) * 10.0
 
-    direction = "n/a"
-    speed = "n/a"
+    direction = speed = "n/a"
     try:
-        ws_scores = warehouse.worksheet("SCORES")
-        prev_row = ws_scores.row_values(3)
+        prev_row = warehouse.worksheet("SCORES").row_values(3)
         if len(prev_row) >= 2 and prev_row[1] not in ("---", "", None):
             prev_score = float(prev_row[1])
             direction = get_direction(composite, prev_score)
             speed = get_speed(composite, prev_score)
-            log.info(f"  Previous L2: {prev_score} -> Direction: {direction}, Speed: {speed}")
-    except Exception as e:
-        log.warning(f"  Could not read previous score: {e}")
+            log.info(f"  Previous: {prev_score} -> {direction}, {speed}")
+    except Exception:
+        pass
 
     signal = "Neutral"
     if composite is not None and not pd.isna(composite):
@@ -693,25 +638,16 @@ def main():
         elif composite >= 6.5:
             signal = "Bullish"
 
-    log.info(f"  L2 Composite: {composite}/10")
-    log.info(f"  Phase: {phase} | Signal: {signal}")
+    log.info(f"  Composite: {composite}/10 | {phase} | {signal}")
     log.info(f"  Sources: {valid_count}/{total_count} | Freshness: {freshness:.1f}/10")
 
-    # --- Write ---
     log.info("--- WRITE PHASE ---")
-    log.info("Writing RAW_MARKET L2...")
     write_raw_market_l2(warehouse, indicator_scores, raw_values)
-    log.info("Writing SCORES L2...")
     write_scores_l2(warehouse, composite, direction, speed, phase, freshness, valid_count, total_count)
-    log.info("Writing DASHBOARD L2...")
     write_dashboard_l2(warehouse, composite, direction, signal, phase, freshness, speed)
 
-    # --- Done ---
     log.info("=" * 60)
-    log.info("L2 Sentiment Collector COMPLETE (7/7 Sources, 11 Indicators)")
-    log.info(f"  Score: {composite}/10 ({phase})")
-    log.info(f"  Signal: {signal} | Direction: {direction} | Speed: {speed}")
-    log.info(f"  Sources: {valid_count}/{total_count}")
+    log.info(f"COMPLETE: {composite}/10 ({phase}) | {signal} | {direction}/{speed} | {valid_count}/{total_count}")
     log.info("=" * 60)
 
 
