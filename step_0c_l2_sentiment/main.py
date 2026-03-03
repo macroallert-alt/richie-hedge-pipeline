@@ -24,6 +24,7 @@ Reference: V77 Statusanalyse Kap.4 (Layer 2 Sentiment)
 Iron Rule: V16 main.py NEVER TOUCH. This is a separate module.
 """
 
+import io
 import os
 import sys
 import logging
@@ -78,19 +79,19 @@ INDICATOR_RANGES = {
     "MARGIN_DEBT_YOY_CHG": (-30.0, 40.0,  False),   # Negative YoY = deleveraging = fear
 }
 
-# Weights: V77 validated, ökonomisch begründet
+# Weights: V77 validated, oekonomisch begruendet
 # Logik: Market-Pricing > Survey > Composite > Behavioral Proxy
-# Frequenz: Täglich > Wöchentlich > Monatlich
-# Redundanz bestraft (VIX Level, CNN niedrig wegen Überlappung)
+# Frequenz: Taeglich > Woechentlich > Monatlich
+# Redundanz bestraft (VIX Level, CNN niedrig wegen Ueberlappung)
 INDICATOR_WEIGHTS = {
-    "PUT_CALL_RATIO":      0.15,  # Stärkstes konträres Einzelsignal, täglich
-    "VIX_TERM_STRUCTURE":  0.14,  # Backwardation = zuverlässigster Angst-Indikator
+    "PUT_CALL_RATIO":      0.15,  # Staerkstes kontraeres Einzelsignal, taeglich
+    "VIX_TERM_STRUCTURE":  0.14,  # Backwardation = zuverlaessigster Angst-Indikator
     "HY_OAS_SPREAD":       0.14,  # Reales Kreditrisiko-Pricing
-    "INSIDER_BUY_SELL":    0.12,  # Stark prädiktiv in Extremen, echtes Skin-in-the-Game
-    "AAII_BULL_PCT":       0.08,  # Konträrer Klassiker, wöchentlich -> leichter Abschlag
-    "AAII_BEAR_PCT":       0.08,  # Zusammen 0.16 für AAII
+    "INSIDER_BUY_SELL":    0.12,  # Stark praediktiv in Extremen, echtes Skin-in-the-Game
+    "AAII_BULL_PCT":       0.08,  # Kontraerer Klassiker, woechentlich -> leichter Abschlag
+    "AAII_BEAR_PCT":       0.08,  # Zusammen 0.16 fuer AAII
     "VIX_LEVEL":           0.08,  # Redundant mit Term Structure, Eigenwert bei Extremen
-    "MOVE_INDEX":          0.06,  # Cross-Asset-Angst, weniger direkt prädiktiv für Equity
+    "MOVE_INDEX":          0.06,  # Cross-Asset-Angst, weniger direkt praediktiv fuer Equity
     "MARGIN_DEBT_YOY_CHG": 0.06,  # Starkes Signal, aber monatlich + 6w Lag
     "CNN_FEAR_GREED":      0.05,  # Niedrig wegen Redundanz, Breadth+SafeHaven als Zusatz
     "GOOGLE_TRENDS_RATIO": 0.04,  # Noisiest Signal, nur Extreme informativ
@@ -248,17 +249,23 @@ def pull_aaii_sentiment():
     Pull AAII Investor Sentiment Survey (weekly, published Thursdays).
     Source: AAII website via direct data endpoint.
     Returns: {AAII_BULL_PCT: float, AAII_BEAR_PCT: float}
+
+    FIX v2: BytesIO wrapper for pd.read_excel, improved fallback regex,
+    sanity checks on parsed values.
     """
     results = {}
 
-    # Primary: AAII XML/JSON data feed
+    # Primary: AAII XLS data file
     try:
         url = "https://www.aaii.com/files/surveys/sentiment.xls"
         log.info(f"  AAII: Fetching sentiment survey from {url}...")
         resp = requests.get(url, headers=SCRAPE_HEADERS, timeout=30)
         resp.raise_for_status()
 
-        df = pd.read_excel(resp.content, header=0)
+        # FIX: wrap bytes in BytesIO for pd.read_excel
+        df = pd.read_excel(io.BytesIO(resp.content), header=0)
+        log.info(f"    AAII XLS columns: {df.columns.tolist()}")
+        log.info(f"    AAII XLS rows: {len(df)}")
 
         # AAII Excel columns: Date, Bullish, Neutral, Bearish (as decimals 0-1)
         # Find the columns - AAII sometimes changes naming
@@ -287,10 +294,14 @@ def pull_aaii_sentiment():
                 if bear_val <= 1.0:
                     bear_val *= 100.0
 
-                results["AAII_BULL_PCT"] = round(bull_val, 2)
-                results["AAII_BEAR_PCT"] = round(bear_val, 2)
-                log.info(f"    OK: AAII_BULL_PCT = {bull_val:.2f}%, AAII_BEAR_PCT = {bear_val:.2f}%")
-                return results
+                # Sanity check: both must be between 5% and 80%, and sum with neutral < 105%
+                if 5.0 <= bull_val <= 80.0 and 5.0 <= bear_val <= 80.0:
+                    results["AAII_BULL_PCT"] = round(bull_val, 2)
+                    results["AAII_BEAR_PCT"] = round(bear_val, 2)
+                    log.info(f"    OK: AAII_BULL_PCT = {bull_val:.2f}%, AAII_BEAR_PCT = {bear_val:.2f}%")
+                    return results
+                else:
+                    log.warning(f"    AAII: Values failed sanity check: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
         else:
             log.warning(f"    AAII: Could not identify Bull/Bear columns in: {cols}")
 
@@ -305,16 +316,47 @@ def pull_aaii_sentiment():
         resp.raise_for_status()
         text = resp.text
 
-        # Look for percentage patterns near "bullish" and "bearish"
-        bull_match = re.search(r'[Bb]ullish[^0-9]*?(\d{1,2}(?:\.\d+)?)\s*%', text)
-        bear_match = re.search(r'[Bb]earish[^0-9]*?(\d{1,2}(?:\.\d+)?)\s*%', text)
+        # Strategy: find ALL percentage values near sentiment keywords
+        # AAII page typically shows: "Bullish: XX.X%  Neutral: XX.X%  Bearish: XX.X%"
+        # Use multiple regex patterns for robustness
+
+        bull_val = None
+        bear_val = None
+
+        # Pattern 1: "Bullish XX.X%" or "Bullish: XX.X%"
+        bull_match = re.search(r'[Bb]ullish\s*:?\s*(\d{1,2}(?:\.\d+)?)\s*%', text)
+        bear_match = re.search(r'[Bb]earish\s*:?\s*(\d{1,2}(?:\.\d+)?)\s*%', text)
 
         if bull_match:
-            results["AAII_BULL_PCT"] = float(bull_match.group(1))
-            log.info(f"    OK (scrape): AAII_BULL_PCT = {results['AAII_BULL_PCT']:.2f}%")
+            bull_val = float(bull_match.group(1))
         if bear_match:
-            results["AAII_BEAR_PCT"] = float(bear_match.group(1))
-            log.info(f"    OK (scrape): AAII_BEAR_PCT = {results['AAII_BEAR_PCT']:.2f}%")
+            bear_val = float(bear_match.group(1))
+
+        # Pattern 2: look in table cells or spans with class containing sentiment keywords
+        if bull_val is None:
+            bull_match2 = re.search(r'(?:bull|optimis)[^>]*>.*?(\d{1,2}(?:\.\d+)?)\s*%', text, re.IGNORECASE | re.DOTALL)
+            if bull_match2:
+                bull_val = float(bull_match2.group(1))
+        if bear_val is None:
+            bear_match2 = re.search(r'(?:bear|pessimis)[^>]*>.*?(\d{1,2}(?:\.\d+)?)\s*%', text, re.IGNORECASE | re.DOTALL)
+            if bear_match2:
+                bear_val = float(bear_match2.group(1))
+
+        # Sanity checks on scraped values
+        if bull_val is not None and (bull_val < 5.0 or bull_val > 80.0):
+            log.warning(f"    AAII scrape: bull={bull_val:.2f}% failed sanity check, discarding")
+            bull_val = None
+        if bear_val is not None and (bear_val < 5.0 or bear_val > 80.0):
+            log.warning(f"    AAII scrape: bear={bear_val:.2f}% failed sanity check, discarding")
+            bear_val = None
+
+        # Only accept if BOTH values pass sanity check
+        if bull_val is not None and bear_val is not None:
+            results["AAII_BULL_PCT"] = round(bull_val, 2)
+            results["AAII_BEAR_PCT"] = round(bear_val, 2)
+            log.info(f"    OK (scrape): AAII_BULL_PCT = {bull_val:.2f}%, AAII_BEAR_PCT = {bear_val:.2f}%")
+        else:
+            log.warning(f"    AAII scrape: incomplete data (bull={bull_val}, bear={bear_val})")
 
     except Exception as e:
         log.warning(f"    AAII fallback (scrape) failed: {e}")
@@ -374,14 +416,13 @@ def pull_margin_debt():
     Pull FINRA Margin Debt YoY Change (monthly, ~6 week lag).
     Source: FINRA margin statistics via FRED series.
     Returns: {MARGIN_DEBT_YOY_CHG: float} (percentage change)
+
+    FIX v2: BytesIO wrapper for pd.read_excel.
     """
     results = {}
 
-    # FRED has no direct margin debt series, but we can use a proxy
     # Primary: Try FINRA data via direct download
     try:
-        # FINRA publishes margin stats monthly
-        # We use the FRED series for debit balances in margin accounts
         url = "https://www.finra.org/investors/learn-to-invest/advanced-investing/margin-statistics"
         log.info(f"  MARGIN_DEBT: Attempting FINRA data...")
 
@@ -390,7 +431,6 @@ def pull_margin_debt():
         text = resp.text
 
         # FINRA page contains a link to the data file
-        # Look for the CSV/Excel download link
         csv_match = re.search(r'href="([^"]*margin[^"]*\.xlsx?)"', text, re.IGNORECASE)
         if csv_match:
             data_url = csv_match.group(1)
@@ -401,7 +441,8 @@ def pull_margin_debt():
             data_resp = requests.get(data_url, headers=SCRAPE_HEADERS, timeout=30)
             data_resp.raise_for_status()
 
-            df = pd.read_excel(data_resp.content)
+            # FIX: wrap bytes in BytesIO for pd.read_excel
+            df = pd.read_excel(io.BytesIO(data_resp.content))
 
             # Find debit balance column
             debit_col = None
@@ -425,7 +466,7 @@ def pull_margin_debt():
     except Exception as e:
         log.warning(f"    MARGIN_DEBT FINRA failed: {e}")
 
-    # Fallback: Use FRED S&P 500 margin debt proxy
+    # Fallback: Use FRED proxy
     # FRED series BOGZ1FL663067003Q = Margin accounts net debit balances (quarterly)
     try:
         log.info(f"  MARGIN_DEBT: Trying FRED proxy (quarterly)...")
@@ -457,37 +498,69 @@ def pull_insider_data():
     Pull Insider Buy/Sell Ratio from OpenInsider.
     Source: openinsider.com (aggregated SEC Form 4 filings).
     Returns: {INSIDER_BUY_SELL: float} (ratio of buys to sells)
+
+    FIX v2: Proper HTML table parsing instead of naive tr-count.
+    Uses screener with buy/sell filter, counts actual transaction rows.
     """
     results = {}
 
     try:
-        # OpenInsider summary page with recent insider activity
-        url = "http://openinsider.com/screener?s=&o=&pl=&ph=&ll=&lh=&fd=7&fdr=&td=0&tdr=&feession=at&tession=ct&xp=1&vl=&vh=&ocl=&och=&session=oi&a=1&v=&cnt=100&page=1"
         log.info(f"  INSIDER: Fetching OpenInsider data...")
 
-        # Simpler approach: get the summary stats page
-        summary_url = "http://openinsider.com/insider-purchases-25k"
-        resp_buy = requests.get(summary_url, headers=SCRAPE_HEADERS, timeout=30)
+        # --- Purchases (last 7 days, >$25k) ---
+        # a=1 = purchases only
+        buy_url = ("http://openinsider.com/screener?s=&o=&pl=25&ph=&ll=&lh="
+                   "&fd=7&fdr=&td=0&tdr=&feession=at&tession=ct&xp=1"
+                   "&vl=&vh=&ocl=&och=&session=oi&a=1&v=&cnt=500&page=1")
+        resp_buy = requests.get(buy_url, headers=SCRAPE_HEADERS, timeout=30)
         resp_buy.raise_for_status()
 
-        # Count buy transactions from the page
-        buy_count = resp_buy.text.count('<tr class')
+        # Count actual data rows: look for "P - Purchase" in transaction type column
+        buy_count = len(re.findall(r'P\s*-\s*Purchase', resp_buy.text))
+        if buy_count == 0:
+            # Fallback: count rows in tinytable
+            table_match = re.search(
+                r'<table[^>]*class="[^"]*tinytable[^"]*"[^>]*>(.*?)</table>',
+                resp_buy.text, re.DOTALL
+            )
+            if table_match:
+                tbody = table_match.group(1)
+                buy_count = max(0, tbody.count('<tr>') - 1)
 
-        sell_url = "http://openinsider.com/insider-sales-25k"
+        log.info(f"    INSIDER purchases (7d, >25k): {buy_count}")
+
+        # --- Sales (last 7 days, >$25k) ---
+        # a=2 = sales only
+        sell_url = ("http://openinsider.com/screener?s=&o=&pl=25&ph=&ll=&lh="
+                    "&fd=7&fdr=&td=0&tdr=&feession=at&tession=ct&xp=1"
+                    "&vl=&vh=&ocl=&och=&session=oi&a=2&v=&cnt=500&page=1")
         resp_sell = requests.get(sell_url, headers=SCRAPE_HEADERS, timeout=30)
         resp_sell.raise_for_status()
 
-        sell_count = resp_sell.text.count('<tr class')
+        sell_count = len(re.findall(r'S\s*-\s*Sale', resp_sell.text))
+        if sell_count == 0:
+            table_match = re.search(
+                r'<table[^>]*class="[^"]*tinytable[^"]*"[^>]*>(.*?)</table>',
+                resp_sell.text, re.DOTALL
+            )
+            if table_match:
+                tbody = table_match.group(1)
+                sell_count = max(0, tbody.count('<tr>') - 1)
 
-        if sell_count > 0:
+        log.info(f"    INSIDER sales (7d, >25k): {sell_count}")
+
+        # Calculate ratio
+        if sell_count > 0 and buy_count >= 0:
             ratio = buy_count / sell_count
+            # Clip to our normalization range
+            ratio = max(0.05, min(ratio, 2.5))
             results["INSIDER_BUY_SELL"] = round(ratio, 4)
             log.info(f"    OK: INSIDER_BUY_SELL = {ratio:.4f} (buys={buy_count}, sells={sell_count})")
-        elif buy_count > 0:
+        elif buy_count > 0 and sell_count == 0:
             results["INSIDER_BUY_SELL"] = 2.0  # Cap at max if no sells
             log.info(f"    OK: INSIDER_BUY_SELL = 2.0 (buys={buy_count}, sells=0, capped)")
         else:
-            log.warning(f"    INSIDER: Could not parse buy/sell counts")
+            log.warning(f"    INSIDER: No transactions found (buys={buy_count}, sells={sell_count})")
 
     except Exception as e:
         log.warning(f"    INSIDER OpenInsider failed: {e}")
