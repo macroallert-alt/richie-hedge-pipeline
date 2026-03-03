@@ -1,0 +1,21 @@
+name: L5 Fragility Collector
+on:
+  schedule:
+    - cron: '25 8 * * 1-5'
+  workflow_dispatch:
+jobs:
+  l5-fragility:
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0e_l5_fragility/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L5 Fragility Collector
+        run: python step_0e_l5_fragility/main.py
