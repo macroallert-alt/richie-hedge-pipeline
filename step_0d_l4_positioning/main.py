@@ -52,8 +52,8 @@ COT_CONTRACTS = {
         "cftc_codes": ["088691"],
     },
     "COT_TREASURY_COMM_NET": {
-        "search_strings": ["10-YEAR", "10 YEAR U.S. TREASURY"],
-        "cftc_codes": ["043602"],
+        "search_strings": ["10-YEAR", "10 YEAR", "UST 10Y", "T-NOTE", "U.S. TREASURY NOTE"],
+        "cftc_codes": ["043602", "043602C"],
     },
 }
 
@@ -222,9 +222,10 @@ def get_cot_columns(df):
         elif "comm_positions_short_all" in cl.replace(" ", "_") or (
                 "commercial" in cl and "short" in cl and "all" in cl and "spread" not in cl):
             col_map["short"] = col
-        elif "open_interest_all" in cl.replace(" ", "_") or (
-                "open" in cl and "interest" in cl and "all" in cl and "old" not in cl):
-            if "open_interest" not in cl or "other" not in cl:
+        elif ("open_interest_all" in cl.replace(" ", "_") or (
+                "open" in cl and "interest" in cl and "all" in cl and "old" not in cl)):
+            # Exclude Pct_of_Open_Interest columns — we need absolute OI
+            if "pct" not in cl and "percent" not in cl and "other" not in cl:
                 col_map["oi"] = col
 
     return col_map
@@ -296,7 +297,10 @@ def pull_cot_data():
         log.info(f"  COT: Available columns: {list(df_all.columns[:20])}")
         return _cot_fallback_library()
 
-    log.info(f"  COT: Column mapping: date={col_map['date']}, long={col_map['long']}, short={col_map['short']}, oi={col_map['oi']}")
+    log.info(f"  COT: Column mapping: date={col_map.get('date','??')}, long={col_map.get('long','??')}, short={col_map.get('short','??')}, oi={col_map.get('oi','??')}") 
+    # Diagnostic: log all column names containing 'open' for debugging
+    oi_candidates = [c for c in df_all.columns if "open" in c.lower() and "interest" in c.lower()]
+    log.info(f"  COT: OI column candidates: {oi_candidates}")
 
     # Process each contract
     for indicator_name, contract_info in COT_CONTRACTS.items():
