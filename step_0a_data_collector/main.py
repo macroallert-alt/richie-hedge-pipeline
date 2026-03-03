@@ -46,6 +46,60 @@ GLP_WEIGHTS = {
 
 CHINA_M2_USD_LAST = 49_261_001_737_116
 
+# --- CYCLES_HOWELL CONSTANTS ---
+
+HOWELL_TROUGH_DATE = date(2022, 10, 1)  # Current cycle trough
+HOWELL_CYCLE_LENGTH = 65  # Months
+HOWELL_DAYS_PER_MONTH = 30.44  # For fractional month calculation
+
+# Phase 4 TURBULENCE current stint started 2025-09-16
+PHASE4_ENTRY_DATE = date(2025, 9, 16)
+PHASE4_ENTRY_CONFIDENCE = 0.300
+PHASE_CONFIDENCE_DAILY_RATE = 0.000954  # Linear growth from entry
+
+# Phase-based lookup tables (100% verified from historical CSV)
+RISKON_MULT = {1: 1.15, 2: 1.10, 3: 1.00, 4: 0.50}
+RISKOFF_MULT = {1: 0.90, 2: 0.95, 3: 1.00, 4: 1.20}
+
+PHASE_NAME = {1: "REBOUND", 2: "CALM", 3: "SPECULATION", 4: "TURBULENCE"}
+
+PHASE_REGIME = {1: "RISK ON", 2: "RISK ON", 3: "RISK ON", 4: "RISK OFF"}
+
+PHASE_SIGNALS = {
+    # Phase: (Eq, Cr, Cmd, PM, GovB, Cash, Crypto, Favored)
+    1: ("🟡 AMBER", "🔴 RED", "🔴 RED", "🟢 GREEN", "🟢 GREEN", "🟢 GREEN", "🔴 RED",
+        "Tech, Cyclicals, SmallCaps"),
+    2: ("🟢 GREEN", "🟢 GREEN", "🟢 GREEN", "🟡 YELLOW", "🟡 AMBER", "🟡 AMBER", "🟢 GREEN",
+        "Financials, EM, Broad Equity"),
+    3: ("🟡 AMBER", "🔴 RED", "🟢 GREEN", "🟡 YELLOW", "🟡 AMBER", "🟡 AMBER", "🟡 AMBER",
+        "Energy, Mining, Commodities"),
+    4: ("🔴 RED", "🔴 RED", "🔴 RED", "🟢 GREEN", "🟢 GREEN", "🟢 GREEN", "🔴 RED",
+        "Cash, Govt Bonds, Defensives"),
+}
+
+# Sub_Phase thresholds: percentage of avg phase duration (124d for Phase 4)
+# EARLY=0-35%, MID=35-84%, DEEP=84-114%, RECOVERY=114%+
+PHASE_AVG_DURATION = {1: 170, 2: 115, 3: 620, 4: 124}
+
+SUB_PHASE_NAMES = {
+    1: ("EARLY REBOUND", "MID REBOUND", "LATE REBOUND", "LATE REBOUND"),
+    2: ("EARLY CALM", "MID CALM", "LATE CALM", "LATE CALM"),
+    3: ("EARLY SPECULATION", "MID SPECULATION", "LATE SPECULATION", "LATE SPECULATION"),
+    4: ("EARLY TURBULENCE", "MID TURBULENCE", "DEEP TURBULENCE", "EARLY TURBULENCE RECOVERY"),
+}
+
+# Cycle_Interpretation thresholds (CP-based, verified from data)
+def cycle_interpretation(cp):
+    if cp < 20: return "Early Cycle (Accumulate)"
+    elif cp < 40: return "Early-Mid Cycle (Risk On)"
+    elif cp < 60: return "Mid Cycle (Selective)"
+    elif cp < 80: return "Late Mid Cycle (Caution)"
+    else: return "Late Cycle (Defensive)"
+
+
+# GLI_Normalized: CBC proprietär, forward-fill last known value
+GLI_NORMALIZED_LAST = 34.52
+
 
 # --- GOOGLE SHEETS ---
 
@@ -213,11 +267,9 @@ def fmt(val, decimals=0):
 def write_data_liquidity(sheet, df, hist_howell_phase=4):
     ws = sheet.worksheet("DATA_Liquidity")
 
-    RISKON = {1: 1.15, 2: 1.10, 3: 1.00, 4: 0.50}
-    RISKOFF = {1: 0.90, 2: 0.95, 3: 1.00, 4: 1.20}
     phase = hist_howell_phase
-    riskon = RISKON.get(phase, 1.00)
-    riskoff = RISKOFF.get(phase, 1.00)
+    riskon = RISKON_MULT.get(phase, 1.00)
+    riskoff = RISKOFF_MULT.get(phase, 1.00)
 
     # Build rows (newest first)
     new_dates_set = set()
@@ -269,6 +321,183 @@ def write_data_liquidity(sheet, df, hist_howell_phase=4):
     # Step 2: Insert new rows at top (row 3)
     ws.insert_rows(rows_to_write, row=3, value_input_option="RAW")
     log.info(f"  Inserted {num} rows at row 3")
+# --- STUFE 2: CYCLES_Howell ---
+
+def calc_cycles_howell(liq_df, start_date, end_date):
+    """
+    Calculate CYCLES_Howell tab for new dates.
+    
+    Current state: Phase 4 TURBULENCE since 2025-09-16, MST=41 (Mar 2026).
+    Strategy: Forward-fill phase + compute derived metrics daily.
+    GLI_Normalized: CBC proprietary, forward-fill 34.52.
+    """
+    rows = []
+    current_phase = 4  # TURBULENCE - forward-fill until manual transition alert
+    
+    for _, lrow in liq_df.iterrows():
+        d = lrow["Date"]
+        d_date = d.date() if hasattr(d, 'date') else d
+        
+        # GLP, Trend, Momentum, Acceleration from DATA_Liquidity
+        glp = lrow.get("Global_Liq_Proxy", np.nan)
+        trend = lrow.get("Trend", np.nan)
+        mom6m = lrow.get("Momentum_6M", np.nan)
+        accel = lrow.get("Acceleration", np.nan)
+        
+        # MST: integer months since trough (increments on 15th of each month)
+        # Verified: MST = (year_diff * 12 + month_diff) + 1 if day >= 15
+        days_since_trough = (d_date - HOWELL_TROUGH_DATE).days
+        months_frac = days_since_trough / HOWELL_DAYS_PER_MONTH  # For CP only
+        y_diff = d_date.year - HOWELL_TROUGH_DATE.year
+        m_diff = d_date.month - HOWELL_TROUGH_DATE.month
+        mst = y_diff * 12 + m_diff
+        if d_date.day >= 15:
+            mst += 1
+        
+        # Cycle_Position: fractional, daily resolution
+        cp = round(months_frac / HOWELL_CYCLE_LENGTH * 100, 1)
+        
+        # Sine_Wave: uses INTEGER MST (verified: sin(2*pi*40/65) = -0.663123)
+        sine_wave = round(np.sin(2 * np.pi * mst / HOWELL_CYCLE_LENGTH), 6)
+        
+        # Months_To_Trough
+        mtt = HOWELL_CYCLE_LENGTH - mst
+        
+        # Phase lookups
+        phase = current_phase
+        phase_name = PHASE_NAME[phase]
+        riskon = RISKON_MULT[phase]
+        riskoff = RISKOFF_MULT[phase]
+        regime = PHASE_REGIME[phase]
+        
+        # Phase_Confidence: linear growth from 0.300 at phase entry
+        days_in_phase = (d_date - PHASE4_ENTRY_DATE).days
+        phase_conf = round(PHASE4_ENTRY_CONFIDENCE + days_in_phase * PHASE_CONFIDENCE_DAILY_RATE, 4)
+        
+        # Sine_Agrees: Phase 4 (bearish/RISK OFF) agrees when sine < 0
+        if phase in (1, 2):
+            sine_agrees = sine_wave > 0
+        elif phase == 4:
+            sine_agrees = sine_wave < 0
+        else:  # Phase 3
+            sine_agrees = True  # Speculation = neutral
+        
+        # Cycle_Interpretation (CP-based)
+        cycle_interp = cycle_interpretation(cp)
+        
+        # Sub_Phase: based on days in current phase / avg duration
+        avg_dur = PHASE_AVG_DURATION[phase]
+        pct_of_avg = days_in_phase / avg_dur * 100 if avg_dur > 0 else 0
+        sub_names = SUB_PHASE_NAMES[phase]
+        if pct_of_avg < 35.0:
+            sub_phase = sub_names[0]
+        elif pct_of_avg < 83.5:
+            sub_phase = sub_names[1]
+        elif pct_of_avg < 113.5:
+            sub_phase = sub_names[2]
+        else:
+            sub_phase = sub_names[3]
+        
+        # Signal lookups
+        sigs = PHASE_SIGNALS[phase]
+        
+        # GLI_Normalized: forward-fill
+        gli_norm = GLI_NORMALIZED_LAST
+        
+        rows.append({
+            "Date": d,
+            "Global_Liq_Proxy": glp,
+            "Trend": trend,
+            "Momentum_6M": mom6m,
+            "Acceleration": accel,
+            "Howell_Phase": phase,
+            "Phase_Name": phase_name,
+            "Howell_RiskOn_Mult": riskon,
+            "Howell_RiskOff_Mult": riskoff,
+            "Months_Since_Trough": mst,
+            "Cycle_Position": cp,
+            "Cycle_Interpretation": cycle_interp,
+            "Months_To_Trough": mtt,
+            "GLI_Normalized": gli_norm,
+            "Sine_Wave": sine_wave,
+            "Phase_Confidence": phase_conf,
+            "Sine_Agrees": sine_agrees,
+            "Regime": regime,
+            "Sig_Equities": sigs[0],
+            "Sig_Credits": sigs[1],
+            "Sig_Commodities": sigs[2],
+            "Sig_PM": sigs[3],
+            "Sig_GovtBonds": sigs[4],
+            "Sig_Cash": sigs[5],
+            "Sig_Crypto": sigs[6],
+            "Favored_Sectors": sigs[7],
+            "Sub_Phase": sub_phase,
+        })
+    
+    return pd.DataFrame(rows)
+
+
+def write_cycles_howell(sheet, df):
+    """Write CYCLES_Howell rows to sheet (newest first, row 3 = first data row)."""
+    ws = sheet.worksheet("CYCLES_Howell")
+    
+    new_dates_set = set()
+    rows_to_write = []
+    for _, row in df.sort_values("Date", ascending=False).iterrows():
+        d = row["Date"].strftime("%Y-%m-%d") if hasattr(row["Date"], "strftime") else str(row["Date"])[:10]
+        new_dates_set.add(d)
+        rows_to_write.append([
+            d,
+            fmt(row["Global_Liq_Proxy"], 6),
+            fmt(row["Trend"], 6),
+            fmt(row["Momentum_6M"], 6),
+            fmt(row["Acceleration"], 6),
+            int(row["Howell_Phase"]),
+            row["Phase_Name"],
+            row["Howell_RiskOn_Mult"],
+            row["Howell_RiskOff_Mult"],
+            int(row["Months_Since_Trough"]),
+            row["Cycle_Position"],
+            row["Cycle_Interpretation"],
+            int(row["Months_To_Trough"]),
+            row["GLI_Normalized"],
+            fmt(row["Sine_Wave"], 6),
+            fmt(row["Phase_Confidence"], 4),
+            row["Sine_Agrees"],
+            row["Regime"],
+            row["Sig_Equities"],
+            row["Sig_Credits"],
+            row["Sig_Commodities"],
+            row["Sig_PM"],
+            row["Sig_GovtBonds"],
+            row["Sig_Cash"],
+            row["Sig_Crypto"],
+            row["Favored_Sectors"],
+            row["Sub_Phase"],
+        ])
+    
+    if not rows_to_write:
+        log.warning("CYCLES_Howell: No rows to write.")
+        return
+    
+    num = len(rows_to_write)
+    log.info(f"CYCLES_Howell: Writing {num} rows...")
+    
+    # Delete overlapping rows (same pattern as DATA_Liquidity)
+    existing_dates = ws.col_values(1)[2:]  # Skip header + sub-header
+    rows_to_delete = []
+    for i, d in enumerate(existing_dates):
+        if d in new_dates_set:
+            rows_to_delete.append(i + 3)
+    
+    for row_idx in sorted(rows_to_delete, reverse=True):
+        ws.delete_rows(row_idx)
+        log.info(f"  Deleted existing row {row_idx} (overlap)")
+    
+    # Insert at row 3 (newest first)
+    ws.insert_rows(rows_to_write, row=3, value_input_option="RAW")
+    log.info(f"  Inserted {num} rows at row 3")
+
 
 
 # --- MAIN ---
@@ -320,6 +549,24 @@ def main():
 
     log.info("=" * 60)
     log.info("Stufe 1 complete")
+    log.info("=" * 60)
+
+    # --- STUFE 2: CYCLES_Howell ---
+    log.info("STUFE 2: CYCLES_Howell")
+    howell_df = calc_cycles_howell(liq_df, start_date, end_date)
+    log.info(f"  {len(howell_df)} rows calculated")
+
+    if not howell_df.empty:
+        r = howell_df.iloc[-1]
+        log.info(f"  Latest: {r['Date'].date() if hasattr(r['Date'], 'date') else r['Date']} "
+                 f"Phase={r['Howell_Phase']} MST={r['Months_Since_Trough']} "
+                 f"CP={r['Cycle_Position']} SW={r['Sine_Wave']:.6f}")
+
+    log.info("Writing CYCLES_Howell...")
+    write_cycles_howell(sheet, howell_df)
+
+    log.info("=" * 60)
+    log.info("Stufe 2 complete")
     log.info("=" * 60)
 
 
