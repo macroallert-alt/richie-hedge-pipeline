@@ -1,0 +1,22 @@
+name: L4 Positioning Collector
+on:
+  schedule:
+    - cron: '20 8 * * 1-5'
+  workflow_dispatch:
+jobs:
+  l4-positioning:
+    runs-on: ubuntu-latest
+    env:
+      EODHD_API_KEY: ${{ secrets.EODHD_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0d_l4_positioning/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L4 Positioning Collector
+        run: python step_0d_l4_positioning/main.py
