@@ -787,10 +787,11 @@ def _parse_ici_mf_flows(today):
     # Pattern: "Equity funds2 had estimated [inflows|outflows] of $X.XX billion
     #           (X.X percent of [Month] [Day] assets)"
     # Also handle: "(less than 0.1 percent of ...)"
-    # Note: ICI uses superscript footnote "2" directly after "funds" which becomes
-    # "funds2" in get_text(). The \S* handles this.
+    # Note: ICI uses superscript footnote "2" in a <sup> tag after "funds".
+    # BeautifulSoup get_text() may render this as "funds2" or "funds 2" (with space).
+    # The \s*\S* handles both cases.
     equity_pct_match = re.search(
-        r"Equity\s+funds\S*\s+had\s+estimated\s+(inflows|outflows)\s+of\s+"
+        r"Equity\s+funds\s*\S*\s+had\s+estimated\s+(inflows|outflows)\s+of\s+"
         r"\$([\d.,]+)\s+billion[^(]*\((less\s+than\s+)?([\d.]+)\s+percent\s+of\s+",
         text, re.IGNORECASE
     )
@@ -900,10 +901,10 @@ def _parse_ici_combined_flows(today):
 
     age_days = (today - report_date).days
 
-    # Extract equity flows: "$X.XX billion"
     # Note: [^(]* allows for whitespace/newlines between "billion" and "("
+    # \s*\S* handles "funds 2" or "funds2" (footnote superscript)
     equity_match = re.search(
-        r"Equity\s+funds\S*\s+had\s+estimated\s+(inflows|outflows)\s+of\s+"
+        r"Equity\s+funds\s*\S*\s+had\s+estimated\s+(inflows|outflows)\s+of\s+"
         r"\$([\d.,]+)\s+billion",
         text, re.IGNORECASE
     )
