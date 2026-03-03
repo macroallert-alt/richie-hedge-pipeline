@@ -1,29 +1,22 @@
 name: L2 Sentiment Collector
 on:
   schedule:
-    - cron: "15 8 * * 1-5"  # 08:15 UTC Mon-Fri (after V55 at 08:00)
+    - cron: '15 8 * * 1-5'
   workflow_dispatch:
-
 jobs:
   l2-sentiment:
     runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-
+          python-version: '3.12'
       - name: Install dependencies
         run: pip install -r step_0c_l2_sentiment/requirements.txt
-
       - name: Write GCP credentials
-        run: echo "${{ secrets.GCP_SA_JSON }}" > /tmp/gcp_sa.json
-        env:
-          GCP_SA_JSON: ${{ secrets.GCP_SA_JSON }}
-
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
       - name: Run L2 Sentiment Collector
-        env:
-          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
         run: python step_0c_l2_sentiment/main.py
