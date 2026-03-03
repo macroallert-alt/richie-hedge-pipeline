@@ -158,7 +158,7 @@ def calc_data_liquidity(fred_data, hist_df, start_date, end_date):
 
     # Combine with historical GLP for MA continuity
     if not hist_df.empty and "Global_Liq_Proxy" in hist_df.columns:
-        hist_glp = hist_df.set_index("Date")["Global_Liq_Proxy"].astype(float)
+        hist_glp = pd.to_numeric(hist_df.set_index("Date")["Global_Liq_Proxy"], errors="coerce").dropna()
         hist_glp = hist_glp[hist_glp.index < pd.Timestamp(start_date)]
         full_glp = pd.concat([hist_glp, glp_fred]).sort_index()
         full_glp = full_glp[~full_glp.index.duplicated(keep="last")]
