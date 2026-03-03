@@ -1,13 +1,15 @@
 """
 L4 Positioning Collector - step_0d_l4_positioning/main.py
 Global Macro RV System - Data Warehouse Layer 4
-Phase 1: COT x 3 (S&P 500, Gold, 10Y Treasury)
+6/6 Indicators LIVE:
+  Phase 1: COT x 3 (S&P 500, Gold, 10Y Treasury) — CFTC XLS ZIPs
+  Phase 2: Crypto Funding Rate — OKX→Bybit→Binance fallback chain
+  Phase 3: Options GEX — EODHD Marketplace API with pagination
+  Phase 4: Fund Flows Equity — ICI MF-only scrape (% of Assets)
 Pulls positioning indicators, normalizes to 0-10, writes to:
   RAW_MARKET (R14-R19), SCORES (R5), DASHBOARD (R20)
-Sources Phase 1: CFTC Legacy Futures (COT x3)
-Sources Phase 2-4: Binance (Crypto), EODHD (GEX), ICI (Fund Flows) — stubs
 Pattern: Identical to L2 Sentiment Collector (Pull -> Normalize -> Composite -> Sheets)
-Reference: V78 Statusanalyse Kap.10, Kap.18, Kap.19
+Reference: V79 Statusanalyse Kap.10, Kap.18, Kap.19
 Iron Rule: V16 main.py NEVER TOUCH. L2 step_0c NEVER TOUCH.
 """
 
@@ -107,7 +109,7 @@ SOURCE_MAP = {
     "COT_GOLD_COMM_NET":    ("CFTC", "T1", "pct"),
     "COT_TREASURY_COMM_NET": ("CFTC", "T1", "pct"),
     "FUND_FLOWS_EQUITY":    ("ICI",  "T3", "pct_aum"),
-    "CRYPTO_FUNDING_RATE":  ("Bybit/Binance", "T2", "pct"),
+    "CRYPTO_FUNDING_RATE":  ("OKX/Bybit/Binance", "T2", "pct"),
     "OPTIONS_GEX":          ("EODHD", "T2", "$B"),
 }
 
@@ -374,7 +376,7 @@ def _cot_fallback_library():
     return {}
 
 
-# ==================== PHASE 2-4 STUBS ====================
+# ==================== PHASE 2: CRYPTO FUNDING ====================
 
 def pull_crypto_funding():
     """Pull perpetual funding rates with multi-exchange fallback chain.
@@ -638,9 +640,256 @@ def pull_options_gex():
 
 
 def pull_fund_flows():
-    """STUB — Phase 4: ICI Combined Fund Flows scraping."""
-    log.info("  FUND_FLOWS: [STUB - Phase 4] Skipping")
-    return {}
+    """Phase 4: ICI Fund Flows — Equity flows as % of Assets.
+
+    Primary: ICI MF-only Flows page (/research/stats/flows)
+      - Parses "Equity funds had estimated [in/out]flows of $X.XX billion
+        (X.X percent of [Month] [Day] assets)" from page text.
+      - MF-only has % of assets directly in text (Combined page does not).
+      - MF flows = active investor decisions (better positioning signal than ETF).
+
+    Fallback 1: ICI Combined Flows page (/research/stats/combined_flows)
+      - Parses absolute dollar equity flows, divides by known AUM (~$20T).
+
+    Fallback 2: datahub.io CSV (monthly, MF only, absolute $M)
+      - Divides by known AUM (~$20T).
+
+    Normalization: -0.20% to +0.20% AUM, linear, not inverted.
+    Outflows = negative (bearish positioning), Inflows = positive (bullish).
+
+    Returns: {"FUND_FLOWS_EQUITY": {"raw_value": pct_of_aum, "age_days": int, "date": str}}
+    """
+    from bs4 import BeautifulSoup
+    import re
+
+    results = {}
+    today = date.today()
+
+    # --- Primary: ICI MF-only Flows (has % of assets in text) ---
+    log.info("  FUND_FLOWS: Trying ICI MF-only Flows (Primary)...")
+    try:
+        result = _parse_ici_mf_flows(today)
+        if result:
+            results["FUND_FLOWS_EQUITY"] = result
+            log.info(f"    ICI MF-only: {result['raw_value']:.4f}% of AUM, Date={result['date']}, Age={result['age_days']}d")
+            return results
+    except Exception as e:
+        log.warning(f"    ICI MF-only: Failed -> {e}")
+
+    # --- Fallback 1: ICI Combined Flows (absolute $ -> divide by AUM) ---
+    log.info("  FUND_FLOWS: Trying ICI Combined Flows (Fallback 1)...")
+    try:
+        result = _parse_ici_combined_flows(today)
+        if result:
+            results["FUND_FLOWS_EQUITY"] = result
+            log.info(f"    ICI Combined: {result['raw_value']:.4f}% of AUM, Date={result['date']}, Age={result['age_days']}d")
+            return results
+    except Exception as e:
+        log.warning(f"    ICI Combined: Failed -> {e}")
+
+    # --- Fallback 2: datahub.io CSV (monthly, absolute $M -> divide by AUM) ---
+    log.info("  FUND_FLOWS: Trying datahub.io CSV (Fallback 2)...")
+    try:
+        result = _parse_datahub_flows(today)
+        if result:
+            results["FUND_FLOWS_EQUITY"] = result
+            log.info(f"    datahub.io: {result['raw_value']:.4f}% of AUM, Date={result['date']}, Age={result['age_days']}d")
+            return results
+    except Exception as e:
+        log.warning(f"    datahub.io: Failed -> {e}")
+
+    log.warning("  FUND_FLOWS: ALL sources failed")
+    return results
+
+
+# Approximate total US equity fund AUM for normalization ($T -> $B)
+# Source: ICI Fact Book 2025 — total equity MF+ETF ~$20T domestic equity
+# Updated periodically; conservative estimate is fine for % calculation
+_EQUITY_AUM_BILLIONS = 20000.0
+
+
+def _parse_ici_mf_flows(today):
+    """Parse ICI MF-only Flows page for equity flows % of assets.
+
+    Looks for pattern: "Equity funds had estimated [in|out]flows of $X.XX billion
+    (X.X percent of [Month] [Day] assets)"
+
+    Also extracts the report week-ending date from:
+    "for the week ended Wednesday, [Month] [Day]"
+    """
+    import re
+    from bs4 import BeautifulSoup
+
+    url = "https://www.ici.org/research/stats/flows"
+    resp = requests.get(url, headers=SCRAPE_HEADERS, timeout=30)
+    resp.raise_for_status()
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    # Get all text from the page body
+    text = soup.get_text(separator=" ", strip=True)
+
+    # Extract week-ending date: "for the week ended Wednesday, February 18"
+    # or "for the eight-day period ended Wednesday, January 7"
+    date_match = re.search(
+        r"(?:week|period)\s+ended\s+\w+,\s+(\w+\s+\d{1,2})",
+        text, re.IGNORECASE
+    )
+    report_date = None
+    if date_match:
+        date_str = date_match.group(1)
+        # Try current year first, then previous year
+        for try_year in [today.year, today.year - 1]:
+            try:
+                report_date = datetime.strptime(f"{date_str} {try_year}", "%B %d %Y").date()
+                # Sanity: report date should not be in the future
+                if report_date <= today:
+                    break
+                report_date = None
+            except ValueError:
+                report_date = None
+
+    if report_date is None:
+        log.warning("    ICI MF-only: Could not parse report date")
+        report_date = today - timedelta(days=7)  # Conservative fallback
+
+    age_days = (today - report_date).days
+
+    # Extract equity flows with % of assets
+    # Pattern: "Equity funds had estimated [inflows|outflows] of $X.XX billion
+    #           (X.X percent of [Month] [Day] assets)"
+    # Also handle: "(less than 0.1 percent of ...)"
+    equity_pct_match = re.search(
+        r"Equity\s+funds\S*\s+had\s+estimated\s+(inflows|outflows)\s+of\s+"
+        r"\$[\d.,]+\s+billion\s+\((less\s+than\s+)?([\d.]+)\s+percent\s+of\s+",
+        text, re.IGNORECASE
+    )
+
+    if equity_pct_match:
+        direction = equity_pct_match.group(1).lower()
+        less_than = equity_pct_match.group(2) is not None
+        pct_value = float(equity_pct_match.group(3))
+
+        # "less than 0.1 percent" -> use 0.05 as midpoint estimate
+        if less_than:
+            pct_value = pct_value / 2.0
+
+        # Outflows are negative (bearish), inflows are positive (bullish)
+        if direction == "outflows":
+            pct_value = -pct_value
+
+        # raw_value is in percentage points matching V79 range (-0.20 to +0.20)
+        # ICI "0.1 percent" = 0.10 percentage points -> raw_value = -0.10
+        raw_value = round(pct_value, 4)
+
+        return {
+            "raw_value": raw_value,
+            "age_days": age_days,
+            "date": report_date.strftime("%Y-%m-%d"),
+        }
+
+    log.warning("    ICI MF-only: Equity % pattern not found in page text")
+    return None
+
+
+def _parse_ici_combined_flows(today):
+    """Fallback 1: Parse ICI Combined Flows page for absolute equity $ flows.
+    Divide by known AUM to get approximate % of assets.
+
+    Looks for: "Equity funds had estimated [in|out]flows of $X.XX billion"
+    """
+    import re
+    from bs4 import BeautifulSoup
+
+    url = "https://www.ici.org/research/stats/combined_flows"
+    resp = requests.get(url, headers=SCRAPE_HEADERS, timeout=30)
+    resp.raise_for_status()
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    text = soup.get_text(separator=" ", strip=True)
+
+    # Extract week-ending date
+    date_match = re.search(
+        r"(?:week|period)\s+ended\s+(\w+\s+\d{1,2},\s+\d{4})",
+        text, re.IGNORECASE
+    )
+    report_date = None
+    if date_match:
+        try:
+            report_date = datetime.strptime(date_match.group(1), "%B %d, %Y").date()
+        except ValueError:
+            report_date = None
+
+    if report_date is None:
+        report_date = today - timedelta(days=7)
+
+    age_days = (today - report_date).days
+
+    # Extract equity flows: "$X.XX billion"
+    equity_match = re.search(
+        r"Equity\s+funds\S*\s+had\s+estimated\s+(inflows|outflows)\s+of\s+"
+        r"\$([\d.,]+)\s+billion",
+        text, re.IGNORECASE
+    )
+
+    if equity_match:
+        direction = equity_match.group(1).lower()
+        amount_str = equity_match.group(2).replace(",", "")
+        amount_b = float(amount_str)
+
+        if direction == "outflows":
+            amount_b = -amount_b
+
+        # Convert to % of AUM: ($B / $AUM_B) * 100 -> percentage points
+        # e.g., $14.64B / $20000B * 100 = 0.073 percentage points
+        pct_of_aum = (amount_b / _EQUITY_AUM_BILLIONS) * 100.0
+        raw_value = round(pct_of_aum, 4)
+
+        return {
+            "raw_value": raw_value,
+            "age_days": age_days,
+            "date": report_date.strftime("%Y-%m-%d"),
+        }
+
+    log.warning("    ICI Combined: Equity flows pattern not found in page text")
+    return None
+
+
+def _parse_datahub_flows(today):
+    """Fallback 2: Parse datahub.io CSV for latest equity flows.
+    Monthly data, absolute $M, divide by known AUM.
+    """
+    url = "https://datahub.io/core/investor-flow-of-funds-us/_r/-/data/weekly.csv"
+    resp = requests.get(url, headers=SCRAPE_HEADERS, timeout=30)
+    resp.raise_for_status()
+
+    df = pd.read_csv(io.StringIO(resp.text))
+    if df.empty:
+        log.warning("    datahub.io: Empty CSV")
+        return None
+
+    # Columns: Date, Total Equity, Domestic Equity, World Equity, ...
+    df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+    df = df.dropna(subset=["Date"]).sort_values("Date")
+
+    if df.empty:
+        return None
+
+    latest = df.iloc[-1]
+    report_date = latest["Date"].date()
+    age_days = (today - report_date).days
+
+    # Total Equity flows in $M
+    equity_flow_m = float(latest.get("Total Equity", 0))
+    # Convert $M to $B, then to percentage points of AUM
+    equity_flow_b = equity_flow_m / 1000.0
+    pct_of_aum = (equity_flow_b / _EQUITY_AUM_BILLIONS) * 100.0
+    raw_value = round(pct_of_aum, 4)
+
+    return {
+        "raw_value": raw_value,
+        "age_days": age_days,
+        "date": report_date.strftime("%Y-%m-%d"),
+    }
 
 
 # ==================== NORMALIZATION ====================
@@ -870,7 +1119,7 @@ def write_dashboard_l4(warehouse, composite, direction, signal, freshness, speed
 
 def main():
     log.info("=" * 60)
-    log.info("L4 Positioning Collector - Starting (Phase 1: COT x 3)")
+    log.info("L4 Positioning Collector - Starting (6/6 Indicators)")
     log.info("=" * 60)
 
     log.info("Connecting to Data Warehouse...")
