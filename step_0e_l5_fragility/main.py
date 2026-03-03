@@ -4,7 +4,7 @@ Global Macro RV System - Data Warehouse Layer 5
 8/8 Indicators:
   1. RESERVE_DRAIN_RATE   — FRED WRESBAL 4w-delta (Liquidity drain speed)
   2. SOFR_FFR_SPREAD      — FRED SOFR-EFFR (Overnight funding stress)
-  3. FIN_STRESS_INDEX     — FRED STLFSI2 (St. Louis Fed Financial Stress)
+  3. FIN_STRESS_INDEX     — FRED STLFSI4 (St. Louis Fed Financial Stress)
   4. ON_RRP_USAGE         — FRED RRPONTSYD (Liquidity reserve buffer)
   5. SPY_CONCENTRATION    — yfinance SPY HHI (Market concentration risk)
   6. LIQUIDITY_AMIHUD     — yfinance SPY Amihud ratio (Market liquidity)
@@ -55,7 +55,7 @@ INDICATOR_RANGES = {
     "SOFR_FFR_SPREAD":     (-2.0, 20.0, False),      # bps; negative = stable, +20 = very stressed
     "FIN_STRESS_INDEX":    (-1.5, 3.0, False),        # index; -1.5 = calm, +3.0 = crisis
     "ON_RRP_USAGE":        (0.0, 500.0, True),        # $B; $500B = big buffer(0), $0 = no buffer(10)
-    "SPY_CONCENTRATION":   (0.03, 0.12, False),       # HHI; 0.03 = diverse(0), 0.12 = concentrated(10)
+    "SPY_CONCENTRATION":   (0.01, 0.06, False),       # HHI top-10; 0.01 = diverse(0), 0.06 = concentrated(10)
     "LIQUIDITY_AMIHUD":    (0.0, 100.0, False),       # percentile 0-100 of 1Y; 0 = liquid, 100 = illiquid
     "AVG_PAIRWISE_CORR":   (0.15, 0.75, False),       # correlation; 0.15 = diverse(0), 0.75 = herding(10)
     "VIX_TERM_STRUCTURE":  (0.75, 1.25, False),       # ratio VIX/VIX3M; 0.75 = contango/calm(0), 1.25 = backwardation/panic(10)
@@ -99,7 +99,7 @@ FRESHNESS_PARAMS = {
 SOURCE_MAP = {
     "RESERVE_DRAIN_RATE":  ("FRED/WRESBAL", "T1", "$B_4w"),
     "SOFR_FFR_SPREAD":     ("FRED", "T1", "bps"),
-    "FIN_STRESS_INDEX":    ("FRED/STLFSI2", "T1", "index"),
+    "FIN_STRESS_INDEX":    ("FRED/STLFSI4", "T1", "index"),
     "ON_RRP_USAGE":        ("FRED/RRPONTSYD", "T1", "$B"),
     "SPY_CONCENTRATION":   ("yfinance", "T2", "HHI"),
     "LIQUIDITY_AMIHUD":    ("yfinance", "T2", "pctl"),
@@ -251,16 +251,21 @@ def pull_sofr_ffr_spread():
 
 
 def pull_fin_stress_index():
-    """Pull St. Louis Fed Financial Stress Index (STLFSI2) from FRED.
+    """Pull St. Louis Fed Financial Stress Index (STLFSI4) from FRED.
     Weekly composite of 18 financial market indicators.
+    STLFSI2 was discontinued, replaced by STLFSI3, then STLFSI4.
     0 = normal, negative = calm, >1 = elevated, >2 = crisis.
     """
     results = {}
-    log.info("  FIN_STRESS: Pulling STLFSI2 from FRED...")
+    log.info("  FIN_STRESS: Pulling STLFSI4 from FRED...")
 
-    val, dt, age = _fred_latest("STLFSI2")
+    val, dt, age = _fred_latest("STLFSI4")
     if val is None:
-        log.warning("    FIN_STRESS: No data")
+        # Fallback to STLFSI3 in case STLFSI4 is also deprecated
+        log.info("    FIN_STRESS: STLFSI4 failed, trying STLFSI3...")
+        val, dt, age = _fred_latest("STLFSI3")
+    if val is None:
+        log.warning("    FIN_STRESS: No data from any STLFSI version")
         return results
 
     results["FIN_STRESS_INDEX"] = {
