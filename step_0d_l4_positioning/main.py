@@ -16,7 +16,7 @@ import os
 import sys
 import logging
 import zipfile
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, timezone
 
 import pandas as pd
 import numpy as np
@@ -407,7 +407,7 @@ def pull_crypto_funding():
             data = resp.json()
             rate_pct, rate_date = parser(data)
             if rate_pct is not None:
-                age_days = (today - rate_date).days
+                age_days = max(0, (today - rate_date).days)
                 btc_rate = rate_pct
                 results["CRYPTO_FUNDING_RATE"] = {
                     "raw_value": rate_pct,
@@ -460,7 +460,7 @@ def _parse_okx_funding(data):
         item = data["data"][0]
         rate = float(item["fundingRate"]) * 100.0
         ts = int(item["fundingTime"])
-        d = datetime.utcfromtimestamp(ts / 1000).date()
+        d = datetime.fromtimestamp(ts / 1000, tz=timezone.utc).date()
         return rate, d
     return None, None
 
@@ -471,7 +471,7 @@ def _parse_bybit_funding(data):
         item = data["result"]["list"][0]
         rate = float(item["fundingRate"]) * 100.0
         ts = int(item["fundingRateTimestamp"])
-        d = datetime.utcfromtimestamp(ts / 1000).date()
+        d = datetime.fromtimestamp(ts / 1000, tz=timezone.utc).date()
         return rate, d
     return None, None
 
@@ -481,7 +481,7 @@ def _parse_binance_funding(data):
     if data and len(data) > 0:
         rate = float(data[0]["fundingRate"]) * 100.0
         ts = int(data[0]["fundingTime"])
-        d = datetime.utcfromtimestamp(ts / 1000).date()
+        d = datetime.fromtimestamp(ts / 1000, tz=timezone.utc).date()
         return rate, d
     return None, None
 
