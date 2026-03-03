@@ -221,12 +221,21 @@ def pull_aaii_sentiment():
 
             log.info(f"    Data starts at row {data_start}")
 
-            # Reverse-walk: start from last row, find first row passing strict sanity
+            # Reverse-walk with date validation: skip summary/average rows
+            date_col_idx = 0  # Date is always col 0 in AAII XLS
             bull_series = pd.to_numeric(df_raw.iloc[data_start:, bull_col_idx], errors="coerce")
             bear_series = pd.to_numeric(df_raw.iloc[data_start:, bear_col_idx], errors="coerce")
 
             found = False
             for walk_idx in reversed(bull_series.index):
+                # Gate 1: Date must be parsable (filters summary/average rows)
+                raw_date = df_raw.iloc[walk_idx, date_col_idx]
+                try:
+                    pd.to_datetime(raw_date)
+                except (ValueError, TypeError):
+                    log.info(f"    Reverse-walk skip row {walk_idx}: unparsable date = {repr(raw_date)}")
+                    continue
+
                 bv = bull_series.loc[walk_idx]
                 brv = bear_series.loc[walk_idx]
                 if pd.isna(bv) or pd.isna(brv):
@@ -240,19 +249,19 @@ def pull_aaii_sentiment():
                 if brv <= 1.0:
                     brv *= 100.0
 
-                # Strict sanity: each 5-70%, sum(bull+bear) < 90%
+                # Gate 2: Sanity — each 5-70%, sum(bull+bear) < 90%
                 if 5.0 <= bv <= 70.0 and 5.0 <= brv <= 70.0 and (bv + brv) < 90.0:
                     results["AAII_BULL_PCT"] = round(bv, 2)
                     results["AAII_BEAR_PCT"] = round(brv, 2)
-                    log.info(f"    Reverse-walk hit row {walk_idx}: bull={bv:.2f}%, bear={brv:.2f}%, sum={bv+brv:.2f}%")
+                    log.info(f"    Reverse-walk hit row {walk_idx}: date={raw_date}, bull={bv:.2f}%, bear={brv:.2f}%, sum={bv+brv:.2f}%")
                     log.info(f"    OK: AAII_BULL_PCT={bv:.2f}%, AAII_BEAR_PCT={brv:.2f}%")
                     found = True
                     return results
                 else:
-                    log.info(f"    Reverse-walk skip row {walk_idx}: bull={bv:.2f}%, bear={brv:.2f}%, sum={bv+brv:.2f}%")
+                    log.info(f"    Reverse-walk skip row {walk_idx}: date={raw_date}, bull={bv:.2f}%, bear={brv:.2f}%, sum={bv+brv:.2f}%")
 
             if not found:
-                log.warning("    Reverse-walk: no row passed strict sanity (5-70% each, sum<90%)")
+                log.warning("    Reverse-walk: no row passed date+sanity checks")
         else:
             log.warning("    Could not find header row with both Bullish+Bearish")
             for i in range(min(5, len(df_raw))):
