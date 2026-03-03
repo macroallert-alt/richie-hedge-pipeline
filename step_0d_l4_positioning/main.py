@@ -377,94 +377,113 @@ def _cot_fallback_library():
 # ==================== PHASE 2-4 STUBS ====================
 
 def pull_crypto_funding():
-    """Pull perpetual funding rates: Bybit (primary) + Binance (fallback).
+    """Pull perpetual funding rates with multi-exchange fallback chain.
 
-    Bybit V5 public market data — no API key, no US geo-block.
-    Binance fapi is geo-blocked from US (GitHub Actions = US servers).
-    Funding rate signal is highly correlated across exchanges.
+    Cloud/datacenter IPs are often blocked by crypto exchanges.
+    We try multiple sources: OKX → Bybit → Binance.
+    All are public endpoints, no API key needed.
+    Funding rates are highly correlated across exchanges (arbitrage).
 
     Returns: {"CRYPTO_FUNDING_RATE": {"raw_value": pct, "age_days": int, "date": str}}
-    ETHUSDT validation: logged but not scored.
     """
-    BYBIT_URL = "https://api.bybit.com/v5/market/funding/history"
-    BINANCE_URL = "https://fapi.binance.com/fapi/v1/fundingRate"
     results = {}
     today = date.today()
-
-    # --- BTCUSDT via Bybit (primary) ---
     btc_rate = None
-    try:
-        resp = requests.get(BYBIT_URL, params={
-            "category": "linear", "symbol": "BTCUSDT", "limit": "1"
-        }, timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
-        if data.get("retCode") == 0 and data.get("result", {}).get("list"):
-            item = data["result"]["list"][0]
-            rate_raw = float(item["fundingRate"])  # e.g. 0.0001
-            rate_pct = rate_raw * 100.0
-            ts_ms = int(item["fundingRateTimestamp"])
-            rate_date = datetime.utcfromtimestamp(ts_ms / 1000).date()
-            age_days = (today - rate_date).days
-            btc_rate = rate_pct
 
-            results["CRYPTO_FUNDING_RATE"] = {
-                "raw_value": rate_pct,
-                "age_days": age_days,
-                "date": rate_date.strftime("%Y-%m-%d"),
-            }
-            log.info(f"    BTCUSDT (Bybit): {rate_pct:.4f}%, Date={rate_date}, Age={age_days}d")
-        else:
-            log.warning(f"    BTCUSDT (Bybit): Unexpected response: {data.get('retMsg', 'unknown')}")
-    except Exception as e:
-        log.warning(f"    BTCUSDT (Bybit): API failed -> {e}")
+    # --- Source chain for BTCUSDT ---
+    sources = [
+        ("OKX", "https://www.okx.com/api/v5/public/funding-rate", 
+         {"instId": "BTC-USDT-SWAP"}, _parse_okx_funding),
+        ("Bybit", "https://api.bybit.com/v5/market/funding/history",
+         {"category": "linear", "symbol": "BTCUSDT", "limit": "1"}, _parse_bybit_funding),
+        ("Binance", "https://fapi.binance.com/fapi/v1/fundingRate",
+         {"symbol": "BTCUSDT", "limit": 1}, _parse_binance_funding),
+    ]
 
-    # --- BTCUSDT via Binance (fallback if Bybit failed) ---
-    if "CRYPTO_FUNDING_RATE" not in results:
+    for name, url, params, parser in sources:
         try:
-            resp = requests.get(BINANCE_URL, params={"symbol": "BTCUSDT", "limit": 1}, timeout=15)
+            resp = requests.get(url, params=params, timeout=15)
             resp.raise_for_status()
             data = resp.json()
-            if data and len(data) > 0:
-                rate_raw = float(data[0]["fundingRate"])
-                rate_pct = rate_raw * 100.0
-                ts_ms = int(data[0]["fundingTime"])
-                rate_date = datetime.utcfromtimestamp(ts_ms / 1000).date()
+            rate_pct, rate_date = parser(data)
+            if rate_pct is not None:
                 age_days = (today - rate_date).days
                 btc_rate = rate_pct
-
                 results["CRYPTO_FUNDING_RATE"] = {
                     "raw_value": rate_pct,
                     "age_days": age_days,
                     "date": rate_date.strftime("%Y-%m-%d"),
                 }
-                log.info(f"    BTCUSDT (Binance fallback): {rate_pct:.4f}%, Date={rate_date}, Age={age_days}d")
+                log.info(f"    BTCUSDT ({name}): {rate_pct:.4f}%, Date={rate_date}, Age={age_days}d")
+                break
         except Exception as e:
-            log.warning(f"    BTCUSDT (Binance fallback): also failed -> {e}")
+            log.warning(f"    BTCUSDT ({name}): failed -> {e}")
 
-    # --- ETHUSDT via Bybit (validation only, NOT scored) ---
+    if "CRYPTO_FUNDING_RATE" not in results:
+        log.warning("    BTCUSDT: ALL sources failed")
+
+    # --- ETHUSDT validation (same source chain, first that works) ---
     eth_rate = None
-    try:
-        resp = requests.get(BYBIT_URL, params={
-            "category": "linear", "symbol": "ETHUSDT", "limit": "1"
-        }, timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
-        if data.get("retCode") == 0 and data.get("result", {}).get("list"):
-            eth_rate = float(data["result"]["list"][0]["fundingRate"]) * 100.0
-            log.info(f"    ETHUSDT (Bybit): {eth_rate:.4f}% (validation only)")
-    except Exception as e:
-        log.warning(f"    ETHUSDT (Bybit): API failed -> {e}")
+    eth_sources = [
+        ("OKX", "https://www.okx.com/api/v5/public/funding-rate",
+         {"instId": "ETH-USDT-SWAP"}, _parse_okx_funding),
+        ("Bybit", "https://api.bybit.com/v5/market/funding/history",
+         {"category": "linear", "symbol": "ETHUSDT", "limit": "1"}, _parse_bybit_funding),
+    ]
+    for name, url, params, parser in eth_sources:
+        try:
+            resp = requests.get(url, params=params, timeout=15)
+            resp.raise_for_status()
+            data = resp.json()
+            rate_pct, _ = parser(data)
+            if rate_pct is not None:
+                eth_rate = rate_pct
+                log.info(f"    ETHUSDT ({name}): {eth_rate:.4f}% (validation only)")
+                break
+        except Exception as e:
+            log.warning(f"    ETHUSDT ({name}): failed -> {e}")
 
-    # --- Divergence check: BTC vs ETH ---
+    # --- Divergence check ---
     if btc_rate is not None and eth_rate is not None:
         divergence = abs(btc_rate - eth_rate)
         if divergence > 0.05:
-            log.warning(f"    BTC-ETH Divergence: {divergence:.4f}% > 0.05% threshold -> LOW CONFIDENCE")
+            log.warning(f"    BTC-ETH Divergence: {divergence:.4f}% > 0.05% -> LOW CONFIDENCE")
         else:
-            log.info(f"    BTC-ETH Divergence: {divergence:.4f}% (OK, <0.05%)")
+            log.info(f"    BTC-ETH Divergence: {divergence:.4f}% (OK)")
 
     return results
+
+
+def _parse_okx_funding(data):
+    """Parse OKX /api/v5/public/funding-rate response."""
+    if data.get("code") == "0" and data.get("data"):
+        item = data["data"][0]
+        rate = float(item["fundingRate"]) * 100.0
+        ts = int(item["fundingTime"])
+        d = datetime.utcfromtimestamp(ts / 1000).date()
+        return rate, d
+    return None, None
+
+
+def _parse_bybit_funding(data):
+    """Parse Bybit /v5/market/funding/history response."""
+    if data.get("retCode") == 0 and data.get("result", {}).get("list"):
+        item = data["result"]["list"][0]
+        rate = float(item["fundingRate"]) * 100.0
+        ts = int(item["fundingRateTimestamp"])
+        d = datetime.utcfromtimestamp(ts / 1000).date()
+        return rate, d
+    return None, None
+
+
+def _parse_binance_funding(data):
+    """Parse Binance /fapi/v1/fundingRate response."""
+    if data and len(data) > 0:
+        rate = float(data[0]["fundingRate"]) * 100.0
+        ts = int(data[0]["fundingTime"])
+        d = datetime.utcfromtimestamp(ts / 1000).date()
+        return rate, d
+    return None, None
 
 def pull_options_gex():
     """STUB — Phase 3: EODHD SPY Options GEX calculation."""
