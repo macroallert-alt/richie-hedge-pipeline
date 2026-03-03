@@ -559,8 +559,11 @@ def read_cu_au_from_prices(sheet, start_date, end_date):
         log.warning(f"DATA_Prices: COPPER={copper_col}, GLD={gld_col} — columns: {available}")
         return pd.Series(dtype=float)
     
-    copper = pd.to_numeric(df[copper_col], errors="coerce")
-    gld = pd.to_numeric(df[gld_col], errors="coerce")
+    copper = pd.to_numeric(df[copper_col].astype(str).str.replace(",", "."), errors="coerce")
+    gld = pd.to_numeric(df[gld_col].astype(str).str.replace(",", "."), errors="coerce")
+    
+    log.info(f"  COPPER: {copper.notna().sum()} numeric vals, last={copper.dropna().iloc[-1] if copper.notna().any() else 'NONE'}")
+    log.info(f"  GLD: {gld.notna().sum()} numeric vals, last={gld.dropna().iloc[-1] if gld.notna().any() else 'NONE'}")
     
     ratio = copper / gld
     ratio = ratio.replace([np.inf, -np.inf], np.nan).dropna()
