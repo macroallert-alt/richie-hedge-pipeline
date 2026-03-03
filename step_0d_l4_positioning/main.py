@@ -224,8 +224,9 @@ def get_cot_columns(df):
             col_map["short"] = col
         elif ("open_interest_all" in cl.replace(" ", "_") or (
                 "open" in cl and "interest" in cl and "all" in cl and "old" not in cl)):
-            # Exclude Pct_of_Open_Interest columns — we need absolute OI
-            if "pct" not in cl and "percent" not in cl and "other" not in cl:
+            # We need absolute Open_Interest_All — exclude Pct, Change, Other variants
+            if ("pct" not in cl and "percent" not in cl and 
+                    "other" not in cl and "change" not in cl):
                 col_map["oi"] = col
 
     return col_map
