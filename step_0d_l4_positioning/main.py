@@ -377,9 +377,64 @@ def _cot_fallback_library():
 # ==================== PHASE 2-4 STUBS ====================
 
 def pull_crypto_funding():
-    """STUB — Phase 2: Binance BTCUSDT + ETHUSDT funding rate."""
-    log.info("  CRYPTO_FUNDING: [STUB - Phase 2] Skipping")
-    return {}
+    """Pull Binance perpetual funding rates for BTCUSDT (scored) + ETHUSDT (validation).
+
+    Binance Futures public endpoint — no API key required, no geo-block.
+    Funding rate is charged every 8 hours (00:00, 08:00, 16:00 UTC).
+    We take the most recent rate as our signal.
+
+    Returns: {"CRYPTO_FUNDING_RATE": {"raw_value": pct, "age_days": int, "date": str}}
+    ETHUSDT is validation only — logged but not returned in scores.
+    """
+    BINANCE_URL = "https://fapi.binance.com/fapi/v1/fundingRate"
+    results = {}
+    today = date.today()
+
+    # --- BTCUSDT (primary, scored) ---
+    try:
+        resp = requests.get(BINANCE_URL, params={"symbol": "BTCUSDT", "limit": 1}, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data and len(data) > 0:
+            rate_raw = float(data[0]["fundingRate"])  # e.g. 0.0001 = 0.01%
+            rate_pct = rate_raw * 100.0  # convert to percentage
+            ts_ms = int(data[0]["fundingTime"])
+            rate_date = datetime.utcfromtimestamp(ts_ms / 1000).date()
+            age_days = (today - rate_date).days
+
+            results["CRYPTO_FUNDING_RATE"] = {
+                "raw_value": rate_pct,
+                "age_days": age_days,
+                "date": rate_date.strftime("%Y-%m-%d"),
+            }
+            log.info(f"    BTCUSDT: {rate_pct:.4f}%, Date={rate_date}, Age={age_days}d")
+        else:
+            log.warning("    BTCUSDT: Empty response from Binance")
+    except Exception as e:
+        log.warning(f"    BTCUSDT: Binance API failed -> {e}")
+
+    # --- ETHUSDT (validation only, NOT scored) ---
+    eth_rate = None
+    try:
+        resp = requests.get(BINANCE_URL, params={"symbol": "ETHUSDT", "limit": 1}, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data and len(data) > 0:
+            eth_rate = float(data[0]["fundingRate"]) * 100.0
+            log.info(f"    ETHUSDT: {eth_rate:.4f}% (validation only)")
+    except Exception as e:
+        log.warning(f"    ETHUSDT: Binance API failed -> {e}")
+
+    # --- Divergence check: BTC vs ETH ---
+    if "CRYPTO_FUNDING_RATE" in results and eth_rate is not None:
+        btc_rate = results["CRYPTO_FUNDING_RATE"]["raw_value"]
+        divergence = abs(btc_rate - eth_rate)
+        if divergence > 0.05:
+            log.warning(f"    BTC-ETH Divergence: {divergence:.4f}% > 0.05% threshold -> LOW CONFIDENCE")
+        else:
+            log.info(f"    BTC-ETH Divergence: {divergence:.4f}% (OK, <0.05%)")
+
+    return results
 
 
 def pull_options_gex():
