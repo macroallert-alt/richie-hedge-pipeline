@@ -164,72 +164,109 @@ def pull_google_trends():
 
 
 def pull_aaii_sentiment():
-    """AAII Bull/Bear Survey. v3: dynamic header row detection for XLS with metadata rows."""
+    """AAII Bull/Bear Survey.
+    v4: Handle merged cells in XLS. Scan ALL cells in first 10 rows to find
+    column indices for Bullish and Bearish, then read data rows below."""
     results = {}
 
-    # Primary: AAII XLS file
     try:
         url = "https://www.aaii.com/files/surveys/sentiment.xls"
         log.info(f"  AAII: Fetching {url}...")
         resp = requests.get(url, headers=SCRAPE_HEADERS, timeout=30)
         resp.raise_for_status()
-        xls_bytes = io.BytesIO(resp.content)
 
-        # Read with NO header first to find the real header row
-        df_raw = pd.read_excel(xls_bytes, header=None)
+        df_raw = pd.read_excel(io.BytesIO(resp.content), header=None)
         log.info(f"    AAII raw shape: {df_raw.shape}")
 
-        # Scan first 20 rows for one containing "Bullish"
-        header_row = None
-        for idx in range(min(20, len(df_raw))):
-            row_vals = [str(v).strip().lower() for v in df_raw.iloc[idx].values]
-            if any("bullish" in v for v in row_vals):
-                header_row = idx
-                log.info(f"    Header found at row {idx}")
-                break
+        # Log first 5 rows for debugging
+        for i in range(min(5, len(df_raw))):
+            log.info(f"    Row {i}: {df_raw.iloc[i].values.tolist()}")
 
-        if header_row is not None:
-            # Re-read with correct header
-            xls_bytes.seek(0)
-            df = pd.read_excel(xls_bytes, header=header_row)
-            log.info(f"    Columns: {df.columns.tolist()}")
+        # Scan first 10 rows to find column indices for Bullish and Bearish
+        # AAII XLS has merged cells: "Bullish" and "Bearish" may appear in
+        # different rows. We need the FIRST column with "Bullish" and the
+        # FIRST column with "Bearish".
+        bull_col_idx = None
+        bear_col_idx = None
+        data_start_row = None
 
-            bull_col = None
-            bear_col = None
-            for c in df.columns:
-                cl = str(c).lower().strip()
-                if "bull" in cl:
-                    bull_col = c
-                elif "bear" in cl:
-                    bear_col = c
+        for row_idx in range(min(10, len(df_raw))):
+            for col_idx in range(len(df_raw.columns)):
+                cell_val = str(df_raw.iloc[row_idx, col_idx]).strip().lower()
+                if cell_val == "bullish" and bull_col_idx is None:
+                    bull_col_idx = col_idx
+                    log.info(f"    Found 'Bullish' at row={row_idx}, col={col_idx}")
+                if cell_val == "bearish" and bear_col_idx is None:
+                    bear_col_idx = col_idx
+                    log.info(f"    Found 'Bearish' at row={row_idx}, col={col_idx}")
+                    # Data starts after this row (or after the next sub-header row)
+                    data_start_row = row_idx + 1
 
-            if bull_col is not None and bear_col is not None:
-                df_clean = df[[bull_col, bear_col]].dropna()
-                if not df_clean.empty:
-                    latest = df_clean.iloc[-1]
-                    bull_val = float(latest[bull_col])
-                    bear_val = float(latest[bear_col])
+        # If we only found Bullish but not Bearish, check if Bearish is in the
+        # same row as a later occurrence of Bullish (merged cell pattern)
+        if bull_col_idx is not None and bear_col_idx is None:
+            # AAII typical layout: Bullish | Neutral | Bearish in adjacent groups
+            # Try col_idx + 2 or +3 as Bearish
+            for offset in [2, 3, 4]:
+                test_col = bull_col_idx + offset
+                if test_col < len(df_raw.columns):
+                    for row_idx in range(min(10, len(df_raw))):
+                        cell_val = str(df_raw.iloc[row_idx, test_col]).strip().lower()
+                        if "bear" in cell_val:
+                            bear_col_idx = test_col
+                            log.info(f"    Found 'Bearish' at row={row_idx}, col={test_col} (offset search)")
+                            break
+                if bear_col_idx is not None:
+                    break
 
-                    # Normalize: decimals to percentage
-                    if bull_val <= 1.0:
-                        bull_val *= 100.0
-                    if bear_val <= 1.0:
-                        bear_val *= 100.0
+        if bull_col_idx is not None and bear_col_idx is not None:
+            # Find where numeric data starts (first row after headers with a number)
+            if data_start_row is None:
+                data_start_row = 3  # safe default
 
-                    # Sanity check
-                    if 5.0 <= bull_val <= 80.0 and 5.0 <= bear_val <= 80.0:
-                        results["AAII_BULL_PCT"] = round(bull_val, 2)
-                        results["AAII_BEAR_PCT"] = round(bear_val, 2)
-                        log.info(f"    OK: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
-                        return results
-                    else:
-                        log.warning(f"    Sanity fail: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
+            # Scan for first row with numeric data in the bull column
+            for row_idx in range(data_start_row, min(data_start_row + 5, len(df_raw))):
+                try:
+                    test_val = float(df_raw.iloc[row_idx, bull_col_idx])
+                    if not pd.isna(test_val):
+                        data_start_row = row_idx
+                        break
+                except (ValueError, TypeError):
+                    continue
+
+            log.info(f"    Data starts at row {data_start_row}, bull_col={bull_col_idx}, bear_col={bear_col_idx}")
+
+            # Get the latest valid data row
+            bull_series = pd.to_numeric(df_raw.iloc[data_start_row:, bull_col_idx], errors="coerce")
+            bear_series = pd.to_numeric(df_raw.iloc[data_start_row:, bear_col_idx], errors="coerce")
+
+            # Find last row where both are valid
+            valid_mask = bull_series.notna() & bear_series.notna()
+            if valid_mask.any():
+                last_valid_idx = valid_mask[valid_mask].index[-1]
+                bull_val = float(bull_series.loc[last_valid_idx])
+                bear_val = float(bear_series.loc[last_valid_idx])
+
+                # Normalize decimals to percent
+                if bull_val <= 1.0:
+                    bull_val *= 100.0
+                if bear_val <= 1.0:
+                    bear_val *= 100.0
+
+                log.info(f"    Latest values: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
+
+                # Sanity check
+                if 5.0 <= bull_val <= 80.0 and 5.0 <= bear_val <= 80.0:
+                    results["AAII_BULL_PCT"] = round(bull_val, 2)
+                    results["AAII_BEAR_PCT"] = round(bear_val, 2)
+                    log.info(f"    OK: AAII_BULL_PCT={bull_val:.2f}%, AAII_BEAR_PCT={bear_val:.2f}%")
+                    return results
+                else:
+                    log.warning(f"    Sanity fail: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
             else:
-                log.warning(f"    Bull/Bear columns not found in: {df.columns.tolist()}")
+                log.warning("    No valid numeric data found in bull/bear columns")
         else:
-            log.warning("    No header row with 'Bullish' found in first 20 rows")
-            for i in range(min(5, len(df_raw))):
-                log.info(f"    Row {i}: {df_raw.iloc[i].values.tolist()}")
+            log.warning(f"    Could not find both columns: bull_col={bull_col_idx}, bear_col={bear_col_idx}")
 
     except Exception as e:
         log.warning(f"    AAII primary (XLS) failed: {e}")
@@ -252,7 +289,6 @@ def pull_aaii_sentiment():
         if m:
             bear_val = float(m.group(1))
 
-        # Sanity
         if bull_val is not None and (bull_val < 5.0 or bull_val > 80.0):
             log.warning(f"    AAII scrape: bull={bull_val:.2f}% failed sanity")
             bull_val = None
@@ -370,7 +406,6 @@ def pull_insider_data():
                 "&fd=7&fdr=&td=0&tdr=&feession=at&tession=ct&xp=1"
                 "&vl=&vh=&ocl=&och=&session=oi&a={}&v=&cnt=500&page=1")
 
-        # Purchases (a=1)
         resp_buy = requests.get(base.format(1), headers=SCRAPE_HEADERS, timeout=30)
         resp_buy.raise_for_status()
         buy_count = len(re.findall(r'P\s*-\s*Purchase', resp_buy.text))
@@ -380,7 +415,6 @@ def pull_insider_data():
                 buy_count = max(0, tm.group(1).count('<tr>') - 1)
         log.info(f"    Purchases: {buy_count}")
 
-        # Sales (a=2)
         resp_sell = requests.get(base.format(2), headers=SCRAPE_HEADERS, timeout=30)
         resp_sell.raise_for_status()
         sell_count = len(re.findall(r'S\s*-\s*Sale', resp_sell.text))
@@ -581,14 +615,12 @@ def main():
     log.info("--- MERGE PHASE ---")
     raw_values = {}
 
-    # VIX: FRED primary, yfinance fallback
     raw_values["VIX_LEVEL"] = fred_data.get("VIX_LEVEL")
     if pd.isna(raw_values.get("VIX_LEVEL")):
         raw_values["VIX_LEVEL"] = yf_data.get("VIX_LEVEL_YF")
         if raw_values.get("VIX_LEVEL") is not None:
             log.info("  VIX: using yfinance fallback")
 
-    # VIX Term Structure
     vix3m = fred_data.get("VIX3M")
     if pd.isna(vix3m) or vix3m is None:
         vix3m = yf_data.get("VIX3M_YF")
@@ -599,7 +631,6 @@ def main():
     else:
         raw_values["VIX_TERM_STRUCTURE"] = np.nan
 
-    # HY OAS: FRED percent to bps
     hy_pct = fred_data.get("HY_OAS_SPREAD")
     if hy_pct is not None and not pd.isna(hy_pct):
         raw_values["HY_OAS_SPREAD"] = hy_pct * 100.0
