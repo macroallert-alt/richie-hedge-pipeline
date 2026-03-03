@@ -135,21 +135,41 @@ def connect_warehouse():
 
 # ==================== COT DATA PULL ====================
 
-def download_cftc_zip(year):
-    """Download CFTC Legacy Futures-Only CSV for a given year."""
-    url = f"https://www.cftc.gov/dea/newcot/deahistfo{year}.zip"
+def download_cftc_current_year():
+    """Download CFTC Legacy Futures-Only TXT for current year (always up to date).
+    This is a plain CSV (not zipped) at a fixed URL containing all weeks of current year.
+    """
+    url = "https://www.cftc.gov/dea/newcot/deafut.txt"
+    log.info(f"    CFTC: Downloading current year from {url}...")
+    try:
+        resp = requests.get(url, headers=SCRAPE_HEADERS, timeout=60)
+        resp.raise_for_status()
+        df = pd.read_csv(io.StringIO(resp.text))
+        log.info(f"    CFTC current: {len(df)} rows loaded")
+        return df
+    except Exception as e:
+        log.warning(f"    CFTC current year failed -> {e}")
+        return None
+
+
+def download_cftc_historical_zip(year):
+    """Download CFTC Legacy Futures-Only historical ZIP for a given year.
+    URL pattern: https://www.cftc.gov/files/dea/history/deafut_txt_{YEAR}.zip
+    """
+    url = f"https://www.cftc.gov/files/dea/history/deafut_txt_{year}.zip"
     log.info(f"    CFTC: Downloading {url}...")
     try:
         resp = requests.get(url, headers=SCRAPE_HEADERS, timeout=60)
         resp.raise_for_status()
         zf = zipfile.ZipFile(io.BytesIO(resp.content))
-        csv_names = [n for n in zf.namelist() if n.endswith(".csv")]
-        if not csv_names:
-            log.warning(f"    CFTC {year}: No CSV in ZIP")
+        # Find CSV or TXT file inside ZIP
+        data_names = [n for n in zf.namelist() if n.endswith(".csv") or n.endswith(".txt")]
+        if not data_names:
+            log.warning(f"    CFTC {year}: No CSV/TXT in ZIP")
             return None
-        csv_name = csv_names[0]
-        log.info(f"    CFTC {year}: Reading {csv_name}...")
-        with zf.open(csv_name) as f:
+        data_name = data_names[0]
+        log.info(f"    CFTC {year}: Reading {data_name}...")
+        with zf.open(data_name) as f:
             df = pd.read_csv(f)
         log.info(f"    CFTC {year}: {len(df)} rows loaded")
         return df
@@ -257,14 +277,21 @@ def pull_cot_data():
     today = date.today()
     current_year = today.year
 
-    # Download current year + enough previous years for 5Y lookback
-    # We need up to 5 years back from today
-    years_to_download = list(range(current_year - COT_LOOKBACK_YEARS, current_year + 1))
-    log.info(f"  COT: Downloading {len(years_to_download)} years ({years_to_download[0]}-{years_to_download[-1]}) for {COT_LOOKBACK_YEARS}Y percentile...")
+    # Download current year (plain TXT, always fresh) + historical ZIPs for 5Y lookback
+    # Historical years: go back COT_LOOKBACK_YEARS from last year
+    years_to_download = list(range(current_year - COT_LOOKBACK_YEARS, current_year))
+    log.info(f"  COT: Downloading current year + {len(years_to_download)} historical years ({years_to_download[0]}-{years_to_download[-1]}) for {COT_LOOKBACK_YEARS}Y percentile...")
 
     all_dfs = []
+
+    # Current year: plain TXT (not zipped)
+    df_current = download_cftc_current_year()
+    if df_current is not None:
+        all_dfs.append(df_current)
+
+    # Historical years: ZIPs
     for year in years_to_download:
-        df_year = download_cftc_zip(year)
+        df_year = download_cftc_historical_zip(year)
         if df_year is not None:
             all_dfs.append(df_year)
 
