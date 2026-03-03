@@ -711,8 +711,13 @@ _EQUITY_AUM_BILLIONS = 20000.0
 def _parse_ici_mf_flows(today):
     """Parse ICI MF-only Flows page for equity flows % of assets.
 
-    Looks for pattern: "Equity funds had estimated [in|out]flows of $X.XX billion
+    Looks for pattern: "Equity funds2 had estimated [in|out]flows of $X.XX billion
     (X.X percent of [Month] [Day] assets)"
+
+    KNOWN ISSUE: ICI uses Drupal with massive navigation that can exceed
+    scraping buffers. We try two approaches:
+    1. Parse HTML and extract only the article/main content area
+    2. Use BeautifulSoup's get_text() on the article container
 
     Also extracts the report week-ending date from:
     "for the week ended Wednesday, [Month] [Day]"
@@ -725,8 +730,32 @@ def _parse_ici_mf_flows(today):
     resp.raise_for_status()
 
     soup = BeautifulSoup(resp.text, "html.parser")
-    # Get all text from the page body
-    text = soup.get_text(separator=" ", strip=True)
+
+    # Strategy: Extract only the main content area, skip navigation
+    # ICI uses <main id="main-content"> or <article> or <div class="node-content">
+    content_area = None
+    for selector in [
+        soup.find("main", id="main-content"),
+        soup.find("main"),
+        soup.find("article"),
+        soup.find("div", class_="node__content"),
+        soup.find("div", class_="field--name-body"),
+        soup.find("div", class_="content"),
+    ]:
+        if selector:
+            text = selector.get_text(separator=" ", strip=True)
+            # Verify this section has the actual data (not just nav)
+            if "Equity funds" in text and "percent" in text:
+                content_area = text
+                log.info(f"    ICI MF-only: Found content area ({len(text)} chars)")
+                break
+
+    # Fallback: full page text (may be truncated by nav)
+    if content_area is None:
+        content_area = soup.get_text(separator=" ", strip=True)
+        log.info(f"    ICI MF-only: Using full page text ({len(content_area)} chars)")
+
+    text = content_area
 
     # Extract week-ending date: "for the week ended Wednesday, February 18"
     # or "for the eight-day period ended Wednesday, January 7"
@@ -755,19 +784,21 @@ def _parse_ici_mf_flows(today):
     age_days = (today - report_date).days
 
     # Extract equity flows with % of assets
-    # Pattern: "Equity funds had estimated [inflows|outflows] of $X.XX billion
+    # Pattern: "Equity funds2 had estimated [inflows|outflows] of $X.XX billion
     #           (X.X percent of [Month] [Day] assets)"
     # Also handle: "(less than 0.1 percent of ...)"
+    # Note: ICI uses superscript footnote "2" directly after "funds" which becomes
+    # "funds2" in get_text(). The \S* handles this.
     equity_pct_match = re.search(
         r"Equity\s+funds\S*\s+had\s+estimated\s+(inflows|outflows)\s+of\s+"
-        r"\$[\d.,]+\s+billion\s+\((less\s+than\s+)?([\d.]+)\s+percent\s+of\s+",
+        r"\$([\d.,]+)\s+billion[^(]*\((less\s+than\s+)?([\d.]+)\s+percent\s+of\s+",
         text, re.IGNORECASE
     )
 
     if equity_pct_match:
         direction = equity_pct_match.group(1).lower()
-        less_than = equity_pct_match.group(2) is not None
-        pct_value = float(equity_pct_match.group(3))
+        less_than = equity_pct_match.group(3) is not None
+        pct_value = float(equity_pct_match.group(4))
 
         # "less than 0.1 percent" -> use 0.05 as midpoint estimate
         if less_than:
@@ -787,7 +818,15 @@ def _parse_ici_mf_flows(today):
             "date": report_date.strftime("%Y-%m-%d"),
         }
 
-    log.warning("    ICI MF-only: Equity % pattern not found in page text")
+    # Debug: log what we found to diagnose future regex failures
+    equity_mentions = [m.start() for m in re.finditer(r"Equity\s+funds", text, re.IGNORECASE)]
+    log.warning(f"    ICI MF-only: Equity % pattern not found. 'Equity funds' found at positions: {equity_mentions[:5]}")
+    if equity_mentions:
+        # Log a small snippet around first match for debugging
+        pos = equity_mentions[0]
+        snippet = text[pos:pos+200].replace("\n", " ")
+        log.warning(f"    ICI MF-only: Snippet: {snippet[:150]}...")
+
     return None
 
 
@@ -805,7 +844,27 @@ def _parse_ici_combined_flows(today):
     resp.raise_for_status()
 
     soup = BeautifulSoup(resp.text, "html.parser")
-    text = soup.get_text(separator=" ", strip=True)
+
+    # Extract main content area (skip massive navigation)
+    content_area = None
+    for selector in [
+        soup.find("main", id="main-content"),
+        soup.find("main"),
+        soup.find("article"),
+        soup.find("div", class_="node__content"),
+        soup.find("div", class_="field--name-body"),
+        soup.find("div", class_="content"),
+    ]:
+        if selector:
+            text = selector.get_text(separator=" ", strip=True)
+            if "Equity funds" in text and "billion" in text:
+                content_area = text
+                break
+
+    if content_area is None:
+        content_area = soup.get_text(separator=" ", strip=True)
+
+    text = content_area
 
     # Extract week-ending date
     date_match = re.search(
@@ -820,11 +879,29 @@ def _parse_ici_combined_flows(today):
             report_date = None
 
     if report_date is None:
+        # Try without year (same as MF-only)
+        date_match2 = re.search(
+            r"(?:week|period)\s+ended\s+\w+,\s+(\w+\s+\d{1,2})",
+            text, re.IGNORECASE
+        )
+        if date_match2:
+            date_str = date_match2.group(1)
+            for try_year in [today.year, today.year - 1]:
+                try:
+                    report_date = datetime.strptime(f"{date_str} {try_year}", "%B %d %Y").date()
+                    if report_date <= today:
+                        break
+                    report_date = None
+                except ValueError:
+                    report_date = None
+
+    if report_date is None:
         report_date = today - timedelta(days=7)
 
     age_days = (today - report_date).days
 
     # Extract equity flows: "$X.XX billion"
+    # Note: [^(]* allows for whitespace/newlines between "billion" and "("
     equity_match = re.search(
         r"Equity\s+funds\S*\s+had\s+estimated\s+(inflows|outflows)\s+of\s+"
         r"\$([\d.,]+)\s+billion",
