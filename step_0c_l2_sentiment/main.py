@@ -112,8 +112,7 @@ def pull_fred_sentiment(fred):
 
     series = {
         "VIXCLS": "VIX_LEVEL",
-        "VIXCLS3M": "VIX3M",
-        "BAMLH0A0HYM2": "HY_OAS_SPREAD",
+        "BAMLH0A0HYM2": "HY_OAS_SPREAD",  # Returns % (e.g. 3.12 = 312 bps)
     }
 
     results = {}
@@ -145,23 +144,40 @@ def pull_yfinance_sentiment():
 
     results = {}
 
-    # VIX (backup if FRED fails) + VIX3M
-    for ticker, label in [("^VIX", "VIX_LEVEL_YF"), ("^VIX3M", "VIX3M_YF")]:
-        try:
-            data = yf.download(ticker, period="5d", progress=False)
-            if data is not None and not data.empty:
-                val = float(data["Close"].iloc[-1])
-                results[label] = val
-                log.info(f"  yfinance: {label} = {val:.4f}")
-        except Exception as e:
-            log.warning(f"  yfinance {ticker} failed: {e}")
+    # Helper: safely extract last close from yfinance (handles MultiIndex)
+    def safe_last_close(ticker):
+        data = yf.download(ticker, period="5d", progress=False)
+        if data is not None and not data.empty:
+            close = data["Close"]
+            if hasattr(close, "squeeze"):
+                close = close.squeeze()
+            return float(close.iloc[-1])
+        return np.nan
+
+    # VIX
+    try:
+        val = safe_last_close("^VIX")
+        if not pd.isna(val):
+            results["VIX_LEVEL_YF"] = val
+            log.info(f"  yfinance: VIX_LEVEL_YF = {val:.4f}")
+    except Exception as e:
+        log.warning(f"  yfinance ^VIX failed: {e}")
+
+    # VIX3M (primary source - not available on FRED)
+    try:
+        val = safe_last_close("^VIX3M")
+        if not pd.isna(val):
+            results["VIX3M_YF"] = val
+            log.info(f"  yfinance: VIX3M_YF = {val:.4f}")
+    except Exception as e:
+        log.warning(f"  yfinance ^VIX3M failed: {e}")
 
     # MOVE Index
     try:
-        data = yf.download("^MOVE", period="5d", progress=False)
-        if data is not None and not data.empty:
-            results["MOVE_INDEX"] = float(data["Close"].iloc[-1])
-            log.info(f"  yfinance: MOVE_INDEX = {results['MOVE_INDEX']:.2f}")
+        val = safe_last_close("^MOVE")
+        if not pd.isna(val):
+            results["MOVE_INDEX"] = val
+            log.info(f"  yfinance: MOVE_INDEX = {val:.2f}")
     except Exception as e:
         log.warning(f"  yfinance MOVE failed: {e}")
 
@@ -341,7 +357,7 @@ def write_raw_market_l2(warehouse, indicator_scores, raw_values):
         updates.append((cell_range, [row_data]))
 
     for cell_range, values in updates:
-        ws.update(cell_range, values, value_input_option="RAW")
+        ws.update(values, cell_range, value_input_option="RAW")
 
     log.info(f"  RAW_MARKET: {len(updates)} L2 indicators written")
 
@@ -387,7 +403,7 @@ def write_scores_l2(warehouse, composite, direction, speed, phase, freshness, va
         "—",             # HISTORICAL_ANALOG
     ]
 
-    ws.update("A3:M3", [row_data], value_input_option="RAW")
+    ws.update([row_data], "A3:M3", value_input_option="RAW")
     log.info(f"  SCORES L2: {composite} ({signal}) | Phase: {phase} | {valid_count}/{total_count} sources")
 
 
@@ -407,7 +423,7 @@ def write_dashboard_l2(warehouse, composite, direction, signal, phase, freshness
         speed,
     ]
 
-    ws.update("A18:G18", [row_data], value_input_option="RAW")
+    ws.update([row_data], "A18:G18", value_input_option="RAW")
     log.info(f"  DASHBOARD L2: Score={composite}, Signal={signal}, Phase={phase}")
 
 
@@ -460,8 +476,13 @@ def main():
     else:
         raw_values["VIX_TERM_STRUCTURE"] = np.nan
 
-    # HY OAS
-    raw_values["HY_OAS_SPREAD"] = fred_data.get("HY_OAS_SPREAD")
+    # HY OAS: FRED returns percent (3.12 = 312 bps), convert to bps
+    hy_pct = fred_data.get("HY_OAS_SPREAD")
+    if hy_pct is not None and not pd.isna(hy_pct):
+        raw_values["HY_OAS_SPREAD"] = hy_pct * 100.0
+        log.info(f"  HY_OAS: {hy_pct:.2f}% -> {hy_pct * 100:.0f} bps")
+    else:
+        raw_values["HY_OAS_SPREAD"] = np.nan
 
     # MOVE Index
     raw_values["MOVE_INDEX"] = yf_data.get("MOVE_INDEX")
