@@ -855,6 +855,281 @@ def write_data_k16_k17(sheet, df):
     log.info(f"  Inserted {num} rows at row 3")
 
 
+# --- STUFE 4: CALC_Macro_State ---
+
+# Macro State Map (V55 Spec v3.0 Kap. 7.4, 31 entries, 100% purity)
+MACRO_STATE_MAP = {
+    (-1, -1, 0): 10, (-1, -1, 1): 10, (-1, -1, 2): 11, (-1, -1, 3): 12,
+    (-1,  0, 0):  9, (-1,  0, 1):  9, (-1,  0, 2): 11, (-1,  0, 3): 12,
+    (-1,  1, 0):  8, (-1,  1, 1):  9, (-1,  1, 2): 11, (-1,  1, 3): 12,
+    ( 0, -1, 0):  7, ( 0, -1, 1):  7, ( 0, -1, 2): 11,
+    ( 0,  0, 0):  6, ( 0,  0, 1):  6, ( 0,  0, 2): 11, ( 0,  0, 3): 12,
+    ( 0,  1, 0):  5, ( 0,  1, 1):  5, ( 0,  1, 2): 11,
+    ( 1, -1, 0):  3, ( 1, -1, 1):  4, ( 1, -1, 2): 11,
+    ( 1,  0, 0):  2, ( 1,  0, 1):  4, ( 1,  0, 2): 11,
+    ( 1,  1, 0):  1, ( 1,  1, 1):  4, ( 1,  1, 2): 11,
+}
+
+STATE_NAMES = {
+    1: "FULL_EXPANSION", 2: "EXPANSION_NEUTRAL", 3: "LATE_EXPANSION",
+    4: "FRAGILE_EXPANSION", 5: "GOLDILOCKS", 6: "NEUTRAL",
+    7: "CAUTION", 8: "EARLY_RECOVERY", 9: "CONTRACTION",
+    10: "DEEP_CONTRACTION", 11: "STRESS_ELEVATED", 12: "FINANCIAL_CRISIS",
+}
+
+
+def calc_p_vote(permit_value):
+    """P-Vote: PERMIT Level-Threshold. >1200=+1, <900=-1. 100% Match."""
+    if pd.isna(permit_value):
+        return 0
+    if permit_value > 1200:
+        return 1
+    elif permit_value < 900:
+        return -1
+    return 0
+
+
+def calc_u_vote(umcsent_value):
+    """U-Vote: UMCSENT Level-Threshold. >70=+1, <60=-1. 99.91% Match."""
+    if pd.isna(umcsent_value):
+        return 0
+    if umcsent_value > 70:
+        return 1
+    elif umcsent_value < 60:
+        return -1
+    return 0
+
+
+def calc_i_vote(icsa_value):
+    """I-Vote: ICSA Level-Threshold INVERTIERT. <250k=+1, >350k=-1. 99.95% Match."""
+    if pd.isna(icsa_value):
+        return 0
+    if icsa_value < 250000:
+        return 1
+    elif icsa_value > 350000:
+        return -1
+    return 0
+
+
+def calc_ip_vote(indpro_pct10):
+    """IP-Vote: INDPRO 10M pct_change. >0.015=+1, <-0.005=-1. 97.72% Match."""
+    if pd.isna(indpro_pct10):
+        return 0
+    if indpro_pct10 > 0.015:
+        return 1
+    elif indpro_pct10 < -0.005:
+        return -1
+    return 0
+
+
+def calc_stress_score(vix, hy_spread, hy_threshold, nfci):
+    """Stress Score: 0-3, sum of binary indicators. V55 Spec Kap. 6."""
+    stress = 0
+    active = []
+    if pd.notna(vix) and vix > 30.0:
+        stress += 1
+        active.append("VIX")
+    if pd.notna(hy_spread) and pd.notna(hy_threshold) and hy_spread > hy_threshold:
+        stress += 1
+        active.append("HY")
+    if pd.notna(nfci) and nfci > 0.5:
+        stress += 1
+        active.append("NFCI")
+    detail = "+".join(active) if active else "NONE"
+    return stress, detail
+
+
+def calc_state_confidence(growth_signal, liq_dir):
+    """State Confidence from Ground Truth: alignment of Growth and Liq direction."""
+    if growth_signal != 0 and liq_dir != 0:
+        if growth_signal == liq_dir:
+            return 85  # full alignment
+        else:
+            return 75  # misaligned
+    else:
+        return 70  # one or both neutral
+
+
+def calc_macro_state(growth_signal, liq_dir, stress_score):
+    """Map (Growth, Liq, Stress) to State 1-12. V55 Spec Kap. 7.4."""
+    s = min(stress_score, 3)
+    if s == 3:
+        return 12, STATE_NAMES[12]
+
+    key = (int(growth_signal), int(liq_dir), int(s))
+    state_num = MACRO_STATE_MAP.get(key)
+    if state_num is None:
+        log.warning(f"  State Map miss: G={growth_signal} L={liq_dir} S={s} — defaulting to State 6")
+        state_num = 6
+    return state_num, STATE_NAMES[state_num]
+
+
+def _fred_lookup(series, d):
+    """Get value from daily-ffilled FRED series, with fallback to nearest prior date."""
+    if series is None or series.empty:
+        return np.nan
+    val = series.get(d, np.nan)
+    if pd.isna(val):
+        prior = series[series.index <= d]
+        if not prior.empty:
+            val = prior.iloc[-1]
+    return val
+
+
+def calc_calc_macro_state(fred_data, k16_df, howell_df, start_date, end_date):
+    """
+    Calculate CALC_Macro_State for new dates.
+
+    Inputs:
+        fred_data: FRED series (PERMIT, UMCSENT, ICSA, INDPRO, VIXCLS, BAMLH0A0HYM2, NFCI)
+        k16_df: DATA_K16_K17 results (for Liq_Dir_Confirmed, Liq_Detail)
+        howell_df: CYCLES_Howell results (for Howell_Phase)
+        start_date, end_date: calculation range
+    """
+    # INDPRO 10-month pct_change (210 trading days on daily-ffilled series)
+    indpro_pct10 = fred_data["INDPRO"].pct_change(210)
+
+    # Build lookup dicts from Stufe 3 output
+    k16_lookup = {}
+    if not k16_df.empty:
+        for _, r in k16_df.iterrows():
+            d = r["Date"]
+            key = d.date() if hasattr(d, "date") else d
+            k16_lookup[key] = {
+                "Liq_Dir_Confirmed": int(r["Liq_Dir_Confirmed"]),
+                "Liq_Detail": r["Liq_Detail"],
+            }
+
+    howell_lookup = {}
+    if not howell_df.empty:
+        for _, r in howell_df.iterrows():
+            d = r["Date"]
+            key = d.date() if hasattr(d, "date") else d
+            howell_lookup[key] = int(r["Howell_Phase"])
+
+    # Generate date range
+    dates = pd.date_range(start=start_date, end=end_date, freq="D")
+
+    rows = []
+    for d in dates:
+        d_date = d.date()
+
+        # Growth Votes (forward-filled FRED)
+        permit_val = _fred_lookup(fred_data["PERMIT"], d)
+        umcsent_val = _fred_lookup(fred_data["UMCSENT"], d)
+        icsa_val = _fred_lookup(fred_data["ICSA"], d)
+        ip_pct = _fred_lookup(indpro_pct10, d)
+
+        p = calc_p_vote(permit_val)
+        u = calc_u_vote(umcsent_val)
+        i = calc_i_vote(icsa_val)
+        ip = calc_ip_vote(ip_pct)
+
+        # Growth Composite & Signal
+        growth_composite = p + u + i + ip
+        growth_signal = int(np.sign(growth_composite)) if growth_composite != 0 else 0
+        growth_detail = f"P:{p}|U:{u}|I:{i}|IP:{ip}={growth_composite}"
+
+        # Liq_Dir_Confirmed from Stufe 3
+        k16_data = k16_lookup.get(d_date, {})
+        liq_dir = k16_data.get("Liq_Dir_Confirmed", 0)
+        liq_detail = k16_data.get("Liq_Detail", "")
+
+        # Stress Score
+        vix_val = _fred_lookup(fred_data["VIXCLS"], d)
+        hy_val = _fred_lookup(fred_data["BAMLH0A0HYM2"], d)
+        nfci_val = _fred_lookup(fred_data["NFCI"], d)
+
+        # HY Threshold ADAPTIVE: 5.0 when Growth=+1, else 7.0
+        hy_threshold = 5.0 if growth_signal == 1 else 7.0
+
+        stress_score, stress_detail = calc_stress_score(vix_val, hy_val, hy_threshold, nfci_val)
+
+        # Macro State
+        state_num, state_name = calc_macro_state(growth_signal, liq_dir, stress_score)
+
+        # State Confidence
+        state_confidence = calc_state_confidence(growth_signal, liq_dir)
+
+        # Howell Phase (reference column)
+        phase = howell_lookup.get(d_date, 4)
+
+        rows.append({
+            "Date": d,
+            "Macro_State_Num": state_num,
+            "Macro_State_Name": state_name,
+            "Growth_Signal": growth_signal,
+            "Growth_Detail": growth_detail,
+            "Liq_Direction": liq_dir,
+            "Liq_Detail": liq_detail,
+            "Stress_Score": stress_score,
+            "Stress_Detail": stress_detail,
+            "VIX": vix_val,
+            "HY_Spread": hy_val,
+            "HY_Threshold": hy_threshold,
+            "NFCI": nfci_val,
+            "Howell_Phase": phase,
+            "State_Confidence": state_confidence,
+            "P_Vote": p,
+            "U_Vote": u,
+            "I_Vote": i,
+            "IP_Vote": ip,
+        })
+
+    return pd.DataFrame(rows)
+
+
+def write_calc_macro_state(sheet, df):
+    """Write CALC_Macro_State rows to sheet (newest first, row 3)."""
+    ws = sheet.worksheet("CALC_Macro_State")
+
+    new_dates_set = set()
+    rows_to_write = []
+    for _, row in df.sort_values("Date", ascending=False).iterrows():
+        d = row["Date"].strftime("%Y-%m-%d") if hasattr(row["Date"], "strftime") else str(row["Date"])[:10]
+        new_dates_set.add(d)
+        rows_to_write.append([
+            d,
+            int(row["Growth_Signal"]),
+            row["Growth_Detail"],
+            int(row["Liq_Direction"]),
+            row["Liq_Detail"],
+            int(row["Stress_Score"]),
+            row["Stress_Detail"],
+            fmt(row["HY_Threshold"], 1),
+            int(row["Macro_State_Num"]),
+            row["Macro_State_Name"],
+            int(row["State_Confidence"]),
+            "",  # Old_Regime_Num (legacy, empty)
+            "",  # Old_Regime_Name (legacy, empty)
+            int(row["Howell_Phase"]),
+            fmt(row["VIX"], 2),
+            fmt(row["HY_Spread"], 2),
+            "",  # Old_State_V25 (legacy, empty)
+        ])
+
+    if not rows_to_write:
+        log.warning("CALC_Macro_State: No rows to write.")
+        return
+
+    num = len(rows_to_write)
+    log.info(f"CALC_Macro_State: Writing {num} rows...")
+
+    # Delete overlapping rows
+    existing_dates = ws.col_values(1)[2:]
+    rows_to_delete = []
+    for i, d in enumerate(existing_dates):
+        if d in new_dates_set:
+            rows_to_delete.append(i + 3)
+
+    for row_idx in sorted(rows_to_delete, reverse=True):
+        ws.delete_rows(row_idx)
+        log.info(f"  Deleted existing row {row_idx} (overlap)")
+
+    ws.insert_rows(rows_to_write, row=3, value_input_option="RAW")
+    log.info(f"  Inserted {num} rows at row 3")
+
+
 # --- MAIN ---
 
 def main():
@@ -940,6 +1215,28 @@ def main():
 
     log.info("=" * 60)
     log.info("Stufe 3 complete")
+    log.info("=" * 60)
+
+    # --- STUFE 4: CALC_Macro_State ---
+    log.info("STUFE 4: CALC_Macro_State")
+    macro_df = calc_calc_macro_state(fred_data, k16_df, howell_df, start_date, end_date)
+    log.info(f"  {len(macro_df)} rows calculated")
+
+    if not macro_df.empty:
+        r = macro_df.iloc[-1]
+        log.info(f"  Latest: {r['Date'].date() if hasattr(r['Date'], 'date') else r['Date']} "
+                 f"State={r['Macro_State_Num']} ({r['Macro_State_Name']}) "
+                 f"GS={r['Growth_Signal']} Liq={r['Liq_Direction']} "
+                 f"Stress={r['Stress_Score']} SC={r['State_Confidence']}")
+        log.info(f"  Growth: {r['Growth_Detail']}")
+        log.info(f"  Stress: {r['Stress_Detail']} (VIX={r['VIX']:.2f} HY={r['HY_Spread']:.2f} "
+                 f"HY_Thr={r['HY_Threshold']:.1f})")
+
+    log.info("Writing CALC_Macro_State...")
+    write_calc_macro_state(sheet, macro_df)
+
+    log.info("=" * 60)
+    log.info("Stufe 4 complete — V55 Data Collector KOMPLETT")
     log.info("=" * 60)
 
 
