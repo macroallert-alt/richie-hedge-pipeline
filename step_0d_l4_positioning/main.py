@@ -540,48 +540,60 @@ def pull_options_gex():
     all_contracts = []
     try:
         opts_url = "https://eodhd.com/api/mp/unicornbay/options/contracts"
-        params = {
-            "filter[underlying_symbol]": "SPY",
-            "filter[exp_date_from]": exp_from,
-            "filter[exp_date_to]": exp_to,
-            "fields[options-contracts]": "contract,type,strike,exp_date,open_interest,gamma,delta,dte",
-            "sort": "strike",
-            "page[limit]": 500,
-            "compact": 1,
-            "api_token": EODHD_API_KEY,
-        }
-        resp = requests.get(opts_url, params=params, timeout=30)
-        resp.raise_for_status()
-        data = resp.json()
+        page_limit = 1000
+        offset = 0
+        total_raw = 0
+        max_pages = 5  # safety cap: 5 * 1000 = 5000 contracts max
 
-        contracts = data.get("data", [])
-        if not contracts:
-            log.warning(f"    OPTIONS: No contracts returned for SPY {exp_from} to {exp_to}")
-            return {}
+        for page in range(max_pages):
+            params = {
+                "filter[underlying_symbol]": "SPY",
+                "filter[exp_date_from]": exp_from,
+                "filter[exp_date_to]": exp_to,
+                "fields[options-contracts]": "contract,type,strike,exp_date,open_interest,gamma,delta,dte",
+                "sort": "strike",
+                "page[limit]": page_limit,
+                "page[offset]": offset,
+                "compact": 1,
+                "api_token": EODHD_API_KEY,
+            }
+            resp = requests.get(opts_url, params=params, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
 
-        for c in contracts:
-            attrs = c.get("attributes", c)
-            try:
-                oi = float(attrs.get("open_interest", 0) or 0)
-                gamma = float(attrs.get("gamma", 0) or 0)
-                strike = float(attrs.get("strike", 0) or 0)
-                opt_type = str(attrs.get("type", "")).lower()
-                if oi > 0 and gamma > 0:
-                    all_contracts.append({
-                        "oi": oi,
-                        "gamma": gamma,
-                        "strike": strike,
-                        "type": opt_type,
-                    })
-            except (ValueError, TypeError):
-                continue
+            contracts = data.get("data", [])
+            if not contracts:
+                if page == 0:
+                    log.warning(f"    OPTIONS: No contracts returned for SPY {exp_from} to {exp_to}")
+                    return {}
+                break
 
-        log.info(f"    OPTIONS: {len(all_contracts)} valid contracts loaded ({len(contracts)} total, 1-7 DTE)")
+            for c in contracts:
+                attrs = c.get("attributes", c)
+                try:
+                    oi = float(attrs.get("open_interest", 0) or 0)
+                    gamma = float(attrs.get("gamma", 0) or 0)
+                    strike = float(attrs.get("strike", 0) or 0)
+                    opt_type = str(attrs.get("type", "")).lower()
+                    if oi > 0 and gamma > 0:
+                        all_contracts.append({
+                            "oi": oi,
+                            "gamma": gamma,
+                            "strike": strike,
+                            "type": opt_type,
+                        })
+                except (ValueError, TypeError):
+                    continue
 
-        meta = data.get("meta", {})
-        total = meta.get("total", len(contracts))
-        if total > 500:
-            log.warning(f"    OPTIONS: {total} total contracts, only fetched 500")
+            total_raw += len(contracts)
+            meta = data.get("meta", {})
+            total_available = meta.get("total", total_raw)
+
+            if total_raw >= total_available or len(contracts) < page_limit:
+                break
+            offset += page_limit
+
+        log.info(f"    OPTIONS: {len(all_contracts)} valid contracts from {total_raw} fetched ({total_available} total, 1-7 DTE, {page+1} pages)")
 
     except Exception as e:
         log.warning(f"    OPTIONS: EODHD options API failed -> {e}")
