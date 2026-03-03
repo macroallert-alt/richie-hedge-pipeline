@@ -684,13 +684,12 @@ def calc_data_k16_k17(fred_data, sheet, howell_df, start_date, end_date):
             howell_lookup[key] = int(hr["Howell_Phase"])
     
     # Read last confirmed state from sheet for 5-Day Confirmation continuity
+    # IMPORTANT: Read from dates BEFORE start_date to avoid reading our own previous writes
     hist_k16 = read_sheet_tab(sheet, "DATA_K16_K17")
     last_confirmed = -1  # default
-    last_confirm_count = 0
-    last_confirm_dir = -1
     if not hist_k16.empty:
-        # Find last row with Liq_Dir_Confirmed
-        for _, hr in hist_k16.sort_values("Date", ascending=False).iterrows():
+        hist_before = hist_k16[hist_k16["Date"] < pd.Timestamp(start_date)]
+        for _, hr in hist_before.sort_values("Date", ascending=False).iterrows():
             try:
                 ldc = float(hr.get("Liq_Dir_Confirmed", np.nan))
                 if not pd.isna(ldc):
