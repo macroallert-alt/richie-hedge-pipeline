@@ -219,10 +219,14 @@ def write_data_liquidity(sheet, df, hist_howell_phase=4):
     riskon = RISKON.get(phase, 1.00)
     riskoff = RISKOFF.get(phase, 1.00)
 
+    # Build rows (newest first)
+    new_dates_set = set()
     rows_to_write = []
     for _, row in df.sort_values("Date", ascending=False).iterrows():
+        d = row["Date"].strftime("%Y-%m-%d")
+        new_dates_set.add(d)
         rows_to_write.append([
-            row["Date"].strftime("%Y-%m-%d"),
+            d,
             fmt(row["Fed_Net_Liq"], 0),
             fmt(row["ECB_USD"], 1),
             fmt(row["BOJ_USD"], 0),
@@ -249,18 +253,22 @@ def write_data_liquidity(sheet, df, hist_howell_phase=4):
     num = len(rows_to_write)
     log.info(f"DATA_Liquidity: Writing {num} rows...")
 
-    existing_dates = ws.col_values(1)[2:]
-    new_dates = set(r[0] for r in rows_to_write)
-    overlap = sum(1 for d in existing_dates if d in new_dates)
-    inserts = num - overlap
+    # Step 1: Delete existing rows that overlap with our new dates
+    # Read all dates from column A (skip header + sub-header)
+    existing_dates = ws.col_values(1)[2:]  # 0-indexed: row3 onwards
+    rows_to_delete = []
+    for i, d in enumerate(existing_dates):
+        if d in new_dates_set:
+            rows_to_delete.append(i + 3)  # +3 because sheet is 1-indexed + 2 header rows
 
-    if inserts > 0:
-        ws.insert_rows([[""] * 20] * inserts, row=3)
-        log.info(f"  Inserted {inserts} blank rows")
+    # Delete from bottom to top so indices don't shift
+    for row_idx in sorted(rows_to_delete, reverse=True):
+        ws.delete_rows(row_idx)
+        log.info(f"  Deleted existing row {row_idx} (overlap)")
 
-    cell_range = f"A3:T{3 + num - 1}"
-    ws.update(cell_range, rows_to_write, value_input_option="RAW")
-    log.info(f"  Written to {cell_range}")
+    # Step 2: Insert new rows at top (row 3)
+    ws.insert_rows(rows_to_write, row=3, value_input_option="RAW")
+    log.info(f"  Inserted {num} rows at row 3")
 
 
 # --- MAIN ---
