@@ -555,7 +555,8 @@ def read_cu_au_from_prices(sheet, start_date, end_date):
             gld_col = col
     
     if copper_col is None or gld_col is None:
-        log.warning(f"DATA_Prices: COPPER={copper_col}, GLD={gld_col} — missing column(s)")
+        available = [c for c in df.columns if c != "Date"][:20]
+        log.warning(f"DATA_Prices: COPPER={copper_col}, GLD={gld_col} — columns: {available}")
         return pd.Series(dtype=float)
     
     copper = pd.to_numeric(df[copper_col], errors="coerce")
@@ -563,6 +564,10 @@ def read_cu_au_from_prices(sheet, start_date, end_date):
     
     ratio = copper / gld
     ratio = ratio.replace([np.inf, -np.inf], np.nan).dropna()
+    
+    if ratio.empty:
+        log.warning(f"  Cu/Au ratio: EMPTY after dropna (copper has {copper.notna().sum()} vals, gld has {gld.notna().sum()} vals)")
+        return pd.Series(dtype=float)
     
     log.info(f"  Cu/Au ratio: {len(ratio)} values, last={ratio.iloc[-1]:.6f} ({ratio.index[-1].date()})")
     return ratio
