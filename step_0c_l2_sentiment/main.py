@@ -221,35 +221,38 @@ def pull_aaii_sentiment():
 
             log.info(f"    Data starts at row {data_start}")
 
-            # Extract numeric series
+            # Reverse-walk: start from last row, find first row passing strict sanity
             bull_series = pd.to_numeric(df_raw.iloc[data_start:, bull_col_idx], errors="coerce")
             bear_series = pd.to_numeric(df_raw.iloc[data_start:, bear_col_idx], errors="coerce")
 
-            # Find last row where both are valid
-            valid_mask = bull_series.notna() & bear_series.notna()
-            if valid_mask.any():
-                last_idx = valid_mask[valid_mask].index[-1]
-                bull_val = float(bull_series.loc[last_idx])
-                bear_val = float(bear_series.loc[last_idx])
+            found = False
+            for walk_idx in reversed(bull_series.index):
+                bv = bull_series.loc[walk_idx]
+                brv = bear_series.loc[walk_idx]
+                if pd.isna(bv) or pd.isna(brv):
+                    continue
+                bv = float(bv)
+                brv = float(brv)
 
-                # Decimals to percent
-                if bull_val <= 1.0:
-                    bull_val *= 100.0
-                if bear_val <= 1.0:
-                    bear_val *= 100.0
+                # Decimal-to-percent conversion
+                if bv <= 1.0:
+                    bv *= 100.0
+                if brv <= 1.0:
+                    brv *= 100.0
 
-                log.info(f"    Latest: bull={bull_val:.2f}%, bear={bear_val:.2f}%")
-
-                # Sanity: both 5-80%, sum < 105%
-                if 5.0 <= bull_val <= 80.0 and 5.0 <= bear_val <= 80.0 and (bull_val + bear_val) < 105.0:
-                    results["AAII_BULL_PCT"] = round(bull_val, 2)
-                    results["AAII_BEAR_PCT"] = round(bear_val, 2)
-                    log.info(f"    OK: AAII_BULL_PCT={bull_val:.2f}%, AAII_BEAR_PCT={bear_val:.2f}%")
+                # Strict sanity: each 5-70%, sum(bull+bear) < 90%
+                if 5.0 <= bv <= 70.0 and 5.0 <= brv <= 70.0 and (bv + brv) < 90.0:
+                    results["AAII_BULL_PCT"] = round(bv, 2)
+                    results["AAII_BEAR_PCT"] = round(brv, 2)
+                    log.info(f"    Reverse-walk hit row {walk_idx}: bull={bv:.2f}%, bear={brv:.2f}%, sum={bv+brv:.2f}%")
+                    log.info(f"    OK: AAII_BULL_PCT={bv:.2f}%, AAII_BEAR_PCT={brv:.2f}%")
+                    found = True
                     return results
                 else:
-                    log.warning(f"    Sanity fail: bull={bull_val:.2f}%, bear={bear_val:.2f}%, sum={bull_val+bear_val:.2f}%")
-            else:
-                log.warning("    No valid numeric data in bull/bear columns")
+                    log.info(f"    Reverse-walk skip row {walk_idx}: bull={bv:.2f}%, bear={brv:.2f}%, sum={bv+brv:.2f}%")
+
+            if not found:
+                log.warning("    Reverse-walk: no row passed strict sanity (5-70% each, sum<90%)")
         else:
             log.warning("    Could not find header row with both Bullish+Bearish")
             for i in range(min(5, len(df_raw))):
