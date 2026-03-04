@@ -1,0 +1,100 @@
+# ═══════════════════════════════════════════════════════════════════
+# ASSET_MAPPINGS.yaml — Asset-to-Sector und Asset-to-Class Mappings
+# Quelle: Risk Officer Spec Teil 2 §10.1 (V16_ASSET_TO_SECTOR_MAP)
+# Jaehrlich aktualisieren (SPY/QQQ Sektor-Gewichte aendern sich)
+# ═══════════════════════════════════════════════════════════════════
+
+# V16 Asset → Sektor Mapping
+# Direkte Sektor-ETFs bekommen 1.0 Zuordnung
+# Multi-Sektor-ETFs werden nach Top-Gewichten aufgeteilt
+asset_to_sector:
+  # Direkte Sektor-ETFs
+  XLK: {Tech: 1.0}
+  XLF: {Financials: 1.0}
+  XLE: {Energy: 1.0}
+  XLV: {Healthcare: 1.0}
+  XLI: {Industrials: 1.0}
+  XLY: {Consumer_Discretionary: 1.0}
+  XLP: {Consumer_Staples: 1.0}
+  XLU: {Utilities: 1.0}
+  XLRE: {Real_Estate: 1.0}
+  XLC: {Communication_Services: 1.0}
+  XLB: {Materials: 1.0}
+
+  # Multi-Sektor-ETFs (approximierte Top-Gewichte, Stand Feb 2026)
+  SPY: {Tech: 0.30, Financials: 0.13, Healthcare: 0.13, Consumer_Discretionary: 0.10, Other: 0.34}
+  QQQ: {Tech: 0.58, Communication_Services: 0.16, Consumer_Discretionary: 0.13, Other: 0.13}
+  RSP: {Tech: 0.15, Financials: 0.12, Healthcare: 0.12, Industrials: 0.12, Other: 0.49}
+  IWM: {Financials: 0.17, Healthcare: 0.16, Industrials: 0.15, Other: 0.52}
+
+  # Commodities
+  GLD: {Commodities: 1.0}
+  SLV: {Commodities: 1.0}
+  GDX: {Commodities: 1.0}
+  GDXJ: {Commodities: 1.0}
+  SIL: {Commodities: 1.0}
+  DBC: {Commodities: 1.0}
+
+  # Bonds
+  TLT: {Bonds: 1.0}
+  SHY: {Cash_Equivalent: 1.0}
+  HYG: {Bonds: 1.0}
+
+  # International
+  VWO: {International_EM: 1.0}
+  EFA: {International_DM: 1.0}
+  INDA: {International_EM: 1.0}
+  FXI: {International_EM: 1.0}
+  EEM: {International_EM: 1.0}
+  KWEB: {International_EM: 1.0}
+
+# Asset → Asset Class Mapping
+asset_to_class:
+  # US Equity
+  XLK: Equity_US
+  XLF: Equity_US
+  XLE: Equity_US
+  XLV: Equity_US
+  XLI: Equity_US
+  XLY: Equity_US
+  XLP: Equity_US
+  XLU: Equity_US
+  XLRE: Equity_US
+  XLC: Equity_US
+  XLB: Equity_US
+  SPY: Equity_US
+  QQQ: Equity_US
+  RSP: Equity_US
+  IWM: Equity_US
+
+  # International Equity
+  VWO: Equity_International
+  EFA: Equity_International
+  INDA: Equity_International
+  FXI: Equity_International
+  EEM: Equity_International
+  KWEB: Equity_International
+
+  # Bonds
+  TLT: Bonds
+  HYG: Bonds
+
+  # Cash Equivalent
+  SHY: Cash_Equivalent
+
+  # Commodities
+  GLD: Commodities
+  SLV: Commodities
+  GDX: Commodities
+  GDXJ: Commodities
+  SIL: Commodities
+  DBC: Commodities
+
+# International Assets Liste (fuer Geography Check)
+international_assets:
+  - VWO
+  - EFA
+  - INDA
+  - FXI
+  - EEM
+  - KWEB

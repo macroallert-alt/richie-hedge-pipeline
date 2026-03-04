@@ -1,0 +1,159 @@
+# ═══════════════════════════════════════════════════════════════════
+# RISK_CONFIG.yaml — Risk Officer Konfiguration
+# Version: 1.0.0
+# Letzte Aenderung: 2026-03-04
+# Quelle: Risk Officer Spec V1.0 (Teil 2 §28, Teil 4 §28)
+# ═══════════════════════════════════════════════════════════════════
+
+version: "1.0.0"
+
+# ─── EXPOSURE CHECKS ──────────────────────────────────────────────
+
+sector_concentration:
+  warning_band: 0.35
+  max: 0.40
+  critical: 0.50
+  overrides:
+    Tech:
+      warning_band: 0.30
+      max: 0.38
+      critical: 0.48
+
+geography:
+  international_max: 0.25
+  international_warning_band: 0.20
+  international_critical: 0.30
+  v16_budget_floor: 0.60
+  single_region_cap: 0.25
+
+single_name:
+  warning_band: 0.20
+  max: 0.25
+  critical: 0.30
+
+asset_class:
+  total_equity_warning: 0.85
+  total_equity_critical: 0.92
+  min_hedge_assets: 0.08
+
+# ─── INTERACTION CHECKS ───────────────────────────────────────────
+
+regime_conflict:
+  enabled: true
+  compatible_mappings:
+    Risk-On: ["BROAD_RISK_ON", "SELECTIVE"]
+    Risk-Off: ["BROAD_RISK_OFF", "RISK_OFF_FORCED", "CONFLICTED"]
+    DD-Protect: ["BROAD_RISK_OFF", "RISK_OFF_FORCED"]
+
+recommendation_overload:
+  enabled: false  # V1: Signal Generator nicht live
+  warning_band: 2
+  max: 3
+  critical: 5
+
+correlation:
+  enabled: false  # V1: Return-Zeitreihen nicht im DW
+  top_n: 5
+  window_days: 63
+  warning_band: 0.75
+  max: 0.85
+  critical: 0.92
+  stale_data_threshold_days: 10
+  frequency: "weekly"
+  weekday: 0  # Montag (weekend_run: false)
+
+# FUTURE Checks (deaktiviert in V1)
+cc_router_timing:
+  enabled: false
+  cc_warning_days: 7
+  router_proximity_threshold: 0.5
+
+ddprotect_permopt:
+  enabled: false
+  min_permopt_for_alert: 0.005
+
+# ─── TEMPORAL CHECKS ──────────────────────────────────────────────
+
+cc_expiry:
+  enabled: false  # V1: F6 nicht live
+  warning_days: 7
+  critical_days: 3
+
+v16_rebalance:
+  enabled: false  # V1: next_rebalance_expected nicht im V16 Output
+  imminent_days: 2
+  confluence_extreme: 3
+
+event_calendar:
+  enabled: true
+  boost_horizon_days: 2
+  tracked_events:
+    - "FOMC"
+    - "CPI"
+    - "NFP"
+    - "PCE"
+    - "GDP"
+    - "ISM_Manufacturing"
+    - "ECB_Rate_Decision"
+    - "BOJ_Rate_Decision"
+
+# ─── SENSITIVITY ──────────────────────────────────────────────────
+
+sensitivity:
+  spy_beta:
+    enabled: false  # V1: Portfolio-Returns nicht im DW
+    window: 63
+  effective_positions:
+    enabled: false  # V1: Korrelationsmatrix nicht verfuegbar
+
+# ─── SEVERITY SYSTEM ─────────────────────────────────────────────
+
+severity:
+  boost_rules:
+    FRAGILITY_EXTREME: 1
+    FRAGILITY_CRISIS: 2
+    EVENT_IMMINENT: 1
+    G7_ELEVATED_RISK: 1
+    G7_STRUCTURAL_BREAK: 2
+  max_boost_severity: "CRITICAL"
+
+# ─── EMERGENCY TRIGGERS ──────────────────────────────────────────
+
+emergency_triggers:
+  emg_portfolio_drawdown:
+    enabled: true
+    threshold: -0.15
+
+  emg_production_systems_down:
+    enabled: false  # V1: F6 + Signal Generator intentionally not live
+    threshold: 2
+
+  emg_v16_ddprotect_failure:
+    enabled: true
+
+  emg_hard_cap_extreme:
+    enabled: true
+    buffer_pp: 0.10
+
+# ─── PORTFOLIO STATUS ────────────────────────────────────────────
+
+portfolio_status:
+  yellow_monitor_threshold: 3
+
+# ─── FAST PATH ────────────────────────────────────────────────────
+
+fast_path:
+  enabled: true
+  weight_change_threshold: 0.02
+
+# ─── ALERT MANAGEMENT ────────────────────────────────────────────
+
+alert_management:
+  ongoing_threshold_days: 4
+  high_volume_warning: 5
+
+# ─── SCHEDULING ───────────────────────────────────────────────────
+
+scheduling:
+  daily_run: true
+  weekend_run: false

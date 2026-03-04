@@ -1,0 +1,50 @@
+name: Step 3 — Risk Officer
+
+on:
+  # Nach Market Analyst (manuell oder scheduled)
+  workflow_run:
+    workflows: ["Step 1 - Market Analyst"]
+    types: [completed]
+  # Manueller Trigger
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no Sheet write)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  risk_officer:
+    runs-on: ubuntu-latest
+    # Nur laufen wenn Market Analyst erfolgreich war (oder manuell)
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install pyyaml google-auth google-auth-oauthlib google-api-python-client
+
+      - name: Run Risk Officer
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            python -m step3_risk_officer --dry-run
+          else
+            python -m step3_risk_officer
+          fi
