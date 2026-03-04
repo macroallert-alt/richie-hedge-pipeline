@@ -193,6 +193,14 @@ def calc_monthly_seasonal_spy(today: date) -> dict:
             log.warning("MONTHLY_SEASONAL_SPY: insufficient data")
             return None
 
+        # Flatten MultiIndex columns if present (yfinance >= 0.2.x returns MultiIndex)
+        if isinstance(spy.columns, pd.MultiIndex):
+            spy.columns = spy.columns.get_level_values(0)
+
+        if "Close" not in spy.columns:
+            log.warning(f"MONTHLY_SEASONAL_SPY: Close column not found. Columns: {spy.columns.tolist()}")
+            return None
+
         spy["monthly_return"] = spy["Close"].pct_change() * 100
         spy = spy.dropna(subset=["monthly_return"])
         spy.index = pd.to_datetime(spy.index)
