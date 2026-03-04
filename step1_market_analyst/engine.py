@@ -244,7 +244,14 @@ def read_history(dw_sheet) -> list:
         for row in data[1:31]:
             if not row or not row[0]:
                 continue
-            day_record = {"date": row[0], "layers": {}}
+            # Skip header rows and placeholder rows (non-date values in col A)
+            cell0 = str(row[0]).strip()
+            if not cell0 or cell0 == "—":
+                continue
+            # Must look like a date: YYYY-MM-DD
+            if len(cell0) < 8 or cell0[4:5] != "-":
+                continue
+            day_record = {"date": cell0, "layers": {}}
             col = 1
             for layer_name in LAYER_NAMES:
                 if col + 2 < len(row):
@@ -535,13 +542,15 @@ def write_agent_summary(dw_sheet, output):
         layer_parts.append(f"{lid}:{ls.get('score', 0)}({ls.get('regime', '?')[:4]})")
     layer_str = " | ".join(layer_parts)
 
-    # Find the "Agent 1" / "Senior Macro" row and overwrite it
+    # Find the "Agent 1" / "Senior Macro" / "Step1_MarketAnalyst" row and overwrite it
     all_data = ws.get_all_values()
     target_row = None
     for i, row in enumerate(all_data):
-        if len(row) >= 3 and ("Agent 1" in str(row[1]) or "Senior Macro" in str(row[2])):
-            target_row = i + 1  # 1-indexed
-            break
+        if len(row) >= 2:
+            row_str = " ".join(str(c) for c in row[:4]).lower()
+            if any(kw in row_str for kw in ["agent 1", "senior macro", "step1_marketanalyst"]):
+                target_row = i + 1  # 1-indexed
+                break
     if target_row is None:
         # Fallback: write to row 2 (after title)
         target_row = 2
