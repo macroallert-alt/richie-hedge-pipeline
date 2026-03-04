@@ -55,8 +55,9 @@ def select_key_driver(
     template_key = _score_to_template_key(score)
     template_str = _get_template(template_group, template_key, score)
 
-    # Fill placeholders with actual data
-    filled = _fill_template(template_str, raw_data)
+    # Fill placeholders with actual data — pass the strongest field as context
+    context_field = _template_group_to_field(strongest, kd_templates)
+    filled = _fill_template(template_str, raw_data, context_field=context_field)
 
     # Add sub-driver detail if available
     drivers = template_group.get("drivers", {})
@@ -99,7 +100,7 @@ def generate_tension(
     # Try to find a matching template
     template_key = f"{strongest_pos}_vs_{strongest_neg}"
     if template_key in tension_templates:
-        return _fill_template(tension_templates[template_key], raw_data)
+        return _fill_template(tension_templates[template_key], raw_data, context_field=strongest_pos)
 
     # Fallback: generic tension string
     pos_label = _field_label(strongest_pos, positives[strongest_pos])
@@ -155,6 +156,12 @@ def _find_template_group(field_name: str, kd_templates: dict) -> dict:
     return None
 
 
+
+
+def _template_group_to_field(field_name: str, kd_templates: dict) -> str:
+    """Returns the actual raw_data field name for a given strongest driver."""
+    return field_name
+
 def _score_to_template_key(score: int) -> str:
     """Maps score to template key name."""
     if score >= 5:
@@ -207,32 +214,80 @@ def _get_template(template_group: dict, preferred_key: str, score: int) -> str:
     return list(template_group.values())[0] if template_group else ""
 
 
-def _fill_template(template_str: str, raw_data: dict) -> str:
-    """Fills {placeholder} with actual values from raw data."""
+def _fill_template(template_str: str, raw_data: dict, context_field: str = None) -> str:
+    """Fills {placeholder} with actual values from raw data.
+    
+    context_field: the field that triggered this template (e.g. "spread_2y10y").
+    Generic placeholders like {value}, {pctl}, {delta_5d}, {direction} resolve
+    to the context_field's data first before scanning all fields.
+    """
     import re
+
+    GENERIC_KEYS = {"value", "pctl", "delta_5d", "direction", "pctl_1y"}
+
+    ctx_data = raw_data.get(context_field, {}) if context_field else {}
+    if not isinstance(ctx_data, dict):
+        ctx_data = {"value": ctx_data}
+
+    GENERIC_MAP = {
+        "value": "value",
+        "pctl": "pctl_1y",
+        "delta_5d": "delta_5d",
+        "direction": "direction",
+        "pctl_1y": "pctl_1y",
+    }
 
     def replacer(match):
         key = match.group(1)
-        # Try direct field access
-        parts = key.split("_")
 
-        # Common patterns: {pctl}, {value}, {delta_5d}, {direction}
-        # Try to find in raw_data
+        if key in GENERIC_KEYS and ctx_data:
+            mapped = GENERIC_MAP.get(key, key)
+            val = ctx_data.get(mapped)
+            if val is not None:
+                return str(val)
+
+        if key.endswith("_pctl"):
+            prefix = key[:-5]
+            for field_name, field_data in raw_data.items():
+                if not isinstance(field_data, dict):
+                    continue
+                if prefix.replace("_", "") in field_name.replace("_", ""):
+                    return str(field_data.get("pctl_1y", "?"))
+
+        if key.endswith("_direction"):
+            prefix = key[:-10]
+            for field_name, field_data in raw_data.items():
+                if not isinstance(field_data, dict):
+                    continue
+                if prefix.replace("_", "") in field_name.replace("_", ""):
+                    return str(field_data.get("direction", "?"))
+
+        if key.endswith("_value"):
+            prefix = key[:-6]
+            for field_name, field_data in raw_data.items():
+                if not isinstance(field_data, dict):
+                    continue
+                if prefix.replace("_", "") in field_name.replace("_", ""):
+                    return str(field_data.get("value", "?"))
+
+        if key.endswith("_delta_5d"):
+            prefix = key[:-9]
+            for field_name, field_data in raw_data.items():
+                if not isinstance(field_data, dict):
+                    continue
+                if prefix.replace("_", "") in field_name.replace("_", ""):
+                    return str(field_data.get("delta_5d", "?"))
+
+        if ctx_data and key in ctx_data:
+            return str(ctx_data[key])
+
         for field_name, field_data in raw_data.items():
             if not isinstance(field_data, dict):
                 continue
             if key in field_data:
                 return str(field_data[key])
 
-            # Field-specific: {hy_pctl} -> raw_data["hy_oas"]["pctl_1y"]
-            if key.endswith("_pctl") and key[:-5].replace("_", "") in field_name.replace("_", ""):
-                return str(field_data.get("pctl_1y", "?"))
-            if key.endswith("_direction") and key[:-10].replace("_", "") in field_name.replace("_", ""):
-                return str(field_data.get("direction", "?"))
-            if key.endswith("_value") and key[:-6].replace("_", "") in field_name.replace("_", ""):
-                return str(field_data.get("value", "?"))
-
-        return f"{{{key}}}"  # Keep placeholder if not found
+        return f"{{{key}}}"
 
     return re.sub(r"\{(\w+)\}", replacer, template_str)
 
@@ -249,9 +304,9 @@ def _select_sub_driver(sub_scores: dict, raw_data: dict, drivers: dict) -> str:
         direction = field_data.get("direction", "FLAT")
 
         if "falling" in driver_key and direction == "DOWN":
-            return _fill_template(template, raw_data)
+            return _fill_template(template, raw_data, context_field=field_name)
         elif "rising" in driver_key and direction == "UP":
-            return _fill_template(template, raw_data)
+            return _fill_template(template, raw_data, context_field=field_name)
 
     return None
 
