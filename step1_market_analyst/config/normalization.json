@@ -1,0 +1,182 @@
+{
+  "_comment": "Normalization parameters per field. Source: AGENT2_SPEC_TEIL3 Sections 5.1-5.4",
+  "_version": "1.0",
+  "_methods": {
+    "pctl": "Percentile 0-100 mapped to -10..+10. pctl 50 = 0.",
+    "threshold": "Value relative to known neutral point, scaled to extremes.",
+    "nonlinear_extreme": "Dead zone in middle (score=0), only extremes matter.",
+    "direction_score": "Direction (UP/DOWN/FLAT) + momentum bonus."
+  },
+
+  "net_liquidity": {
+    "method": "pctl",
+    "invert": false
+  },
+  "walcl": {
+    "method": "direction_score",
+    "invert": false
+  },
+  "tga": {
+    "method": "pctl",
+    "invert": true
+  },
+  "rrp": {
+    "method": "pctl",
+    "invert": true
+  },
+  "mmf_assets": {
+    "method": "pctl",
+    "invert": false
+  },
+  "spread_2y10y": {
+    "method": "threshold",
+    "neutral": 0,
+    "bullish_extreme": 1.5,
+    "bearish_extreme": -1.0,
+    "invert": false
+  },
+  "spread_3m10y": {
+    "method": "threshold",
+    "neutral": 0,
+    "bullish_extreme": 2.0,
+    "bearish_extreme": -1.5,
+    "invert": false
+  },
+  "real_10y_yield": {
+    "method": "pctl",
+    "invert": false,
+    "_note": "Contextual inversion handled per-layer in layer_field_mapping"
+  },
+  "hy_oas": {
+    "method": "pctl",
+    "invert": true
+  },
+  "ig_oas": {
+    "method": "pctl",
+    "invert": true
+  },
+  "nfci": {
+    "method": "threshold",
+    "neutral": 0,
+    "bullish_extreme": -0.5,
+    "bearish_extreme": 0.5,
+    "invert": true
+  },
+  "anfci": {
+    "method": "threshold",
+    "neutral": 0,
+    "bullish_extreme": -0.5,
+    "bearish_extreme": 0.5,
+    "invert": true
+  },
+  "disc_window": {
+    "method": "nonlinear_extreme",
+    "dead_zone_low": 10,
+    "dead_zone_high": 80,
+    "contrarian": false,
+    "invert": true
+  },
+  "vix": {
+    "method": "nonlinear_extreme",
+    "dead_zone_low": 20,
+    "dead_zone_high": 70,
+    "contrarian": false,
+    "invert": true
+  },
+  "vix_term_struct": {
+    "method": "threshold",
+    "neutral": 1.0,
+    "bullish_extreme": 1.2,
+    "bearish_extreme": 0.8,
+    "invert": false
+  },
+  "pc_ratio_equity": {
+    "method": "nonlinear_extreme",
+    "dead_zone_low": 15,
+    "dead_zone_high": 85,
+    "contrarian": true,
+    "invert": false
+  },
+  "iv_rv_spread": {
+    "method": "threshold",
+    "neutral": 0,
+    "bullish_extreme": 8,
+    "bearish_extreme": -5,
+    "invert": false
+  },
+  "pct_above_200dma": {
+    "method": "threshold",
+    "neutral": 50,
+    "bullish_extreme": 80,
+    "bearish_extreme": 20,
+    "invert": false
+  },
+  "nh_nl": {
+    "method": "pctl",
+    "invert": false
+  },
+  "spy_tlt_corr": {
+    "method": "threshold",
+    "neutral": -0.3,
+    "bullish_extreme": -0.6,
+    "bearish_extreme": 0.5,
+    "invert": true
+  },
+  "naaim_exposure": {
+    "method": "nonlinear_extreme",
+    "dead_zone_low": 25,
+    "dead_zone_high": 75,
+    "contrarian": true,
+    "invert": false
+  },
+  "aaii_bull_bear": {
+    "method": "nonlinear_extreme",
+    "dead_zone_low": 20,
+    "dead_zone_high": 80,
+    "contrarian": true,
+    "invert": false
+  },
+  "cot_es_leveraged": {
+    "method": "nonlinear_extreme",
+    "dead_zone_low": 20,
+    "dead_zone_high": 80,
+    "contrarian": true,
+    "invert": false
+  },
+  "cot_zn_leveraged": {
+    "method": "nonlinear_extreme",
+    "dead_zone_low": 20,
+    "dead_zone_high": 80,
+    "contrarian": false,
+    "invert": false
+  },
+  "dxy": {
+    "method": "pctl",
+    "invert": true
+  },
+  "cu_au_ratio": {
+    "method": "pctl",
+    "invert": false
+  },
+  "china_10y": {
+    "method": "direction_score",
+    "invert": true
+  },
+  "usdcnh": {
+    "method": "pctl",
+    "invert": true
+  },
+  "wti_curve": {
+    "method": "threshold",
+    "neutral": 1.0,
+    "bullish_extreme": 0.9,
+    "bearish_extreme": 1.1,
+    "invert": false,
+    "_note": "Backwardation (<1) = bullish demand signal, contango (>1) = bearish"
+  },
+  "usdjpy": {
+    "method": "pctl",
+    "invert": false,
+    "_note": "High USDJPY = carry trade intact. Not inverted — direction depends on layer context."
+  }
+}

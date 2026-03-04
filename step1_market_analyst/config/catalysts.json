@@ -1,0 +1,151 @@
+{
+  "_comment": "Catalyst calendar. Source: AGENT2_SPEC_TEIL5 Section 17.1",
+  "_version": "1.0",
+
+  "tier_1_critical": [
+    {
+      "name": "FOMC",
+      "frequency": "6_weekly",
+      "affects_layers": [
+        "Central Bank Policy Divergence (L7)",
+        "Global Liquidity Cycle (L1)",
+        "Tail Risk & Black Swan (L8)"
+      ],
+      "direction": "BINARY",
+      "typical_impact": "HIGH",
+      "pre_event_days": 3,
+      "post_event_days": 1,
+      "notes": "Decision + Dot Plot + Press Conference. Markets reprice in minutes.",
+      "dates_2026": [
+        "2026-01-29", "2026-03-18", "2026-05-06", "2026-06-17",
+        "2026-07-29", "2026-09-16", "2026-11-04", "2026-12-16"
+      ]
+    },
+    {
+      "name": "CPI",
+      "frequency": "monthly",
+      "affects_layers": [
+        "Central Bank Policy Divergence (L7)",
+        "Macro Regime (L2)"
+      ],
+      "direction": "BINARY",
+      "typical_impact": "HIGH",
+      "pre_event_days": 2,
+      "post_event_days": 1,
+      "notes": "Drives Fed expectations. Hot CPI -> tightening narrative.",
+      "dates_2026": [
+        "2026-01-14", "2026-02-12", "2026-03-12", "2026-04-10",
+        "2026-05-13", "2026-06-11", "2026-07-15", "2026-08-12",
+        "2026-09-10", "2026-10-13", "2026-11-12", "2026-12-10"
+      ]
+    },
+    {
+      "name": "NFP",
+      "frequency": "monthly_first_friday",
+      "affects_layers": [
+        "Macro Regime (L2)",
+        "Central Bank Policy Divergence (L7)"
+      ],
+      "direction": "BINARY",
+      "typical_impact": "HIGH",
+      "pre_event_days": 1,
+      "post_event_days": 1,
+      "notes": "Jobs report. Weak = recession fear. Too strong = more tightening.",
+      "dates_2026": [
+        "2026-01-09", "2026-02-06", "2026-03-06", "2026-04-03",
+        "2026-05-08", "2026-06-05", "2026-07-02", "2026-08-07",
+        "2026-09-04", "2026-10-02", "2026-11-06", "2026-12-04"
+      ]
+    }
+  ],
+
+  "tier_2_high": [
+    {
+      "name": "TREASURY_REFUNDING",
+      "frequency": "quarterly",
+      "affects_layers": [
+        "Global Liquidity Cycle (L1)",
+        "Tail Risk & Black Swan (L8)"
+      ],
+      "direction": "DIRECTIONAL",
+      "typical_impact": "MEDIUM",
+      "pre_event_days": 2,
+      "post_event_days": 2,
+      "notes": "Bill vs. coupon mix affects liquidity. Surprise = market mover.",
+      "dates_2026": [
+        "2026-02-04", "2026-05-06", "2026-08-05", "2026-11-04"
+      ]
+    },
+    {
+      "name": "OPEX",
+      "frequency": "monthly_third_friday",
+      "affects_layers": [
+        "Risk Appetite & Sentiment (L5)",
+        "Tail Risk & Black Swan (L8)"
+      ],
+      "direction": "DIRECTIONAL",
+      "typical_impact": "MEDIUM",
+      "pre_event_days": 2,
+      "post_event_days": 1,
+      "notes": "Gamma exposure unwinds. Vol spike possible.",
+      "dates_2026": [
+        "2026-01-16", "2026-02-20", "2026-03-20", "2026-04-17",
+        "2026-05-15", "2026-06-19", "2026-07-17", "2026-08-21",
+        "2026-09-18", "2026-10-16", "2026-11-20", "2026-12-18"
+      ]
+    },
+    {
+      "name": "ECB_DECISION",
+      "frequency": "6_weekly",
+      "affects_layers": [
+        "Central Bank Policy Divergence (L7)",
+        "Cross-Border Flows & FX (L4)"
+      ],
+      "direction": "BINARY",
+      "typical_impact": "MEDIUM",
+      "pre_event_days": 2,
+      "post_event_days": 1,
+      "notes": "ECB rate decision. Divergence from Fed = FX impact.",
+      "dates_2026": [
+        "2026-01-30", "2026-03-06", "2026-04-17", "2026-06-05",
+        "2026-07-17", "2026-09-11", "2026-10-30", "2026-12-18"
+      ]
+    },
+    {
+      "name": "BOJ_DECISION",
+      "frequency": "8_yearly",
+      "affects_layers": [
+        "Central Bank Policy Divergence (L7)",
+        "Cross-Border Flows & FX (L4)",
+        "Tail Risk & Black Swan (L8)"
+      ],
+      "direction": "BINARY",
+      "typical_impact": "MEDIUM",
+      "pre_event_days": 2,
+      "post_event_days": 2,
+      "notes": "BOJ surprise = carry trade unwind risk. Aug 2024 precedent.",
+      "dates_2026": [
+        "2026-01-24", "2026-03-14", "2026-05-01", "2026-06-16",
+        "2026-07-31", "2026-09-19", "2026-10-30", "2026-12-18"
+      ]
+    },
+    {
+      "name": "EARNINGS_SEASON",
+      "frequency": "quarterly",
+      "affects_layers": [
+        "Earnings & Fundamentals (L3)",
+        "Risk Appetite & Sentiment (L5)"
+      ],
+      "direction": "DIRECTIONAL",
+      "typical_impact": "MEDIUM",
+      "pre_event_days": 5,
+      "post_event_days": 20,
+      "notes": "Big Tech week especially. Guidance > actuals.",
+      "dates_2026": [
+        "2026-01-20", "2026-04-14", "2026-07-14", "2026-10-13"
+      ]
+    }
+  ],
+
+  "tier_3_dynamic": "Populated by IC high_novelty_claims at runtime. Examples: G7 summit, OPEC+ meeting, China NPC, tariff announcements, geopolitical flashpoints."
+}

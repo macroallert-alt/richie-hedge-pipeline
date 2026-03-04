@@ -1,0 +1,63 @@
+{
+  "_comment": "Signal quality / suppression detection rules. Source: AGENT2_SPEC_TEIL3 Section 8",
+  "_version": "1.0",
+
+  "suppression_checks": [
+    {
+      "id": "VIX_SUPPRESSION",
+      "name": "VIX suppressed by dealer gamma",
+      "layer": "Tail Risk & Black Swan (L8)",
+      "conditions": {
+        "vix": {"field": "vix", "test": "pctl < 30"},
+        "pc_ratio": {"field": "pc_ratio_equity", "test": "pctl < 20"},
+        "iv_rv": {"field": "iv_rv_spread", "test": "value < 0"}
+      },
+      "all_must_match": true,
+      "quality": "SUSPICIOUS",
+      "reason": "VIX suppressed by dealer gamma, not true calm",
+      "true_risk": "ELEVATED despite CALM reading",
+      "affected_sub_scores": ["vix", "pc_ratio_equity", "iv_rv_spread"]
+    },
+    {
+      "id": "CREDIT_SUPPRESSION",
+      "name": "HY spreads tight but financial stress rising",
+      "layer": "Macro Regime (L2)",
+      "conditions": {
+        "hy_oas": {"field": "hy_oas", "test": "pctl < 25"},
+        "disc_window": {"field": "disc_window", "test": "direction == 'UP'"},
+        "nfci": {"field": "nfci", "test": "value > 0"}
+      },
+      "all_must_match": true,
+      "quality": "SUSPICIOUS",
+      "reason": "HY spreads tight but financial stress rising elsewhere",
+      "true_risk": "Credit stress may be building under surface",
+      "affected_sub_scores": ["hy_oas", "disc_window", "nfci"]
+    },
+    {
+      "id": "BREADTH_SUPPRESSION",
+      "name": "Breadth looks healthy but internals deteriorating",
+      "layer": "Earnings & Fundamentals (L3)",
+      "conditions": {
+        "breadth": {"field": "pct_above_200dma", "test": "value > 60"},
+        "nh_nl": {"field": "nh_nl", "test": "pctl < 30"}
+      },
+      "all_must_match": true,
+      "quality": "SUSPICIOUS",
+      "reason": "Breadth looks healthy but new highs collapsing",
+      "true_risk": "Rally narrowing, index masking weakness",
+      "affected_sub_scores": ["pct_above_200dma", "nh_nl"]
+    }
+  ],
+
+  "data_freshness": {
+    "stale_threshold": 0.5,
+    "stale_action": "halve_sub_score",
+    "_note": "If field confidence < 0.5, sub-score is halved (integer division)"
+  },
+
+  "degraded_threshold": {
+    "stale_pct": 0.3,
+    "anomaly_count": 1,
+    "_note": "Layer is DEGRADED if >30% fields stale OR >1 anomaly"
+  }
+}

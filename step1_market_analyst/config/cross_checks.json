@@ -1,0 +1,101 @@
+[
+  {
+    "id": "CREDIT_EARNINGS_DIVERGENCE",
+    "name": "Credit sieht Stress den Aktien ignorieren",
+    "condition": {
+      "layer_a": "Macro Regime (L2)",
+      "layer_a_test": "score < -5",
+      "layer_b": "Earnings & Fundamentals (L3)",
+      "layer_b_test": "score > 3"
+    },
+    "tension": "Credit markets pricing stress that equity ignores",
+    "consequence": {
+      "downgrade_conviction": "Earnings & Fundamentals (L3)",
+      "to": "CONFLICTED",
+      "flag_for": ["Risk Officer (Step 3)", "CIO (Step 4)"]
+    },
+    "historical_precedent": "2007 Q3: HY widened while SPX made new highs"
+  },
+  {
+    "id": "LIQUIDITY_SENTIMENT_DIVERGENCE",
+    "name": "Liquiditaet faellt aber Sentiment euphorisch",
+    "condition": {
+      "layer_a": "Global Liquidity Cycle (L1)",
+      "layer_a_test": "score < -3",
+      "layer_b": "Risk Appetite & Sentiment (L5)",
+      "layer_b_test": "regime == 'EUPHORIA'"
+    },
+    "tension": "Liquidity draining while positioning at extremes — vulnerable setup",
+    "consequence": {
+      "downgrade_conviction": "Risk Appetite & Sentiment (L5)",
+      "to": "CONFLICTED",
+      "flag_for": ["Risk Officer (Step 3)"]
+    },
+    "historical_precedent": "Feb 2020: Liquidity tightening, NAAIM at 100+"
+  },
+  {
+    "id": "CB_LIQUIDITY_DIVERGENCE",
+    "name": "Zentralbank strafft aber Liquiditaet expandiert",
+    "condition": {
+      "layer_a": "Central Bank Policy Divergence (L7)",
+      "layer_a_test": "regime == 'TIGHTENING'",
+      "layer_b": "Global Liquidity Cycle (L1)",
+      "layer_b_test": "score > 3"
+    },
+    "tension": "CB tightening but liquidity expanding — RRP/TGA mechanics overriding policy",
+    "consequence": {
+      "note": "Not necessarily bearish — shows mechanical vs. policy liquidity divergence",
+      "flag_for": ["CIO (Step 4)"]
+    },
+    "historical_precedent": "2023 H1: Fed hiking but RRP drain funding rally"
+  },
+  {
+    "id": "TAIL_COMPLACENCY",
+    "name": "Tail Risk ruhig trotz Macro-Deterioration",
+    "condition": {
+      "layer_a": "Tail Risk & Black Swan (L8)",
+      "layer_a_test": "regime == 'CALM'",
+      "layer_b": "Macro Regime (L2)",
+      "layer_b_test": "score < -4 AND direction == 'DETERIORATING'"
+    },
+    "tension": "Tail risk asleep while macro deteriorates — complacency or suppression?",
+    "consequence": {
+      "check": "signal_quality L8",
+      "if_suspicious": "Elevate L8 regime to ELEVATED despite CALM reading",
+      "flag_for": ["Risk Officer (Step 3)"]
+    },
+    "historical_precedent": "Jan 2020: VIX 12 while COVID spreading"
+  },
+  {
+    "id": "FLOWS_FUNDAMENTALS_DIVERGENCE",
+    "name": "Kapital fliesst raus aber Fundamentals gesund",
+    "condition": {
+      "layer_a": "Cross-Border Flows & FX (L4)",
+      "layer_a_test": "regime == 'OUTFLOW' OR regime == 'SQUEEZE'",
+      "layer_b": "Earnings & Fundamentals (L3)",
+      "layer_b_test": "score > 2"
+    },
+    "tension": "Capital outflows despite healthy fundamentals — FX or geopolitical driven",
+    "consequence": {
+      "flag_for": ["CIO (Step 4)"],
+      "note": "May indicate EM stress or USD squeeze, not fundamental weakness"
+    },
+    "historical_precedent": "2018 Q4: EM outflows while US earnings strong"
+  },
+  {
+    "id": "ROTATION_WITHOUT_CAUSE",
+    "name": "Defensive Rotation ohne Macro-Grund",
+    "condition": {
+      "layer_a": "Relative Value & Asset Rotation (L6)",
+      "layer_a_test": "regime == 'DEFENSIVE_ROTATION'",
+      "layer_b": "Macro Regime (L2)",
+      "layer_b_test": "score > 0"
+    },
+    "tension": "Defensive rotation happening despite positive macro — smart money frontrunning?",
+    "consequence": {
+      "flag_for": ["CIO (Step 4)", "Risk Officer (Step 3)"],
+      "note": "Rotation as LEADING indicator — may signal upcoming macro deterioration"
+    },
+    "historical_precedent": "Mid-2019: Defensive rotation preceded rate cuts"
+  }
+]

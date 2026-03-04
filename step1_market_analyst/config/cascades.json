@@ -1,0 +1,68 @@
+[
+  {
+    "id": "CB_TO_LIQUIDITY",
+    "name": "Zentralbank-Straffung entzieht Liquiditaet",
+    "source": "Central Bank Policy Divergence (L7)",
+    "source_trigger": "regime == 'TIGHTENING'",
+    "target": "Global Liquidity Cycle (L1)",
+    "expected_effect": "score decreases",
+    "lag_weeks_min": 3,
+    "lag_weeks_max": 6,
+    "description": "CB hawkish -> 3-6 weeks -> Liquidity tightens"
+  },
+  {
+    "id": "LIQUIDITY_TO_SENTIMENT",
+    "name": "Liquiditaets-Entzug verschlechtert Sentiment",
+    "source": "Global Liquidity Cycle (L1)",
+    "source_trigger": "regime == 'TIGHTENING' OR regime == 'DRAIN'",
+    "target": "Risk Appetite & Sentiment (L5)",
+    "expected_effect": "score increases",
+    "lag_weeks_min": 1,
+    "lag_weeks_max": 2,
+    "description": "Liquidity falls -> 1-2 weeks -> Sentiment turns fearful (L5 contrarian: score rises)"
+  },
+  {
+    "id": "CREDIT_TO_EARNINGS",
+    "name": "Credit-Stress fuehrt zu Earnings-Enttaeuschungen",
+    "source": "Macro Regime (L2)",
+    "source_trigger": "hy_oas_subscore < -5",
+    "target": "Earnings & Fundamentals (L3)",
+    "expected_effect": "score decreases",
+    "lag_weeks_min": 2,
+    "lag_weeks_max": 4,
+    "description": "Credit stress -> 2-4 weeks -> Earnings disappoint"
+  },
+  {
+    "id": "FLOWS_TO_TAIL",
+    "name": "Kapitalflucht erzeugt Tail Risk",
+    "source": "Cross-Border Flows & FX (L4)",
+    "source_trigger": "regime == 'SQUEEZE'",
+    "target": "Tail Risk & Black Swan (L8)",
+    "expected_effect": "regime moves to ELEVATED or worse",
+    "lag_weeks_min": 0,
+    "lag_weeks_max": 1,
+    "description": "FX squeeze -> immediate to 1 week -> Tail risk spikes"
+  },
+  {
+    "id": "SENTIMENT_TO_ROTATION",
+    "name": "Fear treibt Defensive Rotation",
+    "source": "Risk Appetite & Sentiment (L5)",
+    "source_trigger": "regime == 'FEAR' OR regime == 'CAPITULATION'",
+    "target": "Relative Value & Asset Rotation (L6)",
+    "expected_effect": "regime moves to DEFENSIVE_ROTATION",
+    "lag_weeks_min": 0,
+    "lag_weeks_max": 1,
+    "description": "Fear -> immediate -> Rotation into defensives"
+  },
+  {
+    "id": "TAIL_TO_CB_EMERGENCY",
+    "name": "Tail Risk Krise erzwingt Zentralbank-Eingriff",
+    "source": "Tail Risk & Black Swan (L8)",
+    "source_trigger": "regime == 'CRISIS'",
+    "target": "Central Bank Policy Divergence (L7)",
+    "expected_effect": "regime moves to EMERGENCY",
+    "lag_weeks_min": 0,
+    "lag_weeks_max": 2,
+    "description": "Crisis -> 0-2 weeks -> CB emergency easing (2008, 2020)"
+  }
+]

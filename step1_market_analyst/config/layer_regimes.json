@@ -1,0 +1,91 @@
+{
+  "_comment": "Regime categories and score thresholds per layer. Source: AGENT2_SPEC_TEIL2 Section 4.1",
+  "_version": "1.0",
+  "_scoring": "Integer -10 to +10. Regime assigned by score range.",
+
+  "Global Liquidity Cycle (L1)": {
+    "regimes": {
+      "EXPANSION":  {"score_min": 3},
+      "TRANSITION": {"score_min": -2, "score_max": 3},
+      "TIGHTENING": {"score_min": -6, "score_max": -2},
+      "DRAIN":      {"score_max": -6}
+    },
+    "regime_order": ["DRAIN", "TIGHTENING", "TRANSITION", "EXPANSION"]
+  },
+
+  "Macro Regime (L2)": {
+    "regimes": {
+      "GROWTH":    {"score_min": 3},
+      "SLOWDOWN":  {"score_min": -1, "score_max": 3},
+      "RECESSION": {"score_min": -6, "score_max": -1},
+      "RECOVERY":  {"_special": "Detected by direction=IMPROVING while score < 0"}
+    },
+    "regime_order": ["RECESSION", "SLOWDOWN", "GROWTH"],
+    "_note": "RECOVERY is directional: score negative but IMPROVING. Assigned by engine logic, not pure score range."
+  },
+
+  "Earnings & Fundamentals (L3)": {
+    "regimes": {
+      "HEALTHY":        {"score_min": 3},
+      "MIXED":          {"score_min": -2, "score_max": 3},
+      "DETERIORATING":  {"score_min": -6, "score_max": -2},
+      "CRISIS":         {"score_max": -6}
+    },
+    "regime_order": ["CRISIS", "DETERIORATING", "MIXED", "HEALTHY"]
+  },
+
+  "Cross-Border Flows & FX (L4)": {
+    "regimes": {
+      "INFLOW":   {"score_min": 3},
+      "STABLE":   {"score_min": -2, "score_max": 3},
+      "OUTFLOW":  {"score_min": -6, "score_max": -2},
+      "SQUEEZE":  {"score_max": -6}
+    },
+    "regime_order": ["SQUEEZE", "OUTFLOW", "STABLE", "INFLOW"]
+  },
+
+  "Risk Appetite & Sentiment (L5)": {
+    "_contrarian": true,
+    "_note": "L5 is CONTRARIAN. High positive score = extreme bearishness = contrarian bullish. 5 categories.",
+    "regimes": {
+      "CAPITULATION": {"score_min": 5},
+      "FEAR":         {"score_min": 2, "score_max": 5},
+      "NEUTRAL":      {"score_min": -2, "score_max": 2},
+      "OPTIMISM":     {"score_min": -5, "score_max": -2},
+      "EUPHORIA":     {"score_max": -5}
+    },
+    "regime_order": ["EUPHORIA", "OPTIMISM", "NEUTRAL", "FEAR", "CAPITULATION"]
+  },
+
+  "Relative Value & Asset Rotation (L6)": {
+    "regimes": {
+      "RISK_ON_ROTATION":    {"score_min": 3},
+      "BALANCED":            {"score_min": -2, "score_max": 3},
+      "DEFENSIVE_ROTATION":  {"score_min": -6, "score_max": -2},
+      "DISLOCATION":         {"score_max": -6}
+    },
+    "regime_order": ["DISLOCATION", "DEFENSIVE_ROTATION", "BALANCED", "RISK_ON_ROTATION"]
+  },
+
+  "Central Bank Policy Divergence (L7)": {
+    "regimes": {
+      "EASING":     {"score_min": 3},
+      "NEUTRAL":    {"score_min": -2, "score_max": 3},
+      "TIGHTENING": {"score_min": -6, "score_max": -2},
+      "EMERGENCY":  {"score_max": -6}
+    },
+    "regime_order": ["EMERGENCY", "TIGHTENING", "NEUTRAL", "EASING"]
+  },
+
+  "Tail Risk & Black Swan (L8)": {
+    "_inverted": true,
+    "_note": "L8 is INVERTED: positive score = calm (low risk), negative = stress (high risk).",
+    "regimes": {
+      "CALM":     {"score_min": 2},
+      "ELEVATED": {"score_min": -3, "score_max": 2},
+      "ACUTE":    {"score_min": -7, "score_max": -3},
+      "CRISIS":   {"score_max": -7}
+    },
+    "regime_order": ["CRISIS", "ACUTE", "ELEVATED", "CALM"]
+  }
+}

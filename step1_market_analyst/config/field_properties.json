@@ -1,0 +1,275 @@
+{
+  "_comment": "Field properties for all 30 T1/T2 fields consumed by Market Analyst. Source: AGENT2_SPEC_TEIL2 Section 4.3",
+  "_version": "1.0",
+
+  "net_liquidity": {
+    "field_id": 1,
+    "tier": "T1",
+    "timing": "LEADING",
+    "linearity": "LINEAR",
+    "invert": false,
+    "normalization_method": "pctl",
+    "description": "WALCL - TGA - RRP"
+  },
+  "walcl": {
+    "field_id": 2,
+    "tier": "T1",
+    "timing": "LAGGING",
+    "linearity": "LINEAR",
+    "invert": false,
+    "normalization_method": "direction_score",
+    "description": "Fed Balance Sheet"
+  },
+  "tga": {
+    "field_id": 3,
+    "tier": "T1",
+    "timing": "COINCIDENT",
+    "linearity": "LINEAR",
+    "invert": true,
+    "normalization_method": "pctl",
+    "description": "Treasury General Account — inverted: high TGA = liquidity drain"
+  },
+  "rrp": {
+    "field_id": 4,
+    "tier": "T1",
+    "timing": "LEADING",
+    "linearity": "LINEAR",
+    "invert": true,
+    "normalization_method": "pctl",
+    "description": "Reverse Repo — inverted: high RRP = liquidity parked, not in system"
+  },
+  "mmf_assets": {
+    "field_id": 5,
+    "tier": "T1",
+    "timing": "LAGGING",
+    "linearity": "LINEAR",
+    "invert": false,
+    "normalization_method": "pctl",
+    "description": "Money Market Fund Assets"
+  },
+  "spread_2y10y": {
+    "field_id": 6,
+    "tier": "T1",
+    "timing": "LEADING",
+    "linearity": "THRESHOLD",
+    "invert": false,
+    "normalization_method": "threshold",
+    "description": "2Y-10Y Yield Spread — 0 = inversion boundary"
+  },
+  "spread_3m10y": {
+    "field_id": 7,
+    "tier": "T1",
+    "timing": "LEADING",
+    "linearity": "THRESHOLD",
+    "invert": false,
+    "normalization_method": "threshold",
+    "description": "3M-10Y Yield Spread — 0 = inversion boundary"
+  },
+  "real_10y_yield": {
+    "field_id": 8,
+    "tier": "T1",
+    "timing": "COINCIDENT",
+    "linearity": "LINEAR",
+    "invert": "contextual",
+    "normalization_method": "pctl",
+    "description": "Real 10Y Yield (TIPS) — contextual inversion depending on layer"
+  },
+  "hy_oas": {
+    "field_id": 9,
+    "tier": "T1",
+    "timing": "LEADING",
+    "linearity": "LINEAR",
+    "invert": true,
+    "normalization_method": "pctl",
+    "description": "HY OAS — inverted: wide spreads = stress = negative"
+  },
+  "ig_oas": {
+    "field_id": 10,
+    "tier": "T1",
+    "timing": "LEADING",
+    "linearity": "LINEAR",
+    "invert": true,
+    "normalization_method": "pctl",
+    "description": "IG OAS — inverted: wide spreads = stress = negative"
+  },
+  "nfci": {
+    "field_id": 11,
+    "tier": "T2",
+    "timing": "LAGGING",
+    "linearity": "THRESHOLD",
+    "invert": true,
+    "normalization_method": "threshold",
+    "description": "Chicago Fed NFCI — inverted: positive NFCI = tighter conditions = negative"
+  },
+  "anfci": {
+    "field_id": 12,
+    "tier": "T2",
+    "timing": "LAGGING",
+    "linearity": "THRESHOLD",
+    "invert": true,
+    "normalization_method": "threshold",
+    "description": "Adjusted NFCI — inverted: positive = tighter = negative"
+  },
+  "disc_window": {
+    "field_id": 13,
+    "tier": "T2",
+    "timing": "LEADING",
+    "linearity": "NONLINEAR",
+    "invert": true,
+    "normalization_method": "nonlinear_extreme",
+    "description": "Discount Window borrowing — inverted: spike = banking stress"
+  },
+  "vix": {
+    "field_id": 14,
+    "tier": "T1",
+    "timing": "COINCIDENT",
+    "linearity": "NONLINEAR",
+    "invert": true,
+    "normalization_method": "nonlinear_extreme",
+    "description": "VIX — inverted: high VIX = fear = negative. Nonlinear: dead zone in middle"
+  },
+  "vix_term_struct": {
+    "field_id": 15,
+    "tier": "T1",
+    "timing": "LEADING",
+    "linearity": "THRESHOLD",
+    "invert": false,
+    "normalization_method": "threshold",
+    "description": "VIX3M/VIX — >1 = contango (normal), <1 = backwardation (stress)"
+  },
+  "pc_ratio_equity": {
+    "field_id": 16,
+    "tier": "T1",
+    "timing": "COINCIDENT",
+    "linearity": "NONLINEAR",
+    "invert": "contrarian",
+    "normalization_method": "nonlinear_extreme",
+    "description": "Equity P/C Ratio — contrarian: low P/C = complacency = negative"
+  },
+  "iv_rv_spread": {
+    "field_id": 17,
+    "tier": "T1",
+    "timing": "COINCIDENT",
+    "linearity": "THRESHOLD",
+    "invert": false,
+    "normalization_method": "threshold",
+    "description": "IV minus RV — 0 = boundary. Positive = IV premium, negative = RV > IV"
+  },
+  "pct_above_200dma": {
+    "field_id": 18,
+    "tier": "T1",
+    "timing": "COINCIDENT",
+    "linearity": "THRESHOLD",
+    "invert": false,
+    "normalization_method": "threshold",
+    "description": "% S&P500 above 200d MA — 50 = neutral"
+  },
+  "nh_nl": {
+    "field_id": 19,
+    "tier": "T2",
+    "timing": "COINCIDENT",
+    "linearity": "LINEAR",
+    "invert": false,
+    "normalization_method": "pctl",
+    "description": "New Highs minus New Lows"
+  },
+  "spy_tlt_corr": {
+    "field_id": 20,
+    "tier": "T2",
+    "timing": "COINCIDENT",
+    "linearity": "THRESHOLD",
+    "invert": true,
+    "normalization_method": "threshold",
+    "description": "SPY/TLT correlation — inverted: positive corr = no diversification = negative"
+  },
+  "naaim_exposure": {
+    "field_id": 21,
+    "tier": "T2",
+    "timing": "LAGGING",
+    "linearity": "NONLINEAR",
+    "invert": "contrarian",
+    "normalization_method": "nonlinear_extreme",
+    "description": "NAAIM Exposure Index — contrarian: extreme bullishness = negative"
+  },
+  "aaii_bull_bear": {
+    "field_id": 22,
+    "tier": "T2",
+    "timing": "LAGGING",
+    "linearity": "NONLINEAR",
+    "invert": "contrarian",
+    "normalization_method": "nonlinear_extreme",
+    "description": "AAII Bull-Bear Spread — contrarian: extreme bullishness = negative"
+  },
+  "cot_es_leveraged": {
+    "field_id": 23,
+    "tier": "T2",
+    "timing": "LAGGING",
+    "linearity": "NONLINEAR",
+    "invert": "contrarian",
+    "normalization_method": "nonlinear_extreme",
+    "description": "COT E-Mini S&P Leveraged Funds — contrarian"
+  },
+  "cot_zn_leveraged": {
+    "field_id": 24,
+    "tier": "T2",
+    "timing": "LAGGING",
+    "linearity": "NONLINEAR",
+    "invert": "contextual",
+    "normalization_method": "nonlinear_extreme",
+    "description": "COT 10Y Note Leveraged Funds — contextual inversion"
+  },
+  "dxy": {
+    "field_id": 25,
+    "tier": "T1",
+    "timing": "COINCIDENT",
+    "linearity": "LINEAR",
+    "invert": true,
+    "normalization_method": "pctl",
+    "description": "Dollar Index — inverted: strong dollar = pressure on EM/commodities"
+  },
+  "cu_au_ratio": {
+    "field_id": 26,
+    "tier": "T1",
+    "timing": "LEADING",
+    "linearity": "LINEAR",
+    "invert": false,
+    "normalization_method": "pctl",
+    "description": "Copper/Gold ratio — high = risk-on, growth expectations"
+  },
+  "china_10y": {
+    "field_id": 27,
+    "tier": "T2",
+    "timing": "COINCIDENT",
+    "linearity": "LINEAR",
+    "invert": true,
+    "normalization_method": "direction_score",
+    "description": "China 10Y yield — inverted: falling yield = easing/slowdown signal"
+  },
+  "usdcnh": {
+    "field_id": 28,
+    "tier": "T2",
+    "timing": "COINCIDENT",
+    "linearity": "LINEAR",
+    "invert": true,
+    "normalization_method": "pctl",
+    "description": "USD/CNH — inverted: strong USD vs CNY = China stress"
+  },
+  "wti_curve": {
+    "field_id": 29,
+    "tier": "T2",
+    "timing": "COINCIDENT",
+    "linearity": "THRESHOLD",
+    "invert": false,
+    "normalization_method": "threshold",
+    "description": "WTI front/2nd month — <1 = backwardation (demand), >1 = contango (oversupply)"
+  },
+  "usdjpy": {
+    "field_id": 30,
+    "tier": "T1",
+    "timing": "COINCIDENT",
+    "linearity": "LINEAR",
+    "invert": false,
+    "normalization_method": "pctl",
+    "description": "USD/JPY — high = carry trade risk, low = yen strength/risk-off"
+  }
+}

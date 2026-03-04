@@ -1,0 +1,98 @@
+{
+  "_comment": "Concentration Fragility Monitor config. Source: AGENT2_SPEC_ADDENDUM_FRAGILITY Sections 4-5",
+  "_version": "1.0",
+  "_status": "SHADOW_MODE — informational only, no automatic weight changes",
+
+  "indicators": {
+    "hhi": {
+      "source": "data_script",
+      "frequency": "quarterly_or_daily_approximated",
+      "thresholds": {
+        "HEALTHY": {"max": 1500},
+        "ELEVATED": {"min": 1500, "max": 2000},
+        "EXTREME": {"min": 2000}
+      }
+    },
+    "breadth_pct": {
+      "source": "data_script_field_18",
+      "field_name": "pct_above_200dma",
+      "frequency": "daily",
+      "thresholds": {
+        "HEALTHY": {"min": 70},
+        "ELEVATED": {"min": 50, "max": 70},
+        "EXTREME": {"max": 50}
+      },
+      "_note": "<35 is deep EXTREME but same state — captured in trigger detail"
+    },
+    "spy_rsp_6m_delta": {
+      "source": "data_script",
+      "frequency": "daily",
+      "thresholds": {
+        "HEALTHY": {"max": 0.10},
+        "ELEVATED": {"min": 0.10, "max": 0.20},
+        "EXTREME": {"min": 0.20}
+      }
+    },
+    "ai_capex_revenue_gap": {
+      "source": "manual_quarterly",
+      "frequency": "quarterly",
+      "max_staleness_days": 100,
+      "thresholds": {
+        "HEALTHY": {"max_ratio": 2.0},
+        "ELEVATED": {"condition": "ratio > 4.0 AND direction == WIDENING"},
+        "EXTREME": {"min_ratio": 6.0}
+      }
+    }
+  },
+
+  "crisis": {
+    "condition": "mag7_drawdown > 30% AND spy_drawdown < 15%",
+    "mag7_proxy": "equal_weight_basket",
+    "mag7_tickers": ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "TSLA"]
+  },
+
+  "state_determination": "worst_case",
+  "_state_determination_note": "The highest (worst) state triggered by ANY indicator determines overall state.",
+
+  "consequence_recommendations": {
+    "HEALTHY": {
+      "summary": "No fragility concerns. V16 operates normally.",
+      "router": "Standard thresholds active.",
+      "spy_rsp": "100% SPY as is.",
+      "xlk": "No cap.",
+      "perm_opt": "Base allocation (3%).",
+      "action_required": false
+    },
+    "ELEVATED": {
+      "summary": "Concentration elevated. Increase attention.",
+      "router": "Recommendation: Lower router thresholds (DXY 6M < -3% instead of -5%, VWO/SPY 6M > +5% instead of +10%).",
+      "spy_rsp": "Recommendation: Split SPY allocation to 70% SPY + 30% RSP.",
+      "xlk": "Recommendation: Monitor XLK weight, no hard cap.",
+      "perm_opt": "Recommendation: Increase Permanent Optionality to 4% (+1%).",
+      "action_required": true,
+      "action_type": "REVIEW",
+      "action_description": "CIO Briefing should mention ELEVATED Fragility. Agent R discusses implementation with Operator."
+    },
+    "EXTREME": {
+      "summary": "Concentration extreme. De-escalation recommended.",
+      "router": "Recommendation: Router thresholds as ELEVATED. Additionally: minimum 5% international exposure recommended.",
+      "spy_rsp": "Recommendation: Split SPY allocation to 30% SPY + 70% RSP.",
+      "xlk": "Recommendation: XLK hard cap at 20% (even if V16 wants more).",
+      "perm_opt": "Recommendation: Increase Permanent Optionality to 6% (+3%).",
+      "action_required": true,
+      "action_type": "URGENT_REVIEW",
+      "action_description": "CIO Briefing must treat EXTREME Fragility prominently. Agent R discusses concrete implementation options with Operator."
+    },
+    "CRISIS": {
+      "summary": "Mag7 concentration breaking down. Immediate attention required.",
+      "router": "Recommendation: Consider full international allocation (up to 25%). Router activation independent of standard triggers.",
+      "spy_rsp": "Recommendation: 100% RSP instead of SPY.",
+      "xlk": "Recommendation: XLK hard cap at 15%.",
+      "perm_opt": "Recommendation: Increase Permanent Optionality to 8% (+5%).",
+      "g7": "Emergency review recommended: Is this cyclical (temporary) or structural (Nokia moment)?",
+      "action_required": true,
+      "action_type": "EMERGENCY",
+      "action_description": "Immediate CIO attention. G7 Emergency Review within 48h recommended. Agent R coordinates implementation."
+    }
+  }
+}

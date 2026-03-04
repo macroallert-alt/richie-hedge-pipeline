@@ -1,0 +1,88 @@
+{
+  "_comment": "Layer-to-field mapping with weight categories. Source: AGENT2_SPEC_TEIL2 Section 4.4",
+  "_version": "1.0",
+  "_weight_map": {"PRIMARY": 3, "SECONDARY": 2, "CONTEXTUAL": 1},
+
+  "Global Liquidity Cycle (L1)": {
+    "net_liquidity":    {"risk_on": "PRIMARY",     "risk_off": "PRIMARY"},
+    "walcl":            {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "tga":              {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "rrp":              {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "mmf_assets":       {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "ic_LIQUIDITY":     {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"}
+  },
+
+  "Macro Regime (L2)": {
+    "spread_2y10y":     {"risk_on": "PRIMARY",     "risk_off": "SECONDARY"},
+    "spread_3m10y":     {"risk_on": "PRIMARY",     "risk_off": "PRIMARY"},
+    "hy_oas":           {"risk_on": "SECONDARY",   "risk_off": "PRIMARY"},
+    "ig_oas":           {"risk_on": "CONTEXTUAL",  "risk_off": "SECONDARY"},
+    "nfci":             {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "anfci":            {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "real_10y_yield":   {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "ic_RECESSION":     {"risk_on": "CONTEXTUAL",  "risk_off": "SECONDARY"},
+    "ic_FED_POLICY":    {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"}
+  },
+
+  "Earnings & Fundamentals (L3)": {
+    "pct_above_200dma": {"risk_on": "PRIMARY",     "risk_off": "SECONDARY"},
+    "nh_nl":            {"risk_on": "SECONDARY",   "risk_off": "CONTEXTUAL"},
+    "spy_tlt_corr":     {"risk_on": "SECONDARY",   "risk_off": "PRIMARY"},
+    "ic_EQUITY_VALUATION": {"risk_on": "SECONDARY","risk_off": "SECONDARY"},
+    "ic_TECH_AI":       {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"}
+  },
+
+  "Cross-Border Flows & FX (L4)": {
+    "dxy":              {"risk_on": "PRIMARY",     "risk_off": "PRIMARY"},
+    "usdjpy":           {"risk_on": "SECONDARY",   "risk_off": "SECONDARY",
+                         "_context": "level_based_in_L4_carry_trade_risk"},
+    "usdcnh":           {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "china_10y":        {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "ic_CHINA_EM":      {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "ic_DOLLAR":        {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "ic_GEOPOLITICS":   {"risk_on": "CONTEXTUAL",  "risk_off": "SECONDARY"}
+  },
+
+  "Risk Appetite & Sentiment (L5)": {
+    "_contrarian_layer": true,
+    "naaim_exposure":   {"risk_on": "PRIMARY",     "risk_off": "SECONDARY"},
+    "aaii_bull_bear":   {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "cot_es_leveraged": {"risk_on": "PRIMARY",     "risk_off": "PRIMARY"},
+    "cot_zn_leveraged": {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "ic_POSITIONING":   {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "ic_VOLATILITY":    {"risk_on": "CONTEXTUAL",  "risk_off": "SECONDARY"}
+  },
+
+  "Relative Value & Asset Rotation (L6)": {
+    "cu_au_ratio":      {"risk_on": "PRIMARY",     "risk_off": "PRIMARY"},
+    "wti_curve":        {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "real_10y_yield":   {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "spy_tlt_corr":     {"risk_on": "CONTEXTUAL",  "risk_off": "SECONDARY"},
+    "ic_ENERGY":        {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "ic_COMMODITIES":   {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"}
+  },
+
+  "Central Bank Policy Divergence (L7)": {
+    "spread_2y10y":     {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "real_10y_yield":   {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "nfci":             {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "disc_window":      {"risk_on": "CONTEXTUAL",  "risk_off": "SECONDARY"},
+    "ic_FED_POLICY":    {"risk_on": "PRIMARY",     "risk_off": "PRIMARY"},
+    "ic_LIQUIDITY":     {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"}
+  },
+
+  "Tail Risk & Black Swan (L8)": {
+    "_inverted_layer": true,
+    "vix":              {"risk_on": "PRIMARY",     "risk_off": "SECONDARY"},
+    "vix_term_struct":  {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"},
+    "iv_rv_spread":     {"risk_on": "SECONDARY",   "risk_off": "CONTEXTUAL"},
+    "pc_ratio_equity":  {"risk_on": "CONTEXTUAL",  "risk_off": "CONTEXTUAL"},
+    "hy_oas":           {"risk_on": "SECONDARY",   "risk_off": "PRIMARY",
+                         "_context": "velocity_based_in_L8"},
+    "disc_window":      {"risk_on": "CONTEXTUAL",  "risk_off": "SECONDARY",
+                         "_context": "spike_detection_in_L8"},
+    "usdjpy":           {"risk_on": "CONTEXTUAL",  "risk_off": "SECONDARY",
+                         "_context": "velocity_based_in_L8_carry_unwind_aug2024"},
+    "ic_GEOPOLITICS":   {"risk_on": "SECONDARY",   "risk_off": "SECONDARY"}
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "_comment": "IC integration rules: dynamic weighting + topic-layer mapping. Source: AGENT2_SPEC_TEIL3 Section 7.2 + TEIL5 Section 18",
+  "_version": "1.0",
+
+  "weight_rules": {
+    "data_clear_ic_confirms": {
+      "condition": "data_clarity >= 0.7 AND ic_direction == data_direction",
+      "ic_weight": "CONTEXTUAL",
+      "rationale": "Data sufficient. IC merely confirms."
+    },
+    "data_clear_ic_contradicts": {
+      "condition": "data_clarity >= 0.7 AND ic_direction != data_direction",
+      "ic_weight": "SECONDARY",
+      "rationale": "Tension created. IC sees something data doesn't show."
+    },
+    "data_unclear": {
+      "condition": "data_clarity < 0.5",
+      "ic_weight": "PRIMARY",
+      "rationale": "Data alone insufficient. IC narrative resolves ambiguity."
+    },
+    "data_lagging_ic_novel": {
+      "condition": "data_clarity < 0.7 AND ic_has_thesis_shift",
+      "ic_weight": "PRIMARY",
+      "rationale": "IC sees what data doesn't yet reflect. March 2020 case."
+    }
+  },
+
+  "topic_layer_mapping": {
+    "Global Liquidity Cycle (L1)":              ["LIQUIDITY"],
+    "Macro Regime (L2)":                         ["RECESSION", "FED_POLICY"],
+    "Earnings & Fundamentals (L3)":              ["EQUITY_VALUATION", "TECH_AI"],
+    "Cross-Border Flows & FX (L4)":              ["CHINA_EM", "DOLLAR", "GEOPOLITICS"],
+    "Risk Appetite & Sentiment (L5)":            ["POSITIONING", "VOLATILITY"],
+    "Relative Value & Asset Rotation (L6)":      ["ENERGY", "COMMODITIES"],
+    "Central Bank Policy Divergence (L7)":       ["FED_POLICY", "LIQUIDITY"],
+    "Tail Risk & Black Swan (L8)":               ["GEOPOLITICS"]
+  },
+
+  "ic_topic_to_layer_full": {
+    "_comment": "Reverse mapping from AGENT2_SPEC_TEIL5 Section 18 / IC Spec Section 8.2",
+    "LIQUIDITY":        ["Global Liquidity Cycle (L1)", "Central Bank Policy Divergence (L7)"],
+    "FED_POLICY":       ["Macro Regime (L2)", "Central Bank Policy Divergence (L7)"],
+    "CREDIT":           ["Macro Regime (L2)", "Risk Appetite & Sentiment (L5)"],
+    "RECESSION":        ["Macro Regime (L2)", "Earnings & Fundamentals (L3)", "Risk Appetite & Sentiment (L5)"],
+    "INFLATION":        ["Macro Regime (L2)", "Central Bank Policy Divergence (L7)"],
+    "EQUITY_VALUATION": ["Earnings & Fundamentals (L3)", "Risk Appetite & Sentiment (L5)"],
+    "CHINA_EM":         ["Cross-Border Flows & FX (L4)", "Relative Value & Asset Rotation (L6)"],
+    "GEOPOLITICS":      ["Cross-Border Flows & FX (L4)", "Tail Risk & Black Swan (L8)"],
+    "ENERGY":           ["Earnings & Fundamentals (L3)", "Relative Value & Asset Rotation (L6)"],
+    "COMMODITIES":      ["Earnings & Fundamentals (L3)", "Relative Value & Asset Rotation (L6)"],
+    "TECH_AI":          ["Earnings & Fundamentals (L3)", "Risk Appetite & Sentiment (L5)"],
+    "CRYPTO":           ["Relative Value & Asset Rotation (L6)", "Tail Risk & Black Swan (L8)"],
+    "DOLLAR":           ["Cross-Border Flows & FX (L4)", "Relative Value & Asset Rotation (L6)", "Central Bank Policy Divergence (L7)"],
+    "VOLATILITY":       ["Risk Appetite & Sentiment (L5)", "Tail Risk & Black Swan (L8)"],
+    "POSITIONING":      ["Risk Appetite & Sentiment (L5)", "Tail Risk & Black Swan (L8)"]
+  },
+
+  "thesis_shift_threshold": 9,
+  "high_novelty_threshold": 7,
+  "dissent_min_sources": 3
+}

@@ -1,0 +1,128 @@
+{
+  "_comment": "Key Driver + Tension template strings per layer. Source: AGENT2_SPEC_TEIL6 Section 19",
+  "_version": "1.0",
+  "_usage": "Templates use {placeholder} syntax. Filled at runtime with actual data values.",
+
+  "Global Liquidity Cycle (L1)": {
+    "key_driver_templates": {
+      "net_liquidity": {
+        "strong_positive": "Net Liquidity expanding at {pctl}th pctl, +{delta_5d}B in 5d",
+        "positive": "Net Liquidity positive at {pctl}th pctl, moderate expansion",
+        "neutral": "Net Liquidity flat near {pctl}th pctl — no clear direction",
+        "negative": "Net Liquidity contracting at {pctl}th pctl, {delta_5d}B in 5d",
+        "strong_negative": "Net Liquidity in DRAIN: {pctl}th pctl, {delta_5d}B in 5d",
+        "drivers": {
+          "rrp_falling": "driven by RRP drain (RRP at {rrp_pctl}th pctl, {rrp_delta_5d}B in 5d)",
+          "walcl_rising": "supported by WALCL expansion ({walcl_direction})",
+          "tga_falling": "TGA drawdown releasing reserves ({tga_delta_5d}B in 5d)",
+          "rrp_rising": "RRP absorbing liquidity (RRP at {rrp_pctl}th pctl)",
+          "tga_rising": "TGA rebuilding draining reserves ({tga_delta_5d}B in 5d)"
+        }
+      }
+    },
+    "tension_templates": {
+      "rrp_vs_mmf": "RRP draining (bullish) BUT MMF assets rising (liquidity not yet in risk assets)",
+      "walcl_vs_tga": "WALCL expanding BUT TGA rebuilding offsetting gains"
+    }
+  },
+
+  "Macro Regime (L2)": {
+    "key_driver_templates": {
+      "yield_curve": {
+        "positive": "Yield curve steepening: 2Y10Y at {value}bps ({direction} {delta_5d}bps/5d)",
+        "inverted": "Yield curve inverted: 2Y10Y at {value}bps — recession signal active",
+        "flattening": "Yield curve flattening: 2Y10Y at {value}bps, was {value_21d_ago}bps 21d ago"
+      },
+      "credit": {
+        "tight": "HY spreads tight at {hy_pctl}th pctl — credit conditions accommodative",
+        "widening": "HY spreads widening: {hy_pctl}th pctl, +{hy_delta_5d}bps in 5d",
+        "stress": "HY spreads at {hy_pctl}th pctl, IG at {ig_pctl}th pctl — credit stress building"
+      },
+      "financial_conditions": {
+        "loose": "Financial conditions loose: NFCI at {nfci_value} (below zero = accommodative)",
+        "tightening": "Financial conditions tightening: NFCI at {nfci_value}, rising {nfci_direction}"
+      }
+    }
+  },
+
+  "Earnings & Fundamentals (L3)": {
+    "key_driver_templates": {
+      "breadth": {
+        "strong_positive": "Market breadth strong: {value}% above 200d MA",
+        "positive": "Market breadth healthy: {value}% above 200d MA",
+        "neutral": "Market breadth neutral: {value}% above 200d MA",
+        "negative": "Market breadth narrowing: only {value}% above 200d MA",
+        "strong_negative": "Market breadth collapsed: {value}% above 200d MA — rally extremely narrow"
+      },
+      "new_highs": {
+        "positive": "New Highs minus New Lows at {pctl}th pctl — broad participation",
+        "negative": "New Highs collapsing at {pctl}th pctl — divergence from index"
+      }
+    }
+  },
+
+  "Cross-Border Flows & FX (L4)": {
+    "key_driver_templates": {
+      "dollar": {
+        "strong_positive": "DXY weakening at {pctl}th pctl — favorable for EM/commodities",
+        "positive": "DXY moderately weak at {pctl}th pctl",
+        "neutral": "DXY flat at {pctl}th pctl — no clear FX pressure",
+        "negative": "DXY strengthening at {pctl}th pctl — pressure on EM assets",
+        "strong_negative": "DXY surge at {pctl}th pctl — potential EM squeeze"
+      },
+      "china": {
+        "stress": "USD/CNH at {usdcnh_pctl}th pctl, China 10Y {china_10y_direction} — China stress rising",
+        "easing": "China 10Y {china_10y_direction}, USD/CNH at {usdcnh_pctl}th pctl — China easing underway"
+      }
+    }
+  },
+
+  "Risk Appetite & Sentiment (L5)": {
+    "_contrarian": true,
+    "key_driver_templates": {
+      "positioning": {
+        "capitulation": "Positioning at capitulation levels: NAAIM at {naaim_pctl}th pctl, AAII at {aaii_pctl}th pctl — contrarian bullish",
+        "fear": "Positioning fearful: NAAIM at {naaim_pctl}th pctl — contrarian positive",
+        "neutral": "Positioning neutral — no contrarian signal from sentiment",
+        "optimism": "Positioning elevated: NAAIM at {naaim_pctl}th pctl — crowding risk building",
+        "euphoria": "Positioning at extreme bullish levels: NAAIM at {naaim_pctl}th pctl, COT ES at {cot_es_pctl}th pctl — contrarian BEARISH"
+      }
+    }
+  },
+
+  "Relative Value & Asset Rotation (L6)": {
+    "key_driver_templates": {
+      "cu_au": {
+        "risk_on": "Cu/Au ratio at {pctl}th pctl — cyclical outperformance, growth optimism",
+        "neutral": "Cu/Au ratio neutral at {pctl}th pctl — no clear rotation signal",
+        "defensive": "Cu/Au ratio falling at {pctl}th pctl — defensive rotation underway"
+      },
+      "oil_curve": {
+        "backwardation": "WTI curve in backwardation ({value}) — demand strength",
+        "contango": "WTI curve in contango ({value}) — demand weakness / oversupply"
+      }
+    }
+  },
+
+  "Central Bank Policy Divergence (L7)": {
+    "key_driver_templates": {
+      "policy_stance": {
+        "easing": "IC consensus: Fed pivoting dovish. 2Y10Y at {spread_value}bps supports easing narrative",
+        "neutral": "CB policy neutral. NFCI at {nfci_value}, no strong directional bias",
+        "tightening": "IC consensus: Fed hawkish. Real yield at {real_yield_value}%, financial conditions tightening",
+        "emergency": "Discount window spike ({disc_window_direction}), financial stress indicators elevated"
+      }
+    }
+  },
+
+  "Tail Risk & Black Swan (L8)": {
+    "key_driver_templates": {
+      "vol_regime": {
+        "calm": "VIX at {vix_pctl}th pctl, term structure in contango ({vts_value}) — tail risk low",
+        "elevated": "VIX rising at {vix_pctl}th pctl, IV/RV spread at {ivrv_value} — risk building",
+        "acute": "VIX spike at {vix_pctl}th pctl, term structure inverted ({vts_value}) — acute stress",
+        "crisis": "VIX extreme at {vix_pctl}th pctl, HY velocity {hy_velocity} — systemic stress"
+      }
+    }
+  }
+}
