@@ -4,7 +4,7 @@ Main orchestrator. Runs daily at 06:00 UTC via GitHub Actions.
 
 10 Phases:
   0: Setup (load configs)
-  1: Read inputs (RAW_MARKET, RAW_MACRO, IC, V16 state, history)
+  1: Read inputs (RAW_AGENT2, IC, V16 state, history)
   2: Normalize (field -> sub-score)
   3: Layer scores (sub-scores -> weighted score -> regime)
   4: Dynamics (velocity, acceleration, direction, surprise, regime history, transition)
@@ -16,6 +16,9 @@ Main orchestrator. Runs daily at 06:00 UTC via GitHub Actions.
   10: Output (DW tabs + JSON files)
 
 Runtime target: <30 seconds. LLM calls: 0. External API calls: 0.
+
+Input: RAW_AGENT2 tab (30 fields, written by step_0b_agent_feeder)
+Output: SCORES, DIVERGENCE, AGENT_SUMMARY, BELIEFS tabs + Drive JSON
 """
 
 import os
@@ -124,21 +127,25 @@ def connect_google():
 
 def read_raw_data_structured(dw_sheet) -> dict:
     """
-    Reads RAW_MARKET and RAW_MACRO tabs.
-    DW stores fields as rows with standardized columns:
+    Reads RAW_AGENT2 tab (single tab, 30 fields).
+    Written by step_0b_agent_feeder.
+    Format per row:
     Field | Value | Pctl_1Y | Direction | Delta_5D | Delta_5D_Norm | Confidence | Anomaly
+
+    Skips title row (row 1). Header is row 2. Data starts row 3.
     """
     raw_data = {}
 
-    for tab_name in ["RAW_MARKET", "RAW_MACRO"]:
+    for tab_name in ["RAW_AGENT2"]:
         try:
             ws = dw_sheet.worksheet(tab_name)
             data = ws.get_all_values()
-            if len(data) < 2:
-                log.warning(f"  {tab_name}: Empty")
+            if len(data) < 3:
+                log.warning(f"  {tab_name}: Empty or only headers")
                 continue
 
-            headers = [h.strip().lower() for h in data[0]]
+            # Row 0 = title bar, Row 1 = headers, Row 2+ = data
+            headers = [h.strip().lower() for h in data[1]]
             field_col = _find_col(headers, ["field", "field_name", "name"])
             value_col = _find_col(headers, ["value", "latest"])
             pctl_col = _find_col(headers, ["pctl_1y", "pctl", "percentile"])
@@ -148,11 +155,11 @@ def read_raw_data_structured(dw_sheet) -> dict:
             conf_col = _find_col(headers, ["confidence", "conf"])
             anom_col = _find_col(headers, ["anomaly", "anomaly_flag"])
 
-            for row in data[1:]:
+            for row in data[2:]:
                 if field_col is None or field_col >= len(row):
                     continue
                 field_name = row[field_col].strip()
-                if not field_name:
+                if not field_name or field_name == "—":
                     continue
 
                 raw_data[field_name] = {
@@ -165,7 +172,8 @@ def read_raw_data_structured(dw_sheet) -> dict:
                     "anomaly_flag": _safe_str(row, anom_col, "OK"),
                 }
 
-            log.info(f"  {tab_name}: {len([r for r in data[1:] if r and r[0].strip()])} fields read")
+            field_count = len([r for r in data[2:] if r and r[0].strip() and r[0].strip() != "—"])
+            log.info(f"  {tab_name}: {field_count} fields read")
         except gspread.exceptions.WorksheetNotFound:
             log.warning(f"  {tab_name}: Tab not found")
         except Exception as e:
