@@ -1,7 +1,8 @@
 """
 step3_risk_officer/main.py
-Entry Point — liest Daten aus V16 Production + DW Sheet,
-fuehrt Risk Officer aus, schreibt RISK_ALERTS + RISK_HISTORY ins DW.
+Entry Point — liest Daten aus V16 Production + Market Analyst (Drive JSON / DW Sheet),
+fuehrt Risk Officer aus, schreibt RISK_ALERTS + RISK_HISTORY ins DW Sheet,
+schreibt JSON nach Drive CURRENT/ + ARCHIVE/.
 
 Aufruf:
   python -m step3_risk_officer                    # Normaler Run
@@ -45,43 +46,65 @@ V16_ASSETS = [
 ]
 
 # ─── DD-Protect State Mapping ─────────────────────────────────────
-# CALC_Macro_State → Macro_State_Name enthält den State
-# States 10-12 sind DD-Protect States
 
 DD_PROTECT_STATES = {10, 11, 12}
 RISK_ON_STATES = {1, 2, 3, 4, 5, 6}
 RISK_OFF_STATES = {7, 8, 9}
 
 
-def get_sheets_service():
+# ═══════════════════════════════════════════════════════════════════
+# GOOGLE SERVICES
+# ═══════════════════════════════════════════════════════════════════
+
+def _get_credentials():
+    """Erstellt Credentials aus Environment Variable. Gibt (creds, creds_path) zurueck."""
+    from google.oauth2.service_account import Credentials
+
+    creds_json = os.environ.get("GCP_SA_KEY") or os.environ.get("GOOGLE_CREDENTIALS")
+    if not creds_json:
+        log_error("No GCP_SA_KEY or GOOGLE_CREDENTIALS found in environment")
+        return None
+
+    import tempfile
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+        f.write(creds_json)
+        creds_path = f.name
+
+    creds = Credentials.from_service_account_file(
+        creds_path,
+        scopes=[
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive",
+        ]
+    )
+    os.unlink(creds_path)
+    return creds
+
+
+def get_sheets_service(creds):
     """Erstellt Google Sheets API Service."""
     try:
-        from google.oauth2.service_account import Credentials
         from googleapiclient.discovery import build
-
-        creds_json = os.environ.get("GCP_SA_KEY") or os.environ.get("GOOGLE_CREDENTIALS")
-        if not creds_json:
-            log_error("No GCP_SA_KEY or GOOGLE_CREDENTIALS found in environment")
-            return None
-
-        import tempfile
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
-            f.write(creds_json)
-            creds_path = f.name
-
-        creds = Credentials.from_service_account_file(
-            creds_path,
-            scopes=["https://www.googleapis.com/auth/spreadsheets"]
-        )
-        os.unlink(creds_path)
-
         service = build("sheets", "v4", credentials=creds)
         return service.spreadsheets()
-
     except Exception as e:
         log_error(f"Failed to create Sheets service: {e}")
         return None
 
+
+def get_drive_service(creds):
+    """Erstellt Google Drive API Service."""
+    try:
+        from googleapiclient.discovery import build
+        return build("drive", "v3", credentials=creds)
+    except Exception as e:
+        log_error(f"Failed to create Drive service: {e}")
+        return None
+
+
+# ═══════════════════════════════════════════════════════════════════
+# SHEET HELPERS
+# ═══════════════════════════════════════════════════════════════════
 
 def read_sheet_range(sheets, spreadsheet_id, range_str):
     """Liest Range aus Google Sheet. Returns list of lists."""
@@ -122,7 +145,70 @@ def clear_and_write(sheets, spreadsheet_id, range_str, values):
     return write_sheet_range(sheets, spreadsheet_id, range_str, values)
 
 
-# ─── INPUT READER ─────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════════
+# DRIVE HELPERS
+# ═══════════════════════════════════════════════════════════════════
+
+def _find_folder(drive_service, name, parent_id):
+    """Sucht Ordner nach Name unter parent_id."""
+    try:
+        results = drive_service.files().list(
+            q=f"'{parent_id}' in parents and name='{name}' and mimeType='application/vnd.google-apps.folder' and trashed=false",
+            fields="files(id)",
+        ).execute()
+        files = results.get("files", [])
+        return files[0]["id"] if files else None
+    except Exception:
+        return None
+
+
+def _find_or_create_folder(drive_service, name, parent_id):
+    """Sucht oder erstellt Ordner."""
+    folder_id = _find_folder(drive_service, name, parent_id)
+    if folder_id:
+        return folder_id
+    metadata = {"name": name, "mimeType": "application/vnd.google-apps.folder", "parents": [parent_id]}
+    folder = drive_service.files().create(body=metadata, fields="id").execute()
+    return folder["id"]
+
+
+def _upload_or_replace(drive_service, folder_id, filename, content_bytes):
+    """Upload oder Update einer Datei in einem Ordner."""
+    from googleapiclient.http import MediaInMemoryUpload
+
+    results = drive_service.files().list(
+        q=f"'{folder_id}' in parents and name='{filename}' and trashed=false",
+        fields="files(id)",
+    ).execute()
+    existing = results.get("files", [])
+    media = MediaInMemoryUpload(content_bytes, mimetype="application/json")
+    if existing:
+        drive_service.files().update(fileId=existing[0]["id"], media_body=media).execute()
+    else:
+        metadata = {"name": filename, "parents": [folder_id]}
+        drive_service.files().create(body=metadata, media_body=media).execute()
+
+
+def _read_json_from_drive(drive_service, folder_id, filename):
+    """Liest eine JSON-Datei aus einem Drive-Ordner. Returns dict oder None."""
+    try:
+        results = drive_service.files().list(
+            q=f"'{folder_id}' in parents and name='{filename}' and trashed=false",
+            fields="files(id,name)",
+        ).execute()
+        files = results.get("files", [])
+        if not files:
+            return None
+        content = drive_service.files().get_media(fileId=files[0]["id"]).execute()
+        return json.loads(content.decode("utf-8"))
+    except Exception as e:
+        log_warning(f"Drive read failed for {filename}: {e}")
+        return None
+
+
+# ═══════════════════════════════════════════════════════════════════
+# INPUT READER
+# ═══════════════════════════════════════════════════════════════════
 
 def read_v16_production(sheets):
     """
@@ -240,75 +326,132 @@ def read_v16_production(sheets):
     return v16
 
 
-def read_layer_analysis(sheets):
+def read_market_analyst_from_drive(drive_service):
     """
-    Liest Market Analyst Output aus DW SCORES Tab.
+    PRIMAER: Liest Market Analyst JSON von Drive CURRENT/step1_market_analyst.json.
 
-    SCORES Tab hat:
-      Row 1: Header-Block
-      Row 2: LAYER, SCORE_RAW, SCORE_7D, ...
-      Row 3+: L2 Sentiment, L3 Intelligence, ...
+    Returns dict mit system_regime, fragility_state, layer_scores — oder None.
+    """
+    drive_root_id = os.environ.get("DRIVE_ROOT_ID", "")
+    if not drive_root_id:
+        log_warning("DRIVE_ROOT_ID not set — cannot read from Drive")
+        return None
+
+    current_id = _find_folder(drive_service, "CURRENT", drive_root_id)
+    if not current_id:
+        log_warning("CURRENT/ folder not found on Drive")
+        return None
+
+    ma_data = _read_json_from_drive(drive_service, current_id, "step1_market_analyst.json")
+    if not ma_data:
+        log_warning("step1_market_analyst.json not found or empty on Drive")
+        return None
+
+    # Validierung: Pflichtfelder pruefen
+    if "system_regime" not in ma_data or "layers" not in ma_data:
+        log_warning("Market Analyst JSON missing required fields (system_regime, layers)")
+        return None
+
+    # Layer Scores extrahieren (layer_id -> score)
+    layer_scores = {}
+    for layer_name, layer_data in ma_data.get("layers", {}).items():
+        layer_id = layer_data.get("layer_id", "")
+        if layer_id:
+            layer_scores[layer_id] = layer_data.get("score", 0)
+
+    log_info(f"  Market Analyst from Drive: {len(layer_scores)} layers, "
+             f"regime={ma_data['system_regime'].get('regime', 'UNKNOWN')}, "
+             f"fragility={ma_data.get('fragility_state', {}).get('state', 'UNKNOWN')}")
+
+    return {
+        "source": "DRIVE_JSON",
+        "system_regime": ma_data["system_regime"],
+        "fragility_state": ma_data.get("fragility_state", {"state": "UNKNOWN"}),
+        "layer_scores": layer_scores,
+        "full_json": ma_data,
+    }
+
+
+def read_layer_analysis_from_sheet(sheets):
+    """
+    FALLBACK: Liest Market Analyst Output aus DW SCORES Tab.
+
+    SCORES Tab Format:
+      Col A = Date
+      Col B = Layer-ID (L1, L2, ..., L8)
+      Col C = Layer-Name
+      Col D = SCORE_RAW (Integer -10 bis +10)
+      Col E = Regime
+      Col F = Direction
     """
     rows = read_sheet_range(sheets, DW_SHEET_ID, f"{TAB_SCORES}!A:F")
 
-    # Layer Scores sammeln
     layer_scores = {}
+    layer_regimes = {}
+    layer_directions = {}
+
     for row in rows:
-        if not row or len(row) < 2:
+        if not row or len(row) < 4:
             continue
-        layer_name = str(row[0]).strip()
-        if not layer_name.startswith("L"):
+
+        # Col B = Layer-ID (Index 1)
+        layer_id = str(row[1]).strip()
+        if not layer_id.startswith("L"):
             continue
+
+        # Col D = SCORE_RAW (Index 3)
         try:
-            score = float(row[1])
-            layer_scores[layer_name] = score
+            score = int(float(row[3]))
         except (ValueError, TypeError):
             continue
+
+        layer_scores[layer_id] = score
+
+        # Col E = Regime (Index 4), Col F = Direction (Index 5) — optional
+        if len(row) > 4:
+            layer_regimes[layer_id] = str(row[4]).strip()
+        if len(row) > 5:
+            layer_directions[layer_id] = str(row[5]).strip()
 
     if not layer_scores:
         log_warning("SCORES tab has no valid layer scores")
         return None
 
-    log_info(f"  Layer Analysis: {len(layer_scores)} layers loaded")
-
-    # System Regime ableiten aus Layer Scores
-    # Einfache Heuristik: Durchschnitt der verfuegbaren Scores
-    avg_score = sum(layer_scores.values()) / len(layer_scores) if layer_scores else 5.0
-
-    if avg_score >= 6.5:
-        regime = "BROAD_RISK_ON"
-        lean = "POSITIVE"
-    elif avg_score >= 4.5:
-        regime = "SELECTIVE"
-        lean = "NEUTRAL"
-    elif avg_score >= 3.0:
-        regime = "CONFLICTED"
-        lean = "NEGATIVE"
-    else:
-        regime = "BROAD_RISK_OFF"
-        lean = "NEGATIVE"
-
-    # Fragility ableiten
-    # L5 Fragility Score: hoch = fragil
-    l5 = layer_scores.get("L5 Fragility", 5.0)
-    if l5 >= 8.0:
-        fragility = "CRISIS"
-    elif l5 >= 6.5:
-        fragility = "EXTREME"
-    elif l5 >= 5.0:
-        fragility = "ELEVATED"
-    else:
-        fragility = "HEALTHY"
+    log_info(f"  Layer Analysis from Sheet (FALLBACK): {len(layer_scores)} layers loaded")
+    log_info(f"  Scores: {layer_scores}")
 
     return {
-        "system_regime": {
-            "regime": regime,
-            "lean": lean
-        },
-        "fragility_state": {
-            "state": fragility
-        },
-        "layer_scores": layer_scores
+        "source": "SHEET_FALLBACK",
+        "system_regime": {"regime": "UNKNOWN", "lean": "UNKNOWN"},
+        "fragility_state": {"state": "UNKNOWN", "fallback": True},
+        "layer_scores": layer_scores,
+    }
+
+
+def read_layer_analysis(sheets, drive_service):
+    """
+    Orchestrierer: Versucht Drive JSON zuerst, faellt auf Sheet zurueck.
+    """
+    # Primaer: Drive JSON
+    if drive_service:
+        result = read_market_analyst_from_drive(drive_service)
+        if result:
+            return result
+        log_warning("Drive read failed — falling back to SCORES tab")
+
+    # Fallback: Sheet
+    if sheets:
+        result = read_layer_analysis_from_sheet(sheets)
+        if result:
+            return result
+
+    # Beides fehlgeschlagen
+    log_error("Layer Analysis completely unavailable — using safe defaults")
+    return {
+        "source": "DEFAULTS",
+        "system_regime": {"regime": "UNKNOWN", "lean": "UNKNOWN"},
+        "fragility_state": {"state": "UNKNOWN"},
+        "layer_scores": {},
     }
 
 
@@ -334,7 +477,9 @@ def read_risk_history(sheets):
         return None
 
 
-# ─── OUTPUT WRITER ────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════════
+# OUTPUT WRITER — SHEETS
+# ═══════════════════════════════════════════════════════════════════
 
 def write_risk_alerts(sheets, output):
     """Schreibt aktuellen Risk Officer Output in RISK_ALERTS Tab."""
@@ -414,7 +559,39 @@ def append_risk_history(sheets, output):
     ).execute()
 
 
-# ─── MAIN ─────────────────────────────────────────────────────────
+# ═══════════════════════════════════════════════════════════════════
+# OUTPUT WRITER — DRIVE
+# ═══════════════════════════════════════════════════════════════════
+
+def write_json_to_drive(drive_service, output):
+    """Schreibt Risk Officer JSON nach CURRENT/ und ARCHIVE/YYYY-MM-DD/."""
+    drive_root_id = os.environ.get("DRIVE_ROOT_ID", "")
+    if not drive_root_id:
+        log_warning("DRIVE_ROOT_ID not set — skipping Drive write")
+        return
+
+    try:
+        json_bytes = json.dumps(output, indent=2, default=str).encode("utf-8")
+        filename = "step3_risk_officer.json"
+
+        current_id = _find_folder(drive_service, "CURRENT", drive_root_id)
+        if current_id:
+            _upload_or_replace(drive_service, current_id, filename, json_bytes)
+            log_info(f"  Drive CURRENT/{filename} written")
+
+        archive_id = _find_folder(drive_service, "ARCHIVE", drive_root_id)
+        if archive_id:
+            date_folder_id = _find_or_create_folder(drive_service, output["date"], archive_id)
+            _upload_or_replace(drive_service, date_folder_id, filename, json_bytes)
+            log_info(f"  Drive ARCHIVE/{output['date']}/{filename} written")
+    except Exception as e:
+        log_warning(f"  Drive write failed (non-fatal): {e}")
+        log_warning("  Sheet outputs were written successfully — Drive write skipped")
+
+
+# ═══════════════════════════════════════════════════════════════════
+# MAIN
+# ═══════════════════════════════════════════════════════════════════
 
 def main():
     parser = argparse.ArgumentParser(description="Risk Officer V1")
@@ -425,14 +602,24 @@ def main():
     run_date = parse_date(args.date) if args.date else date.today()
     log_info(f"Risk Officer V1 starting — date: {run_date}, dry-run: {args.dry_run}")
 
-    # ─── Google Sheets verbinden ──────────────────────────────
+    # ─── Google Services verbinden ────────────────────────────
+    sheets = None
+    drive_service = None
+
     if not args.dry_run:
-        sheets = get_sheets_service()
+        creds = _get_credentials()
+        if not creds:
+            log_error("Cannot create Google credentials — aborting")
+            sys.exit(1)
+
+        sheets = get_sheets_service(creds)
         if not sheets:
             log_error("Cannot connect to Google Sheets — aborting")
             sys.exit(1)
-    else:
-        sheets = None
+
+        drive_service = get_drive_service(creds)
+        if not drive_service:
+            log_warning("Cannot connect to Google Drive — will use Sheet fallback only")
 
     # ─── Inputs lesen ─────────────────────────────────────────
     inputs = {}
@@ -444,14 +631,16 @@ def main():
         else:
             log_error("V16 Production unavailable — running with limited checks")
 
-        layer = read_layer_analysis(sheets)
+        layer = read_layer_analysis(sheets, drive_service)
         if layer:
             inputs["layer_analysis"] = layer
+            log_info(f"  Layer Analysis source: {layer.get('source', 'UNKNOWN')}")
         else:
             log_warning("Layer Analysis unavailable — using defaults")
             inputs["layer_analysis"] = {
+                "source": "DEFAULTS",
                 "system_regime": {"regime": "UNKNOWN", "lean": "UNKNOWN"},
-                "fragility_state": {"state": "HEALTHY"}
+                "fragility_state": {"state": "UNKNOWN"}
             }
 
         risk_history = read_risk_history(sheets)
@@ -470,6 +659,7 @@ def main():
                 }
             },
             "layer_analysis": {
+                "source": "DRY_RUN",
                 "system_regime": {"regime": "SELECTIVE", "lean": "POSITIVE"},
                 "fragility_state": {"state": "HEALTHY"}
             }
@@ -491,8 +681,14 @@ def main():
         write_risk_alerts(sheets, output)
         append_risk_history(sheets, output)
         log_info("Sheet write complete.")
-    elif args.dry_run:
-        log_info("Dry-run — skipping Sheet write")
+
+    # ─── Drive schreiben ──────────────────────────────────────
+    if drive_service and not args.dry_run:
+        log_info("Writing to Google Drive...")
+        write_json_to_drive(drive_service, output)
+
+    if args.dry_run:
+        log_info("Dry-run — skipping all writes")
         print(json.dumps(output, indent=2, default=str))
 
     return output

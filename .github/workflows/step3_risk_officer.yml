@@ -42,6 +42,7 @@ jobs:
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          DRIVE_ROOT_ID: "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             python -m step3_risk_officer --dry-run
