@@ -602,11 +602,11 @@ def pull_cot_leveraged():
 
     try:
         year = date.today().year
-        url = f"https://www.cftc.gov/files/dea/history/fut_disagg_txt_{year}.zip"
+        url = f"https://www.cftc.gov/files/dea/history/fut_fin_txt_{year}.zip"
         log.info(f"  COT: Fetching {url}...")
         resp = req.get(url, headers=SCRAPE_HEADERS, timeout=45)
         if resp.status_code != 200:
-            url = f"https://www.cftc.gov/files/dea/history/fut_disagg_txt_{year-1}.zip"
+            url = f"https://www.cftc.gov/files/dea/history/fut_fin_txt_{year-1}.zip"
             log.info(f"  COT: Fallback {url}...")
             resp = req.get(url, headers=SCRAPE_HEADERS, timeout=45)
         if resp.status_code != 200:
@@ -629,19 +629,30 @@ def pull_cot_leveraged():
         if date_col is None:
             date_col = next((c for c in df.columns if 'date' in c.lower()), None)
 
-        # Find managed money columns (disaggregated report uses "M_Money" not "Lev_Money")
-        # Columns: M_Money_Positions_Long_All, M_Money_Positions_Short_All
+        # Find leveraged/managed money columns
+        # Financial Futures report (fut_fin): "Lev_Money_Positions_Long_All"
+        # Disaggregated report (fut_disagg): "M_Money_Positions_Long_All"
         long_col = None
         short_col = None
+        # Try Leveraged Money first (Financial Futures report)
         for c in df.columns:
             cl = c.lower().replace(' ', '_')
-            # Primary: Managed Money (M_Money)
-            if 'm_money' in cl and 'long' in cl and 'spread' not in cl and 'change' not in cl and 'old' not in cl:
+            if 'lev_money' in cl and 'long' in cl and 'spread' not in cl and 'change' not in cl and 'old' not in cl:
                 if long_col is None:
                     long_col = c
-            if 'm_money' in cl and 'short' in cl and 'spread' not in cl and 'change' not in cl and 'old' not in cl:
+            if 'lev_money' in cl and 'short' in cl and 'spread' not in cl and 'change' not in cl and 'old' not in cl:
                 if short_col is None:
                     short_col = c
+        # Fallback: Managed Money (Disaggregated report)
+        if long_col is None or short_col is None:
+            for c in df.columns:
+                cl = c.lower().replace(' ', '_')
+                if 'm_money' in cl and 'long' in cl and 'spread' not in cl and 'change' not in cl and 'old' not in cl:
+                    if long_col is None:
+                        long_col = c
+                if 'm_money' in cl and 'short' in cl and 'spread' not in cl and 'change' not in cl and 'old' not in cl:
+                    if short_col is None:
+                        short_col = c
 
         if long_col is None or short_col is None:
             log.warning(f"  COT: Cannot find Managed Money Long/Short columns")
