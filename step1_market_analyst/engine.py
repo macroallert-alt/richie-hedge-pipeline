@@ -534,10 +534,28 @@ def write_agent_summary(dw_sheet, output):
         lid = get_layer_id(ln)
         layer_parts.append(f"{lid}:{ls.get('score', 0)}({ls.get('regime', '?')[:4]})")
     layer_str = " | ".join(layer_parts)
-    row = [today, "Step1_MarketAnalyst", sys_reg, frag, n_cross, n_cascade, n_surprise,
-           layer_str[:300], output["run_timestamp"]]
-    _write_rows_to_tab(ws, [row], today, 9)
-    log.info(f"  AGENT_SUMMARY: {sys_reg} | Fragility={frag}")
+
+    # Find the "Agent 1" / "Senior Macro" row and overwrite it
+    all_data = ws.get_all_values()
+    target_row = None
+    for i, row in enumerate(all_data):
+        if len(row) >= 3 and ("Agent 1" in str(row[1]) or "Senior Macro" in str(row[2])):
+            target_row = i + 1  # 1-indexed
+            break
+    if target_row is None:
+        # Fallback: write to row 2 (after title)
+        target_row = 2
+
+    row_data = [today, "Step1_MarketAnalyst", sys_reg, frag, n_cross, n_cascade, n_surprise,
+                layer_str[:300], output["run_timestamp"]]
+    # Pad to 9 cols
+    while len(row_data) < 9:
+        row_data.append("")
+    row_data = [str(v) if v is not None else "" for v in row_data]
+
+    ws.update(values=[row_data], range_name=f"A{target_row}:I{target_row}",
+              value_input_option="RAW")
+    log.info(f"  AGENT_SUMMARY: {sys_reg} | Fragility={frag} (row {target_row})")
 
 
 def write_beliefs_tab(dw_sheet, output):
@@ -551,8 +569,13 @@ def write_beliefs_tab(dw_sheet, output):
     for layer_name in LAYER_NAMES:
         lr = output["layers"].get(layer_name, {})
         row.extend([lr.get("score", 0), lr.get("regime", "UNKNOWN"), lr.get("direction", "STABLE")])
-    _write_rows_to_tab(ws, [row], today, 1 + 8 * 3)
-    log.info("  BELIEFS: 1 row written")
+    row = [str(v) if v is not None else "" for v in row]
+    n_cols = len(row)
+    end_col = _col_letter(n_cols)
+    # Write to row 2 (after title row 1)
+    ws.update(values=[row], range_name=f"A2:{end_col}2",
+              value_input_option="RAW")
+    log.info("  BELIEFS: 1 row written (row 2)")
 
 
 def write_json_to_drive(drive_service, output):
@@ -617,21 +640,62 @@ def _upload_or_replace(drive_service, folder_id, filename, content_bytes):
 # ============================================================
 
 def _write_rows_to_tab(ws, rows, today_str, expected_cols):
+    """Write rows to tab using update (not insert) to preserve layout.
+    
+    Strategy: Find the data section (rows between title and next section header),
+    write into those rows using update(). Never insert or delete rows.
+    """
     padded = []
     for row in rows:
         r = [str(v) if v is not None else "" for v in row]
         while len(r) < expected_cols:
             r.append("")
         padded.append(r)
-    try:
-        existing_dates = ws.col_values(1)[1:]
-        rows_to_delete = [i + 2 for i, d in enumerate(existing_dates) if d == today_str]
-        for row_idx in sorted(rows_to_delete, reverse=True):
-            ws.delete_rows(row_idx)
-    except Exception:
-        pass
-    if padded:
-        ws.insert_rows(padded, row=2, value_input_option="RAW")
+
+    if not padded:
+        return
+
+    # Find first empty or data row after row 1 (title row)
+    # The data section starts at row 2 in all tabs
+    all_data = ws.get_all_values()
+    
+    # Find where to write: look for first row that is either empty,
+    # has a date, or has "—" in col A (placeholder)
+    data_start = 2  # Row 2 (1-indexed) = after title
+    
+    # Check if row 2 is a header row (contains column names like DATE, LAYER, etc.)
+    if len(all_data) >= 2:
+        row2_upper = [str(c).strip().upper() for c in all_data[1]]
+        header_keywords = {"DATE", "LAYER", "BELIEF_ID", "COLUMN", "COMBINATION", "SOURCE"}
+        if any(kw in row2_upper for kw in header_keywords):
+            data_start = 3  # Skip header, write from row 3
+
+    # First: clear any existing rows for today (overwrite with blanks)
+    for i, existing_row in enumerate(all_data):
+        row_idx = i + 1  # 1-indexed
+        if row_idx < data_start:
+            continue
+        if len(existing_row) > 0 and existing_row[0] == today_str:
+            blank = [""] * expected_cols
+            ws.update(values=[blank], range_name=f"A{row_idx}:{chr(64+expected_cols)}{row_idx}",
+                      value_input_option="RAW")
+
+    # Write new data starting at data_start
+    end_row = data_start + len(padded) - 1
+    # Use column letter calculation for ranges > 26 cols
+    end_col = _col_letter(expected_cols)
+    ws.update(values=padded, range_name=f"A{data_start}:{end_col}{end_row}",
+              value_input_option="RAW")
+
+
+def _col_letter(n):
+    """Convert column number (1-indexed) to Excel letter (A, B, ..., Z, AA, AB...)."""
+    result = ""
+    while n > 0:
+        n -= 1
+        result = chr(65 + n % 26) + result
+        n //= 26
+    return result
 
 
 # ============================================================
