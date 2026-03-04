@@ -3,36 +3,28 @@ name: Step 0b — Agent Feeder (30 Fields → RAW_AGENT2)
 on:
   schedule:
     - cron: '30 3 * * 1-5'   # 03:30 UTC = 04:30 CET, Mon-Fri (before Step 1 at 04:50)
-  workflow_dispatch:           # Manual trigger
+  workflow_dispatch:
 
 jobs:
   agent-feeder:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Install dependencies
         run: pip install -r step_0b_agent_feeder/requirements.txt
 
       - name: Write GCP credentials
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-        run: echo "$GCP_SA_KEY" > /tmp/gcp_sa.json
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
 
       - name: Run Agent Feeder
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
-          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python step_0b_agent_feeder/main.py
-
-      - name: Cleanup credentials
-        if: always()
-        run: rm -f /tmp/gcp_sa.json
