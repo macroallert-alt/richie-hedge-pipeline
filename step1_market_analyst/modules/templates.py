@@ -237,8 +237,38 @@ def _fill_template(template_str: str, raw_data: dict, context_field: str = None)
         "pctl_1y": "pctl_1y",
     }
 
+    ALIAS_MAP = {
+        "vts_value": ("vix_term_struct", "value"),
+        "vix_pctl": ("vix", "pctl_1y"),
+        "ivrv_value": ("iv_rv_spread", "value"),
+        "hy_velocity": ("hy_oas", "delta_5d"),
+        "nfci_value": ("nfci", "value"),
+        "nfci_direction": ("nfci", "direction"),
+        "spread_value": ("spread_2y10y", "value"),
+        "real_yield_value": ("real_10y_yield", "value"),
+        "hy_pctl": ("hy_oas", "pctl_1y"),
+        "ig_pctl": ("ig_oas", "pctl_1y"),
+        "hy_delta_5d": ("hy_oas", "delta_5d"),
+        "naaim_pctl": ("naaim_exposure", "pctl_1y"),
+        "aaii_pctl": ("aaii_bull_bear", "pctl_1y"),
+        "cot_es_pctl": ("cot_es_leveraged", "pctl_1y"),
+        "usdcnh_pctl": ("usdcnh", "pctl_1y"),
+        "china_10y_direction": ("china_10y", "direction"),
+        "rrp_pctl": ("rrp", "pctl_1y"),
+        "rrp_delta_5d": ("rrp", "delta_5d"),
+        "walcl_direction": ("walcl", "direction"),
+        "tga_delta_5d": ("tga", "delta_5d"),
+        "disc_window_direction": ("disc_window", "direction"),
+    }
+
     def replacer(match):
         key = match.group(1)
+
+        if key in ALIAS_MAP:
+            fn, dk = ALIAS_MAP[key]
+            fd = raw_data.get(fn, {})
+            if isinstance(fd, dict) and dk in fd:
+                return str(fd[dk])
 
         if key in GENERIC_KEYS and ctx_data:
             mapped = GENERIC_MAP.get(key, key)
