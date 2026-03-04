@@ -989,6 +989,49 @@ def main():
         json.dump(dashboard, f, indent=2, ensure_ascii=False)
     print(f"  dashboard_{v16_data['date']}.json (Backup)")
 
+    # 4b. Write to SIGNAL_HISTORY (V16 Sheet)
+    print("\n" + "="*60)
+    print("SIGNAL_HISTORY WRITE")
+    print("="*60)
+    try:
+        from google.oauth2.service_account import Credentials
+        from googleapiclient.discovery import build
+        import tempfile
+
+        creds_json = os.environ.get("GCP_SA_KEY") or os.environ.get("GOOGLE_CREDENTIALS")
+        if creds_json:
+            with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+                f.write(creds_json)
+                creds_path = f.name
+            creds = Credentials.from_service_account_file(
+                creds_path, scopes=["https://www.googleapis.com/auth/spreadsheets"]
+            )
+            os.unlink(creds_path)
+            sheets = build("sheets", "v4", credentials=creds).spreadsheets()
+
+            # Zeile: Date, Macro_State, Growth, Liq_Dir, Stress, FM_GLD...FM_ETH
+            tw = v16_data["target_weights"]
+            row = [
+                v16_data["date"],
+                str(v16_data["macro_state_num"]),
+                str(v16_data["growth_signal"]),
+                str(v16_data["liq_direction"]),
+                str(v16_data["stress_score"]),
+            ] + [str(round(tw.get(a, 0), 6)) for a in ASSETS]
+
+            sheets.values().append(
+                spreadsheetId=SHEET_ID,
+                range="SIGNAL_HISTORY!A:AD",
+                valueInputOption="RAW",
+                body={"values": [row]}
+            ).execute()
+            print(f"  Appended row for {v16_data['date']}: {sum(1 for a in ASSETS if tw.get(a,0) > 0)} active positions")
+        else:
+            print("  SKIP: No GCP_SA_KEY/GOOGLE_CREDENTIALS found")
+    except Exception as e:
+        print(f"  WARNING: SIGNAL_HISTORY write failed: {e}")
+        print("  (Non-fatal — dashboard.json was saved successfully)")
+
     # 5. Summary
     elapsed = (datetime.now() - t0).total_seconds()
     print(f"\n{'='*60}")
