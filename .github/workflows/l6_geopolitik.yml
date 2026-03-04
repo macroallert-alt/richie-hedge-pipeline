@@ -1,0 +1,22 @@
+name: L6 Geopolitik Collector
+on:
+  schedule:
+    - cron: '40 8 * * 1-5'
+  workflow_dispatch:
+jobs:
+  l6-geopolitik:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0h_l6_geopolitik/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L6 Geopolitik Collector
+        run: python step_0h_l6_geopolitik/main.py
