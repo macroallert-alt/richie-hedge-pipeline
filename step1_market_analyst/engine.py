@@ -556,17 +556,21 @@ def write_beliefs_tab(dw_sheet, output):
 
 
 def write_json_to_drive(drive_service, output):
-    json_bytes = json.dumps(output, indent=2, default=str).encode("utf-8")
-    filename = "step1_market_analyst.json"
-    current_id = _find_folder(drive_service, "CURRENT", DRIVE_ROOT_ID)
-    if current_id:
-        _upload_or_replace(drive_service, current_id, filename, json_bytes)
-        log.info(f"  Drive CURRENT/{filename} written")
-    archive_id = _find_folder(drive_service, "ARCHIVE", DRIVE_ROOT_ID)
-    if archive_id:
-        date_folder_id = _find_or_create_folder(drive_service, output["date"], archive_id)
-        _upload_or_replace(drive_service, date_folder_id, filename, json_bytes)
-        log.info(f"  Drive ARCHIVE/{output['date']}/{filename} written")
+    try:
+        json_bytes = json.dumps(output, indent=2, default=str).encode("utf-8")
+        filename = "step1_market_analyst.json"
+        current_id = _find_folder(drive_service, "CURRENT", DRIVE_ROOT_ID)
+        if current_id:
+            _upload_or_replace(drive_service, current_id, filename, json_bytes)
+            log.info(f"  Drive CURRENT/{filename} written")
+        archive_id = _find_folder(drive_service, "ARCHIVE", DRIVE_ROOT_ID)
+        if archive_id:
+            date_folder_id = _find_or_create_folder(drive_service, output["date"], archive_id)
+            _upload_or_replace(drive_service, date_folder_id, filename, json_bytes)
+            log.info(f"  Drive ARCHIVE/{output['date']}/{filename} written")
+    except Exception as e:
+        log.warning(f"  Drive write failed (non-fatal): {e}")
+        log.warning("  Sheet outputs were written successfully — Drive archive skipped")
 
 
 # ============================================================
