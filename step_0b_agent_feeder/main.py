@@ -516,7 +516,7 @@ def pull_nh_nl():
         below_count = 0
         valid = 0
         for etf in etfs:
-            df = yf_download(etf, days=280)
+            df = yf_download(etf, days=370)  # 370 cal days ≈ 260 trading days
             if len(df) < 252:
                 continue
             close = df["Close"].dropna()
@@ -650,6 +650,13 @@ def pull_cot_leveraged():
 
         log.info(f"  COT: Long col='{long_col}', Short col='{short_col}'")
 
+        # Debug: show unique market names containing key words
+        all_markets = df[market_col].unique()
+        sp_markets = [m for m in all_markets if 's&p' in str(m).lower() or 'e-mini' in str(m).lower() or 'sp ' in str(m).lower()]
+        tn_markets = [m for m in all_markets if 'note' in str(m).lower() or 't-note' in str(m).lower() or '10-y' in str(m).lower() or '10 y' in str(m).lower()]
+        log.info(f"  COT S&P-related markets: {sp_markets[:5]}")
+        log.info(f"  COT Note-related markets: {tn_markets[:5]}")
+
         def get_cot_net(market_pattern, label):
             mask = df[market_col].str.contains(market_pattern, case=False, na=False)
             if not mask.any():
@@ -674,12 +681,22 @@ def pull_cot_leveraged():
                 return None
 
         results["cot_es_leveraged"] = get_cot_net("E-MINI S&P 500", "ES")
+        if results["cot_es_leveraged"] is None:
+            results["cot_es_leveraged"] = get_cot_net("E-MINI S.P. 500", "ES")
+        if results["cot_es_leveraged"] is None:
+            results["cot_es_leveraged"] = get_cot_net("EMINI S&P", "ES")
+        if results["cot_es_leveraged"] is None:
+            results["cot_es_leveraged"] = get_cot_net("S&P 500", "ES")
+
         results["cot_zn_leveraged"] = get_cot_net("10-YEAR", "ZN")
-        # Fallback for ZN
         if results["cot_zn_leveraged"] is None:
             results["cot_zn_leveraged"] = get_cot_net("10 YEAR", "ZN")
-            if results["cot_zn_leveraged"] is None:
-                results["cot_zn_leveraged"] = get_cot_net("T-NOTE", "ZN")
+        if results["cot_zn_leveraged"] is None:
+            results["cot_zn_leveraged"] = get_cot_net("T-NOTE", "ZN")
+        if results["cot_zn_leveraged"] is None:
+            results["cot_zn_leveraged"] = get_cot_net("10 YR", "ZN")
+        if results["cot_zn_leveraged"] is None:
+            results["cot_zn_leveraged"] = get_cot_net("UST 10", "ZN")
 
     except Exception as e:
         log.warning(f"  COT pull failed: {e}")
