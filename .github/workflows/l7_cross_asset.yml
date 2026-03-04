@@ -1,0 +1,21 @@
+name: L7 Cross-Asset Collector
+on:
+  schedule:
+    - cron: '35 8 * * 1-5'
+  workflow_dispatch:
+jobs:
+  l7-cross-asset:
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0f_l7_cross_asset/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L7 Cross-Asset Collector
+        run: python step_0f_l7_cross_asset/main.py
