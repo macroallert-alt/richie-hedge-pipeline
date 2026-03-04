@@ -4,7 +4,7 @@ Main orchestrator. Runs daily at 06:00 UTC via GitHub Actions.
 
 10 Phases:
   0: Setup (load configs)
-  1: Read inputs (RAW_AGENT2, IC, V16 state, history)
+  1: Read inputs (RAW_MARKET, RAW_MACRO, IC, V16 state, history)
   2: Normalize (field -> sub-score)
   3: Layer scores (sub-scores -> weighted score -> regime)
   4: Dynamics (velocity, acceleration, direction, surprise, regime history, transition)
@@ -16,9 +16,6 @@ Main orchestrator. Runs daily at 06:00 UTC via GitHub Actions.
   10: Output (DW tabs + JSON files)
 
 Runtime target: <30 seconds. LLM calls: 0. External API calls: 0.
-
-Input: RAW_AGENT2 tab (30 fields, written by step_0b_agent_feeder)
-Output: SCORES, DIVERGENCE, AGENT_SUMMARY, BELIEFS tabs + Drive JSON
 """
 
 import os
@@ -111,6 +108,15 @@ def load_configs() -> dict:
 
 def connect_google():
     creds_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "/tmp/gcp_sa.json")
+    if not os.path.exists(creds_path):
+        raw = os.environ.get("GOOGLE_CREDENTIALS", "")
+        if not raw:
+            raw = os.environ.get("GCP_SA_KEY", "")
+        if raw:
+            with open(creds_path, "w") as f:
+                f.write(raw)
+        else:
+            raise FileNotFoundError("No GCP credentials found")
     creds = Credentials.from_service_account_file(creds_path, scopes=[
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive",
@@ -127,12 +133,9 @@ def connect_google():
 
 def read_raw_data_structured(dw_sheet) -> dict:
     """
-    Reads RAW_AGENT2 tab (single tab, 30 fields).
-    Written by step_0b_agent_feeder.
-    Format per row:
+    Reads RAW_AGENT2 tab (fed by step_0b_agent_feeder).
+    DW stores fields as rows with standardized columns:
     Field | Value | Pctl_1Y | Direction | Delta_5D | Delta_5D_Norm | Confidence | Anomaly
-
-    Skips title row (row 1). Header is row 2. Data starts row 3.
     """
     raw_data = {}
 
@@ -141,11 +144,20 @@ def read_raw_data_structured(dw_sheet) -> dict:
             ws = dw_sheet.worksheet(tab_name)
             data = ws.get_all_values()
             if len(data) < 3:
-                log.warning(f"  {tab_name}: Empty or only headers")
+                log.warning(f"  {tab_name}: Empty or no data rows")
                 continue
 
-            # Row 0 = title bar, Row 1 = headers, Row 2+ = data
-            headers = [h.strip().lower() for h in data[1]]
+            # RAW_AGENT2 has title in row 1, headers in row 2, data from row 3
+            # Detect by checking if row 0 looks like a title (no 'field' header)
+            row0_lower = [h.strip().lower() for h in data[0]]
+            if "field" in row0_lower or "field_name" in row0_lower:
+                header_idx = 0
+                data_start = 1
+            else:
+                header_idx = 1
+                data_start = 2
+
+            headers = [h.strip().lower() for h in data[header_idx]]
             field_col = _find_col(headers, ["field", "field_name", "name"])
             value_col = _find_col(headers, ["value", "latest"])
             pctl_col = _find_col(headers, ["pctl_1y", "pctl", "percentile"])
@@ -155,11 +167,11 @@ def read_raw_data_structured(dw_sheet) -> dict:
             conf_col = _find_col(headers, ["confidence", "conf"])
             anom_col = _find_col(headers, ["anomaly", "anomaly_flag"])
 
-            for row in data[2:]:
+            for row in data[data_start:]:
                 if field_col is None or field_col >= len(row):
                     continue
                 field_name = row[field_col].strip()
-                if not field_name or field_name == "—":
+                if not field_name:
                     continue
 
                 raw_data[field_name] = {
@@ -172,8 +184,7 @@ def read_raw_data_structured(dw_sheet) -> dict:
                     "anomaly_flag": _safe_str(row, anom_col, "OK"),
                 }
 
-            field_count = len([r for r in data[2:] if r and r[0].strip() and r[0].strip() != "—"])
-            log.info(f"  {tab_name}: {field_count} fields read")
+            log.info(f"  {tab_name}: {len([r for r in data[1:] if r and r[0].strip()])} fields read")
         except gspread.exceptions.WorksheetNotFound:
             log.warning(f"  {tab_name}: Tab not found")
         except Exception as e:
