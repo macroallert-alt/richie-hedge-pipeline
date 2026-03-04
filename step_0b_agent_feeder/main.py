@@ -232,12 +232,18 @@ def pull_yfinance_fields():
     """Pull all yfinance-sourced fields. Returns dict {field_name: value}."""
     results = {}
 
+    # Fix TzCache lock issue on GitHub Actions
+    import os
+    os.environ["YF_CACHE_DIR"] = "/tmp/yf_cache"
+    os.makedirs("/tmp/yf_cache", exist_ok=True)
+
     # --- Multi-ticker download for efficiency ---
     tickers = "^VIX ^VIX3M SPY TLT DX-Y.NYB HG=F GC=F CNH=X CL=F JPY=X"
     log.info(f"  Downloading: {tickers}")
     try:
         bulk = yf.download(tickers, period="120d", interval="1d",
-                           progress=False, auto_adjust=True, group_by="ticker")
+                           progress=False, auto_adjust=True, group_by="ticker",
+                           threads=False)  # threads=False avoids DB lock
     except Exception as e:
         log.error(f"  Bulk yfinance download failed: {e}")
         bulk = pd.DataFrame()
@@ -502,79 +508,44 @@ def pull_pct_above_200dma():
 # ─────────────────────────────────────────────
 
 def pull_nh_nl():
-    """NYSE New Highs minus New Lows. Multiple scrape attempts."""
-    import requests as req
-    import re
-
-    # Source 1: stockanalysis.com (simple HTML)
+    """NYSE New Highs minus New Lows. ETF-based proxy (always works)."""
     try:
-        url = "https://stockanalysis.com/markets/highs-lows/"
-        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=15)
-        if resp.status_code == 200:
-            text = resp.text
-            # Look for new highs and new lows counts
-            highs_m = re.search(r'New\s+Highs?\s*</[^>]*>\s*<[^>]*>\s*(\d+)', text, re.I)
-            lows_m = re.search(r'New\s+Lows?\s*</[^>]*>\s*<[^>]*>\s*(\d+)', text, re.I)
-            if highs_m and lows_m:
-                nh = int(highs_m.group(1))
-                nl = int(lows_m.group(1))
-                result = nh - nl
-                log.info(f"  nh_nl: Highs={nh}, Lows={nl}, Net={result} (stockanalysis)")
-                return result
-    except Exception as e:
-        log.warning(f"  nh_nl stockanalysis failed: {e}")
-
-    # Source 2: marketinout.com
-    try:
-        url = "https://www.marketinout.com/chart/market.php?breadth=new-highs-new-lows"
-        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=15)
-        if resp.status_code == 200:
-            text = resp.text
-            # Look for the latest value in the data
-            m = re.search(r'New Highs.*?(\d+).*?New Lows.*?(\d+)', text, re.I | re.S)
-            if m:
-                nh = int(m.group(1))
-                nl = int(m.group(2))
-                result = nh - nl
-                log.info(f"  nh_nl: Highs={nh}, Lows={nl}, Net={result} (marketinout)")
-                return result
-    except Exception as e:
-        log.warning(f"  nh_nl marketinout failed: {e}")
-
-    # Source 3: Calculate from yfinance — count S&P 500 near 52w highs vs lows
-    # Crude proxy but always available
-    try:
-        log.info("  nh_nl: trying yfinance proxy (SPY constituents sample)")
-        # Use sector ETFs as proxy for breadth
+        log.info("  nh_nl: calculating via sector ETF proxy")
         etfs = ["XLK", "XLF", "XLV", "XLE", "XLI", "XLP", "XLY", "XLU", "XLB", "XLRE", "XLC"]
         above_count = 0
         below_count = 0
+        valid = 0
         for etf in etfs:
-            df = yf_download(etf, days=260)
+            df = yf_download(etf, days=280)
             if len(df) < 252:
                 continue
             close = df["Close"].dropna()
-            high_52w = close.rolling(252).max().iloc[-1]
-            low_52w = close.rolling(252).min().iloc[-1]
-            last = close.iloc[-1]
-            # Within 2% of 52w high = "new high territory"
-            if last >= high_52w * 0.98:
+            if len(close) < 252:
+                continue
+            valid += 1
+            high_52w = float(close.rolling(252).max().iloc[-1])
+            low_52w = float(close.rolling(252).min().iloc[-1])
+            last = float(close.iloc[-1])
+            # Within 3% of 52w high = "new high territory"
+            if last >= high_52w * 0.97:
                 above_count += 1
-            # Within 2% of 52w low = "new low territory"
-            elif last <= low_52w * 1.02:
+            # Within 3% of 52w low = "new low territory"
+            elif last <= low_52w * 1.03:
                 below_count += 1
-        if above_count + below_count > 0:
+        if valid >= 8:
             # Scale: each sector ETF represents ~45 stocks
             nh = above_count * 45
             nl = below_count * 45
             result = nh - nl
-            log.info(f"  nh_nl: ETF proxy — {above_count} sectors near highs, {below_count} near lows, est Net={result}")
+            log.info(f"  nh_nl: {valid} ETFs analyzed, {above_count} near highs, "
+                     f"{below_count} near lows, est Net={result}")
             return result
+        else:
+            log.warning(f"  nh_nl: only {valid}/11 ETFs had enough data")
+            return None
     except Exception as e:
-        log.warning(f"  nh_nl yfinance proxy failed: {e}")
-
-    log.warning("  nh_nl: all sources failed")
-    return None
+        log.warning(f"  nh_nl failed: {e}")
+        return None
 
 
 # ─────────────────────────────────────────────
@@ -658,22 +629,22 @@ def pull_cot_leveraged():
         if date_col is None:
             date_col = next((c for c in df.columns if 'date' in c.lower()), None)
 
-        # Find leveraged money columns (the disaggregated report uses these names)
-        # Typical: "Lev_Money_Positions_Long_All" and "Lev_Money_Positions_Short_All"
-        # Or: "Lev Money Positions-Long (All)" etc.
+        # Find managed money columns (disaggregated report uses "M_Money" not "Lev_Money")
+        # Columns: M_Money_Positions_Long_All, M_Money_Positions_Short_All
         long_col = None
         short_col = None
         for c in df.columns:
-            cl = c.lower().replace('_', ' ').replace('-', ' ')
-            if 'lev' in cl and 'long' in cl and 'spread' not in cl and 'change' not in cl:
+            cl = c.lower().replace(' ', '_')
+            # Primary: Managed Money (M_Money)
+            if 'm_money' in cl and 'long' in cl and 'spread' not in cl and 'change' not in cl and 'old' not in cl:
                 if long_col is None:
                     long_col = c
-            if 'lev' in cl and 'short' in cl and 'spread' not in cl and 'change' not in cl:
+            if 'm_money' in cl and 'short' in cl and 'spread' not in cl and 'change' not in cl and 'old' not in cl:
                 if short_col is None:
                     short_col = c
 
         if long_col is None or short_col is None:
-            log.warning(f"  COT: Cannot find Lev Money Long/Short columns")
+            log.warning(f"  COT: Cannot find Managed Money Long/Short columns")
             log.warning(f"  COT: All columns: {df.columns.tolist()[:20]}")
             return results
 
