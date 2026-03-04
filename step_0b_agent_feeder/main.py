@@ -7,9 +7,12 @@ Writes to Data Warehouse tabs:
   RAW_AGENT2          — Current values (30 rows, overwritten daily)
   RAW_AGENT2_HISTORY  — Daily append (365d rolling, for Pctl/Delta calc)
 
-Wave 1 (24 fields): FRED + yfinance — fully automated
-Wave 2 (6 fields):  pct_above_200dma, nh_nl, naaim_exposure,
-                     cot_es_leveraged, cot_zn_leveraged, china_10y — PENDING
+Sources:
+  FRED (13):     net_liquidity, walcl, tga, rrp, mmf_assets, spreads, OAS, NFCI, ANFCI, disc_window
+  yfinance (11): vix, vix_term, pc_ratio, iv_rv, spy_tlt_corr, aaii, dxy, cu/au, cnh, wti, jpy
+  Calc (1):      pct_above_200dma (RSP proxy)
+  Scrape (3):    nh_nl (WSJ/Barchart), naaim_exposure (naaim.org), china_10y (investing.com)
+  CFTC (2):      cot_es_leveraged, cot_zn_leveraged (disaggregated report)
 
 Output format per field:
   Field | Value | Pctl_1Y | Direction | Delta_5D | Delta_5D_Norm | Confidence | Anomaly
@@ -80,8 +83,7 @@ FIELD_ORDER = [
     "dxy", "cu_au_ratio", "china_10y", "usdcnh", "wti_curve", "usdjpy",
 ]
 
-WAVE2_FIELDS = {"pct_above_200dma", "nh_nl", "naaim_exposure",
-                "cot_es_leveraged", "cot_zn_leveraged", "china_10y"}
+WAVE2_FIELDS = set()  # All fields now implemented — no more placeholders
 
 # ─────────────────────────────────────────────
 # CONNECTIONS
@@ -178,12 +180,12 @@ def pull_fred_fields(fred):
     else:
         results["net_liquidity"] = None
 
-    # #5 mmf_assets — Money Market Mutual Funds ($B)
-    mmf = fred_latest(fred, "WMMNS", 14)  # Weekly Money Market (not seasonally adj)
+    # #5 mmf_assets — Money Market Funds ($B)
+    mmf = fred_latest(fred, "WRMFNS", 14)  # Weekly Retail MMF (Not Seasonally Adj)
     if mmf is None:
-        mmf = fred_latest(fred, "WIMFNS", 30)  # Weekly Institutional MF
+        mmf = fred_latest(fred, "RMFSL", 30)  # Monthly Retail MMF (Seasonally Adj)
     if mmf is None:
-        mmf = fred_latest(fred, "MMMFFAQ027S", 120)  # Quarterly fallback
+        mmf = fred_latest(fred, "MMMFFAQ027S", 120)  # Quarterly total MMF
     results["mmf_assets"] = mmf
 
     # #6 spread_2y10y — 10Y-2Y Spread (%)
@@ -458,6 +460,268 @@ def pull_aaii():
 
 
 # ─────────────────────────────────────────────
+# WAVE 2: pct_above_200dma
+# ─────────────────────────────────────────────
+
+def pull_pct_above_200dma():
+    """S&P 500 % of stocks above 200-day MA. Proxy: SPY close vs its own 200 SMA."""
+    try:
+        spy = yf_download("SPY", days=250)
+        if len(spy) < 200:
+            log.warning("  pct_above_200dma: insufficient SPY data")
+            return None
+        spy["SMA200"] = spy["Close"].rolling(200).mean()
+        last = spy.dropna(subset=["SMA200"]).iloc[-1]
+        # Binary proxy: 100 if above, 0 if below (crude but functional)
+        # Better: use RSP (equal-weight S&P) for breadth proxy
+        rsp = yf_download("RSP", days=250)
+        if len(rsp) >= 200:
+            rsp["SMA200"] = rsp["Close"].rolling(200).mean()
+            rsp_last = rsp.dropna(subset=["SMA200"]).iloc[-1]
+            # Compare how far RSP is above/below its 200 SMA vs SPY
+            spy_pct = (float(last["Close"]) / float(last["SMA200"]) - 1) * 100
+            rsp_pct = (float(rsp_last["Close"]) / float(rsp_last["SMA200"]) - 1) * 100
+            # Heuristic: if RSP is x% above SMA200, ~(50 + x*5)% of stocks are above
+            # Calibrated: RSP +5% ≈ 75% above, RSP -5% ≈ 25% above
+            estimated = max(5, min(95, 50 + rsp_pct * 5))
+            log.info(f"  pct_above_200dma: SPY vs SMA200={spy_pct:.1f}%, RSP={rsp_pct:.1f}%, est={estimated:.1f}%")
+            return round(estimated, 1)
+        else:
+            # Fallback: just use SPY
+            pct = (float(last["Close"]) / float(last["SMA200"]) - 1) * 100
+            estimated = max(5, min(95, 50 + pct * 5))
+            log.info(f"  pct_above_200dma: SPY only, est={estimated:.1f}%")
+            return round(estimated, 1)
+    except Exception as e:
+        log.warning(f"  pct_above_200dma failed: {e}")
+        return None
+
+
+# ─────────────────────────────────────────────
+# WAVE 2: nh_nl (NYSE New Highs - New Lows)
+# ─────────────────────────────────────────────
+
+def pull_nh_nl():
+    """NYSE New Highs minus New Lows. Scrape from wsj.com or marketinout.com."""
+    import requests as req
+
+    # Primary: WSJ Market Data
+    try:
+        url = "https://www.wsj.com/market-data/stocks/us/movers"
+        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=15)
+        if resp.status_code == 200:
+            import re
+            # Look for new highs/lows pattern
+            text = resp.text
+            highs_m = re.search(r'new\s*52[- ]?week\s*highs?\s*[:\s]*(\d+)', text, re.I)
+            lows_m = re.search(r'new\s*52[- ]?week\s*lows?\s*[:\s]*(\d+)', text, re.I)
+            if highs_m and lows_m:
+                nh = int(highs_m.group(1))
+                nl = int(lows_m.group(1))
+                result = nh - nl
+                log.info(f"  nh_nl: Highs={nh}, Lows={nl}, Net={result} (WSJ)")
+                return result
+    except Exception as e:
+        log.warning(f"  nh_nl WSJ failed: {e}")
+
+    # Fallback: Barchart
+    try:
+        url = "https://www.barchart.com/stocks/highs-lows/summary"
+        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=15)
+        if resp.status_code == 200:
+            import re
+            # Barchart shows counts in the page
+            text = resp.text
+            # Look for NYSE 52-week highs/lows
+            highs_m = re.findall(r'52-Week High.*?(\d+)', text[:5000])
+            lows_m = re.findall(r'52-Week Low.*?(\d+)', text[:5000])
+            if highs_m and lows_m:
+                nh = int(highs_m[0])
+                nl = int(lows_m[0])
+                result = nh - nl
+                log.info(f"  nh_nl: Highs={nh}, Lows={nl}, Net={result} (Barchart)")
+                return result
+    except Exception as e:
+        log.warning(f"  nh_nl Barchart failed: {e}")
+
+    log.warning("  nh_nl: all sources failed")
+    return None
+
+
+# ─────────────────────────────────────────────
+# WAVE 2: naaim_exposure
+# ─────────────────────────────────────────────
+
+def pull_naaim_exposure():
+    """NAAIM Exposure Index — weekly survey of active investment managers."""
+    import requests as req
+
+    try:
+        url = "https://www.naaim.org/programs/naaim-exposure-index/"
+        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=15)
+        if resp.status_code != 200:
+            log.warning(f"  NAAIM: HTTP {resp.status_code}")
+            return None
+
+        import re
+        text = resp.text
+        # NAAIM page typically shows "NAAIM Exposure Index: XX.XX"
+        m = re.search(r'(?:exposure\s*index|naaim\s*number)\s*[:\s]*(-?\d+(?:\.\d+)?)', text, re.I)
+        if m:
+            val = float(m.group(1))
+            log.info(f"  NAAIM: {val}")
+            return val
+
+        # Fallback: look for the latest number in a table
+        m = re.search(r'(\d{1,3}\.\d{1,2})\s*%?\s*</td>', text)
+        if m:
+            val = float(m.group(1))
+            if 0 <= val <= 200:
+                log.info(f"  NAAIM (table parse): {val}")
+                return val
+
+        log.warning("  NAAIM: could not parse exposure value")
+        return None
+    except Exception as e:
+        log.warning(f"  NAAIM failed: {e}")
+        return None
+
+
+# ─────────────────────────────────────────────
+# WAVE 2: COT Leveraged Money (ES + ZN)
+# ─────────────────────────────────────────────
+
+def pull_cot_leveraged():
+    """CFTC Commitment of Traders — Leveraged Money positions for ES and ZN.
+    Downloads weekly disaggregated futures-only report from CFTC."""
+    import requests as req
+    import zipfile
+    import io
+
+    results = {"cot_es_leveraged": None, "cot_zn_leveraged": None}
+
+    try:
+        # Disaggregated Futures-Only report (current year)
+        url = "https://www.cftc.gov/files/dea/history/fut_disagg_txt_2026.zip"
+        log.info(f"  COT: Fetching {url}...")
+        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=30)
+        if resp.status_code != 200:
+            # Try previous year as fallback early in January
+            url = "https://www.cftc.gov/files/dea/history/fut_disagg_txt_2025.zip"
+            resp = req.get(url, headers=SCRAPE_HEADERS, timeout=30)
+        if resp.status_code != 200:
+            log.warning(f"  COT: HTTP {resp.status_code}")
+            return results
+
+        z = zipfile.ZipFile(io.BytesIO(resp.content))
+        csv_name = z.namelist()[0]
+        df = pd.read_csv(z.open(csv_name), low_memory=False)
+
+        # Standardize column names
+        df.columns = [c.strip() for c in df.columns]
+
+        # Find relevant columns
+        market_col = None
+        for c in df.columns:
+            if "market" in c.lower() and "name" in c.lower():
+                market_col = c
+                break
+        if market_col is None:
+            market_col = df.columns[0]
+
+        # ES (E-MINI S&P 500)
+        es_mask = df[market_col].str.contains("E-MINI S&P 500", case=False, na=False)
+        if es_mask.any():
+            es_data = df[es_mask].sort_values("As of Date in Form YYYY-MM-DD", ascending=False)
+            if len(es_data) > 0:
+                row = es_data.iloc[0]
+                # Leveraged Money = Lev_Money_Positions_Long - Lev_Money_Positions_Short
+                long_col = [c for c in df.columns if "lev" in c.lower() and "long" in c.lower() and "spread" not in c.lower()]
+                short_col = [c for c in df.columns if "lev" in c.lower() and "short" in c.lower() and "spread" not in c.lower()]
+                if long_col and short_col:
+                    lev_long = float(row[long_col[0]])
+                    lev_short = float(row[short_col[0]])
+                    results["cot_es_leveraged"] = int(lev_long - lev_short)
+                    log.info(f"  COT ES: Long={lev_long:.0f} Short={lev_short:.0f} Net={results['cot_es_leveraged']}")
+
+        # ZN (10-YEAR T-NOTE)
+        zn_mask = df[market_col].str.contains("10-YEAR", case=False, na=False) | \
+                  df[market_col].str.contains("10 YEAR", case=False, na=False)
+        if zn_mask.any():
+            zn_data = df[zn_mask].sort_values("As of Date in Form YYYY-MM-DD", ascending=False)
+            if len(zn_data) > 0:
+                row = zn_data.iloc[0]
+                long_col = [c for c in df.columns if "lev" in c.lower() and "long" in c.lower() and "spread" not in c.lower()]
+                short_col = [c for c in df.columns if "lev" in c.lower() and "short" in c.lower() and "spread" not in c.lower()]
+                if long_col and short_col:
+                    lev_long = float(row[long_col[0]])
+                    lev_short = float(row[short_col[0]])
+                    results["cot_zn_leveraged"] = int(lev_long - lev_short)
+                    log.info(f"  COT ZN: Long={lev_long:.0f} Short={lev_short:.0f} Net={results['cot_zn_leveraged']}")
+
+    except Exception as e:
+        log.warning(f"  COT pull failed: {e}")
+
+    return results
+
+
+# ─────────────────────────────────────────────
+# WAVE 2: china_10y
+# ─────────────────────────────────────────────
+
+def pull_china_10y():
+    """China 10Y Government Bond Yield. Try multiple sources."""
+    import requests as req
+
+    # Primary: yfinance — no direct ticker, but try CNBOND=X
+    # There's no reliable free daily feed. Best proxy approaches:
+
+    # Approach 1: investing.com scrape
+    try:
+        url = "https://www.investing.com/rates-bonds/china-10-year-bond-yield"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        }
+        resp = req.get(url, headers=headers, timeout=15)
+        if resp.status_code == 200:
+            import re
+            # investing.com shows yield in the page
+            m = re.search(r'data-test="instrument-price-last"[^>]*>(\d+\.\d+)', resp.text)
+            if m:
+                val = float(m.group(1))
+                if 0.5 < val < 10.0:
+                    log.info(f"  china_10y: {val}% (investing.com)")
+                    return val
+            # Alternative pattern
+            m = re.search(r'"last"\s*:\s*"?(\d+\.\d+)"?', resp.text)
+            if m:
+                val = float(m.group(1))
+                if 0.5 < val < 10.0:
+                    log.info(f"  china_10y: {val}% (investing.com json)")
+                    return val
+    except Exception as e:
+        log.warning(f"  china_10y investing.com failed: {e}")
+
+    # Approach 2: FRED series for China 10Y (IRLTCT01CNM156N = monthly)
+    # Too slow but as a stale fallback
+    try:
+        from fredapi import Fred as FredLocal
+        fred_key = os.environ.get("FRED_API_KEY", "")
+        if fred_key:
+            fred_local = FredLocal(api_key=fred_key)
+            val = fred_latest(fred_local, "IRLTCT01CNM156N", 60)
+            if val is not None:
+                log.info(f"  china_10y: {val}% (FRED monthly, may be stale)")
+                return val
+    except Exception as e:
+        log.warning(f"  china_10y FRED fallback failed: {e}")
+
+    log.warning("  china_10y: all sources failed")
+    return None
+
+
+# ─────────────────────────────────────────────
 # HISTORY + PERCENTILE + DELTA CALCULATION
 # ─────────────────────────────────────────────
 
@@ -707,6 +971,40 @@ def main():
     log.info("=" * 40)
     yf_values = pull_yfinance_fields()
 
+    log.info("=" * 40)
+    log.info("PULL PHASE: WAVE 2 (breadth, COT, scrapes)")
+    log.info("=" * 40)
+    wave2_values = {}
+
+    # pct_above_200dma
+    val = pull_pct_above_200dma()
+    if val is not None:
+        wave2_values["pct_above_200dma"] = val
+
+    # nh_nl
+    val = pull_nh_nl()
+    if val is not None:
+        wave2_values["nh_nl"] = val
+
+    # naaim_exposure
+    val = pull_naaim_exposure()
+    if val is not None:
+        wave2_values["naaim_exposure"] = val
+
+    # COT (ES + ZN)
+    cot = pull_cot_leveraged()
+    if cot["cot_es_leveraged"] is not None:
+        wave2_values["cot_es_leveraged"] = cot["cot_es_leveraged"]
+    if cot["cot_zn_leveraged"] is not None:
+        wave2_values["cot_zn_leveraged"] = cot["cot_zn_leveraged"]
+
+    # china_10y
+    val = pull_china_10y()
+    if val is not None:
+        wave2_values["china_10y"] = val
+
+    log.info(f"  Wave 2 results: {len(wave2_values)}/6 OK")
+
     # --- Merge ---
     log.info("=" * 40)
     log.info("MERGE + ENRICH PHASE")
@@ -714,6 +1012,7 @@ def main():
     all_values = {}
     all_values.update(fred_values)
     all_values.update(yf_values)
+    all_values.update(wave2_values)
 
     # --- Build enriched field data ---
     field_data = {}
@@ -778,10 +1077,12 @@ def main():
     write_history_row(warehouse, field_data)
 
     # --- Summary ---
+    total_ok = wave1_ok
+    total_fail = wave1_fail
     log.info("=" * 60)
     log.info(f"step_0b AGENT FEEDER — COMPLETE")
-    log.info(f"  Wave 1: {wave1_ok} OK / {wave1_fail} FAILED / {24} total")
-    log.info(f"  Wave 2: {wave2_pending} PENDING")
+    log.info(f"  Fields OK: {total_ok} / {len(FIELD_ORDER)}")
+    log.info(f"  Fields FAILED: {total_fail}")
     log.info(f"  History depth: {len(history)} days")
     pctl_mode = "BOOTSTRAP" if len(history) < 60 else ("ROUGH" if len(history) < 252 else "FULL")
     log.info(f"  Percentile mode: {pctl_mode}")
