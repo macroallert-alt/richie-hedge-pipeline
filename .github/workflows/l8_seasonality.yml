@@ -1,0 +1,21 @@
+name: L8 Seasonality Collector
+on:
+  schedule:
+    - cron: '30 8 * * 1-5'
+  workflow_dispatch:
+jobs:
+  l8-seasonality:
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0g_l8_seasonality/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L8 Seasonality Collector
+        run: python step_0g_l8_seasonality/main.py
