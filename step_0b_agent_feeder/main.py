@@ -464,31 +464,31 @@ def pull_aaii():
 # ─────────────────────────────────────────────
 
 def pull_pct_above_200dma():
-    """S&P 500 % of stocks above 200-day MA. Proxy: SPY close vs its own 200 SMA."""
+    """S&P 500 % of stocks above 200-day MA. Proxy: RSP (equal-weight) vs 200 SMA."""
     try:
-        spy = yf_download("SPY", days=250)
+        spy = yf_download("SPY", days=310)  # 310 cal days ≈ 210 trading days
         if len(spy) < 200:
-            log.warning("  pct_above_200dma: insufficient SPY data")
+            log.warning(f"  pct_above_200dma: SPY only {len(spy)} rows, need 200")
             return None
-        spy["SMA200"] = spy["Close"].rolling(200).mean()
-        last = spy.dropna(subset=["SMA200"]).iloc[-1]
-        # Binary proxy: 100 if above, 0 if below (crude but functional)
-        # Better: use RSP (equal-weight S&P) for breadth proxy
-        rsp = yf_download("RSP", days=250)
+        spy_close = spy["Close"].dropna()
+        sma200 = spy_close.rolling(200).mean()
+        spy_last = float(spy_close.iloc[-1])
+        spy_sma = float(sma200.iloc[-1])
+
+        rsp = yf_download("RSP", days=310)
         if len(rsp) >= 200:
-            rsp["SMA200"] = rsp["Close"].rolling(200).mean()
-            rsp_last = rsp.dropna(subset=["SMA200"]).iloc[-1]
-            # Compare how far RSP is above/below its 200 SMA vs SPY
-            spy_pct = (float(last["Close"]) / float(last["SMA200"]) - 1) * 100
-            rsp_pct = (float(rsp_last["Close"]) / float(rsp_last["SMA200"]) - 1) * 100
-            # Heuristic: if RSP is x% above SMA200, ~(50 + x*5)% of stocks are above
-            # Calibrated: RSP +5% ≈ 75% above, RSP -5% ≈ 25% above
+            rsp_close = rsp["Close"].dropna()
+            rsp_sma200 = rsp_close.rolling(200).mean()
+            rsp_last = float(rsp_close.iloc[-1])
+            rsp_sma = float(rsp_sma200.iloc[-1])
+            spy_pct = (spy_last / spy_sma - 1) * 100
+            rsp_pct = (rsp_last / rsp_sma - 1) * 100
+            # Heuristic: RSP +5% ≈ 75% above, RSP -5% ≈ 25% above
             estimated = max(5, min(95, 50 + rsp_pct * 5))
-            log.info(f"  pct_above_200dma: SPY vs SMA200={spy_pct:.1f}%, RSP={rsp_pct:.1f}%, est={estimated:.1f}%")
+            log.info(f"  pct_above_200dma: SPY={spy_pct:.1f}%, RSP={rsp_pct:.1f}%, est={estimated:.1f}%")
             return round(estimated, 1)
         else:
-            # Fallback: just use SPY
-            pct = (float(last["Close"]) / float(last["SMA200"]) - 1) * 100
+            pct = (spy_last / spy_sma - 1) * 100
             estimated = max(5, min(95, 50 + pct * 5))
             log.info(f"  pct_above_200dma: SPY only, est={estimated:.1f}%")
             return round(estimated, 1)
@@ -502,47 +502,76 @@ def pull_pct_above_200dma():
 # ─────────────────────────────────────────────
 
 def pull_nh_nl():
-    """NYSE New Highs minus New Lows. Scrape from wsj.com or marketinout.com."""
+    """NYSE New Highs minus New Lows. Multiple scrape attempts."""
     import requests as req
+    import re
 
-    # Primary: WSJ Market Data
+    # Source 1: stockanalysis.com (simple HTML)
     try:
-        url = "https://www.wsj.com/market-data/stocks/us/movers"
+        url = "https://stockanalysis.com/markets/highs-lows/"
         resp = req.get(url, headers=SCRAPE_HEADERS, timeout=15)
         if resp.status_code == 200:
-            import re
-            # Look for new highs/lows pattern
             text = resp.text
-            highs_m = re.search(r'new\s*52[- ]?week\s*highs?\s*[:\s]*(\d+)', text, re.I)
-            lows_m = re.search(r'new\s*52[- ]?week\s*lows?\s*[:\s]*(\d+)', text, re.I)
+            # Look for new highs and new lows counts
+            highs_m = re.search(r'New\s+Highs?\s*</[^>]*>\s*<[^>]*>\s*(\d+)', text, re.I)
+            lows_m = re.search(r'New\s+Lows?\s*</[^>]*>\s*<[^>]*>\s*(\d+)', text, re.I)
             if highs_m and lows_m:
                 nh = int(highs_m.group(1))
                 nl = int(lows_m.group(1))
                 result = nh - nl
-                log.info(f"  nh_nl: Highs={nh}, Lows={nl}, Net={result} (WSJ)")
+                log.info(f"  nh_nl: Highs={nh}, Lows={nl}, Net={result} (stockanalysis)")
                 return result
     except Exception as e:
-        log.warning(f"  nh_nl WSJ failed: {e}")
+        log.warning(f"  nh_nl stockanalysis failed: {e}")
 
-    # Fallback: Barchart
+    # Source 2: marketinout.com
     try:
-        url = "https://www.barchart.com/stocks/highs-lows/summary"
+        url = "https://www.marketinout.com/chart/market.php?breadth=new-highs-new-lows"
         resp = req.get(url, headers=SCRAPE_HEADERS, timeout=15)
         if resp.status_code == 200:
-            import re
-            # Barchart shows counts in the page
             text = resp.text
-            # Look for NYSE 52-week highs/lows
-            highs_m = re.findall(r'52-Week High.*?(\d+)', text[:5000])
-            lows_m = re.findall(r'52-Week Low.*?(\d+)', text[:5000])
-            if highs_m and lows_m:
-                nh = int(highs_m[0])
-                nl = int(lows_m[0])
+            # Look for the latest value in the data
+            m = re.search(r'New Highs.*?(\d+).*?New Lows.*?(\d+)', text, re.I | re.S)
+            if m:
+                nh = int(m.group(1))
+                nl = int(m.group(2))
                 result = nh - nl
-                log.info(f"  nh_nl: Highs={nh}, Lows={nl}, Net={result} (Barchart)")
+                log.info(f"  nh_nl: Highs={nh}, Lows={nl}, Net={result} (marketinout)")
                 return result
     except Exception as e:
-        log.warning(f"  nh_nl Barchart failed: {e}")
+        log.warning(f"  nh_nl marketinout failed: {e}")
+
+    # Source 3: Calculate from yfinance — count S&P 500 near 52w highs vs lows
+    # Crude proxy but always available
+    try:
+        log.info("  nh_nl: trying yfinance proxy (SPY constituents sample)")
+        # Use sector ETFs as proxy for breadth
+        etfs = ["XLK", "XLF", "XLV", "XLE", "XLI", "XLP", "XLY", "XLU", "XLB", "XLRE", "XLC"]
+        above_count = 0
+        below_count = 0
+        for etf in etfs:
+            df = yf_download(etf, days=260)
+            if len(df) < 252:
+                continue
+            close = df["Close"].dropna()
+            high_52w = close.rolling(252).max().iloc[-1]
+            low_52w = close.rolling(252).min().iloc[-1]
+            last = close.iloc[-1]
+            # Within 2% of 52w high = "new high territory"
+            if last >= high_52w * 0.98:
+                above_count += 1
+            # Within 2% of 52w low = "new low territory"
+            elif last <= low_52w * 1.02:
+                below_count += 1
+        if above_count + below_count > 0:
+            # Scale: each sector ETF represents ~45 stocks
+            nh = above_count * 45
+            nl = below_count * 45
+            result = nh - nl
+            log.info(f"  nh_nl: ETF proxy — {above_count} sectors near highs, {below_count} near lows, est Net={result}")
+            return result
+    except Exception as e:
+        log.warning(f"  nh_nl yfinance proxy failed: {e}")
 
     log.warning("  nh_nl: all sources failed")
     return None
@@ -601,14 +630,14 @@ def pull_cot_leveraged():
     results = {"cot_es_leveraged": None, "cot_zn_leveraged": None}
 
     try:
-        # Disaggregated Futures-Only report (current year)
-        url = "https://www.cftc.gov/files/dea/history/fut_disagg_txt_2026.zip"
+        year = date.today().year
+        url = f"https://www.cftc.gov/files/dea/history/fut_disagg_txt_{year}.zip"
         log.info(f"  COT: Fetching {url}...")
-        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=30)
+        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=45)
         if resp.status_code != 200:
-            # Try previous year as fallback early in January
-            url = "https://www.cftc.gov/files/dea/history/fut_disagg_txt_2025.zip"
-            resp = req.get(url, headers=SCRAPE_HEADERS, timeout=30)
+            url = f"https://www.cftc.gov/files/dea/history/fut_disagg_txt_{year-1}.zip"
+            log.info(f"  COT: Fallback {url}...")
+            resp = req.get(url, headers=SCRAPE_HEADERS, timeout=45)
         if resp.status_code != 200:
             log.warning(f"  COT: HTTP {resp.status_code}")
             return results
@@ -616,51 +645,75 @@ def pull_cot_leveraged():
         z = zipfile.ZipFile(io.BytesIO(resp.content))
         csv_name = z.namelist()[0]
         df = pd.read_csv(z.open(csv_name), low_memory=False)
-
-        # Standardize column names
         df.columns = [c.strip() for c in df.columns]
+        log.info(f"  COT: Loaded {len(df)} rows, {len(df.columns)} cols")
 
-        # Find relevant columns
-        market_col = None
+        # Log column names containing 'lev' for debugging
+        lev_cols = [c for c in df.columns if 'lev' in c.lower()]
+        log.info(f"  COT leverage columns: {lev_cols[:6]}")
+
+        # Find market and date columns
+        market_col = next((c for c in df.columns if 'market' in c.lower() and 'name' in c.lower()), df.columns[0])
+        date_col = next((c for c in df.columns if 'date' in c.lower() and 'form' in c.lower()), None)
+        if date_col is None:
+            date_col = next((c for c in df.columns if 'date' in c.lower()), None)
+
+        # Find leveraged money columns (the disaggregated report uses these names)
+        # Typical: "Lev_Money_Positions_Long_All" and "Lev_Money_Positions_Short_All"
+        # Or: "Lev Money Positions-Long (All)" etc.
+        long_col = None
+        short_col = None
         for c in df.columns:
-            if "market" in c.lower() and "name" in c.lower():
-                market_col = c
-                break
-        if market_col is None:
-            market_col = df.columns[0]
+            cl = c.lower().replace('_', ' ').replace('-', ' ')
+            if 'lev' in cl and 'long' in cl and 'spread' not in cl and 'change' not in cl:
+                if long_col is None:
+                    long_col = c
+            if 'lev' in cl and 'short' in cl and 'spread' not in cl and 'change' not in cl:
+                if short_col is None:
+                    short_col = c
 
-        # ES (E-MINI S&P 500)
-        es_mask = df[market_col].str.contains("E-MINI S&P 500", case=False, na=False)
-        if es_mask.any():
-            es_data = df[es_mask].sort_values("As of Date in Form YYYY-MM-DD", ascending=False)
-            if len(es_data) > 0:
-                row = es_data.iloc[0]
-                # Leveraged Money = Lev_Money_Positions_Long - Lev_Money_Positions_Short
-                long_col = [c for c in df.columns if "lev" in c.lower() and "long" in c.lower() and "spread" not in c.lower()]
-                short_col = [c for c in df.columns if "lev" in c.lower() and "short" in c.lower() and "spread" not in c.lower()]
-                if long_col and short_col:
-                    lev_long = float(row[long_col[0]])
-                    lev_short = float(row[short_col[0]])
-                    results["cot_es_leveraged"] = int(lev_long - lev_short)
-                    log.info(f"  COT ES: Long={lev_long:.0f} Short={lev_short:.0f} Net={results['cot_es_leveraged']}")
+        if long_col is None or short_col is None:
+            log.warning(f"  COT: Cannot find Lev Money Long/Short columns")
+            log.warning(f"  COT: All columns: {df.columns.tolist()[:20]}")
+            return results
 
-        # ZN (10-YEAR T-NOTE)
-        zn_mask = df[market_col].str.contains("10-YEAR", case=False, na=False) | \
-                  df[market_col].str.contains("10 YEAR", case=False, na=False)
-        if zn_mask.any():
-            zn_data = df[zn_mask].sort_values("As of Date in Form YYYY-MM-DD", ascending=False)
-            if len(zn_data) > 0:
-                row = zn_data.iloc[0]
-                long_col = [c for c in df.columns if "lev" in c.lower() and "long" in c.lower() and "spread" not in c.lower()]
-                short_col = [c for c in df.columns if "lev" in c.lower() and "short" in c.lower() and "spread" not in c.lower()]
-                if long_col and short_col:
-                    lev_long = float(row[long_col[0]])
-                    lev_short = float(row[short_col[0]])
-                    results["cot_zn_leveraged"] = int(lev_long - lev_short)
-                    log.info(f"  COT ZN: Long={lev_long:.0f} Short={lev_short:.0f} Net={results['cot_zn_leveraged']}")
+        log.info(f"  COT: Long col='{long_col}', Short col='{short_col}'")
+
+        def get_cot_net(market_pattern, label):
+            mask = df[market_col].str.contains(market_pattern, case=False, na=False)
+            if not mask.any():
+                log.warning(f"  COT {label}: no rows matching '{market_pattern}'")
+                return None
+            subset = df[mask]
+            if date_col:
+                subset = subset.sort_values(date_col, ascending=False)
+            row = subset.iloc[0]
+            try:
+                lev_long = pd.to_numeric(row[long_col], errors='coerce')
+                lev_short = pd.to_numeric(row[short_col], errors='coerce')
+                if pd.isna(lev_long) or pd.isna(lev_short):
+                    log.warning(f"  COT {label}: NaN values — long={row[long_col]}, short={row[short_col]}")
+                    return None
+                net = int(lev_long - lev_short)
+                report_date = row[date_col] if date_col else "unknown"
+                log.info(f"  COT {label}: Long={lev_long:.0f} Short={lev_short:.0f} Net={net} (date={report_date})")
+                return net
+            except Exception as e:
+                log.warning(f"  COT {label} parse error: {e}")
+                return None
+
+        results["cot_es_leveraged"] = get_cot_net("E-MINI S&P 500", "ES")
+        results["cot_zn_leveraged"] = get_cot_net("10-YEAR", "ZN")
+        # Fallback for ZN
+        if results["cot_zn_leveraged"] is None:
+            results["cot_zn_leveraged"] = get_cot_net("10 YEAR", "ZN")
+            if results["cot_zn_leveraged"] is None:
+                results["cot_zn_leveraged"] = get_cot_net("T-NOTE", "ZN")
 
     except Exception as e:
         log.warning(f"  COT pull failed: {e}")
+        import traceback
+        log.warning(traceback.format_exc())
 
     return results
 
