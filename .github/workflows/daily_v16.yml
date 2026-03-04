@@ -12,6 +12,7 @@ jobs:
       FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
       FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
     steps:
       - uses: actions/checkout@v4
@@ -19,7 +20,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: pip install pandas numpy gspread google-auth requests fredapi anthropic yfinance beautifulsoup4 lxml scipy
+        run: pip install pandas numpy gspread google-auth google-api-python-client requests fredapi anthropic yfinance beautifulsoup4 lxml scipy
       - name: Write GCP credentials
         run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
       - name: Run Data Collector
