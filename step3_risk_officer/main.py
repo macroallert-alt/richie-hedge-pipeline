@@ -1,12 +1,12 @@
 """
-step_3_risk_officer/main.py
-Entry Point — liest Daten aus Google Sheet DW, fuehrt Risk Officer aus,
-schreibt RISK_ALERTS + RISK_HISTORY Tabs.
+step3_risk_officer/main.py
+Entry Point — liest Daten aus V16 Production + DW Sheet,
+fuehrt Risk Officer aus, schreibt RISK_ALERTS + RISK_HISTORY ins DW.
 
 Aufruf:
-  python -m step_3_risk_officer                    # Normaler Run
-  python -m step_3_risk_officer --dry-run          # Kein Sheet-Write
-  python -m step_3_risk_officer --date 2026-03-04  # Bestimmtes Datum
+  python -m step3_risk_officer                    # Normaler Run
+  python -m step3_risk_officer --dry-run          # Kein Sheet-Write
+  python -m step3_risk_officer --date 2026-03-04  # Bestimmtes Datum
 """
 
 import os
@@ -23,13 +23,34 @@ from .utils.helpers import log_info, log_warning, log_error, parse_date
 DW_SHEET_ID = "1sZeZ4VVztAqjBjyfXcCfhpSWJ4pCGF8ip1ksu_TYMHY"
 V16_SHEET_ID = "11xoZ-E-W0eG23V_HSKloqzC4ubLYg9pfcf6k7HJ0oSE"
 
-# ─── Tabs ─────────────────────────────────────────────────────────
+# ─── V16 Tabs ─────────────────────────────────────────────────────
 
-TAB_V16_WEIGHTS = "PORTFOLIO_IST"
-TAB_V16_STATE = "V16_STATE"
-TAB_LAYER_ANALYSIS = "LAYER_ANALYSIS"
+TAB_SIGNAL_HISTORY = "SIGNAL_HISTORY"
+TAB_CALC_MACRO_STATE = "CALC_Macro_State"
+
+# ─── DW Tabs ──────────────────────────────────────────────────────
+
+TAB_SCORES = "SCORES"
 TAB_RISK_ALERTS = "RISK_ALERTS"
 TAB_RISK_HISTORY = "RISK_HISTORY"
+
+# ─── V16 Asset Order (SIGNAL_HISTORY Spalten F-AD) ────────────────
+
+V16_ASSETS = [
+    "GLD", "SLV", "GDX", "GDXJ", "SIL",
+    "SPY", "XLY", "XLI", "XLF", "XLE",
+    "IWM", "XLV", "XLP", "XLU", "VNQ",
+    "XLK", "EEM", "VGK", "TLT", "TIP",
+    "LQD", "HYG", "DBC", "BTC", "ETH"
+]
+
+# ─── DD-Protect State Mapping ─────────────────────────────────────
+# CALC_Macro_State → Macro_State_Name enthält den State
+# States 10-12 sind DD-Protect States
+
+DD_PROTECT_STATES = {10, 11, 12}
+RISK_ON_STATES = {1, 2, 3, 4, 5, 6}
+RISK_OFF_STATES = {7, 8, 9}
 
 
 def get_sheets_service():
@@ -97,77 +118,197 @@ def clear_and_write(sheets, spreadsheet_id, range_str, values):
             spreadsheetId=spreadsheet_id, range=range_str, body={}
         ).execute()
     except Exception:
-        pass  # Tab existiert evtl noch nicht
+        pass
     return write_sheet_range(sheets, spreadsheet_id, range_str, values)
 
 
 # ─── INPUT READER ─────────────────────────────────────────────────
 
 def read_v16_production(sheets):
-    """Liest V16 State + Gewichte aus V16 Production Sheet."""
+    """
+    Liest V16 State + Gewichte aus V16 Production Sheet.
+
+    SIGNAL_HISTORY: Letzte Zeile = aktuelle Gewichte
+      Col A=Date, B=Macro_State, C=Growth, D=Liq_Dir, E=Stress,
+      Col F-AD = FM_GLD ... FM_ETH (25 Assets)
+
+    CALC_Macro_State: Letzte Zeile = aktueller Macro State
+      Col I=Macro_State_Num, J=Macro_State_Name
+    """
     v16 = {}
 
-    # V16 State Tab
-    state_rows = read_sheet_range(sheets, V16_SHEET_ID, f"{TAB_V16_STATE}!A:B")
-    state_dict = {}
-    for row in state_rows:
-        if len(row) >= 2:
-            state_dict[row[0].strip()] = row[1].strip()
+    # ─── SIGNAL_HISTORY: Gewichte aus letzter Zeile ───────────
+    sig_rows = read_sheet_range(sheets, V16_SHEET_ID, f"{TAB_SIGNAL_HISTORY}!A:AD")
+    if len(sig_rows) < 2:
+        log_warning("SIGNAL_HISTORY empty or header-only")
+        return None
 
-    if state_dict:
-        v16["v16_state"] = state_dict.get("v16_state", "Risk-On")
-        v16["v16_regime"] = state_dict.get("v16_regime", "UNKNOWN")
-        v16["dd_protect_active"] = state_dict.get("dd_protect_active", "FALSE").upper() == "TRUE"
-        v16["dd_protect_trigger_level"] = -0.12
+    # Letzte non-empty Zeile finden
+    last_row = None
+    for row in reversed(sig_rows):
+        if row and len(row) > 5 and row[0] and row[0] != "Date":
+            last_row = row
+            break
 
-        dd_str = state_dict.get("current_drawdown_from_peak", "0")
-        try:
-            v16["current_drawdown_from_peak"] = float(dd_str)
-        except ValueError:
-            v16["current_drawdown_from_peak"] = 0.0
+    if not last_row:
+        log_warning("No data rows in SIGNAL_HISTORY")
+        return None
 
-    # Weights aus PORTFOLIO_IST
-    weight_rows = read_sheet_range(sheets, V16_SHEET_ID, f"{TAB_V16_WEIGHTS}!A:B")
+    log_info(f"  V16 SIGNAL_HISTORY last row date: {last_row[0]}")
+
+    # Macro State aus SIGNAL_HISTORY
+    macro_state_num = None
+    try:
+        macro_state_num = int(float(last_row[1]))
+    except (ValueError, TypeError, IndexError):
+        pass
+
+    # Growth, Liq_Dir, Stress
+    try:
+        v16["growth"] = int(float(last_row[2])) if len(last_row) > 2 and last_row[2] else 0
+        v16["liq_dir"] = int(float(last_row[3])) if len(last_row) > 3 and last_row[3] else 0
+        v16["stress"] = int(float(last_row[4])) if len(last_row) > 4 and last_row[4] else 0
+    except (ValueError, TypeError):
+        v16["growth"] = 0
+        v16["liq_dir"] = 0
+        v16["stress"] = 0
+
+    # Gewichte (Spalte F-AD = Index 5-29)
     weights = {}
-    for row in weight_rows:
-        if len(row) >= 2:
-            ticker = row[0].strip()
-            if ticker and ticker != "Asset" and ticker != "Ticker":
-                try:
-                    w = float(row[1])
-                    if w > 0:
-                        weights[ticker] = w
-                except (ValueError, TypeError):
-                    continue
+    for i, asset in enumerate(V16_ASSETS):
+        col_idx = 5 + i
+        if col_idx < len(last_row) and last_row[col_idx]:
+            try:
+                w = float(last_row[col_idx])
+                if w > 0:
+                    weights[asset] = w
+            except (ValueError, TypeError):
+                continue
+
     v16["weights"] = weights
 
     if not weights:
-        log_warning("V16 weights empty — PORTFOLIO_IST may be missing or malformed")
+        log_warning("V16 weights all zero or empty")
         return None
+
+    log_info(f"  V16 weights: {len(weights)} active positions, "
+             f"top 3: {sorted(weights.items(), key=lambda x: -x[1])[:3]}")
+
+    # ─── CALC_Macro_State: Aktueller State ────────────────────
+    state_rows = read_sheet_range(
+        sheets, V16_SHEET_ID, f"{TAB_CALC_MACRO_STATE}!A:J"
+    )
+
+    last_state_row = None
+    for row in reversed(state_rows):
+        if row and len(row) > 8 and row[0] and row[0] != "Date" and row[0] != "Datum":
+            last_state_row = row
+            break
+
+    if last_state_row:
+        try:
+            state_num = int(float(last_state_row[8]))  # Col I = Macro_State_Num
+        except (ValueError, TypeError, IndexError):
+            state_num = macro_state_num or 3
+
+        state_name = last_state_row[9] if len(last_state_row) > 9 else "UNKNOWN"
+
+        log_info(f"  V16 State: {state_num} ({state_name})")
+
+        # V16 State ableiten
+        if state_num in DD_PROTECT_STATES:
+            v16["v16_state"] = "DD-Protect"
+            v16["dd_protect_active"] = True
+        elif state_num in RISK_OFF_STATES:
+            v16["v16_state"] = "Risk-Off"
+            v16["dd_protect_active"] = False
+        else:
+            v16["v16_state"] = "Risk-On"
+            v16["dd_protect_active"] = False
+
+        v16["v16_regime"] = state_name
+        v16["macro_state_num"] = state_num
+    else:
+        v16["v16_state"] = "Risk-On"
+        v16["v16_regime"] = "UNKNOWN"
+        v16["dd_protect_active"] = False
+        v16["macro_state_num"] = macro_state_num
+
+    v16["dd_protect_trigger_level"] = -0.12
+    v16["current_drawdown_from_peak"] = 0.0  # TODO: berechnen wenn Performance-Daten verfuegbar
 
     return v16
 
 
 def read_layer_analysis(sheets):
-    """Liest Market Analyst Output aus DW."""
-    rows = read_sheet_range(sheets, DW_SHEET_ID, f"{TAB_LAYER_ANALYSIS}!A:B")
-    la = {}
-    for row in rows:
-        if len(row) >= 2:
-            la[row[0].strip()] = row[1].strip()
+    """
+    Liest Market Analyst Output aus DW SCORES Tab.
 
-    if not la:
-        log_warning("LAYER_ANALYSIS empty or missing")
+    SCORES Tab hat:
+      Row 1: Header-Block
+      Row 2: LAYER, SCORE_RAW, SCORE_7D, ...
+      Row 3+: L2 Sentiment, L3 Intelligence, ...
+    """
+    rows = read_sheet_range(sheets, DW_SHEET_ID, f"{TAB_SCORES}!A:F")
+
+    # Layer Scores sammeln
+    layer_scores = {}
+    for row in rows:
+        if not row or len(row) < 2:
+            continue
+        layer_name = str(row[0]).strip()
+        if not layer_name.startswith("L"):
+            continue
+        try:
+            score = float(row[1])
+            layer_scores[layer_name] = score
+        except (ValueError, TypeError):
+            continue
+
+    if not layer_scores:
+        log_warning("SCORES tab has no valid layer scores")
         return None
+
+    log_info(f"  Layer Analysis: {len(layer_scores)} layers loaded")
+
+    # System Regime ableiten aus Layer Scores
+    # Einfache Heuristik: Durchschnitt der verfuegbaren Scores
+    avg_score = sum(layer_scores.values()) / len(layer_scores) if layer_scores else 5.0
+
+    if avg_score >= 6.5:
+        regime = "BROAD_RISK_ON"
+        lean = "POSITIVE"
+    elif avg_score >= 4.5:
+        regime = "SELECTIVE"
+        lean = "NEUTRAL"
+    elif avg_score >= 3.0:
+        regime = "CONFLICTED"
+        lean = "NEGATIVE"
+    else:
+        regime = "BROAD_RISK_OFF"
+        lean = "NEGATIVE"
+
+    # Fragility ableiten
+    # L5 Fragility Score: hoch = fragil
+    l5 = layer_scores.get("L5 Fragility", 5.0)
+    if l5 >= 8.0:
+        fragility = "CRISIS"
+    elif l5 >= 6.5:
+        fragility = "EXTREME"
+    elif l5 >= 5.0:
+        fragility = "ELEVATED"
+    else:
+        fragility = "HEALTHY"
 
     return {
         "system_regime": {
-            "regime": la.get("system_regime", "UNKNOWN"),
-            "lean": la.get("regime_lean", "UNKNOWN")
+            "regime": regime,
+            "lean": lean
         },
         "fragility_state": {
-            "state": la.get("fragility_state", "HEALTHY")
-        }
+            "state": fragility
+        },
+        "layer_scores": layer_scores
     }
 
 
@@ -175,10 +316,9 @@ def read_risk_history(sheets):
     """Liest gestrigen Risk Officer Output fuer Trend-Erkennung."""
     rows = read_sheet_range(sheets, DW_SHEET_ID, f"{TAB_RISK_HISTORY}!A:L")
     if len(rows) < 2:
-        return None  # Kein Header oder keine Daten
+        return None
 
     header = rows[0]
-    # Letzte Zeile = gestern
     last = rows[-1]
     history = dict(zip(header, last))
 
@@ -228,7 +368,6 @@ def write_risk_alerts(sheets, output):
 
 def append_risk_history(sheets, output):
     """Haengt kompakte Zeile an RISK_HISTORY Tab an."""
-    # Pruefe ob Header existiert
     existing = read_sheet_range(sheets, DW_SHEET_ID, f"{TAB_RISK_HISTORY}!A1:A1")
     if not existing:
         header = [
@@ -241,7 +380,6 @@ def append_risk_history(sheets, output):
             sheets, DW_SHEET_ID, f"{TAB_RISK_HISTORY}!A1", [header]
         )
 
-    # Kompakte Alert-JSON (nur check_id + severity + days_active)
     compact_alerts = [
         {
             "check_id": a.get("check_id"),
@@ -310,11 +448,14 @@ def main():
         if layer:
             inputs["layer_analysis"] = layer
         else:
-            log_error("Layer Analysis unavailable")
+            log_warning("Layer Analysis unavailable — using defaults")
+            inputs["layer_analysis"] = {
+                "system_regime": {"regime": "UNKNOWN", "lean": "UNKNOWN"},
+                "fragility_state": {"state": "HEALTHY"}
+            }
 
         risk_history = read_risk_history(sheets)
     else:
-        # Dry-run: Dummy-Daten
         log_info("Dry-run mode — using dummy inputs")
         inputs = {
             "v16_production": {
@@ -352,7 +493,6 @@ def main():
         log_info("Sheet write complete.")
     elif args.dry_run:
         log_info("Dry-run — skipping Sheet write")
-        # JSON Output fuer Debugging
         print(json.dumps(output, indent=2, default=str))
 
     return output
