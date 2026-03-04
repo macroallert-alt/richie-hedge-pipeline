@@ -652,8 +652,9 @@ def pull_cot_leveraged():
 
         # Debug: show unique market names containing key words
         all_markets = df[market_col].unique()
-        sp_markets = [m for m in all_markets if 's&p' in str(m).lower() or 'e-mini' in str(m).lower() or 'sp ' in str(m).lower()]
-        tn_markets = [m for m in all_markets if 'note' in str(m).lower() or 't-note' in str(m).lower() or '10-y' in str(m).lower() or '10 y' in str(m).lower()]
+        log.info(f"  COT: {len(all_markets)} unique markets. First 15: {list(all_markets[:15])}")
+        sp_markets = [m for m in all_markets if any(k in str(m).lower() for k in ['s&p', 'e-mini', 'sp ', 'sp5', 'mini', '500'])]
+        tn_markets = [m for m in all_markets if any(k in str(m).lower() for k in ['note', 't-note', '10-y', '10 y', '10y', 'treasury', 'bond'])]
         log.info(f"  COT S&P-related markets: {sp_markets[:5]}")
         log.info(f"  COT Note-related markets: {tn_markets[:5]}")
 
