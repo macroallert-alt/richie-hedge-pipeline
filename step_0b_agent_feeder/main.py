@@ -51,6 +51,12 @@ TAB_HISTORY = "RAW_AGENT2_HISTORY"
 # How many days of yfinance history to pull for calculations
 YF_LOOKBACK = 120
 
+SCRAPE_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+}
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -163,22 +169,19 @@ def pull_fred_fields(fred):
     # #3 tga — Treasury General Account ($M)
     results["tga"] = fred_latest(fred, "WTREGEN", 14)
 
-    # #4 rrp — Overnight Reverse Repo ($B)
-    rrp_val = fred_latest(fred, "RRPONTSYD", 7)
-    if rrp_val is not None:
-        results["rrp"] = rrp_val / 1000.0  # Convert $M to $B
-    else:
-        results["rrp"] = None
+    # #4 rrp — Overnight Reverse Repo ($M, same unit as walcl/tga)
+    results["rrp"] = fred_latest(fred, "RRPONTSYD", 7)
 
     # #1 net_liquidity — WALCL - TGA - RRP (all in $M)
     if results["walcl"] and results["tga"] and results["rrp"] is not None:
-        rrp_m = results["rrp"] * 1000  # Back to $M for calculation
-        results["net_liquidity"] = results["walcl"] - results["tga"] - rrp_m
+        results["net_liquidity"] = results["walcl"] - results["tga"] - results["rrp"]
     else:
         results["net_liquidity"] = None
 
     # #5 mmf_assets — Money Market Mutual Funds ($B)
-    mmf = fred_latest(fred, "WMMN", 14)
+    mmf = fred_latest(fred, "WMMNS", 14)  # Weekly Money Market (not seasonally adj)
+    if mmf is None:
+        mmf = fred_latest(fred, "WIMFNS", 30)  # Weekly Institutional MF
     if mmf is None:
         mmf = fred_latest(fred, "MMMFFAQ027S", 120)  # Quarterly fallback
     results["mmf_assets"] = mmf
@@ -353,62 +356,105 @@ def pull_yfinance_fields():
 # ─────────────────────────────────────────────
 
 def pull_aaii():
-    """Pull AAII Bull-Bear spread from weekly Excel file."""
+    """Pull AAII Bull-Bear spread. Ported from 0c L2 Sentiment Collector.
+    v5: XLS parser with merged header detection + reverse-walk + fallback scrape."""
+    import io
+    import re
+    import requests as req
+
+    # --- Primary: XLS download ---
     try:
-        import requests as req
         url = "https://www.aaii.com/files/surveys/sentiment.xls"
-        headers = {"User-Agent": "Mozilla/5.0"}
-        resp = req.get(url, headers=headers, timeout=30)
-        if resp.status_code != 200:
-            log.warning(f"  AAII: HTTP {resp.status_code}")
-            return None
+        log.info(f"  AAII: Fetching {url}...")
+        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=30)
+        resp.raise_for_status()
 
-        import io
-        try:
-            df = pd.read_excel(io.BytesIO(resp.content), engine="xlrd")
-        except Exception:
-            df = pd.read_excel(io.BytesIO(resp.content), engine="openpyxl")
+        df_raw = pd.read_excel(io.BytesIO(resp.content), header=None)
+        log.info(f"    AAII raw shape: {df_raw.shape}")
 
-        # Find Bullish and Bearish columns
-        bull_col = bear_col = None
-        for col in df.columns:
-            c = str(col).strip().lower()
-            if "bullish" in c and "bull" in c:
-                bull_col = col
-            elif "bearish" in c and "bear" in c:
-                bear_col = col
-            if not bull_col and c in ("bullish", "bull"):
-                bull_col = col
-            if not bear_col and c in ("bearish", "bear"):
-                bear_col = col
+        # Find TRUE header row: must contain BOTH "Bullish" AND "Bearish"
+        header_row = None
+        bull_col_idx = None
+        bear_col_idx = None
 
-        if bull_col is None or bear_col is None:
-            # Fallback: assume columns by position (typical AAII layout)
-            num_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-            if len(num_cols) >= 3:
-                bull_col = num_cols[0]
-                bear_col = num_cols[2]
-            else:
-                log.warning(f"  AAII: Cannot find Bull/Bear columns: {df.columns.tolist()}")
-                return None
+        for row_idx in range(min(15, len(df_raw))):
+            row_vals = [str(v).strip() for v in df_raw.iloc[row_idx].values]
+            row_lower = [v.lower() for v in row_vals]
+            if "bullish" in row_lower and "bearish" in row_lower:
+                header_row = row_idx
+                bull_col_idx = row_lower.index("bullish")
+                bear_col_idx = row_lower.index("bearish")
+                log.info(f"    TRUE header at row {row_idx}: {row_vals}")
+                break
 
-        last_valid = df[[bull_col, bear_col]].dropna().iloc[-1]
-        bull = float(last_valid[bull_col])
-        bear = float(last_valid[bear_col])
+        if header_row is not None and bull_col_idx is not None and bear_col_idx is not None:
+            data_start = header_row + 1
+            # Skip blank rows
+            for r in range(data_start, min(data_start + 5, len(df_raw))):
+                try:
+                    test = float(df_raw.iloc[r, bull_col_idx])
+                    if not pd.isna(test):
+                        data_start = r
+                        break
+                except (ValueError, TypeError):
+                    continue
 
-        # Values might be in % (33.2) or decimal (0.332)
-        if bull < 1.0:
-            bull *= 100
-        if bear < 1.0:
-            bear *= 100
+            bull_series = pd.to_numeric(df_raw.iloc[data_start:, bull_col_idx], errors="coerce")
+            bear_series = pd.to_numeric(df_raw.iloc[data_start:, bear_col_idx], errors="coerce")
 
-        spread = round(bull - bear, 2)
-        log.info(f"  AAII: Bull={bull:.1f}% Bear={bear:.1f}% Spread={spread:.1f}")
-        return spread
+            # Reverse-walk with date validation
+            for walk_idx in reversed(bull_series.index):
+                raw_date = df_raw.iloc[walk_idx, 0]
+                try:
+                    pd.to_datetime(raw_date)
+                except (ValueError, TypeError):
+                    continue
+
+                bv = bull_series.loc[walk_idx]
+                brv = bear_series.loc[walk_idx]
+                if pd.isna(bv) or pd.isna(brv):
+                    continue
+                bv = float(bv)
+                brv = float(brv)
+                if bv <= 1.0:
+                    bv *= 100.0
+                if brv <= 1.0:
+                    brv *= 100.0
+
+                if 5.0 <= bv <= 70.0 and 5.0 <= brv <= 70.0 and (bv + brv) < 90.0:
+                    spread = round(bv - brv, 2)
+                    log.info(f"    AAII OK: Bull={bv:.1f}% Bear={brv:.1f}% Spread={spread}")
+                    return spread
+        else:
+            log.warning("    AAII: Could not find header row with Bullish+Bearish")
 
     except Exception as e:
-        log.warning(f"  AAII scrape failed: {e}")
-        return None
+        log.warning(f"    AAII primary (XLS) failed: {e}")
+
+    # --- Fallback: HTML scrape ---
+    try:
+        url = "https://www.aaii.com/sentimentsurvey"
+        log.info(f"  AAII fallback: Scraping {url}...")
+        resp = req.get(url, headers=SCRAPE_HEADERS, timeout=30)
+        resp.raise_for_status()
+        text = resp.text
+        bull_val = bear_val = None
+        m = re.search(r'[Bb]ullish\s*:?\s*(\d{1,2}(?:\.\d+)?)\s*%', text)
+        if m:
+            bull_val = float(m.group(1))
+        m = re.search(r'[Bb]earish\s*:?\s*(\d{1,2}(?:\.\d+)?)\s*%', text)
+        if m:
+            bear_val = float(m.group(1))
+        if bull_val and bear_val and 5.0 <= bull_val <= 80.0 and 5.0 <= bear_val <= 80.0:
+            spread = round(bull_val - bear_val, 2)
+            log.info(f"    AAII OK (scrape): Bull={bull_val:.1f}% Bear={bear_val:.1f}% Spread={spread}")
+            return spread
+        else:
+            log.warning(f"    AAII scrape incomplete: bull={bull_val}, bear={bear_val}")
+    except Exception as e:
+        log.warning(f"    AAII fallback failed: {e}")
+
+    return None
 
 
 # ─────────────────────────────────────────────
