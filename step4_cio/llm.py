@@ -179,13 +179,23 @@ def build_draft_user_prompt(preprocessor_output: dict, inputs: dict,
             f"{yt[:500]}..."
         )
 
-    # Truncate IC high_novelty_claims to top 20 for token budget
+    # Truncate IC for token budget — top 10 claims only, consensus summary
     ic = inputs.get("ic_intelligence", {})
-    ic_truncated = {**ic}
-    claims = ic_truncated.get("high_novelty_claims", [])
-    if len(claims) > 20:
-        ic_truncated["high_novelty_claims"] = claims[:20]
-        ic_truncated["_claims_truncated"] = f"Showing top 20 of {len(claims)}"
+    ic_truncated = {}
+    # Keep consensus scores (compact)
+    ic_truncated["consensus"] = ic.get("consensus", {})
+    # Keep divergences (usually few)
+    ic_truncated["divergences"] = ic.get("divergences", [])
+    # Top 10 high novelty claims only
+    claims = ic.get("high_novelty_claims", [])
+    ic_truncated["high_novelty_claims"] = claims[:10]
+    if len(claims) > 10:
+        ic_truncated["_claims_truncated"] = f"Showing top 10 of {len(claims)}"
+    # Extraction summary
+    ic_truncated["extraction_summary"] = ic.get("extraction_summary", {})
+    # Catalyst timeline (top 10)
+    catalysts = ic.get("catalyst_timeline", [])
+    ic_truncated["catalyst_timeline"] = catalysts[:10]
 
     prompt = f"""Schreibe das heutige CIO Briefing (DRAFT).
 
@@ -274,10 +284,12 @@ def build_final_user_prompt(preprocessor_output: dict, inputs: dict,
 
     # Truncate IC for token budget
     ic = inputs.get("ic_intelligence", {})
-    ic_truncated = {**ic}
-    claims = ic_truncated.get("high_novelty_claims", [])
-    if len(claims) > 20:
-        ic_truncated["high_novelty_claims"] = claims[:20]
+    ic_truncated = {}
+    ic_truncated["consensus"] = ic.get("consensus", {})
+    ic_truncated["divergences"] = ic.get("divergences", [])
+    ic_truncated["high_novelty_claims"] = ic.get("high_novelty_claims", [])[:10]
+    ic_truncated["extraction_summary"] = ic.get("extraction_summary", {})
+    ic_truncated["catalyst_timeline"] = ic.get("catalyst_timeline", [])[:10]
 
     prompt = f"""Du bist der CIO. Du hast einen DRAFT geschrieben. Ein unabhaengiger Analyst (Devil's Advocate) hat Gegenargumente formuliert.
 

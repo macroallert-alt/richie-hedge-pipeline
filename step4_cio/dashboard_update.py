@@ -242,13 +242,18 @@ def update_dashboard_json(cio_output: dict, dashboard_json_path: str,
         la_input = inputs_raw.get("layer_analysis", {})
         logger.info(f"Layers input check: keys={list(la_input.keys())[:10] if la_input else 'EMPTY'}")
 
-        # Market Analyst JSON may have layer_scores at top level or nested
+        # Market Analyst JSON structure: top-level 'layers' dict with per-layer objects
+        # Each layer has 'score', 'signal', 'freshness' etc.
         layer_scores = la_input.get("layer_scores", {})
-        if not layer_scores and la_input.get("layers"):
-            layer_scores = la_input["layers"].get("layer_scores", {})
+        if not layer_scores:
+            # Try extracting from 'layers' dict (MA production format)
+            layers_dict = la_input.get("layers", {})
+            if isinstance(layers_dict, dict):
+                for layer_key, layer_data in layers_dict.items():
+                    if isinstance(layer_data, dict) and "score" in layer_data:
+                        layer_scores[layer_key] = layer_data["score"]
 
         if layer_scores:
-            # Inject layer_scores back for the builder
             la_with_scores = {**la_input, "layer_scores": layer_scores}
             dashboard["layers"] = _build_layers_block(la_with_scores)
             dashboard["known_unknowns"] = [
