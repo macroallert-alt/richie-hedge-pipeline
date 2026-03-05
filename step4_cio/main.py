@@ -428,7 +428,7 @@ def main():
 
         # Update dashboard.json
         from step4_cio.dashboard_update import update_dashboard_json
-        update_dashboard_json(final_output, DASHBOARD_JSON_PATH)
+        update_dashboard_json(final_output, DASHBOARD_JSON_PATH, inputs_raw=inputs)
 
         output_for_log = final_output
 
@@ -467,7 +467,7 @@ def main():
             write_agent_summary(sheets_service, final_output, "final")
 
         from step4_cio.dashboard_update import update_dashboard_json
-        update_dashboard_json(final_output, DASHBOARD_JSON_PATH)
+        update_dashboard_json(final_output, DASHBOARD_JSON_PATH, inputs_raw=inputs)
 
         output_for_log = final_output
 

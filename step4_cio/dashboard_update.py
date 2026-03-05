@@ -100,16 +100,22 @@ def build_briefing_block(cio_output: dict) -> dict:
     }
 
 
-def update_dashboard_json(cio_output: dict, dashboard_json_path: str) -> None:
+def update_dashboard_json(cio_output: dict, dashboard_json_path: str,
+                         inputs_raw: dict | None = None) -> None:
     """
     Read data/dashboard/latest.json, replace briefing block,
-    update header + pipeline_health + digest + known_unknowns, write back.
+    update header + pipeline_health + digest + known_unknowns,
+    update risk block (from Risk Officer) and layers block (from Market Analyst),
+    write back.
     """
     if not os.path.exists(dashboard_json_path):
         logger.warning(
             f"Dashboard JSON not found at {dashboard_json_path} — skipping"
         )
         return
+
+    if inputs_raw is None:
+        inputs_raw = {}
 
     try:
         with open(dashboard_json_path, "r") as f:
@@ -213,6 +219,44 @@ def update_dashboard_json(cio_output: dict, dashboard_json_path: str) -> None:
             ku for ku in kus if ku.get("gap") != "CIO_BRIEFING"
         ]
 
+        # 7. Update risk block from Risk Officer input (CIO has it loaded)
+        risk_input = inputs_raw.get("risk_alerts", {})
+        if risk_input and risk_input.get("portfolio_status"):
+            dashboard["risk"] = _build_risk_block(risk_input)
+            dashboard["known_unknowns"] = [
+                ku for ku in dashboard["known_unknowns"]
+                if ku.get("gap") != "RISK"
+            ]
+            steps["step_3_risk_officer"] = {
+                "status": "OK",
+                "completed_at": risk_input.get("date", now_utc),
+                "summary": (
+                    f"{risk_input.get('portfolio_status', '?')} — "
+                    f"{len(risk_input.get('alerts', []))} alerts"
+                ),
+            }
+            dashboard.setdefault("pipeline_health", {})["steps"] = steps
+            logger.info(f"Risk block updated: {risk_input.get('portfolio_status')}")
+
+        # 8. Update layers block from Market Analyst input (CIO has it loaded)
+        la_input = inputs_raw.get("layer_analysis", {})
+        if la_input and la_input.get("layer_scores"):
+            dashboard["layers"] = _build_layers_block(la_input)
+            dashboard["known_unknowns"] = [
+                ku for ku in dashboard["known_unknowns"]
+                if ku.get("gap") != "LAYER_SCORES"
+            ]
+            steps["step_1_market_analyst"] = {
+                "status": "OK",
+                "completed_at": la_input.get("date", now_utc),
+                "summary": (
+                    f"Regime: {la_input.get('system_regime', '?')}, "
+                    f"Fragility: {la_input.get('fragility_state', '?')}"
+                ),
+            }
+            dashboard.setdefault("pipeline_health", {})["steps"] = steps
+            logger.info(f"Layers block updated: {la_input.get('system_regime')}")
+
         # Write back
         with open(dashboard_json_path, "w") as f:
             json.dump(dashboard, f, indent=2, ensure_ascii=False)
@@ -257,3 +301,82 @@ def _build_action_items_block(action_items: list) -> dict:
         },
         "ongoing_conditions": [],
     }
+
+
+def _build_risk_block(risk_officer: dict) -> dict:
+    """
+    Map Risk Officer JSON to dashboard.json risk block.
+    Matches RiskDetail.jsx expectations.
+    """
+    alerts = risk_officer.get("alerts", [])
+
+    # Map alerts to dashboard format
+    dashboard_alerts = []
+    for alert in alerts:
+        dashboard_alerts.append({
+            "check_id": alert.get("check_id", ""),
+            "severity": alert.get("severity", "MONITOR"),
+            "trend": alert.get("trend", "STABLE"),
+            "days_active": alert.get("days_active", 0),
+            "details": alert.get("details", {}),
+            "recommendation": alert.get("recommendation", ""),
+        })
+
+    # Emergency triggers
+    emg = risk_officer.get("emergency_triggers", {})
+    emergency_triggers = {
+        "max_drawdown_breach": _is_trigger_active(emg, "EMG_PORTFOLIO_DRAWDOWN"),
+        "correlation_crisis": _is_trigger_active(emg, "EMG_CORRELATION_CRISIS"),
+        "liquidity_crisis": _is_trigger_active(emg, "EMG_LIQUIDITY_CRISIS"),
+        "regime_forced": _is_trigger_active(emg, "EMG_REGIME_FORCED"),
+    }
+
+    # Ongoing conditions
+    ongoing = risk_officer.get("ongoing_conditions", [])
+
+    return {
+        "status": "AVAILABLE",
+        "portfolio_status": risk_officer.get("portfolio_status", "GREEN"),
+        "alerts": dashboard_alerts,
+        "emergency_triggers": emergency_triggers,
+        "ongoing_conditions_count": len(ongoing),
+        "ongoing_conditions": ongoing,
+        "sensitivity": risk_officer.get("sensitivity", {}),
+        "risk_summary": risk_officer.get("risk_summary", ""),
+        "fast_path": risk_officer.get("fast_path", False),
+    }
+
+
+def _is_trigger_active(emg_dict: dict, key: str) -> bool:
+    """Check if an emergency trigger is active."""
+    trigger = emg_dict.get(key, {})
+    if isinstance(trigger, dict):
+        return trigger.get("status") == "ACTIVE"
+    return bool(trigger)
+
+
+def _build_layers_block(layer_analysis: dict) -> dict:
+    """
+    Map Market Analyst JSON to dashboard.json layers block.
+    Matches LayersDetail.jsx expectations.
+    """
+    layer_scores = layer_analysis.get("layer_scores", {})
+    fragility_data = layer_analysis.get("fragility_data", {})
+
+    # Calculate regime stability percentage (if available)
+    conv_dynamics = layer_analysis.get("conviction_dynamics", {})
+    stability_days = conv_dynamics.get("regime_stability_days", None)
+    regime_stability_pct = None
+    if stability_days is not None:
+        # Rough heuristic: 30+ days = 100%, scale linearly
+        regime_stability_pct = min(100, round(stability_days / 30 * 100))
+
+    return {
+        "status": "AVAILABLE",
+        "system_regime": layer_analysis.get("system_regime", "UNKNOWN"),
+        "regime_stability_pct": regime_stability_pct,
+        "fragility_state": layer_analysis.get("fragility_state", "N/A"),
+        "fragility_data": fragility_data,
+        "layer_scores": layer_scores,
+    }
+
