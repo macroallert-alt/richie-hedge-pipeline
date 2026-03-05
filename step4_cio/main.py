@@ -287,8 +287,14 @@ def load_all_inputs(drive_service, sheets_service) -> dict:
         else:
             inputs["cio_history"] = None
 
-        # Yesterday's briefing (from Drive CURRENT/ — same file, previous day)
-        inputs["yesterday_briefing"] = None  # First run has no yesterday
+        # Yesterday's briefing (from Drive CURRENT/ — step6_cio_final.json is overwritten daily)
+        yesterday = read_drive_json(drive_service, "step6_cio_final.json", CURRENT_FOLDER_ID)
+        if yesterday and yesterday.get("date") != date.today().isoformat():
+            inputs["yesterday_briefing"] = yesterday
+            logger.info(f"  yesterday_briefing: LOADED (date={yesterday.get('date')})")
+        else:
+            inputs["yesterday_briefing"] = None
+            logger.info("  yesterday_briefing: MISSING (same day or not found)")
 
     else:
         logger.warning("No Drive service — using empty inputs for non-V16 data")

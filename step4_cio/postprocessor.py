@@ -257,21 +257,63 @@ def handle_fact_check_flags(flags: list) -> dict:
 # ==========================================================================
 
 def extract_action_items(briefing_text: str, preprocessor_output: dict) -> list:
-    """Extract action items from S7 into machine-readable JSON."""
+    """Extract action items from S7 into machine-readable JSON.
+
+    Handles two formats:
+    1. Legacy: Lines starting with ACT: / REVIEW: / WATCH:
+    2. LLM format: Section headers (IMMEDIATE/SHORT-TERM/MEDIUM-TERM/WATCHLIST)
+       with items like **AI-1: ...** or **WL-1: ...**
+    """
     s7_text = _extract_section_text(briefing_text, "S7")
     items = []
 
+    # Determine current section context from headers
+    current_type = None
+    import re
+
     for line in s7_text.split("\n"):
-        line = line.strip()
-        if not line:
+        line_stripped = line.strip()
+        if not line_stripped:
+            continue
+        line_upper = line_stripped.upper()
+
+        # --- Legacy prefix format ---
+        if line_upper.startswith("ACT:") or line_upper.startswith("ACT "):
+            items.append(_parse_action_item(line_stripped, "ACT", preprocessor_output))
+            continue
+        if line_upper.startswith("REVIEW:") or line_upper.startswith("REVIEW "):
+            items.append(_parse_action_item(line_stripped, "REVIEW", preprocessor_output))
+            continue
+        if line_upper.startswith("WATCH:") or line_upper.startswith("WATCH "):
+            items.append(_parse_action_item(line_stripped, "WATCH", preprocessor_output))
             continue
 
-        if line.upper().startswith("ACT:") or line.upper().startswith("ACT "):
-            items.append(_parse_action_item(line, "ACT", preprocessor_output))
-        elif line.upper().startswith("REVIEW:") or line.upper().startswith("REVIEW "):
-            items.append(_parse_action_item(line, "REVIEW", preprocessor_output))
-        elif line.upper().startswith("WATCH:") or line.upper().startswith("WATCH "):
-            items.append(_parse_action_item(line, "WATCH", preprocessor_output))
+        # --- Section header detection (LLM format) ---
+        if "IMMEDIATE" in line_upper or "VOR NFP" in line_upper or "<24H" in line_upper:
+            current_type = "ACT"
+            continue
+        if "SHORT-TERM" in line_upper or "48H" in line_upper:
+            current_type = "REVIEW"
+            continue
+        if "MEDIUM-TERM" in line_upper or "7D-30D" in line_upper:
+            current_type = "WATCH"
+            continue
+        if "WATCHLIST" in line_upper and "ACTION" not in line_upper:
+            current_type = "WATCH"
+            continue
+        if "POST-NFP" in line_upper or "POST NFP" in line_upper:
+            current_type = "REVIEW"
+            continue
+        if "DEFERRED" in line_upper:
+            current_type = "WATCH"
+            continue
+
+        # --- LLM item detection: **AI-1: ...** or **WL-1: ...** ---
+        ai_match = re.match(r'\*\*(?:AI|WL|DF)-?\d+[:\s]', line_stripped)
+        if ai_match and current_type:
+            # Extract description: remove ** markers
+            desc = re.sub(r'\*\*', '', line_stripped).strip()
+            items.append(_parse_action_item_from_desc(desc, current_type, preprocessor_output))
 
     # Conviction-based upgrade: LOW → REVIEW becomes ACT
     conviction = preprocessor_output.get("header", {}).get("system_conviction", "MODERATE")
@@ -288,6 +330,36 @@ def extract_action_items(briefing_text: str, preprocessor_output: dict) -> list:
         item["id"] = f"action_{today_str}_{i + 1:03d}"
 
     return items
+
+
+def _parse_action_item_from_desc(description: str, item_type: str,
+                                  preprocessor_output: dict) -> dict:
+    """Parse an action item from its description text (LLM format)."""
+    source_alerts = []
+    source_patterns = []
+
+    for alert in preprocessor_output.get("alert_treatment", {}).get("full_treatment", []):
+        cid = alert.get("check_id", "")
+        if cid and cid.lower() in description.lower():
+            source_alerts.append(cid)
+
+    for pattern in preprocessor_output.get("patterns", {}).get("class_a_active", []):
+        pname = pattern.get("pattern", "")
+        if pname and pname.lower().replace("_", " ") in description.lower():
+            source_patterns.append(pname)
+
+    return {
+        "type": item_type,
+        "description": description,
+        "urgency": (
+            "TODAY" if item_type == "ACT"
+            else "THIS_WEEK" if item_type == "REVIEW"
+            else "ONGOING"
+        ),
+        "source_alerts": source_alerts,
+        "source_patterns": source_patterns,
+        "conviction_upgrade": False,
+    }
 
 
 def _parse_action_item(line: str, item_type: str, preprocessor_output: dict) -> dict:

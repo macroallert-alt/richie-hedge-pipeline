@@ -1,123 +1,199 @@
 # =============================================================================
-# Event Calendar — Q1 + Q2 2026
-# Shared between Risk Officer (Step 3) and CIO (Step 4/6)
-# Manually updated quarterly
-# Format: CIO Spec Teil 3 §3.4
+# EVENT_CALENDAR.yaml — Verified against official sources 2026-03-05
+# Sources: federalreserve.gov/monetarypolicy/fomccalendars.htm, bls.gov
 # =============================================================================
 
 events:
-  # --- March 2026 ---
-  - date: "2026-03-07"
-    type: "NFP"
-    time: "08:30 ET"
+  # --- FOMC Meetings (Decision on 2nd day, 14:00 ET) ---
+  # Source: https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
+  - date: "2026-01-28"
+    event: "FOMC Decision"
+    type: "FOMC"
     impact: "HIGH"
-    affected_topics: ["RECESSION", "FED_POLICY"]
-    notes: "Nonfarm payrolls + unemployment rate"
-
-  - date: "2026-03-12"
-    type: "CPI"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["INFLATION", "FED_POLICY"]
-    notes: "CPI + Core CPI"
+    themes: ["FED_POLICY", "LIQUIDITY"]
+    notes: "Jan 27-28. Rate held 3.50-3.75%."
 
   - date: "2026-03-18"
-    type: "FOMC_DECISION"
-    time: "14:00 ET"
+    event: "FOMC Decision + SEP + Dot Plot"
+    type: "FOMC"
     impact: "HIGH"
-    affected_topics: ["FED_POLICY", "LIQUIDITY", "CREDIT"]
-    notes: "Rate decision + SEP + dot plot"
-
-  - date: "2026-03-28"
-    type: "PCE_INFLATION"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["INFLATION", "FED_POLICY"]
-    notes: "Core PCE, Fed preferred measure"
-
-  # --- April 2026 ---
-  - date: "2026-04-03"
-    type: "NFP"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["RECESSION", "FED_POLICY"]
-    notes: "Nonfarm payrolls"
-
-  - date: "2026-04-10"
-    type: "CPI"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["INFLATION", "FED_POLICY"]
-    notes: "CPI + Core CPI"
+    themes: ["FED_POLICY", "LIQUIDITY"]
+    notes: "Mar 17-18. Summary of Economic Projections."
 
   - date: "2026-04-29"
-    type: "FOMC_DECISION"
-    time: "14:00 ET"
+    event: "FOMC Decision"
+    type: "FOMC"
     impact: "HIGH"
-    affected_topics: ["FED_POLICY", "LIQUIDITY", "CREDIT"]
-    notes: "Rate decision"
-
-  - date: "2026-04-30"
-    type: "PCE_INFLATION"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["INFLATION", "FED_POLICY"]
-    notes: "Core PCE"
-
-  # --- May 2026 ---
-  - date: "2026-05-01"
-    type: "ISM_MANUFACTURING"
-    time: "10:00 ET"
-    impact: "MEDIUM"
-    affected_topics: ["RECESSION"]
-    notes: "ISM Manufacturing PMI"
-
-  - date: "2026-05-08"
-    type: "NFP"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["RECESSION", "FED_POLICY"]
-    notes: "Nonfarm payrolls"
-
-  - date: "2026-05-12"
-    type: "CPI"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["INFLATION", "FED_POLICY"]
-    notes: "CPI + Core CPI"
-
-  - date: "2026-05-29"
-    type: "PCE_INFLATION"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["INFLATION", "FED_POLICY"]
-    notes: "Core PCE"
-
-  # --- June 2026 ---
-  - date: "2026-06-05"
-    type: "NFP"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["RECESSION", "FED_POLICY"]
-    notes: "Nonfarm payrolls"
-
-  - date: "2026-06-10"
-    type: "CPI"
-    time: "08:30 ET"
-    impact: "HIGH"
-    affected_topics: ["INFLATION", "FED_POLICY"]
-    notes: "CPI + Core CPI"
+    themes: ["FED_POLICY", "LIQUIDITY"]
+    notes: "Apr 28-29."
 
   - date: "2026-06-17"
-    type: "FOMC_DECISION"
-    time: "14:00 ET"
+    event: "FOMC Decision + SEP + Dot Plot"
+    type: "FOMC"
     impact: "HIGH"
-    affected_topics: ["FED_POLICY", "LIQUIDITY", "CREDIT"]
-    notes: "Rate decision + SEP + dot plot"
+    themes: ["FED_POLICY", "LIQUIDITY"]
+    notes: "Jun 16-17. Summary of Economic Projections."
 
-  - date: "2026-06-26"
-    type: "PCE_INFLATION"
-    time: "08:30 ET"
+  - date: "2026-07-29"
+    event: "FOMC Decision"
+    type: "FOMC"
     impact: "HIGH"
-    affected_topics: ["INFLATION", "FED_POLICY"]
-    notes: "Core PCE"
+    themes: ["FED_POLICY", "LIQUIDITY"]
+    notes: "Jul 28-29."
+
+  - date: "2026-09-16"
+    event: "FOMC Decision + SEP + Dot Plot"
+    type: "FOMC"
+    impact: "HIGH"
+    themes: ["FED_POLICY", "LIQUIDITY"]
+    notes: "Sep 15-16. Summary of Economic Projections."
+
+  - date: "2026-10-28"
+    event: "FOMC Decision"
+    type: "FOMC"
+    impact: "HIGH"
+    themes: ["FED_POLICY", "LIQUIDITY"]
+    notes: "Oct 27-28."
+
+  - date: "2026-12-09"
+    event: "FOMC Decision + SEP + Dot Plot"
+    type: "FOMC"
+    impact: "HIGH"
+    themes: ["FED_POLICY", "LIQUIDITY"]
+    notes: "Dec 8-9. Summary of Economic Projections."
+
+  # --- NFP (Employment Situation, 08:30 ET) ---
+  # Source: bls.gov — typically 1st Friday of month
+  - date: "2026-03-06"
+    event: "NFP (Feb data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for February 2026."
+
+  - date: "2026-04-03"
+    event: "NFP (Mar data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for March 2026."
+
+  - date: "2026-05-08"
+    event: "NFP (Apr data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for April 2026."
+
+  - date: "2026-06-05"
+    event: "NFP (May data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for May 2026."
+
+  - date: "2026-07-02"
+    event: "NFP (Jun data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for June 2026."
+
+  - date: "2026-08-07"
+    event: "NFP (Jul data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for July 2026."
+
+  - date: "2026-09-04"
+    event: "NFP (Aug data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for August 2026."
+
+  - date: "2026-10-02"
+    event: "NFP (Sep data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for September 2026."
+
+  - date: "2026-11-06"
+    event: "NFP (Oct data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for October 2026."
+
+  - date: "2026-12-04"
+    event: "NFP (Nov data)"
+    type: "NFP"
+    impact: "HIGH"
+    themes: ["RECESSION", "FED_POLICY"]
+    notes: "Employment Situation for November 2026."
+
+  # --- CPI (Consumer Price Index, 08:30 ET) ---
+  # Source: bls.gov/cpi — typically ~10-13th of month
+  - date: "2026-02-11"
+    event: "CPI (Jan data)"
+    type: "CPI"
+    impact: "HIGH"
+    themes: ["INFLATION", "FED_POLICY"]
+    notes: "Confirmed by BLS."
+
+  - date: "2026-03-11"
+    event: "CPI (Feb data)"
+    type: "CPI"
+    impact: "HIGH"
+    themes: ["INFLATION", "FED_POLICY"]
+    notes: "Confirmed by BLS."
+
+  - date: "2026-04-14"
+    event: "CPI (Mar data)"
+    type: "CPI"
+    impact: "HIGH"
+    themes: ["INFLATION", "FED_POLICY"]
+    notes: "Estimated based on BLS pattern."
+
+  - date: "2026-05-12"
+    event: "CPI (Apr data)"
+    type: "CPI"
+    impact: "HIGH"
+    themes: ["INFLATION", "FED_POLICY"]
+    notes: "Estimated based on BLS pattern."
+
+  - date: "2026-06-10"
+    event: "CPI (May data)"
+    type: "CPI"
+    impact: "HIGH"
+    themes: ["INFLATION", "FED_POLICY"]
+    notes: "Estimated based on BLS pattern."
+
+  - date: "2026-07-14"
+    event: "CPI (Jun data)"
+    type: "CPI"
+    impact: "HIGH"
+    themes: ["INFLATION", "FED_POLICY"]
+    notes: "Estimated based on BLS pattern."
+
+  # --- ECB ---
+  - date: "2026-03-06"
+    event: "ECB Rate Decision"
+    type: "ECB"
+    impact: "MEDIUM"
+    themes: ["FED_POLICY", "DOLLAR"]
+    notes: "Same day as NFP."
+
+  - date: "2026-04-16"
+    event: "ECB Rate Decision"
+    type: "ECB"
+    impact: "MEDIUM"
+    themes: ["FED_POLICY", "DOLLAR"]
+
+  - date: "2026-06-04"
+    event: "ECB Rate Decision"
+    type: "ECB"
+    impact: "MEDIUM"
+    themes: ["FED_POLICY", "DOLLAR"]
