@@ -1,0 +1,32 @@
+Extract structured claims from the following content.
+
+SOURCE: {source_id} ({source_name})
+CONTENT TYPE: {content_type}
+CONTENT DATE: {content_date}
+TITLE: {title}
+
+KNOWN BIAS OF THIS SOURCE: {known_bias} ({bias_label})
+This source is known to be {bias_description}. Calibrate novelty and sentiment accordingly — their baseline position is NOT novel.
+
+{extraction_context}
+
+---BEGIN CONTENT---
+{content_text}
+---END CONTENT---
+
+Extract up to 10 claims. Return ONLY a JSON array:
+[
+  {{
+    "claim_text": "...",
+    "claim_type": "OPINION|PREDICTION|FACT|ANALYSIS",
+    "sentiment": {{"direction": "BULLISH|BEARISH|NEUTRAL|MIXED", "intensity": 1}},
+    "topics": ["TOPIC1", "TOPIC2"],
+    "primary_topic": "TOPIC1",
+    "timeframe": "IMMEDIATE|SHORT|MEDIUM|LONG",
+    "catalyst": "..." ,
+    "catalyst_date": "...",
+    "novelty_score": 0,
+    "novelty_note": "...",
+    "extraction_confidence": 0.9
+  }}
+]

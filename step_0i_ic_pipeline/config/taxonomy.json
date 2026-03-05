@@ -1,0 +1,85 @@
+{
+  "topics": [
+    "LIQUIDITY", "FED_POLICY", "CREDIT", "RECESSION", "INFLATION",
+    "EQUITY_VALUATION", "CHINA_EM", "GEOPOLITICS", "ENERGY",
+    "COMMODITIES", "TECH_AI", "CRYPTO", "DOLLAR", "VOLATILITY", "POSITIONING"
+  ],
+
+  "topic_keywords": {
+    "LIQUIDITY": ["net liquidity", "fed balance sheet", "QE", "QT", "TGA", "RRP", "M2", "global liquidity", "PBOC", "BOJ", "ECB", "central bank", "money supply", "reserve", "drain"],
+    "FED_POLICY": ["fed", "fomc", "powell", "rates", "dot plot", "tapering", "rate cut", "rate hike", "fed funds", "terminal rate", "neutral rate", "restrictive", "accommodative"],
+    "CREDIT": ["spreads", "high yield", "investment grade", "defaults", "banking", "credit", "HY OAS", "IG OAS", "delinquencies", "lending standards", "SLOOS", "financial conditions"],
+    "RECESSION": ["recession", "GDP", "employment", "ISM", "PMI", "labor", "unemployment", "payrolls", "consumer", "soft landing", "hard landing", "growth"],
+    "INFLATION": ["CPI", "PCE", "inflation", "deflation", "disinflation", "wages", "energy prices", "sticky inflation", "core", "headline", "breakeven"],
+    "EQUITY_VALUATION": ["P/E", "earnings", "buybacks", "valuation", "Shiller", "CAPE", "margin", "revenue", "guidance", "EPS", "forward earnings", "multiple"],
+    "CHINA_EM": ["China", "PBOC", "yuan", "renminbi", "capital flows", "trade", "emerging", "EM", "India", "Brazil", "stimulus", "property"],
+    "GEOPOLITICS": ["war", "sanctions", "election", "trade war", "tariff", "NATO", "Taiwan", "Ukraine", "Russia", "BRICS", "deglobalization"],
+    "ENERGY": ["oil", "gas", "OPEC", "energy", "crude", "WTI", "brent", "natural gas", "LNG", "energy transition", "shale", "SPR"],
+    "COMMODITIES": ["gold", "silver", "copper", "agriculture", "commodity", "mining", "platinum", "palladium", "lithium", "uranium"],
+    "TECH_AI": ["AI", "artificial intelligence", "semiconductor", "chip", "magnificent 7", "FAANG", "tech bubble", "Nvidia", "cloud", "data center", "capex"],
+    "CRYPTO": ["bitcoin", "BTC", "ethereum", "crypto", "regulation", "adoption", "stablecoin", "DeFi", "halving", "ETF"],
+    "DOLLAR": ["DXY", "dollar", "reserve currency", "milkshake", "euro", "yen", "FX", "forex", "currency", "dedollarization"],
+    "VOLATILITY": ["VIX", "options", "gamma", "market structure", "0DTE", "volatility", "skew", "term structure", "hedging", "convexity", "tail risk"],
+    "POSITIONING": ["crowding", "flows", "sentiment", "AAII", "put/call", "COT", "fund flows", "retail", "institutional", "short interest"]
+  },
+
+  "topic_to_layers": {
+    "LIQUIDITY":        ["L1", "L7"],
+    "FED_POLICY":       ["L1", "L2", "L7"],
+    "CREDIT":           ["L2", "L5"],
+    "RECESSION":        ["L2", "L3", "L5"],
+    "INFLATION":        ["L2", "L7"],
+    "EQUITY_VALUATION": ["L3", "L5"],
+    "CHINA_EM":         ["L4", "L6"],
+    "GEOPOLITICS":      ["L4", "L8"],
+    "ENERGY":           ["L3", "L6"],
+    "COMMODITIES":      ["L3", "L6"],
+    "TECH_AI":          ["L3", "L5"],
+    "CRYPTO":           ["L6", "L8"],
+    "DOLLAR":           ["L4", "L6", "L7"],
+    "VOLATILITY":       ["L5", "L8"],
+    "POSITIONING":      ["L5", "L8"]
+  },
+
+  "topic_to_assets": {
+    "LIQUIDITY":        ["SPY", "QQQ", "TLT", "GLD", "BTC"],
+    "FED_POLICY":       ["TLT", "IEF", "SHY", "SPY", "GLD"],
+    "CREDIT":           ["HYG", "LQD", "SPY"],
+    "RECESSION":        ["SPY", "TLT", "GLD", "IWM"],
+    "INFLATION":        ["TIP", "GLD", "USO", "DBC", "BTC"],
+    "EQUITY_VALUATION": ["SPY", "QQQ", "IWM"],
+    "CHINA_EM":         ["FXI", "EEM", "GLD", "DXY"],
+    "GEOPOLITICS":      ["GLD", "USO", "UUP", "VIX"],
+    "ENERGY":           ["USO", "XLE", "UNG"],
+    "COMMODITIES":      ["GLD", "SLV", "DBC", "COPX"],
+    "TECH_AI":          ["QQQ", "SMH", "SOXX"],
+    "CRYPTO":           ["BTC", "ETH"],
+    "DOLLAR":           ["UUP", "DXY", "GLD", "EEM", "FXI"],
+    "VOLATILITY":       ["VIX", "UVXY", "SPY"],
+    "POSITIONING":      ["SPY", "QQQ", "IWM", "HYG"]
+  },
+
+  "v16_relevance_rules": {
+    "v16_related": ["LIQUIDITY", "FED_POLICY", "CREDIT", "RECESSION", "INFLATION", "DOLLAR", "VOLATILITY", "POSITIONING"],
+    "f6_related": ["EQUITY_VALUATION", "TECH_AI", "POSITIONING", "VOLATILITY"],
+    "g7_related": ["CHINA_EM", "GEOPOLITICS", "DOLLAR", "ENERGY", "COMMODITIES"]
+  },
+
+  "divergence_config": {
+    "LIQUIDITY":        {"divergence_possible": true},
+    "FED_POLICY":       {"divergence_possible": true},
+    "CREDIT":           {"divergence_possible": true},
+    "RECESSION":        {"divergence_possible": true},
+    "INFLATION":        {"divergence_possible": true},
+    "EQUITY_VALUATION": {"divergence_possible": false, "reason": "Keine Echtzeit-DC-Metrik"},
+    "CHINA_EM":         {"divergence_possible": true},
+    "GEOPOLITICS":      {"divergence_possible": false, "reason": "Rein qualitativ"},
+    "ENERGY":           {"divergence_possible": true},
+    "COMMODITIES":      {"divergence_possible": true},
+    "TECH_AI":          {"divergence_possible": false, "reason": "Sektorspezifisch"},
+    "CRYPTO":           {"divergence_possible": false, "reason": "Asset, kein Indikator"},
+    "DOLLAR":           {"divergence_possible": true},
+    "VOLATILITY":       {"divergence_possible": true},
+    "POSITIONING":      {"divergence_possible": true}
+  }
+}
