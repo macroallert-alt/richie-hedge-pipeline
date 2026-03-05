@@ -378,9 +378,12 @@ def main():
 
         # Write Draft to Drive CURRENT/
         if drive_service:
-            # Remove preprocessor_output from Drive JSON (too large, internal only)
-            drive_data = {k: v for k, v in cio_output.items() if k != "preprocessor_output"}
-            write_drive_json(drive_service, drive_data, "step4_cio_draft.json")
+            try:
+                # Remove preprocessor_output from Drive JSON (too large, internal only)
+                drive_data = {k: v for k, v in cio_output.items() if k != "preprocessor_output"}
+                write_drive_json(drive_service, drive_data, "step4_cio_draft.json")
+            except Exception as e:
+                logger.error(f"Draft Drive write failed: {e}")
 
         # THEN: Promote Draft to Final (DA not built yet → V1 behavior)
         logger.info("=" * 60)
@@ -396,23 +399,32 @@ def main():
 
         # Write Final to Drive CURRENT/
         if drive_service:
-            drive_data = {k: v for k, v in final_output.items() if k != "preprocessor_output"}
-            write_drive_json(drive_service, drive_data, "step6_cio_final.json")
-            write_drive_text(drive_service, final_output["briefing_text"], "step6_cio_final_memo.md")
+            try:
+                drive_data = {k: v for k, v in final_output.items() if k != "preprocessor_output"}
+                write_drive_json(drive_service, drive_data, "step6_cio_final.json")
+                write_drive_text(drive_service, final_output["briefing_text"], "step6_cio_final_memo.md")
+            except Exception as e:
+                logger.error(f"Final Drive write failed: {e}")
 
         # Write CIO History Digest to Drive HISTORY/
         if drive_service:
-            history_digest = final_output.get("cio_history_digest", {})
-            history_folder_id = _find_folder(drive_service, "HISTORY", DRIVE_ROOT_ID)
-            if history_folder_id:
-                write_drive_json(drive_service, history_digest, "cio_history_digest.json", history_folder_id)
-                logger.info("Drive: cio_history_digest.json written to HISTORY/")
-            else:
-                logger.warning("HISTORY folder not found — skipping history write")
+            try:
+                history_digest = final_output.get("cio_history_digest", {})
+                history_folder_id = _find_folder(drive_service, "HISTORY", DRIVE_ROOT_ID)
+                if history_folder_id:
+                    write_drive_json(drive_service, history_digest, "cio_history_digest.json", history_folder_id)
+                    logger.info("Drive: cio_history_digest.json written to HISTORY/")
+                else:
+                    logger.warning("HISTORY folder not found — skipping history write")
+            except Exception as e:
+                logger.error(f"History Drive write failed: {e}")
 
         # Write AGENT_SUMMARY
         if sheets_service:
-            write_agent_summary(sheets_service, final_output, "final")
+            try:
+                write_agent_summary(sheets_service, final_output, "final")
+            except Exception as e:
+                logger.error(f"AGENT_SUMMARY write failed: {e}")
 
         # Update dashboard.json
         from step4_cio.dashboard_update import update_dashboard_json

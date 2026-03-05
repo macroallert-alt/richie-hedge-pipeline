@@ -369,7 +369,7 @@ def call_cio_llm(system_prompt: str, user_prompt: str, llm_config: dict) -> dict
     max_tokens = llm_config.get("max_tokens", 8000)
     max_retries = llm_config.get("retry_on_failure", 2)
     temp_increment = llm_config.get("retry_temperature_increment", 0.1)
-    timeout = llm_config.get("timeout_seconds", 60)
+    timeout = llm_config.get("timeout_seconds", 180)
 
     for attempt in range(max_retries + 1):
         try:
