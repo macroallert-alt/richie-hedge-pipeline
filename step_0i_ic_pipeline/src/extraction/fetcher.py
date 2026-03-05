@@ -116,6 +116,7 @@ def fetch_youtube_transcript(source: dict, fetch_state: dict) -> Optional[dict]:
     """
     Fetch latest YouTube transcript for a source.
     Returns dict with source_id, content_date, title, text, url or None.
+    Supports both youtube-transcript-api v0.x (static) and v1.x+ (instance).
     """
     from youtube_transcript_api import YouTubeTranscriptApi
 
@@ -142,33 +143,45 @@ def fetch_youtube_transcript(source: dict, fetch_state: dict) -> Optional[dict]:
             return None
 
         try:
-            transcript_list = YouTubeTranscriptApi.get_transcript(
-                vid, languages=[lang, "en"]
-            )
-            text = " ".join(seg["text"] for seg in transcript_list)
-            if len(text) > MAX_CONTENT_LENGTH:
-                text = text[:MAX_CONTENT_LENGTH]
-
-            # Update fetch state
-            fetch_state.setdefault("fetch_state", {})[source_id] = {
-                "last_fetch_date": date.today().isoformat(),
-                "last_content_id": vid,
-                "last_content_date": video["published"],
-            }
-
-            return {
-                "source_id": source_id,
-                "source_name": source["source_name"],
-                "content_date": video["published"],
-                "title": video["title"],
-                "text": text,
-                "url": video["url"],
-                "content_type": "podcast",
-                "fetch_method": "youtube_transcript",
-            }
+            # New API (v1.x+): instance method .fetch()
+            ytt_api = YouTubeTranscriptApi()
+            fetched = ytt_api.fetch(vid, languages=[lang, "en"])
+            # FetchedTranscript has .snippets, each with .text
+            text = " ".join(snippet.text for snippet in fetched.snippets)
+        except AttributeError:
+            try:
+                # Old API (v0.x): static method .get_transcript()
+                transcript_list = YouTubeTranscriptApi.get_transcript(
+                    vid, languages=[lang, "en"]
+                )
+                text = " ".join(seg["text"] for seg in transcript_list)
+            except Exception as e:
+                logger.warning(f"[{source_id}] Transcript failed for {vid}: {e}")
+                continue
         except Exception as e:
             logger.warning(f"[{source_id}] Transcript failed for {vid}: {e}")
             continue
+
+        if len(text) > MAX_CONTENT_LENGTH:
+            text = text[:MAX_CONTENT_LENGTH]
+
+        # Update fetch state
+        fetch_state.setdefault("fetch_state", {})[source_id] = {
+            "last_fetch_date": date.today().isoformat(),
+            "last_content_id": vid,
+            "last_content_date": video["published"],
+        }
+
+        return {
+            "source_id": source_id,
+            "source_name": source["source_name"],
+            "content_date": video["published"],
+            "title": video["title"],
+            "text": text,
+            "url": video["url"],
+            "content_type": "podcast",
+            "fetch_method": "youtube_transcript",
+        }
 
     return None
 
@@ -185,11 +198,32 @@ def _html_to_text(html: str) -> str:
 
 
 def _fetch_feed(rss_url: str) -> feedparser.FeedParserDict:
-    """Fetch and parse RSS feed with browser-like User-Agent.
+    """Fetch and parse RSS feed, trying multiple strategies.
     
-    Substack and some other feeds reject the default feedparser UA.
-    We fetch the raw XML with requests first, then parse it.
+    Substack blocks browser-like UAs via Cloudflare but allows simpler
+    clients through. We try multiple approaches in order:
+    1. feedparser direct (uses urllib internally with its own UA)
+    2. requests with minimal/no custom UA
+    3. requests with browser UA (for sites that require it)
     """
+    # Strategy 1: feedparser direct — often works for Substack
+    feed = feedparser.parse(rss_url)
+    if not feed.bozo or feed.entries:
+        return feed
+
+    # Strategy 2: requests with Python default UA (no override)
+    try:
+        resp = requests.get(rss_url, timeout=20, headers={
+            "Accept": "application/rss+xml, application/xml, text/xml, */*",
+        })
+        resp.raise_for_status()
+        feed = feedparser.parse(resp.content)
+        if not feed.bozo or feed.entries:
+            return feed
+    except requests.RequestException as e:
+        logger.debug(f"RSS fetch (default UA) failed for {rss_url}: {e}")
+
+    # Strategy 3: requests with browser UA
     try:
         resp = requests.get(rss_url, timeout=20, headers={
             "User-Agent": HTTP_USER_AGENT,
@@ -198,9 +232,8 @@ def _fetch_feed(rss_url: str) -> feedparser.FeedParserDict:
         resp.raise_for_status()
         return feedparser.parse(resp.content)
     except requests.RequestException as e:
-        logger.warning(f"RSS fetch failed for {rss_url}: {e}")
-        # Fallback to direct feedparser (works for non-Substack feeds)
-        return feedparser.parse(rss_url)
+        logger.warning(f"RSS fetch failed (all strategies) for {rss_url}: {e}")
+        return feedparser.parse("")  # empty feed
 
 
 def _scrape_full_article(url: str) -> Optional[str]:
