@@ -129,7 +129,12 @@ def update_dashboard_json(cio_output: dict, dashboard_json_path: str,
         header["briefing_type"] = cio_output.get("briefing_type", header.get("briefing_type"))
         header["system_conviction"] = cio_output.get("system_conviction", "N/A")
         header["risk_ampel"] = cio_output.get("risk_ampel", header.get("risk_ampel"))
-        header["fragility_state"] = cio_output.get("fragility_state", header.get("fragility_state", "N/A"))
+
+        # fragility_state may be a dict from Market Analyst — extract string
+        frag_raw = cio_output.get("fragility_state", header.get("fragility_state", "N/A"))
+        if isinstance(frag_raw, dict):
+            frag_raw = frag_raw.get("state", frag_raw.get("level", "N/A"))
+        header["fragility_state"] = frag_raw
         header["is_draft_fallback"] = cio_output.get("is_fallback", False)
 
         # DA stats in header
@@ -171,10 +176,9 @@ def update_dashboard_json(cio_output: dict, dashboard_json_path: str,
         else:
             digest["line_2_actions"] = "Keine Action Items. System stabil."
 
-        frag = cio_output.get("fragility_state", "N/A")
         dq = cio_output.get("data_quality", "DEGRADED")
         digest["line_3_confidence"] = (
-            f"Conviction: {conv}. Fragility: {frag}. Data: {dq}."
+            f"Conviction: {conv}. Fragility: {frag_raw}. Data: {dq}."
         )
         dashboard["digest"] = digest
 
@@ -260,13 +264,18 @@ def update_dashboard_json(cio_output: dict, dashboard_json_path: str,
                 ku for ku in dashboard["known_unknowns"]
                 if ku.get("gap") != "LAYER_SCORES"
             ]
+            # Extract strings for summary (may be dicts)
+            ma_regime = la_input.get('system_regime', '?')
+            if isinstance(ma_regime, dict):
+                ma_regime = ma_regime.get('regime', '?')
+            ma_frag = la_input.get('fragility_state', '?')
+            if isinstance(ma_frag, dict):
+                ma_frag = ma_frag.get('state', '?')
+
             steps["step_1_market_analyst"] = {
                 "status": "OK",
                 "completed_at": la_input.get("date", now_utc),
-                "summary": (
-                    f"Regime: {la_input.get('system_regime', '?')}, "
-                    f"Fragility: {la_input.get('fragility_state', '?')}"
-                ),
+                "summary": f"Regime: {ma_regime}, Fragility: {ma_frag}",
             }
             dashboard.setdefault("pipeline_health", {})["steps"] = steps
             logger.info(f"Layers block updated: {la_input.get('system_regime')}, {len(layer_scores)} layers")
