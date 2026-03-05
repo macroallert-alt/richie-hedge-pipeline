@@ -91,7 +91,7 @@ def _get_latest_video_ids(channel_url: str, max_videos: int = 3,
         return []
 
     rss_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
-    feed = feedparser.parse(rss_url)
+    feed = _fetch_feed(rss_url)
 
     results = []
     for entry in feed.entries[:max_videos]:
