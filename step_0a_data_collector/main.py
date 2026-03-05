@@ -1161,6 +1161,42 @@ def main():
     log.info(f"Pulling FRED: {fred_start} -> {fred_end}")
     fred_data = pull_all_fred(fred, fred_start, fred_end)
 
+    # --- STUFE 0: DATA_Prices (V16 Asset-Preise) ---
+    # Muss vor Stufe 3 laufen (K16 liest Cu/Au aus DATA_Prices)
+    log.info("=" * 60)
+    log.info("STUFE 0: DATA_Prices (27 Assets)")
+    log.info("=" * 60)
+    try:
+        from fetchers import FMPFetcher, YFinanceFetcher, V16PriceFetcher
+        from writers import V16SheetWriter
+
+        fmp_key = os.environ.get('FMP_API_KEY', os.environ.get('EODHD_API_KEY', ''))
+        fmp = FMPFetcher(fmp_key)
+        yf = YFinanceFetcher()
+        price_fetcher = V16PriceFetcher(fmp, yf)
+
+        log.info("  Fetching 27 asset prices...")
+        v16_prices = price_fetcher.fetch_all()
+        ok_count = sum(1 for v in v16_prices.values() if v is not None)
+        log.info(f"  Prices fetched: {ok_count}/27")
+
+        if ok_count >= 20:  # Mindestens 20/27 Preise muessen da sein
+            creds_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "/tmp/gcp_sa.json")
+            writer = V16SheetWriter(PRODUCTION_SHEET_ID, creds_path)
+            success = writer.write_prices(v16_prices, end_date)
+            if success:
+                log.info(f"  DATA_Prices: {end_date} geschrieben")
+            else:
+                log.warning("  DATA_Prices: write_prices returned False")
+        else:
+            log.warning(f"  DATA_Prices: Nur {ok_count}/27 Preise — SKIP (brauche mindestens 20)")
+
+    except Exception as e:
+        log.error(f"  STUFE 0 FAILED (non-fatal): {e}")
+        log.info("  Pipeline continues without price update")
+
+    log.info("")
+
     log.info("Reading historical DATA_Liquidity...")
     hist_liq = read_sheet_tab(sheet, "DATA_Liquidity")
     log.info(f"  {len(hist_liq)} historical rows")
