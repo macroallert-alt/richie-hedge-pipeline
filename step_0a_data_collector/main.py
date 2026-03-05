@@ -1152,17 +1152,10 @@ def main():
     log.info(f"Last good date: {last_good}")
     log.info(f"Calculating: {start_date} -> {end_date}")
 
-    if start_date > end_date:
-        log.info("Sheet is up to date. Nothing to do.")
-        return
-
-    fred_start = (start_date - timedelta(days=1200)).strftime("%Y-%m-%d")
-    fred_end = end_date.strftime("%Y-%m-%d")
-    log.info(f"Pulling FRED: {fred_start} -> {fred_end}")
-    fred_data = pull_all_fred(fred, fred_start, fred_end)
-
     # --- STUFE 0: DATA_Prices (V16 Asset-Preise) ---
-    # Muss vor Stufe 3 laufen (K16 liest Cu/Au aus DATA_Prices)
+    # Laeuft IMMER (auch wenn Macro State schon aktuell ist),
+    # weil Preise taeglich geschrieben werden muessen.
+    # write_prices() hat eigenen Duplikat-Check (skippt wenn Datum schon existiert).
     log.info("=" * 60)
     log.info("STUFE 0: DATA_Prices (27 Assets)")
     log.info("=" * 60)
@@ -1196,6 +1189,15 @@ def main():
         log.info("  Pipeline continues without price update")
 
     log.info("")
+
+    if start_date > end_date:
+        log.info("Sheet is up to date. Nothing to do.")
+        return
+
+    fred_start = (start_date - timedelta(days=1200)).strftime("%Y-%m-%d")
+    fred_end = end_date.strftime("%Y-%m-%d")
+    log.info(f"Pulling FRED: {fred_start} -> {fred_end}")
+    fred_data = pull_all_fred(fred, fred_start, fred_end)
 
     log.info("Reading historical DATA_Liquidity...")
     hist_liq = read_sheet_tab(sheet, "DATA_Liquidity")
