@@ -261,8 +261,8 @@ def extract_action_items(briefing_text: str, preprocessor_output: dict) -> list:
 
     Handles two formats:
     1. Legacy: Lines starting with ACT: / REVIEW: / WATCH:
-    2. LLM format: Section headers (IMMEDIATE/SHORT-TERM/MEDIUM-TERM/WATCHLIST)
-       with items like **AI-1: ...** or **WL-1: ...**
+    2. LLM format: Section headers (IMMEDIATE/PRE-EVENT/POST-EVENT/ONGOING/WATCHLIST)
+       with items like **A1: ...**, **AI-1: ...**, **WL-1: ...**, or bullet - **Text:**
     """
     s7_text = _extract_section_text(briefing_text, "S7")
     items = []
@@ -289,31 +289,44 @@ def extract_action_items(briefing_text: str, preprocessor_output: dict) -> list:
             continue
 
         # --- Section header detection (LLM format) ---
-        if "IMMEDIATE" in line_upper or "VOR NFP" in line_upper or "<24H" in line_upper:
-            current_type = "ACT"
-            continue
-        if "SHORT-TERM" in line_upper or "48H" in line_upper:
-            current_type = "REVIEW"
-            continue
-        if "MEDIUM-TERM" in line_upper or "7D-30D" in line_upper:
-            current_type = "WATCH"
-            continue
-        if "WATCHLIST" in line_upper and "ACTION" not in line_upper:
-            current_type = "WATCH"
-            continue
-        if "POST-NFP" in line_upper or "POST NFP" in line_upper:
-            current_type = "REVIEW"
-            continue
-        if "DEFERRED" in line_upper:
-            current_type = "WATCH"
-            continue
+        # Only match lines that look like headers (ending with :** or similar)
+        is_header = line_stripped.endswith(":**") or line_stripped.endswith(":**)")
+        if is_header:
+            if "IMMEDIATE" in line_upper or "VOR NFP" in line_upper or "<24H" in line_upper:
+                current_type = "ACT"
+                continue
+            if "PRE-EVENT" in line_upper or "PRE EVENT" in line_upper:
+                current_type = "ACT"
+                continue
+            if "SHORT-TERM" in line_upper or "48H" in line_upper:
+                current_type = "REVIEW"
+                continue
+            if "POST-EVENT" in line_upper or "POST EVENT" in line_upper or "POST-NFP" in line_upper or "POST NFP" in line_upper:
+                current_type = "REVIEW"
+                continue
+            if "ONGOING" in line_upper or "MEDIUM-TERM" in line_upper or "7D-30D" in line_upper:
+                current_type = "WATCH"
+                continue
+            if "WATCHLIST" in line_upper and "ACTION" not in line_upper:
+                current_type = "WATCH"
+                continue
+            if "DEFERRED" in line_upper:
+                current_type = "WATCH"
+                continue
 
-        # --- LLM item detection: **AI-1: ...** or **WL-1: ...** ---
-        ai_match = re.match(r'\*\*(?:AI|WL|DF)-?\d+[:\s]', line_stripped)
-        if ai_match and current_type:
+        # --- LLM item detection: **A1: ...**, **AI-1: ...**, **WL-1: ...** ---
+        item_match = re.match(r'\*\*(?:AI|WL|DF|A)-?\d+[:\s]', line_stripped)
+        if item_match and current_type:
             # Extract description: remove ** markers
             desc = re.sub(r'\*\*', '', line_stripped).strip()
             items.append(_parse_action_item_from_desc(desc, current_type, preprocessor_output))
+            continue
+
+        # --- Bullet watchlist items: - **Text:** description ---
+        bullet_match = re.match(r'^-\s*\*\*(.+?):\*\*', line_stripped)
+        if bullet_match and current_type == "WATCH":
+            desc = bullet_match.group(1).strip()
+            items.append(_parse_action_item_from_desc(desc, "WATCH", preprocessor_output))
 
     # Conviction-based upgrade: LOW → REVIEW becomes ACT
     conviction = preprocessor_output.get("header", {}).get("system_conviction", "MODERATE")
