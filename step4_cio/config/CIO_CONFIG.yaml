@@ -1,0 +1,301 @@
+# =============================================================================
+# CIO Agent Configuration — V1.0
+# Consolidated: LLM, Engine, Patterns, Absence Checks, Mappings
+# Source: CIO Spec Teile 2, 3, 6
+# =============================================================================
+
+version: "1.0"
+
+# -----------------------------------------------------------------------------
+# LLM Configuration (Spec Teil 4 §4.1)
+# -----------------------------------------------------------------------------
+llm:
+  model: "claude-sonnet-4-5-20250929"
+  temperature: 0.3
+  max_tokens: 8000
+  retry_on_failure: 2
+  retry_temperature_increment: 0.1
+  timeout_seconds: 60
+
+# -----------------------------------------------------------------------------
+# Engine (Spec Teil 6 §6.1)
+# -----------------------------------------------------------------------------
+engine:
+  pipeline_step_draft: 4
+  pipeline_step_final: 6
+
+# -----------------------------------------------------------------------------
+# Data Warehouse (Spec Teil 6 §6.5)
+# -----------------------------------------------------------------------------
+data_warehouse:
+  sheet_id: "1sZeZ4VVztAqjBjyfXcCfhpSWJ4pCGF8ip1ksu_TYMHY"
+  draft_tab: "DRAFT_MEMO"
+  final_tab: "FINAL_MEMO"
+  history_tab: "CIO_HISTORY"
+  agent_summary_tab: "AGENT_SUMMARY"
+
+# -----------------------------------------------------------------------------
+# Google Drive (consistent with IC Pipeline + Risk Officer)
+# -----------------------------------------------------------------------------
+drive:
+  root_id: "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
+  current_folder_id: "1JelM_zZgPeX8TluTfaNqQmsTm3tXkG_8"
+
+# -----------------------------------------------------------------------------
+# History Management (Spec Teil 5 §5.5, Teil 6 §6.3)
+# -----------------------------------------------------------------------------
+history:
+  max_active_threads: 20
+  thread_auto_resolve_days: 14
+  max_resolved_threads_keep: 50
+  action_item_escalation_days: 3
+  act_item_urgent_escalation_days: 1
+
+# -----------------------------------------------------------------------------
+# Fact-Check (Spec Teil 5 §5.3)
+# -----------------------------------------------------------------------------
+fact_check:
+  enabled: true
+  critical_checks:
+    - "REGIME_MISMATCH"
+    - "AMPEL_MISMATCH"
+  high_checks:
+    - "SEVERITY_MISMATCH"
+    - "FRAGILITY_MISMATCH"
+  medium_checks:
+    - "BRIEFING_TYPE_MISMATCH"
+
+# -----------------------------------------------------------------------------
+# Fallback (Spec Teil 5 §5.8)
+# -----------------------------------------------------------------------------
+fallback:
+  enabled: true
+  log_fallback_usage: true
+
+# -----------------------------------------------------------------------------
+# Input Requirements (Spec Teil 1 §1.6, Teil 3 §3.2)
+#   PFLICHT = CIO does not run without this
+#   DEGRADED = CIO runs, marks as degraded
+#   OPTIONAL = no effect if missing
+# -----------------------------------------------------------------------------
+inputs:
+  pflicht:
+    - "v16_production"
+    - "risk_alerts"
+  degraded:
+    - "layer_analysis"
+    - "ic_intelligence"
+    - "f6_production"
+    - "beliefs"
+    - "signals"
+  optional:
+    - "cio_history"
+    - "yesterday_briefing"
+    - "g7_narrative"
+
+# -----------------------------------------------------------------------------
+# Briefing Type Rules (Spec Teil 2 §2.2, Teil 3 §3.7)
+# Highest matching level wins: EMERGENCY > ACTION > ROUTINE > WATCH (default)
+# -----------------------------------------------------------------------------
+briefing_type:
+  routine_requires_all:
+    risk_ampel: "GREEN"
+    no_class_a_patterns: true
+    no_high_novelty_7plus: true
+    no_events_48h: true
+    max_router_proximity: 0.6
+    fragility_state: "HEALTHY"
+    no_open_act_items: true
+  action_any_of:
+    risk_ampel_in: ["YELLOW", "RED"]
+    fragility_state: "EXTREME"
+    act_items_open_days_gt: 1
+    min_warnings_simultaneous: 2
+    escalating_warning_or_higher: true
+  emergency_any_of:
+    risk_ampel: "BLACK"
+    any_emergency_trigger_active: true
+    fragility_state: "CRISIS"
+    dd_protect_active: true
+
+# -----------------------------------------------------------------------------
+# System Conviction Rules (Spec Teil 2 §2.3, Teil 3 §3.9)
+# -----------------------------------------------------------------------------
+conviction:
+  high_requires_all:
+    regime_compatible: true
+    max_divergences: 1
+    max_divergence_severity: 4.0
+    max_low_confidence_markers: 1
+    max_no_data_themes: 3
+    no_crowded_consensus_pattern: true
+  low_any_of:
+    regime_incompatible: true
+    min_divergences: 3
+    min_divergence_severity_single: 6.0
+    min_low_confidence_markers: 4
+    regime_divergence_pattern: true
+    min_no_data_themes: 5
+
+# Regime compatibility pairs (Spec Teil 3 §3.9)
+regime_compatibility:
+  RISK_ON: ["BROAD_RISK_ON", "SELECTIVE"]
+  RISK_OFF: ["BROAD_RISK_OFF", "RISK_OFF_FORCED"]
+  TRANSITION: ["NEUTRAL", "CONFLICTED"]
+  # V16 uses: RISK_ON, RISK_OFF, TRANSITION
+  # Also accept SELECTIVE as V16 regime (maps to RISK_ON family)
+  SELECTIVE: ["BROAD_RISK_ON", "SELECTIVE", "NEUTRAL"]
+
+# -----------------------------------------------------------------------------
+# Klasse A Pattern Definitions (Spec Teil 3 §3.6, Teil 6 §6.3)
+# 9 Patterns + 1 Anti-Pattern
+# -----------------------------------------------------------------------------
+patterns:
+  COMPLACENCY_TRAP:
+    description: "Alle Systeme gruen — historisch gefaehrlichster Zustand"
+    triggers:
+      volatility_layer_max: 3.0
+      liquidity_layer_min: 6.0
+      risk_ampel: "GREEN"
+      no_warning_or_higher: true
+      extended_calm_or_routine_streak: 5
+    urgency_impact: "WATCH"
+    conviction_impact: null
+
+  REGIME_DIVERGENCE:
+    description: "V16 und Market Analyst widersprechen sich fundamental"
+    triggers:
+      incompatible_pairs:
+        - ["RISK_ON", "BROAD_RISK_OFF"]
+        - ["RISK_ON", "RISK_OFF_FORCED"]
+        - ["RISK_OFF", "BROAD_RISK_ON"]
+    urgency_impact: null
+    conviction_impact: "OVERRIDE_LOW"
+
+  CROWDED_CONSENSUS:
+    description: "Fast alle Quellen und Systeme einer Meinung — Gegenrichtung ist Risiko"
+    triggers:
+      ic_consensus_abs_min: 6.0
+      market_analyst_alignment: true
+      ic_source_count_min: 4
+    urgency_impact: "WATCH"
+    conviction_impact: null
+
+  TEMPORAL_CONVERGENCE:
+    description: "Mehrere zeitliche Druckpunkte konvergieren"
+    triggers:
+      min_temporal_triggers: 2
+      plus_risk_or_fragility: true
+    urgency_impact: "REVIEW"
+    conviction_impact: null
+
+  FRAGILITY_ESCALATION:
+    description: "Concentration + Fragility + qualitative Warnsignale konvergieren"
+    triggers:
+      fragility_min: "ELEVATED"
+      sector_concentration_alert: true
+      ic_bearish_tech_or_equity: true
+    urgency_impact: "REVIEW"
+    conviction_impact: null
+
+  SILENT_RISK:
+    description: "Genau ein System flaggt ein Risiko — Fruehwarnung"
+    triggers:
+      single_system_risk: true
+      no_corroboration: true
+    urgency_impact: "WATCH"
+    conviction_impact: null
+
+  OPPORTUNITY_WINDOW:
+    description: "Mehrere Systeme deuten auf internationale Diversifikation"
+    triggers:
+      v16_risk_on: true
+      router_proximity_min: 0.7
+      ic_bullish_em_or_commodities: true
+      risk_ampel_max: "YELLOW"
+      fragility_max: "ELEVATED"
+    urgency_impact: "WATCH"
+    conviction_impact: null
+
+  F6_POSITION_UNDER_PRESSURE:
+    description: "IC warnt vor Sektor in dem F6 aktiv ist"
+    triggers:
+      f6_active_in_sector: true
+      ic_bearish_on_sector: true
+    urgency_impact: "REVIEW"
+    conviction_impact: null
+
+  F6_SIGNAL_IC_CONFIRMATION:
+    description: "F6 Signal wird durch IC qualitativ bestaetigt"
+    triggers:
+      f6_new_signal_in_sector: true
+      ic_bullish_on_sector: true
+      no_risk_alert_on_sector: true
+    urgency_impact: null
+    conviction_impact: null
+
+# Anti-Pattern (Spec Teil 3 §3.6)
+anti_patterns:
+  HIGH_NOVELTY_LOW_SIGNAL:
+    description: "Hohe Novelty aber minimaler bias-adjusted Signal"
+    triggers:
+      novelty_min: 5
+      bias_adjusted_signal_abs_max: 2.0
+    action: "Confirmed Views statt prominent featuren"
+
+# -----------------------------------------------------------------------------
+# Absence Checks (Spec Teil 3 §3.5)
+# -----------------------------------------------------------------------------
+absence_checks:
+  ic_blind_spot:
+    enabled: true
+    min_source_count: 1
+    theme_indicators:
+      CREDIT:
+        indicator: "hy_oas_5d_change"
+        threshold: 15
+      VOLATILITY:
+        indicator: "vix_1d_change"
+        threshold: 2.0
+      EQUITY_VALUATION:
+        indicator: "spy_5d_return"
+        threshold: 0.03
+      ENERGY:
+        indicator: "uso_5d_return"
+        threshold: 0.05
+      DOLLAR:
+        indicator: "dxy_5d_change"
+        threshold: 1.5
+      CHINA_EM:
+        indicator: "fxi_5d_return"
+        threshold: 0.04
+
+  near_miss:
+    enabled: true
+    proximity_threshold: 0.8
+
+  extended_calm:
+    enabled: true
+    min_consecutive_days: 5
+
+# -----------------------------------------------------------------------------
+# F6 Sector → IC Theme Mapping (Spec Teil 6 §6.3)
+# -----------------------------------------------------------------------------
+sector_theme_mapping:
+  Technology: "TECH_AI"
+  Energy: "ENERGY"
+  Financials: "CREDIT"
+  Consumer Discretionary: "RECESSION"
+  Healthcare: "EQUITY_VALUATION"
+  Materials: "COMMODITIES"
+  Consumer Staples: "RECESSION"
+  Industrials: "RECESSION"
+  Utilities: "CREDIT"
+  Real Estate: "CREDIT"
+  Communication Services: "TECH_AI"
+
+# -----------------------------------------------------------------------------
+# Ongoing Conditions Compression (Spec Teil 3 §3.8)
+# -----------------------------------------------------------------------------
+ongoing_compression:
+  stable_days_threshold: 3

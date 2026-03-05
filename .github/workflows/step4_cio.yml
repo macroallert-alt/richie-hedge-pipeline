@@ -1,0 +1,42 @@
+name: Step 4+6 — CIO Agent
+
+on:
+  workflow_run:
+    workflows: ["Step 3 — Risk Officer"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  cio-agent:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic google-auth google-api-python-client pyyaml
+
+      - name: Run CIO Agent (Draft → auto-promotes to Final)
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python -m step4_cio --mode draft
+
+      - name: Commit dashboard.json updates
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/dashboard/latest.json
+          git diff --cached --quiet || git commit -m "CIO: Update briefing + dashboard $(date +%Y-%m-%d)"
+          git push
