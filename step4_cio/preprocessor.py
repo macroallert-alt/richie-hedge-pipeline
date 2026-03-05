@@ -26,6 +26,24 @@ CONFIG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config")
 
 
 # ==========================================================================
+# HELPERS: Market Analyst returns nested dicts — extract strings
+# ==========================================================================
+
+def _extract_fragility_string(val) -> str:
+    """Market Analyst returns fragility_state as dict — extract string."""
+    if isinstance(val, dict):
+        return val.get("state", val.get("level", "HEALTHY"))
+    return val if val else "HEALTHY"
+
+
+def _extract_regime_string(val) -> str:
+    """Market Analyst returns system_regime as dict — extract string."""
+    if isinstance(val, dict):
+        return val.get("regime", "UNKNOWN")
+    return val if val else "UNKNOWN"
+
+
+# ==========================================================================
 # PHASE 1: INPUT VALIDATION + COMPLETENESS MANIFEST (Spec Teil 3 §3.2)
 # ==========================================================================
 
@@ -359,7 +377,7 @@ def match_patterns(inputs: dict, temporal_context: dict,
 
     # --- Pattern 2: REGIME_DIVERGENCE ---
     v16_regime = v16.get("regime", "UNKNOWN")
-    ma_regime = la.get("system_regime", "UNKNOWN")
+    ma_regime = _extract_regime_string(la.get("system_regime", "UNKNOWN"))
     if _is_regime_incompatible(v16_regime, ma_regime):
         active.append({
             "pattern": "REGIME_DIVERGENCE",
@@ -412,7 +430,7 @@ def match_patterns(inputs: dict, temporal_context: dict,
     if cc_critical:
         temporal_triggers += 1
 
-    fragility = la.get("fragility_state", "HEALTHY")
+    fragility = _extract_fragility_string(la.get("fragility_state", "HEALTHY"))
     has_risk_or_fragility = (
         has_warning_plus or fragility in ("ELEVATED", "EXTREME", "CRISIS")
     )
@@ -766,7 +784,7 @@ def calculate_system_conviction(inputs: dict, ic_intelligence: dict,
 
     # Regime compatibility
     v16_regime = inputs.get("v16_production", {}).get("regime", "UNKNOWN")
-    ma_regime = inputs.get("layer_analysis", {}).get("system_regime", "UNKNOWN")
+    ma_regime = _extract_regime_string(inputs.get("layer_analysis", {}).get("system_regime", "UNKNOWN"))
     compat_map = config.get("regime_compatibility", {})
     regime_compatible = ma_regime in compat_map.get(v16_regime, [])
 
@@ -835,9 +853,9 @@ def assemble_preprocessor_output(
             "briefing_type": briefing_type,
             "system_conviction": system_conviction,
             "risk_ampel": inputs.get("risk_alerts", {}).get("portfolio_status", "GREEN"),
-            "fragility_state": inputs.get("layer_analysis", {}).get(
+            "fragility_state": _extract_fragility_string(inputs.get("layer_analysis", {}).get(
                 "fragility_state", "HEALTHY"
-            ),
+            )),
             "data_quality": data_quality,
             "v16_regime": inputs.get("v16_production", {}).get("regime", "UNKNOWN"),
         },

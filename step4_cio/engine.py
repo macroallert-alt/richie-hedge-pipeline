@@ -64,6 +64,20 @@ DEFAULT_HISTORY = {
 }
 
 
+def _extract_fragility_string(val) -> str:
+    """Market Analyst returns fragility_state as dict — extract string."""
+    if isinstance(val, dict):
+        return val.get("state", val.get("level", "HEALTHY"))
+    return val if val else "HEALTHY"
+
+
+def _extract_regime_string(val) -> str:
+    """Market Analyst returns system_regime as dict — extract string."""
+    if isinstance(val, dict):
+        return val.get("regime", "UNKNOWN")
+    return val if val else "UNKNOWN"
+
+
 def is_monday_mode(d: date) -> bool:
     """Monday = special mode. Delta refers to Friday, not yesterday."""
     return d.weekday() == 0
@@ -143,7 +157,7 @@ def run_cio_draft(inputs: dict, config: dict,
     anti_patterns = detect_anti_patterns(inputs.get("ic_intelligence", {}), config)
 
     logger.info("PRE-PROCESSOR: Phase 6 — Briefing Type")
-    fragility_state = (
+    fragility_state = _extract_fragility_string(
         inputs.get("layer_analysis", {}).get("fragility_state", "HEALTHY")
     )
     briefing_type = determine_briefing_type(
@@ -361,7 +375,9 @@ def run_cio_final(inputs: dict, draft_output: dict,
         "briefing_type": preprocessor_output["header"]["briefing_type"],
         "system_conviction": preprocessor_output["header"]["system_conviction"],
         "risk_ampel": inputs.get("risk_alerts", {}).get("portfolio_status", "GREEN"),
-        "fragility_state": inputs.get("layer_analysis", {}).get("fragility_state", "UNKNOWN"),
+        "fragility_state": _extract_fragility_string(
+            inputs.get("layer_analysis", {}).get("fragility_state", "UNKNOWN")
+        ),
         "data_quality": preprocessor_output["header"]["data_quality"],
         "v16_regime": inputs.get("v16_production", {}).get("regime", "UNKNOWN"),
         "briefing_text": briefing_text,
@@ -477,7 +493,7 @@ def _build_fallback_output(preprocessor_output: dict | None, inputs: dict,
         "system_conviction": header.get("system_conviction", "LOW"),
         "risk_ampel": header.get("risk_ampel",
                                   inputs.get("risk_alerts", {}).get("portfolio_status", "GREEN")),
-        "fragility_state": header.get("fragility_state", "UNKNOWN"),
+        "fragility_state": _extract_fragility_string(header.get("fragility_state", "UNKNOWN")),
         "data_quality": header.get("data_quality", "DEGRADED"),
         "v16_regime": header.get("v16_regime",
                                   inputs.get("v16_production", {}).get("regime", "UNKNOWN")),
