@@ -467,6 +467,7 @@ def build_intelligence_block(intel: dict, briefing: dict) -> dict:
             "novelty": hn.get("novelty_score", 0),
             "signal": round(signal, 1),
             "theme": primary_topic,
+            "date": hn.get("content_date", ""),
         })
 
     claims_out.sort(key=lambda x: x["novelty"], reverse=True)

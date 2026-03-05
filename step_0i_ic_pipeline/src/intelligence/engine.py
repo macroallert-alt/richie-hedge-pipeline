@@ -205,6 +205,7 @@ def run_intelligence_engine(
             "claim_text": c.get("claim_text", ""),
             "novelty_score": c.get("novelty_score", 0),
             "topics": c.get("topics", []),
+            "content_date": c.get("content_date", ""),
         }
         for c in high_novelty
     ]
