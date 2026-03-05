@@ -135,15 +135,18 @@ def write_drive_outputs(
         _upload_to_drive(service, briefing, "step0b_ic_briefing.json", current_id)
         logger.info("Drive: CURRENT/ updated")
 
-        # Write to HISTORY/ic/YYYY-MM-DD/
-        history_id = _find_or_create_folder(service, "HISTORY", DRIVE_ROOT_ID)
-        ic_history_id = _find_or_create_folder(service, "ic", history_id)
-        day_id = _find_or_create_folder(service, today_str, ic_history_id)
-
-        _upload_to_drive(service, intel, "step0b_ic_intelligence.json", day_id)
-        _upload_to_drive(service, claims_output, "step0b_ic_claims.json", day_id)
-        _upload_to_drive(service, briefing, "step0b_ic_briefing.json", day_id)
-        logger.info(f"Drive: HISTORY/ic/{today_str}/ archived")
+        # Write to HISTORY/ic/YYYY-MM-DD/ — disabled until P1 (SA quota fix)
+        # try:
+        #     history_id = _find_or_create_folder(service, "HISTORY", DRIVE_ROOT_ID)
+        #     ic_history_id = _find_or_create_folder(service, "ic", history_id)
+        #     day_id = _find_or_create_folder(service, today_str, ic_history_id)
+        #     _upload_to_drive(service, intel, "step0b_ic_intelligence.json", day_id)
+        #     _upload_to_drive(service, claims_output, "step0b_ic_claims.json", day_id)
+        #     _upload_to_drive(service, briefing, "step0b_ic_briefing.json", day_id)
+        #     logger.info(f"Drive: HISTORY/ic/{today_str}/ archived")
+        # except Exception as hist_err:
+        #     logger.warning(f"Drive HISTORY write skipped: {hist_err}")
+        logger.info("Drive: HISTORY write disabled (P1 — SA quota fix pending)")
 
     except ImportError:
         logger.warning("Google API libraries not installed — Drive writes skipped")
