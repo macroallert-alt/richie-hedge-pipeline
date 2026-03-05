@@ -40,6 +40,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          PROXY_URL: ${{ secrets.PROXY_URL }}
         run: python -m step_0i_ic_pipeline.main --stage ${{ github.event.inputs.stage || 'all' }}
 
       - name: Commit state updates

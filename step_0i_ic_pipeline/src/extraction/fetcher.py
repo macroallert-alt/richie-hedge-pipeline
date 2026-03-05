@@ -32,6 +32,11 @@ HTTP_USER_AGENT = (
     "Chrome/124.0.0.0 Safari/537.36"
 )
 
+# Proxy configuration — loaded from PROXY_URL env var (set via GitHub Secret)
+# Format: http://user:pass@host:port
+PROXY_URL = os.environ.get("PROXY_URL", "")
+PROXIES = {"http": PROXY_URL, "https": PROXY_URL} if PROXY_URL else None
+
 
 # ---------------------------------------------------------------------------
 # Fetch State Persistence
@@ -60,7 +65,7 @@ def _get_channel_id_from_url(channel_url: str) -> Optional[str]:
     try:
         resp = requests.get(channel_url, timeout=15, headers={
             "User-Agent": HTTP_USER_AGENT
-        })
+        }, proxies=PROXIES)
         resp.raise_for_status()
         match = re.search(r'"externalId":"(UC[^"]+)"', resp.text)
         if match:
@@ -144,7 +149,17 @@ def fetch_youtube_transcript(source: dict, fetch_state: dict) -> Optional[dict]:
 
         try:
             # New API (v1.x+): instance method .fetch()
-            ytt_api = YouTubeTranscriptApi()
+            if PROXY_URL:
+                from youtube_transcript_api.proxies import WebshareProxyConfig
+                from urllib.parse import urlparse
+                parsed = urlparse(PROXY_URL)
+                proxy_config = WebshareProxyConfig(
+                    proxy_username=parsed.username or "",
+                    proxy_password=parsed.password or "",
+                )
+                ytt_api = YouTubeTranscriptApi(proxy_config=proxy_config)
+            else:
+                ytt_api = YouTubeTranscriptApi()
             fetched = ytt_api.fetch(vid, languages=[lang, "en"])
             # FetchedTranscript has .snippets, each with .text
             text = " ".join(snippet.text for snippet in fetched.snippets)
@@ -215,7 +230,7 @@ def _fetch_feed(rss_url: str) -> feedparser.FeedParserDict:
     try:
         resp = requests.get(rss_url, timeout=20, headers={
             "Accept": "application/rss+xml, application/xml, text/xml, */*",
-        })
+        }, proxies=PROXIES)
         resp.raise_for_status()
         feed = feedparser.parse(resp.content)
         if not feed.bozo or feed.entries:
@@ -228,7 +243,7 @@ def _fetch_feed(rss_url: str) -> feedparser.FeedParserDict:
         resp = requests.get(rss_url, timeout=20, headers={
             "User-Agent": HTTP_USER_AGENT,
             "Accept": "application/rss+xml, application/xml, text/xml, */*",
-        })
+        }, proxies=PROXIES)
         resp.raise_for_status()
         return feedparser.parse(resp.content)
     except requests.RequestException as e:
@@ -241,7 +256,7 @@ def _scrape_full_article(url: str) -> Optional[str]:
     try:
         resp = requests.get(url, timeout=15, headers={
             "User-Agent": HTTP_USER_AGENT
-        })
+        }, proxies=PROXIES)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
 
@@ -414,6 +429,11 @@ def fetch_all_sources(sources: list[dict]) -> tuple[list[dict], dict, list[dict]
     fetch_state = load_fetch_state()
     all_content = []
     failed_sources = []
+
+    if PROXY_URL:
+        logger.info("Proxy enabled — routing requests through residential proxy")
+    else:
+        logger.info("No proxy configured — using direct connections")
 
     for source in sources:
         if not source.get("active", True):
