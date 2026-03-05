@@ -377,22 +377,46 @@ def _build_layers_block(layer_analysis: dict) -> dict:
     Matches LayersDetail.jsx expectations.
     """
     layer_scores = layer_analysis.get("layer_scores", {})
+
+    # Ensure layer_scores values are numbers, not dicts
+    clean_scores = {}
+    for key, val in layer_scores.items():
+        if isinstance(val, (int, float)):
+            clean_scores[key] = val
+        elif isinstance(val, dict):
+            # Extract 'score' from layer dict
+            clean_scores[key] = val.get("score", val.get("score_raw", 0.0))
+        else:
+            try:
+                clean_scores[key] = float(val)
+            except (TypeError, ValueError):
+                clean_scores[key] = 0.0
+
     fragility_data = layer_analysis.get("fragility_data", {})
+
+    # system_regime may be a string or a dict
+    system_regime = layer_analysis.get("system_regime", "UNKNOWN")
+    if isinstance(system_regime, dict):
+        system_regime = system_regime.get("regime", system_regime.get("name", "UNKNOWN"))
+
+    # fragility_state may also be dict
+    fragility_state = layer_analysis.get("fragility_state", "N/A")
+    if isinstance(fragility_state, dict):
+        fragility_state = fragility_state.get("state", fragility_state.get("level", "N/A"))
 
     # Calculate regime stability percentage (if available)
     conv_dynamics = layer_analysis.get("conviction_dynamics", {})
     stability_days = conv_dynamics.get("regime_stability_days", None)
     regime_stability_pct = None
     if stability_days is not None:
-        # Rough heuristic: 30+ days = 100%, scale linearly
         regime_stability_pct = min(100, round(stability_days / 30 * 100))
 
     return {
         "status": "AVAILABLE",
-        "system_regime": layer_analysis.get("system_regime", "UNKNOWN"),
+        "system_regime": system_regime,
         "regime_stability_pct": regime_stability_pct,
-        "fragility_state": layer_analysis.get("fragility_state", "N/A"),
+        "fragility_state": fragility_state,
         "fragility_data": fragility_data,
-        "layer_scores": layer_scores,
+        "layer_scores": clean_scores,
     }
 
