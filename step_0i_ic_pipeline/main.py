@@ -28,6 +28,11 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_DIR = os.path.join(BASE_DIR, "config")
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
+# Path to Vercel dashboard JSON (written by V16_DAILY_RUNNER, updated by IC)
+DASHBOARD_JSON_PATH = os.path.join(
+    os.path.dirname(BASE_DIR), "data", "dashboard", "latest.json"
+)
+
 
 def _load_json(path: str) -> dict:
     with open(path, "r") as f:
@@ -381,6 +386,188 @@ def run_briefing(intel: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Dashboard Intelligence Block Builder
+# ---------------------------------------------------------------------------
+def build_intelligence_block(intel: dict, briefing: dict) -> dict:
+    """
+    Map IC Pipeline output to dashboard.json intelligence block.
+    Format matches IntelDetail.jsx expectations exactly:
+      consensus[TOPIC] = {score, direction, sources, confidence}
+      divergences[] = {theme, divergence_type, magnitude, ic_signal, dc_signal, ...}
+      high_novelty_claims[] = {source, claim, novelty, signal, theme}
+      catalyst_timeline[] = {event, date, days_until, impact, themes}
+    """
+    today = date.today()
+
+    # --- Consensus: IC format -> Dashboard format ---
+    consensus_out = {}
+    ic_consensus = intel.get("consensus", {})
+    for topic, data in ic_consensus.items():
+        score = data.get("consensus_score", 0.0)
+        source_count = data.get("source_count", 0)
+        confidence_label = data.get("confidence", "NO_DATA")
+
+        if confidence_label == "NO_DATA":
+            continue
+
+        conf_map = {"HIGH": 0.85, "MEDIUM": 0.65, "LOW": 0.40}
+        confidence_num = conf_map.get(confidence_label, 0.5)
+
+        if score > 1.0:
+            direction = "BULLISH"
+        elif score < -1.0:
+            direction = "BEARISH"
+        else:
+            direction = "NEUTRAL"
+
+        consensus_out[topic] = {
+            "score": score,
+            "direction": direction,
+            "sources": source_count,
+            "confidence": confidence_num,
+        }
+
+    # --- Divergences: IC format -> Dashboard format ---
+    divergences_out = []
+    for div in intel.get("divergences", []):
+        topic = div.get("topic", "")
+        ic_contrib = ic_consensus.get(topic, {}).get("contributors", [])
+        top_names = [c["source_id"] for c in sorted(
+            ic_contrib,
+            key=lambda x: abs(x.get("avg_bias_adjusted_signal", 0))
+            * x.get("expertise_weight", 1),
+            reverse=True,
+        )[:3]]
+
+        ic_score = div.get("ic_consensus_score", 0.0)
+        dc_score = div.get("dc_signal_score", 0.0)
+
+        divergences_out.append({
+            "theme": topic,
+            "divergence_type": div.get("divergence_type", "UNKNOWN"),
+            "magnitude": round(div.get("severity", 0.0) / 10.0, 2),
+            "ic_signal": ic_score,
+            "dc_signal": dc_score,
+            "ic_top_contributors": top_names,
+            "dc_source_field": div.get("dc_source_field", ""),
+            "dc_confidence": div.get("dc_confidence", None),
+            "interpretation_hint": div.get("interpretation", ""),
+        })
+
+    # --- High Novelty Claims: IC format -> Dashboard format ---
+    claims_out = []
+    for hn in intel.get("high_novelty_claims", []):
+        primary_topic = hn.get("topics", [""])[0] if hn.get("topics") else ""
+        topic_consensus = ic_consensus.get(primary_topic, {})
+        signal = topic_consensus.get("consensus_score", 0.0)
+
+        claims_out.append({
+            "source": hn.get("source_id", ""),
+            "claim": hn.get("claim_text", ""),
+            "novelty": hn.get("novelty_score", 0),
+            "signal": round(signal, 1),
+            "theme": primary_topic,
+        })
+
+    claims_out.sort(key=lambda x: x["novelty"], reverse=True)
+
+    # --- Catalyst Timeline: IC format -> Dashboard format ---
+    catalysts_out = []
+    for cat in intel.get("catalyst_timeline", []):
+        cat_date_str = cat.get("date", "")
+        days_until = None
+        if cat_date_str:
+            try:
+                if len(cat_date_str) == 10:
+                    cat_date = datetime.strptime(cat_date_str, "%Y-%m-%d").date()
+                    days_until = (cat_date - today).days
+                elif len(cat_date_str) == 7:
+                    cat_date = datetime.strptime(
+                        cat_date_str + "-01", "%Y-%m-%d"
+                    ).date()
+                    days_until = (cat_date - today).days
+            except (ValueError, TypeError):
+                pass
+
+        if days_until is not None and days_until < 0:
+            continue
+
+        sources_count = len(cat.get("sources_mentioning", []))
+        impact = "HIGH" if sources_count >= 2 else "MEDIUM"
+
+        catalysts_out.append({
+            "event": cat.get("event", ""),
+            "date": cat_date_str,
+            "days_until": days_until if days_until is not None else 99,
+            "impact": impact,
+            "themes": cat.get("topics", []),
+        })
+
+    catalysts_out.sort(key=lambda x: x["days_until"])
+
+    return {
+        "status": "AVAILABLE",
+        "consensus": consensus_out,
+        "divergences": divergences_out,
+        "divergences_count": len(divergences_out),
+        "high_novelty_claims": claims_out,
+        "catalyst_timeline": catalysts_out,
+    }
+
+
+def update_dashboard_json(intel: dict, briefing: dict) -> None:
+    """
+    Read data/dashboard/latest.json, replace intelligence block,
+    update pipeline_health, and write back.
+    """
+    if not os.path.exists(DASHBOARD_JSON_PATH):
+        logger.warning(
+            f"Dashboard JSON not found at {DASHBOARD_JSON_PATH} "
+            f"— skipping update"
+        )
+        return
+
+    try:
+        with open(DASHBOARD_JSON_PATH, "r") as f:
+            dashboard = json.load(f)
+
+        # Replace intelligence block
+        dashboard["intelligence"] = build_intelligence_block(intel, briefing)
+
+        # Update pipeline health
+        now_utc = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+        steps = dashboard.get("pipeline_health", {}).get("steps", {})
+        steps["step_0b_ic"] = {
+            "status": "OK",
+            "completed_at": now_utc,
+            "summary": (
+                f"{intel.get('extraction_summary', {}).get('total_claims', 0)} claims, "
+                f"{len(intel.get('divergences', []))} divergences, "
+                f"{intel.get('extraction_summary', {}).get('high_novelty_claims', 0)} high-novelty"
+            ),
+        }
+
+        # Update header divergences count
+        dashboard.get("header", {})["divergences_count"] = len(
+            intel.get("divergences", [])
+        )
+
+        # Remove INTELLIGENCE from known_unknowns
+        kus = dashboard.get("known_unknowns", [])
+        dashboard["known_unknowns"] = [
+            ku for ku in kus if ku.get("gap") != "INTELLIGENCE"
+        ]
+
+        with open(DASHBOARD_JSON_PATH, "w") as f:
+            json.dump(dashboard, f, indent=2, ensure_ascii=False)
+
+        logger.info(f"Dashboard JSON updated: {DASHBOARD_JSON_PATH}")
+
+    except Exception as e:
+        logger.error(f"Dashboard JSON update failed: {e}")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 def main():
@@ -446,6 +633,7 @@ def main():
             write_drive_outputs(claims_output, intel, briefing)
             write_intelligence_tab(claims, sources)
             write_agent_summary_tab(briefing)
+            update_dashboard_json(intel, briefing)
 
     except Exception as e:
         logger.exception(f"Pipeline failed: {e}")

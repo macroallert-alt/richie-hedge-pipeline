@@ -49,5 +49,6 @@ jobs:
           git config user.email "ic@pipeline.local"
           git add step_0i_ic_pipeline/data/history/beliefs.json
           git add step_0i_ic_pipeline/data/history/fetch_state.json
-          git diff --staged --quiet || git commit -m "IC: Update state $(date +%Y-%m-%d)"
+          git add data/dashboard/latest.json
+          git diff --staged --quiet || git commit -m "IC: Update state + dashboard $(date +%Y-%m-%d)"
           git push
