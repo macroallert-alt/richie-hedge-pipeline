@@ -25,6 +25,13 @@ FETCH_STATE_PATH = os.path.join(
 )
 MAX_CONTENT_LENGTH = 80_000  # chars — safety cap for LLM input
 
+# Browser-like User-Agent — required for Substack and YouTube scraping
+HTTP_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/124.0.0.0 Safari/537.36"
+)
+
 
 # ---------------------------------------------------------------------------
 # Fetch State Persistence
@@ -52,7 +59,7 @@ def _get_channel_id_from_url(channel_url: str) -> Optional[str]:
     """Extract channel ID from YouTube channel URL via page scrape."""
     try:
         resp = requests.get(channel_url, timeout=15, headers={
-            "User-Agent": "Mozilla/5.0 (compatible; IC-Pipeline/1.0)"
+            "User-Agent": HTTP_USER_AGENT
         })
         resp.raise_for_status()
         match = re.search(r'"externalId":"(UC[^"]+)"', resp.text)
@@ -66,9 +73,14 @@ def _get_channel_id_from_url(channel_url: str) -> Optional[str]:
     return None
 
 
-def _get_latest_video_ids(channel_url: str, max_videos: int = 3) -> list[dict]:
-    """Get latest video IDs from YouTube channel RSS feed."""
-    channel_id = _get_channel_id_from_url(channel_url)
+def _get_latest_video_ids(channel_url: str, max_videos: int = 3,
+                          channel_id: str = None) -> list[dict]:
+    """Get latest video IDs from YouTube channel RSS feed.
+    
+    If channel_id is provided directly, skip the URL scrape step.
+    """
+    if not channel_id:
+        channel_id = _get_channel_id_from_url(channel_url)
     if not channel_id:
         logger.warning(f"No channel_id for {channel_url}")
         return []
@@ -108,14 +120,17 @@ def fetch_youtube_transcript(source: dict, fetch_state: dict) -> Optional[dict]:
     from youtube_transcript_api import YouTubeTranscriptApi
 
     source_id = source["source_id"]
-    channel_url = source["fetch_config"]["channel_url"]
-    lang = source["fetch_config"].get("language", "en")
+    config = source["fetch_config"]
+    channel_url = config["channel_url"]
+    channel_id = config.get("channel_id")  # optional shortcut
+    lang = config.get("language", "en")
 
     last_content_id = fetch_state.get("fetch_state", {}).get(
         source_id, {}
     ).get("last_content_id", "")
 
-    videos = _get_latest_video_ids(channel_url, max_videos=3)
+    videos = _get_latest_video_ids(channel_url, max_videos=3,
+                                   channel_id=channel_id)
     if not videos:
         logger.info(f"[{source_id}] No videos found")
         return None
@@ -169,11 +184,30 @@ def _html_to_text(html: str) -> str:
     return soup.get_text(separator=" ", strip=True)
 
 
+def _fetch_feed(rss_url: str) -> feedparser.FeedParserDict:
+    """Fetch and parse RSS feed with browser-like User-Agent.
+    
+    Substack and some other feeds reject the default feedparser UA.
+    We fetch the raw XML with requests first, then parse it.
+    """
+    try:
+        resp = requests.get(rss_url, timeout=20, headers={
+            "User-Agent": HTTP_USER_AGENT,
+            "Accept": "application/rss+xml, application/xml, text/xml, */*",
+        })
+        resp.raise_for_status()
+        return feedparser.parse(resp.content)
+    except requests.RequestException as e:
+        logger.warning(f"RSS fetch failed for {rss_url}: {e}")
+        # Fallback to direct feedparser (works for non-Substack feeds)
+        return feedparser.parse(rss_url)
+
+
 def _scrape_full_article(url: str) -> Optional[str]:
     """Scrape full article text from URL."""
     try:
         resp = requests.get(url, timeout=15, headers={
-            "User-Agent": "Mozilla/5.0 (compatible; IC-Pipeline/1.0)"
+            "User-Agent": HTTP_USER_AGENT
         })
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
@@ -222,7 +256,7 @@ def fetch_rss(source: dict, fetch_state: dict) -> list[dict]:
     except (ValueError, TypeError):
         last_dt = date(2000, 1, 1)
 
-    feed = feedparser.parse(rss_url)
+    feed = _fetch_feed(rss_url)
     if feed.bozo and not feed.entries:
         logger.warning(f"[{source_id}] RSS parse error: {feed.bozo_exception}")
         return []
