@@ -362,14 +362,16 @@ def call_cio_llm(system_prompt: str, user_prompt: str, llm_config: dict) -> dict
         logger.error("ANTHROPIC_API_KEY not set")
         return {"success": False, "error": "ANTHROPIC_API_KEY not set"}
 
-    client = anthropic.Anthropic(api_key=api_key)
+    # Disable Anthropic client internal retries — we handle retries ourselves
+    # Default client retries 2x with exponential backoff, eating 9+ minutes
+    client = anthropic.Anthropic(api_key=api_key, max_retries=0)
 
     model = llm_config.get("model", "claude-sonnet-4-5-20250929")
     temperature = llm_config.get("temperature", 0.3)
     max_tokens = llm_config.get("max_tokens", 8000)
     max_retries = llm_config.get("retry_on_failure", 2)
     temp_increment = llm_config.get("retry_temperature_increment", 0.1)
-    timeout = llm_config.get("timeout_seconds", 180)
+    timeout = llm_config.get("timeout_seconds", 300)
 
     for attempt in range(max_retries + 1):
         try:

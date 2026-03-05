@@ -240,8 +240,17 @@ def update_dashboard_json(cio_output: dict, dashboard_json_path: str,
 
         # 8. Update layers block from Market Analyst input (CIO has it loaded)
         la_input = inputs_raw.get("layer_analysis", {})
-        if la_input and la_input.get("layer_scores"):
-            dashboard["layers"] = _build_layers_block(la_input)
+        logger.info(f"Layers input check: keys={list(la_input.keys())[:10] if la_input else 'EMPTY'}")
+
+        # Market Analyst JSON may have layer_scores at top level or nested
+        layer_scores = la_input.get("layer_scores", {})
+        if not layer_scores and la_input.get("layers"):
+            layer_scores = la_input["layers"].get("layer_scores", {})
+
+        if layer_scores:
+            # Inject layer_scores back for the builder
+            la_with_scores = {**la_input, "layer_scores": layer_scores}
+            dashboard["layers"] = _build_layers_block(la_with_scores)
             dashboard["known_unknowns"] = [
                 ku for ku in dashboard["known_unknowns"]
                 if ku.get("gap") != "LAYER_SCORES"
@@ -255,7 +264,9 @@ def update_dashboard_json(cio_output: dict, dashboard_json_path: str,
                 ),
             }
             dashboard.setdefault("pipeline_health", {})["steps"] = steps
-            logger.info(f"Layers block updated: {la_input.get('system_regime')}")
+            logger.info(f"Layers block updated: {la_input.get('system_regime')}, {len(layer_scores)} layers")
+        else:
+            logger.warning("Layers block NOT updated — no layer_scores found in Market Analyst data")
 
         # Write back
         with open(dashboard_json_path, "w") as f:
