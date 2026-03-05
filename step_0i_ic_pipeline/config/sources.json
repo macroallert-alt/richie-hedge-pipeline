@@ -90,4 +90,99 @@
     },
     {
       "source_id": "doomberg",
-      "source_na
+      "source_name": "Doomberg",
+      "active": true,
+      "fetch_method": "rss",
+      "fetch_config": {
+        "rss_url": "https://doomberg.substack.com/feed",
+        "full_text_in_rss": true,
+        "scrape_full_article": false
+      },
+      "cadence": "2x_weekly",
+      "cadence_note": "Typically Tuesday and Thursday",
+      "known_bias": 0,
+      "bias_label": "energy/commodity specialist, contrarian",
+      "bias_description": "Doomberg is neutral overall but has deep expertise in energy. Claims outside energy/commodities carry lower weight.",
+      "tier": "SECONDARY",
+      "extraction_context": ""
+    },
+    {
+      "source_id": "crescat",
+      "source_name": "Crescat Capital (Tavi Costa, Otavio Costa)",
+      "active": true,
+      "fetch_method": "youtube",
+      "fetch_config": {
+        "channel_url": "https://www.youtube.com/@CrescatCapital",
+        "language": "en"
+      },
+      "cadence": "weekly",
+      "cadence_note": "Weekly market commentary",
+      "known_bias": 4,
+      "bias_label": "commodity/hard asset bull, bearish growth stocks",
+      "bias_description": "Crescat is structurally long commodities and short overvalued growth. Their bullish commodity calls are baseline, not signal.",
+      "tier": "SECONDARY",
+      "extraction_context": "This source discusses commodities, credit, and macro with reference to copper/gold ratios and energy markets. Extract their INVESTMENT THESIS and POSITIONING, not the specific commodity prices or ratios they cite."
+    },
+    {
+      "source_id": "pettis",
+      "source_name": "Michael Pettis",
+      "active": true,
+      "fetch_method": "rss",
+      "fetch_config": {
+        "rss_url": "https://carnegieendowment.org/experts/pettis/feed",
+        "full_text_in_rss": false,
+        "scrape_full_article": true
+      },
+      "cadence": "monthly",
+      "cadence_note": "Irregular but typically 1-2 articles/month",
+      "known_bias": -3,
+      "bias_label": "China structural bear, trade imbalance focused",
+      "bias_description": "Pettis has been consistently bearish on China's economic model. His China bearishness is baseline. New would be bullish China signals.",
+      "tier": "SECONDARY",
+      "extraction_context": ""
+    },
+    {
+      "source_id": "geohussar",
+      "source_name": "GeoHussar (Geopolitics)",
+      "active": false,
+      "fetch_method": "rss",
+      "fetch_config": {
+        "rss_url": "TO_BE_CONFIGURED",
+        "notes": "Primarily Twitter/X based. May need web scraper or Twitter API for V2."
+      },
+      "cadence": "daily",
+      "cadence_note": "Real-time geopolitical updates",
+      "known_bias": 0,
+      "bias_label": "geopolitics specialist",
+      "bias_description": "Neutral analyst focused on geopolitical developments. No market directional bias.",
+      "tier": "SECONDARY",
+      "extraction_context": ""
+    },
+    {
+      "source_id": "zerohedge",
+      "source_name": "ZeroHedge (Top Stories)",
+      "active": true,
+      "fetch_method": "rss",
+      "fetch_config": {
+        "rss_url": "https://feeds.feedburner.com/zerohedge/feed",
+        "full_text_in_rss": false,
+        "scrape_full_article": true,
+        "max_articles_per_day": 5
+      },
+      "cadence": "daily",
+      "cadence_note": "Multiple articles daily, filter to top 5",
+      "known_bias": -5,
+      "bias_label": "permabear, contrarian, sensationalist",
+      "bias_description": "ZeroHedge has a persistent bearish/doom bias. Their bearish calls are noise. Only useful when they turn bullish or report breaking data.",
+      "tier": "NOISE_FILTER",
+      "extraction_context": ""
+    }
+  ]
+}
+```
+
+Ersetze die Datei komplett, dann push:
+```
+git add step_0i_ic_pipeline/config/sources.json
+git commit -m "fix: sources.json truncated string"
+git push
