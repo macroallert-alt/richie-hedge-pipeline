@@ -384,17 +384,35 @@ def _build_layers_block(layer_analysis: dict) -> dict:
     """
     Map Market Analyst JSON to dashboard.json layers block.
     Matches LayersDetail.jsx expectations.
+    Writes full layer objects {score, direction, conviction, limiting_factor}
+    when available. Frontend handles both flat numbers and objects.
     """
     layer_scores = layer_analysis.get("layer_scores", {})
+    layers_dict = layer_analysis.get("layers", {})
 
-    # Ensure layer_scores values are numbers, not dicts
+    # Build layer_scores: full objects if available, flat numbers as fallback
     clean_scores = {}
     for key, val in layer_scores.items():
-        if isinstance(val, (int, float)):
+        # Check if full layer object exists in 'layers' dict
+        full_obj = layers_dict.get(key, {}) if isinstance(layers_dict, dict) else {}
+        if isinstance(full_obj, dict) and "score" in full_obj:
+            # Write full object with score, direction, conviction, limiting_factor
+            clean_scores[key] = {
+                "score": _safe_number(full_obj.get("score", 0)),
+                "direction": full_obj.get("direction", None),
+                "conviction": full_obj.get("conviction", None),
+                "limiting_factor": full_obj.get("limiting_factor", None),
+            }
+        elif isinstance(val, (int, float)):
             clean_scores[key] = val
         elif isinstance(val, dict):
-            # Extract 'score' from layer dict
-            clean_scores[key] = val.get("score", val.get("score_raw", 0.0))
+            # layer_scores value is itself a dict
+            clean_scores[key] = {
+                "score": _safe_number(val.get("score", val.get("score_raw", 0))),
+                "direction": val.get("direction", None),
+                "conviction": val.get("conviction", None),
+                "limiting_factor": val.get("limiting_factor", None),
+            }
         else:
             try:
                 clean_scores[key] = float(val)
@@ -428,4 +446,14 @@ def _build_layers_block(layer_analysis: dict) -> dict:
         "fragility_data": fragility_data,
         "layer_scores": clean_scores,
     }
+
+
+def _safe_number(val):
+    """Convert value to number, return 0 on failure."""
+    if isinstance(val, (int, float)):
+        return val
+    try:
+        return float(val)
+    except (TypeError, ValueError):
+        return 0
 
