@@ -208,19 +208,28 @@ def extract_claims(
 
         raw_text = response.content[0].text.strip()
 
-        # Try to parse JSON — handle markdown code fences
+        # Strip markdown code fences if present
         raw_text = re.sub(r"^```(?:json)?\s*", "", raw_text)
-        raw_text = re.sub(r"\s*```$", "", raw_text)
+        raw_text = re.sub(r"\s*```\s*$", "", raw_text)
 
-        claims_raw = json.loads(raw_text)
+        # Find the start of the JSON array — Haiku sometimes prepends text
+        bracket_pos = raw_text.find("[")
+        if bracket_pos == -1:
+            logger.error(f"[{source_id}] No JSON array found in response: {raw_text[:300]}")
+            return []
+
+        # Use raw_decode to parse first JSON value, ignore trailing text
+        decoder = json.JSONDecoder()
+        try:
+            claims_raw, _ = decoder.raw_decode(raw_text, bracket_pos)
+        except json.JSONDecodeError as e:
+            logger.error(f"[{source_id}] JSON parse error: {e}\nRaw: {raw_text[:500]}")
+            return []
 
         if not isinstance(claims_raw, list):
             logger.error(f"[{source_id}] API returned non-list: {type(claims_raw)}")
             return []
 
-    except json.JSONDecodeError as e:
-        logger.error(f"[{source_id}] JSON parse error: {e}\nRaw: {raw_text[:500]}")
-        return []
     except Exception as e:
         logger.error(f"[{source_id}] API call failed: {e}")
         return []
