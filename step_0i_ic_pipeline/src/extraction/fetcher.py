@@ -69,10 +69,18 @@ def _get_channel_id_from_url(channel_url: str) -> Optional[str]:
         resp.raise_for_status()
         match = re.search(r'"externalId":"(UC[^"]+)"', resp.text)
         if match:
+            logger.info(f"Found channel_id {match.group(1)} via externalId for {channel_url}")
             return match.group(1)
         match = re.search(r'channel_id=([^"&]+)', resp.text)
         if match:
+            logger.info(f"Found channel_id {match.group(1)} via channel_id param for {channel_url}")
             return match.group(1)
+        # Try canonical link pattern
+        match = re.search(r'<link rel="canonical" href="https://www\.youtube\.com/channel/(UC[^"]+)"', resp.text)
+        if match:
+            logger.info(f"Found channel_id {match.group(1)} via canonical link for {channel_url}")
+            return match.group(1)
+        logger.warning(f"Channel ID not found in HTML for {channel_url} (response length: {len(resp.text)})")
     except Exception as e:
         logger.warning(f"Could not extract channel ID from {channel_url}: {e}")
     return None
