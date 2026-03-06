@@ -355,10 +355,19 @@ def extract_action_items(briefing_text: str, preprocessor_output: dict) -> list:
             continue
 
         # --- Bullet watchlist items: - **Text:** description ---
+        # Exclude known subfield labels that are part of item detail, not items
         bullet_match = re.match(r'^-\s*\*\*(.+?):\*\*', line_stripped)
         if bullet_match and current_type == "WATCH":
-            desc = bullet_match.group(1).strip()
-            items.append(_parse_action_item_from_desc(desc, "WATCH", preprocessor_output))
+            label = bullet_match.group(1).strip()
+            subfield_labels = {
+                "status", "trigger", "was", "warum", "monitoring",
+                "nächster check", "naechster check", "trigger noch aktiv",
+                "kontext", "context", "schwelle", "threshold",
+                "nächste schritte", "naechste schritte", "next steps",
+                "deadline", "warum jetzt", "why now",
+            }
+            if label.lower() not in subfield_labels:
+                items.append(_parse_action_item_from_desc(label, "WATCH", preprocessor_output))
 
     # Conviction-based upgrade: LOW → REVIEW becomes ACT
     conviction = preprocessor_output.get("header", {}).get("system_conviction", "MODERATE")
