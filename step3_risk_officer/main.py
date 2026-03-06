@@ -564,7 +564,7 @@ def append_risk_history(sheets, output):
 # ═══════════════════════════════════════════════════════════════════
 
 def write_json_to_drive(drive_service, output):
-    """Schreibt Risk Officer JSON nach CURRENT/ und ARCHIVE/YYYY-MM-DD/."""
+    """Schreibt Risk Officer JSON nach CURRENT/ (Drive) und archive/ (lokal fuer Git)."""
     drive_root_id = os.environ.get("DRIVE_ROOT_ID", "")
     if not drive_root_id:
         log_warning("DRIVE_ROOT_ID not set — skipping Drive write")
@@ -579,14 +579,25 @@ def write_json_to_drive(drive_service, output):
             _upload_or_replace(drive_service, current_id, filename, json_bytes)
             log_info(f"  Drive CURRENT/{filename} written")
 
-        archive_id = _find_folder(drive_service, "ARCHIVE", drive_root_id)
-        if archive_id:
-            date_folder_id = _find_or_create_folder(drive_service, output["date"], archive_id)
-            _upload_or_replace(drive_service, date_folder_id, filename, json_bytes)
-            log_info(f"  Drive ARCHIVE/{output['date']}/{filename} written")
+        # Archive to local filesystem (committed by GitHub Actions)
+        _write_local_archive(output, filename)
     except Exception as e:
         log_warning(f"  Drive write failed (non-fatal): {e}")
         log_warning("  Sheet outputs were written successfully — Drive write skipped")
+
+
+def _write_local_archive(output, filename):
+    """Write JSON to archive/YYYY-MM-DD/ for Git-based archiving."""
+    try:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        archive_dir = os.path.join(os.path.dirname(base_dir), "archive", output["date"])
+        os.makedirs(archive_dir, exist_ok=True)
+        archive_path = os.path.join(archive_dir, filename)
+        with open(archive_path, "w") as f:
+            json.dump(output, f, indent=2, default=str)
+        log_info(f"  Local archive: archive/{output['date']}/{filename}")
+    except Exception as e:
+        log_warning(f"  Local archive write failed (non-fatal): {e}")
 
 
 # ═══════════════════════════════════════════════════════════════════
