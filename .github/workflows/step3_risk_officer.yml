@@ -1,9 +1,9 @@
 name: Step 3 — Risk Officer
 
 on:
-  # Nach Market Analyst (manuell oder scheduled)
+  # Nach Signal Generator (Step 2) — neue Kette: Step 1 → Step 2 → Step 3
   workflow_run:
-    workflows: ["Step 1 - Market Analyst"]
+    workflows: ["Step 2 Signal Generator"]
     types: [completed]
   # Manueller Trigger
   workflow_dispatch:
@@ -20,7 +20,7 @@ on:
 jobs:
   risk_officer:
     runs-on: ubuntu-latest
-    # Nur laufen wenn Market Analyst erfolgreich war (oder manuell)
+    # Nur laufen wenn Signal Generator erfolgreich war (oder manuell)
     if: >
       github.event_name == 'workflow_dispatch' ||
       github.event.workflow_run.conclusion == 'success'

@@ -1,0 +1,34 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-06",
+        "source": "Signal Generator Spec Teil 2 §8.4"
+    },
+
+    "fragility_overlay": {
+        "HEALTHY": {
+            "threshold_key": "threshold_healthy",
+            "minimum_international_pct": 0.0,
+            "router_override": false,
+            "note": "Standard-Schwellen. Kein Minimum."
+        },
+        "ELEVATED": {
+            "threshold_key": "threshold_elevated",
+            "minimum_international_pct": 0.0,
+            "router_override": false,
+            "note": "Gesenkte Schwellen. Kein Minimum, aber leichter zu feuern."
+        },
+        "EXTREME": {
+            "threshold_key": "threshold_extreme",
+            "minimum_international_pct": 0.05,
+            "router_override": false,
+            "note": "Gesenkte Schwellen + Empfehlung: Minimum 5% International."
+        },
+        "CRISIS": {
+            "threshold_key": "threshold_elevated",
+            "minimum_international_pct": 0.25,
+            "router_override": true,
+            "note": "Router empfiehlt volle International-Allokation (bis 25%) unabhaengig von Triggern. G7 Emergency Review empfohlen."
+        }
+    }
+}

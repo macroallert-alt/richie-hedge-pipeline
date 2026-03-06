@@ -1,0 +1,71 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-06",
+        "source": "Signal Generator Spec Teil 3 §17, Teil 4 §22-23"
+    },
+
+    "attribution_sources": {
+        "V16": {
+            "validated": true,
+            "backtest_years": 18,
+            "auto_executable": true,
+            "description": "V16 Regime-basierte Allokation"
+        },
+        "F6": {
+            "validated": true,
+            "backtest_years": 18,
+            "auto_executable": true,
+            "description": "F6 Stock Picking + Covered Calls"
+        },
+        "ROUTER": {
+            "validated": false,
+            "backtest_years": 0,
+            "auto_executable": false,
+            "description": "Conviction Router Empfehlung (Shadow Mode)",
+            "requires": "Agent R + Operator Freigabe"
+        },
+        "PERM_OPT": {
+            "validated": false,
+            "backtest_years": 0,
+            "auto_executable": false,
+            "description": "Permanent Optionality (G7-bestimmt)",
+            "requires": "Agent R + Operator Freigabe"
+        },
+        "FRAGILITY": {
+            "validated": false,
+            "backtest_years": 0,
+            "auto_executable": false,
+            "description": "Fragility Monitor Empfehlung",
+            "requires": "Agent R + Operator Freigabe"
+        }
+    },
+
+    "order_of_operations": ["V16", "F6", "PERM_OPT", "ROUTER"],
+
+    "projection_rules": {
+        "tech_exposure_map": {
+            "XLK": 1.00,
+            "QQQ": 0.50,
+            "SPY": 0.30,
+            "RSP": 0.15,
+            "IWM": 0.15,
+            "VWO": 0.15,
+            "INDA": 0.10,
+            "FXI": 0.25,
+            "KWEB": 0.80,
+            "_F6_XLK": 1.00,
+            "_DEFAULT": 0.10
+        },
+        "concentration_warning_threshold": 0.35,
+        "note": "Tech Exposure Map: Anteil Tech-Exposition pro ETF. SPY hat ~30% Tech, QQQ ~50%."
+    },
+
+    "v1_scope": {
+        "f6_status": "UNAVAILABLE",
+        "perm_opt_status": "UNAVAILABLE",
+        "g7_status": "UNAVAILABLE",
+        "fragility_recommendations_status": "UNAVAILABLE",
+        "note": "V1 nur V16 + Router. F6, PermOpt, G7, Fragility-Empfehlungen kommen in V2."
+    }
+}

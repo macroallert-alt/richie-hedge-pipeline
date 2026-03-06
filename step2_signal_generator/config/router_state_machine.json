@@ -1,0 +1,58 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-06",
+        "source": "Signal Generator Spec Teil 2 §7"
+    },
+
+    "states": {
+        "US_DOMESTIC": {
+            "description": "Default. 100% US via V16. Router inaktiv.",
+            "is_default": true,
+            "international_allocation": 0.0,
+            "transitions_to": ["EM_BROAD", "CHINA_STIMULUS", "COMMODITY_SUPER"],
+            "expected_frequency": "~85% der Zeit"
+        },
+        "EM_BROAD": {
+            "description": "Dollar faellt, EM outperformt. 15-25% VWO/INDA.",
+            "is_default": false,
+            "international_allocation_range": [0.15, 0.25],
+            "transitions_to": ["US_DOMESTIC"],
+            "cannot_transition_to": ["CHINA_STIMULUS", "COMMODITY_SUPER"],
+            "expected_frequency": "~10% der Zeit"
+        },
+        "CHINA_STIMULUS": {
+            "description": "Massiver China-Stimulus. 10-20% FXI/KWEB.",
+            "is_default": false,
+            "international_allocation_range": [0.10, 0.20],
+            "transitions_to": ["US_DOMESTIC"],
+            "cannot_transition_to": ["EM_BROAD", "COMMODITY_SUPER"],
+            "expected_frequency": "~3% der Zeit"
+        },
+        "COMMODITY_SUPER": {
+            "description": "Late Cycle + Rohstoffe stark. V16-interne Commodity-Uebergewichtung.",
+            "is_default": false,
+            "international_allocation": 0.0,
+            "commodity_overweight_factor_range": [1.5, 2.0],
+            "transitions_to": ["US_DOMESTIC"],
+            "cannot_transition_to": ["EM_BROAD", "CHINA_STIMULUS"],
+            "expected_frequency": "~2% der Zeit"
+        }
+    },
+
+    "transition_rules": {
+        "direct_transitions_only_via_default": true,
+        "explanation": "Kein direkter Wechsel zwischen internationalen States. Immer ueber US_DOMESTIC zurueck.",
+        "exception": "EMERGENCY: V16 FINANCIAL_CRISIS oder DEEP_CONTRACTION → sofort US_DOMESTIC"
+    },
+
+    "emergency_regimes": ["FINANCIAL_CRISIS", "DEEP_CONTRACTION"],
+
+    "hard_limits": {
+        "max_international_pct_stage1": 0.25,
+        "max_international_pct_stage2": 0.35,
+        "v16_budget_floor_absolute": 0.60,
+        "current_stage": 1,
+        "note": "Stage 2 erst nach 12+ Monaten erfolgreicher Shadow-Validierung"
+    }
+}

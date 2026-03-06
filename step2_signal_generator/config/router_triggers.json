@@ -1,0 +1,326 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-06",
+        "source": "Signal Generator Spec Teil 2 §8-9",
+        "notes": "All Router Trigger definitions. Thresholds per Fragility State."
+    },
+
+    "triggers": {
+        "em_broad": {
+            "id": "EM_BROAD",
+            "name": "Emerging Markets Broad Rotation",
+            "description": "Dollar faellt, EM outperformt. Empfehlung: 15-25% VWO/INDA.",
+            "conditions": {
+                "dxy_6m_momentum": {
+                    "field": "dxy.delta_126d",
+                    "operator": "<",
+                    "threshold_healthy": -0.05,
+                    "threshold_elevated": -0.03,
+                    "threshold_extreme": -0.03,
+                    "description": "Dollar muss signifikant fallen (6M pct change)"
+                },
+                "vwo_spy_6m_relative": {
+                    "field": "relative.vwo_spy_126d",
+                    "operator": ">",
+                    "threshold_healthy": 0.10,
+                    "threshold_elevated": 0.05,
+                    "threshold_extreme": 0.05,
+                    "description": "EM muss US signifikant outperformen (6M relative return)"
+                },
+                "v16_regime_allowed": {
+                    "field": "v16_regime",
+                    "operator": "in",
+                    "allowed": ["NEUTRAL", "SOFT_LANDING", "LATE_EXPANSION", "EARLY_RECOVERY", "REFLATION"],
+                    "blocked": ["FULL_EXPANSION", "FINANCIAL_CRISIS", "DEEP_CONTRACTION"],
+                    "description": "Nicht rotieren wenn V16 voll laeuft oder in Krise"
+                },
+                "bamlem_falling": {
+                    "field": "bamlem.delta_63d",
+                    "operator": "<",
+                    "threshold": 0,
+                    "description": "EM-Spreads muessen fallen (Risk-On fuer EM)"
+                }
+            },
+            "dual_signal_entry": {
+                "fast_signal": {
+                    "vwo_3m_momentum": {
+                        "field": "vwo.return_63d",
+                        "operator": ">",
+                        "threshold": 0
+                    },
+                    "vwo_above_50d_ma": {
+                        "field_a": "vwo.price",
+                        "field_b": "vwo.ma_50d",
+                        "operator": "a_gt_b"
+                    }
+                },
+                "slow_signal": {
+                    "vwo_6m_momentum": {
+                        "field": "vwo.return_126d",
+                        "operator": ">",
+                        "threshold": 0
+                    },
+                    "vwo_12m_momentum": {
+                        "field": "vwo.return_252d",
+                        "operator": ">",
+                        "threshold": 0
+                    }
+                },
+                "rule": "BOTH_REQUIRED"
+            },
+            "exit_conditions": [
+                {
+                    "id": "vwo_below_200d",
+                    "description": "VWO unter 200d MA",
+                    "field_a": "vwo.price",
+                    "field_b": "vwo.ma_200d",
+                    "operator": "a_lt_b",
+                    "severity": "REDUCE",
+                    "action": "International auf 50% der aktuellen Allokation reduzieren. Rest in Cash/Gold."
+                },
+                {
+                    "id": "vwo_below_200d_and_spreads_rising",
+                    "description": "VWO unter 200d MA UND EM-Spreads steigen",
+                    "conditions": [
+                        {"field_a": "vwo.price", "field_b": "vwo.ma_200d", "operator": "a_lt_b"},
+                        {"field": "bamlem.delta_63d", "operator": ">", "threshold": 0}
+                    ],
+                    "combine": "AND",
+                    "severity": "EXIT",
+                    "action": "Komplett Exit. Zurueck zu US_DOMESTIC."
+                },
+                {
+                    "id": "relative_momentum_negative",
+                    "description": "VWO/SPY 3M Relative Momentum negativ",
+                    "field": "relative.vwo_spy_63d",
+                    "operator": "<",
+                    "threshold": 0,
+                    "severity": "EXIT",
+                    "action": "Sofort Exit. Relative Momentum hat gedreht."
+                },
+                {
+                    "id": "v16_emergency_regime",
+                    "description": "V16 in Krisen-Regime",
+                    "field": "v16_regime",
+                    "operator": "in",
+                    "values": ["FINANCIAL_CRISIS", "DEEP_CONTRACTION"],
+                    "severity": "EMERGENCY",
+                    "action": "EMERGENCY EXIT. Sofortige Rueckkehr zu US_DOMESTIC."
+                }
+            ],
+            "allocation": {
+                "total_international_pct_range": [0.15, 0.25],
+                "default_total_pct": 0.20,
+                "default_distribution": {
+                    "VWO": 0.60,
+                    "INDA": 0.40
+                },
+                "g7_override_field": "preferred_targets.if_em_broad",
+                "note": "60/40 Split als Default. G7 kann ueberschreiben."
+            },
+            "g7_veto_required": false
+        },
+
+        "china_stimulus": {
+            "id": "CHINA_STIMULUS",
+            "name": "China Stimulus Rotation",
+            "description": "Massiver China-Stimulus. Empfehlung: 10-20% FXI/KWEB.",
+            "conditions": {
+                "china_credit_impulse": {
+                    "field": "china_credit_impulse.zscore_2y",
+                    "operator": ">",
+                    "threshold_healthy": 2.0,
+                    "threshold_elevated": 1.5,
+                    "threshold_extreme": 1.5,
+                    "description": "Massiver Stimulus-Push erforderlich (Z-Score)"
+                },
+                "fxi_spy_3m_relative": {
+                    "field": "relative.fxi_spy_63d",
+                    "operator": ">",
+                    "threshold": 0,
+                    "description": "China muss relativ zu US positiv performen"
+                },
+                "cny_stable": {
+                    "field": "usdcnh.delta_63d",
+                    "operator": ">",
+                    "threshold": -0.05,
+                    "description": "CNY darf nicht im Freefall sein (max -5% in 3M)"
+                },
+                "v16_regime_allowed": {
+                    "field": "v16_regime",
+                    "operator": "not_in",
+                    "blocked": ["FINANCIAL_CRISIS"],
+                    "description": "Nicht in globaler Finanzkrise nach China rotieren"
+                }
+            },
+            "dual_signal_entry": {
+                "fast_signal": {
+                    "fxi_3m_momentum": {
+                        "field": "fxi.return_63d",
+                        "operator": ">",
+                        "threshold": 0
+                    },
+                    "fxi_above_50d_ma": {
+                        "field_a": "fxi.price",
+                        "field_b": "fxi.ma_50d",
+                        "operator": "a_gt_b"
+                    }
+                },
+                "slow_signal": {
+                    "fxi_6m_momentum": {
+                        "field": "fxi.return_126d",
+                        "operator": ">",
+                        "threshold": 0
+                    }
+                },
+                "rule": "BOTH_REQUIRED"
+            },
+            "exit_conditions": [
+                {
+                    "id": "fxi_below_200d",
+                    "description": "FXI unter 200d MA",
+                    "field_a": "fxi.price",
+                    "field_b": "fxi.ma_200d",
+                    "operator": "a_lt_b",
+                    "severity": "EXIT",
+                    "action": "Komplett Exit."
+                },
+                {
+                    "id": "fxi_spy_relative_negative",
+                    "description": "FXI/SPY 3M Relative negativ",
+                    "field": "relative.fxi_spy_63d",
+                    "operator": "<",
+                    "threshold": 0,
+                    "severity": "EXIT",
+                    "action": "Sofort Exit."
+                },
+                {
+                    "id": "cny_freefall",
+                    "description": "CNY im Freefall",
+                    "field": "usdcnh.delta_63d",
+                    "operator": "<",
+                    "threshold": -0.05,
+                    "severity": "EXIT",
+                    "action": "Sofort Exit. Waehrungsrisiko."
+                },
+                {
+                    "id": "g7_veto_activated",
+                    "description": "G7 Veto aktiviert",
+                    "type": "g7_veto_check",
+                    "keywords": ["FXI", "KWEB", "CHINA"],
+                    "severity": "EXIT",
+                    "action": "Sofort Exit. G7 Veto aktiv."
+                },
+                {
+                    "id": "v16_emergency_regime",
+                    "description": "V16 in Krisen-Regime",
+                    "field": "v16_regime",
+                    "operator": "in",
+                    "values": ["FINANCIAL_CRISIS", "DEEP_CONTRACTION"],
+                    "severity": "EMERGENCY",
+                    "action": "EMERGENCY EXIT."
+                }
+            ],
+            "allocation": {
+                "total_international_pct_range": [0.10, 0.20],
+                "default_total_pct": 0.15,
+                "default_distribution": {
+                    "FXI": 0.60,
+                    "KWEB": 0.40
+                },
+                "g7_override_field": "preferred_targets.if_china_stimulus",
+                "note": "60/40 Split als Default. G7 kann ueberschreiben."
+            },
+            "g7_veto_required": true
+        },
+
+        "commodity_super": {
+            "id": "COMMODITY_SUPER",
+            "name": "Commodity Supercycle Overweight",
+            "description": "Late Cycle + Rohstoffe stark. Empfehlung: V16-interne Commodity-Uebergewichtung.",
+            "conditions": {
+                "dbc_spy_6m_relative": {
+                    "field": "relative.dbc_spy_126d",
+                    "operator": ">",
+                    "threshold": 0,
+                    "description": "Commodities muessen US-Aktien outperformen"
+                },
+                "v16_regime_allowed": {
+                    "field": "v16_regime",
+                    "operator": "in",
+                    "allowed": ["LATE_EXPANSION", "FRAGILE_EXPANSION"],
+                    "description": "Nur in spaetem Zyklus relevant"
+                },
+                "dxy_not_rising": {
+                    "field": "dxy.delta_126d",
+                    "operator": ">",
+                    "threshold": -0.02,
+                    "description": "Dollar flat oder fallend (nicht stark steigend)"
+                }
+            },
+            "dual_signal_entry": {
+                "fast_signal": {
+                    "dbc_3m_momentum": {
+                        "field": "dbc.return_63d",
+                        "operator": ">",
+                        "threshold": 0
+                    }
+                },
+                "slow_signal": {
+                    "dbc_6m_momentum": {
+                        "field": "dbc.return_126d",
+                        "operator": ">",
+                        "threshold": 0
+                    },
+                    "gld_6m_momentum": {
+                        "field": "gld.return_126d",
+                        "operator": ">",
+                        "threshold": 0
+                    }
+                },
+                "rule": "BOTH_REQUIRED"
+            },
+            "exit_conditions": [
+                {
+                    "id": "dbc_spy_relative_negative",
+                    "description": "DBC/SPY 3M Relative negativ",
+                    "field": "relative.dbc_spy_63d",
+                    "operator": "<",
+                    "threshold": 0,
+                    "severity": "EXIT",
+                    "action": "Commodity-Uebergewichtung zuruecknehmen."
+                },
+                {
+                    "id": "v16_regime_changed",
+                    "description": "V16 nicht mehr in Late Cycle",
+                    "field": "v16_regime",
+                    "operator": "not_in",
+                    "values": ["LATE_EXPANSION", "FRAGILE_EXPANSION"],
+                    "severity": "EXIT",
+                    "action": "Zurueck zu Standard V16-Gewichtung."
+                },
+                {
+                    "id": "v16_emergency_regime",
+                    "description": "V16 in Krisen-Regime",
+                    "field": "v16_regime",
+                    "operator": "in",
+                    "values": ["FINANCIAL_CRISIS", "DEEP_CONTRACTION"],
+                    "severity": "EMERGENCY",
+                    "action": "EMERGENCY EXIT."
+                }
+            ],
+            "allocation": {
+                "total_international_pct": 0,
+                "commodity_overweight": {
+                    "factor_range": [1.5, 2.0],
+                    "default_factor": 1.5,
+                    "assets": ["GLD", "SLV", "DBC", "GDX"],
+                    "note": "KEIN neues ETF. Uebergewichtung bestehender V16-Commodities."
+                },
+                "note": "Empfehlung an Operator, V16-Commodity-Gewichte manuell zu erhoehen. V16 wird NICHT automatisch modifiziert."
+            },
+            "g7_veto_required": false
+        }
+    }
+}

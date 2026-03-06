@@ -1,0 +1,38 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-06",
+        "source": "Signal Generator Spec Teil 2 §7.2, Teil 4 §21"
+    },
+
+    "entry": {
+        "frequency": "MONTHLY",
+        "evaluation_day_max": 3,
+        "explanation": "Entry-Evaluation am 1.-3. Werktag des Monats (erster Handelstag). Prueft ob Tag <= 3 UND Wochentag < 5 (Mo-Fr) UND nicht bereits in diesem Monat evaluiert."
+    },
+
+    "exit": {
+        "frequency": "DAILY",
+        "explanation": "Exit-Check jeden Handelstag wenn Router aktiv (State != US_DOMESTIC). EIN Exit-Signal reicht."
+    },
+
+    "proximity": {
+        "frequency": "DAILY",
+        "fast_path_threshold": 0.3,
+        "f6_advisory_threshold": 0.7,
+        "cio_mention_threshold": 0.5,
+        "full_path_forced_threshold": 0.3,
+        "explanation": "Proximity wird taeglich berechnet. < 0.3 fuer alle Trigger = Fast Path erlaubt. >= 0.7 = F6 Advisory + CIO Mention."
+    },
+
+    "trend": {
+        "stable_threshold": 0.03,
+        "explanation": "Proximity-Aenderung < 3 Punkte vs gestern = STABLE. Sonst RISING oder FALLING. From Dashboard Writer Addendum."
+    },
+
+    "outcome_tracker": {
+        "pending_expiry_days": 5,
+        "review_after_days": 90,
+        "explanation": "PENDING Empfehlungen verfallen nach 5 Tagen wenn Trigger nicht mehr aktiv. Review nach 90 Tagen."
+    }
+}
