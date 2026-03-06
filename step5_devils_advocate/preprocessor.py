@@ -162,7 +162,13 @@ def _check_alert_omissions(parsed_draft: dict, risk_alerts: dict | None, config:
 
     # Emergency triggers
     for trig_id, trig_data in risk_alerts.get("emergency_triggers", {}).items():
-        if trig_data.get("status") == "ACTIVE":
+        is_active = False
+        if isinstance(trig_data, dict):
+            is_active = trig_data.get("status") == "ACTIVE"
+        elif isinstance(trig_data, bool):
+            is_active = trig_data
+
+        if is_active:
             s3 = parsed_draft["sections"].get("S3", "")
             if trig_id not in s3:
                 omissions.append({
