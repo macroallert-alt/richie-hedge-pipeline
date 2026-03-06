@@ -788,6 +788,106 @@ def extract_da_resolution(briefing_text: str) -> dict:
 
 
 # ==========================================================================
+# DA RESOLUTION WRITE-BACK — Match Resolutions to DA Challenge IDs
+# ==========================================================================
+
+def build_cio_resolutions(da_resolution: dict, devils_advocate: dict) -> list:
+    """
+    Match extracted DA resolutions from the Final briefing text
+    with the original DA challenge IDs and types.
+
+    Args:
+        da_resolution: Output from extract_da_resolution() — has 'details' list
+        devils_advocate: Full DA output JSON — has 'challenges' list
+
+    Returns:
+        List of dicts: [{challenge_id, challenge_type, resolution}, ...]
+        Ready for update_effectiveness_after_cio_final().
+    """
+    if not da_resolution or not devils_advocate:
+        return []
+
+    da_details = da_resolution.get("details", [])
+    da_challenges = devils_advocate.get("challenges", [])
+
+    if not da_details or not da_challenges:
+        return []
+
+    cio_resolutions = []
+    matched_ids = set()
+
+    for detail in da_details:
+        summary = detail.get("challenge_summary", "").strip().lower()
+        resolution = detail.get("marker_type", "")  # ACCEPTED / NOTED / REJECTED
+
+        if not summary or not resolution:
+            continue
+
+        # Match by text similarity: first 50 chars of summary vs challenge_text
+        best_match = None
+        best_score = 0
+
+        for challenge in da_challenges:
+            cid = challenge.get("id", "")
+            if cid in matched_ids:
+                continue
+
+            ctext = challenge.get("challenge_text", "").strip().lower()
+
+            # Strategy 1: summary is substring of challenge_text
+            if summary[:50] in ctext:
+                best_match = challenge
+                best_score = 100
+                break
+
+            # Strategy 2: challenge_text starts with summary prefix
+            if ctext[:50] in summary and len(ctext[:50]) > 10:
+                if best_score < 80:
+                    best_match = challenge
+                    best_score = 80
+
+            # Strategy 3: word overlap (fallback)
+            summary_words = set(summary.split())
+            ctext_words = set(ctext.split())
+            if len(summary_words) > 0:
+                overlap = len(summary_words & ctext_words) / len(summary_words)
+                if overlap > 0.5 and overlap > best_score / 100:
+                    best_match = challenge
+                    best_score = int(overlap * 100)
+
+        if best_match:
+            matched_ids.add(best_match["id"])
+            cio_resolutions.append({
+                "challenge_id": best_match["id"],
+                "challenge_type": best_match.get("type", "PREMISE_ATTACK"),
+                "resolution": resolution,
+            })
+            logger.info(
+                f"  DA Write-back: {best_match['id']} → {resolution} "
+                f"(match score: {best_score})"
+            )
+        else:
+            logger.warning(
+                f"  DA Write-back: No match for resolution '{summary[:60]}...' "
+                f"({resolution})"
+            )
+
+    # For unmatched DA challenges (no resolution in text): default to NOTED
+    for challenge in da_challenges:
+        if challenge.get("id") not in matched_ids:
+            cio_resolutions.append({
+                "challenge_id": challenge["id"],
+                "challenge_type": challenge.get("type", "PREMISE_ATTACK"),
+                "resolution": "NOTED",
+            })
+            logger.info(
+                f"  DA Write-back: {challenge['id']} → NOTED (no marker in text)"
+            )
+
+    return cio_resolutions
+
+
+# ==========================================================================
 # FALLBACK BRIEFING (Spec Teil 5 §5.8)
 # ==========================================================================
 

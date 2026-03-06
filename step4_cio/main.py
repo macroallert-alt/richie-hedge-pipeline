@@ -284,8 +284,13 @@ def load_all_inputs(drive_service, sheets_service) -> dict:
         if history_folder_id:
             cio_hist = read_drive_json(drive_service, "cio_history_digest.json", history_folder_id)
             inputs["cio_history"] = cio_hist
+
+            # DA History (for DA Resolution Write-back in Final mode)
+            da_hist = read_drive_json(drive_service, "da_history.json", history_folder_id)
+            inputs["da_history"] = da_hist
         else:
             inputs["cio_history"] = None
+            inputs["da_history"] = None
 
         # Yesterday's briefing (from Git archive — more reliable than Drive CURRENT/)
         yesterday = _read_yesterday_archive()
@@ -304,6 +309,7 @@ def load_all_inputs(drive_service, sheets_service) -> dict:
         inputs["signals"] = {"status": "UNAVAILABLE"}
         inputs["f6_production"] = {"status": "UNAVAILABLE", "active_positions": [], "signals_today": []}
         inputs["cio_history"] = None
+        inputs["da_history"] = None
         inputs["yesterday_briefing"] = None
 
     return inputs
@@ -508,6 +514,25 @@ def main():
                     logger.warning("HISTORY folder not found — skipping history write")
             except Exception as e:
                 logger.error(f"History Drive write failed: {e}")
+
+        # Write DA History (Resolution Write-back — bidirectional data flow)
+        if drive_service:
+            try:
+                da_history_updated = final_output.get("da_history_updated")
+                if da_history_updated:
+                    history_folder_id = _find_folder(drive_service, "HISTORY", DRIVE_ROOT_ID)
+                    if history_folder_id:
+                        write_drive_json(
+                            drive_service, da_history_updated,
+                            "da_history.json", history_folder_id,
+                        )
+                        logger.info("Drive: da_history.json written to HISTORY/ (Resolution Write-back)")
+                    else:
+                        logger.warning("HISTORY folder not found — skipping DA history write-back")
+                else:
+                    logger.info("DA Write-back: No da_history_updated — skipping")
+            except Exception as e:
+                logger.error(f"DA History Drive write-back failed (non-fatal): {e}")
 
         # Write AGENT_SUMMARY
         if sheets_service:

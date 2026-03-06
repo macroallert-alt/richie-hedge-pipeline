@@ -45,6 +45,7 @@ from step4_cio.postprocessor import (
     update_history_digest,
     update_action_item_tracking,
     extract_da_resolution,
+    build_cio_resolutions,
     generate_fallback_briefing,
 )
 
@@ -364,6 +365,32 @@ def run_cio_final(inputs: dict, draft_output: dict,
     action_items = extract_action_items(briefing_text, preprocessor_output)
     da_resolution = extract_da_resolution(briefing_text)
 
+    # DA Resolution Write-back: match resolutions to DA challenge IDs
+    # and update da_history effectiveness tracking
+    da_history_updated = None
+    if devils_advocate:
+        try:
+            cio_resolutions = build_cio_resolutions(da_resolution, devils_advocate)
+            if cio_resolutions:
+                from step5_devils_advocate.postprocessor import update_effectiveness_after_cio_final
+                da_history_raw = inputs.get("da_history")
+                if da_history_raw:
+                    import copy
+                    da_history_copy = copy.deepcopy(da_history_raw)
+                    da_history_updated = update_effectiveness_after_cio_final(
+                        da_history_copy, cio_resolutions
+                    )
+                    logger.info(
+                        f"DA Write-back: {len(cio_resolutions)} resolutions processed, "
+                        f"acceptance_rate={da_history_updated.get('challenge_effectiveness', {}).get('acceptance_rate_overall', 0):.0%}"
+                    )
+                else:
+                    logger.warning("DA Write-back: da_history not available — skipping")
+            else:
+                logger.info("DA Write-back: No resolutions to write back")
+        except Exception as e:
+            logger.error(f"DA Write-back failed (non-fatal): {e}")
+
     section_texts = parse_sections(briefing_text)
     section_word_counts = {k: len(v.split()) for k, v in section_texts.items()}
 
@@ -400,6 +427,7 @@ def run_cio_final(inputs: dict, draft_output: dict,
         },
         "preprocessor_output": preprocessor_output,
         "cio_history_digest": draft_output.get("cio_history_digest", DEFAULT_HISTORY),
+        "da_history_updated": da_history_updated,
     }
 
     logger.info(
