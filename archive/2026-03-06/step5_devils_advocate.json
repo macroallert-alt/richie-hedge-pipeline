@@ -1,22 +1,22 @@
 {
   "date": "2026-03-06",
-  "run_id": "da_20260306_081259",
-  "draft_run_id": "cio_draft_20260306_080814",
+  "run_id": "da_20260306_083007",
+  "draft_run_id": "cio_draft_20260306_082412",
   "primary_focus": "NARRATIVE",
   "perspective_seed": "Makro-Trader",
   "challenges": [
     {
       "id": "da_20260306_001",
       "type": "NARRATIVE",
-      "target_section": "S2",
+      "target_section": "S3",
       "target_assumption": "KA1",
-      "challenge_text": "Der CIO erzaehlt NFP/ECB als \"Binary Outcome Day mit Portfolio-Exposure in beide Richtungen\". Alternative Lesart: Das ist ein LIQUIDITY-REGIME-TEST, kein Event-Outcome-Problem. V16 Liquidity Direction = -1 (Tightening), Market Analyst L1 = TRANSITION (Proximity 0.2 zu TIGHTENING), aber Net Liquidity flat bei 50th percentile. Die Frage ist nicht \"NFP stark oder schwach?\", sondern \"Reagiert Liquidity auf NFP?\". Wenn NFP schwach ABER Liquidity bleibt flat (weil Fed-Pivot-Erwartungen nicht materialisieren) = V16 shiftet zu RISK_OFF ohne dass NFP selbst der Trigger ist. Wenn NFP stark ABER Liquidity tightened weiter (weil Fed hawkish bleibt) = V16 bleibt SELECTIVE aber Stress Score steigt. Das Portfolio ist nicht auf Event-Outcomes positioniert — es ist auf Liquidity-Regime-Shift positioniert. NFP/ECB sind INDIKATOREN fuer den Shift, nicht URSACHEN.",
+      "challenge_text": "Der CIO erzaehlt HYG 28.8% als \"Event-Risk vor binaeren NFP/ECB\" — die Geschichte ist: Starke oder schwache Daten → Credit Spreads weiten → HYG leidet. Alternative Narrative mit denselben Fakten: HYG 28.8% ist KEIN Event-Risk, sondern Regime-Hedge. V16 allokiert HYG aus LATE_EXPANSION (Growth +1, Stress 0) — das ist die Regime-Annahme \"Wirtschaft waechst, aber keine Panik\". NFP/ECB sind Tests dieser Annahme. Wenn NFP moderat stark (150-200k) + ECB neutral → Regime bestaetigt, HYG profitiert (Spreads eng bleiben). Wenn NFP extrem (>300k oder <50k) → Regime widerlegt, aber dann ist HYG-Loss ein Regime-Signal, kein Konzentrations-Fehler. Der CIO behandelt 28.8% als \"zu viel vor Event\". Alternative: 28.8% ist \"richtig dimensioniert fuer aktuelles Regime, Event testet ob Regime noch gilt\". Das ist kein Exposure-Problem, das ist Regime-Validierung in Echtzeit.",
       "evidence": [
-        "V16 Liquidity Direction -1 (Tightening) + Market Analyst L1 Score 0 (TRANSITION) = Regime-Unsicherheit, nicht Event-Unsicherheit",
-        "Market Analyst L1 Proximity 0.2 zu TIGHTENING = nahe an Schwelle, NFP koennte Trigger sein",
-        "V16 SELECTIVE Regime (Late Expansion) ist INSTABIL wenn Liquidity von Tightening zu Easing wechselt (dann STEADY_GROWTH) oder von Tightening zu Crisis (dann RISK_OFF)",
-        "CIO sagt \"Binary Exposure\" fuer HYG/DBC/GLD — aber alle drei reagieren primaer auf LIQUIDITY, sekundaer auf NFP-Zahl selbst",
-        "IC NO_DATA fuer Liquidity = keine externe Confirmation ob Liquidity-Regime stabil ist"
+        "V16 Macro State 3 (LATE_EXPANSION), Growth +1, Stress 0 — Regime sagt \"Credit safe\"",
+        "Market Analyst L3 Score +4 (Earnings HEALTHY, 82.6% Breadth) — Fundamentals stuetzen Credit",
+        "IG OAS 0 (neutral, 50th pctl) — Spreads zeigen KEINE Stress-Signale",
+        "HYG Historical Performance in LATE_EXPANSION Regimes (nicht in Daten, aber V16 allokiert aus Backtest) — wenn V16 HYG hoch gewichtet, ist das statistisch validiert",
+        "Risk Officer Context: \"Fragility HEALTHY, DD Protect inactive\" — keine strukturellen Warnsignale"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": false,
@@ -27,15 +27,15 @@
     {
       "id": "da_20260306_002",
       "type": "UNASKED_QUESTION",
-      "target_section": "S5",
-      "target_assumption": "KA3",
-      "challenge_text": "Der CIO interpretiert IC Data Void (NO_DATA fuer Liquidity/Fed/Credit/Recession) als \"Datenluecke, nicht Signal\". Ungestellte Frage: Was wenn das Schweigen selbst das Signal ist? An einem NFP-Tag sollten IC-Quellen MAXIMALE Meinung haben (Positioning, Konsens-Erwartungen, Event-Wetten). Stattdessen: 1 Quelle (ZeroHedge), 39 Claims, alle Geopolitik/Energy, NICHTS zu Macro. Das ist nicht \"keine Daten verfuegbar\" — das ist \"die verfuegbare Quelle fokussiert bewusst NICHT auf NFP\". ZeroHedge-Bias ist bekannt (Tail-Risk, Doom), aber Novelty 5-7 bedeutet diese Narrative sind NEU. Hypothese: Wenn Smart Money (oder auch nur Noise-Quellen wie ZH) vor NFP auf Geopolitik pivotiert statt auf Macro, ist das ein POSITIONING-Signal. \"Wir reden ueber Iran weil wir NFP fuer irrelevant halten\" (bullish — Markt ignoriert Macro-Risk) ODER \"Wir reden ueber Iran weil NFP zu scary ist um direkt zu diskutieren\" (bearish — Macro-Risk wird verdraengt). Beide Lesarten sind plausibel. CIO hat keine Mechanik um zwischen ihnen zu unterscheiden.",
+      "target_section": "S2",
+      "target_assumption": null,
+      "challenge_text": "Das System fragt \"Wann kommt NFP/ECB?\" (HEUTE, 6h). Es fragt NICHT: \"Was passiert wenn NFP/ECB sich gegenseitig canceln?\" Szenario: NFP stark (bullish USD, bearish TLT) + ECB dovish (bearish EUR, bullish EU Bonds) → Netto-Effekt auf DXY/Yields unklar, aber USDJPY spike wahrscheinlich (USD staerkt vs. EUR, JPY bleibt weak). V16 haelt 0% FX-Exposure (kein EEM, kein VGK), aber DBC 21.2% ist Dollar-sensitiv (Commodities inverse zu DXY). Market Analyst L4 (FX) Score 0, exponiert auf ECB, aber misst nur USDJPY/DXY Percentiles — NICHT Cross-Impacts (NFP vs. ECB). Wenn NFP+ECB divergieren → FX-Volatilitaet spike → DBC intraday drawdown moeglich (auch wenn Regime bullish Commodities bleibt). Das System hat keinen \"Event-Interference\"-Detektor fuer simultane Tier-1 Releases in verschiedenen Regionen. Risk: DBC 21.2% (WARNING-Schwelle bereits gerissen) koennte zusaetzliche 2-5% intraday verlieren durch FX-Whipsaw, auch ohne Regime-Change.",
       "evidence": [
-        "IC 39 Claims, 0 zu Liquidity/Fed/Credit/Recession am Tag vor NFP = statistisch anomal",
-        "ZeroHedge Novelty 5-7 fuer Iran/Hormuz = NEUE Narrative, nicht recycelte Doom-Porn",
-        "Market Analyst L7 (Central Bank Policy) Score 0, Conviction LOW = keine klare Fed-Erwartung im System",
-        "CIO KA3 sagt \"keine Daten = keine Quellen verfuegbar\", aber ZeroHedge IST verfuegbar und schweigt zu Macro = aktive Wahl, nicht Luecke",
-        "Pre-Processor hat 5x IC_HIGH_NOVELTY_OMISSION geflaggt = System erkennt dass etwas fehlt, aber CIO behandelt es als neutral"
+        "NFP 13:30 UTC, ECB 13:45 UTC — 15min Abstand, beide BINARY Impact",
+        "Market Analyst L4 exponiert auf beide Events, aber Score 0 (neutral) — keine Directional Bias",
+        "DBC 21.2%, Risk Officer WARNING (20.3% > 20% Schwelle) — bereits an Limit",
+        "V16 Liquidity -1 (bullish Commodities langfristig), aber FX-Volatilitaet ist kurzfristiger Stoerfaktor",
+        "IC meldet NICHTS zu FX oder Event-Interference — blinder Fleck"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": false,
@@ -46,17 +46,17 @@
     {
       "id": "da_20260306_003",
       "type": "PREMISE_ATTACK",
-      "target_section": "S6",
-      "target_assumption": "KA2",
-      "challenge_text": "Der CIO nimmt an V16 SELECTIVE Regime bleibt post-NFP stabil (KA2) WEIL \"V16 operiert auf validierten Signalen\". Aber die Praemisse \"validierte Signale = stabiles Regime\" gilt nur wenn die Signale FORWARD-LOOKING sind. V16 Liquidity Direction -1 und Stress Score 0 sind CURRENT STATE, nicht EXPECTED STATE. NFP ist ein REGIME-SHIFT-KATALYSATOR — wenn NFP die Fed-Erwartung aendert, aendert sich Liquidity Direction NACH dem Event, nicht vorher. V16 kann per Definition nicht auf NFP-Ueberraschung pre-positioned sein (es sei denn Liquidity-Daten haben NFP bereits antizipiert — aber Market Analyst L1 sagt TRANSITION, nicht TIGHTENING confirmed). Das bedeutet: V16 ist REAKTIV zu NFP, nicht PROAKTIV. Wenn NFP V16-Regime shiftet, ist das NICHT \"V16 hat falsch gelegen\" — es ist \"V16 hat korrekt auf neue Daten reagiert\". Aber CIO-Formulierung \"Regime bleibt stabil\" impliziert V16 hat NFP bereits eingepreist. Das ist strukturell unmoeglich fuer ein System das auf Liquidity/Stress reagiert, nicht auf Event-Erwartungen.",
+      "target_section": "S4",
+      "target_assumption": null,
+      "challenge_text": "Der CIO nimmt an \"Event-Cluster + Low Conviction = erhoehte Wahrscheinlichkeit fuer Post-Event Regime-Shift\" (Pattern \"Event-Cluster bei niedriger System-Conviction\"). Praemisse: LOW Conviction entsteht WEIL Events bevorstehen (Unsicherheit vor Outcome). Angriff: LOW Conviction koennte auch bedeuten die Systeme sehen KEINEN Regime-Shift kommen — deshalb neutral/conflicted. Market Analyst 5/8 Layers CONFLICTED ist nicht \"Unsicherheit vor Event\", sondern \"Daten zeigen keine klare Richtung\". L2 (Macro) Tension: \"Spread bullish +4 BUT Nfci bearish -10\" — das ist strukturelle Inkonsistenz in den Daten, nicht Event-Nervositaet. L8 (Tail Risk) Score +2 (CALM) trotz Proximity zu ELEVATED — das sagt \"Maerkte sehen kein Tail Risk\". Wenn Systeme tatsaechlich Event-nervoes waeren → L8 Score sollte sinken (VIX steigen), L5 (Sentiment) sollte negativ werden. Stattdessen: L5 Score 0 (NEUTRAL), L8 Score +2 (CALM). Alternative Lesart: LOW Conviction = \"Regime ist stabil, Events aendern nichts\". Post-Event Regime-Shift ist NICHT wahrscheinlicher, sondern GLEICH wahrscheinlich wie an jedem anderen Tag. Der CIO projiziert Event-Importance auf System-Conviction, aber die Systeme sagen moeglicherweise \"Events sind Noise\".",
       "evidence": [
-        "V16 hat keine Forward-Looking-Komponente fuer Events (kein \"NFP Consensus\" Input, keine Event-Probability-Adjustierung)",
-        "Market Analyst L2 (Macro Regime) Proximity 1.0 zu RECESSION = an Schwelle, NFP-Schwaeche koennte Shift triggern",
-        "Market Analyst L7 (Central Bank Policy) hat NFP als \"REDUCE_CONVICTION\" Event markiert = System erkennt dass NFP Unsicherheit schafft, nicht reduziert",
-        "CIO sagt \"V16 wird nicht mechanisch rebalancen\" (korrekt), aber dann \"Regime-Shift moeglich wenn Daten extrem\" = Widerspruch zu \"Regime bleibt stabil\"",
-        "KA2 \"V16 Regime stable post-event\" hat \"If wrong\"-Klausel die Rebalance morgen beschreibt = CIO erkennt implizit dass Stabilitaet NICHT die Base-Case-Annahme ist"
+        "Market Analyst L8 (Tail Risk) Score +2, Regime CALM — Maerkte preisen kein Event-Risk",
+        "L5 (Sentiment) Score 0, Regime NEUTRAL — keine Positionierungs-Extreme vor Events",
+        "VIX 50th pctl (neutral, ~15-18 impliziert per Historical Range) — keine Volatilitaets-Praemie",
+        "V16 System Conviction LOW (Header) — aber V16 Regime SELECTIVE stabil, keine Rebalance-Trigger proximity",
+        "IC Confidence LOW — aber IC meldet NICHTS zu NFP/ECB (alle Claims historisch bis 2026-03-04)"
       ],
-      "severity": "SUBSTANTIVE",
+      "severity": "MODERATE",
       "is_persistent": false,
       "persistent_days": 0,
       "is_forced_decision": false,
@@ -64,16 +64,16 @@
     },
     {
       "id": "da_20260306_004",
-      "type": "PREMISE_ATTACK",
-      "target_section": "S3",
-      "target_assumption": null,
-      "challenge_text": "Risk Officer meldet HYG 28.8% als CRITICAL (RO-20260304-003), CIO sagt \"V16-Gewicht ist Regime-Folge, nicht Regime-Fehler\" und \"Konzentration im Design-Rahmen\". Praemissen-Angriff: Der CIO nimmt an \"im Design-Rahmen\" = \"akzeptables Risiko\". Aber Risk Officer Base Severity war WARNING, Boost zu CRITICAL kam durch EVENT_IMMINENT (NFP in 48h). Das bedeutet: Konzentration ist NICHT im Design-Rahmen fuer Event-Days. V16 Design optimiert fuer Regime-Trends (Wochen/Monate), nicht fuer Event-Volatilitaet (Stunden/Tage). An normalen Tagen ist HYG 28.8% manageable (Sharpe 2.74, MaxDD -10.78% historisch). An NFP-Tagen ist HYG 28.8% ein TAIL-RISK-AMPLIFIER — wenn Credit Spreads intraday um 20-30bps swingen (historisch bei >2-Sigma-NFP), entspricht das ~2-3% HYG-Move, was bei 28.8% Gewicht ~0.8% Portfolio-Impact ist. Bei aktuellem DD -1.11% waere das -1.9% Gesamt-DD, noch weit von -10% DD-Protect entfernt. ABER: CIO sagt \"bereite mentale Stop-Loss-Schwelle vor bei -5% DD\" (A1) = CIO erkennt implizit dass Event-Day-Konzentration NICHT im normalen Design-Rahmen liegt. Risk Officer ist konsistent, CIO-Praemisse ist inkonsistent.",
+      "type": "NARRATIVE",
+      "target_section": "S5",
+      "target_assumption": "KA3",
+      "challenge_text": "Der CIO erzaehlt IC (ZeroHedge, Iran/Hormuz) als \"geopolitisches Color, kein Trade-Signal\" — die Geschichte ist: Single source, LOW Confidence, Novelty hoch aber Signal null, deshalb irrelevant fuer Portfolio. Alternative Narrative: IC ist Leading Indicator fuer Regime-Shift den V16 noch nicht sieht. V16 allokiert DBC 21.2%, GLD 17.9% aus Liquidity -1 (Late Cycle Commodities-Rotation). IC meldet COMMODITIES +8.0 (Venezuela Gold), ENERGY +1.33 (Hormuz), GEOPOLITICS +1.12 (Iran) — alle bullish fuer DBC/GLD. Timing: IC Claims dated 2026-03-04 bis 2026-03-06 (HEUTE) — das ist CONCURRENT mit V16 Allokation, nicht vorausschauend. Aber: Wenn Hormuz-Szenario tatsaechlich eskaliert (NFP zeigt Rezessions-Angst → Flight to Safety → Gold, ODER ECB dovish → EUR weak → Commodities) → IC-Narrativ wird Ex-Post als \"richtig\" bewertet. Problem: V16 hat DBC/GLD aus Regime allokiert, IC hat Hormuz aus Geopolitik geclaimt — die Kausalitaet ist unklar. Sind sie unabhaengig konvergent (bullish Commodities aus verschiedenen Gruenden) oder ist IC tatsaechlich Leading (Geopolitik → Regime-Shift → V16 reagiert)? Der CIO dismissed IC als \"kein Signal\", aber wenn IC und V16 zur selben Allokation kommen (70% Commodities/Defensives) aus verschiedenen Frameworks → das ist CONVERGENT EVIDENCE, nicht Noise. Staerkere Lesart: IC liefert Narrativ (WARUM Commodities steigen — Hormuz), V16 liefert Mechanik (WANN Commodities steigen — Liquidity -1). Zusammen: hoehere Confidence fuer Commodities-Allokation als V16 allein.",
       "evidence": [
-        "Risk Officer Base Severity WARNING, Boost EVENT_IMMINENT → CRITICAL = System unterscheidet zwischen Normal-Day-Risk und Event-Day-Risk",
-        "V16 Performance-Metriken (Sharpe 2.74, MaxDD -10.78%) sind TREND-basiert, nicht EVENT-basiert (keine Intraday-Volatilitaet-Metrik)",
-        "CIO A1 \"bereite mentale Stop-Loss bei -5% DD\" = implizite Anerkennung dass -10% DD-Protect zu weit weg ist fuer Event-Day-Risk",
-        "HYG historische Intraday-Volatilitaet an NFP-Tagen (nicht im Briefing, aber bekannt) ~2-3x hoeher als normale Tage",
-        "Market Analyst L2 und L7 haben NFP als REDUCE_CONVICTION markiert = System-weite Erkennung dass Events Unsicherheit schaffen"
+        "V16 DBC 21.2%, GLD 17.9% = 39.1% Commodities (ohne indirekte Exposure)",
+        "IC COMMODITIES +8.0 (1 Claim, Venezuela Gold), ENERGY +1.33 (6 Claims, Hormuz)",
+        "IC Claims dated 2026-03-04 bis 2026-03-06 — concurrent mit V16 Allokation",
+        "V16 Liquidity -1, Macro State 3 (LATE_EXPANSION) — Regime-Logik fuer Commodities",
+        "Market Analyst L6 (RV) Cu/Au Score 0 (neutral) — KEINE quantitative Bestaetigung fuer Commodities-Rotation, aber auch kein Widerspruch"
       ],
       "severity": "MODERATE",
       "is_persistent": false,
@@ -83,18 +83,19 @@
     },
     {
       "id": "da_20260306_005",
-      "type": "UNASKED_QUESTION",
-      "target_section": "SYSTEM",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S6",
       "target_assumption": null,
-      "challenge_text": "Alle Systeme melden LOW Conviction oder CONFLICTED (Market Analyst NEUTRAL LOW Conviction, IC LOW Confidence, Risk Officer erste Erfassung ohne Trend-Daten, F6 UNAVAILABLE). CIO interpretiert das als \"epistemische Unsicherheit\" und \"die Systeme haben keine Meinung\". Ungestellte Frage: Was wenn LOW Conviction selbst ein REGIME-SIGNAL ist? Historisch (Hussman, Grantham): Perioden mit niedriger Conviction und flachen Signalen sind oft LATE-CYCLE-PHASEN — Markt ist \"too calm\", Volatilitaet compressed, alle warten auf Katalyst. V16 sagt LATE_EXPANSION (Macro State 3), Market Analyst L8 (Tail Risk) sagt CALM. Das ist konsistent mit \"Ruhe vor dem Sturm\". Wenn NFP der Katalyst ist der compressed Volatilitaet released, dann ist LOW Conviction HEUTE ein bullish Signal fuer Volatilitaet MORGEN. CIO behandelt LOW Conviction als \"wir wissen nichts\" — alternative Lesart: \"der Markt weiss nichts, und das ist selbst Information\". VIX-Niveau nicht im Briefing, aber wenn VIX <15 waere (typisch fuer CALM Regime), waere das Confirmation. CIO hat keine Mechanik um \"LOW Conviction = compressed Vol = mean reversion imminent\" zu testen.",
+      "challenge_text": "Der CIO sagt \"Portfolio ist DEFENSIV positioniert (70% Commodities/Defensives, 0% Equities) trotz V16 Risk-On Label\". Praemisse: 0% Equities = defensiv. Angriff: 0% Equities koennte OFFENSIV sein wenn Equities das falsche Risk-Asset sind. V16 Regime SELECTIVE, Growth +1 (bullish), Liquidity -1 (bearish fuer Equities, bullish fuer Commodities). In Late Cycle (Macro State 3) performen Commodities BESSER als Equities (Liquidity Tightening trifft Equity Multiples, hebt Commodities). HYG 27.7% (Corporate Credit) ist NICHT defensiv — Credit ist Risk-Asset, nur weniger volatil als Equities. DBC 21.2% (Commodities) ist NICHT defensiv — Commodities sind zyklisch, nur anti-korreliert zu Equities in bestimmten Regimes. Einzig echte Defensives: XLU 18.2%, XLP 15.0% = 33.2%. Rest (67%) ist Risk-On (HYG Credit-Risk, DBC/GLD Commodities-Risk). Der CIO labelt Portfolio als \"defensiv\" weil 0% SPY, aber das ist Equity-Bias. Alternative: Portfolio ist RISK-ON via Non-Equity Risk-Assets (Credit, Commodities). Das ist nicht \"defensiv trotz Risk-On Label\", das ist \"Risk-On via alternativen Assets\". Wenn NFP/ECB bullish fuer Risk → HYG/DBC profitieren genauso wie SPY profitieren wuerde. Wenn bearish → HYG/DBC leiden genauso. Der einzige Unterschied: Correlation zu SPY ist niedriger (Diversifikation), aber Directional Exposure zu Risk ist gleich.",
       "evidence": [
-        "Market Analyst System Regime NEUTRAL, alle Layer-Scores nahe Null = flache Signale",
-        "V16 Regime SELECTIVE (Late Expansion) + Stress Score 0 = kein akuter Stress, aber Wachstum verlangsamt",
-        "Market Analyst L8 (Tail Risk) Score +2, Regime CALM = System sieht keine Tail-Risks",
-        "IC Confidence LOW bis NO_DATA fuer alle Macro-Themen = keine starken Meinungen im Markt",
-        "CIO sagt \"Event-Day Data Void\" (S4 Pattern) = Datenluecke an Tag mit hoher erwarteter Volatilitaet = Anomalie die selbst Signal sein koennte"
+        "V16 Regime SELECTIVE, Growth +1, Stress 0 — Risk-On Regime",
+        "HYG 27.7% = Corporate Credit = Risk-Asset (Spread-sensitiv, Default-Risk)",
+        "DBC 21.2% = Commodities = Zyklisch (GDP-sensitiv, nicht Safe Haven)",
+        "GLD 17.9% = einziger echter Safe Haven, aber 18% ist nicht \"defensiv dominiert\"",
+        "XLU+XLP 33.2% = echte Defensives, aber Minority des Portfolios",
+        "Market Analyst L3 Score +4 (Earnings HEALTHY) — Risk-On Fundamentals stuetzen HYG/DBC"
       ],
-      "severity": "MODERATE",
+      "severity": "MINOR",
       "is_persistent": false,
       "persistent_days": 0,
       "is_forced_decision": false,
@@ -102,6 +103,31 @@
     }
   ],
   "preprocessor_flags_unused": [
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
     {
       "flag_type": "IC_HIGH_NOVELTY_OMISSION",
       "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
@@ -241,22 +267,22 @@
   "metadata": {
     "total_challenges": 5,
     "by_type": {
-      "NARRATIVE": 1,
-      "UNASKED_QUESTION": 2,
+      "NARRATIVE": 2,
+      "UNASKED_QUESTION": 1,
       "PREMISE_ATTACK": 2
     },
     "by_severity": {
-      "SUBSTANTIVE": 3,
+      "SUBSTANTIVE": 2,
       "MODERATE": 2,
-      "MINOR": 0
+      "MINOR": 1
     },
     "persistent_renewed": 0,
     "forced_decisions": 0,
-    "preprocessor_flags_total": 29,
+    "preprocessor_flags_total": 34,
     "preprocessor_flags_used": 5,
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_temperature": 0.4,
     "llm_attempt": 1,
-    "generation_time_seconds": 77.8
+    "generation_time_seconds": 87.0
   }
 }
