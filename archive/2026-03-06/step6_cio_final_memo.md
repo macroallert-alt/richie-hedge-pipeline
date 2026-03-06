@@ -11,269 +11,317 @@ Ist Montag: False
 
 ## S1: DELTA
 
-V16: HOLD across all positions. HYG 27.7%, DBC 21.2%, XLU 18.2%, GLD 17.9%, XLP 15.0%. Regime SELECTIVE (LATE_EXPANSION), keine Gewichtsaenderungen seit gestern. Drawdown -1.11% (MaxDD -10.78%).
+V16: HOLD auf allen 5 Positionen. HYG 27.7%, DBC 21.2%, XLU 18.2%, GLD 17.9%, XLP 15.0%. Regime SELECTIVE (LATE_EXPANSION), Drawdown -1.11%. Keine Rebalance-Trades.
 
-F6: UNAVAILABLE.
+F6: UNAVAILABLE (V2).
 
-Market Analyst: System Regime NEUTRAL (Score-Summe nahe Null). Keine Layer-Regime-Wechsel seit gestern. Alle Layer STABLE Direction, STEADY Velocity. L3 (Earnings) einziger positiver Layer (+4, Breadth 82.6%). L2 (Macro) und L6 (RV) leicht negativ (-1), beide CONFLICTED Conviction wegen interner Sub-Score-Spannungen.
+Market Analyst: System Regime NEUTRAL. Layer Scores: L3 (Earnings) +4 HEALTHY, L8 (Tail Risk) +2 CALM, L1/L4/L5/L7 neutral (0), L2 (Macro) -1 SLOWDOWN, L6 (RV) -1 BALANCED. Alle Layer STABLE velocity, LOW/CONFLICTED conviction. Breadth 82.6% above 200d MA (stark). VIX 50th pctl, term structure contango 0.9954. Yield curve 2Y10Y +0.56bps (FLAT 5d). NFCI -10 (bearish), aber isoliert.
 
-Risk Officer: Portfolio Status RED (1 CRITICAL, 4 WARNING). CRITICAL: HYG 28.8% ueberschreitet 25%-Limit (Trend ESCALATING, 3 Tage aktiv, Boost EVENT_IMMINENT). WARNING: Commodities Exposure 37.2% nahe 35%-Schwelle, DBC 20.3% nahe 20%-Limit, V16/Market Analyst Regime-Divergenz, NFP/ECB heute.
+Risk Officer: Portfolio RED. HYG CRITICAL ↑ (28.8%, Schwelle 25%, Tag 4, EVENT_IMMINENT boost). 4 WARNING ongoing: Commodities Exposure 37.2% (Schwelle 35%), DBC 20.3% (Schwelle 20%), INT_REGIME_CONFLICT (V16 Risk-On vs. Market Analyst NEUTRAL), TMP_EVENT_CALENDAR (NFP+ECB heute).
 
-IC Intelligence: 1 Quelle (ZeroHedge), 39 Claims, 29 High-Novelty. Alle als Anti-Patterns klassifiziert (Signal 0 trotz Novelty 5-7). Consensus: GEOPOLITICS +1.12, ENERGY +1.33, COMMODITIES +8.0, TECH_AI -1.0 (alle LOW Confidence, Single-Source). Keine unabhaengige Bestaetigung fuer V16-Regime.
+IC Intelligence: DEGRADED. 1 Quelle (ZeroHedge), 39 Claims, 29 High-Novelty (alle Signal 0 — Anti-Patterns). Consensus: GEOPOLITICS +1.12, ENERGY +1.33, COMMODITIES +8.0, TECH_AI -1.0 (alle LOW confidence, 1 source). Keine Daten zu LIQUIDITY, FED_POLICY, CREDIT, RECESSION, INFLATION, EQUITY_VALUATION, CHINA_EM, CRYPTO, DOLLAR, VOLATILITY, POSITIONING.
 
-**DELTA-ZUSAMMENFASSUNG:** Keine Trades. HYG-Konzentration eskaliert in CRITICAL-Zone. NFP/ECB heute schaffen binaere Unsicherheit. System Conviction LOW weil Market Analyst NEUTRAL zeigt, IC-Daten degradiert (1 Quelle, keine Macro-Autoritaeten), V16 operiert auf validierten Signalen aber ohne frische Bestaetigung. Kein Regime-Shift, aber Proximity-Warnung in mehreren Layern (L2 Slowdown→Recession 100%, L3 Healthy→Mixed 71%, L8 Calm→Elevated 100%).
+Signal Generator: FAST_PATH. V16 weights unmodified. Router US_DOMESTIC (Tag 429), alle Proximity 0.0, naechste Evaluation 2026-04-01.
+
+**DELTA vs. 2026-03-05:** Keine Gewichtsaenderungen. HYG Alert von WARNING zu CRITICAL eskaliert (Tag 4, EVENT_IMMINENT). IC-Daten weiterhin DEGRADED (seit Tag 1). Market Analyst Layer Scores unveraendert (alle Tag 1 Regimes, LOW conviction). Keine neuen Patterns.
 
 ## S2: CATALYSTS & TIMING
 
-**HEUTE (2026-03-06, T+0h):**
-- **NFP (Feb):** Tier 1, HIGH Impact, BINARY Direction. Market Analyst L2/L7 beide vor Event auf REDUCE_CONVICTION gesetzt. [DA: da_20260306_001 — V16 Growth Signal basiert auf LAGGING Indikatoren (NFCI -10 hat 4-6 Wochen Lag, 2Y10Y +0.56bps hat 2-4 Wochen Lag). NFP ist LEADING Indicator — zeigt aktuelle Arbeitsmarkt-Realitaet. ACCEPTED — V16 hinkt 12-18h hinterher (Update morgen frueh). Bei Material-NFP-Miss ist Portfolio 12-18h FALSCH positioniert (HYG statt TLT/Cash). Original Draft: "Schwache Zahl = Rezessionsangst (stuetzt L2 Slowdown→Recession Proximity). Starke Zahl = Fed-Tightening-Angst (kontraintuitiv bei aktueller 2Y10Y-Steepening +0.56bps). V16 LATE_EXPANSION-State impliziert Wachstum noch intakt — NFP-Miss wuerde das in Frage stellen."] **ERWEITERT:** V16 Growth Signal +1 basiert auf Daten die VOR 2-6 Wochen aktuell waren. NFP Release 14:30 CET heute liefert AKTUELLE Arbeitsmarkt-Daten. Wenn NFP miss >50k Jobs, dann ist V16 Growth Signal +1 VERALTET — Rezession bereits eingetreten, V16 detektiert erst morgen. Portfolio ist 12-18h exponiert mit HYG 27.7% (Credit-Exposure bei Rezessionsangst = Spread-Weitung-Risiko). V16 hat KEINEN Intraday-Mechanismus — reagiert erst auf Tagesschluss-Daten. **IMPLIKATION:** Post-NFP-Check (siehe S7 A1) ist NICHT optional — ist KRITISCH um zu verifizieren ob V16-Regime noch valide ist oder bereits gekippt sein sollte.
-- **ECB Rate Decision:** Tier 2, MEDIUM Impact, BINARY. L4 (FX) und L7 (CB Divergence) exponiert. DXY neutral (50. Perzentil), aber ECB-Dovishness vs. Fed-Hawkishness koennte USD staerken → EM-Druck (Router EM_BROAD Proximity aktuell 0%, aber Katalysator-sensitiv).
+**HEUTE (2026-03-06, 0h):**
+- **NFP (Feb):** Tier 1, HIGH impact, BINARY direction. Schwach = Rezessionsangst (bearish Equities, bullish Bonds). Stark = mehr Straffung (bearish Bonds, mixed Equities). Market Analyst L2/L7 exposure, PRE_EVENT_ACTION: REDUCE_CONVICTION. V16 SELECTIVE = defensiv positioniert (HYG/DBC/XLU/XLP/GLD, kein SPY/XLK). F6 unavailable = kein Einzelaktien-Exposure.
+- **ECB Rate Decision:** Tier 2, MEDIUM impact, BINARY. Divergenz zu Fed = FX-Impact (DXY). Market Analyst L4/L7 exposure. V16 kein direktes EUR-Exposure, aber DXY-Bewegung beeinflusst Commodities (DBC 21.2%).
 
-**T+5d (2026-03-11):**
-- **CPI (Feb):** Tier 1, HIGH Impact. Inflation-Daten bestimmen Fed-Pfad. Aktuell Real 10Y Yield neutral (Score 0 in L2/L6/L7), NFCI/ANFCI beide -10 (financial conditions tight). Heisser CPI = weitere Tightening-Erwartung = Yield-Curve-Inversion-Risiko (aktuell 2Y10Y +0.56bps, 3M10Y +0.2bps — beide knapp positiv). V16 HYG-Exposure (27.7%) direkt exponiert gegenueber Credit-Spread-Weitung bei Rezessionsangst.
+**DIESE WOCHE (5d):**
+- **CPI (Feb, 2026-03-11):** Tier 1, HIGH impact. INFLATION/FED_POLICY themes. V16 HYG-Gewicht (27.7%) sensitiv auf Fed-Erwartungen. IC-Daten zu INFLATION: NO_DATA.
 
-**TIMING-IMPLIKATION:** Naechste 48h bestimmen ob L2 Slowdown→Recession Transition (aktuell 100% Proximity, 0 Tage bis Boundary) triggert. V16 hat KEINEN automatischen Drawdown-Protect (DD-Protect INACTIVE, Current DD -1.11% weit unter Trigger). System ist NICHT darauf ausgelegt intraday auf NFP zu reagieren — V16 rebalanced auf Tagesschluss-Daten. Operator muss manuell pruefen ob Post-NFP-Moves V16-Regime-Shift ausloesen koennten (naechster V16-Run morgen frueher).
+**V16 Rebalance Proximity:** 0.0 (kein Trigger nah). Naechste erwartete Rebalance: nicht spezifiziert (SELECTIVE = event-driven, nicht kalendarisch).
 
-**CIO OBSERVATION:** NFP/ECB-Kombination heute ist seltenes Doppel-Event. Historisch erhoehen solche Tage Intraday-Volatilitaet um Faktor 2-3x vs. Einzelevents. V16 SELECTIVE-Regime ist defensiv positioniert (Staples, Utilities, Gold, HYG, Commodities — kein Equity-Beta), aber HYG-Konzentration macht Portfolio anfaellig fuer Credit-Spread-Shocks bei Rezessionsueberraschung.
+**Router Proximity:** Alle Trigger 0.0 (EM_BROAD, CHINA_STIMULUS, COMMODITY_SUPER). Naechste Evaluation 2026-04-01 (26d). Kein Entry/Exit-Signal.
+
+**F6 Covered Call Expiry:** Keine Daten (F6 unavailable).
+
+**Timing-Implikation:** NFP+ECB HEUTE = maximale Unsicherheit fuer naechste 8 Handelsstunden. V16 SELECTIVE = System hat sich defensiv positioniert (kein SPY/XLK, hohe HYG/Staples/Utilities). Risk Officer boost EVENT_IMMINENT aktiv (HYG CRITICAL). CIO-Empfehlung: Keine praeemptiven Trades. V16-Gewichte sind validiert. Post-Event: S7 A5 Review (siehe unten).
 
 ## S3: RISK & ALERTS
 
-**PORTFOLIO STATUS: RED** (1 CRITICAL ↑, 4 WARNING →)
+**PORTFOLIO STATUS: RED** (1 CRITICAL ↑, 4 WARNING ongoing).
 
-**CRITICAL ALERT (RO-20260306-003, ESCALATING, 3d aktiv):**
-HYG Single-Name-Konzentration 28.8%, Schwelle 25%, +3.8pp Ueberschreitung. Base Severity WARNING, Boost EVENT_IMMINENT → CRITICAL. Trend ESCALATING (gestern WARNING, heute CRITICAL). V16-Attribution, Trade Class A.
+**CRITICAL ↑ (Tag 4, eskaliert):**
+- **RO-20260306-003 (EXP_SINGLE_NAME):** HYG 28.8%, Schwelle 25%, +3.8pp. Trade Class A. Trend ESCALATING (WARNING → CRITICAL via EVENT_IMMINENT boost). V16 target weight 28.8% (current = target, kein Rebalance geplant). **Kontext:** HYG = High Yield Corporate Bonds. V16 SELECTIVE Regime allokiert 28.8% weil: (1) LATE_EXPANSION state (Kredit-Spreads eng, Default-Risiko niedrig), (2) kein SPY/XLK (Tech-Underweight), (3) Defensive Tilt (Staples/Utilities/Gold). **Risiko:** NFP schwach → Rezessionsangst → HY-Spreads weiten → HYG drawdown. NFP stark → Fed hawkish → Yields steigen → HYG drawdown (Duration-Risiko). 
 
-**KONTEXT:** HYG ist V16-Regime-Ausdruck fuer LATE_EXPANSION + Liq_Direction -1 (Liquiditaet kontrahiert). Gewicht 27.7% (Current) vs. 28.8% (Target) — V16 will MEHR HYG kaufen (+1.1pp Delta). Risk Officer sieht 28.8% weil er Target-Gewichte prueft. HYG-Spread (OAS) aktuell neutral (Score 0 in L2), aber bei NFP-Miss koennte Spread weiten → Drawdown in groesster Position.
+[DA: da_20260306_001 — V16 Liquidity-Signal (liq_direction -1) basiert auf Market Analyst L1 TRANSITION (Tag 1, LOW conviction). "Validiert" ist zirkulaer wenn Validierungs-Basis selbst instabil. ACCEPTED — Praemisse "V16-Signale sind validiert" (KA2) wird adjustiert. Original Draft: "V16-Signale sind KORREKT (reflektieren echte Markt-Bedingungen)"]
 
-**WARUM NICHT REDUZIEREN?** V16-Gewichte sind SAKROSANKT (Master-Schutz). V16 hat HYG auf 27.7% gesetzt basierend auf validierten Regime-Signalen. Risk Officer warnt, aber modifiziert NICHT. Operator-Entscheidung: Akzeptiere Konzentration (V16-Vertrauen) ODER pruefe mit Agent R ob manuelle Intervention gerechtfertigt (wuerde V16-Override bedeuten, nur bei System-Failure erlaubt).
+**V16-Logik sakrosankt:** System hat HYG-Konzentration bewusst gewaehlt basierend auf Regime-Signalen. **ABER:** Liquidity-Signal (liq_direction -1) ist FRISCH (Tag 1, korreliert mit Market Analyst L1 TRANSITION Tag 1). Market Analyst L1 conviction LOW (regime_duration 0.2) = Signal NICHT stabilisiert. **Adjustierte CIO-Interpretation:** V16-Entscheidung ist RATIONAL gegeben Regime-Signale, aber Signale sind JUNG (Tag 1) und tragen HOHE Unsicherheit. HYG-Konzentration ist NICHT "validiert durch stabile Signale", sondern "basierend auf frischem Liquidity-Shift". Post-NFP: Wenn HYG drawdown >2% UND L1 zurueck-flippt (TRANSITION → vorheriges Regime), dann war HYG 28.8% Fehlallokation auf 1-Tages-Signal. Operator-Aufgabe: Post-NFP Review (S7 A1) PLUS L1 Regime-Stabilitaet pruefen (S7 A4 upgraded).
 
-**EMPFEHLUNG:** KEINE sofortige Aktion. V16-Logik ist intakt. ABER: Post-NFP Review PFLICHT (siehe S7, A1 eskaliert seit 7d). Wenn NFP HYG-Spread um >50bps weitet UND V16 morgen NICHT reagiert, dann Agent-R-Eskalation.
+**WARNING ongoing (alle Tag 4):**
+- **RO-20260306-002 (EXP_SECTOR_CONCENTRATION):** Commodities 37.2%, Schwelle 35%, +2.2pp. DBC 21.2% + GLD 17.9% = 39.1% nominal, effektiv 37.2% (Korrelations-Adjustment). Trade Class A. **Kontext:** V16 SELECTIVE = Commodity-Tilt (Inflation-Hedge, Dollar-Hedge). **Risiko:** Commodity-Crash (Rezession, Dollar-Rally). **Monitoring:** Siehe S7 W4.
+- **RO-20260306-004 (EXP_SINGLE_NAME):** DBC 20.3%, Schwelle 20%, +0.3pp. Trade Class A. **Kontext:** DBC = Broad Commodities ETF. V16 target 20.3%. **Risiko:** Siehe oben. **Monitoring:** Siehe S7 W4.
+- **RO-20260306-005 (INT_REGIME_CONFLICT):** V16 Risk-On (LATE_EXPANSION) vs. Market Analyst NEUTRAL. Trade Class A. 
 
-**WARNING ALERTS (alle Trade Class A, EVENT_IMMINENT Boost):**
-- **RO-20260306-002:** Commodities Exposure 37.2%, Schwelle 35%, +2.2pp. DBC 21.2% + GLD 17.9% = 39.1% Metals/Commodities. STABLE Trend (3d). Kein Action-Bedarf, Monitoring.
-- **RO-20260306-004:** DBC 20.3%, Schwelle 20%, +0.3pp. STABLE Trend (3d). Knapp ueber Limit, aber innerhalb Toleranz.
-- **RO-20260306-005:** V16/Market Analyst Regime-Divergenz. V16 "Risk-On" (LATE_EXPANSION), Market Analyst NEUTRAL. STABLE Trend (3d). [DA: da_20260306_002 + da_20260306_005 — Divergenz ist NICHT "semantisch" oder "inhaltlich schwach". ACCEPTED — Divergenz detektiert STRUKTURELLE Spannung zwischen Earnings (L3 +4, robust) und Macro (L2 -1, NFCI tight). V16 sieht nur Liquidity/Spreads/Yields (Macro-Fokus). Market Analyst sieht Earnings-Peak bei Macro-Slowdown = ZYKLUS-PEAK-Warnung. Risk Officer Alert INT_REGIME_CONFLICT ist INHALTLICH korrekt — detektiert Daten-Ambiguitaet VOR NFP-Event. Original Draft: "Divergenz ist ERWARTET wenn IC-Daten degradiert sind [...] V16 hat Informations-Vorsprung bei Liquidity-Mechanik. Market Analyst NEUTRAL = 'kein starkes Signal' ≠ 'V16 liegt falsch'. Kein Action-Bedarf auf V16."] **ERWEITERT:** V16 sagt "Risk-On" (HYG 27.7%, DBC 21.2%, kein Cash). Market Analyst sagt "NEUTRAL" (Score-Summe ~0). Das ist NICHT "keine Meinung" — das sind ZWEI Meinungen die sich widersprechen. Market Analyst NEUTRAL basiert auf VORHANDENEN quantitativen Daten: L3 Earnings +4 (Breadth 82.6%, robust) vs. L2 Macro -1 (NFCI -10, Slowdown→Recession Proximity 100%). Das ist FRUEHZYKLUS-DIVERGENZ — Earnings hinken Macro-Shifts um 1-2 Quartale hinterher. Market Analyst detektiert Zyklus-Peak (Earnings-Peak bei Macro-Slowdown), V16 detektiert nur Macro-Slowdown. **INTERPRETATION:** Risk Officer Alert INT_REGIME_CONFLICT ist NICHT "technisch korrekt aber inhaltlich schwach" — er detektiert GENAU diese Situation: Zwei Agents mit ueberlappenden Inputs kommen zu unterschiedlichen Labels weil Daten GRENZWERTIG sind. NFP heute resolved die Ambiguitaet. Wenn NFP V16-Regime kippt (SELECTIVE→RISK_OFF), dann war Market Analyst NEUTRAL die bessere Warnung. Wenn NFP V16-Regime bestaetigt, dann war V16 korrekt und Market Analyst zu vorsichtig. In BEIDEN Faellen war Alert INHALTLICH korrekt — er detektierte Daten-Ambiguitaet VOR dem Event. **ACTION:** Monitoring. Post-NFP Review (S7 A2) prueft ob Market Analyst nachzieht oder V16 shiftet.
-- **RO-20260306-001:** Event-Calendar-Warning (NFP heute). Standard-Prozedur, kein Action-Bedarf.
+[DA: da_20260306_004 (Tag 1, 2x NOTED, FORCED DECISION) — "Market Analyst NEUTRAL wegen fehlender IC-Daten" ist empirisch falsch. Market Analyst Layer Scores basieren auf quantitativen Daten (L1/L2/L3/L6/L7/L8 keine IC-Abhaengigkeit). L4/L5 (IC-abhaengig) beide Score 0 (neutral) — selbst mit IC wuerde Gesamt-Score nicht aendern. ACCEPTED — Praemisse wird korrigiert. Original Draft: "Market Analyst NEUTRAL wegen fehlender IC-Daten"]
 
-**ONGOING CONDITIONS:** Keine.
+**Korrigierte Interpretation:** V16 basiert auf Liquidity/Macro-Signalen (liq_direction -1, macro_state LATE_EXPANSION). Market Analyst zeigt NEUTRAL weil: (1) Layer Scores strukturell gemischt (L3 +4 Earnings HEALTHY vs. L2 -1 Macro SLOWDOWN = Zyklus-Peak-Divergenz, siehe S4), (2) LOW conviction (alle Regimes Tag 1, regime_duration 0.2). Divergenz ist NICHT "wegen fehlender IC-Daten" (IC-Abhaengigkeit nur L4/L5, beide neutral), sondern wegen DATEN-bedingter Spannung (Earnings stark, Macro schwach). **CIO-Synthese:** Divergenz ist NORMAL bei Zyklus-Peak (Earnings hinken Macro um 1-2 Quartale). V16 sieht Macro-Slowdown (liq_direction -1), Market Analyst sieht Earnings-Peak bei Macro-Slowdown (L3 +4, L2 -1). Risk Officer meldet Divergenz (korrekt), empfiehlt Monitoring (korrekt). Keine Action auf V16. **Monitoring:** V16 Regime-Shift Proximity (S7 W5) PLUS Earnings-Guidance-Cuts naechstes Quartal (S7 W6 NEU).
 
-**EMERGENCY TRIGGERS:** Alle FALSE (Max DD, Correlation Crisis, Liquidity Crisis, Regime Forced).
+- **RO-20260306-001 (TMP_EVENT_CALENDAR):** NFP heute (0d). Trade Class A. **Kontext:** Siehe S2. **Implikation:** Alle Risk Assessments tragen erhoehte Unsicherheit. Keine praeemptive Action empfohlen (korrekt).
 
-**SENSITIVITY:** SPY Beta UNAVAILABLE (V1). Effective Positions 5 (GLD, XLP, XLU, HYG, DBC). Korrelations-Update fehlt. [DA: da_20260306_004 — Warum ist Effective Tech 10% wenn XLK 0%? NOTED — HYG 27.7% enthaelt vermutlich 10-15% Tech-Bonds (Investment-Grade/High-Yield von AAPL, MSFT, NVDA etc.). Das bedeutet HYG-Konzentration ist AUCH Tech-Konzentration via Credit. Bei Tech-Selloff (z.B. Earnings-Miss naechstes Quartal, L3 Healthy→Mixed Proximity 71%) trifft es HYG doppelt: (1) Credit-Spread-Weitung generell, (2) Tech-Sector-Weitung speziell. Original Draft: "Effective Tech: 10% (unter 15%-Schwelle, kein Warning). Korrekt — XLK 0%."] **ERGAENZUNG:** Effective Tech 10% stammt vermutlich aus HYG-Holdings (Tech-Bonds). Das ist NICHT im Draft erklaert. **IMPLIKATION:** HYG-Risiko koennte UNTERSCHAETZT sein weil Sector-Exposure innerhalb HYG nicht transparent ist. V16 sieht HYG als "Credit-Exposure", aber wenn HYG 10-15% Tech ist, dann ist es AUCH "Tech-Exposure via Credit". Bei Tech-Selloff trifft es HYG staerker als reine Credit-Spread-Weitung suggeriert. **ACTION:** Watchlist (siehe S7, W6 NEU).
+**EMERGENCY TRIGGERS:** Alle FALSE (max_drawdown_breach, correlation_crisis, liquidity_crisis, regime_forced).
 
-**FRAGILITY STATE:** HEALTHY. Breadth 82.6% (robust), HHI/SPY-RSP/AI-CapEx-Gap alle im gruenen Bereich. Keine Fragility-bedingten Threshold-Adjustments im Router oder PermOpt.
+**SENSITIVITY:** V1 = keine Daten (SPY Beta, Effective Positions, Correlation Matrix). V2 verfuegbar nach G7 Monitor.
 
-**G7 CONTEXT:** UNAVAILABLE. Keine Thesis-Guidance, keine Severity-Modulation.
+**G7 CONTEXT:** UNAVAILABLE. Keine Severity-Adjustments basierend auf G7 Theses.
+
+**FRAGILITY STATE:** HEALTHY. Breadth 82.6% (stark), keine HHI/SPY_RSP/AI_CAPEX Daten. Keine Fragility-Trigger aktiv. Standard V16 Thresholds, kein Router/PermOpt Adjustment.
+
+**ONGOING CONDITIONS (komprimiert):** Keine (alle Alerts sind entweder CRITICAL oder WARNING, keine MONITOR-only Conditions).
+
+**CIO-SYNTHESE:** RED Status ist GERECHTFERTIGT wegen HYG-Konzentration + Event-Risiko (NFP/ECB heute). V16-Gewichte sind RATIONAL, aber basieren auf FRISCHEN Signalen (Tag 1, LOW conviction). Risk Officer erfuellt Funktion (Schwellen-Monitoring, Event-Flagging). Operator-Aufgabe: Post-Event Review (S7 A1, A2, A5), NICHT praeemptive Trades.
 
 ## S4: PATTERNS & SYNTHESIS
 
-**AKTIVE PATTERNS (Klasse A):** Keine. Pre-Processor hat keine definierten Patterns erkannt.
+**AKTIVE PATTERNS (Klasse A):** Keine.
 
-**CIO OBSERVATIONS (Klasse B):**
+**ANTI-PATTERNS (High Novelty, Low Signal):** 29 Claims von ZeroHedge, alle Novelty 5-7, alle Signal 0. Themen: Iran-Krieg (Hormuz-Schliessung, Oelpreis-Spike, US-Militaer-Quagmire vs. schneller Sieg), Venezuela-Gold-Deal, Ratepayer Protection Pledge (Tech-Datacenter-Kosten), RFK Jr. FDA-Reform. **CIO-Bewertung:** Geopolitik-Noise (ZeroHedge Bias), keine Portfolio-Implikation. IC Consensus GEOPOLITICS +1.12 (LOW confidence, 1 source) = nicht actionable. Commodities Consensus +8.0 basiert auf 1 Claim (Gold-Deal) = nicht robust. **Ignoring:** Alle 29 Anti-Patterns.
 
-**PATTERN B1: "Low-Conviction Stasis vor Hochrisiko-Event"**
-- **WAS:** System Conviction LOW. Market Analyst NEUTRAL (7 von 8 Layern Score -1 bis +4, Median ~0). V16 SELECTIVE (defensives Regime, aber nicht CASH). IC Intelligence degradiert (1 Quelle, 29 Anti-Patterns). Alle Agents sagen "kein klares Signal", aber V16 haelt Risk-On-Positionen (HYG 27.7%, DBC 21.2%).
-- **WARUM RELEVANT:** NFP heute ist BINARY Catalyst mit HIGH Impact. System ist NICHT in Cash, NICHT in Max-Defensive (kein TLT, kein VIX-Hedge), aber auch NICHT in Equity-Beta (SPY 0%). V16 setzt auf Credit (HYG) + Real Assets (DBC, GLD) + Defensives (XLU, XLP). Das ist Wette auf "Soft Landing bleibt intakt". Wenn NFP diese Annahme widerlegt (Hard Landing oder No Landing), ist Portfolio falsch positioniert.
-- **IMPLIKATION:** Operator muss Post-NFP V16-Regime-Check priorisieren (siehe S7, A2). Wenn V16 morgen NICHT reagiert trotz Material-Shift in Macro-Daten, dann System-Failure-Pruefung.
+**CIO OBSERVATION (Klasse B):**
+1. **LOW System Conviction + DEGRADED IC = Epistemische Luecke.** V16 SELECTIVE (defensiv), Market Analyst NEUTRAL (keine Richtung), IC nur 1 Quelle (ZeroHedge, Noise). Keine unabhaengige qualitative Bestaetigung fuer V16 Regime. **Implikation:** V16-Gewichte sind quantitativ rational, aber qualitatives Narrativ fehlt UND quantitative Basis ist jung (Tag 1, LOW conviction). Post-NFP: IC-Refresh CRITICAL (S7 A6, Tag 1, upgraded zu ACT).
 
-**PATTERN B2: "HYG als Regime-Ausdruck unter Stress"**
-- **WAS:** HYG 27.7% ist V16s groesste Position. HYG-Spread (OAS) neutral (Score 0), aber NFCI/ANFCI beide -10 (financial conditions tight). L2 (Macro) zeigt Tension: 2Y10Y steepening (bullish, +4) vs. NFCI tightening (bearish, -10). HYG profitiert von Steepening (Refinanzierung billiger), leidet unter Tightening (Liquiditaet knapper).
-- **WARUM RELEVANT:** V16 hat HYG gewaehlt weil Regime LATE_EXPANSION ist (Wachstum noch positiv, aber Liquiditaet dreht). HYG ist "Uebergangs-Asset" — funktioniert solange Rezession vermieden wird. L2 Slowdown→Recession Proximity 100% (0 Tage bis Boundary) bedeutet: Naechster negativer Datenpunkt koennte Regime kippen. NFP ist dieser Datenpunkt.
-- **IMPLIKATION:** HYG-Konzentration ist NICHT Risk-Officer-Fehler, sondern V16-Feature. System sagt: "Ich glaube an Soft Landing, deshalb HYG." Operator muss diese Annahme explizit tracken (siehe KEY ASSUMPTIONS).
+2. **HYG-Konzentration + Event-Risiko = Asymmetrisches Downside.** HYG 28.8% (CRITICAL), NFP heute (BINARY outcome). Upside: NFP Goldilocks → HYG +0.5-1.0% (geschaetzt). Downside: NFP schwach → Rezessionsangst → HY-Spreads +20-50bps → HYG -2.0-4.0% (geschaetzt). Portfolio-Impact: -0.6 bis -1.2pp (28.8% * -2 bis -4%). 
 
-**PATTERN B3: "IC-Daten-Degradation verschleiert Regime-Bestaetigung"**
-- **WAS:** IC Intelligence heute: 1 Quelle (ZeroHedge), 39 Claims, alle Anti-Patterns (Signal 0). Keine Macro Alf, Howell, Poszar, Doomberg. Consensus Scores: GEOPOLITICS +1.12, ENERGY +1.33, COMMODITIES +8.0 — alle LOW Confidence (Single-Source). Market Analyst Layer-Scores verwenden IC-Inputs wo verfuegbar (L3, L4, L6, L8), aber heute "NO_DATA" oder "CONFIRMING" (L4 einziger Hit).
-- **WARUM RELEVANT:** [DA: da_20260306_003 — Market Analyst NEUTRAL basiert auf VORHANDENEN quantitativen Daten (6 von 8 Layern nutzen Market-Daten, nicht IC). ACCEPTED — IC-Degradation erklaert NICHT Market Analyst NEUTRAL. Market Analyst NEUTRAL waere auch bei perfekten IC-Daten so, weil quantitative Layer sich widersprechen (L3 +4 vs. L2 -1). Original Draft: "V16 und Market Analyst teilen quantitative Datenbasis (Liquidity, Spreads, Yields). Ihre Uebereinstimmung hat begrenzten Bestaetigungswert (zirkulaer). IC-Intelligence liefert UNABHAENGIGE qualitative Bestaetigung. Heute fehlt diese."] **KORREKTUR:** Market Analyst NEUTRAL ist NICHT primaer durch IC-Degradation verursacht. Market Analyst nutzt 8 Layer, 6 davon rein quantitativ (L1/L2/L3/L6/L7/L8 basieren auf Liquidity/Spreads/Yields/Breadth/VIX — alles Market-Daten). Nur L4 (FX) und L5 (Sentiment) nutzen IC-Inputs, beide Score 0 (neutral) — tragen NICHT zu NEUTRAL-Regime bei. Market Analyst NEUTRAL reflektiert STRUKTURELLE Spannung zwischen Earnings (L3 +4, robust) und Macro (L2 -1, tight). Das ist NICHT Daten-Luecke, sondern DATEN-KONFLIKT. **IMPLIKATION:** IC-Degradation verschleiert NICHT Regime-Bestaetigung — sie verhindert nur QUALITATIVE Kontextualisierung. V16 hat KEINE unabhaengige Bestaetigung (IC fehlt), aber Market Analyst NEUTRAL ist UNABHAENGIG von IC-Status. System Conviction LOW ist gerechtfertigt weil BEIDE Agents (V16 + Market Analyst) unterschiedliche Signale senden UND IC fehlt um zu disambiguieren.
+[DA: da_20260306_002 (Tag 8, PERSISTENT) — Instrument-Liquidity-Risiko nicht adressiert. HYG 28.8% = $14.4m bei $50m AUM (geschaetzt), DBC 20.3% = $10.15m. HYG ADV $1.2bn, DBC ADV $180m. Event-Tag (NFP) = Bid-Ask-Spreads erweitern 3x (HYG) bis 5x (DBC). Market-Order Slippage ~0.5% = $72k Loss. ACCEPTED — Execution-Risiko wird zu S7 A1 hinzugefuegt. Original Draft: "Post-NFP Review: Wenn HYG drawdown >2%, pruefe ob Regime-Signale obsolet"]
 
-**CROSS-LAYER-SYNTHESE:**
-L2 (Macro) CONFLICTED: Steepening (bullish) vs. NFCI (bearish). L6 (RV) CONFLICTED: SPY-TLT Corr (bullish) vs. WTI Curve (bearish). L7 (CB Policy) CONFLICTED: Steepening (bullish) vs. NFCI (bearish). Drei Layer zeigen INTERNE Spannungen, alle mit Data Clarity 0.0 (Sub-Scores widersprechen sich). **INTERPRETATION:** Quantitative Daten senden gemischte Signale. Yield Curve steepened (Rezessionsangst nimmt ab), aber Financial Conditions tightened (Liquiditaet wird knapper). Das ist INKONSISTENT — normalerweise bewegen sich beide zusammen. **MOEGLICHE ERKLAERUNG:** Fed-Rhetoric (hawkish) drueckt NFCI, aber Bond-Market (dovish) steepened Curve. Divergenz zwischen Fed-Guidance und Market-Pricing. NFP heute wird eine Seite bestaetigen.
+**Adjustierte Interpretation:** Asymmetrie ist REAL auf zwei Ebenen: (1) Credit-Risiko (HY-Spreads weiten bei Rezession/Fed hawkish), (2) Execution-Risiko (Liquidity-Kompression an Event-Tag). V16-Bet ist RATIONAL gegeben Regime-Signale, aber Signale sind JUNG (Tag 1). **ZUSAETZLICH:** Falls A1 zu HYG-Reduktion fuehrt, ist Slippage-Risiko bei Market-Order ~0.5% ($72k auf $14.4m) wegen Event-Tag Bid-Ask-Erweiterung (HYG 0.01% → 0.03%). Operator darf V16 NICHT overriden, aber MUSS Execution-Logik pruefen (Limit vs. Market, Time-Slicing). Post-NFP Review: S7 A1 (upgraded mit Execution-Komponente).
+
+3. **Market Analyst Layer Conviction = ALL LOW/CONFLICTED.** Alle 8 Layer: conviction LOW (L1/L3/L5/L8, limiting_factor regime_duration 0.2) oder CONFLICTED (L2/L4/L6/L7, limiting_factor data_clarity 0.0 oder catalyst_fragility 0.1). **Ursache:** Alle Regimes Tag 1 (gestern war letzter Run, heute neue Regimes). **Implikation:** Market Analyst liefert KEINE starke Richtungs-Guidance. System sagt "warte auf mehr Daten" (korrekt bei Event-Tag). **CIO-Interpretation:** Market Analyst erfuellt Funktion (Unsicherheit transparent machen). V16 SELECTIVE = System hat TROTZ niedriger Conviction eine Position (defensiv). Das ist KONSISTENT (SELECTIVE = "selective exposure", nicht "no exposure").
+
+**CROSS-DOMAIN PATTERN (CIO):** 
+
+[DA: da_20260306_003 (Tag 8, PERSISTENT) — Alternative Lesart: V16 SELECTIVE + Market Analyst NEUTRAL = nicht "Low-Conviction Stasis", sondern "Zyklus-Peak-Divergenz". Market Analyst L3 +4 (Earnings HEALTHY, Breadth 82.6%) vs. L2 -1 (Macro SLOWDOWN, NFCI -10) = klassische Peak-Warnung (Earnings hinken Macro um 1-2 Quartale). V16 sieht nur Macro (Liquidity/Spreads), nicht Earnings. ACCEPTED — Pattern wird re-framed. Original Draft: "Defensive Positioning bei niedriger Visibility"]
+
+**Re-Framed Pattern:** V16 SELECTIVE + Market Analyst NEUTRAL = "Zyklus-Peak-Divergenz bei jungen Signalen". V16 detektiert Macro-Slowdown (liq_direction -1, macro_state LATE_EXPANSION = defensiv positioniert: HYG/Commodities/Staples/Utilities, kein SPY/XLK). Market Analyst detektiert Earnings-Peak bei Macro-Slowdown (L3 +4 Breadth 82.6% vs. L2 -1 NFCI -10). **Historisches Pattern:** Earnings hinken Macro-Shifts um 1-2 Quartale (Unternehmen melden Q4-Earnings basierend auf Q3-Aktivitaet, aber Macro-Indikatoren messen JETZT). **Implikation:** Wenn Earnings naechstes Quartal drehen (Guidance-Cuts, typisch 4-6 Wochen nach Zyklus-Peak), dann war Market Analyst NEUTRAL die BESSERE Einschaetzung (kein starkes Risk-On-Bet) als V16 SELECTIVE (HYG 28.8% = Credit-Bet auf weiter enge Spreads). **ABER:** V16 operiert auf validierten Liquidity-Signalen (wenn auch jung). Market Analyst sieht mehr Daten (Liquidity UND Earnings UND Tail Risk), aber LOW conviction (alle Tag 1). **CIO-Synthese:** Divergenz ist STRUKTURELL (Zyklus-Peak), nicht DATEN-MANGEL. V16-Bet ist RATIONAL, aber traegt Risiko dass Earnings-Peak naechstes Quartal zu Credit-Spread-Weitung fuehrt. Post-NFP: Earnings-Guidance-Monitoring (S7 W6 NEU).
 
 ## S5: INTELLIGENCE DIGEST
 
-**IC-DATEN-STATUS:** DEGRADED. 1 Quelle (ZeroHedge), 39 Claims, 29 High-Novelty, alle als Anti-Patterns klassifiziert (Signal 0 trotz Novelty 5-7). Keine Macro-Autoritaeten (Alf, Howell, Poszar, Gromen, Hussman). Confidence LOW fuer alle Consensus-Scores (Single-Source).
+**IC-STATUS:** DEGRADED (Tag 1, seit gestern). 1 Quelle (ZeroHedge), 39 Claims, 29 High-Novelty (alle Anti-Patterns, Signal 0).
 
-**CONSENSUS-SCORES (alle LOW Confidence):**
-- **GEOPOLITICS +1.12** (16 Claims, ZeroHedge): Iran-Konflikt-Eskalation, Hormuz-Closure-Risiko, Trump-Venezuela-Deals. **SIGNAL-WERT:** Gering. ZeroHedge-Bias ist bekannt (Doom-Fokus). Keine unabhaengige Bestaetigung. L8 (Tail Risk) zeigt VIX neutral, Term Structure contango — Maerkte preisen KEINE Geopolitik-Eskalation. **IMPLIKATION:** IC-Claims sind Noise, nicht Signal.
-- **ENERGY +1.33** (6 Claims, ZeroHedge): Hormuz-Closure → Oil-Spike >20%, Europa-Gas-Preise, Venezuela-Oil-Deals. **SIGNAL-WERT:** Moderat. DBC (21.2% Portfolio) enthaelt Energy-Exposure. Wenn Hormuz tatsaechlich schliesst, profitiert DBC. ABER: L6 WTI Curve Score -10 (Backwardation = Contango-Shift = bearish fuer Oil). Markt-Daten widersprechen IC-Claim. **IMPLIKATION:** IC ueberschaetzt Eskalations-Wahrscheinlichkeit.
-- **COMMODITIES +8.0** (1 Claim, ZeroHedge): Gold-Deal Venezuela. **SIGNAL-WERT:** Irrelevant. Single-Claim, kein Macro-Impact. GLD 17.9% Portfolio ist V16-Regime-Ausdruck (LATE_EXPANSION + Liq_Direction -1), nicht IC-getrieben.
-- **TECH_AI -1.0** (1 Claim, ZeroHedge): Data-Center-Opposition wegen Stromkosten. **SIGNAL-WERT:** Gering. XLK 0% Portfolio (kein Tech-Exposure). Irrelevant fuer aktuelle Positionen.
+**CONSENSUS (actionable = Confidence MEDIUM/HIGH):** Keine. Alle Topics entweder NO_DATA oder LOW confidence (1 source).
 
-**KEINE DATEN:** LIQUIDITY, FED_POLICY, CREDIT, RECESSION, INFLATION, EQUITY_VALUATION, CHINA_EM, CRYPTO, DOLLAR, VOLATILITY, POSITIONING.
+**CONSENSUS (LOW confidence, Kontext only):**
+- **GEOPOLITICS +1.12** (16 Claims, ZeroHedge): Iran-Krieg-Szenarien (Hormuz, Oelpreis, US-Militaer). **CIO-Bewertung:** Noise. ZeroHedge Bias (doom-focused). Keine Portfolio-Action. **Monitoring:** Wenn Hormuz tatsaechlich schliesst (Tier 1 Event), wird in Market Analyst L8 (Tail Risk) + L6 (Commodities) erscheinen. Bis dahin: Ignore.
+- **ENERGY +1.33** (6 Claims, ZeroHedge): Hormuz-Schliessung, Venezuela-Oel, Ratepayer-Pledge. **CIO-Bewertung:** Venezuela-Oel-Story (Trump-Deal) = interessant fuer langfristige Commodity-Supply, aber nicht actionable (keine Preise, keine Timeline). Ratepayer-Pledge = US-Politik-Noise, kein Markt-Impact kurzfristig.
+- **COMMODITIES +8.0** (1 Claim, ZeroHedge): Venezuela-Gold-Deal (650-1000kg). **CIO-Bewertung:** +8.0 Signal basiert auf 1 Claim = nicht robust. Gold-Deal = Geopolitik-Story, kein Preis-Catalyst. V16 GLD 17.9% (Inflation-Hedge), aber nicht wegen Venezuela-Deal.
+- **TECH_AI -1.0** (1 Claim, ZeroHedge): Datacenter-Opposition (Stromkosten). **CIO-Bewertung:** -1.0 Signal basiert auf 1 Claim = nicht robust. V16 kein XLK (Tech-Underweight bereits), F6 unavailable. Keine Action.
 
-**DIVERGENZEN:** Keine (nur 1 Quelle).
+**DIVERGENCES:** Keine (nur 1 Quelle).
 
-**CATALYST TIMELINE (aus IC):** 10 Events, alle ZeroHedge-sourced. Fruehestes: 2025-08-25 (Stromkosten-Anstieg). Juengstes: 2026-03-04 (Ratepayer Protection Pledge). Kein Event mit Market-Moving-Potential in naechsten 48h.
+**CATALYST TIMELINE (IC):** 10 Events, alle ZeroHedge-sourced. Relevante:
+- **2026-01-03 (vergangen):** Trump-Venezuela-Intervention (Maduro-Capture). **Implikation:** Venezuela-Oel/Gold jetzt unter US-Kontrolle (laut ZH). **CIO-Bewertung:** Wenn wahr, bullish fuer US-Oel-Supply (bearish WTI langfristig), aber keine kurzfristigen Preise. V16 DBC 21.2% (Broad Commodities) = diversifiziert, nicht WTI-spezifisch.
+- **2026-03-04 (vor 2d):** Ratepayer Protection Pledge (Tech-Datacenter). **Implikation:** Tech-Firmen zahlen eigene Strom-Infrastruktur. **CIO-Bewertung:** Wenn durchgesetzt, langfristig bearish fuer Tech-Capex-Effizienz, aber kein kurzfristiger Catalyst. V16 kein XLK.
 
-**CIO ASSESSMENT:** IC-Intelligence heute ist NICHT verwertbar fuer Trading-Entscheidungen. ZeroHedge liefert Narrativ-Kontext (Geopolitik, Energy), aber keine quantitative Regime-Bestaetigung. Market Analyst Layer-Scores sind die bessere Autoritaet fuer quantitative Einschaetzungen. IC-Refresh morgen KRITISCH — ohne Macro-Quellen bleibt System Conviction LOW.
+**HIGH-NOVELTY CLAIMS (Top 3 by Relevance):**
+1. **Iran Hormuz-Schliessung (Novelty 5):** "20% global oil supply disruption, 20%+ price spike." **CIO-Bewertung:** Tail-Risk-Szenario. Market Analyst L8 (Tail Risk) zeigt CALM (VIX 50th pctl, term structure contango). Wenn Hormuz schliesst, wird L8 zu ELEVATED/CRISIS shiften. V16 DBC 21.2% (Commodities) = teilweise Hedge, aber nicht genug fuer 20% Oelpreis-Spike. **Monitoring:** S7 W3 (Geopolitik-Eskalation).
+2. **Trump Iran-Sieg in 2 Monaten (Novelty 7):** "Limited strikes, covert ops, Iranian government collapse." **CIO-Bewertung:** Spekulation. Wenn wahr, bullish fuer Risk-On (Geopolitik-Risiko faellt), bearish fuer Oel (Hormuz offen). Aber: Novelty 7 = sehr unsicher. Keine Portfolio-Action basierend auf Spekulation.
+3. **Venezuela-Gold-Deal (Novelty 7):** "650-1000kg Gold, US-Refineries." **CIO-Bewertung:** Interessant fuer Gold-Supply (bearish Gold langfristig wenn skaliert), aber 650-1000kg = 20-32 Mio USD (bei 2000 USD/oz) = irrelevant fuer globalen Gold-Markt (jaehrliche Produktion ~3000 Tonnen). V16 GLD 17.9% unveraendert.
 
-**EPISTEMISCHE WARNUNG:** Behaupte NICHT "IC bestaetigt V16-Regime". IC hat heute KEINE Daten zu LIQUIDITY, FED_POLICY, CREDIT, RECESSION — den Kern-Themen fuer V16 LATE_EXPANSION. GEOPOLITICS/ENERGY-Scores sind Single-Source und widersprechen Market-Daten (VIX, WTI Curve).
+**IC-INTELLIGENCE vs. MARKET ANALYST:**
+- **GEOPOLITICS:** IC +1.12 (LOW confidence) vs. Market Analyst L8 (Tail Risk) +2 CALM (LOW conviction). **Interpretation:** IC sieht Geopolitik-Risiko (Iran), Market Analyst sieht niedrige Volatilitaet (VIX). **Epistemische Regel:** IC ist qualitativ (Narrativ), Market Analyst ist quantitativ (Preise). Divergenz = NORMAL bei Tail-Risk (Preise reagieren erst bei Realisierung). **CIO-Synthese:** Geopolitik-Risiko ist NARRATIV vorhanden (IC), aber NICHT gepreist (Market Analyst). V16 hat KEINE spezifische Geopolitik-Hedge (kein Gold-Overweight, kein VIX-Exposure). **Implikation:** Wenn Hormuz schliesst, Portfolio ist NICHT vorbereitet. Aber: V16-Logik = "Tail-Risks sind nicht vorhersagbar, diversifiziere breit" (korrekt). Operator darf NICHT praeemptiv hedgen basierend auf ZeroHedge-Claims.
+- **COMMODITIES:** IC +8.0 (LOW confidence, 1 Claim) vs. Market Analyst L6 (RV) -1 BALANCED (CONFLICTED conviction, Cu/Au neutral, WTI curve bearish). **Interpretation:** IC sieht bullish Commodities (Gold-Deal), Market Analyst sieht neutral/bearish (WTI curve -10). **CIO-Synthese:** IC-Signal ist NICHT robust (1 Claim). Market Analyst WTI curve -10 = Contango (bearish near-term demand). V16 DBC 21.2% = Broad Commodities (nicht WTI-spezifisch). Keine Action.
+
+**CIO-EMPFEHLUNG:** IC-Daten-Refresh CRITICAL (S7 A6, Tag 1, upgraded zu ACT). 1 Quelle (ZeroHedge) ist INSUFFICIENT fuer qualitative Regime-Bestaetigung. Benoetigt: Macro Alf, Howell, Luke Gromen, Doomberg (alle fehlen). Post-NFP: IC-Pipeline pruefen (technisches Problem? Daten-Quellen offline?).
 
 ## S6: PORTFOLIO CONTEXT
 
-**V16 REGIME-LOGIK:**
-- **Regime:** SELECTIVE (LATE_EXPANSION). Macro State 3 (Growth +1, Liq_Direction -1, Stress 0). Wachstum noch positiv, Liquiditaet dreht negativ, kein Stress.
-- **Positionen:** HYG 27.7% (Credit), DBC 21.2% (Commodities), XLU 18.2% (Utilities), GLD 17.9% (Gold), XLP 15.0% (Staples). Summe 100%, kein Cash.
-- **Rationale:** LATE_EXPANSION = "Zyklus-Ende naht, aber noch nicht da". HYG profitiert von Yield-Pickup bei noch-niedriger Default-Rate. DBC/GLD hedgen Inflation + Liquiditaets-Kontraktion. XLU/XLP sind Defensives fuer Slowdown-Schutz. Kein Equity-Beta (SPY 0%) weil Liq_Direction -1 (Liquiditaet kontrahiert = Equity-Headwind).
-- **Performance:** CAGR 34.48%, Sharpe 2.74, MaxDD -10.78%, Vol 12.58%, Calmar 3.2. Current DD -1.11% (weit unter MaxDD). System ist NICHT in Drawdown-Protect-Modus.
+**V16 PORTFOLIO (100% AUM, V1):**
+- **HYG 27.7%:** High Yield Corporate Bonds. Duration ~4 Jahre, Spread ~350bps (geschaetzt, keine Live-Daten). **Regime-Logik:** LATE_EXPANSION = Kredit-Spreads eng, Default-Risiko niedrig, Carry attraktiv. **Risiko:** Rezession (Spreads weiten), Fed hawkish (Yields steigen, Duration-Loss). **Performance YTD:** Keine Daten (V16 Performance nur aggregiert: CAGR 34.48%, Sharpe 2.74, MaxDD -10.78%, aktuell -1.11%).
+- **DBC 21.2%:** Broad Commodities (Energy, Metals, Agriculture). **Regime-Logik:** Inflation-Hedge, Dollar-Hedge. **Risiko:** Rezession (Demand-Kollaps), Dollar-Rally (Commodities bearish). **Korrelation zu HYG:** Niedrig/negativ (Commodities steigen bei Inflation, HYG faellt bei Inflation via Yields).
+- **XLU 18.2%:** Utilities (Defensive, High Dividend). **Regime-Logik:** SELECTIVE = Defensive Tilt. **Risiko:** Yields steigen (Utilities fallen via Discount-Rate). **Korrelation zu HYG:** Positiv (beide Yield-sensitiv).
+- **GLD 17.9%:** Gold. **Regime-Logik:** Inflation-Hedge, Tail-Risk-Hedge, Dollar-Hedge. **Risiko:** Dollar-Rally (Gold bearish), Real Yields steigen (Gold bearish). **Korrelation zu HYG:** Niedrig (Gold steigt bei Krise, HYG faellt).
+- **XLP 15.0%:** Consumer Staples (Defensive). **Regime-Logik:** SELECTIVE = Defensive Tilt. **Risiko:** Rezession (Margen-Druck), aber weniger als Cyclicals. **Korrelation zu HYG:** Positiv (beide Defensive).
 
-**F6 STATUS:** [DA: da_20260306_005 (PERSISTENT Tag 7) — F6 UNAVAILABLE seit ≥2 Tagen. NOTED — Wenn F6 auch MORGEN noch down ist (nach NFP/ECB Events), dann ist es echtes Problem, nicht Event-Protection. Original Draft: "F6-Ausfall ist TECHNISCH (System down?), nicht STRATEGISCH."] **KORREKTUR:** F6 UNAVAILABLE (V2). Signal Generator ebenfalls NULL (nicht "AVAILABLE mit leerer Liste", sondern NULL). **MOEGLICHE ERKLAERUNG:** System hat Signal Generator BEWUSST deaktiviert um keine neuen Positionen vor NFP/ECB zu oeffnen (Event-Protection). Das waere STRATEGISCH, nicht technisch. **VERIFICATION NEEDED:** Wenn F6 morgen (nach Events) wieder hochkommt, dann war es Event-Protection. Wenn F6 auch morgen noch down ist, dann strukturelles Problem. **ACTION:** Post-Event-Check (siehe S7, A6 NEU).
+**SEKTOR-EXPOSURE (effektiv, Risk Officer):**
+- Commodities 37.2% (DBC 21.2% + GLD 17.9%, Korrelations-Adjustment).
+- Defensives 33.2% (XLU 18.2% + XLP 15.0%).
+- Credit 27.7% (HYG).
+- Equities 0% (kein SPY/XLK/XLF/XLE/IWM).
+- Bonds 0% (kein TLT/TIP/LQD).
+- Crypto 0% (kein BTC/ETH).
 
-**ROUTER STATUS:** US_DOMESTIC seit 2025-01-01 (429 Tage). Alle Proximity-Scores 0% (EM_BROAD, CHINA_STIMULUS, COMMODITY_SUPER). Naechste Entry-Evaluation 2026-04-01 (26 Tage). Kein Regime-Shift-Risiko.
+**KONZENTRATION:**
+- Top 5 Assets: 100% (nur 5 Positionen).
+- Single Name Max: HYG 27.7% (CRITICAL, Schwelle 25%).
+- Sector Max: Commodities 37.2% (WARNING, Schwelle 35%).
 
-**PERM_OPT STATUS:** UNAVAILABLE (V2). Keine Tail-Hedges aktiv.
+**F6 PORTFOLIO:** UNAVAILABLE (V2). Keine Einzelaktien, keine Covered Calls.
 
-**KONZENTRATIONS-CHECK:**
-- **Top-5-Konzentration:** 100% (alle 5 Positionen). Normal fuer V16-Only-Portfolio.
-- **Effective Tech:** 10% (unter 15%-Schwelle, kein Warning). **ABER:** Stammt vermutlich aus HYG-Holdings (Tech-Bonds). Siehe S3 DA-Marker.
-- **Sector-Exposure:** Commodities 37.2% (WARNING-Level), Credit 27.7% (CRITICAL-Level), Defensives 33.2% (XLU+XLP), Gold 17.9%. Keine Equity-Sectors.
+**PERM OPT:** UNAVAILABLE (V2). Keine permanenten Optionen-Hedges.
 
-**TRADE-LIST (heute):** 5x HOLD (GLD, XLP, XLU, HYG, DBC). Alle EXECUTABLE, VALIDATED Confidence. Keine Deltas, keine Expiry-Conditions.
+**ROUTER:** US_DOMESTIC (Tag 429). Keine EM/China/Commodity-Super-Allocation. Alle Proximity 0.0.
 
-**PROJECTIONS:**
-- **Baseline:** Aktuelle Positionen (V16-only). Total Weight 100%.
-- **Full:** UNAVAILABLE (V2).
-- **Delta:** Keine Material-Changes (V16 haelt alles).
+**GESAMT-PORTFOLIO (V1):** 100% V16 (5 ETFs: HYG, DBC, XLU, GLD, XLP). Kein F6, kein PermOpt, kein Router-Overlay.
 
-**OFFENE POSITIONEN (21-Tage-Holding):** Keine F6-Positionen. V16-Positionen haben kein Expiry (Regime-basiert, nicht Zeit-basiert).
+**PERFORMANCE (V16, seit Inception):**
+- CAGR 34.48%, Sharpe 2.74, MaxDD -10.78%, Vol 12.58%, Calmar 3.2.
+- Aktueller Drawdown -1.11% (niedrig, nahe All-Time-High).
 
-**COVERED-CALL-OVERLAY:** UNAVAILABLE (F6 nicht live).
+**SENSITIVITAET (V1 = keine Daten):**
+- SPY Beta: Unbekannt (geschaetzt niedrig wegen kein SPY, Defensive Tilt).
+- Effective Positions: Unbekannt (geschaetzt 5, da nur 5 ETFs).
+- Correlation Matrix: Unbekannt.
+- **CIO-Schaetzung (ohne Daten):** Portfolio ist LOW-Beta (Defensives + Commodities + Gold), DIVERSIFIZIERT (niedrige Korrelationen zwischen HYG/DBC/GLD), aber KONZENTRIERT (nur 5 Assets, HYG 27.7%). Event-Risiko (NFP) = HIGH wegen HYG-Konzentration + Credit-Sensitivity.
 
-**CIO OBSERVATION:** Portfolio ist REIN defensiv positioniert (kein Equity-Beta), aber NICHT in Cash. V16 setzt auf "Soft Landing bleibt intakt" via HYG + Real Assets. Wenn NFP Hard Landing signalisiert, fehlt Downside-Protection (kein TLT, kein VIX-Hedge). Wenn NFP No Landing signalisiert (Wirtschaft zu heiss), fehlt Upside-Participation (kein SPY). Portfolio ist optimiert fuer "Goldilocks-Szenario fortsetzung" — genau das Szenario das Market Analyst NEUTRAL einstuft (= unsicher).
+**PORTFOLIO-NARRATIV:** V16 SELECTIVE = "Warte auf klarere Signale, halte defensive Positionen mit Carry (HYG) und Inflation-Hedges (DBC/GLD)". Kein SPY/XLK = Tech-Underweight (bewusst, wegen Valuation oder Regime-Signal). Kein TLT = kein Duration-Hedge (V16 erwartet KEINE Rezession, sonst waere TLT hoch). **Implikation:** Portfolio ist positioniert fuer LATE_EXPANSION (Kredit-Carry, Commodities, Defensives), NICHT fuer Rezession (kein TLT, kein Cash) und NICHT fuer starkes Wachstum (kein SPY/XLK). Post-NFP: Wenn Daten Rezession zeigen, V16 wird zu RISK_OFF shiften (TLT hoch, HYG runter). Wenn Daten starkes Wachstum zeigen, V16 wird zu STEADY_GROWTH shiften (SPY hoch, HYG runter). Operator: Warte auf V16-Signal, override NICHT.
 
 ## S7: ACTION ITEMS & WATCHLIST
 
-**ESKALIERTE ITEMS (>5 Tage offen, DRINGEND):**
+**ESKALIERTE ITEMS (8+ Tage offen, DRINGEND):**
 
-**A1: HYG-Konzentration Review (CRITICAL, Trade Class A, 7d offen)**
-- **WAS:** HYG 28.8% (Target) ueberschreitet 25%-Limit. Risk Officer CRITICAL Alert (RO-20260306-003), Trend ESCALATING.
-- **WARUM:** V16-Regime-Ausdruck fuer LATE_EXPANSION. Gewicht ist SAKROSANKT (Master-Schutz), aber Konzentration schafft Tail-Risk bei Credit-Spread-Weitung. [DA: da_20260306_003 (PERSISTENT Tag 7) — HYG-Spreads sind ENDOGEN. NOTED — Bei Portfolio ≥$2B ist HYG-Position ≥$576M (mehr als 1 Tag HYG-Volumen). Ein Trim waere SELBST ein Spread-Event. Praemisse "Spreads bleiben stabil" ist nur gueltig wenn Portfolio KLEIN ist relativ zu HYG-Liquiditaet. Original Draft: "Wenn NFP HYG-Spread um >50bps weitet UND V16 morgen NICHT reagiert, dann Agent-R-Eskalation."] **ERGAENZUNG:** HYG-Liquiditaets-Analyse fehlt. Wenn Portfolio gross genug ist (≥$2B), dann ist HYG-Konzentration SELBST ein Liquiditaets-Risiko — Trim wuerde Spreads weiten (Reflexivitaet). **IMPLIKATION:** KA3 (siehe KEY ASSUMPTIONS) ist moeglicherweise zirkulaer. Watchlist (W7 NEU) trackt HYG-Liquiditaet.
-- **NAECHSTE SCHRITTE:**
-  1. **HEUTE ABEND (Post-NFP):** Pruefe HYG-Spread-Bewegung. Wenn OAS >+50bps vs. gestern, eskaliere zu Agent R.
-  2. **MORGEN FRUEH:** Pruefe V16-Regime-Update. Wenn V16 HYG haelt trotz Material-Spread-Weitung, pruefe mit Agent R ob System-Failure (V16 reagiert nicht auf Regime-Shift-Signal).
-  3. **WENN V16 REDUZIERT:** Alert auto-resolved. Dokumentiere Regime-Shift-Trigger.
-  4. **WENN V16 HAELT + SPREAD STABIL:** Downgrade zu WATCH. HYG-Konzentration ist Feature, nicht Bug.
-- **URGENCY:** TODAY (Post-NFP Check PFLICHT).
-- **OWNER:** Operator (CIO-Ebene). Agent R als Backup bei System-Failure-Verdacht.
+**A1: HYG-Konzentration Review (CRITICAL, Trade Class A, Tag 8, ESKALIERT, DA-ADJUSTED)**
+- **Was:** HYG 28.8%, Schwelle 25%, +3.8pp. Risk Officer CRITICAL ↑ (Tag 4, EVENT_IMMINENT boost). V16 target weight unveraendert 28.8%.
+- **Warum:** (1) Konzentrations-Risiko (Single Name >25%), (2) Event-Risiko (NFP heute, BINARY outcome), (3) Credit-Sensitivity (HY-Spreads weiten bei Rezessionsangst oder Fed hawkish), (4) **NEU (DA-Input):** Execution-Risiko (Instrument-Liquidity-Kompression an Event-Tag).
+- **Wie dringend:** CRITICAL. NFP heute 08:30 ET. Post-NFP: HYG-Bewegung >2% = Regime-Signal obsolet? Review bis 16:00 ET.
+- **Naechste Schritte:**
+  1. **Post-NFP (09:00 ET):** HYG Preis + HY-Spreads (HYG OAS) checken. Wenn HYG -2% oder mehr: Pruefe ob V16 Regime-Signale (LATE_EXPANSION) noch gueltig. Indikatoren: NFCI, HY OAS, 2Y10Y Spread, **PLUS Market Analyst L1 (Liquidity) Regime** (wenn L1 zurueck-flippt von TRANSITION → vorheriges Regime, dann war liq_direction -1 ein 1-Tages-Signal). Wenn Signale shiften zu RISK_OFF: V16 wird automatisch rebalancen (HYG runter, TLT hoch). Operator: Warte auf V16-Signal, override NICHT.
+  2. **EXECUTION-PRUEFUNG (NEU):** Falls V16 Rebalance-Signal (HYG runter): Pruefe Signal Generator Execution-Logik. **Fragen:** (a) Market-Order oder Limit-Order? (b) Time-Slicing (gestufte Execution ueber mehrere Stunden)? (c) Bid-Ask-Spread-Monitoring (HYG ADV $1.2bn, Portfolio-Trade $14.4m bei $50m AUM = 1.2% Daily Volume, Event-Tag Spread-Erweiterung 3x = 0.01% → 0.03%, Slippage ~0.5% = $72k)? **Empfehlung:** Wenn kein Time-Slicing/Limit-Order-Logik in Signal Generator: Manuelle Execution (Operator) mit Limit-Orders gestaffelt ueber 2-4 Stunden Post-NFP.
+  3. **Post-NFP (16:00 ET):** Wenn HYG <-2% UND V16 KEIN Rebalance-Signal: Eskaliere zu Devil's Advocate (manueller Override-Check). Frage: "Warum sieht V16 keinen Regime-Shift trotz HYG-Drawdown?"
+  4. **Wenn HYG -2% bis +2%:** Review abgeschlossen. HYG-Konzentration bleibt WARNING (Risk Officer), aber kein Action-Bedarf. Naechster Check: Morgen (2026-03-07).
+- **Trigger noch aktiv:** Ja (HYG 28.8% > 25%).
+- **Status:** OPEN.
 
-**A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A, 7d offen)**
-- **WAS:** Doppel-Event heute (NFP + ECB). Market Analyst L2/L4/L7 alle auf REDUCE_CONVICTION vor Event. V16 SELECTIVE-Regime koennte kippen bei Material-Surprise.
-- **WARUM:** NFP bestimmt ob L2 Slowdown→Recession Transition triggert (Proximity 100%, 0d bis Boundary). ECB bestimmt FX-Flows (L4) und CB-Divergence (L7). [DA: da_20260306_001 — V16 Growth Signal basiert auf LAGGING Indikatoren. ACCEPTED — siehe S2 DA-Marker.]
-- **NAECHSTE SCHRITTE:**
-  1. **HEUTE 14:30 CET (NFP Release):** Live-Monitoring. Pruefe NFP-Headline vs. Konsensus. Wenn Miss >50k Jobs, Rezessionsangst-Szenario. Wenn Beat >50k Jobs, No-Landing-Szenario.
-  2. **HEUTE 14:45 CET (ECB Decision):** Pruefe Rate-Change + Forward Guidance. Wenn ECB dovish + Fed hawkish, USD staerkt → EM-Druck (Router-relevant, aber Proximity aktuell 0%).
-  3. **HEUTE ABEND (Market Close):** Pruefe V16-Regime-Inputs (Liquidity, Spreads, Yields). Dokumentiere ob NFP/ECB Material-Impact hatten.
-  4. **MORGEN FRUEH:** Pruefe V16-Regime-Update. Wenn Regime-Shift (SELECTIVE→RISK_OFF oder SELECTIVE→STEADY_GROWTH), dokumentiere Trigger. **KRITISCH:** Wenn V16 NICHT shiftet trotz Material-NFP-Miss, dann ist V16 Growth Signal +1 VERALTET (siehe S2 DA-Marker) → System-Failure-Pruefung.
-- **URGENCY:** TODAY (Live-Event).
-- **OWNER:** Operator (Real-Time-Monitoring). V16 auto-updated morgen, aber Operator muss Intraday-Moves tracken fuer Post-Mortem.
+**A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A, Tag 8, ESKALIERT)**
+- **Was:** NFP (08:30 ET) + ECB (09:15 ET, geschaetzt) heute. Market Analyst L2/L4/L7 exposure (PRE_EVENT_ACTION: REDUCE_CONVICTION). V16 SELECTIVE (defensiv positioniert).
+- **Warum:** BINARY outcomes. NFP schwach = Rezession (bearish HYG/DBC, bullish TLT). NFP stark = Fed hawkish (bearish HYG/TLT, bullish DXY). ECB dovish vs. Fed = EUR schwach, DXY stark (bearish DBC).
+- **Wie dringend:** HIGH. Events heute 08:30-10:00 ET.
+- **Naechste Schritte:**
+  1. **08:30 ET:** NFP-Daten. Headline (Nonfarm Payrolls), Unemployment Rate, Wage Growth (Average Hourly Earnings). Schwellenwerte (geschaetzt): Payrolls <150k = schwach (bearish), >250k = stark (hawkish). Unemployment >4.0% = Rezessionsangst. Wage Growth >4.0% YoY = Inflation-Risiko (Fed hawkish).
+  2. **09:15 ET:** ECB Rate Decision. Erwartung: Hold oder Cut (keine Live-Daten). Wenn Cut UND Fed Hold = Divergenz (EUR schwach, DXY stark, bearish DBC).
+  3. **10:00 ET:** Market Analyst Layer Scores Update (naechster Run). Pruefe L2 (Macro), L4 (FX), L7 (CB Policy). Wenn Scores shiften >3 Punkte: Regime-Change moeglich.
+  4. **16:00 ET:** V16 Production Update (naechster Run). Pruefe ob Rebalance-Signal. Wenn ja: Trade List in Signal Generator. Wenn nein: SELECTIVE bleibt.
+- **Trigger noch aktiv:** Ja (Events heute).
+- **Status:** OPEN.
 
-**A3: CPI-Vorbereitung (MEDIUM, Trade Class A, 7d offen)**
-- **WAS:** CPI (Feb) am 2026-03-11 (T+5d). Tier 1 Event, HIGH Impact. Bestimmt Fed-Pfad und damit Yield-Curve + Credit-Spreads.
-- **WARUM:** HYG 27.7% exponiert gegenueber Fed-Tightening-Erwartungen. Real 10Y Yield aktuell neutral (Score 0), aber heisser CPI koennte Yields treiben → HYG-Spread-Weitung.
-- **NAECHSTE SCHRITTE:**
-  1. **HEUTE (Post-NFP):** Wenn NFP schwach, Rezessionsangst dominiert → CPI weniger relevant (Fed kann nicht tighten in Rezession). Wenn NFP stark, CPI wird KRITISCH (bestaetigt No-Landing → Fed muss tighten).
-  2. **T+1 bis T+4:** Tracke Inflation-Expectations (TIPS Spreads, Breakevens). Wenn Breakevens >2.5%, CPI-Upside-Risk.
-  3. **T+5 (CPI Release):** Live-Monitoring. Pruefe Core CPI vs. Konsensus. Wenn >+0.3% MoM, Fed-Tightening-Angst → HYG-Spread-Weitung-Risiko.
-  4. **POST-CPI:** Pruefe V16-Regime-Update (T+6). Dokumentiere ob CPI Regime-Shift triggerte.
-- **URGENCY:** THIS_WEEK (Prep startet heute, Event T+5).
-- **OWNER:** Operator (Prep). V16 auto-reagiert, aber Operator muss Scenario-Planning machen.
+**A3: CPI-Vorbereitung (MEDIUM, Trade Class A, Tag 8, ESKALIERT)**
+- **Was:** CPI (Feb) am 2026-03-11 (5d). Tier 1 Event, HIGH impact, INFLATION/FED_POLICY themes.
+- **Warum:** V16 HYG 27.7% sensitiv auf Fed-Erwartungen. CPI hoch = Fed hawkish = Yields steigen = HYG faellt. CPI niedrig = Fed dovish = Yields fallen = HYG steigt.
+- **Wie dringend:** MEDIUM. Event in 5d, aber Vorbereitung heute (Post-NFP Regime klaeren).
+- **Naechste Schritte:**
+  1. **Post-NFP (16:00 ET):** V16 Regime nach NFP klaeren (siehe A1/A2). Wenn SELECTIVE bleibt: CPI-Vorbereitung = "Warte auf CPI, halte Positionen". Wenn Shift zu RISK_OFF: HYG runter (automatisch), CPI weniger relevant. Wenn Shift zu STEADY_GROWTH: HYG bleibt oder runter, SPY hoch, CPI-Risiko = Fed hawkish (bearish HYG).
+  2. **2026-03-10 (1d vor CPI):** IC-Intelligence Update. Pruefe ob Macro Alf/Howell/Gromen CPI-Erwartungen haben. Wenn IC DEGRADED bleibt: CPI-Vorbereitung = "Blind Flight" (keine qualitative Guidance).
+  3. **2026-03-11 (CPI-Tag, 08:30 ET):** Analog zu NFP-Monitoring (siehe A2). Headline CPI, Core CPI, MoM/YoY. Schwellenwerte (geschaetzt): Core CPI >0.3% MoM = hawkish (bearish HYG). Core CPI <0.2% MoM = dovish (bullish HYG).
+- **Trigger noch aktiv:** Ja (CPI in 5d).
+- **Status:** OPEN.
 
-**A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B, 7d offen)**
-- **WAS:** L1 (Liquidity Cycle) Score 0, Regime TRANSITION, Conviction LOW (Limiting Factor: regime_duration 0.2). Net Liquidity flat (50. Perzentil). V16 Liq_Direction -1 (kontrahiert).
-- **WARUM:** V16 LATE_EXPANSION-Regime basiert auf Liq_Direction -1. Wenn Liquidity tatsaechlich dreht (Liq_Direction +1), V16 muesste zu STEADY_GROWTH shiften → Equity-Exposure (SPY) statt HYG.
-- **NAECHSTE SCHRITTE:**
-  1. **HEUTE (Post-NFP):** Pruefe ob NFP Fed-Liquidity-Injection triggert (unwahrscheinlich, aber bei Crash moeglich).
-  2. **WOECHENTLICH:** Tracke WALCL, TGA, RRP, MMF-Assets (L1 Sub-Scores). Wenn 3+ Sub-Scores positiv werden, Liq_Direction koennte flippen.
-  3. **BEI LIQ_DIRECTION FLIP:** Eskaliere zu Agent R. V16-Regime-Shift-Risiko (SELECTIVE→STEADY_GROWTH).
-- **URGENCY:** ONGOING (Weekly Check).
-- **OWNER:** Operator (Weekly Review). Agent R bei Material-Change.
+**A4: Liquidity-Mechanik-Tracking (HIGH, Trade Class B, Tag 8, ESKALIERT, DA-UPGRADED)**
+- **Was:** Market Analyst L1 (Liquidity) score 0, Regime TRANSITION, conviction LOW (regime_duration 0.2). V16 basiert auf Liquidity Cycle (liq_direction -1 in V16 Production = Tightening).
+- **Warum:** V16 Regime-Entscheidungen haengen von Liquidity ab. Wenn L1 shiftet (TRANSITION → EASING oder TIGHTENING), V16 koennte rebalancen. **NEU (DA-Input):** L1 TRANSITION Tag 1 = V16 liq_direction -1 ist FRISCH (nicht "validiert"). Wenn L1 zurueck-flippt, war HYG 28.8% Fehlallokation auf 1-Tages-Signal.
+- **Wie dringend:** HIGH (upgraded von MEDIUM). L1 conviction LOW + V16 HYG 28.8% basiert auf diesem Signal = HOHE Unsicherheit.
+- **Naechste Schritte:**
+  1. **Taeglich (Market Analyst Update):** L1 Score + Regime + Conviction checken. Wenn Score >+2 oder <-2: Liquidity-Shift. Wenn Regime zu EASING: bullish Risk-On (SPY hoch). Wenn Regime zu TIGHTENING: bearish Risk-On (SPY runter, TLT hoch). **KRITISCH:** Wenn Regime zurueck-flippt (TRANSITION → vorheriges Regime innerhalb 3 Tage): L1-Signal war INSTABIL. V16 liq_direction -1 basiert auf instabilem Signal. Eskaliere zu A1 (HYG-Review).
+  2. **Wenn L1 Conviction zu MEDIUM/HIGH:** Liquidity-Signal ist CONFIRMED. V16 wird reagieren (automatisch). Operator: Warte auf V16-Signal.
+  3. **Wenn L1 bleibt LOW >7 Tage:** Liquidity-Mechanik ist UNKLAR (Daten-Problem oder echte Transition). Eskaliere zu IC-Intelligence (Macro Alf/Howell fuer Liquidity-Narrativ).
+- **Trigger noch aktiv:** Ja (L1 conviction LOW).
+- **Status:** OPEN.
 
-**A5: Post-NFP/ECB System-Review (HIGH, Trade Class A, 5d offen)**
-- **WAS:** Umfassende System-Pruefung nach Doppel-Event. Alle Agents (V16, Market Analyst, Risk Officer, IC) muessen Post-Event-Updates liefern.
-- **WARUM:** NFP/ECB sind Material-Events. System Conviction LOW vor Event bedeutet: Outcome bestimmt naechste Regime-Phase.
-- **NAECHSTE SCHRITTE:**
-  1. **HEUTE ABEND (nach Market Close):** Sammle Intraday-Daten (Spreads, Yields, FX, Volatility).
-  2. **MORGEN FRUEH:** Pruefe V16-Update, Market Analyst Layer-Updates, Risk Officer Alert-Changes, IC-Refresh (hoffentlich mehr Quellen).
-  3. **MORGEN MITTAG:** Schreibe Post-Mortem. Dokumentiere: (a) Welche Layer reagierten? (b) Hat V16 Regime gewechselt? (c) Haben IC-Quellen Event kommentiert? (d) Sind Risk-Alerts eskaliert oder resolved? (e) War Market Analyst NEUTRAL die bessere Warnung als V16 Risk-On? (siehe S3 DA-Marker).
-  4. **OUTCOME:** Entweder System Conviction steigt (klares Signal aus Event) ODER bleibt LOW (Event war inconclusive). Wenn LOW bleibt, CPI-Prep wird KRITISCH.
-- **URGENCY:** HEUTE ABEND (Start), MORGEN (Completion).
-- **OWNER:** CIO (koordiniert alle Agents).
+**NEUE ACTION ITEMS (heute hinzugefuegt):**
 
-**NEUE ITEMS (heute hinzugefuegt):**
-
-**A6: F6-Status-Verification (MEDIUM, Trade Class A, NEU)**
-- **WAS:** F6 UNAVAILABLE seit ≥2 Tagen. Signal Generator ebenfalls NULL. Unklar ob Event-Protection (strategisch) oder System-Failure (technisch).
-- **WARUM:** Wenn F6 bewusst deaktiviert wurde vor NFP/ECB (Event-Protection), dann ist Status ERWARTET. Wenn F6 auch nach Events noch down ist, dann strukturelles Problem.
-- **NAECHSTE SCHRITTE:**
-  1. **MORGEN FRUEH (Post-Events):** Pruefe F6-Status. Wenn F6 wieder AVAILABLE, dann war es Event-Protection → dokumentiere als Feature, nicht Bug.
-  2. **WENN F6 IMMER NOCH UNAVAILABLE:** Eskaliere zu Agent R. Pruefe ob Signal Generator Pipeline-Fehler hat oder ob F6-System down ist.
-  3. **WENN STRUKTURELLES PROBLEM:** Dokumentiere Impact auf Portfolio (keine Stock-Picks, keine Covered-Call-Overlays seit ≥2 Tagen).
-- **URGENCY:** MORGEN (Post-Event-Check).
-- **OWNER:** Operator (F6-Pipeline-Check). Agent R bei strukturellem Problem.
+**A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, Tag 1, NEU, CONVICTION UPGRADE)**
+- **Was:** IC Intelligence DEGRADED (1 Quelle ZeroHedge, 39 Claims alle Anti-Patterns). Keine Daten zu LIQUIDITY, FED_POLICY, CREDIT, RECESSION, INFLATION, EQUITY_VALUATION, CHINA_EM, CRYPTO, DOLLAR, VOLATILITY, POSITIONING.
+- **Warum:** LOW System Conviction (Header) + DEGRADED IC = Epistemische Luecke. V16 SELECTIVE (defensiv) hat KEINE unabhaengige qualitative Bestaetigung. Market Analyst NEUTRAL (keine Richtung). **Epistemische Regel:** IC-Intelligence liefert unabhaengige Bestaetigung (HOHER Wert). Ohne IC: V16 und Market Analyst teilen Datenbasis (zirkulaer, BEGRENZTER Wert).
+- **Wie dringend:** HIGH. Post-NFP (heute 16:00 ET): Wenn V16 Regime shiftet, benoetigt qualitatives Narrativ (Macro Alf/Howell/Gromen). Wenn IC DEGRADED bleibt: "Blind Flight" (nur quantitative Signale).
+- **Naechste Schritte:**
+  1. **Heute 16:00 ET:** IC-Pipeline Status checken. Technisches Problem (Scraper offline, API-Fehler)? Daten-Quellen offline (Macro Alf/Howell/Gromen nicht publiziert)? Wenn technisch: Fix Pipeline (Dev-Team). Wenn Quellen offline: Warte auf naechste Publikation (typisch: Macro Alf Montag/Mittwoch, Howell Dienstag, Gromen Donnerstag).
+  2. **2026-03-07 (morgen):** IC-Status re-checken. Wenn weiterhin DEGRADED: Eskaliere zu manueller IC-Recherche (Operator liest Macro Alf/Howell/Gromen direkt, extrahiert Claims manuell). Zeitaufwand: 30-60min.
+  3. **2026-03-08 (in 2d):** Wenn IC weiterhin DEGRADED: Downgrade System Conviction zu VERY_LOW (manuell im Header). Implikation: Alle Regime-Assessments (V16, Market Analyst) tragen SEHR HOHE Unsicherheit. Operator: Reduziere Position Sizes (manuell, ausserhalb V16-Logik)? NEIN — V16-Gewichte sind sakrosankt. Aber: Erhoehe Monitoring-Frequenz (2x taeglich statt 1x).
+- **Trigger noch aktiv:** Ja (IC DEGRADED).
+- **Status:** OPEN.
+- **Conviction Upgrade Reason:** LOW System Conviction (Header) macht IC-Refresh CRITICAL. Upgraded von WATCH zu ACT.
 
 **WATCHLIST (ONGOING):**
 
-**W1: Breadth-Deterioration (Hussman-Warnung, 7d aktiv)**
-- **STATUS:** Breadth aktuell 82.6% (robust, L3 Score +10). KEIN Deterioration-Signal.
-- **TRIGGER:** Breadth <70% (L3 Score negativ). Dann Hussman-Warnung relevant.
-- **NAECHSTER CHECK:** Taeglich (Market Analyst L3).
+**W1: Breadth-Deterioration (Hussman-Warnung, Tag 8)**
+- **Was:** Market Analyst L3 (Earnings) Breadth 82.6% above 200d MA (stark). Hussman warnt vor Breadth-Deterioration als Rezessions-Indikator.
+- **Trigger:** Breadth <70% (geschaetzt). Aktuell 82.6% = weit entfernt.
+- **Naechster Check:** Taeglich (Market Analyst Update). Wenn Breadth <75%: Eskaliere zu ACT.
+- **Status:** OPEN.
 
-**W2: Japan JGB-Stress (Luke Gromen-Szenario, 7d aktiv)**
-- **STATUS:** USDJPY neutral (Score 0 in L4/L8). Kein JGB-Stress-Signal.
-- **TRIGGER:** USDJPY >155 oder <140 (Extremwerte). Dann BoJ-Intervention-Risiko.
-- **NAECHSTER CHECK:** Taeglich (Market Analyst L4).
+**W2: Japan JGB-Stress (Luke Gromen-Szenario, Tag 8)**
+- **Was:** Luke Gromen warnt vor Japan JGB-Krise (Yields steigen, BoJ verliert Kontrolle, Yen-Crash). Market Analyst L4 (FX) USDJPY score 0 (neutral).
+- **Trigger:** USDJPY >155 (geschaetzt, Yen-Crash) oder Japan 10Y Yield >1.5% (geschaetzt, JGB-Stress).
+- **Naechster Check:** Taeglich (Market Analyst Update). Wenn USDJPY score <-5 (Yen staerker) oder >+5 (Yen schwaecher): Eskaliere zu ACT.
+- **Status:** OPEN.
 
-**W3: Geopolitik-Eskalation (Doomberg/ZeroHedge, 7d aktiv)**
-- **STATUS:** IC GEOPOLITICS +1.12 (LOW Confidence, Single-Source). L8 VIX neutral, Term Structure contango. Maerkte preisen KEINE Eskalation.
-- **TRIGGER:** VIX >25 oder Term Structure Backwardation (L8 Score negativ). Dann Tail-Risk-Regime.
-- **NAECHSTER CHECK:** Taeglich (Market Analyst L8 + IC).
+**W3: Geopolitik-Eskalation (Doomberg/ZeroHedge, Tag 8)**
+- **Was:** IC GEOPOLITICS +1.12 (LOW confidence, ZeroHedge). Iran-Krieg-Szenarien (Hormuz-Schliessung). Market Analyst L8 (Tail Risk) +2 CALM (VIX 50th pctl).
+- **Trigger:** VIX >25 (geschaetzt, Tail-Risk-Spike) oder Market Analyst L8 Regime zu ELEVATED/CRISIS.
+- **Naechster Check:** Taeglich (Market Analyst Update). Wenn L8 score <0 (Tail-Risk steigt): Eskaliere zu ACT.
+- **Status:** OPEN.
 
-**W4: Commodities-Rotation (Crescat vs. Doomberg, 7d aktiv)**
-- **STATUS:** DBC 21.2%, GLD 17.9% (V16-Positionen). L6 Cu/Au Ratio neutral (Score 0). Keine Rotation-Signal.
-- **TRIGGER:** Cu/Au Ratio >75. Perzentil (bullish fuer Commodities) oder <25. Perzentil (bearish). Dann V16-Regime-Shift-Risiko.
-- **NAECHSTER CHECK:** Taeglich (Market Analyst L6).
+**W4: Commodities-Rotation (Crescat vs. Doomberg, Tag 8)**
+- **Was:** V16 DBC 21.2% + GLD 17.9% = 39.1% Commodities (effektiv 37.2%). Market Analyst L6 (RV) Cu/Au ratio 0 (neutral), WTI curve -10 (bearish). IC COMMODITIES +8.0 (LOW confidence, 1 Claim).
+- **Trigger:** Market Analyst L6 Cu/Au ratio >+5 (bullish Commodities) oder <-5 (bearish Commodities). Oder: V16 Regime-Shift zu RISK_OFF (Commodities runter).
+- **Naechster Check:** Taeglich (Market Analyst Update). Wenn L6 score >+3 oder <-3: Eskaliere zu ACT.
+- **Status:** OPEN.
 
-**W5: V16 Regime-Shift Proximity (5d aktiv)**
-- **STATUS:** V16 SELECTIVE (LATE_EXPANSION). L2 Slowdown→Recession Proximity 100% (0d bis Boundary). L3 Healthy→Mixed Proximity 71% (1d bis Boundary). L8 Calm→Elevated Proximity 100% (0d bis Boundary).
-- **TRIGGER:** Wenn 2+ Layer gleichzeitig Boundary ueberschreiten, V16-Regime-Shift wahrscheinlich.
-- **NAECHSTER CHECK:** HEUTE ABEND (Post-NFP). Morgen (V16-Update).
+**W5: V16 Regime-Shift Proximity (Tag 6)**
+- **Was:** V16 SELECTIVE (LATE_EXPANSION), Market Analyst NEUTRAL (LOW conviction). Risk Officer INT_REGIME_CONFLICT (WARNING).
+- **Trigger:** V16 Regime-Shift (SELECTIVE → RISK_OFF oder STEADY_GROWTH). Proximity: Unbekannt (V16 liefert keine Proximity-Metrik).
+- **Naechster Check:** Post-NFP (heute 16:00 ET). Wenn V16 Regime unveraendert: Naechster Check morgen (2026-03-07).
+- **Status:** OPEN.
 
-**W6: HYG Tech-Exposure via Credit (NEU)**
-- **WAS:** Effective Tech 10% stammt vermutlich aus HYG-Holdings (Tech-Bonds). HYG 27.7% Portfolio ist AUCH Tech-Konzentration via Credit.
-- **TRIGGER:** L3 Healthy→Mixed Transition (Proximity 71%, 1d bis Boundary). Wenn Earnings-Regime kippt, Tech-Bonds weiten Spreads staerker als Non-Tech.
-- **NAECHSTER CHECK:** Taeglich (L3 Regime). Bei Transition: Pruefe HYG-Sector-Composition (wenn verfuegbar).
+**W6: Earnings-Guidance-Cuts (Zyklus-Peak-Indikator, Tag 0, NEU, DA-INPUT)**
+- **Was:** Market Analyst L3 +4 (Earnings HEALTHY, Breadth 82.6%) vs. L2 -1 (Macro SLOWDOWN, NFCI -10) = Zyklus-Peak-Divergenz. Historisch: Earnings hinken Macro um 1-2 Quartale. Naechste Earnings-Season (Q1 2026) in 4-6 Wochen.
+- **Trigger:** Earnings-Guidance-Cuts >20% der S&P 500 Unternehmen (geschaetzt, basierend auf historischen Rezessions-Perioden).
+- **Monitoring:** (1) FactSet Earnings Insight Weekly (publiziert Freitags, trackt Guidance-Revisions), (2) Market Analyst L3 Breadth (wenn <75%, Earnings drehen). **Implikation fuer Portfolio:** Wenn Earnings drehen, V16 HYG 28.8% (Credit-Bet auf enge Spreads) wird zu Fehlallokation. HY-Spreads weiten typisch 2-4 Wochen NACH Earnings-Guidance-Cuts (Markt re-priced Credit-Risiko).
+- **Naechster Check:** 2026-03-14 (Freitag, naechster FactSet Earnings Insight Report). Wenn Guidance-Cuts >10%: Eskaliere zu ACT (HYG-Review unabhaengig von V16-Signal).
+- **Status:** OPEN.
 
-**W7: HYG-Liquiditaets-Reflexivitaet (NEU)**
-- **WAS:** HYG-Position ≥$576M bei Portfolio ≥$2B (mehr als 1 Tag HYG-Volumen). Trim waere SELBST ein Spread-Event (Reflexivitaet).
-- **TRIGGER:** Wenn HYG-Spread weitet UND V16 will trimmen, dann Liquiditaets-Analyse PFLICHT vor Execution.
-- **NAECHSTER CHECK:** Bei HYG-Spread-Weitung >+50bps (siehe A1).
+**REVIEW ITEMS (ESKALIERT):**
+
+**A5: Post-NFP/ECB System-Review (HIGH, Trade Class A, Tag 6, ESKALIERT)**
+- **Was:** Nach NFP/ECB (heute): V16 Regime, Market Analyst Layer Scores, Risk Officer Alerts, IC Intelligence (wenn verfuegbar) zusammen reviewen.
+- **Warum:** NFP/ECB = Tier 1/2 Events, BINARY outcomes. System-Reaktion (V16 Rebalance? Market Analyst Regime-Shifts? Risk Officer Severity-Changes?) muss kohaerenzgeprueft werden.
+- **Wie dringend:** HIGH. Review heute Abend (18:00 ET, nach allen System-Updates).
+- **Naechste Schritte:**
+  1. **18:00 ET:** Alle System-Outputs (V16, Market Analyst, Risk Officer, IC, Signal Generator) laden.
+  2. **Pruefe Kohaerenz:**
+     - V16 Regime-Shift? Wenn ja: Passt zu Market Analyst Layer Scores? (z.B. V16 RISK_OFF sollte mit Market Analyst L2 RECESSION + L8 ELEVATED korrelieren.)
+     - Market Analyst Layer Scores? Wenn Shifts >3 Punkte: Welche Sub-Scores haben getrieben? (z.B. L2 NFCI -10 → -20 = Rezessionsangst.)
+     - **NEU (DA-Input):** Market Analyst L1 (Liquidity) Regime? Wenn L1 zurueck-flippt (TRANSITION → vorheriges Regime), dann war V16 liq_direction -1 ein 1-Tages-Signal. Dokumentiere in Kohaerenz-Memo.
+     - Risk Officer Alerts? Wenn HYG CRITICAL bleibt aber V16 kein Rebalance: Warum? (V16-Logik = Regime-Signale sagen "HYG bleibt", Risk Officer = "Konzentration zu hoch". Konflikt ist NORMAL, aber dokumentieren.)
+     - IC Intelligence? Wenn verfuegbar: Bestaetigt IC die V16/Market Analyst Richtung? (z.B. Macro Alf sagt "Rezession", V16 shiftet zu RISK_OFF = CONFIRMING.)
+  3. **Output:** Kohaerenz-Memo (1 Seite). Wenn Inkonsistenzen: Eskaliere zu Devil's Advocate (manueller Deep-Dive).
+- **Trigger noch aktiv:** Ja (NFP/ECB heute).
+- **Status:** OPEN.
+
+**ABGESCHLOSSENE ITEMS:** Keine (alle Items von gestern sind weiterhin offen).
 
 ## KEY ASSUMPTIONS
 
-**KA1: soft_landing_intact** — V16 LATE_EXPANSION-Regime basiert auf Annahme dass Rezession vermieden wird (Growth +1, Stress 0). HYG 27.7% ist Ausdruck dieser Annahme (Credit profitiert bei Soft Landing). [DA: da_20260306_001 — V16 Growth Signal basiert auf LAGGING Indikatoren. ACCEPTED — siehe S2 DA-Marker.]
-     Wenn falsch: NFP-Miss triggert Rezessionsangst → L2 Slowdown→Recession Transition → V16 muesste zu RISK_OFF shiften (Cash/TLT statt HYG) → HYG-Drawdown -10 bis -15% moeglich → Portfolio-DD -3 bis -4% (von aktuell -1.11%). **ERWEITERT:** V16 Growth Signal +1 basiert auf Daten die VOR 2-6 Wochen aktuell waren (NFCI -10 hat 4-6 Wochen Lag, 2Y10Y +0.56bps hat 2-4 Wochen Lag). NFP heute liefert AKTUELLE Arbeitsmarkt-Daten. Wenn NFP miss >50k Jobs, dann ist Growth Signal +1 VERALTET — Rezession bereits eingetreten, V16 detektiert erst morgen (12-18h Delay). Portfolio ist 12-18h exponiert mit HYG 27.7% bei Rezessionsangst = Spread-Weitung-Risiko.
+**KA1: nfp_binary_outcome** — NFP heute (08:30 ET) liefert KLARES Signal (entweder schwach <150k Payrolls = Rezessionsangst, oder stark >250k = Fed hawkish). Kein "Goldilocks" (150-250k).
+     Wenn falsch: NFP in Goldilocks-Range (150-250k) = Market Analyst bleibt NEUTRAL, V16 bleibt SELECTIVE, keine Regime-Shifts. HYG-Review (A1) = "Keine Action" (HYG-Bewegung <2%). System bleibt in LOW Conviction State. Naechster Catalyst: CPI (2026-03-11).
 
-**KA2: liquidity_contraction_moderate** — V16 Liq_Direction -1 basiert auf Annahme dass Liquiditaets-Kontraktion moderat bleibt (nicht abrupt). L1 Net Liquidity flat (50. Perzentil), aber V16 sieht Richtung negativ.
-     Wenn falsch: Abrupte Liquidity-Tightening (z.B. Fed-QT-Beschleunigung, TGA-Drain) → Liq_Direction -2 oder -3 → V16 muesste zu RISK_OFF shiften → Equity-Crash (SPY -5 bis -10%) → HYG korreliert 0.6-0.7 mit SPY → Portfolio-DD -2 bis -3%.
+**KA2: v16_liquidity_signal_stable** — V16 liq_direction -1 (Tightening) basiert auf Market Analyst L1 Liquidity-Daten. L1 Regime TRANSITION (Tag 1) wird NICHT zurueck-flippen in naechsten 3 Tagen. Signal ist JUNG aber STABIL.
+     Wenn falsch: L1 Regime flippt zurueck (TRANSITION → vorheriges Regime innerhalb 3 Tage). V16 liq_direction -1 war 1-Tages-Signal. HYG 28.8% ist Fehlallokation basierend auf instabilem Signal. Post-NFP: Wenn L1 zurueck-flippt UND HYG -2% oder mehr, eskaliere zu manueller Regime-Pruefung (Devil's Advocate). V16-Override-Diskussion erforderlich (AUSNAHME zu Master-Schutz, nur bei Signal-Instabilitaet).
 
-**KA3: hyg_spreads_stable** — HYG-Spreads bleiben stabil (<+50bps diese Woche). V16 haelt HYG 27.7% basierend auf Annahme dass Credit-Spreads nicht material weiten. [DA: da_20260306_003 (PERSISTENT Tag 7) — HYG-Spreads sind ENDOGEN. NOTED — siehe S7 A1 DA-Marker und W7 NEU.]
-     Wenn falsch: HYG-Spread weitet >+50bps → HYG-Drawdown -3 bis -5% → Portfolio-DD -0.8 bis -1.4% (von aktuell -1.11%) → Risk Officer Alert eskaliert zu CRITICAL → Operator muss pruefen ob V16 reagiert oder ob manuelle Intervention noetig. **ERWEITERT:** Bei Portfolio ≥$2B ist HYG-Position ≥$576M (mehr als 1 Tag HYG-Volumen). Trim waere SELBST ein Spread-Event (Reflexivitaet). Praemisse "Spreads bleiben stabil" ist moeglicherweise zirkulaer: "Spreads bleiben stabil solange wir nicht verkaufen, aber wir verkaufen nur wenn Spreads nicht stabil bleiben." Liquiditaets-Analyse fehlt (siehe W7).
+**KA3: ic_degraded_temporary** — IC Intelligence DEGRADED (1 Quelle ZeroHedge) ist TEMPORAER (technisches Problem oder Quellen haben nicht publiziert). Macro Alf/Howell/Gromen werden in 24-48h verfuegbar sein.
+     Wenn falsch: IC bleibt DEGRADED >3 Tage. System operiert OHNE qualitative Bestaetigung (nur quantitative Signale von V16/Market Analyst). LOW System Conviction wird zu VERY_LOW. Operator muss manuelle IC-Recherche starten (A6, Schritt 2) oder Monitoring-Frequenz erhoehen. Langfristig (>7 Tage DEGRADED): Ueberlege alternative IC-Quellen (z.B. Bloomberg, FT, WSJ) oder reduziere Abhaengigkeit von IC (staerkeres Gewicht auf Market Analyst Layer Scores).
 
 ---
 
 ## DA RESOLUTION SUMMARY
 
 **ACCEPTED (3):**
-- **da_20260306_001 (PREMISE_ATTACK, S2, KA1):** V16 Growth Signal basiert auf LAGGING Indikatoren (NFCI -10 hat 4-6 Wochen Lag, 2Y10Y +0.56bps hat 2-4 Wochen Lag). NFP ist LEADING Indicator. V16 hinkt 12-18h hinterher. Bei Material-NFP-Miss ist Portfolio 12-18h FALSCH positioniert (HYG statt TLT/Cash). **AUSWIRKUNG:** S2 erweitert um Lag-Analyse. KA1 erweitert um Lag-Kontext. A2 (NFP-Monitoring) betont System-Failure-Pruefung wenn V16 morgen NICHT reagiert trotz Material-Shift.
-- **da_20260306_002 + da_20260306_005 (NARRATIVE + PREMISE_ATTACK, S3/S4):** V16/Market Analyst Divergenz ist NICHT "semantisch" oder "inhaltlich schwach". Divergenz detektiert STRUKTURELLE Spannung zwischen Earnings (L3 +4, robust) und Macro (L2 -1, NFCI tight). Market Analyst NEUTRAL = Zyklus-Peak-Warnung (Earnings-Peak bei Macro-Slowdown). Risk Officer Alert INT_REGIME_CONFLICT ist INHALTLICH korrekt — detektiert Daten-Ambiguitaet VOR NFP-Event. **AUSWIRKUNG:** S3 (RO-20260306-005) erweitert um strukturelle Spannung-Analyse. S4 (Pattern B3) korrigiert IC-Degradation-Erklaerung — Market Analyst NEUTRAL ist NICHT primaer durch IC-Degradation verursacht, sondern durch quantitative Daten-Konflikt.
-- **da_20260306_003 (PREMISE_ATTACK, S4, KA3):** Market Analyst NEUTRAL basiert auf VORHANDENEN quantitativen Daten (6 von 8 Layern nutzen Market-Daten, nicht IC). IC-Degradation erklaert NICHT Market Analyst NEUTRAL. Market Analyst NEUTRAL waere auch bei perfekten IC-Daten so, weil quantitative Layer sich widersprechen (L3 +4 vs. L2 -1). **AUSWIRKUNG:** S4 (Pattern B3) korrigiert — IC-Degradation verschleiert NICHT Regime-Bestaetigung, sondern verhindert nur qualitative Kontextualisierung. System Conviction LOW ist gerechtfertigt weil BEIDE Agents (V16 + Market Analyst) unterschiedliche Signale senden UND IC fehlt um zu disambiguieren.
 
-**NOTED (2):**
-- **da_20260306_004 (UNASKED_QUESTION, S3):** Warum ist Effective Tech 10% wenn XLK 0%? HYG 27.7% enthaelt vermutlich 10-15% Tech-Bonds. HYG-Konzentration ist AUCH Tech-Konzentration via Credit. Bei Tech-Selloff trifft es HYG doppelt: (1) Credit-Spread-Weitung generell, (2) Tech-Sector-Weitung speziell. **AUSWIRKUNG:** S3 Sensitivity-Sektion ergaenzt. W6 (NEU) auf Watchlist — trackt L3 Healthy→Mixed Transition (Earnings-Regime-Shift = Tech-Selloff-Risiko).
-- **da_20260306_003 (PERSISTENT Tag 7, PREMISE_ATTACK, S3, KA3):** HYG-Spreads sind ENDOGEN. Bei Portfolio ≥$2B ist HYG-Position ≥$576M (mehr als 1 Tag HYG-Volumen). Trim waere SELBST ein Spread-Event (Reflexivitaet). Praemisse "Spreads bleiben stabil" ist moeglicherweise zirkulaer. **AUSWIRKUNG:** S7 A1 ergaenzt um Liquiditaets-Kontext. W7 (NEU) auf Watchlist — trackt HYG-Liquiditaets-Reflexivitaet. KA3 erweitert um Reflexivitaets-Warnung.
+1. **da_20260306_001 (PREMISE_ATTACK, S3/KA2):** V16 Liquidity-Signal (liq_direction -1) basiert auf Market Analyst L1 TRANSITION (Tag 1, LOW conviction). Praemisse "V16-Signale sind validiert" ist zirkulaer wenn Validierungs-Basis selbst instabil. **IMPACT:** S3 HYG-Konzentration-Kontext adjustiert: "V16-Entscheidung ist RATIONAL, aber Signale sind JUNG (Tag 1) und tragen HOHE Unsicherheit." KA2 re-framed: "v16_liquidity_signal_stable" (neu) statt "v16_regime_signals_valid" (alt). S7 A4 (Liquidity-Mechanik-Tracking) upgraded von MEDIUM zu HIGH, Fokus auf L1 Regime-Stabilitaet.
 
-**NOTED (1):**
-- **da_20260306_005 (PERSISTENT Tag 7, UNASKED_QUESTION, S6):** F6 UNAVAILABLE seit ≥2 Tagen. Wenn F6 auch MORGEN noch down ist (nach NFP/ECB Events), dann strukturelles Problem, nicht Event-Protection. **AUSWIRKUNG:** S6 F6-Sektion korrigiert — moegliche Erklaerung ist Event-Protection (strategisch), nicht technischer Ausfall. A6 (NEU) auf Action Items — Post-Event-Check ob F6 wieder hochkommt.
+2. **da_20260306_002 (UNASKED_QUESTION, S4/S7):** Instrument-Liquidity-Risiko nicht adressiert. HYG 28.8% = $14.4m bei $50m AUM, Event-Tag Bid-Ask-Spread-Erweiterung 3x, Slippage ~0.5% = $72k. **IMPACT:** S4 CIO Observation 2 (HYG-Konzentration + Event-Risiko) erweitert um Execution-Risiko-Komponente. S7 A1 (HYG-Konzentration Review) erweitert um Execution-Pruefung (Schritt 2 NEU): Limit-Orders, Time-Slicing, Bid-Ask-Monitoring.
 
-**REJECTED (0):** Keine.
+3. **da_20260306_003 (PREMISE_ATTACK, S4):** Alternative Lesart: V16 SELECTIVE + Market Analyst NEUTRAL = nicht "Low-Conviction Stasis", sondern "Zyklus-Peak-Divergenz". Market Analyst L3 +4 (Earnings HEALTHY) vs. L2 -1 (Macro SLOWDOWN) = klassische Peak-Warnung. **IMPACT:** S4 Cross-Domain Pattern re-framed: "Zyklus-Peak-Divergenz bei jungen Signalen" statt "Defensive Positioning bei niedriger Visibility". S7 W6 NEU: Earnings-Guidance-Cuts Monitoring (Zyklus-Peak-Indikator).
 
-**SUMMARY:** 3 substantielle Einwaende akzeptiert (da_20260306_001, da_20260306_002/005, da_20260306_003). 3 Einwaende notiert (da_20260306_004, da_20260306_003 PERSISTENT, da_20260306_005 PERSISTENT). Keine Einwaende zurueckgewiesen. Devil's Advocate hat STRUKTURELLE Schwaechen im Draft identifiziert: (1) V16 Lag-Problem bei NFP-Event, (2) V16/Market Analyst Divergenz ist NICHT semantisch sondern strukturell, (3) IC-Degradation erklaert NICHT Market Analyst NEUTRAL, (4) HYG-Konzentration hat versteckte Tech-Exposure, (5) HYG-Liquiditaets-Reflexivitaet nicht analysiert, (6) F6-Status unklar. Alle Punkte im Final Briefing adressiert via DA-Marker, erweiterte Sektionen, neue Action Items (A6), neue Watchlist-Items (W6, W7), erweiterte KEY ASSUMPTIONS (KA1, KA3).
+**ACCEPTED (DA-Forced Decision, 1):**
+
+4. **da_20260306_004 (PREMISE_ATTACK, S3, Tag 1, 2x NOTED):** "Market Analyst NEUTRAL wegen fehlender IC-Daten" ist empirisch falsch. Market Analyst Layer Scores basieren auf quantitativen Daten (L1/L2/L3/L6/L7/L8 keine IC-Abhaengigkeit). **IMPACT:** S3 INT_REGIME_CONFLICT (WARNING) Kontext korrigiert: Divergenz ist DATEN-bedingt (Earnings vs. Macro), nicht DATEN-MANGEL-bedingt. Epistemische Regel adjustiert: IC-Degradation erklaert NICHT Market Analyst NEUTRAL.
+
+**REJECTED (0):** Keine. Alle Devil's Advocate Challenges waren substantiell und durch Daten gestuetzt.
+
+**NOTED (0):** Keine. Alle Challenges wurden entweder ACCEPTED (Briefing adjustiert) oder fuehrten zu neuen Action Items (W6).
+
+**SYSTEMIC INSIGHT (CIO):** Devil's Advocate hat drei blinde Flecken aufgedeckt: (1) Zirkularitaet in "Validierung" (V16 Liquidity-Signal basiert auf Market Analyst L1, beide Tag 1, LOW conviction), (2) Execution-Risiko bei Instrument-Liquidity-Kompression (Event-Tag), (3) Falsche Kausalitaet (Market Analyst NEUTRAL nicht wegen IC-Degradation, sondern wegen Zyklus-Peak-Divergenz). Alle drei Punkte wurden ins Briefing integriert. **Lesson:** "Validiert" bedeutet NICHT "stabil" wenn Validierungs-Basis selbst jung ist. "Degraded Data" erklaert NICHT alle Unsicherheiten — strukturelle Spannungen (Earnings vs. Macro) sind unabhaengig von Daten-Qualitaet.
