@@ -45,28 +45,39 @@ class RouterFetcher:
 
         results = {}
         for key, cfg in assets.items():
-            ticker = cfg["ticker"]
-            try:
-                t = yf.Ticker(ticker)
-                hist = t.history(start=start_date, auto_adjust=True)
+            # Build ticker list: primary + fallbacks
+            tickers_to_try = [cfg["ticker"]]
+            if "fallback_tickers" in cfg:
+                tickers_to_try.extend(cfg["fallback_tickers"])
 
-                if hist is not None and not hist.empty and "Close" in hist.columns:
-                    close = hist["Close"].dropna()
-                    if not close.empty:
-                        results[key] = close
-                        logger.info(
-                            f"  {key:8s} ({ticker:12s}): {len(close):>4d} days, "
-                            f"latest={close.iloc[-1]:.4f} ({close.index[-1].strftime('%Y-%m-%d')})"
-                        )
-                    else:
-                        logger.warning(f"  {key:8s} ({ticker:12s}): NO DATA (empty after dropna)")
-                else:
-                    logger.warning(f"  {key:8s} ({ticker:12s}): NO DATA")
-            except Exception as e:
-                logger.warning(f"  {key:8s} ({ticker:12s}): ERROR — {e}")
+            fetched = False
+            for ticker in tickers_to_try:
+                try:
+                    t = yf.Ticker(ticker)
+                    hist = t.history(start=start_date, auto_adjust=True)
 
-            # Short pause between tickers to avoid rate limiting
-            time.sleep(0.5)
+                    if hist is not None and not hist.empty and "Close" in hist.columns:
+                        close = hist["Close"].dropna()
+                        if not close.empty:
+                            results[key] = close
+                            suffix = " (fallback)" if ticker != cfg["ticker"] else ""
+                            logger.info(
+                                f"  {key:8s} ({ticker:12s}): {len(close):>4d} days, "
+                                f"latest={close.iloc[-1]:.4f} "
+                                f"({close.index[-1].strftime('%Y-%m-%d')}){suffix}"
+                            )
+                            fetched = True
+                            break
+                except Exception as e:
+                    logger.warning(f"  {key:8s} ({ticker:12s}): ERROR — {e}")
+
+                time.sleep(0.5)
+
+            if not fetched:
+                logger.warning(f"  {key:8s}: NO DATA (tried: {', '.join(tickers_to_try)})")
+
+            # Short pause between assets to avoid rate limiting
+            time.sleep(0.3)
 
         return results
 
