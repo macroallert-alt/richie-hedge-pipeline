@@ -438,16 +438,12 @@ def main():
         # Write Draft to Drive CURRENT/
         if drive_service:
             try:
-                drive_data = {k: v for k, v in cio_output.items() if k != "preprocessor_output"}
-                write_drive_json(drive_service, drive_data, "step4_cio_draft.json")
+                write_drive_json(drive_service, cio_output, "step4_cio_draft.json")
             except Exception as e:
                 logger.error(f"Draft Drive write failed: {e}")
 
         # Archive Draft locally (committed by GitHub Actions)
-        _write_local_archive(
-            {k: v for k, v in cio_output.items() if k != "preprocessor_output"},
-            "step4_cio_draft.json",
-        )
+        _write_local_archive(cio_output, "step4_cio_draft.json")
 
         output_for_log = cio_output
 
