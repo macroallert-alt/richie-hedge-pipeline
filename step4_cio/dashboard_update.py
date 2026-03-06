@@ -282,6 +282,28 @@ def update_dashboard_json(cio_output: dict, dashboard_json_path: str,
         else:
             logger.warning("Layers block NOT updated — no layer_scores found in Market Analyst data")
 
+        # 9. Update signals block from Signal Generator input
+        signals_input = inputs_raw.get("signals", {})
+        if signals_input and signals_input.get("execution_path"):
+            dashboard["signals"] = _build_signals_block(signals_input)
+            dashboard["known_unknowns"] = [
+                ku for ku in dashboard["known_unknowns"]
+                if ku.get("gap") != "SIGNALS"
+            ]
+            steps["step_2_signal_generator"] = {
+                "status": "OK",
+                "completed_at": signals_input.get("run_timestamp", now_utc),
+                "summary": (
+                    f"{signals_input.get('execution_path', '?')} — "
+                    f"Router: {signals_input.get('router', {}).get('current_state', '?')}, "
+                    f"max prox: {signals_input.get('router', {}).get('max_proximity', 0):.0%}"
+                ),
+            }
+            dashboard.setdefault("pipeline_health", {})["steps"] = steps
+            logger.info(f"Signals block updated: {signals_input.get('execution_path')}")
+        else:
+            logger.info("Signals block NOT updated — no Signal Generator data")
+
         # Write back
         with open(dashboard_json_path, "w") as f:
             json.dump(dashboard, f, indent=2, ensure_ascii=False)
@@ -445,6 +467,71 @@ def _build_layers_block(layer_analysis: dict) -> dict:
         "fragility_state": fragility_state,
         "fragility_data": fragility_data,
         "layer_scores": clean_scores,
+    }
+
+
+def _build_signals_block(signals_input: dict) -> dict:
+    """
+    Map Signal Generator JSON to dashboard.json signals block.
+    Matches SignalsDetail.jsx expectations.
+    """
+    router = signals_input.get("router", {})
+    proximity = router.get("proximity", {})
+    projections = signals_input.get("projections", {})
+    concentration = projections.get("concentration_check", {}).get("baseline", {})
+    recommendations = signals_input.get("recommendations", {})
+    trade_list = signals_input.get("trade_list", [])
+
+    # Router status per trigger
+    router_status = {}
+    for trigger_id in ("em_broad", "china_stimulus", "commodity_super"):
+        prox_data = proximity.get(trigger_id, {})
+        composite = prox_data.get("composite", 0.0)
+        trend = prox_data.get("trend", "STABLE")
+
+        # Determine state label
+        current_state = router.get("current_state", "US_DOMESTIC")
+        if current_state.lower() == trigger_id:
+            state = "ACTIVE"
+        elif composite >= 0.7:
+            state = "APPROACHING"
+        elif composite >= 0.3:
+            state = "MONITORING"
+        else:
+            state = "INACTIVE"
+
+        router_status[trigger_id.upper()] = {
+            "proximity": round(composite, 4),
+            "trend": trend,
+            "state": state,
+        }
+
+    # PermOpt status
+    perm_opt = signals_input.get("perm_opt", {})
+    permopt_status = {
+        "budget_pct": perm_opt.get("total_pct", 0),
+        "active": perm_opt.get("status") != "UNAVAILABLE",
+        "positions_count": 0,
+    }
+
+    return {
+        "status": "AVAILABLE",
+        "execution_path": signals_input.get("execution_path", "UNKNOWN"),
+        "trade_count": len(trade_list),
+        "router_state": router.get("current_state", "US_DOMESTIC"),
+        "router_days_in_state": router.get("days_in_state", 0),
+        "router_status": router_status,
+        "max_proximity": router.get("max_proximity", 0),
+        "max_proximity_trigger": router.get("max_proximity_trigger"),
+        "effective_concentration": concentration.get("effective_tech_pct", 0),
+        "concentration_warning": concentration.get("warning", False),
+        "permopt_status": permopt_status,
+        "has_actionable_recommendations": recommendations.get("has_actionable_recommendations", False),
+        "summary_for_cio": recommendations.get("summary_for_cio", ""),
+        "entry_evaluation": router.get("entry_evaluation", {}),
+        "exit_check": router.get("exit_check"),
+        "emergency": router.get("emergency"),
+        "crisis_override": router.get("crisis_override", False),
     }
 
 
