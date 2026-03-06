@@ -107,13 +107,15 @@ def _find_section_start(text: str, section_num: int) -> int | None:
 
 
 def _extract_tickers(text: str, entities: dict) -> list:
-    """Extract ticker symbols from text."""
+    """Extract ticker symbols from text. Only matches known V16/F6 tickers."""
     known = entities.get("v16_tickers", [])
-    mentioned = [t for t in known if t in text]
-    potential = re.findall(r'\b[A-Z]{1,5}\b', text)
-    noise = set(entities.get("ticker_noise_words", []))
-    all_tickers = list(set(mentioned + [t for t in potential if t not in noise]))
-    return all_tickers
+    # Only match known tickers as whole words (avoid substring matches like
+    # "GLD" inside "ENGLAND"). Use word boundary regex per ticker.
+    mentioned = []
+    for ticker in known:
+        if re.search(r'\b' + re.escape(ticker) + r'\b', text):
+            mentioned.append(ticker)
+    return mentioned
 
 
 # =============================================================================
