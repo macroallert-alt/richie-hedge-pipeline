@@ -1,24 +1,22 @@
 {
   "date": "2026-03-06",
-  "run_id": "da_20260306_072454",
-  "draft_run_id": "cio_draft_20260306_071842",
+  "run_id": "da_20260306_081259",
+  "draft_run_id": "cio_draft_20260306_080814",
   "primary_focus": "NARRATIVE",
   "perspective_seed": "Makro-Trader",
   "challenges": [
     {
       "id": "da_20260306_001",
       "type": "NARRATIVE",
-      "target_section": "S5",
-      "target_assumption": null,
-      "challenge_text": "Der CIO erzählt die Geschichte \"IC-Consensus stabil, keine neuen Signale, alle High-Novelty Claims sind Anti-Patterns.\" Alternative Lesart: Die 8 HIGH-Significance Omissions von Howell (alle Novelty 7) sind nicht \"kein Signal\" — sie sind ein SYSTEMATISCHES Ausblenden der Liquidity-Mechanik die Howell beschreibt. Der Pre-Processor flaggt diese als HIGH-Significance, aber der CIO behandelt sie als Rauschen. Howell beschreibt konkrete Liquidity-Flows (Fed +5% seit Ende 2025, TGA-Rebuild $400bn, Dollar-Dämpfung) — das sind NICHT qualitative Narrativ-Pieces, das sind quantifizierbare Mechaniken. Die Alternative: Der CIO fokussiert auf Market Analyst L1 (score 0, TRANSITION) und sagt \"Net Liquidity flat, also kein Signal.\" Aber Howell sagt: Liquidity elevated ABER Momentum negativ (TGA-Drag + Dollar). Das ist nicht \"kein Signal\" — das ist ein LEADING Indicator dass L1 von TRANSITION zu TIGHTENING shiften könnte BEVOR es in den Daten sichtbar wird. Der CIO wartet auf den L1-Score-Shift. Howell warnt VOR dem Shift. Das ist der Unterschied zwischen Lagging (L1) und Leading (Howell). Die 8 Omissions sind nicht Rauschen — sie sind die fehlende Forward Guidance für L1.",
+      "target_section": "S2",
+      "target_assumption": "KA1",
+      "challenge_text": "Der CIO erzaehlt NFP/ECB als \"Binary Outcome Day mit Portfolio-Exposure in beide Richtungen\". Alternative Lesart: Das ist ein LIQUIDITY-REGIME-TEST, kein Event-Outcome-Problem. V16 Liquidity Direction = -1 (Tightening), Market Analyst L1 = TRANSITION (Proximity 0.2 zu TIGHTENING), aber Net Liquidity flat bei 50th percentile. Die Frage ist nicht \"NFP stark oder schwach?\", sondern \"Reagiert Liquidity auf NFP?\". Wenn NFP schwach ABER Liquidity bleibt flat (weil Fed-Pivot-Erwartungen nicht materialisieren) = V16 shiftet zu RISK_OFF ohne dass NFP selbst der Trigger ist. Wenn NFP stark ABER Liquidity tightened weiter (weil Fed hawkish bleibt) = V16 bleibt SELECTIVE aber Stress Score steigt. Das Portfolio ist nicht auf Event-Outcomes positioniert — es ist auf Liquidity-Regime-Shift positioniert. NFP/ECB sind INDIKATOREN fuer den Shift, nicht URSACHEN.",
       "evidence": [
-        "Pre-Processor: 8x IC_HIGH_NOVELTY_OMISSION, source howell, Novelty 7, Significance HIGH",
-        "CIO S5: \"175 High-Novelty Claims (Novelty ≥5), alle Signal 0 (Anti-Patterns)\"",
-        "CIO S5: \"IC-Consensus ist stabil (HIGH confidence), aber nicht durch neue Insights getrieben\"",
-        "Howell claim_20260305_howell_001: \"Fed Liquidity +5% seit Ende 2025, annualisiert +20%\"",
-        "Howell claim_20260305_howell_006: \"US dollar strength will likely dampen liquidity conditions in next reporting period\" (Novelty 7)",
-        "Market Analyst L1: score 0 (TRANSITION), Net Liquidity 50.0th pctl (flat)",
-        "CIO S4 OBS-2: \"IC liefert Narrativ-Kontext, aber keine Trade-Signale\""
+        "V16 Liquidity Direction -1 (Tightening) + Market Analyst L1 Score 0 (TRANSITION) = Regime-Unsicherheit, nicht Event-Unsicherheit",
+        "Market Analyst L1 Proximity 0.2 zu TIGHTENING = nahe an Schwelle, NFP koennte Trigger sein",
+        "V16 SELECTIVE Regime (Late Expansion) ist INSTABIL wenn Liquidity von Tightening zu Easing wechselt (dann STEADY_GROWTH) oder von Tightening zu Crisis (dann RISK_OFF)",
+        "CIO sagt \"Binary Exposure\" fuer HYG/DBC/GLD — aber alle drei reagieren primaer auf LIQUIDITY, sekundaer auf NFP-Zahl selbst",
+        "IC NO_DATA fuer Liquidity = keine externe Confirmation ob Liquidity-Regime stabil ist"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": false,
@@ -29,17 +27,15 @@
     {
       "id": "da_20260306_002",
       "type": "UNASKED_QUESTION",
-      "target_section": "SYSTEM",
-      "target_assumption": null,
-      "challenge_text": "Was wenn die HYG-Konzentration (28.8%, CRITICAL) nicht durch V16-Regime-Logik getrieben ist, sondern durch einen Liquidity-Artefakt? Das System misst HYG als \"Carry\" (High Yield Credit), aber HYG ist auch der liquideste Credit-ETF — Average Daily Volume >$1bn. Wenn V16 SELECTIVE-Regime \"Defensive + Carry\" favorisiert, könnte der Optimizer HYG NICHT wegen Credit-Attraktivität wählen, sondern wegen Liquidität (niedrigste Slippage bei Rebalance). Das würde bedeuten: HYG 28.8% ist ein Liquiditäts-Proxy, kein Credit-View. Die ungestellte Frage: Wenn HYG primär Liquiditäts-Vehicle ist (nicht Credit-Exposure), was passiert wenn Credit-Spreads widenen ABER HYG-Liquidität austrocknet (Bid-Ask Spreads explodieren)? V16 würde versuchen zu rebalancen (Regime-Shift), aber HYG-Exit wäre teuer (hohe Slippage). Das System hat keinen Liquidity-Stress-Test für Concentrated Positions. A1 (HYG-Review) prüft \"Liquidität bei Stress\" — aber das ist NACH dem Stress. Die Frage ist: Sollte V16-Optimizer einen Liquidity-Constraint haben (max X% in Single Name wenn ADV <$Y)? Heute nicht relevant (HYG liquide), aber bei nächstem Regime-Shift (z.B. RECESSION) könnte HYG-Liquidität kollabieren während V16 versucht zu exiten.",
+      "target_section": "S5",
+      "target_assumption": "KA3",
+      "challenge_text": "Der CIO interpretiert IC Data Void (NO_DATA fuer Liquidity/Fed/Credit/Recession) als \"Datenluecke, nicht Signal\". Ungestellte Frage: Was wenn das Schweigen selbst das Signal ist? An einem NFP-Tag sollten IC-Quellen MAXIMALE Meinung haben (Positioning, Konsens-Erwartungen, Event-Wetten). Stattdessen: 1 Quelle (ZeroHedge), 39 Claims, alle Geopolitik/Energy, NICHTS zu Macro. Das ist nicht \"keine Daten verfuegbar\" — das ist \"die verfuegbare Quelle fokussiert bewusst NICHT auf NFP\". ZeroHedge-Bias ist bekannt (Tail-Risk, Doom), aber Novelty 5-7 bedeutet diese Narrative sind NEU. Hypothese: Wenn Smart Money (oder auch nur Noise-Quellen wie ZH) vor NFP auf Geopolitik pivotiert statt auf Macro, ist das ein POSITIONING-Signal. \"Wir reden ueber Iran weil wir NFP fuer irrelevant halten\" (bullish — Markt ignoriert Macro-Risk) ODER \"Wir reden ueber Iran weil NFP zu scary ist um direkt zu diskutieren\" (bearish — Macro-Risk wird verdraengt). Beide Lesarten sind plausibel. CIO hat keine Mechanik um zwischen ihnen zu unterscheiden.",
       "evidence": [
-        "Risk Officer RO-20260304-003: HYG 28.8%, CRITICAL, Single Name >25%",
-        "CIO S6: \"V16 SELECTIVE = Defensive Tilt + Carry (HYG 28.8%)\"",
-        "CIO S4 OBS-4: \"HYG-Konzentration ist Regime-Feature, nicht Bug\"",
-        "CIO S7 A1: \"Prüfe HYG-Liquidität bei Stress (Bid-Ask Spreads, Average Daily Volume)\"",
-        "Market Analyst L2: Transition Proximity 1.0 (SLOWDOWN → RECESSION, distance 0)",
-        "V16: Current Drawdown -1.11%, DD-Protect Threshold -10.0% (INACTIVE)",
-        "HYG typisches ADV: >$1bn (höchste Liquidität unter Credit-ETFs)"
+        "IC 39 Claims, 0 zu Liquidity/Fed/Credit/Recession am Tag vor NFP = statistisch anomal",
+        "ZeroHedge Novelty 5-7 fuer Iran/Hormuz = NEUE Narrative, nicht recycelte Doom-Porn",
+        "Market Analyst L7 (Central Bank Policy) Score 0, Conviction LOW = keine klare Fed-Erwartung im System",
+        "CIO KA3 sagt \"keine Daten = keine Quellen verfuegbar\", aber ZeroHedge IST verfuegbar und schweigt zu Macro = aktive Wahl, nicht Luecke",
+        "Pre-Processor hat 5x IC_HIGH_NOVELTY_OMISSION geflaggt = System erkennt dass etwas fehlt, aber CIO behandelt es als neutral"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": false,
@@ -50,16 +46,15 @@
     {
       "id": "da_20260306_003",
       "type": "PREMISE_ATTACK",
-      "target_section": "S2",
-      "target_assumption": "KA1",
-      "challenge_text": "KA1 nimmt an \"NFP-Outcome ist binär (schwach = Rezessionsangst, stark = Fed-Tightening-Erwartung).\" Aber die Daten zeigen: Market Analyst L2 (Macro) hat DREI konfliktäre Sub-Scores: Spread 2Y10Y +4 (bullish), NFCI -10 (bearish), ANFCI -10 (bearish). Das bedeutet: Der Markt preist GLEICHZEITIG rate cuts (Curve steepening) UND financial tightening (NFCI/ANFCI negativ). Das ist nicht binär — das ist ein SPLIT-Regime. NFP schwach könnte BEIDE Narrative verstärken: (1) Rezessionsangst (bearish) UND (2) Fed-Dovish-Erwartung (bullish für duration assets wie TLT, bearish für Credit wie HYG). NFP stark könnte BEIDE Narrative schwächen: (1) Kein Rezessionsrisiko (bullish) UND (2) Fed bleibt hawkish (bearish für duration). Die Annahme \"binär\" ignoriert dass der Markt in einem REGIME-KONFLIKT ist (Curve sagt dovish, Financial Conditions sagen tight). NFP löst den Konflikt nicht — es verschiebt nur das Gewicht zwischen den beiden Narrativen. Das bedeutet: A5 (Post-Event-Review) sollte nicht fragen \"Hat L2 RECESSION-Shift vollzogen?\" sondern \"Welches Narrativ hat gewonnen — Curve oder Financial Conditions?\" Und wenn BEIDE Narrative bleiben (NFP neutral/mixed), dann bleibt der Konflikt — und Market Analyst Conviction bleibt LOW. Das ist nicht \"keine Auflösung\" — das ist \"Regime-Konflikt bestätigt.\" Der CIO sollte ein drittes Szenario vorbereiten: NFP neutral → Konflikt persistiert → V16 bleibt SELECTIVE (kein Shift), Market Analyst bleibt NEUTRAL (kein Conviction-Sprung), Portfolio bleibt Event-exponiert bis CPI (2026-03-11).",
+      "target_section": "S6",
+      "target_assumption": "KA2",
+      "challenge_text": "Der CIO nimmt an V16 SELECTIVE Regime bleibt post-NFP stabil (KA2) WEIL \"V16 operiert auf validierten Signalen\". Aber die Praemisse \"validierte Signale = stabiles Regime\" gilt nur wenn die Signale FORWARD-LOOKING sind. V16 Liquidity Direction -1 und Stress Score 0 sind CURRENT STATE, nicht EXPECTED STATE. NFP ist ein REGIME-SHIFT-KATALYSATOR — wenn NFP die Fed-Erwartung aendert, aendert sich Liquidity Direction NACH dem Event, nicht vorher. V16 kann per Definition nicht auf NFP-Ueberraschung pre-positioned sein (es sei denn Liquidity-Daten haben NFP bereits antizipiert — aber Market Analyst L1 sagt TRANSITION, nicht TIGHTENING confirmed). Das bedeutet: V16 ist REAKTIV zu NFP, nicht PROAKTIV. Wenn NFP V16-Regime shiftet, ist das NICHT \"V16 hat falsch gelegen\" — es ist \"V16 hat korrekt auf neue Daten reagiert\". Aber CIO-Formulierung \"Regime bleibt stabil\" impliziert V16 hat NFP bereits eingepreist. Das ist strukturell unmoeglich fuer ein System das auf Liquidity/Stress reagiert, nicht auf Event-Erwartungen.",
       "evidence": [
-        "KA1: \"NFP-Outcome ist binär (schwach = Rezessionsangst, stark = Fed-Tightening-Erwartung)\"",
-        "Market Analyst L2 Sub-Scores: Spread 2Y10Y +4 (bullish), NFCI -10 (bearish), ANFCI -10 (bearish)",
-        "CIO S2: \"Binary Outcome: Schwach = Rezessionsangst, Stark = Fed-Tightening-Erwartung\"",
-        "CIO S4 OBS-3: \"Tension: Yield Curve steepening (bullish) vs. Financial Conditions tightening (bearish)\"",
-        "Market Analyst L2: score -1 (SLOWDOWN), Transition Proximity 1.0 (RECESSION, distance 0)",
-        "Market Analyst Conviction: 5 Layers LOW (regime_duration), 3 Layers CONFLICTED (data_clarity)"
+        "V16 hat keine Forward-Looking-Komponente fuer Events (kein \"NFP Consensus\" Input, keine Event-Probability-Adjustierung)",
+        "Market Analyst L2 (Macro Regime) Proximity 1.0 zu RECESSION = an Schwelle, NFP-Schwaeche koennte Shift triggern",
+        "Market Analyst L7 (Central Bank Policy) hat NFP als \"REDUCE_CONVICTION\" Event markiert = System erkennt dass NFP Unsicherheit schafft, nicht reduziert",
+        "CIO sagt \"V16 wird nicht mechanisch rebalancen\" (korrekt), aber dann \"Regime-Shift moeglich wenn Daten extrem\" = Widerspruch zu \"Regime bleibt stabil\"",
+        "KA2 \"V16 Regime stable post-event\" hat \"If wrong\"-Klausel die Rebalance morgen beschreibt = CIO erkennt implizit dass Stabilitaet NICHT die Base-Case-Annahme ist"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": false,
@@ -70,16 +65,15 @@
     {
       "id": "da_20260306_004",
       "type": "PREMISE_ATTACK",
-      "target_section": "S4",
+      "target_section": "S3",
       "target_assumption": null,
-      "challenge_text": "Der CIO sagt in OBS-2 \"IC-Consensus hat BEGRENZTEN Bestätigungswert vs. Market Analyst weil teilweise zirkulär (Howell und Market Analyst teilen Datenbasis).\" Aber dann verwendet der CIO in S5 IC-Consensus als \"Bestätigung\" für Market Analyst Layer-Scores: \"IC LIQUIDITY -0.77 bestätigt L1 score 0 (TRANSITION),\" \"IC FED_POLICY -2.13 bestätigt L7 score 0 (NEUTRAL).\" Das ist inkonsistent. Entweder IC-Consensus hat begrenzten Bestätigungswert (dann keine \"Bestätigung\"-Claims in S5), oder IC-Consensus ist unabhängig genug für Bestätigung (dann ist die Epistemische Regel in OBS-2 falsch). Die Prämisse \"teilweise zirkulär\" ist korrekt (Howell verwendet Fed H.4.1, Market Analyst L1 verwendet Fed H.4.1), aber der CIO zieht nicht die richtige Konsequenz: Wenn zirkulär, dann ist IC-Consensus ein LAGGING Indicator (bestätigt was Market Analyst schon sieht), nicht ein LEADING Indicator (warnt vor Market Analyst-Shift). Das bedeutet: Die 8 Howell-Omissions (HIGH Significance, Novelty 7) sind nicht \"kein Signal\" — sie sind LEADING Signals die Market Analyst NOCH NICHT sieht (weil Howell forward-looking interpretiert, Market Analyst backward-looking misst). Der CIO sollte IC-Consensus nicht als \"Bestätigung\" verwenden, sondern als \"Forward Guidance\" — was sagt IC über die NÄCHSTE Bewegung von Market Analyst Layer-Scores? Beispiel: Howell sagt \"Dollar-Stärke dämpft Liquidity next reporting period\" (claim_20260305_howell_006, Novelty 7). Market Analyst L1 sagt \"Net Liquidity flat\" (50.0th pctl). Das ist keine Bestätigung — das ist eine Warnung dass L1 von TRANSITION zu TIGHTENING shiften könnte wenn Dollar steigt (L4 DXY aktuell neutral, 50.0th pctl). Der CIO behandelt IC als Lagging, sollte es aber als Leading behandeln.",
+      "challenge_text": "Risk Officer meldet HYG 28.8% als CRITICAL (RO-20260304-003), CIO sagt \"V16-Gewicht ist Regime-Folge, nicht Regime-Fehler\" und \"Konzentration im Design-Rahmen\". Praemissen-Angriff: Der CIO nimmt an \"im Design-Rahmen\" = \"akzeptables Risiko\". Aber Risk Officer Base Severity war WARNING, Boost zu CRITICAL kam durch EVENT_IMMINENT (NFP in 48h). Das bedeutet: Konzentration ist NICHT im Design-Rahmen fuer Event-Days. V16 Design optimiert fuer Regime-Trends (Wochen/Monate), nicht fuer Event-Volatilitaet (Stunden/Tage). An normalen Tagen ist HYG 28.8% manageable (Sharpe 2.74, MaxDD -10.78% historisch). An NFP-Tagen ist HYG 28.8% ein TAIL-RISK-AMPLIFIER — wenn Credit Spreads intraday um 20-30bps swingen (historisch bei >2-Sigma-NFP), entspricht das ~2-3% HYG-Move, was bei 28.8% Gewicht ~0.8% Portfolio-Impact ist. Bei aktuellem DD -1.11% waere das -1.9% Gesamt-DD, noch weit von -10% DD-Protect entfernt. ABER: CIO sagt \"bereite mentale Stop-Loss-Schwelle vor bei -5% DD\" (A1) = CIO erkennt implizit dass Event-Day-Konzentration NICHT im normalen Design-Rahmen liegt. Risk Officer ist konsistent, CIO-Praemisse ist inkonsistent.",
       "evidence": [
-        "CIO S4 OBS-2: \"Epistemische Regel: Howell und Market Analyst teilen Datenbasis (teilweise zirkulär). IC-Consensus hat BEGRENZTEN Bestätigungswert vs. L1.\"",
-        "CIO S5: \"IC LIQUIDITY -0.77 — Bestätigung: Market Analyst L1 score 0 (TRANSITION)\"",
-        "CIO S5: \"IC FED_POLICY -2.13 — Bestätigung: Market Analyst L7 score 0 (NEUTRAL)\"",
-        "Pre-Processor: 8x IC_HIGH_NOVELTY_OMISSION, source howell, Novelty 7, Significance HIGH",
-        "Howell claim_20260305_howell_006: \"US dollar strength will likely dampen liquidity conditions in next reporting period\" (Novelty 7)",
-        "Market Analyst L1: Net Liquidity 50.0th pctl (flat), L4 DXY 50.0th pctl (neutral)"
+        "Risk Officer Base Severity WARNING, Boost EVENT_IMMINENT → CRITICAL = System unterscheidet zwischen Normal-Day-Risk und Event-Day-Risk",
+        "V16 Performance-Metriken (Sharpe 2.74, MaxDD -10.78%) sind TREND-basiert, nicht EVENT-basiert (keine Intraday-Volatilitaet-Metrik)",
+        "CIO A1 \"bereite mentale Stop-Loss bei -5% DD\" = implizite Anerkennung dass -10% DD-Protect zu weit weg ist fuer Event-Day-Risk",
+        "HYG historische Intraday-Volatilitaet an NFP-Tagen (nicht im Briefing, aber bekannt) ~2-3x hoeher als normale Tage",
+        "Market Analyst L2 und L7 haben NFP als REDUCE_CONVICTION markiert = System-weite Erkennung dass Events Unsicherheit schaffen"
       ],
       "severity": "MODERATE",
       "is_persistent": false,
@@ -90,17 +84,15 @@
     {
       "id": "da_20260306_005",
       "type": "UNASKED_QUESTION",
-      "target_section": "S7",
+      "target_section": "SYSTEM",
       "target_assumption": null,
-      "challenge_text": "A1 (HYG-Review) fragt \"Covered Call Overlay möglich?\" und sagt \"F6 UNAVAILABLE, aber manuell prüfbar.\" Die ungestellte Frage: Warum ist F6 seit 4 Tagen UNAVAILABLE, und was ist der Expected Loss wenn F6 weitere 7+ Tage UNAVAILABLE bleibt (bis CPI 2026-03-11)? F6 ist nicht nur \"Stock Picker\" — F6 ist auch \"Covered Call Overlay\" (Income Generation). Wenn F6 UNAVAILABLE, dann fehlt nicht nur Equity-Exposure (SPY 0%), sondern auch Income-Generation (Covered Calls). Das Portfolio ist 100% V16 = kein Income außer HYG-Yield. Wenn HYG-Konzentration CRITICAL ist (28.8%), dann ist Income-Konzentration auch CRITICAL (100% aus HYG, 0% aus Covered Calls). Die Frage: Was ist der Opportunity Cost von F6-Ausfall? Annahme: F6 generiert ~0.5-1.0% monatlich aus Covered Calls (typisch für 21-Tage-Holding). 4 Tage Ausfall = ~0.07-0.13% Opportunity Cost. 11 Tage Ausfall (bis CPI) = ~0.18-0.37% Opportunity Cost. Das ist nicht trivial bei einem Portfolio mit CAGR 34.48%. Und: Wenn F6 bis CPI UNAVAILABLE bleibt, dann hat der Operator KEINE Equity-Exposure während NFP/ECB/CPI (drei Tier-1-Events). V16 ist 0% SPY (Defensive Tilt). Das bedeutet: Portfolio ist UNDEREXPOSED zu Equity-Upside wenn NFP/ECB bullish. Der CIO sagt \"F6-Status außerhalb CIO-Kontrolle\" — aber der Expected Loss von F6-Ausfall sollte quantifiziert werden. A5 (Post-Event-Review) sollte fragen: \"Was wäre Portfolio-Performance wenn F6 aktiv gewesen wäre?\" Das ist die Kosten-Seite von System-Redundanz.",
+      "challenge_text": "Alle Systeme melden LOW Conviction oder CONFLICTED (Market Analyst NEUTRAL LOW Conviction, IC LOW Confidence, Risk Officer erste Erfassung ohne Trend-Daten, F6 UNAVAILABLE). CIO interpretiert das als \"epistemische Unsicherheit\" und \"die Systeme haben keine Meinung\". Ungestellte Frage: Was wenn LOW Conviction selbst ein REGIME-SIGNAL ist? Historisch (Hussman, Grantham): Perioden mit niedriger Conviction und flachen Signalen sind oft LATE-CYCLE-PHASEN — Markt ist \"too calm\", Volatilitaet compressed, alle warten auf Katalyst. V16 sagt LATE_EXPANSION (Macro State 3), Market Analyst L8 (Tail Risk) sagt CALM. Das ist konsistent mit \"Ruhe vor dem Sturm\". Wenn NFP der Katalyst ist der compressed Volatilitaet released, dann ist LOW Conviction HEUTE ein bullish Signal fuer Volatilitaet MORGEN. CIO behandelt LOW Conviction als \"wir wissen nichts\" — alternative Lesart: \"der Markt weiss nichts, und das ist selbst Information\". VIX-Niveau nicht im Briefing, aber wenn VIX <15 waere (typisch fuer CALM Regime), waere das Confirmation. CIO hat keine Mechanik um \"LOW Conviction = compressed Vol = mean reversion imminent\" zu testen.",
       "evidence": [
-        "F6 Production: status UNAVAILABLE (seit 4 Tagen laut CIO S1)",
-        "CIO S6: \"F6 UNAVAILABLE (seit 4 Tagen). Portfolio ist 100% V16-getrieben.\"",
-        "CIO S7 A1: \"Covered Call Overlay möglich? (F6 UNAVAILABLE, aber manuell prüfbar)\"",
-        "V16: Current Weights SPY 0%, XLY 0%, XLI 0%, XLF 0%, XLE 0%, IWM 0%, XLK 0%, XLV 0%",
-        "V16 Performance: CAGR 34.48%, Sharpe 2.74",
-        "F6 typische Strategie: Stock Picker + Covered Call Overlay, 21-Tage-Holding",
-        "CIO S2: \"Heute NFP+ECB, 2026-03-11 CPI (Tier 1 Events)\""
+        "Market Analyst System Regime NEUTRAL, alle Layer-Scores nahe Null = flache Signale",
+        "V16 Regime SELECTIVE (Late Expansion) + Stress Score 0 = kein akuter Stress, aber Wachstum verlangsamt",
+        "Market Analyst L8 (Tail Risk) Score +2, Regime CALM = System sieht keine Tail-Risks",
+        "IC Confidence LOW bis NO_DATA fuer alle Macro-Themen = keine starken Meinungen im Markt",
+        "CIO sagt \"Event-Day Data Void\" (S4 Pattern) = Datenluecke an Tag mit hoher erwarteter Volatilitaet = Anomalie die selbst Signal sein koennte"
       ],
       "severity": "MODERATE",
       "is_persistent": false,
@@ -112,146 +104,6 @@
   "preprocessor_flags_unused": [
     {
       "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von forward_guidance (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
       "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
       "significance": "HIGH"
     },
@@ -266,573 +118,63 @@
       "significance": "HIGH"
     },
     {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von damped_spring (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von damped_spring (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von damped_spring (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von hidden_forces (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von hidden_forces (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von luke_gromen (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von luke_gromen (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von luke_gromen (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von luke_gromen (Novelty 7) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von lyn_alden (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von lyn_alden (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von macro_alf (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hussman (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von crescat (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von crescat (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
@@ -848,21 +190,6 @@
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
       "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
@@ -892,74 +219,24 @@
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von damped_spring (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von damped_spring (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von damped_spring (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von damped_spring (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von damped_spring (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von luke_gromen (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von luke_gromen (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von luke_gromen (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     }
   ],
   "persistent_challenges_renewed": [],
   "confidence_saturation": {
     "active": false,
-    "score": 0.35,
+    "score": 0.2,
     "components": {
       "all_ampeln_green": false,
       "all_layers_aligned": false,
       "ic_consensus_high": false,
-      "conviction_high": true,
+      "conviction_high": false,
       "no_divergences": true,
       "fragility_healthy": true,
       "briefing_routine": false
     },
-    "interpretation": "Confidence Saturation bei 35% — unter Schwelle (85%)."
+    "interpretation": "Confidence Saturation bei 20% — unter Schwelle (85%)."
   },
   "metadata": {
     "total_challenges": 5,
@@ -975,11 +252,11 @@
     },
     "persistent_renewed": 0,
     "forced_decisions": 0,
-    "preprocessor_flags_total": 175,
-    "preprocessor_flags_used": 8,
+    "preprocessor_flags_total": 29,
+    "preprocessor_flags_used": 5,
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_temperature": 0.4,
     "llm_attempt": 1,
-    "generation_time_seconds": 85.4
+    "generation_time_seconds": 77.8
   }
 }
