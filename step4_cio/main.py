@@ -287,14 +287,14 @@ def load_all_inputs(drive_service, sheets_service) -> dict:
         else:
             inputs["cio_history"] = None
 
-        # Yesterday's briefing (from Drive CURRENT/ — step6_cio_final.json is overwritten daily)
-        yesterday = read_drive_json(drive_service, "step6_cio_final.json", CURRENT_FOLDER_ID)
-        if yesterday and yesterday.get("date") != date.today().isoformat():
+        # Yesterday's briefing (from Git archive — more reliable than Drive CURRENT/)
+        yesterday = _read_yesterday_archive()
+        if yesterday:
             inputs["yesterday_briefing"] = yesterday
             logger.info(f"  yesterday_briefing: LOADED (date={yesterday.get('date')})")
         else:
             inputs["yesterday_briefing"] = None
-            logger.info("  yesterday_briefing: MISSING (same day or not found)")
+            logger.info("  yesterday_briefing: MISSING (no archive for yesterday)")
 
     else:
         logger.warning("No Drive service — using empty inputs for non-V16 data")
@@ -320,6 +320,58 @@ def _find_folder(service, name: str, parent_id: str) -> str | None:
         files = results.get("files", [])
         return files[0]["id"] if files else None
     except Exception:
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Local Archive Helpers (Git-based archiving)
+# ---------------------------------------------------------------------------
+def _write_local_archive(data: dict, filename: str) -> None:
+    """Write JSON to archive/YYYY-MM-DD/ for Git-based archiving."""
+    try:
+        today_str = date.today().isoformat()
+        archive_dir = os.path.join(os.path.dirname(BASE_DIR), "archive", today_str)
+        os.makedirs(archive_dir, exist_ok=True)
+        archive_path = os.path.join(archive_dir, filename)
+        with open(archive_path, "w") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False, default=str)
+        logger.info(f"Local archive: archive/{today_str}/{filename}")
+    except Exception as e:
+        logger.warning(f"Local archive write failed (non-fatal): {e}")
+
+
+def _write_local_archive_text(text: str, filename: str) -> None:
+    """Write text file to archive/YYYY-MM-DD/ for Git-based archiving."""
+    try:
+        today_str = date.today().isoformat()
+        archive_dir = os.path.join(os.path.dirname(BASE_DIR), "archive", today_str)
+        os.makedirs(archive_dir, exist_ok=True)
+        archive_path = os.path.join(archive_dir, filename)
+        with open(archive_path, "w", encoding="utf-8") as f:
+            f.write(text)
+        logger.info(f"Local archive: archive/{today_str}/{filename}")
+    except Exception as e:
+        logger.warning(f"Local archive text write failed (non-fatal): {e}")
+
+
+def _read_yesterday_archive() -> dict | None:
+    """Read yesterday's CIO Final from Git archive. Returns dict or None."""
+    from datetime import timedelta
+    try:
+        # Try yesterday first, then day before (weekends/holidays)
+        for days_back in range(1, 5):
+            check_date = (date.today() - timedelta(days=days_back)).isoformat()
+            archive_path = os.path.join(
+                os.path.dirname(BASE_DIR), "archive", check_date, "step6_cio_final.json"
+            )
+            if os.path.exists(archive_path):
+                with open(archive_path, "r") as f:
+                    data = json.load(f)
+                logger.info(f"  yesterday_briefing: Found archive/{check_date}/step6_cio_final.json")
+                return data
+        return None
+    except Exception as e:
+        logger.warning(f"Yesterday archive read failed: {e}")
         return None
 
 
@@ -391,6 +443,12 @@ def main():
             except Exception as e:
                 logger.error(f"Draft Drive write failed: {e}")
 
+        # Archive Draft locally (committed by GitHub Actions)
+        _write_local_archive(
+            {k: v for k, v in cio_output.items() if k != "preprocessor_output"},
+            "step4_cio_draft.json",
+        )
+
         # THEN: Promote Draft to Final (DA not built yet → V1 behavior)
         logger.info("=" * 60)
         logger.info("CIO FINAL (Step 6) — DA not available, promoting Draft")
@@ -411,6 +469,16 @@ def main():
                 write_drive_text(drive_service, final_output["briefing_text"], "step6_cio_final_memo.md")
             except Exception as e:
                 logger.error(f"Final Drive write failed: {e}")
+
+        # Archive Final locally (committed by GitHub Actions)
+        _write_local_archive(
+            {k: v for k, v in final_output.items() if k != "preprocessor_output"},
+            "step6_cio_final.json",
+        )
+        _write_local_archive_text(
+            final_output.get("briefing_text", ""),
+            "step6_cio_final_memo.md",
+        )
 
         # Write CIO History Digest to Drive HISTORY/
         if drive_service:
@@ -468,6 +536,16 @@ def main():
             drive_data = {k: v for k, v in final_output.items() if k != "preprocessor_output"}
             write_drive_json(drive_service, drive_data, "step6_cio_final.json")
             write_drive_text(drive_service, final_output["briefing_text"], "step6_cio_final_memo.md")
+
+        # Archive Final locally (committed by GitHub Actions)
+        _write_local_archive(
+            {k: v for k, v in final_output.items() if k != "preprocessor_output"},
+            "step6_cio_final.json",
+        )
+        _write_local_archive_text(
+            final_output.get("briefing_text", ""),
+            "step6_cio_final_memo.md",
+        )
 
         if sheets_service:
             write_agent_summary(sheets_service, final_output, "final")
