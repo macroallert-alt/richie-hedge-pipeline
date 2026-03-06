@@ -672,18 +672,37 @@ def update_action_item_tracking(existing_items: list, new_items: list,
                 f"trigger no longer active"
             )
 
-    # Add new items (dedup)
-    existing_descs = {i.get("description", "").lower()[:50] for i in updated}
+    # Add new items (dedup by AI-ID prefix like "AI-1:", "W-2:", or description)
+    existing_ids = set()
+    for i in updated:
+        desc = i.get("description", "")
+        ai_id = _extract_ai_id(desc)
+        if ai_id:
+            existing_ids.add(ai_id)
+        else:
+            existing_ids.add(desc.lower()[:50])
+
     for new_item in new_items:
-        desc_key = new_item.get("description", "").lower()[:50]
-        if desc_key not in existing_descs:
+        desc = new_item.get("description", "")
+        ai_id = _extract_ai_id(desc)
+        dedup_key = ai_id if ai_id else desc.lower()[:50]
+        if dedup_key not in existing_ids:
             new_item["days_open"] = 1
             new_item["trigger_still_active"] = True
             new_item["status"] = "OPEN"
             updated.append(new_item)
-            existing_descs.add(desc_key)
+            existing_ids.add(dedup_key)
 
     return updated
+
+
+def _extract_ai_id(description: str):
+    """Extract AI-1, AI-10, W-1, WL-3 etc. from description for dedup."""
+    import re
+    match = re.match(r'((?:AI|WL|DF|W|A)-?\d+)', description)
+    if match:
+        return match.group(1).upper()
+    return None
 
 
 def _is_trigger_still_active(item: dict, inputs: dict,
