@@ -1,6 +1,6 @@
 """
 step_0r_router_data_signal_generator/fetcher.py
-Fetches Router raw data from yfinance and FRED.
+Fetches Router raw data from yfinance, FRED, and V16 Sheet.
 """
 
 import json
@@ -15,6 +15,9 @@ import yfinance as yf
 from fredapi import Fred
 
 logger = logging.getLogger("router_data.fetcher")
+
+# V16 Production Sheet
+V16_SHEET_ID = "11xoZ-E-W0eG23V_HSKloqzC4ubLYg9pfcf6k7HJ0oSE"
 
 
 class RouterFetcher:
@@ -99,32 +102,56 @@ class RouterFetcher:
             logger.error(f"FRED {series_id} fetch failed: {e}")
             return None
 
-    def read_credit_impulse_from_dashboard(self) -> Optional[float]:
+    def read_credit_impulse_from_v16_sheet(self) -> Optional[float]:
         """
-        Read V16 Credit Impulse from dashboard.json (local file).
-        The V16 Daily Runner writes this daily.
+        Read Credit Impulse from V16 Production Sheet.
+        Tab: DATA_K16_K17, Column E (Credit_Impulse), newest row (prepend_row mode).
+        Uses the same GOOGLE_CREDENTIALS as Drive writes.
         """
-        dashboard_path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            "data", "dashboard", "latest.json",
-        )
-
         try:
-            if not os.path.exists(dashboard_path):
-                logger.warning(f"dashboard.json not found at {dashboard_path}")
+            creds_json = os.environ.get("GOOGLE_CREDENTIALS", "")
+            if not creds_json:
+                logger.warning("GOOGLE_CREDENTIALS not set — cannot read V16 Sheet")
                 return None
 
-            with open(dashboard_path, "r", encoding="utf-8") as f:
-                dashboard = json.load(f)
+            from google.oauth2 import service_account
+            from googleapiclient.discovery import build
 
-            v16 = dashboard.get("v16", {})
-            ci = v16.get("credit_impulse")
-            if ci is not None:
-                logger.info(f"  Credit Impulse from dashboard: {ci:.6f}")
-                return float(ci)
-            else:
-                logger.warning("Credit Impulse not found in dashboard.json v16 block")
+            creds_info = json.loads(creds_json)
+            creds = service_account.Credentials.from_service_account_info(
+                creds_info, scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"]
+            )
+            sheets = build("sheets", "v4", credentials=creds)
+
+            # Read rows 2-6 (header in row 1, newest data near top due to prepend)
+            range_str = "DATA_K16_K17!A2:E6"
+            result = sheets.spreadsheets().values().get(
+                spreadsheetId=V16_SHEET_ID,
+                range=range_str,
+                valueRenderOption="UNFORMATTED_VALUE",
+            ).execute()
+
+            rows = result.get("values", [])
+            if not rows:
+                logger.warning("V16 Sheet DATA_K16_K17: no data rows returned")
                 return None
+
+            # Find first row with a valid Credit_Impulse value (column E = index 4)
+            for row in rows:
+                if len(row) >= 5:
+                    ci_raw = row[4]
+                    row_date = row[0] if len(row) > 0 else "?"
+                    if ci_raw is not None and ci_raw != "" and ci_raw != 0:
+                        try:
+                            ci_val = float(ci_raw)
+                            logger.info(f"  Credit Impulse from V16 Sheet: {ci_val:.6f} (date: {row_date})")
+                            return ci_val
+                        except (ValueError, TypeError):
+                            continue
+
+            logger.warning("V16 Sheet DATA_K16_K17: no valid Credit_Impulse found in rows 2-6")
+            return None
+
         except Exception as e:
-            logger.warning(f"Dashboard read failed: {e}")
+            logger.warning(f"V16 Sheet Credit Impulse read failed: {e}")
             return None

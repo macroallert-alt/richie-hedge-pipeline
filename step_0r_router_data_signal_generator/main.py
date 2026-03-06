@@ -152,8 +152,8 @@ def main():
     # 1b: FRED BAMLEM
     bamlem_result = fetcher.fetch_fred_bamlem()
 
-    # 1c: Credit Impulse from dashboard
-    credit_impulse = fetcher.read_credit_impulse_from_dashboard()
+    # 1c: Credit Impulse from V16 Sheet (DATA_K16_K17, column E)
+    credit_impulse = fetcher.read_credit_impulse_from_v16_sheet()
 
     # ================================================================
     # PHASE 2: UPDATE CACHE
