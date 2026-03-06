@@ -20,6 +20,14 @@ HISTORY_JSON = "router_history.json"
 MAX_HISTORY_DAYS = 400  # Keep ~16 months for 252d returns + buffer
 
 
+def _normalize_ts(ts):
+    """Convert any timestamp to tz-naive for consistent indexing."""
+    ts = pd.Timestamp(ts)
+    if ts.tzinfo is not None:
+        ts = ts.tz_convert("UTC").tz_localize(None)
+    return ts
+
+
 class RouterHistoryCache:
     """Manages price history for Router data calculations."""
 
@@ -64,7 +72,16 @@ class RouterHistoryCache:
         if not self.data:
             return
 
-        df = pd.DataFrame(self.data)
+        # Normalize all series to tz-naive before building DataFrame
+        normalized = {}
+        for key, series in self.data.items():
+            if series is not None and len(series) > 0:
+                idx = series.index
+                if hasattr(idx, "tz") and idx.tz is not None:
+                    idx = idx.tz_convert("UTC").tz_localize(None)
+                normalized[key] = pd.Series(series.values, index=idx, dtype=float)
+
+        df = pd.DataFrame(normalized)
 
         parquet_path = os.path.join(self.cache_dir, HISTORY_FILE)
         try:
@@ -95,7 +112,7 @@ class RouterHistoryCache:
     def update(self, field_name: str, value: float, dt: datetime = None):
         if value is None:
             return
-        ts = pd.Timestamp(dt or datetime.now())
+        ts = _normalize_ts(dt or datetime.now())
         if field_name not in self.data:
             self.data[field_name] = pd.Series(dtype=float)
         self.data[field_name][ts] = value
@@ -108,7 +125,8 @@ class RouterHistoryCache:
             self.data[field_name] = pd.Series(dtype=float)
         for idx, val in df_series.items():
             if pd.notna(val):
-                self.data[field_name][pd.Timestamp(idx)] = float(val)
+                ts = _normalize_ts(idx)
+                self.data[field_name][ts] = float(val)
 
     def get(self, field_name: str) -> Optional[pd.Series]:
         s = self.data.get(field_name)
