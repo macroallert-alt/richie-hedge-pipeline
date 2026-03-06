@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -43,12 +45,14 @@ jobs:
           PROXY_URL: ${{ secrets.PROXY_URL }}
         run: python -m step_0i_ic_pipeline.main --stage ${{ github.event.inputs.stage || 'all' }}
 
-      - name: Commit state updates
+      - name: Commit state updates + archive
         run: |
           git config user.name "IC Pipeline"
           git config user.email "ic@pipeline.local"
           git add step_0i_ic_pipeline/data/history/beliefs.json
           git add step_0i_ic_pipeline/data/history/fetch_state.json
           git add data/dashboard/latest.json
-          git diff --staged --quiet || git commit -m "IC: Update state + dashboard $(date +%Y-%m-%d)"
+          git add archive/
+          git diff --staged --quiet || git commit -m "IC: Update state + dashboard + archive $(date +%Y-%m-%d)"
+          git pull --rebase
           git push

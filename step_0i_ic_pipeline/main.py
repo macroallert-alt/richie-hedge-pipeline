@@ -140,18 +140,11 @@ def write_drive_outputs(
         _upload_to_drive(service, briefing, "step0b_ic_briefing.json", current_id)
         logger.info("Drive: CURRENT/ updated")
 
-        # Write to HISTORY/ic/YYYY-MM-DD/ — disabled until P1 (SA quota fix)
-        # try:
-        #     history_id = _find_or_create_folder(service, "HISTORY", DRIVE_ROOT_ID)
-        #     ic_history_id = _find_or_create_folder(service, "ic", history_id)
-        #     day_id = _find_or_create_folder(service, today_str, ic_history_id)
-        #     _upload_to_drive(service, intel, "step0b_ic_intelligence.json", day_id)
-        #     _upload_to_drive(service, claims_output, "step0b_ic_claims.json", day_id)
-        #     _upload_to_drive(service, briefing, "step0b_ic_briefing.json", day_id)
-        #     logger.info(f"Drive: HISTORY/ic/{today_str}/ archived")
-        # except Exception as hist_err:
-        #     logger.warning(f"Drive HISTORY write skipped: {hist_err}")
-        logger.info("Drive: HISTORY write disabled (P1 — SA quota fix pending)")
+        # Write to HISTORY/ic/YYYY-MM-DD/ via local archive (committed by GitHub Actions)
+        _write_local_archive(claims_output, "step0b_ic_claims.json", today_str)
+        _write_local_archive(intel, "step0b_ic_intelligence.json", today_str)
+        _write_local_archive(briefing, "step0b_ic_briefing.json", today_str)
+        logger.info(f"Local archive: archive/{today_str}/ (3 files)")
 
     except ImportError:
         logger.warning("Google API libraries not installed — Drive writes skipped")
@@ -159,9 +152,20 @@ def write_drive_outputs(
         logger.error(f"Drive write failed: {e}")
 
 
-# ---------------------------------------------------------------------------
-# Google Sheets Output
-# ---------------------------------------------------------------------------
+def _write_local_archive(data: dict, filename: str, date_str: str) -> None:
+    """Write JSON to archive/YYYY-MM-DD/ for Git-based archiving."""
+    try:
+        archive_dir = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "archive", date_str,
+        )
+        os.makedirs(archive_dir, exist_ok=True)
+        archive_path = os.path.join(archive_dir, filename)
+        with open(archive_path, "w") as f:
+            json.dump(data, f, indent=2)
+        logger.info(f"  Local archive: archive/{date_str}/{filename}")
+    except Exception as e:
+        logger.warning(f"  Local archive write failed (non-fatal): {e}")
 DW_SHEET_ID = "1sZeZ4VVztAqjBjyfXcCfhpSWJ4pCGF8ip1ksu_TYMHY"
 
 
