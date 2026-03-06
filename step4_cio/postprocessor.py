@@ -21,6 +21,29 @@ logger = logging.getLogger("cio_postprocessor")
 
 
 # ==========================================================================
+# SECTION MARKER HELPER — flexible matching for LLM output variations
+# ==========================================================================
+
+def _find_section_start(text: str, section_num: int) -> int:
+    """Find the start position of a section marker like ## S7: or ## S7 (flexible).
+    Returns -1 if not found."""
+    # Try exact first: ## S7:
+    exact = f"## S{section_num}:"
+    if exact in text:
+        return text.index(exact)
+    # Flexible: ## S7 followed by space, dash, or newline (no colon)
+    match = re.search(rf'##\s*S{section_num}[\s:\-—]', text)
+    if match:
+        return match.start()
+    return -1
+
+
+def _section_present(text: str, section_num: int) -> bool:
+    """Check if a section marker is present (flexible)."""
+    return _find_section_start(text, section_num) >= 0
+
+
+# ==========================================================================
 # SECTION PARSING (used by engine.py and dashboard_update.py)
 # ==========================================================================
 
@@ -61,7 +84,7 @@ def extract_sections(briefing_text: str) -> list:
     """Return list of section markers present, e.g. ['S1', 'S2', ...]."""
     found = []
     for i in range(1, 8):
-        if f"## S{i}:" in briefing_text:
+        if _section_present(briefing_text, i):
             found.append(f"S{i}")
     return found
 
@@ -104,10 +127,10 @@ def validate_output(briefing_text: str, is_final: bool = False) -> tuple:
     """
     errors = []
 
-    # Required sections
+    # Required sections (flexible matching)
     for i in range(1, 8):
-        if f"## S{i}:" not in briefing_text:
-            errors.append(f"MISSING_SECTION: ## S{i}:")
+        if not _section_present(briefing_text, i):
+            errors.append(f"MISSING_SECTION: S{i}")
 
     # Header line present (within first 300 chars)
     header_area = briefing_text[:300]
@@ -121,23 +144,31 @@ def validate_output(briefing_text: str, is_final: bool = False) -> tuple:
             # Only warn — draft-as-final won't have this
             pass
 
-    # Minimum length per section
+    # Minimum length per section (using flexible start positions)
     for i in range(1, 8):
-        marker = f"## S{i}:"
-        next_marker = f"## S{i + 1}:" if i < 7 else "KEY ASSUMPTIONS"
+        s_start = _find_section_start(briefing_text, i)
+        if s_start < 0:
+            continue
 
-        if marker in briefing_text:
-            start = briefing_text.index(marker)
-            if next_marker and next_marker in briefing_text:
-                end = briefing_text.index(next_marker)
-            else:
-                end = len(briefing_text)
+        # Find end: next section or KEY ASSUMPTIONS
+        s_end = len(briefing_text)
+        if i < 7:
+            next_start = _find_section_start(briefing_text, i + 1)
+            if next_start >= 0:
+                s_end = next_start
+        else:
+            # S7: look for KEY ASSUMPTIONS or end
+            for end_marker in ("KEY ASSUMPTIONS", "DEVIL'S ADVOCATE", "---\n"):
+                pos = briefing_text.find(end_marker, s_start)
+                if pos >= 0:
+                    s_end = pos
+                    break
 
-            section_content = briefing_text[start:end]
-            word_count = len(section_content.split())
+        section_content = briefing_text[s_start:s_end]
+        word_count = len(section_content.split())
 
-            if word_count < 10:
-                errors.append(f"SECTION_TOO_SHORT: S{i} ({word_count} words)")
+        if word_count < 10:
+            errors.append(f"SECTION_TOO_SHORT: S{i} ({word_count} words)")
 
     return (len(errors) == 0, errors)
 
@@ -1159,26 +1190,32 @@ def generate_fallback_briefing(preprocessor_output: dict | None,
 # ==========================================================================
 
 def _extract_section_text(briefing_text: str, section_id: str) -> str:
-    """Extract text for a specific section (e.g. 'S7')."""
-    num = section_id.replace("S", "")
-    start_marker = f"## S{num}:"
-    next_num = int(num) + 1
-    end_marker = f"## S{next_num}:" if next_num <= 7 else "KEY ASSUMPTIONS"
+    """Extract text for a specific section (e.g. 'S7'). Flexible marker matching."""
+    num = int(section_id.replace("S", ""))
 
-    if start_marker not in briefing_text:
+    s_start = _find_section_start(briefing_text, num)
+    if s_start < 0:
         return ""
 
-    start = briefing_text.index(start_marker) + len(start_marker)
-
-    if end_marker and end_marker in briefing_text:
-        end = briefing_text.index(end_marker)
+    # Skip past the marker line itself
+    newline_pos = briefing_text.find("\n", s_start)
+    if newline_pos >= 0:
+        content_start = newline_pos + 1
     else:
-        # Try other end markers
-        for alt_end in ("KEY ASSUMPTIONS", "DEVIL'S ADVOCATE", "---\n"):
-            if alt_end in briefing_text[start:]:
-                end = start + briefing_text[start:].index(alt_end)
-                break
-        else:
-            end = len(briefing_text)
+        content_start = s_start
 
-    return briefing_text[start:end].strip()
+    # Find end: next section or end markers
+    s_end = len(briefing_text)
+    next_num = num + 1
+    if next_num <= 7:
+        next_start = _find_section_start(briefing_text, next_num)
+        if next_start >= 0:
+            s_end = next_start
+    else:
+        for end_marker in ("KEY ASSUMPTIONS", "DEVIL'S ADVOCATE", "---\n"):
+            pos = briefing_text.find(end_marker, content_start)
+            if pos >= 0:
+                s_end = pos
+                break
+
+    return briefing_text[content_start:s_end].strip()
