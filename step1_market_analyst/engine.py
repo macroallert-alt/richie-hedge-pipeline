@@ -595,14 +595,24 @@ def write_json_to_drive(drive_service, output):
         if current_id:
             _upload_or_replace(drive_service, current_id, filename, json_bytes)
             log.info(f"  Drive CURRENT/{filename} written")
-        archive_id = _find_folder(drive_service, "ARCHIVE", DRIVE_ROOT_ID)
-        if archive_id:
-            date_folder_id = _find_or_create_folder(drive_service, output["date"], archive_id)
-            _upload_or_replace(drive_service, date_folder_id, filename, json_bytes)
-            log.info(f"  Drive ARCHIVE/{output['date']}/{filename} written")
+        # Archive to local filesystem (committed by GitHub Actions)
+        _write_local_archive(output, filename)
     except Exception as e:
         log.warning(f"  Drive write failed (non-fatal): {e}")
         log.warning("  Sheet outputs were written successfully — Drive archive skipped")
+
+
+def _write_local_archive(output, filename):
+    """Write JSON to archive/YYYY-MM-DD/ for Git-based archiving."""
+    try:
+        archive_dir = Path(__file__).parent.parent / "archive" / output["date"]
+        archive_dir.mkdir(parents=True, exist_ok=True)
+        archive_path = archive_dir / filename
+        with open(archive_path, "w") as f:
+            json.dump(output, f, indent=2, default=str)
+        log.info(f"  Local archive: archive/{output['date']}/{filename}")
+    except Exception as e:
+        log.warning(f"  Local archive write failed (non-fatal): {e}")
 
 
 # ============================================================
