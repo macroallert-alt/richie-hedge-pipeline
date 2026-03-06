@@ -1,0 +1,75 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-06",
+        "notes": "Assets and FRED series for Conviction Router data feed."
+    },
+    "yfinance_assets": {
+        "VWO": {
+            "ticker": "VWO",
+            "description": "Vanguard FTSE Emerging Markets ETF",
+            "router_trigger": "EM_BROAD",
+            "needs_ma": [50, 200],
+            "needs_returns": [63, 126, 252]
+        },
+        "FXI": {
+            "ticker": "FXI",
+            "description": "iShares China Large-Cap ETF",
+            "router_trigger": "CHINA_STIMULUS",
+            "needs_ma": [50, 200],
+            "needs_returns": [63, 126]
+        },
+        "SPY": {
+            "ticker": "SPY",
+            "description": "S&P 500 ETF — relative performance baseline",
+            "router_trigger": "ALL",
+            "needs_ma": [],
+            "needs_returns": [63, 126]
+        },
+        "DBC": {
+            "ticker": "DBC",
+            "description": "Invesco DB Commodity Tracking",
+            "router_trigger": "COMMODITY_SUPER",
+            "needs_ma": [],
+            "needs_returns": [63, 126]
+        },
+        "GLD": {
+            "ticker": "GLD",
+            "description": "SPDR Gold Shares",
+            "router_trigger": "COMMODITY_SUPER",
+            "needs_ma": [],
+            "needs_returns": [126]
+        },
+        "DXY": {
+            "ticker": "DX-Y.NYB",
+            "description": "US Dollar Index",
+            "router_trigger": "EM_BROAD",
+            "needs_ma": [],
+            "needs_returns": [63, 126]
+        },
+        "USDCNH": {
+            "ticker": "CNH=X",
+            "description": "USD/CNH Offshore Yuan",
+            "router_trigger": "CHINA_STIMULUS",
+            "needs_ma": [],
+            "needs_returns": [63]
+        }
+    },
+    "fred_series": {
+        "BAMLEM": {
+            "series_id": "BAMLEMCBPIOAS",
+            "description": "ICE BofA EM Corporate Bond OAS",
+            "router_trigger": "EM_BROAD",
+            "unit": "percent",
+            "needs_delta": [63]
+        }
+    },
+    "credit_impulse": {
+        "source": "dashboard_json",
+        "path": "v16.credit_impulse",
+        "description": "V16 Credit Impulse — read from dashboard.json, compute zscore from own history",
+        "router_trigger": "CHINA_STIMULUS"
+    },
+    "history_days": 300,
+    "min_history_days": 260
+}
