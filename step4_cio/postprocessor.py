@@ -256,18 +256,31 @@ def handle_fact_check_flags(flags: list) -> dict:
 # STEP 3: ACTION ITEMS EXTRACTION (Spec Teil 5 §5.4)
 # ==========================================================================
 
+def _extract_type_from_text(text: str):
+    """Extract ACT/REVIEW/WATCH from inline markers like (ACT, TODAY, OPEN)."""
+    upper = text.upper()
+    if "(ACT," in upper or "(ACT " in upper or ", ACT)" in upper:
+        return "ACT"
+    if "(REVIEW," in upper or "(REVIEW " in upper or ", REVIEW)" in upper:
+        return "REVIEW"
+    if "(WATCH," in upper or "(WATCH " in upper or ", WATCH)" in upper:
+        return "WATCH"
+    return None
+
+
 def extract_action_items(briefing_text: str, preprocessor_output: dict) -> list:
     """Extract action items from S7 into machine-readable JSON.
 
-    Handles two formats:
+    Handles three formats:
     1. Legacy: Lines starting with ACT: / REVIEW: / WATCH:
-    2. LLM format: Section headers (IMMEDIATE/PRE-EVENT/POST-EVENT/ONGOING/WATCHLIST)
-       with items like **A1: ...**, **AI-1: ...**, **WL-1: ...**, or bullet - **Text:**
+    2. LLM format with section headers (IMMEDIATE/PRE-EVENT/POST-EVENT/ONGOING/WATCHLIST)
+    3. LLM self-typed items: **AI-1: Description (ACT, TODAY, OPEN)**
+       — extracts type from inline text when header context is ambiguous
+    Also handles: **W-1: ...** watchlist items, bullet - **Text:** items
     """
     s7_text = _extract_section_text(briefing_text, "S7")
     items = []
 
-    # Determine current section context from headers
     current_type = None
     import re
 
@@ -289,7 +302,6 @@ def extract_action_items(briefing_text: str, preprocessor_output: dict) -> list:
             continue
 
         # --- Section header detection (LLM format) ---
-        # Only match lines that look like headers (ending with :** or similar)
         is_header = line_stripped.endswith(":**") or line_stripped.endswith(":**)")
         if is_header:
             if "IMMEDIATE" in line_upper or "VOR NFP" in line_upper or "<24H" in line_upper:
@@ -307,19 +319,39 @@ def extract_action_items(briefing_text: str, preprocessor_output: dict) -> list:
             if "ONGOING" in line_upper or "MEDIUM-TERM" in line_upper or "7D-30D" in line_upper:
                 current_type = "WATCH"
                 continue
-            if "WATCHLIST" in line_upper and "ACTION" not in line_upper:
-                current_type = "WATCH"
-                continue
             if "DEFERRED" in line_upper:
                 current_type = "WATCH"
                 continue
+            # WATCHLIST header (allow ACTION in surrounding text)
+            if "WATCHLIST" in line_upper:
+                current_type = "WATCH"
+                continue
+            # OFFENE/NEUE ACTION ITEMS — items self-type via inline markers
+            if "OFFENE" in line_upper or "NEUE" in line_upper or "NEW ACTION" in line_upper:
+                current_type = "SELF_TYPE"
+                continue
 
-        # --- LLM item detection: **A1: ...**, **AI-1: ...**, **WL-1: ...** ---
-        item_match = re.match(r'\*\*(?:AI|WL|DF|A)-?\d+[:\s]', line_stripped)
-        if item_match and current_type:
-            # Extract description: remove ** markers
+        # --- AI/A-N item detection ---
+        item_match = re.match(r'\*\*(?:AI|DF|A)-?\d+[:\s]', line_stripped)
+        if item_match:
             desc = re.sub(r'\*\*', '', line_stripped).strip()
-            items.append(_parse_action_item_from_desc(desc, current_type, preprocessor_output))
+            inline_type = _extract_type_from_text(desc)
+            item_type = inline_type or (current_type if current_type != "SELF_TYPE" else None) or "REVIEW"
+            items.append(_parse_action_item_from_desc(desc, item_type, preprocessor_output))
+            continue
+
+        # --- W-N watchlist items ---
+        w_match = re.match(r'\*\*W-?\d+[:\s]', line_stripped)
+        if w_match:
+            desc = re.sub(r'\*\*', '', line_stripped).strip()
+            items.append(_parse_action_item_from_desc(desc, "WATCH", preprocessor_output))
+            continue
+
+        # --- WL-N watchlist items ---
+        wl_match = re.match(r'\*\*WL-?\d+[:\s]', line_stripped)
+        if wl_match:
+            desc = re.sub(r'\*\*', '', line_stripped).strip()
+            items.append(_parse_action_item_from_desc(desc, "WATCH", preprocessor_output))
             continue
 
         # --- Bullet watchlist items: - **Text:** description ---
