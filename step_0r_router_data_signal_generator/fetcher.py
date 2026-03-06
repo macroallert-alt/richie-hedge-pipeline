@@ -3,8 +3,10 @@ step_0r_router_data_signal_generator/fetcher.py
 Fetches Router raw data from yfinance and FRED.
 """
 
+import json
 import logging
 import os
+import time
 from datetime import datetime, timedelta
 from typing import Dict, Optional, Tuple
 
@@ -28,53 +30,40 @@ class RouterFetcher:
         if not fred_key:
             logger.warning("FRED_API_KEY not set — FRED fetches will fail")
 
-    def fetch_yfinance_prices(self) -> Dict[str, pd.DataFrame]:
+    def fetch_yfinance_prices(self) -> Dict[str, pd.Series]:
         """
         Fetch price history for all Router assets via yfinance.
-        Returns dict of {asset_key: DataFrame with 'Close' column}.
-        First run: fetches full history_days.
-        Subsequent runs: fetches 10 days (cache has the rest).
+        Fetches each ticker individually with a short pause to avoid rate limits.
+        Returns dict of {asset_key: pd.Series of close prices}.
         """
         assets = self.config.get("yfinance_assets", {})
-        tickers = {key: cfg["ticker"] for key, cfg in assets.items()}
-
-        # Build ticker string for batch download
-        ticker_list = list(tickers.values())
-        logger.info(f"yfinance: Fetching {len(ticker_list)} assets, {self.history_days}d history")
-
-        try:
-            # Always fetch full history — yfinance is fast for 300d
-            # Cache will merge and deduplicate
-            start_date = (datetime.now() - timedelta(days=self.history_days + 30)).strftime("%Y-%m-%d")
-            data = yf.download(
-                ticker_list,
-                start=start_date,
-                auto_adjust=True,
-                progress=False,
-                threads=True,
-            )
-        except Exception as e:
-            logger.error(f"yfinance batch download failed: {e}")
-            return {}
+        start_date = (datetime.now() - timedelta(days=self.history_days + 30)).strftime("%Y-%m-%d")
+        logger.info(f"yfinance: Fetching {len(assets)} assets individually, {self.history_days}d history")
 
         results = {}
-        for key, ticker in tickers.items():
+        for key, cfg in assets.items():
+            ticker = cfg["ticker"]
             try:
-                if len(ticker_list) == 1:
-                    # Single ticker: data is a simple DataFrame
-                    close = data["Close"]
-                else:
-                    # Multiple tickers: MultiIndex columns
-                    close = data["Close"][ticker]
+                t = yf.Ticker(ticker)
+                hist = t.history(start=start_date, auto_adjust=True)
 
-                if close is not None and not close.dropna().empty:
-                    results[key] = close.dropna()
-                    logger.info(f"  {key:8s} ({ticker:12s}): {len(results[key]):>4d} days, "
-                                f"latest={results[key].iloc[-1]:.4f} ({results[key].index[-1].strftime('%Y-%m-%d')})")
+                if hist is not None and not hist.empty and "Close" in hist.columns:
+                    close = hist["Close"].dropna()
+                    if not close.empty:
+                        results[key] = close
+                        logger.info(
+                            f"  {key:8s} ({ticker:12s}): {len(close):>4d} days, "
+                            f"latest={close.iloc[-1]:.4f} ({close.index[-1].strftime('%Y-%m-%d')})"
+                        )
+                    else:
+                        logger.warning(f"  {key:8s} ({ticker:12s}): NO DATA (empty after dropna)")
                 else:
                     logger.warning(f"  {key:8s} ({ticker:12s}): NO DATA")
             except Exception as e:
                 logger.warning(f"  {key:8s} ({ticker:12s}): ERROR — {e}")
+
+            # Short pause between tickers to avoid rate limiting
+            time.sleep(0.5)
 
         return results
 
@@ -98,8 +87,10 @@ class RouterFetcher:
                 valid = series.dropna()
                 latest_val = float(valid.iloc[-1])
                 latest_date = valid.index[-1].strftime("%Y-%m-%d")
-                logger.info(f"  BAMLEM  ({series_id:12s}): {len(valid):>4d} days, "
-                            f"latest={latest_val:.2f} ({latest_date})")
+                logger.info(
+                    f"  BAMLEM  ({series_id:12s}): {len(valid):>4d} days, "
+                    f"latest={latest_val:.2f} ({latest_date})"
+                )
                 return valid, latest_val, latest_date
             else:
                 logger.warning(f"FRED {series_id}: no data returned")
@@ -123,8 +114,7 @@ class RouterFetcher:
                 logger.warning(f"dashboard.json not found at {dashboard_path}")
                 return None
 
-            import json
-            with open(dashboard_path, "r") as f:
+            with open(dashboard_path, "r", encoding="utf-8") as f:
                 dashboard = json.load(f)
 
             v16 = dashboard.get("v16", {})
