@@ -91,7 +91,7 @@ def run_signal_generator(inputs: dict, config: dict, today: date = None) -> dict
     # ============================================================
     logger.info("")
     logger.info("PHASE 2: Fast Path Check")
-    quick_prox = quick_proximity_check(router_raw_data)
+    quick_prox = quick_proximity_check(router_raw_data, v16_regime)
 
     use_fast_path = (
         router_state.get("current_state", "US_DOMESTIC") == "US_DOMESTIC"

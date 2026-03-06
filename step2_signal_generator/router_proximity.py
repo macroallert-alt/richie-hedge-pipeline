@@ -226,29 +226,44 @@ def _check_signal_group(signal_group: dict, router_raw_data: dict) -> bool:
 # QUICK PROXIMITY CHECK (Fast Path)
 # ============================================================
 
-def quick_proximity_check(router_raw_data: dict) -> float:
+def quick_proximity_check(router_raw_data: dict, v16_regime: str = "UNKNOWN") -> float:
     """
     Fast, rough estimate of max Router proximity.
-    Only checks 2 key indicators per trigger.
+    Only checks 2 key indicators per trigger + regime blockers.
     Spec Teil 4 §21.1
 
     Returns: max proximity across all triggers (0.0-1.0)
     """
     # EM_BROAD: DXY 6M + VWO/SPY relative
-    dxy_6m = _safe_float(get_field_value(router_raw_data, "dxy.delta_126d"), 0.0)
-    vwo_spy = _safe_float(get_field_value(router_raw_data, "relative.vwo_spy_126d"), 0.0)
-    em_prox = min(
-        min(1.0, max(0.0, dxy_6m / -0.05)) if dxy_6m < 0 else 0.0,
-        min(1.0, max(0.0, vwo_spy / 0.10)) if vwo_spy > 0 else 0.0,
-    )
+    # Regime blocker: FULL_EXPANSION, FINANCIAL_CRISIS, DEEP_CONTRACTION → 0
+    em_blocked = v16_regime in ("FULL_EXPANSION", "FINANCIAL_CRISIS", "DEEP_CONTRACTION")
+    if em_blocked:
+        em_prox = 0.0
+    else:
+        dxy_6m = _safe_float(get_field_value(router_raw_data, "dxy.delta_126d"), 0.0)
+        vwo_spy = _safe_float(get_field_value(router_raw_data, "relative.vwo_spy_126d"), 0.0)
+        em_prox = min(
+            min(1.0, max(0.0, dxy_6m / -0.05)) if dxy_6m < 0 else 0.0,
+            min(1.0, max(0.0, vwo_spy / 0.10)) if vwo_spy > 0 else 0.0,
+        )
 
     # CHINA_STIMULUS: Credit Impulse Z-Score
-    china_ci = _safe_float(get_field_value(router_raw_data, "china_credit_impulse.zscore_2y"), 0.0)
-    china_prox = min(1.0, max(0.0, china_ci / 2.0)) if china_ci > 0 else 0.0
+    # Regime blocker: FINANCIAL_CRISIS → 0
+    china_blocked = v16_regime in ("FINANCIAL_CRISIS",)
+    if china_blocked:
+        china_prox = 0.0
+    else:
+        china_ci = _safe_float(get_field_value(router_raw_data, "china_credit_impulse.zscore_2y"), 0.0)
+        china_prox = min(1.0, max(0.0, china_ci / 2.0)) if china_ci > 0 else 0.0
 
     # COMMODITY_SUPER: DBC/SPY relative
-    dbc_spy = _safe_float(get_field_value(router_raw_data, "relative.dbc_spy_126d"), 0.0)
-    comm_prox = min(1.0, max(0.0, dbc_spy / 0.05)) if dbc_spy > 0 else 0.0
+    # Regime blocker: only allowed in LATE_EXPANSION, FRAGILE_EXPANSION → else 0
+    comm_allowed = v16_regime in ("LATE_EXPANSION", "FRAGILE_EXPANSION")
+    if not comm_allowed:
+        comm_prox = 0.0
+    else:
+        dbc_spy = _safe_float(get_field_value(router_raw_data, "relative.dbc_spy_126d"), 0.0)
+        comm_prox = min(1.0, max(0.0, dbc_spy / 0.05)) if dbc_spy > 0 else 0.0
 
     return round(max(em_prox, china_prox, comm_prox), 4)
 
