@@ -1,0 +1,339 @@
+# =============================================================================
+# Devil's Advocate Configuration — V1.0
+# Source: DA Spec Teile 1-4
+# =============================================================================
+
+version: "1.0"
+
+# -----------------------------------------------------------------------------
+# LLM Configuration (Spec Teil 3 §3.1)
+# -----------------------------------------------------------------------------
+llm:
+  model: "claude-sonnet-4-5-20250929"
+  temperature: 0.4
+  max_tokens: 4000
+  retry_on_failure: 2
+  retry_temperature_increment: 0.1
+  timeout_seconds: 45
+
+# -----------------------------------------------------------------------------
+# Engine
+# -----------------------------------------------------------------------------
+engine:
+  pipeline_step: 5
+
+# -----------------------------------------------------------------------------
+# Data Warehouse
+# -----------------------------------------------------------------------------
+data_warehouse:
+  sheet_id: "1sZeZ4VVztAqjBjyfXcCfhpSWJ4pCGF8ip1ksu_TYMHY"
+  output_tab: "DEVILS_ADVOCATE"
+
+# -----------------------------------------------------------------------------
+# Google Drive
+# -----------------------------------------------------------------------------
+drive:
+  root_id: "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
+  current_folder_id: "1JelM_zZgPeX8TluTfaNqQmsTm3tXkG_8"
+
+# -----------------------------------------------------------------------------
+# Challenge Configuration (Spec Teil 4 §4.10)
+# -----------------------------------------------------------------------------
+challenges:
+  min_per_run: 1
+  max_per_run: 5
+  severity_levels:
+    - SUBSTANTIVE
+    - MODERATE
+    - MINOR
+
+# -----------------------------------------------------------------------------
+# Omission Detection (Spec Teil 2 §2.3)
+# -----------------------------------------------------------------------------
+omission_detection:
+  alert_omission:
+    must_mention_trends: ["NEW", "ESCALATING"]
+    must_mention_severities_if_stable: ["WARNING", "CRITICAL", "EMERGENCY"]
+  ic_omission:
+    high_novelty_threshold: 7
+    moderate_novelty_threshold: 5
+  pattern_omission:
+    class_a_is_mandatory: true
+
+# -----------------------------------------------------------------------------
+# Consistency Check (Spec Teil 2 §2.4)
+# -----------------------------------------------------------------------------
+consistency_check:
+  enabled: true
+  tone_analysis:
+    cautious_words: ["unsicher", "unklar", "widersprueche", "divergenz", "vorsicht",
+                     "uncertain", "unclear", "conflicting", "divergence", "caution"]
+    confident_words: ["klar", "robust", "solide", "stark", "ueberzeugend",
+                      "clear", "robust", "solid", "strong", "convincing"]
+
+# -----------------------------------------------------------------------------
+# Drift Detection (Spec Teil 2 §2.5)
+# -----------------------------------------------------------------------------
+drift_detection:
+  enabled: true
+  overreaction_threshold:
+    tone_delta_min: 2
+    data_delta_max: 0
+  complacency_threshold:
+    data_delta_min: 2
+    tone_delta_max: 0
+
+# -----------------------------------------------------------------------------
+# Confidence Saturation (Spec Teil 2 §2.6)
+# -----------------------------------------------------------------------------
+confidence_saturation:
+  threshold: 0.85
+  weights:
+    all_ampeln_green: 0.15
+    all_layers_aligned: 0.20
+    ic_consensus_high: 0.15
+    conviction_high: 0.15
+    no_divergences: 0.10
+    fragility_healthy: 0.10
+    briefing_routine: 0.15
+
+# -----------------------------------------------------------------------------
+# Persistence (Spec Teil 4 §4.10)
+# -----------------------------------------------------------------------------
+persistence:
+  noted_to_forced_decision_days: 3
+  challenge_retention_days: 7
+
+# -----------------------------------------------------------------------------
+# Focus Rotation (Spec Teil 2 §2.8)
+# -----------------------------------------------------------------------------
+focus_rotation:
+  focuses: ["NARRATIVE", "UNASKED_QUESTION", "PREMISE_ATTACK"]
+  min_weight_per_focus: 0.10
+
+# -----------------------------------------------------------------------------
+# Perspective Seeds (Spec Teil 2 §2.8)
+# -----------------------------------------------------------------------------
+perspective_seeds:
+  rotation_interval_trading_days: 20
+  seeds:
+    - id: "MACRO_TRADER"
+      label: "Makro-Trader"
+      instruction: >
+        Denke heute wie ein Makro-Trader der NUR auf Liquiditaets-Zyklen
+        schaut. Alles andere ist Noise. Ist der CIO vom Liquiditaets-Signal
+        abgelenkt? Fokussiert er auf Micro-Themen waehrend sich das
+        Makro-Bild verschiebt?
+    - id: "ACTUARY"
+      label: "Versicherungs-Aktuar"
+      instruction: >
+        Denke heute wie ein Versicherungs-Aktuar. Nicht was am
+        wahrscheinlichsten ist interessiert dich, sondern: Was ist der
+        Expected Loss? Wahrscheinlichkeit x Schadenshoehe. Suche nach
+        dem Szenario mit dem schlechtesten Risiko-Ertrags-Verhaeltnis
+        das der CIO nicht adressiert.
+    - id: "JOURNALIST"
+      label: "Investigativ-Journalist"
+      instruction: >
+        Denke heute wie ein Investigativ-Journalist. Jemand luegt.
+        Nicht der CIO — die DATEN. Welche Datenquelle koennte fehlerhaft,
+        verzoegert oder manipuliert sein? Welche Zahl im Briefing sieht
+        richtig aus, koennte aber auf veralteten Mappings, approximierten
+        Gewichten oder unvollstaendigen Quellen basieren?
+    - id: "SYSTEMS_ENGINEER"
+      label: "Systemingenieur"
+      instruction: >
+        Denke heute nicht ueber die Maerkte — denke ueber das SYSTEM.
+        Wo koennte die Pipeline einen blinden Fleck haben? Welche
+        Interaktion zwischen Agents koennte zu einem falschen Ergebnis
+        fuehren? Nicht weil ein Agent falsch arbeitet, sondern weil die
+        KOMBINATION ihrer Outputs etwas erzeugt das keiner beabsichtigt hat?
+    - id: "TEMPORAL_ANALYST"
+      label: "Temporal-Analyst"
+      instruction: >
+        Ignoriere heute alle Levels und absoluten Werte. Schau NUR auf
+        Geschwindigkeiten und Beschleunigungen. Was AENDERT sich am
+        schnellsten? Was hat sich in den letzten 5 Tagen am meisten
+        verschoben, ohne dass es einen Alert ausgeloest hat? Die
+        gefaehrlichsten Bewegungen sind die die unter den Schwellen
+        bleiben aber konsistent in eine Richtung gehen.
+
+# -----------------------------------------------------------------------------
+# Asymmetry (Spec Teil 2 §2.9)
+# -----------------------------------------------------------------------------
+asymmetry:
+  routine_high:
+    mode: "MAXIMUM_SCRUTINY"
+    max_flags: 15
+    min_challenges: 2
+  emergency_low:
+    mode: "FOCUSED_SCRUTINY"
+    max_flags: 5
+    min_challenges: 1
+  action:
+    mode: "PRIORITY_SCRUTINY"
+    max_flags: 8
+    min_challenges: 1
+  default:
+    mode: "STANDARD_SCRUTINY"
+    max_flags: 10
+    min_challenges: 1
+
+# -----------------------------------------------------------------------------
+# Master Protection (Spec Teil 1 §1.10)
+# -----------------------------------------------------------------------------
+master_protection:
+  v16_attack_phrases:
+    - "v16 sollte"
+    - "v16 liegt falsch"
+    - "v16 irrt"
+    - "regime sollte"
+    - "risk_on ist falsch"
+    - "risk_off ist falsch"
+    - "v16 gewichte aendern"
+    - "v16 gewichte anpassen"
+  f6_attack_phrases:
+    - "f6 sollte"
+    - "f6 liegt falsch"
+    - "f6 signal falsch"
+    - "f6 position schliessen"
+  trade_phrases:
+    - "empfehle zu kaufen"
+    - "empfehle zu verkaufen"
+    - "sollte kaufen"
+    - "sollte verkaufen"
+    - "position aufbauen"
+    - "position abbauen"
+    - "sofort verkaufen"
+    - "sofort kaufen"
+  ro_severity_phrases:
+    - "risk officer uebertreibt"
+    - "severity sollte"
+    - "alert ist uebertrieben"
+    - "severity zu hoch"
+    - "severity zu niedrig"
+
+# -----------------------------------------------------------------------------
+# Known Entities (for Omission Detection text extraction)
+# -----------------------------------------------------------------------------
+known_entities:
+  alert_ids:
+    - "EXP_SECTOR_CONCENTRATION"
+    - "EXP_GEOGRAPHY"
+    - "EXP_SINGLE_NAME"
+    - "EXP_ASSET_CLASS"
+    - "INT_REGIME_CONFLICT"
+    - "INT_RECOMMENDATION_OVERLOAD"
+    - "INT_CORRELATION_SHOCK"
+    - "INT_CC_ROUTER_TIMING"
+    - "INT_DDPROTECT_PERMOPT"
+    - "TMP_CC_EXPIRY"
+    - "TMP_V16_REBALANCE"
+    - "TMP_EVENT_CALENDAR"
+  v16_tickers:
+    - "SPY"
+    - "QQQ"
+    - "XLK"
+    - "XLF"
+    - "XLE"
+    - "XLV"
+    - "XLI"
+    - "XLP"
+    - "XLU"
+    - "IWM"
+    - "VGK"
+    - "EEM"
+    - "GLD"
+    - "SLV"
+    - "GDX"
+    - "GDXJ"
+    - "SIL"
+    - "TLT"
+    - "TIP"
+    - "LQD"
+    - "HYG"
+    - "DBC"
+    - "VNQ"
+    - "BTC"
+    - "ETH"
+  ic_sources:
+    - "Howell"
+    - "Macro Alf"
+    - "Hussman"
+    - "Doomberg"
+    - "Lyn Alden"
+    - "Raoul Pal"
+    - "Jeff Snider"
+    - "Luke Gromen"
+    - "Brent Johnson"
+    - "Santiago Capital"
+    - "Andreas Steno"
+  pattern_names:
+    - "COMPLACENCY_TRAP"
+    - "REGIME_DIVERGENCE"
+    - "CROWDED_CONSENSUS"
+    - "TEMPORAL_CONVERGENCE"
+    - "FRAGILITY_ESCALATION"
+    - "SILENT_RISK"
+    - "OPPORTUNITY_WINDOW"
+    - "F6_POSITION_UNDER_PRESSURE"
+    - "F6_SIGNAL_IC_CONFIRMATION"
+  ticker_noise_words:
+    - "THE"
+    - "AND"
+    - "FOR"
+    - "NOT"
+    - "BUT"
+    - "CIO"
+    - "ALL"
+    - "NEW"
+    - "ACT"
+    - "LOW"
+    - "HIGH"
+    - "RISK"
+    - "WATCH"
+    - "NOTE"
+    - "FULL"
+    - "NONE"
+    - "DELTA"
+    - "ROUTINE"
+    - "ACTION"
+    - "EMERGENCY"
+    - "GREEN"
+    - "YELLOW"
+    - "RED"
+    - "BLACK"
+    - "HEALTHY"
+    - "ELEVATED"
+    - "EXTREME"
+    - "CRISIS"
+    - "MONITOR"
+    - "WARNING"
+    - "CRITICAL"
+    - "STABLE"
+    - "RISING"
+    - "DECLINING"
+    - "ACCEPTED"
+    - "NOTED"
+    - "REJECTED"
+    - "DTE"
+    - "HHI"
+    - "VIX"
+    - "DXY"
+    - "FOMC"
+    - "CPI"
+    - "NFP"
+    - "PCE"
+    - "BOJ"
+    - "ECB"
+    - "FED"
+    - "PBOC"
+    - "KEY"
+    - "DAY"
+    - "TAG"
+    - "PRE"
+    - "POST"
+    - "USD"
+    - "EUR"
+    - "JPY"
+    - "GBP"

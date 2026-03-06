@@ -1,0 +1,44 @@
+name: Step 6 — CIO Final
+
+on:
+  workflow_run:
+    workflows: ["Step 5 — Devil's Advocate"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  cio-final:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic google-auth google-api-python-client pyyaml
+
+      - name: Run CIO Final (Step 6 — with DA challenges)
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python -m step4_cio --mode final
+
+      - name: Commit dashboard.json + archive
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/dashboard/latest.json
+          git add archive/
+          git diff --cached --quiet || git commit -m "CIO Final: Update briefing + dashboard + archive $(date +%Y-%m-%d)"
+          git pull --rebase
+          git push

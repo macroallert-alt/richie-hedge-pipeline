@@ -422,7 +422,8 @@ def main():
     from step4_cio.engine import run_cio_draft, run_cio_final
 
     if args.mode == "draft":
-        # ========== DRAFT RUN ==========
+        # ========== DRAFT-ONLY RUN (Step 4) ==========
+        # DA (Step 5) runs after this, then CIO Final (Step 6)
         logger.info("=" * 60)
         logger.info("CIO DRAFT (Step 4)")
         logger.info("=" * 60)
@@ -437,7 +438,6 @@ def main():
         # Write Draft to Drive CURRENT/
         if drive_service:
             try:
-                # Remove preprocessor_output from Drive JSON (too large, internal only)
                 drive_data = {k: v for k, v in cio_output.items() if k != "preprocessor_output"}
                 write_drive_json(drive_service, drive_data, "step4_cio_draft.json")
             except Exception as e:
@@ -449,15 +449,35 @@ def main():
             "step4_cio_draft.json",
         )
 
-        # THEN: Promote Draft to Final (DA not built yet → V1 behavior)
+        output_for_log = cio_output
+
+    elif args.mode == "final":
+        # ========== FINAL RUN (Step 6 — after DA) ==========
+        if not drive_service:
+            logger.error("Cannot run final mode without Drive service")
+            sys.exit(1)
+
+        # Load Draft from Drive CURRENT/
+        draft = read_drive_json(drive_service, "step4_cio_draft.json")
+        if not draft:
+            logger.error("No draft found in Drive CURRENT/ — run draft first")
+            sys.exit(1)
+
+        # Load DA output (may be None if DA failed — Draft-as-Final)
+        da = read_drive_json(drive_service, "step5_devils_advocate.json")
+        if da:
+            logger.info(f"  DA challenges loaded: {da.get('metadata', {}).get('total_challenges', '?')}")
+        else:
+            logger.info("  DA output not found — Draft will be promoted as Final")
+
         logger.info("=" * 60)
-        logger.info("CIO FINAL (Step 6) — DA not available, promoting Draft")
+        logger.info("CIO FINAL (Step 6)")
         logger.info("=" * 60)
 
         final_output = run_cio_final(
             inputs=inputs,
-            draft_output=cio_output,
-            devils_advocate=None,  # DA not built yet
+            draft_output=draft,
+            devils_advocate=da,
             config=config,
         )
 
@@ -501,55 +521,6 @@ def main():
                 logger.error(f"AGENT_SUMMARY write failed: {e}")
 
         # Update dashboard.json
-        from step4_cio.dashboard_update import update_dashboard_json
-        update_dashboard_json(final_output, DASHBOARD_JSON_PATH, inputs_raw=inputs)
-
-        output_for_log = final_output
-
-    elif args.mode == "final":
-        # ========== FINAL-ONLY RUN (when DA is built) ==========
-        # Load draft from Drive CURRENT/
-        if not drive_service:
-            logger.error("Cannot run final mode without Drive service")
-            sys.exit(1)
-
-        draft = read_drive_json(drive_service, "step4_cio_draft.json")
-        if not draft:
-            logger.error("No draft found in Drive CURRENT/ — run draft first")
-            sys.exit(1)
-
-        # Load DA output (when built)
-        da = read_drive_json(drive_service, "step5_devils_advocate.json")
-
-        logger.info("=" * 60)
-        logger.info("CIO FINAL (Step 6)")
-        logger.info("=" * 60)
-
-        final_output = run_cio_final(
-            inputs=inputs,
-            draft_output=draft,
-            devils_advocate=da,
-            config=config,
-        )
-
-        if drive_service:
-            drive_data = {k: v for k, v in final_output.items() if k != "preprocessor_output"}
-            write_drive_json(drive_service, drive_data, "step6_cio_final.json")
-            write_drive_text(drive_service, final_output["briefing_text"], "step6_cio_final_memo.md")
-
-        # Archive Final locally (committed by GitHub Actions)
-        _write_local_archive(
-            {k: v for k, v in final_output.items() if k != "preprocessor_output"},
-            "step6_cio_final.json",
-        )
-        _write_local_archive_text(
-            final_output.get("briefing_text", ""),
-            "step6_cio_final_memo.md",
-        )
-
-        if sheets_service:
-            write_agent_summary(sheets_service, final_output, "final")
-
         from step4_cio.dashboard_update import update_dashboard_json
         update_dashboard_json(final_output, DASHBOARD_JSON_PATH, inputs_raw=inputs)
 
