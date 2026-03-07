@@ -302,14 +302,15 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
     Extract V16 context from Signal Generator output or dashboard fallback.
 
     Returns dict with: regime, current_weights, weight_deltas, macro_state_name
+    Weights are normalized to {asset: float} format.
     """
     # Try Signal Generator first
     v16_trades = signal_gen.get("v16_trades", {})
     if v16_trades and v16_trades.get("weights"):
         return {
             "regime": v16_trades.get("v16_regime", "UNKNOWN"),
-            "current_weights": v16_trades.get("weights", {}),
-            "weight_deltas": v16_trades.get("weight_deltas", {}),
+            "current_weights": _normalize_weights(v16_trades.get("weights", {})),
+            "weight_deltas": _normalize_weights(v16_trades.get("weight_deltas", {})),
             "macro_state_name": v16_trades.get("state_label", "UNKNOWN"),
         }
 
@@ -318,8 +319,8 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
     if v16_block:
         return {
             "regime": v16_block.get("regime", "UNKNOWN"),
-            "current_weights": v16_block.get("current_weights", {}),
-            "weight_deltas": v16_block.get("weight_deltas", {}),
+            "current_weights": _normalize_weights(v16_block.get("current_weights", {})),
+            "weight_deltas": _normalize_weights(v16_block.get("weight_deltas", {})),
             "macro_state_name": v16_block.get("macro_state_name", "UNKNOWN"),
         }
 
@@ -329,6 +330,32 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
         "weight_deltas": {},
         "macro_state_name": "UNKNOWN",
     }
+
+
+def _normalize_weights(weights: dict) -> dict:
+    """
+    Normalize weights to {asset: float} format.
+    Handles both direct floats and nested dicts like {"weight": 0.277, ...}.
+    """
+    normalized = {}
+    for asset, value in weights.items():
+        if isinstance(value, (int, float)):
+            normalized[asset] = float(value)
+        elif isinstance(value, dict):
+            # Try common keys: weight, target_weight, value
+            for key in ("weight", "target_weight", "value"):
+                if key in value:
+                    try:
+                        normalized[asset] = float(value[key])
+                    except (ValueError, TypeError):
+                        pass
+                    break
+        elif isinstance(value, str):
+            try:
+                normalized[asset] = float(value)
+            except ValueError:
+                pass
+    return normalized
 
 
 def _top_position(weights: dict) -> str:
