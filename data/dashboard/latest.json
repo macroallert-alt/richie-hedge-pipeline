@@ -1277,5 +1277,172 @@
       "Pipeline Phase 1: Nur V16-Daten verfuegbar"
     ],
     "errors": []
+  },
+  "execution": {
+    "date": "2026-03-07",
+    "execution_level": "CAUTION",
+    "total_score": 6,
+    "max_score": 18,
+    "veto_applied": false,
+    "dimensions": {
+      "event_risk": {
+        "score": 1,
+        "max": 3,
+        "label": "4 HIGH events in 14d"
+      },
+      "positioning_conflict": {
+        "score": 3,
+        "max": 3,
+        "label": "COT DBC -47.8%"
+      },
+      "liquidity_risk": {
+        "score": 0,
+        "max": 3,
+        "label": "All clear"
+      },
+      "cross_asset_confirmation": {
+        "score": 2,
+        "max": 3,
+        "label": "GOLD_DXY_DIVERGENCE"
+      },
+      "gex_regime": {
+        "score": 0,
+        "max": 3,
+        "label": "GEX $-0.21B — SLIGHTLY_NEGATIVE"
+      },
+      "sentiment_extreme": {
+        "score": 0,
+        "max": 3,
+        "label": "Neutral"
+      }
+    },
+    "confirming_count": 16,
+    "conflicting_count": 7,
+    "net_assessment": "STRONGLY_CONFIRMING",
+    "top_confirming": [
+      "amihud: LIQUID — Wert: 50.85",
+      "sofr_ffr: NORMAL — Wert: 3.0",
+      "fin_stress: RELAXED — Wert: -0.4436"
+    ],
+    "top_conflicting": [
+      "COT HYG Conflict (ELEVATED) — COT_SP500_COMM_NET = -29.1% — Smart Money gegen HYG (28% im Portfolio)",
+      "COT DBC Conflict (EXTREME) — COT_GOLD_COMM_NET = -47.8% — Smart Money gegen DBC (21% im Portfolio)",
+      "COT XLU Conflict (ELEVATED) — COT_SP500_COMM_NET = -29.1% — Smart Money gegen XLU (18% im Portfolio)"
+    ],
+    "recommendation_action": "EXECUTE_WITH_LIMITS",
+    "recommendation_short": "Heute (Samstag) keine Aktion nötig — V16 hat kein materielles Rebalancing.",
+    "specific_actions": [],
+    "event_window": {
+      "next_48h_count": 0,
+      "next_48h_events": [],
+      "next_14d_count": 8,
+      "convergence_week": true,
+      "event_density_label": "HIGH"
+    },
+    "calendar_upcoming": [
+      {
+        "date": "2026-03-11",
+        "event": "US CPI (February)",
+        "impact": "HIGH",
+        "days_until": 4
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US PCE Price Index (January)",
+        "impact": "HIGH",
+        "days_until": 6
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US GDP Q4 2025 (Second Estimate)",
+        "impact": "MEDIUM",
+        "days_until": 6
+      },
+      {
+        "date": "2026-03-18",
+        "event": "FOMC Meeting (March)",
+        "impact": "HIGH",
+        "days_until": 11
+      },
+      {
+        "date": "2026-03-19",
+        "event": "ECB Monetary Policy Meeting",
+        "impact": "MEDIUM",
+        "days_until": 12
+      }
+    ],
+    "calendar_monthly": [
+      {
+        "date": "2026-03-11",
+        "event": "US CPI (February)",
+        "type": "CPI",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US PCE Price Index (January)",
+        "type": "PCE",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US GDP Q4 2025 (Second Estimate)",
+        "type": "GDP",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-18",
+        "event": "FOMC Meeting (March)",
+        "type": "FOMC",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-19",
+        "event": "ECB Monetary Policy Meeting",
+        "type": "ECB",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-19",
+        "event": "Bank of Japan Monetary Policy Meeting",
+        "type": "BOJ",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-20",
+        "event": "China LPR (March)",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-20",
+        "event": "Quad Witching",
+        "type": "OPEX",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-04-01",
+        "event": "ISM Manufacturing PMI (March)",
+        "type": "ISM_MFG",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-04-03",
+        "event": "US Nonfarm Payrolls (March)",
+        "type": "NFP",
+        "impact": "HIGH"
+      }
+    ],
+    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Liquidität: Amihud 50.85 — alle Assets handelbar ohne Slippage-Risiko\n• Funding-Stress: SOFR-FFR Spread 3.0bps, Financial Stress Index -0.44 — keine systemischen Spannungen\n• VIX-Term-Struktur: Contango 0.9954 — Markt preist Beruhigung ein, keine Panik\n• Commodity-Bestätigung: V16 39% Commodities (DBC 21%, GLD 18%) + Copper Rising — Trend intakt\n• Equity-Bestätigung: V16 33% Equities (HYG 28%, XLU 18%, XLP 15%) + SPY Rising — kein Bruch\n• Gold-Real-Yield: Gold 18% + Real Yields Falling — historisch positives Setup für Gold\n• Credit-Spreads: HY OAS 297bps — Normal-Range, keine Stress-Signale\n• MOVE Index: 74.53 — Anleihen-Volatilität unauffällig\n• Sentiment: CNN Fear & Greed 30.84 (Neutral), VIX 21.15, Put/Call 0.808 — keine Extreme\n• Kein materielles Rebalancing: V16 alle Positionen HOLD — heute kein Execution-Risiko\n\nCONFLICTING:\n• COT Gold EXTREME: Commercial Net -47.8% — Smart Money massiv gegen GLD (18%) und DBC (21%)\n• COT S&P500 ELEVATED: Commercial Net -29.1% — Smart Money gegen HYG (28%), XLU (18%), XLP (15%)\n• Gold-DXY-Divergenz: Gold +2.7% UND DXY +1.7% — beide steigen gleichzeitig, historisch nicht nachhaltig\n• GEX negativ: $-0.21B (SLIGHTLY_NEGATIVE) — Dealer-Hedging verstärkt Moves, erhöhte Intraday-Volatilität\n• Event-Cluster: 8 Events in 14d, Convergence Week aktiv — Risiko plötzlicher Regime-Shifts\n• 4 HIGH-Impact Events in 14d: Potenzial für abrupte Positionierungs-Änderungen\n• 100% Portfolio COT-Konflikt: Alle 5 Top-Positionen haben Smart-Money-Gegenwind\n\nNETTO: 10 Confirming vs 7 Conflicting. Technisch grünes Licht, aber Smart Money steht komplett gegen das Portfolio — COT-Signale historisch 2-4 Wochen vorauslaufend.\n\nEMPFEHLUNG:\nHeute (Samstag) keine Aktion nötig — V16 hat kein materielles Rebalancing. Falls V16 Montag Regime wechselt und Trades generiert: Limit-Orders bevorzugen, nicht Market-Orders. HYG und DBC: Besonders vorsichtig, COT-Extreme bedeuten oft Trendwende in 1-3 Wochen. GLD: Gold-DXY-Divergenz beobachten — wenn DXY weiter steigt, wird Gold-Rally fragil. XLU/XLP: Defensive Equities bei COT-Gegenwind anfällig für Rotation. Execution-Timing: Erste 30 Minuten nach US-Open meiden (GEX negativ verstärkt Volatilität). Wenn V16 neue Trades generiert: Nicht alles auf einmal, sondern über 2-3 Tage verteilen.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: COT Gold Commercial Net > -35% (aktuell -47.8%) — Smart Money dreht\n• Execute sofort wenn: Gold-DXY-Divergenz löst sich auf (DXY fällt unter 104.0 oder Gold korrigiert) — Nachhaltigkeit bestätigt\n• Eskaliere zu Wait/Hold wenn: HY OAS > 320bps — Credit-Stress beginnt\n• Eskaliere zu Wait/Hold wenn: VIX > 25 UND GEX < -$1.0B — Volatilitäts-Regime-Shift",
+    "would_change_my_mind": {
+      "execute_if": [
+        "COT Gold Commercial Net > -35% (aktuell -47.8%) — Smart Money dreht",
+        "Gold-DXY-Divergenz löst sich auf (DXY fällt unter 104.0 oder Gold korrigiert) — Nachhaltigkeit bestätigt"
+      ],
+      "hold_if": [
+        "HY OAS > 320bps — Credit-Stress beginnt",
+        "VIX > 25 UND GEX < -$1.0B — Volatilitäts-Regime-Shift"
+      ]
+    }
   }
 }
