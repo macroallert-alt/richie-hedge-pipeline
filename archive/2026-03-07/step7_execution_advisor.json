@@ -1,6 +1,6 @@
 {
   "date": "2026-03-07",
-  "run_timestamp": "2026-03-07T09:00:27.468393Z",
+  "run_timestamp": "2026-03-07T09:03:56.635079Z",
   "execution_assessment": {
     "total_score": 6,
     "raw_score": 6,
@@ -346,17 +346,14 @@
   },
   "recommendation": {
     "action": "EXECUTE_WITH_LIMITS",
-    "reasoning": "Heute (Samstag) keine Aktion nötig — V16 hat kein materielles Rebalancing.",
+    "reasoning": "Kein materielles Rebalancing heute nötig — alle Positionen HOLD.",
     "specific_actions": [],
     "would_change_my_mind": {
       "execute_if": [
-        "COT Gold Commercial Net > -35% (aktuell -47.8%) — Smart Money dreht",
-        "Gold-DXY-Divergenz löst sich auf (DXY fällt unter 104.0 oder Gold korrigiert) — Nachhaltigkeit bestätigt"
+        "COT_GOLD_COMM_NET > -35% (Smart Money kapituliert) UND Gold-DXY-Divergenz aufgelöst (DXY < +0.5% oder Gold < +0.5%)",
+        "GEX > +$0.5B (Dealer-Hedging stabilisiert) UND VIX < 18 (Volatilität normalisiert)"
       ],
-      "hold_if": [
-        "HY OAS > 320bps — Credit-Stress beginnt",
-        "VIX > 25 UND GEX < -$1.0B — Volatilitäts-Regime-Shift"
-      ]
+      "hold_if": []
     }
   },
   "event_window": {
@@ -619,7 +616,7 @@
       }
     ]
   },
-  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Liquidität: Amihud 50.85 — alle Assets handelbar ohne Slippage-Risiko\n• Funding-Stress: SOFR-FFR Spread 3.0bps, Financial Stress Index -0.44 — keine systemischen Spannungen\n• VIX-Term-Struktur: Contango 0.9954 — Markt preist Beruhigung ein, keine Panik\n• Commodity-Bestätigung: V16 39% Commodities (DBC 21%, GLD 18%) + Copper Rising — Trend intakt\n• Equity-Bestätigung: V16 33% Equities (HYG 28%, XLU 18%, XLP 15%) + SPY Rising — kein Bruch\n• Gold-Real-Yield: Gold 18% + Real Yields Falling — historisch positives Setup für Gold\n• Credit-Spreads: HY OAS 297bps — Normal-Range, keine Stress-Signale\n• MOVE Index: 74.53 — Anleihen-Volatilität unauffällig\n• Sentiment: CNN Fear & Greed 30.84 (Neutral), VIX 21.15, Put/Call 0.808 — keine Extreme\n• Kein materielles Rebalancing: V16 alle Positionen HOLD — heute kein Execution-Risiko\n\nCONFLICTING:\n• COT Gold EXTREME: Commercial Net -47.8% — Smart Money massiv gegen GLD (18%) und DBC (21%)\n• COT S&P500 ELEVATED: Commercial Net -29.1% — Smart Money gegen HYG (28%), XLU (18%), XLP (15%)\n• Gold-DXY-Divergenz: Gold +2.7% UND DXY +1.7% — beide steigen gleichzeitig, historisch nicht nachhaltig\n• GEX negativ: $-0.21B (SLIGHTLY_NEGATIVE) — Dealer-Hedging verstärkt Moves, erhöhte Intraday-Volatilität\n• Event-Cluster: 8 Events in 14d, Convergence Week aktiv — Risiko plötzlicher Regime-Shifts\n• 4 HIGH-Impact Events in 14d: Potenzial für abrupte Positionierungs-Änderungen\n• 100% Portfolio COT-Konflikt: Alle 5 Top-Positionen haben Smart-Money-Gegenwind\n\nNETTO: 10 Confirming vs 7 Conflicting. Technisch grünes Licht, aber Smart Money steht komplett gegen das Portfolio — COT-Signale historisch 2-4 Wochen vorauslaufend.\n\nEMPFEHLUNG:\nHeute (Samstag) keine Aktion nötig — V16 hat kein materielles Rebalancing. Falls V16 Montag Regime wechselt und Trades generiert: Limit-Orders bevorzugen, nicht Market-Orders. HYG und DBC: Besonders vorsichtig, COT-Extreme bedeuten oft Trendwende in 1-3 Wochen. GLD: Gold-DXY-Divergenz beobachten — wenn DXY weiter steigt, wird Gold-Rally fragil. XLU/XLP: Defensive Equities bei COT-Gegenwind anfällig für Rotation. Execution-Timing: Erste 30 Minuten nach US-Open meiden (GEX negativ verstärkt Volatilität). Wenn V16 neue Trades generiert: Nicht alles auf einmal, sondern über 2-3 Tage verteilen.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: COT Gold Commercial Net > -35% (aktuell -47.8%) — Smart Money dreht\n• Execute sofort wenn: Gold-DXY-Divergenz löst sich auf (DXY fällt unter 104.0 oder Gold korrigiert) — Nachhaltigkeit bestätigt\n• Eskaliere zu Wait/Hold wenn: HY OAS > 320bps — Credit-Stress beginnt\n• Eskaliere zu Wait/Hold wenn: VIX > 25 UND GEX < -$1.0B — Volatilitäts-Regime-Shift",
+  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Liquidität: Amihud 50.85 — alle Assets handelbar ohne Slippage-Risiko\n• Finanzstress: FIN_STRESS -0.44 — entspanntes Marktumfeld, keine systemischen Risiken\n• VIX-Struktur: VIX Term Structure 0.9954 (Contango) — Markt preist Beruhigung ein\n• Korrelationen: Avg Correlation 0.30 — normale Diversifikation, keine Panik-Gleichlauf\n• Commodity-Bestätigung: V16 39% Commodity + Copper Rising — Makro-Trend intakt\n• Equity-Bestätigung: V16 33% Equity + SPY Rising — kein Bruch im Trend\n• Gold-Real-Yield: Gold 18% + Real Yields Falling — historisch positives Setup\n• Credit-Spreads: HY OAS 297bps — normal, keine Stress-Signale\n• MOVE Index: 74.53 — Bond-Volatilität im Normalbereich\n• Kein materielles Rebalancing: Alle Positionen HOLD — kein Execution-Risiko heute\n\nCONFLICTING:\n• COT Gold EXTREM: -47.8% — Smart Money massiv gegen GLD (18%) und DBC (21%), insgesamt 39% des Portfolios\n• COT S&P500: -29.1% — Smart Money gegen HYG (28%), XLU (18%), XLP (15%), insgesamt 61% des Portfolios\n• Gold-DXY-Divergenz: Gold +2.7% UND DXY +1.7% — beide steigen gleichzeitig, historisch nicht nachhaltig\n• GEX negativ: $-0.21B (SLIGHTLY_NEGATIVE) — Dealer-Hedging verstärkt Moves, erhöhte Intraday-Volatilität\n• Event-Cluster: 8 Events in 14d, davon 4 HIGH-Impact — Convergence Week aktiv\n• Positioning-Konflikt: 100% des Portfolios (alle 5 Positionen) haben COT-Gegenwind\n• Wochenende: Heute Samstag — keine Execution möglich, Gap-Risiko bis Montag\n\nNETTO: 10 Confirming vs 7 Conflicting. Liquidität und Makro-Trends bestätigen Portfolio, aber Smart-Money-Positionierung und Gold-DXY-Divergenz signalisieren Vorsicht.\n\nEMPFEHLUNG:\nKein materielles Rebalancing heute nötig — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall, dass V16 Montag Regime wechselt: WARTE bis Dienstag 09:00 ET. Grund: (1) COT-Konflikt bei 100% des Portfolios erfordert Beobachtung ob Smart Money kapituliert oder Recht behält, (2) Gold-DXY-Divergenz muss sich auflösen (entweder Gold fällt oder DXY fällt), (3) Event-Cluster in 14d — lass erste Events (Montag: US ISM Services, China Trade Balance) passieren bevor du neue Positionen aufbaust. Falls V16 Montag doch tradet: HYG und GLD mit Limit-Orders (COT-Gegenwind), DBC nur bei Volumen > 5M Shares in erster Stunde (Slippage-Risiko bei negativem Positioning).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: COT_GOLD_COMM_NET > -35% (Smart Money kapituliert) UND Gold-DXY-Divergenz aufgelöst (DXY < +0.5% oder Gold < +0.5%)\n• Execute sofort wenn: GEX > +$0.5B (Dealer-Hedging stabilisiert) UND VIX < 18 (Volatilität normalisiert)\n• Eskaliere zu HOLD wenn: COT_GOLD_COMM_NET < -55% (Smart Money erhöht Shorts weiter) ODER Gold-DXY-Divergenz verstärkt sich (beide > +3%)\n• Eskaliere zu HOLD wenn: Montag ISM Services < 50 (Rezessionssignal) ODER China Trade Balance < -$80B (Nachfrageschwäche bestätigt Commodity-Risiko)",
   "v16_context": {
     "regime": "SELECTIVE",
     "top5": [
@@ -662,7 +659,7 @@
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_used": true,
     "llm_fallback": false,
-    "engine_time_seconds": 22.91,
-    "total_time_seconds": 22.9
+    "engine_time_seconds": 23.5,
+    "total_time_seconds": 23.5
   }
 }
