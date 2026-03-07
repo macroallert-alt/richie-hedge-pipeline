@@ -191,6 +191,7 @@ def run_execution_advisor(inputs: dict, config: dict,
         event_window=event_window,
         today=today,
         config=config,
+        dw_data=dw_data,
     )
 
     if llm_result.get("llm_fallback"):
@@ -301,7 +302,8 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
     """
     Extract V16 context from Signal Generator output or dashboard fallback.
 
-    Returns dict with: regime, current_weights, weight_deltas, macro_state_name
+    Returns dict with: regime, current_weights, weight_deltas, macro_state_name,
+                       latest_prices (V96: for LLM market data block)
     Weights are normalized to {asset: float} format.
     """
     # Try Signal Generator first
@@ -312,6 +314,7 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
             "current_weights": _normalize_weights(v16_trades.get("weights", {})),
             "weight_deltas": _normalize_weights(v16_trades.get("weight_deltas", {})),
             "macro_state_name": v16_trades.get("state_label", "UNKNOWN"),
+            "latest_prices": v16_trades.get("latest_prices", {}),
         }
 
     # Fallback: dashboard.json v16 block
@@ -322,6 +325,7 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
             "current_weights": _normalize_weights(v16_block.get("current_weights", {})),
             "weight_deltas": _normalize_weights(v16_block.get("weight_deltas", {})),
             "macro_state_name": v16_block.get("macro_state_name", "UNKNOWN"),
+            "latest_prices": v16_block.get("latest_prices", {}),
         }
 
     return {
@@ -329,6 +333,7 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
         "current_weights": {},
         "weight_deltas": {},
         "macro_state_name": "UNKNOWN",
+        "latest_prices": {},
     }
 
 

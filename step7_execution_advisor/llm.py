@@ -21,7 +21,7 @@ logger = logging.getLogger("execution_advisor.llm")
 
 
 # =============================================================================
-# SYSTEM PROMPT (Spec Teil 6 §31.2 — verbatim)
+# SYSTEM PROMPT (Spec Teil 6 §31.2 — verbatim + V96 Ergänzungen)
 # =============================================================================
 
 SYSTEM_PROMPT_ADVISOR = """Du bist der Execution Advisor von Baldur Creek Capital, einem systematischen Macro Hedge Fund.
@@ -36,6 +36,7 @@ Du bekommst:
 - V16 Positionen und Trades
 - Pipeline-Kontext (Risk Officer, CIO, Router)
 - Event-Kalender (was in 48h/14d kommt)
+- Aktuelle Marktdaten (DW Sheet Werte + ETF-Preise)
 
 REGELN — STRIKT EINHALTEN:
 
@@ -52,7 +53,7 @@ REGELN — STRIKT EINHALTEN:
 
 5. Verwende die EXAKTEN Zahlen aus den Daten. Keine Schaetzungen, keine Rundungen die du selbst machst. Wenn COT Gold -47.8% ist, schreib -47.8%, nicht "fast -50%".
 
-6. "Would Change My Mind" Abschnitt MUSS konkrete, messbare Bedingungen enthalten. NICHT: "wenn sich die Lage aendert". SONDERN: "wenn HY OAS > 320bps" oder "wenn DXY unter 104 faellt".
+6. "Would Change My Mind" Abschnitt MUSS konkrete, messbare Bedingungen enthalten die auf den bereitgestellten AKTUELLEN MARKTDATEN basieren. Verwende NUR Werte und Levels die in den Daten stehen. ERFINDE KEINE Preisniveaus aus deinem Training. Beispiel: Wenn VIX aktuell bei 19.5 ist, schreibe "VIX > 28" (sinnvoller Schwellenwert relativ zum aktuellen Wert). Wenn du einen Spot-Preis NICHT in den Daten findest, verwende stattdessen relative Bedingungen ("Gold faellt >5%") oder die bereitgestellten ETF-Preise ("GLD faellt unter X").
 
 7. Wenn V16 heute KEINE materiellen Trades hat (alle HOLD, Delta < 1%): Sage das explizit. "Kein materielles Rebalancing noetig. Die Empfehlung bezieht sich auf den Fall dass V16 morgen Regime wechselt."
 
@@ -61,6 +62,8 @@ REGELN — STRIKT EINHALTEN:
 9. Bei WAIT oder HOLD (Score 7+): Sei SPEZIFISCH warum und wie lange. "Warte bis FOMC-Ergebnis (morgen 14:00 ET)" nicht "warte auf Klarheit".
 
 10. Nenne in der Empfehlung IMMER spezifische Assets aus dem Portfolio. Nicht "vorsichtig sein" sondern "HYG: Limit-Orders setzen, DBC: Slippage-Risiko bei hohem Volumen".
+
+11. Bei "Would Change My Mind" Triggern: Verwende die bereitgestellten ETF-Preise (GLD, DXY-Return, SPY, HYG etc.) und DW-Indikatoren (VIX, HY OAS, MOVE etc.) als Referenz. NIEMALS Spot-Preise erfinden die nicht in den Daten stehen. Wenn ein bestimmter Spot-Preis nicht verfuegbar ist, formuliere die Bedingung relativ ("GLD faellt >5% vom aktuellen Kurs {aktueller_kurs}") oder ueber verfuegbare Indikatoren ("HY OAS steigt ueber 350bps").
 
 FORMAT — EXAKT EINHALTEN:
 
@@ -84,14 +87,14 @@ EMPFEHLUNG:
 [2-5 Saetze. Konkret. Spezifische Assets nennen. Timing angeben.]
 
 WOULD CHANGE MY MIND:
-• Execute sofort wenn: [messbare Bedingung 1]
-• Execute sofort wenn: [messbare Bedingung 2] (optional)
-• Eskaliere zu Wait/Hold wenn: [messbare Bedingung 1]
-• Eskaliere zu Wait/Hold wenn: [messbare Bedingung 2] (optional)"""
+• Execute sofort wenn: [messbare Bedingung basierend auf bereitgestellten Daten]
+• Execute sofort wenn: [messbare Bedingung] (optional)
+• Eskaliere zu Wait/Hold wenn: [messbare Bedingung basierend auf bereitgestellten Daten]
+• Eskaliere zu Wait/Hold wenn: [messbare Bedingung] (optional)"""
 
 
 # =============================================================================
-# USER PROMPT TEMPLATE (Spec Teil 6 §31.3)
+# USER PROMPT TEMPLATE (Spec Teil 6 §31.3 + V96 Marktdaten-Block)
 # =============================================================================
 
 USER_PROMPT_TEMPLATE_ADVISOR = """Heute: {today} ({weekday})
@@ -104,6 +107,9 @@ Top-5 Positionen:
 Rebalance-Trades heute:
 {rebalance_formatted}
 Materielles Rebalancing: {material_rebalance}
+
+=== AKTUELLE MARKTDATEN (fuer "Would Change My Mind" Referenzwerte) ===
+{market_data_formatted}
 
 === EXECUTION SCORE: {total_score}/{max_score} → {execution_level} ===
 Veto: {veto_info}
@@ -135,7 +141,83 @@ Naechste 48h: {events_48h}
 Naechste 14d: {events_14d_count} Events
 Convergence Week: {convergence}
 
+WICHTIG: Verwende bei "Would Change My Mind" NUR die oben bereitgestellten Marktdaten als Referenzwerte. Erfinde KEINE Preisniveaus.
+
 Schreibe das Execution Briefing im vorgegebenen Format."""
+
+
+# =============================================================================
+# MARKET DATA FORMATTER (V96 NEU)
+# =============================================================================
+
+def _format_market_data(dw_data: dict, v16_data: dict) -> str:
+    """
+    Format current market data for LLM prompt.
+    Provides actual values so LLM doesn't hallucinate price levels.
+    """
+    lines = []
+
+    # --- ETF Prices from V16 Top-5 ---
+    weights = v16_data.get("current_weights", {})
+    top5 = sorted(weights.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
+    if top5:
+        lines.append("ETF-Preise (Top-5 Portfolio-Positionen):")
+        # Prices come from signal generator v16_trades
+        prices = v16_data.get("latest_prices", {})
+        for asset, weight in top5:
+            price = prices.get(asset)
+            if price is not None:
+                lines.append(f"  {asset}: ${price:.2f} (Gewicht: {weight:.1%})")
+            else:
+                lines.append(f"  {asset}: Preis nicht verfuegbar (Gewicht: {weight:.1%})")
+
+    # --- DW Indicators ---
+    # L2 Sentiment
+    dw_lines = []
+    _add_dw_line(dw_lines, dw_data, "VIX_LEVEL", "VIX")
+    _add_dw_line(dw_lines, dw_data, "HY_OAS_SPREAD", "HY OAS Spread (bps)")
+    _add_dw_line(dw_lines, dw_data, "CNN_FEAR_GREED", "CNN Fear & Greed")
+    _add_dw_line(dw_lines, dw_data, "PUT_CALL_RATIO", "Put/Call Ratio")
+    _add_dw_line(dw_lines, dw_data, "MOVE_INDEX", "MOVE Index")
+    _add_dw_line(dw_lines, dw_data, "INSIDER_BUY_SELL", "Insider Buy/Sell")
+
+    # L4 Positioning
+    _add_dw_line(dw_lines, dw_data, "COT_SP500_COMM_NET", "COT S&P500 Commercial Net (%)")
+    _add_dw_line(dw_lines, dw_data, "COT_GOLD_COMM_NET", "COT Gold Commercial Net (%)")
+    _add_dw_line(dw_lines, dw_data, "COT_TREASURY_COMM_NET", "COT Treasury Commercial Net (%)")
+    _add_dw_line(dw_lines, dw_data, "OPTIONS_GEX", "Options GEX ($B)")
+    _add_dw_line(dw_lines, dw_data, "FUND_FLOWS_EQUITY", "Fund Flows Equity")
+
+    # L5 Fragility
+    _add_dw_line(dw_lines, dw_data, "FIN_STRESS_INDEX", "OFR Financial Stress Index")
+    _add_dw_line(dw_lines, dw_data, "SOFR_FFR_SPREAD", "SOFR-FFR Spread")
+    _add_dw_line(dw_lines, dw_data, "LIQUIDITY_AMIHUD", "Liquidity (Amihud)")
+    _add_dw_line(dw_lines, dw_data, "VIX_TERM_STRUCTURE", "VIX Term Structure")
+
+    # L7 Cross-Asset
+    _add_dw_line(dw_lines, dw_data, "GOLD_RETURN_20D", "Gold Return 20d (%)")
+    _add_dw_line(dw_lines, dw_data, "DXY_RETURN_20D", "DXY Return 20d (%)")
+    _add_dw_line(dw_lines, dw_data, "COPPER_SMA50_TREND", "Copper vs SMA50 Trend")
+    _add_dw_line(dw_lines, dw_data, "SPY_SMA50_TREND", "SPY vs SMA50 Trend")
+    _add_dw_line(dw_lines, dw_data, "REAL_YIELD_10Y_TREND", "Real Yield 10Y Trend")
+    _add_dw_line(dw_lines, dw_data, "YIELD_CURVE_10Y2Y", "Yield Curve 10Y-2Y")
+
+    if dw_lines:
+        lines.append("")
+        lines.append("DW-Indikatoren (aktuell):")
+        lines.extend(dw_lines)
+
+    if not lines:
+        return "(Keine Marktdaten verfuegbar — verwende relative Bedingungen)"
+
+    return "\n".join(lines)
+
+
+def _add_dw_line(lines: list, dw_data: dict, key: str, label: str):
+    """Add a DW indicator line if available."""
+    value = dw_data.get(key)
+    if value is not None and value != "":
+        lines.append(f"  {label}: {value}")
 
 
 # =============================================================================
@@ -151,8 +233,11 @@ def build_advisor_user_prompt(
     router_output: dict,
     event_window: dict,
     today: date,
+    dw_data: dict = None,
 ) -> str:
     """Build the complete user prompt for the Execution Advisor LLM call."""
+
+    dw_data = dw_data or {}
 
     # V16 Top-5
     weights = v16_data.get("current_weights", {})
@@ -205,6 +290,9 @@ def build_advisor_user_prompt(
     else:
         veto_info = "Nein"
 
+    # Market data block (V96 NEU)
+    market_data_formatted = _format_market_data(dw_data, v16_data)
+
     return USER_PROMPT_TEMPLATE_ADVISOR.format(
         today=today.isoformat(),
         weekday=today.strftime("%A"),
@@ -213,6 +301,7 @@ def build_advisor_user_prompt(
         top5_formatted=top5_formatted,
         rebalance_formatted=rebalance_formatted,
         material_rebalance=material_rebalance,
+        market_data_formatted=market_data_formatted,
         total_score=scoring_result["total_score"],
         max_score=scoring_result["max_possible"],
         execution_level=scoring_result["execution_level"],
@@ -300,6 +389,10 @@ def parse_advisor_llm_response(response: dict) -> dict:
         hold_if = _extract_conditional_triggers(
             briefing_text, "Wait/Hold wenn:"
         )
+    if not hold_if:
+        hold_if = _extract_conditional_triggers(
+            briefing_text, "Eskaliere zu Hold wenn:"
+        )
 
     return {
         "briefing_text": briefing_text,
@@ -381,6 +474,7 @@ def generate_execution_briefing(
     event_window: dict,
     today: date,
     config: dict = None,
+    dw_data: dict = None,
 ) -> dict:
     """
     Generate Execution Briefing via LLM with retry and fallback.
@@ -406,10 +500,11 @@ def generate_execution_briefing(
     retry_temp_inc = llm_config.get("retry_temperature_increment", 0.1)
     timeout = llm_config.get("timeout_seconds", 120)
 
-    # Build user prompt
+    # Build user prompt (now includes dw_data for market data block)
     user_prompt = build_advisor_user_prompt(
         scoring_result, cc_result, v16_data, risk_officer,
         cio_final, router_output, event_window, today,
+        dw_data=dw_data,
     )
 
     for attempt in range(1, retry_count + 2):
