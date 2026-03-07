@@ -1,0 +1,136 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-07",
+        "source": "Trading Desk Spec Teil 2 §4, §6.4"
+    },
+
+    "event_types": {
+        "FOMC": {
+            "name": "FOMC Decision",
+            "frequency": "8x/year",
+            "impact_default": "HIGH",
+            "themes_default": ["FED_POLICY", "LIQUIDITY"],
+            "time_et_default": "14:00",
+            "search_query": "FOMC meeting dates {year} {next_year} federal reserve schedule",
+            "source_url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+            "subtypes": ["FOMC_STANDARD", "FOMC_SEP"]
+        },
+        "CPI": {
+            "name": "CPI Release",
+            "frequency": "monthly",
+            "impact_default": "HIGH",
+            "themes_default": ["INFLATION", "FED_POLICY"],
+            "time_et_default": "08:30",
+            "search_query": "CPI consumer price index release dates {year} {next_year} BLS schedule",
+            "source_url": "https://www.bls.gov/cpi/"
+        },
+        "NFP": {
+            "name": "Employment Situation",
+            "frequency": "monthly",
+            "impact_default": "HIGH",
+            "themes_default": ["RECESSION", "FED_POLICY"],
+            "time_et_default": "08:30",
+            "search_query": "non farm payrolls release dates {year} {next_year} BLS employment",
+            "source_url": "https://www.bls.gov/news.release/empsit.htm"
+        },
+        "PCE": {
+            "name": "PCE Price Index",
+            "frequency": "monthly",
+            "impact_default": "HIGH",
+            "themes_default": ["INFLATION", "FED_POLICY"],
+            "time_et_default": "08:30",
+            "search_query": "PCE personal consumption expenditures release dates {year} {next_year} BEA",
+            "source_url": "https://www.bea.gov/"
+        },
+        "ISM_MFG": {
+            "name": "ISM Manufacturing PMI",
+            "frequency": "monthly",
+            "impact_default": "MEDIUM",
+            "themes_default": ["RECESSION", "COMMODITIES"],
+            "time_et_default": "10:00",
+            "search_query": "ISM manufacturing PMI release dates {year} {next_year}",
+            "source_url": "https://www.ismworld.org/"
+        },
+        "GDP": {
+            "name": "GDP Release",
+            "frequency": "quarterly_3x",
+            "impact_default": "MEDIUM",
+            "themes_default": ["RECESSION", "FED_POLICY"],
+            "time_et_default": "08:30",
+            "search_query": "GDP release dates {year} {next_year} BEA advance preliminary final",
+            "source_url": "https://www.bea.gov/data/gdp/gross-domestic-product",
+            "subtypes": ["GDP_ADVANCE", "GDP_PRELIMINARY", "GDP_FINAL"]
+        },
+        "ECB": {
+            "name": "ECB Rate Decision",
+            "frequency": "6x/year",
+            "impact_default": "MEDIUM",
+            "themes_default": ["FED_POLICY", "DOLLAR"],
+            "time_et_default": "07:45",
+            "search_query": "ECB governing council meeting dates {year} {next_year} rate decision",
+            "source_url": "https://www.ecb.europa.eu/"
+        },
+        "BOJ": {
+            "name": "BoJ Policy Decision",
+            "frequency": "8x/year",
+            "impact_default": "MEDIUM",
+            "themes_default": ["LIQUIDITY", "FED_POLICY"],
+            "time_et_default": "VARIABLE",
+            "search_query": "Bank of Japan BOJ monetary policy meeting dates {year} {next_year}",
+            "source_url": "https://www.boj.or.jp/en/"
+        },
+        "PBOC": {
+            "name": "PBoC LPR Decision",
+            "frequency": "monthly",
+            "impact_default": "MEDIUM",
+            "themes_default": ["CHINA_EM", "LIQUIDITY"],
+            "time_et_default": "21:15_PREV_DAY",
+            "search_query": "PBoC loan prime rate LPR dates {year} {next_year} China",
+            "source_url": "http://www.pbc.gov.cn/en/",
+            "rule_based_hint": "Usually 20th of each month"
+        },
+        "OPEC": {
+            "name": "OPEC+ Meeting",
+            "frequency": "~6x/year",
+            "impact_default": "MEDIUM",
+            "themes_default": ["COMMODITIES", "ENERGY"],
+            "time_et_default": "VARIABLE",
+            "search_query": "OPEC+ meeting dates {year} {next_year} production decision schedule",
+            "source_url": "https://www.opec.org/"
+        },
+        "OPEX": {
+            "name": "Options Expiry",
+            "frequency": "monthly",
+            "impact_default": "MEDIUM",
+            "themes_default": ["VOLATILITY", "LIQUIDITY"],
+            "time_et_default": "ALL_DAY",
+            "search_query": null,
+            "source_url": null,
+            "rule_based": true,
+            "subtypes": ["MONTHLY_OPEX", "QUAD_WITCHING"]
+        },
+        "CHINA_DATA": {
+            "name": "China Macro Data Release",
+            "frequency": "monthly_plus_quarterly",
+            "impact_default": "MEDIUM",
+            "themes_default": ["CHINA_EM", "COMMODITIES"],
+            "time_et_default": "02:00",
+            "search_query": "China GDP industrial production retail sales release dates {year} {next_year} NBS",
+            "source_url": "http://www.stats.gov.cn/english/",
+            "subtypes": ["CHINA_GDP", "CHINA_MONTHLY"]
+        }
+    },
+
+    "valid_themes": [
+        "FED_POLICY",
+        "INFLATION",
+        "RECESSION",
+        "LIQUIDITY",
+        "COMMODITIES",
+        "CHINA_EM",
+        "DOLLAR",
+        "VOLATILITY",
+        "ENERGY"
+    ]
+}
