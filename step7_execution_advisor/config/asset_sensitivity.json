@@ -1,0 +1,40 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-07",
+        "source": "Trading Desk Spec Teil 4 §20"
+    },
+
+    "asset_sensitivities": {
+        "SPY":  {"rate": 0.3, "equity": 1.0, "commodity": 0.1, "dollar": -0.2, "vol": -0.8},
+        "QQQ":  {"rate": 0.4, "equity": 1.0, "commodity": 0.0, "dollar": -0.2, "vol": -0.9},
+        "XLK":  {"rate": 0.4, "equity": 1.0, "commodity": 0.0, "dollar": -0.2, "vol": -0.9},
+        "RSP":  {"rate": 0.2, "equity": 0.9, "commodity": 0.1, "dollar": -0.1, "vol": -0.7},
+        "IWM":  {"rate": 0.3, "equity": 1.0, "commodity": 0.1, "dollar": -0.1, "vol": -0.8},
+        "XLP":  {"rate": 0.2, "equity": 0.5, "commodity": 0.1, "dollar": -0.1, "vol": -0.3},
+        "XLU":  {"rate": 0.6, "equity": 0.4, "commodity": 0.0, "dollar": -0.1, "vol": -0.3},
+        "XLE":  {"rate": 0.1, "equity": 0.7, "commodity": 0.8, "dollar": -0.3, "vol": -0.5},
+        "XLF":  {"rate": -0.3, "equity": 0.8, "commodity": 0.0, "dollar": 0.1, "vol": -0.7},
+        "HYG":  {"rate": 0.7, "equity": 0.5, "commodity": 0.0, "dollar": 0.0, "vol": -0.6},
+        "TLT":  {"rate": 1.0, "equity": -0.2, "commodity": 0.0, "dollar": 0.1, "vol": 0.3},
+        "SHY":  {"rate": 0.3, "equity": 0.0, "commodity": 0.0, "dollar": 0.0, "vol": 0.0},
+        "GLD":  {"rate": -0.5, "equity": -0.1, "commodity": 0.8, "dollar": -0.8, "vol": 0.4},
+        "SLV":  {"rate": -0.3, "equity": 0.1, "commodity": 0.9, "dollar": -0.6, "vol": 0.2},
+        "GDX":  {"rate": -0.4, "equity": 0.3, "commodity": 0.7, "dollar": -0.6, "vol": 0.1},
+        "DBC":  {"rate": -0.1, "equity": 0.3, "commodity": 1.0, "dollar": -0.4, "vol": -0.3},
+        "VWO":  {"rate": 0.2, "equity": 0.7, "commodity": 0.3, "dollar": -0.7, "vol": -0.6},
+        "INDA": {"rate": 0.2, "equity": 0.7, "commodity": 0.2, "dollar": -0.5, "vol": -0.5},
+        "FXI":  {"rate": 0.1, "equity": 0.6, "commodity": 0.2, "dollar": -0.4, "vol": -0.5},
+        "KWEB": {"rate": 0.2, "equity": 0.8, "commodity": 0.0, "dollar": -0.3, "vol": -0.7}
+    },
+
+    "sensitivity_labels": {
+        "rate": "Zins-Sensitiv (Yields steigen → Verlust wenn positiv)",
+        "equity": "Aktien-Sensitiv (Aktien fallen → Verlust wenn positiv)",
+        "commodity": "Commodity-Sensitiv (Rohstoffe fallen → Verlust wenn positiv)",
+        "dollar": "Dollar-Sensitiv (Dollar steigt → Verlust wenn negativ)",
+        "vol": "Volatilitäts-Sensitiv (VIX steigt → Verlust wenn negativ)"
+    },
+
+    "portfolio_sensitivity_calculation": "Σ(asset_weight × asset_sensitivity) pro Kategorie"
+}

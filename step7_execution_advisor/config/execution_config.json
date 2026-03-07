@@ -1,0 +1,42 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-07",
+        "source": "Trading Desk Spec Teil 6 §31"
+    },
+
+    "llm": {
+        "model": "claude-sonnet-4-5-20250929",
+        "temperature": 0.2,
+        "max_tokens": 3000,
+        "retry_on_failure": 1,
+        "retry_temperature_increment": 0.1,
+        "timeout_seconds": 120
+    },
+
+    "prompts": {
+        "system_prompt_version": "1.0",
+        "user_prompt_version": "1.0",
+        "last_updated": "2026-03-07",
+        "notes": "Initial version. Based on Trading Desk Spec Teil 6 §31."
+    },
+
+    "event_window": {
+        "hours_48h": 48,
+        "days_14d": 14,
+        "convergence_window_days": 5,
+        "convergence_min_high_events": 2,
+        "calendar_upcoming_count": 5,
+        "calendar_monthly_count": 10
+    },
+
+    "dashboard": {
+        "top_confirming_count": 3,
+        "top_conflicting_count": 3
+    },
+
+    "degraded_mode": {
+        "dw_unavailable_score_override": 0,
+        "event_calendar_missing_score_override": 0
+    }
+}

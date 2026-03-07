@@ -1,0 +1,39 @@
+name: "Step 7 — Execution Advisor"
+
+on:
+  workflow_run:
+    workflows: ["Step 6 — CIO Final"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  execution-advisor:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install anthropic google-api-python-client google-auth pyyaml
+
+      - name: Run Execution Advisor
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m step7_execution_advisor
+
+      - name: Commit archive + dashboard
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          DATUM=$(date +%Y-%m-%d)
+          git add archive/ data/dashboard/
+          git diff --cached --quiet || git commit -m "Step 7 Execution Advisor: ${DATUM}"
+          git push

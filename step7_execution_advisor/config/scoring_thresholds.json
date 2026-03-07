@@ -1,0 +1,70 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "date": "2026-03-07",
+        "source": "Trading Desk Spec Teil 3 §7-14"
+    },
+
+    "execution_levels": {
+        "EXECUTE": {"min_score": 0, "max_score": 3, "color": "#22c55e", "label": "Execute as planned"},
+        "CAUTION": {"min_score": 4, "max_score": 6, "color": "#eab308", "label": "Execute with Limit Orders"},
+        "WAIT":    {"min_score": 7, "max_score": 9, "color": "#f97316", "label": "Wait for clarity"},
+        "HOLD":    {"min_score": 10, "max_score": 18, "color": "#ef4444", "label": "Do not rebalance"}
+    },
+
+    "veto_rules": {
+        "single_max_override": {
+            "threshold": 3,
+            "minimum_level": "CAUTION",
+            "minimum_score": 4
+        },
+        "double_warning_override": {
+            "max_threshold": 2,
+            "sum_threshold": 7,
+            "minimum_level": "WAIT",
+            "minimum_score": 7
+        },
+        "all_relaxed_cap": {
+            "max_threshold": 1,
+            "sum_threshold": 4,
+            "maximum_level": "CAUTION",
+            "maximum_score": 3
+        }
+    },
+
+    "positioning": {
+        "cot_extreme_threshold": 40,
+        "cot_elevated_threshold": 25,
+        "fund_flow_conflict_threshold": -0.5
+    },
+
+    "liquidity": {
+        "amihud_illiquid_threshold": 80,
+        "amihud_moderate_threshold": 60,
+        "sofr_ffr_stressed_threshold": 15,
+        "sofr_ffr_elevated_threshold": 8,
+        "fin_stress_high_threshold": 1.0,
+        "vix_ts_backwardation_threshold": 0.90,
+        "avg_corr_high_threshold": 0.6
+    },
+
+    "gex": {
+        "strongly_negative_threshold": -1.0,
+        "negative_threshold": -0.5
+    },
+
+    "sentiment": {
+        "aaii_extreme_bullish_pctl": 80,
+        "aaii_extreme_bearish_pctl": 20,
+        "cnn_fg_extreme_greed": 80,
+        "cnn_fg_extreme_fear": 20,
+        "vix_high_fear": 30,
+        "vix_complacent": 13,
+        "pcr_extreme_complacent": 0.6,
+        "pcr_extreme_fear": 1.2,
+        "hy_oas_credit_stress": 500,
+        "hy_oas_elevated": 400,
+        "insider_heavy_selling": 0.5,
+        "move_high_bond_vol": 120
+    }
+}
