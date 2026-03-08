@@ -40,6 +40,7 @@ from step_0s_g7_monitor.scenario_engine import phase6_scenario_engine
 from step_0s_g7_monitor.narrative_engine import phase8_narrative_generation
 from step_0s_g7_monitor.sheet_writer import G7SheetWriter
 from step_0s_g7_monitor.display_writer import G7DisplayWriter
+from step_0s_g7_monitor.dashboard_update import update_dashboard_json as update_g7_dashboard
 
 # ============================================================
 # CONSTANTS
@@ -52,6 +53,11 @@ THRESHOLDS_PATH = os.path.join(CONFIG_DIR, "G7_THRESHOLDS.json")
 CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache")
 
 G7_SHEET_ID = "1TVl-GNYxK7Sppn8Tv8lSlMVgFfCwr8WslWSwABpOybk"
+
+DASHBOARD_JSON_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "data", "dashboard", "latest.json"
+)
 
 
 def load_thresholds():
@@ -668,6 +674,33 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
             print("[Phase 10] Dry-run — skipping writes")
             print("\nG7_STATUS output:")
             print(json.dumps(g7_status, indent=2, default=str))
+
+    # ---- PHASE 10b: Dashboard JSON (g7 block for Vercel) ----
+    try:
+        print("[Phase 10b] Updating dashboard.json g7 block...")
+        sit_result = overlays.get("sit", {})
+        update_g7_dashboard(
+            dashboard_json_path=DASHBOARD_JSON_PATH,
+            power_scores=power_scores,
+            gap_data=gap_data,
+            overlays=overlays,
+            g7_status=g7_status,
+            scenario_result=scenario_result,
+            narrative=narrative_result or _default_narrative(g7_status),
+            scoring_result=scoring,
+            sit_result=sit_result,
+            run_metadata={
+                "run_id": run_id,
+                "run_type": run_type,
+                "duration_s": round(time.time() - start_time, 1),
+                "errors_count": len(run_log["errors"]),
+            },
+            sheet_writer=writer,
+        )
+        print("  Dashboard g7 block written")
+    except Exception as e:
+        print(f"[Phase 10b] Dashboard update failed (non-fatal): {e}")
+        run_log["errors"].append(f"P10b: {e}")
 
     # ---- PRINT SUMMARY ----
     print("\n" + "=" * 70)
