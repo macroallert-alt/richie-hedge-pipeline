@@ -590,7 +590,7 @@ class G7DisplayWriter:
             [_fmt_pct(gp) if gp else "—"],# Gold 1M%
             [_yc("DX-Y.NYB")],          # DXY
             ["—"],                       # V16 State — cross-read pending
-            [_fv("BAMLMOVE")],           # MOVE Index
+            [_yc("^MOVE")],              # MOVE Index
             [_fv("STLFSI4")],           # NFCI
             [_fv("ANFCI")],             # ANFCI
         ])])
