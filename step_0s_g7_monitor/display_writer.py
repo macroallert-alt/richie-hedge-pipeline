@@ -119,21 +119,29 @@ class G7DisplayWriter:
         if not scenario_result or not isinstance(scenario_result, dict):
             return [0.40, 0.20, 0.25, 0.15]
         probs = None
-        ct = scenario_result.get("current_thesis")
-        if isinstance(ct, dict):
-            probs = ct.get("probabilities")
-        if not probs:
-            th = scenario_result.get("thesis")
-            if isinstance(th, dict):
-                probs = th.get("probabilities")
+        # Try current_thesis first, then thesis
+        for key in ("current_thesis", "thesis"):
+            ct = scenario_result.get(key)
+            if isinstance(ct, dict):
+                probs = ct.get("scenario_probabilities") or ct.get("probabilities")
+                if probs and isinstance(probs, dict):
+                    break
         if not probs or not isinstance(probs, dict):
             return [0.40, 0.20, 0.25, 0.15]
         return [
-            probs.get("S1_managed_decline", probs.get("S1_status_quo", 0.40)),
-            probs.get("S2_conflict", probs.get("S2_bifurcation", 0.20)),
-            probs.get("S3_us_renewal", probs.get("S3_fragmentation", 0.25)),
-            probs.get("S4_multipolar", probs.get("S4_fiscal_dominance", 0.15)),
+            probs.get("managed_decline", probs.get("S1_managed_decline", probs.get("S1_status_quo", 0.40))),
+            probs.get("conflict_escalation", probs.get("S2_conflict", probs.get("S2_bifurcation", 0.20))),
+            probs.get("us_renewal", probs.get("S3_us_renewal", probs.get("S3_fragmentation", 0.25))),
+            probs.get("multipolar_chaos", probs.get("S4_multipolar", probs.get("S4_fiscal_dominance", 0.15))),
         ]
+
+    def _extract_tilts(self, scenario_result):
+        """Extract computed tilts from scenario result."""
+        for key in ("current_thesis", "thesis"):
+            ct = scenario_result.get(key) if isinstance(scenario_result, dict) else None
+            if isinstance(ct, dict) and ct.get("computed_tilts"):
+                return ct["computed_tilts"]
+        return {}
 
     # ============================================================
     # DASHBOARD
@@ -142,16 +150,26 @@ class G7DisplayWriter:
     def write_dashboard(self, power_scores, gap_data, overlays, g7_status, scenario_result):
         print("  [Display] DASHBOARD...")
         d = []
+
+        # --- Power Scores table (B5:G11) ---
+        tilts = self._extract_tilts(scenario_result)
         ps_rows = []
         for region in REGIONS:
             ps = power_scores.get(region, {})
             score = ps.get("score")
             mom = ps.get("momentum", 0)
             trend = "▲" if mom > 0.3 else "▼" if mom < -0.3 else "►"
+            # Column G: dominant tilt direction for this region's key ETF
+            region_etf = {"USA": "SPY", "CHINA": "FXI", "EU": "EFA", "INDIA": "INDA",
+                          "JP_KR_TW": "EFA", "GULF": "EEM", "REST_EM": "VWO"}
+            etf = region_etf.get(region, "EEM")
+            tilt_val = tilts.get(etf, 0)
+            tilt_str = f"{tilt_val:+.2f}" if tilt_val != 0 else "—"
             ps_rows.append([_fmt(score), trend, _fmt_delta(mom),
-                           CYCLE_PHASES.get(region, "—"), KEY_RISKS.get(region, "—"), "—"])
+                           CYCLE_PHASES.get(region, "—"), KEY_RISKS.get(region, "—"), tilt_str])
         d.append(("DASHBOARD!B5:G11", ps_rows))
 
+        # --- Gap section (D14:D17) ---
         gap = gap_data.get("gap", 0)
         thuc = "LOW"
         for loop in overlays.get("feedback_loops", []):
@@ -162,9 +180,20 @@ class G7DisplayWriter:
             [_fmt(gap)], [gap_data.get("trend", "STABLE")], [thuc],
             ["N/A" if gap_data.get("trend") != "CLOSING" else "Monitor"]]))
 
+        # --- Scenario Probabilities (B21:B24) ---
         probs = self._extract_probs(scenario_result)
         d.append(("DASHBOARD!B21:B24", [[_fmt_pct(p * 100, 0)] for p in probs]))
 
+        # --- Tilt Direction Table (B27:C34) — top 8 assets by absolute tilt ---
+        if tilts:
+            sorted_tilts = sorted(tilts.items(), key=lambda x: abs(x[1]), reverse=True)[:8]
+            tilt_rows = []
+            for asset, tilt_val in sorted_tilts:
+                direction = "OW" if tilt_val > 0.05 else "UW" if tilt_val < -0.05 else "N"
+                tilt_rows.append([asset, f"{direction} ({tilt_val:+.2f})"])
+            d.append(("DASHBOARD!B27:C34", tilt_rows))
+
+        # --- Run info (D39:D42) ---
         d.append(("DASHBOARD!D39:D42", [
             [_now_iso()], ["Next scheduled run"], ["Weekly + Quarterly"],
             [g7_status.get("attention_flag", "NONE")]]))
@@ -175,7 +204,7 @@ class G7DisplayWriter:
     # POWER_SCORES
     # ============================================================
 
-    def write_power_scores(self, scores, momenta, power_scores):
+    def write_power_scores(self, scores, momenta, power_scores, scenario_result=None):
         print("  [Display] POWER_SCORES...")
         d = []
         def _rv(dim):
@@ -189,6 +218,26 @@ class G7DisplayWriter:
         d.append(("POWER_SCORES!C28:I28", [[_fmt(power_scores.get(r, {}).get("score")) for r in REGIONS]]))
         d.append(("POWER_SCORES!C29:I29", [[_fmt_delta(power_scores.get(r, {}).get("momentum", 0)) for r in REGIONS]]))
         d.append(("POWER_SCORES!C30:I30", [[CYCLE_PHASES.get(r, "—") for r in REGIONS]]))
+
+        # --- Regime Sensitivity Check (C34:I37) ---
+        # Shows how each region's "effective score" shifts under each pure scenario
+        # Uses tilt as proxy: region_etf tilt under each scenario
+        if scenario_result:
+            from step_0s_g7_monitor.scenario_engine import ASSET_EXPOSURE_VECTORS
+            region_etf = {"USA": "SPY", "CHINA": "FXI", "EU": "EFA", "INDIA": "INDA",
+                          "JP_KR_TW": "EFA", "GULF": "EEM", "REST_EM": "VWO"}
+            scenario_names = ["managed_decline", "conflict_escalation", "us_renewal", "multipolar_chaos"]
+            regime_rows = []
+            for sn in scenario_names:
+                row = []
+                for r in REGIONS:
+                    etf = region_etf.get(r, "EEM")
+                    exp = ASSET_EXPOSURE_VECTORS.get(etf, {})
+                    val = exp.get(sn, 0)
+                    row.append(f"{val:+.1f}")
+                regime_rows.append(row)
+            d.append(("POWER_SCORES!C34:I37", regime_rows))
+
         self._batch_write(d)
 
     # ============================================================
@@ -465,12 +514,50 @@ class G7DisplayWriter:
     def write_scenarios(self, scenario_result):
         print("  [Display] SCENARIOS...")
         probs = self._extract_probs(scenario_result)
-        self._batch_write([
+        d = [
             ("SCENARIOS!B4", [[_fmt_pct(probs[0] * 100, 0)]]),
             ("SCENARIOS!B13", [[_fmt_pct(probs[1] * 100, 0)]]),
             ("SCENARIOS!B22", [[_fmt_pct(probs[2] * 100, 0)]]),
             ("SCENARIOS!B31", [[_fmt_pct(probs[3] * 100, 0)]]),
-        ])
+        ]
+
+        # --- Probability-Weighted Tilt Table (SCENARIOS!B40:G48) ---
+        # 9 key assets: SPY, QQQ, EEM, TLT, GLD, FXI, INDA, BTC, DBC
+        # Columns: Asset, Managed Decline, Conflict, Renewal, Multipolar, Weighted Tilt
+        from step_0s_g7_monitor.scenario_engine import ASSET_EXPOSURE_VECTORS
+        display_assets = ["SPY", "QQQ", "EEM", "TLT", "GLD", "FXI", "INDA", "BTC", "DBC"]
+        tilt_rows = []
+        for asset in display_assets:
+            exp = ASSET_EXPOSURE_VECTORS.get(asset, {})
+            a_exp = exp.get("managed_decline", 0)
+            b_exp = exp.get("conflict_escalation", 0)
+            c_exp = exp.get("us_renewal", 0)
+            d_exp = exp.get("multipolar_chaos", 0)
+            weighted = (probs[0] * a_exp + probs[1] * b_exp
+                        + probs[2] * c_exp + probs[3] * d_exp)
+            tilt_rows.append([
+                asset,
+                f"{a_exp:+.1f}", f"{b_exp:+.1f}", f"{c_exp:+.1f}", f"{d_exp:+.1f}",
+                f"{weighted:+.3f}",
+            ])
+        d.append(("SCENARIOS!B40:G48", tilt_rows))
+
+        # --- Thesis metadata (SCENARIOS!B51:B54) ---
+        thesis = None
+        for key in ("current_thesis", "thesis"):
+            t = scenario_result.get(key) if isinstance(scenario_result, dict) else None
+            if isinstance(t, dict) and t.get("dominant_thesis"):
+                thesis = t
+                break
+        if thesis:
+            d.append(("SCENARIOS!B51:B54", [
+                [thesis.get("dominant_thesis", "—")],
+                [thesis.get("confidence", "—")],
+                [thesis.get("probability_source", "—")],
+                ["Yes" if thesis.get("interim_flag") else "No"],
+            ]))
+
+        self._batch_write(d)
 
     # ============================================================
     # SCORING
@@ -495,15 +582,15 @@ class G7DisplayWriter:
 
         self._batch_write([("SCORING!B5:B16", [
             [_yc("^VIX")],              # VIX
-            ["—"],                       # VIX3M — not in yfinance tickers yet
+            [_yc("^VIX3M")],            # VIX3M
             [_fv("BAMLH0A0HYM2")],      # HY Spread
             [_fmt(gv, 0) if gv else "—"],# GPR
             [_fv("T10Y2Y")],            # 2Y10Y
             [_fv("BAMLC0A0CM")],        # Credit Stress IG OAS
             [_fmt_pct(gp) if gp else "—"],# Gold 1M%
             [_yc("DX-Y.NYB")],          # DXY
-            ["—"],                       # V16 State
-            ["—"],                       # MOVE — needs FRED series
+            ["—"],                       # V16 State — cross-read pending
+            [_fv("BAMLMOVE")],           # MOVE Index
             [_fv("STLFSI4")],           # NFCI
             [_fv("ANFCI")],             # ANFCI
         ])])
@@ -575,7 +662,7 @@ class G7DisplayWriter:
 
         for name, fn, args in [
             ("DASHBOARD", self.write_dashboard, (power_scores, gap_data, overlays, g7_status, scenario_result)),
-            ("POWER_SCORES", self.write_power_scores, (scores, momenta, power_scores)),
+            ("POWER_SCORES", self.write_power_scores, (scores, momenta, power_scores, scenario_result)),
             ("STRUCTURAL", self.write_structural, (validated_data, scores)),
             ("FINANCIAL", self.write_financial, (validated_data, overlays)),
             ("LEADING", self.write_leading, (scores, momenta, overlays, validated_data)),

@@ -558,11 +558,11 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
         run_log["phases"]["P3"] = {"status": "ERROR", "error": str(e)}
         run_log["errors"].append(f"P3: {e}")
 
-    # ---- PHASE 4 (STUB) ----
+    # ---- PHASE 4 ----
     ps = time.time()
     try:
-        overlays = phase4_overlay_computation(scores=scoring, validated_data=validation.get("validated_data", {}), previous_overlays={})
-        run_log["phases"]["P4"] = {"status": "STUB", "duration_s": round(time.time() - ps, 1)}
+        overlays = phase4_overlay_computation(scores=scoring, validated_data=validation.get("validated_data", {}), previous_overlays={}, run_type=run_type)
+        run_log["phases"]["P4"] = {"status": "OK", "duration_s": round(time.time() - ps, 1)}
     except Exception as e:
         print(f"[Phase 4] ERROR: {e}"); traceback.print_exc()
         overlays = _default_overlays()
@@ -580,11 +580,11 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
         run_log["phases"]["P5"] = {"status": "ERROR", "error": str(e)}
         run_log["errors"].append(f"P5: {e}")
 
-    # ---- PHASE 6 (STUB) ----
+    # ---- PHASE 6 ----
     ps = time.time()
     try:
         scenario_result = phase6_scenario_engine(scores=scoring, overlays=overlays, gap_data=gap_data, validated_data=validation.get("validated_data", {}), previous_thesis=previous_thesis, scenario_history=thesis_history, run_type=run_type)
-        run_log["phases"]["P6"] = {"status": "STUB", "thesis_updated": scenario_result.get("thesis_updated", False), "duration_s": round(time.time() - ps, 1)}
+        run_log["phases"]["P6"] = {"status": "OK", "thesis_updated": scenario_result.get("thesis_updated", False), "duration_s": round(time.time() - ps, 1)}
     except Exception as e:
         print(f"[Phase 6] ERROR: {e}"); traceback.print_exc()
         scenario_result = {"thesis_updated": False, "current_thesis": previous_thesis}

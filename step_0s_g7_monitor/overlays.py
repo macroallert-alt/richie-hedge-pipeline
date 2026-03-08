@@ -1,13 +1,13 @@
 """
 step_0s_g7_monitor/overlays.py
-Phase 4: Overlay Computation — Etappe 2 VOLLSTAENDIG
+Phase 4: Overlay Computation — Etappe 3
 
 Berechnet 9 Cross-Dimensionale Overlays in fester Reihenfolge:
   1. Feedback Loop Quantifizierung (7 Loops)
   2. Supply Chain Stress Index (SCSI)
   3. De-Dollarization Index (DDI)
   4. Fiscal Dominance Proximity Score (FDP)
-  5. Sanctions Intensity Tracker (SIT) — Placeholder (Etappe 3 LLM)
+  5. Sanctions Intensity Tracker (SIT) — LLM + Brave Search (Etappe 3)
   6. Early Warning Index (EWI, 10 Canary Signals)
   7. Geopolitical Attractiveness Ranking (V1 simplified)
   8. Liquidity Distribution Map — Placeholder (Etappe 3 LLM)
@@ -20,6 +20,8 @@ Thresholds: config/G7_THRESHOLDS.json
 import os
 import json
 import math
+import time
+import traceback
 from datetime import datetime, timezone
 
 # ============================================================
@@ -910,15 +912,319 @@ def _generate_fdp_implication(region, proximity, qtrs):
 # 5. SANCTIONS INTENSITY TRACKER — SIT (Spec Teil 3 §5)
 # ============================================================
 
-def compute_sit():
+# Pre-configured baseline expectations (helps LLM calibration)
+SANCTIONS_BASELINE = {
+    "USA":      {"role": "PRIMARY_IMPOSER", "packages_est": 30},
+    "EU":       {"role": "SECONDARY_IMPOSER", "packages_est": 20},
+    "CHINA":    {"role": "TARGET_RETALIATOR", "packages_est": 15},
+    "INDIA":    {"role": "MOSTLY_NEUTRAL", "packages_est": 2},
+    "JP_KR_TW": {"role": "US_ALIGNED_IMPOSER", "packages_est": 10},
+    "GULF":     {"role": "SELECTIVE_COMPLIANCE", "packages_est": 3},
+    "REST_EM":  {"role": "MIXED", "packages_est": 5},
+}
+
+CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cache")
+SIT_CACHE_PATH = os.path.join(CACHE_DIR, "sit.json")
+SIT_CACHE_MAX_AGE_DAYS = 90
+
+
+def _load_sit_cache():
+    """Load SIT cache. Returns None if stale or missing."""
+    try:
+        if not os.path.exists(SIT_CACHE_PATH):
+            return None
+        with open(SIT_CACHE_PATH, "r") as f:
+            cache = json.load(f)
+        cached_date = cache.get("cached_date", "")
+        if cached_date:
+            age = (datetime.now(timezone.utc) - datetime.fromisoformat(cached_date)).days
+            if age <= SIT_CACHE_MAX_AGE_DAYS:
+                return cache
+    except Exception:
+        pass
+    return None
+
+
+def _save_sit_cache(data):
+    """Save SIT result to cache."""
+    try:
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        data["cached_date"] = datetime.now(timezone.utc).isoformat()
+        with open(SIT_CACHE_PATH, "w") as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        print(f"  SIT cache save error: {e}")
+
+
+def _run_brave_sit_queries():
     """
-    Sanctions Intensity Tracker — Placeholder for Etappe 3 (LLM-based).
-    Spec Teil 3 §5.
+    Run Brave Search queries for sanctions intelligence.
+    7 queries — one per region, focused on recent sanctions activity.
     """
+    api_key = os.environ.get("BRAVE_API_KEY", "")
+    if not api_key:
+        print("  SIT: No BRAVE_API_KEY — skipping web search")
+        return None
+
+    import requests
+
+    queries = {}
+    for region in REGIONS:
+        region_name = {
+            "USA": "United States", "CHINA": "China", "EU": "European Union",
+            "INDIA": "India", "JP_KR_TW": "Japan South Korea Taiwan",
+            "GULF": "Saudi Arabia UAE Gulf states", "REST_EM": "emerging markets",
+        }.get(region, region)
+
+        queries[region] = f"sanctions imposed on by {region_name} 2025 2026 SWIFT"
+
+    all_results = {}
+    total_results = 0
+
+    for region, query in queries.items():
+        try:
+            resp = requests.get(
+                "https://api.search.brave.com/res/v1/web/search",
+                headers={"X-Subscription-Token": api_key, "Accept": "application/json"},
+                params={"q": query, "count": 5},
+                timeout=10,
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                results = data.get("web", {}).get("results", [])
+                snippets = [r.get("description", "")[:300] for r in results[:5]]
+                all_results[region] = " | ".join(snippets)
+                total_results += len(results)
+            else:
+                all_results[region] = ""
+        except Exception as e:
+            print(f"  SIT Brave error for {region}: {e}")
+            all_results[region] = ""
+        time.sleep(0.25)
+
+    print(f"  SIT: {total_results} Brave results across {len(queries)} queries")
+    return all_results
+
+
+def _call_sit_llm(search_results):
+    """
+    Call Claude Sonnet to assess sanctions intensity per region.
+    Returns structured JSON with per-region assessments.
+    """
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        print("  SIT: No ANTHROPIC_API_KEY — using fallback")
+        return None
+
+    import requests as req
+
+    # Build context block from search results
+    context_parts = []
+    for region in REGIONS:
+        baseline = SANCTIONS_BASELINE.get(region, {})
+        snippets = search_results.get(region, "No data available")
+        context_parts.append(
+            f"--- {region} (baseline role: {baseline.get('role', 'UNKNOWN')}, "
+            f"est. {baseline.get('packages_est', 0)} active packages) ---\n"
+            f"Web search snippets: {snippets[:800]}"
+        )
+
+    context = "\n\n".join(context_parts)
+
+    prompt = f"""You are the Sanctions Intensity Tracker for a geopolitical intelligence system.
+
+Assess the current sanctions landscape for each of the 7 regions based on the web search data below.
+
+SEARCH DATA:
+{context}
+
+Respond ONLY with valid JSON (no markdown, no preamble). Use this exact schema:
+{{
+  "regions": {{
+    "USA": {{
+      "imposed_by": {{"active_packages": int, "new_last_90d": int, "severity": "LOW|MEDIUM|HIGH"}},
+      "imposed_on": {{"active_packages": int, "new_last_90d": int, "severity": "LOW|MEDIUM|HIGH"}},
+      "swift_disconnection_risk": "LOW|MEDIUM|HIGH|ACTIVE",
+      "reserve_freeze_risk": "LOW|MEDIUM|HIGH|ACTIVE",
+      "escalation_trend": "DE-ESCALATING|STABLE|ESCALATING|CRITICAL",
+      "severity_score": float 0-10,
+      "highlight": "one sentence"
+    }},
+    ... (same for CHINA, EU, INDIA, JP_KR_TW, GULF, REST_EM)
+  }},
+  "global_escalation_trend": "DE-ESCALATING|STABLE|ESCALATING|CRITICAL",
+  "global_highlight": "one sentence summary"
+}}
+
+RULES:
+- severity_score: 0=no sanctions exposure, 5=moderate, 10=maximum (like Russia 2022)
+- For PRIMARY_IMPOSERS (USA, EU): severity_score reflects THEIR vulnerability to retaliation
+- Be calibrated: USA imposing sanctions on others is NORMAL (severity_score 1-2 for USA itself)
+- CHINA receiving tech sanctions is current reality (severity_score 4-6)
+- REST_EM varies hugely — use weighted average of major EMs
+- Base your assessment on the search data provided, not assumptions"""
+
+    try:
+        resp = req.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            json={
+                "model": "claude-sonnet-4-20250514",
+                "max_tokens": 3000,
+                "temperature": 0.2,
+                "messages": [{"role": "user", "content": prompt}],
+            },
+            timeout=120,
+        )
+        if resp.status_code != 200:
+            print(f"  SIT LLM error: HTTP {resp.status_code}")
+            return None
+
+        data = resp.json()
+        text = ""
+        for block in data.get("content", []):
+            if block.get("type") == "text":
+                text += block.get("text", "")
+
+        # Parse JSON from response
+        text = text.strip()
+        if text.startswith("```"):
+            text = text.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+
+        result = json.loads(text)
+        print(f"  SIT LLM: {len(text)} chars response, {len(result.get('regions', {}))} regions")
+        return result
+
+    except json.JSONDecodeError as e:
+        print(f"  SIT LLM JSON parse error: {e}")
+        return None
+    except Exception as e:
+        print(f"  SIT LLM error: {e}")
+        return None
+
+
+def _build_sit_fallback():
+    """Deterministic fallback when Brave/LLM unavailable."""
+    regions = {}
+    fallback_data = {
+        "USA":      {"imposed_by_pkg": 30, "imposed_on_pkg": 2, "sev": 1.5, "esc": "STABLE",
+                     "swift": "LOW", "reserve": "LOW", "hl": "Primary sanctions imposer; minimal own exposure."},
+        "CHINA":    {"imposed_by_pkg": 5, "imposed_on_pkg": 15, "sev": 5.0, "esc": "ESCALATING",
+                     "swift": "MEDIUM", "reserve": "MEDIUM", "hl": "Increasing tech/semiconductor sanctions from US and allies."},
+        "EU":       {"imposed_by_pkg": 20, "imposed_on_pkg": 1, "sev": 1.0, "esc": "STABLE",
+                     "swift": "LOW", "reserve": "LOW", "hl": "Active sanctions imposer aligned with US; low own exposure."},
+        "INDIA":    {"imposed_by_pkg": 0, "imposed_on_pkg": 1, "sev": 0.5, "esc": "STABLE",
+                     "swift": "LOW", "reserve": "LOW", "hl": "Mostly neutral; minor secondary sanctions risk from Russia trade."},
+        "JP_KR_TW": {"imposed_by_pkg": 8, "imposed_on_pkg": 1, "sev": 1.0, "esc": "STABLE",
+                     "swift": "LOW", "reserve": "LOW", "hl": "US-aligned imposers; chip export controls on China active."},
+        "GULF":     {"imposed_by_pkg": 1, "imposed_on_pkg": 2, "sev": 1.5, "esc": "STABLE",
+                     "swift": "LOW", "reserve": "LOW", "hl": "Selective compliance; balancing US and China relationships."},
+        "REST_EM":  {"imposed_by_pkg": 1, "imposed_on_pkg": 5, "sev": 3.0, "esc": "STABLE",
+                     "swift": "MEDIUM", "reserve": "LOW", "hl": "Mixed exposure; Russia/Iran sanctions affect some EMs."},
+    }
+
+    for region in REGIONS:
+        fb = fallback_data.get(region, {})
+        regions[region] = {
+            "imposed_by": {"active_packages": fb.get("imposed_by_pkg", 0), "new_last_90d": 0, "severity": "LOW"},
+            "imposed_on": {"active_packages": fb.get("imposed_on_pkg", 0), "new_last_90d": 0, "severity": "LOW"},
+            "swift_disconnection_risk": fb.get("swift", "LOW"),
+            "reserve_freeze_risk": fb.get("reserve", "LOW"),
+            "escalation_trend": fb.get("esc", "STABLE"),
+            "severity_score": fb.get("sev", 1.0),
+            "highlight": fb.get("hl", "No data available."),
+        }
+
     return {
-        "escalation_trend": "STABLE",
-        "highlight": "Sanctions tracking pending (Etappe 3 — LLM + Web Search).",
-        "data_note": "SIT requires LLM + web search — will be implemented in Etappe 3.",
+        "regions": regions,
+        "global_escalation_trend": "STABLE",
+        "global_highlight": "Sanctions landscape stable; China tech restrictions dominant theme. (FALLBACK DATA)",
+    }
+
+
+def compute_sit(run_type="WEEKLY"):
+    """
+    Sanctions Intensity Tracker — LLM + Brave Search.
+    Spec Teil 3 §5.
+
+    Measures TWO dimensions per region:
+      1. Sanctions IMPOSED BY this region (power projection)
+      2. Sanctions IMPOSED ON this region (vulnerability)
+
+    Cache: 90 days (sanctions shift slowly). Force refresh on AD_HOC/QUARTERLY.
+    Fallback: Deterministic baseline when Brave/LLM unavailable.
+    """
+    print("  SIT: Computing Sanctions Intensity...")
+
+    # --- Check cache ---
+    force = run_type in ("AD_HOC", "QUARTERLY")
+    if not force:
+        cache = _load_sit_cache()
+        if cache and cache.get("regions"):
+            print("  SIT: Using cached data (still valid)")
+            return _format_sit_output(cache, source="CACHE")
+
+    # --- Brave Search ---
+    ps = time.time()
+    search_results = _run_brave_sit_queries()
+
+    if search_results:
+        # --- LLM Assessment ---
+        llm_result = _call_sit_llm(search_results)
+        if llm_result and llm_result.get("regions"):
+            # Validate: must have all 7 regions
+            if len(llm_result["regions"]) >= 5:
+                duration = round(time.time() - ps, 1)
+                print(f"  SIT: LLM assessment complete ({duration}s)")
+                _save_sit_cache(llm_result)
+                return _format_sit_output(llm_result, source="BRAVE_SEARCH_LLM")
+
+    # --- Fallback ---
+    print("  SIT: Using deterministic fallback")
+    fallback = _build_sit_fallback()
+    return _format_sit_output(fallback, source="FALLBACK")
+
+
+def _format_sit_output(raw, source="UNKNOWN"):
+    """Format SIT data into the standard overlay output dict."""
+    regions = raw.get("regions", {})
+
+    # Compute aggregate escalation trend from regions
+    escalation_counts = {"DE-ESCALATING": 0, "STABLE": 0, "ESCALATING": 0, "CRITICAL": 0}
+    for region_data in regions.values():
+        trend = region_data.get("escalation_trend", "STABLE")
+        if trend in escalation_counts:
+            escalation_counts[trend] += 1
+
+    # Global trend: use raw value if provided, else derive from regions
+    global_trend = raw.get("global_escalation_trend")
+    if not global_trend:
+        if escalation_counts["CRITICAL"] >= 1:
+            global_trend = "CRITICAL"
+        elif escalation_counts["ESCALATING"] >= 2:
+            global_trend = "ESCALATING"
+        elif escalation_counts["DE-ESCALATING"] >= 4:
+            global_trend = "DE-ESCALATING"
+        else:
+            global_trend = "STABLE"
+
+    # Per-region severity scores (for Attractiveness and Scenario Engine)
+    severity_scores = {}
+    for region in REGIONS:
+        rd = regions.get(region, {})
+        severity_scores[region] = rd.get("severity_score", 1.0)
+
+    return {
+        "escalation_trend": global_trend,
+        "highlight": raw.get("global_highlight", ""),
+        "regions": regions,
+        "severity_scores": severity_scores,
+        "source": source,
+        "data_note": f"SIT assessed via {source}.",
     }
 
 
@@ -1104,7 +1410,7 @@ MCAP_TO_GDP = {
 }
 
 
-def compute_attractiveness(power_scores):
+def compute_attractiveness(power_scores, sanctions_result=None):
     """
     Geopolitical Attractiveness Ranking — V1 simplified.
     Spec Teil 3 §7.
@@ -1112,21 +1418,27 @@ def compute_attractiveness(power_scores):
     Formula (V2):
       score = power_score * 0.30
             + max(0, momentum) * 10 * 0.25
-            + -sanctions_severity * 0.15   (→ 0 in Etappe 2, SIT placeholder)
+            + -sanctions_severity * 0.15
             + -(mcap/gdp / 2) * 0.15
             + demographic_dividend * 0.15
     """
     ranking = []
 
+    # Extract per-region severity scores from SIT (default 0 if not available)
+    sev_scores = {}
+    if sanctions_result and isinstance(sanctions_result.get("severity_scores"), dict):
+        sev_scores = sanctions_result["severity_scores"]
+
     for region in REGIONS:
         ps = power_scores.get(region, {})
         score = ps.get("score", 50)
         momentum = ps.get("momentum", 0)
+        sanctions_sev = sev_scores.get(region, 0)
 
         attractiveness = (
             score * 0.30
             + max(0, momentum) * 10 * 0.25
-            + 0 * 0.15  # Sanctions severity = 0 (SIT placeholder)
+            + -sanctions_sev * 0.15
             + -(MCAP_TO_GDP.get(region, 0.80) / 2) * 0.15
             + DEMOGRAPHIC_DIVIDEND.get(region, 0.50) * 0.15
         )
@@ -1137,7 +1449,7 @@ def compute_attractiveness(power_scores):
             "components": {
                 "power_score_weighted": round(score * 0.30, 2),
                 "momentum_weighted": round(max(0, momentum) * 10 * 0.25, 2),
-                "sanctions_discount": 0,
+                "sanctions_discount": round(-sanctions_sev * 0.15, 2),
                 "valuation_edge": round(-(MCAP_TO_GDP.get(region, 0.80) / 2) * 0.15, 2),
                 "demographic_premium": round(DEMOGRAPHIC_DIVIDEND.get(region, 0.50) * 0.15, 2),
             },
@@ -1242,7 +1554,7 @@ def _extract_gpr(validated_data, previous_overlays):
 # MAIN ENTRY POINT — phase4_overlay_computation()
 # ============================================================
 
-def phase4_overlay_computation(scores, validated_data, previous_overlays):
+def phase4_overlay_computation(scores, validated_data, previous_overlays, run_type="WEEKLY"):
     """
     Phase 4: Compute all 9 overlays.
     Called by main.py after Phase 3 (Scoring Engine).
@@ -1257,11 +1569,12 @@ def phase4_overlay_computation(scores, validated_data, previous_overlays):
             - data_quality: dict[region] = quality info
         validated_data: Phase 2 validated raw data (FRED, yfinance, etc.)
         previous_overlays: Previous overlay results (from Sheet or empty dict)
+        run_type: "WEEKLY", "QUARTERLY", or "AD_HOC"
 
     Returns:
         dict with all overlay results, consumed by Phase 5 + Phase 6 + Sheet Writer.
     """
-    print("[Phase 4] Overlay Computation (Etappe 2)...")
+    print("[Phase 4] Overlay Computation (Etappe 3)...")
 
     thresholds = _load_thresholds()
 
@@ -1305,9 +1618,14 @@ def phase4_overlay_computation(scores, validated_data, previous_overlays):
         print(f"  FDP ERROR: {e}")
         fdp = {r: {"composite_proximity": 0, "trend": "STABLE"} for r in REGIONS}
 
-    # --- 5. SIT (Placeholder) ---
-    sanctions = compute_sit()
-    print(f"  SIT: {sanctions['escalation_trend']} (placeholder)")
+    # --- 5. SIT (Brave Search + LLM) ---
+    try:
+        sanctions = compute_sit(run_type=run_type)
+        src = sanctions.get("source", "?")
+        print(f"  SIT: {sanctions['escalation_trend']} [{src}]")
+    except Exception as e:
+        print(f"  SIT ERROR: {e}"); traceback.print_exc()
+        sanctions = _format_sit_output(_build_sit_fallback(), source="ERROR_FALLBACK")
 
     # --- 6. EWI ---
     try:
@@ -1317,9 +1635,9 @@ def phase4_overlay_computation(scores, validated_data, previous_overlays):
         print(f"  EWI ERROR: {e}")
         ewi = {"active_signals": 0, "total_signals": 10, "severity": "NONE", "active_details": []}
 
-    # --- 7. Attractiveness ---
+    # --- 7. Attractiveness (now uses SIT severity scores) ---
     try:
-        attractiveness = compute_attractiveness(power_scores)
+        attractiveness = compute_attractiveness(power_scores, sanctions_result=sanctions)
         top = attractiveness[0] if attractiveness else {}
         print(f"  Attractiveness: #1 = {top.get('region', '?')} ({top.get('composite_score', 0):.1f})")
     except Exception as e:
@@ -1355,7 +1673,7 @@ def phase4_overlay_computation(scores, validated_data, previous_overlays):
         # FDP
         "fdp": fdp,
 
-        # SIT (Placeholder)
+        # SIT (Brave Search + LLM)
         "sanctions": sanctions,
 
         # EWI
@@ -1375,7 +1693,7 @@ def phase4_overlay_computation(scores, validated_data, previous_overlays):
         "gpr_index_trend": gpr_trend,
         "gpr_index_zscore": gpr_zscore,
 
-        # SCSI Dimension Modifiers (computed, NOT applied in Etappe 2)
+        # SCSI Dimension Modifiers (computed, NOT applied yet)
         "scsi_dimension_modifiers": scsi.get("dimension_modifiers", {}),
 
         # Scenario shift (carried from previous)

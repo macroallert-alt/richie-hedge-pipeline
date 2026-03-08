@@ -64,6 +64,7 @@ YFINANCE_TICKERS = [
     "BTC-USD",       # Bitcoin
     "^VIX",          # VIX
     "^VVIX",         # VVIX
+    "^VIX3M",        # VIX 3-Month (term structure)
 ]
 
 # FRED series
@@ -85,6 +86,7 @@ FRED_SERIES = [
     "BAMLC0A0CM",           # IG Corporate OAS (Credit Stress)
     "ANFCI",                # Adjusted NFCI (Chicago Fed)
     "GOLDAMGBD228NLBM",     # Gold Price (London Fix)
+    "BAMLMOVE",             # MOVE Index (bond volatility)
 ]
 
 # World Bank indicators
