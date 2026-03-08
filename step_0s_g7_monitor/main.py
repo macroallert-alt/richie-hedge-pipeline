@@ -576,11 +576,12 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
     # ---- PHASE 7 (STUB) ----
     run_log["phases"]["P7"] = {"status": "STUB", "duration_s": 0}
 
-    # ---- PHASE 8 (STUB) ----
+    # ---- PHASE 8 ----
     ps = time.time()
     try:
         narrative_result = phase8_narrative_generation(power_scores=power_scores, gap_data=gap_data, overlays=overlays, g7_status=g7_status, scenario_result=scenario_result, web_search_results=None, previous_narrative=None)
-        run_log["phases"]["P8"] = {"status": "STUB", "duration_s": round(time.time() - ps, 1)}
+        llm_model = narrative_result.get("llm_model", "unknown") if narrative_result else "error"
+        run_log["phases"]["P8"] = {"status": "OK", "llm_model": llm_model, "duration_s": round(time.time() - ps, 1)}
     except Exception as e:
         print(f"[Phase 8] ERROR: {e}"); traceback.print_exc()
         narrative_result = _default_narrative(g7_status)
