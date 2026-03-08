@@ -269,36 +269,54 @@ class G7SheetWriter:
 
     def write_g7_narrative(self, narrative):
         """Write G7_NARRATIVE tab — woechentlich ueberschrieben."""
+
+        def _serialize(val):
+            """Ensure value is a string — serialize lists/dicts to JSON."""
+            if val is None:
+                return ""
+            if isinstance(val, (list, dict)):
+                return json.dumps(val, default=str)
+            return str(val)
+
         rows = [
             ["G7_NARRATIVE", ""],
-            ["headline", narrative.get("headline", "")],
-            ["weekly_shift_narrative", narrative.get("weekly_shift_narrative", "")],
-            ["scenario_implications", narrative.get("scenario_implications", "")],
-            ["portfolio_context", narrative.get("portfolio_context", "")],
-            ["unasked_question", narrative.get("unasked_question", "")],
-            ["cascade_watch", narrative.get("cascade_watch", "")],
+            ["headline", _serialize(narrative.get("headline", ""))],
+            ["weekly_shift_narrative", _serialize(narrative.get("weekly_shift_narrative", ""))],
+            ["scenario_implications", _serialize(narrative.get("scenario_implications", ""))],
+            ["portfolio_context", _serialize(narrative.get("portfolio_context", ""))],
+            ["unasked_question", _serialize(narrative.get("unasked_question", ""))],
+            ["cascade_watch", _serialize(narrative.get("cascade_watch", []))],
             ["attention_flag", narrative.get("attention_flag", "NONE")],
             [""],
             ["REGIME CONGRUENCE", ""],
-            ["regime_congruence_json", json.dumps(narrative.get("regime_congruence", {}))],
-            ["regime_congruence_note", narrative.get("regime_congruence_note", "")],
+            ["regime_congruence_json", json.dumps(narrative.get("regime_congruence", {}), default=str)],
+            ["regime_congruence_note", _serialize(narrative.get("regime_congruence_note", ""))],
             [""],
             ["COUNTER NARRATIVE", ""],
-            ["counter_narrative_json", json.dumps(narrative.get("counter_narrative", {}))],
+            ["counter_narrative_json", json.dumps(narrative.get("counter_narrative", {}), default=str)],
             [""],
             ["TOP SIGNALS", ""],
-            ["top_signals_json", json.dumps(narrative.get("top_signals", []))],
+            ["top_signals_json", json.dumps(narrative.get("top_signals", []), default=str)],
             [""],
             ["SCHEMA-NOW", ""],
-            ["historical_analog_json", json.dumps(narrative.get("historical_analog", {}))],
-            ["liquidity_map_json", json.dumps(narrative.get("liquidity_distribution_map", {}))],
-            ["correlation_regime_json", json.dumps(narrative.get("correlation_regime", {}))],
+            ["historical_analog_json", json.dumps(narrative.get("historical_analog", {}), default=str)],
+            ["liquidity_map_json", json.dumps(narrative.get("liquidity_distribution_map", {}), default=str)],
+            ["correlation_regime_json", json.dumps(narrative.get("correlation_regime", {}), default=str)],
             [""],
-            ["META", ""],
-            ["word_count", str(narrative.get("word_count", 0))],
-            ["llm_model", narrative.get("llm_model", "")],
-            ["generation_time_seconds", str(narrative.get("generation_time_seconds", 0))],
+            ["DASHBOARD EXPLANATIONS", ""],
         ]
+
+        # Dashboard explanations — written as key-value pairs
+        explanations = narrative.get("dashboard_explanations", {})
+        if isinstance(explanations, dict):
+            for key, text in explanations.items():
+                rows.append([key, _serialize(text)])
+
+        rows.append([""])
+        rows.append(["META", ""])
+        rows.append(["word_count", str(narrative.get("word_count", 0))])
+        rows.append(["llm_model", narrative.get("llm_model", "")])
+        rows.append(["generation_time_seconds", str(narrative.get("generation_time_seconds", 0))])
 
         return self._clear_and_write("G7_NARRATIVE!A1", rows)
 
