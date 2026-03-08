@@ -1,0 +1,425 @@
+{
+  "_meta": {
+    "file": "G7_THRESHOLDS.json",
+    "version": "1.0",
+    "date": "2026-02-27",
+    "status": "STARTWERTE — kalibriert via Forward Test",
+    "description": "Alle konfigurierbaren Schwellenwerte des G7 World Order Monitor. Wird von Phase 5 (Status Determination) via load_thresholds() geladen. Aenderungen hier aendern das Systemverhalten OHNE Code-Aenderung.",
+    "referenz": "G7 Spec Teil 6 §6.5 (Phase 5 Status Determination), Teil 3 §6 (EWI), Teil 3 §1-5 (Overlays)",
+    "kalibrierung": "Startwerte basierend auf historischen Daten und Experteneinschaetzung. Nach 2-4 Quartalen Forward Test anpassen."
+  },
+
+  "status_determination": {
+    "_description": "Schwellenwerte fuer die 4-stufige Status-Bestimmung (STABLE → SHIFTING → ELEVATED_RISK → STRUCTURAL_BREAK). Referenz: G7 Spec Teil 6 §6.5",
+
+    "gap": {
+      "_description": "USA-China Power Gap Score. Niedrigerer Wert = hoehere Spannung.",
+      "GAP_CRITICAL": 5,
+      "GAP_ELEVATED": 10,
+      "GAP_SHIFTING": 15,
+      "_unit": "Power Score Differenz (USA minus China)",
+      "_logic": "Gap < Threshold → Status-Trigger aktiv"
+    },
+
+    "gpr": {
+      "_description": "Geopolitical Risk Index (Caldara-Iacoviello). Hoehere Werte = mehr geopolitisches Risiko.",
+      "GPR_CRITICAL": 350,
+      "GPR_ELEVATED": 250,
+      "GPR_SHIFTING": 150,
+      "_unit": "GPR Index Punkte",
+      "_logic": "GPR > Threshold → Status-Trigger aktiv",
+      "_baseline": "GPR Langzeit-Durchschnitt ~100-120"
+    },
+
+    "scsi": {
+      "_description": "Supply Chain Stress Index (Composite aus Freight, Chokepoints, Inventory). Hoehere Werte = mehr Supply Chain Stress.",
+      "SCSI_CRITICAL": 80,
+      "SCSI_ELEVATED": 60,
+      "SCSI_SHIFTING": 40,
+      "_unit": "SCSI Composite Score (0-100)",
+      "_logic": "SCSI > Threshold → Status-Trigger aktiv"
+    },
+
+    "ddi": {
+      "_description": "Dollar Dominance Index. Hoehere Werte = USD-Dominanz steigt. Nur SHIFTING Trigger (DDI-Bewegungen sind strukturell, nicht akut).",
+      "DDI_SHIFTING": 65,
+      "_unit": "DDI Composite Score (0-100)",
+      "_logic": "DDI > Threshold → beitraegt zu SHIFTING. DDI allein loest kein ELEVATED_RISK aus."
+    },
+
+    "fdp": {
+      "_description": "Fiscal Dominance Probability (USA). Hoehere Werte = naeher an fiskalischer Dominanz.",
+      "FDP_ELEVATED": 0.85,
+      "_unit": "Composite Proximity (0-1)",
+      "_logic": "FDP > 0.85 → beitraegt zu ELEVATED_RISK. FDP > 0.65 boosted Scenario S4 Probability (G7 Spec Teil 4 §4.2)."
+    },
+
+    "feedback_loops": {
+      "_description": "Aktive Feedback Loops mit hoher Severity. Mehrere aktive Loops = hoehere System-Fragiliaet.",
+      "FEEDBACK_ELEVATED_COUNT": 2,
+      "FEEDBACK_ELEVATED_SEVERITY": 3,
+      "_unit": "Count und Severity Score (0-10)",
+      "_logic": ">=FEEDBACK_ELEVATED_COUNT Loops mit Severity > FEEDBACK_ELEVATED_SEVERITY → beitraegt zu ELEVATED_RISK"
+    },
+
+    "ewi": {
+      "_description": "Early Warning Index aktive Signale. Mehr aktive Signale = mehr akkumulierter Stress.",
+      "EWI_SHIFTING_COUNT": 3,
+      "EWI_ELEVATED_COUNT": 5,
+      "_unit": "Anzahl aktiver EWI Canary Signals (von 10 moeglichen)",
+      "_logic": ">=3 aktive → beitraegt zu SHIFTING. >=5 aktive → beitraegt zu ELEVATED_RISK."
+    },
+
+    "scenario_shift": {
+      "_description": "Maximale Probability-Verschiebung gegenueber aktueller Thesis. Grosse Shifts = Thesis moeglicherweise ungueltig.",
+      "SCENARIO_SHIFT_CRITICAL": 0.20,
+      "_unit": "Probability Delta (0-1)",
+      "_logic": "Max Scenario Shift > 0.20 → STRUCTURAL_BREAK Trigger"
+    },
+
+    "status_hierarchy": {
+      "_description": "Status-Bestimmung folgt einer strikten Hierarchie (hoechstes zuerst). Wenn STRUCTURAL_BREAK zutrifft, werden ELEVATED_RISK und SHIFTING nicht geprueft.",
+      "order": ["STRUCTURAL_BREAK", "ELEVATED_RISK", "SHIFTING", "STABLE"],
+      "STRUCTURAL_BREAK_requires": "GAP_CRITICAL OR GPR_CRITICAL OR SCSI_CRITICAL OR SCENARIO_SHIFT_CRITICAL",
+      "ELEVATED_RISK_requires": "check_elevated_risk() — multiple sub-checks including GAP_ELEVATED, GPR_ELEVATED, SCSI_ELEVATED, FDP_ELEVATED, FEEDBACK_ELEVATED, EWI_ELEVATED",
+      "SHIFTING_requires": "check_shifting() — GAP_SHIFTING OR GPR_SHIFTING OR SCSI_SHIFTING OR DDI_SHIFTING OR EWI_SHIFTING",
+      "STABLE_is_default": true
+    }
+  },
+
+  "ewi_canary_signals": {
+    "_description": "Individuelle Schwellenwerte fuer die 10 EWI Canary Signals. Referenz: G7 Spec Teil 3 §6",
+
+    "bdi_anomaly": {
+      "name": "Shipping Rate Anomaly",
+      "method": "Z-Score vs 90d Baseline",
+      "threshold": 1.5,
+      "unit": "Sigma",
+      "temporal": "TACTICAL",
+      "lead_time": "Days to weeks"
+    },
+    "chokepoint_alert": {
+      "name": "Chokepoint Disruption Alert",
+      "method": "Any chokepoint score > threshold",
+      "threshold": 50,
+      "unit": "Chokepoint Score (0-100)",
+      "temporal": "TACTICAL",
+      "lead_time": "Days"
+    },
+    "polymarket_shift": {
+      "name": "Prediction Market Shift",
+      "method": "Any tracked market moves >Xpp in 7 days",
+      "threshold": 5,
+      "unit": "Percentage points per week",
+      "temporal": "TACTICAL",
+      "lead_time": "Days to weeks"
+    },
+    "gpr_spike": {
+      "name": "Geopolitical Risk Spike",
+      "method": "Z-Score >X vs 90d MA",
+      "threshold": 2.0,
+      "unit": "Z-Score (Sigma)",
+      "temporal": "TACTICAL",
+      "lead_time": "Days to weeks"
+    },
+    "swift_shift": {
+      "name": "SWIFT Payment Share Shift",
+      "method": "Monats-Delta > Xpp",
+      "threshold": 1.0,
+      "unit": "Percentage points per month",
+      "temporal": "CYCLICAL",
+      "lead_time": "Months"
+    },
+    "gold_acceleration": {
+      "name": "Central Bank Gold Purchase Acceleration",
+      "method": "Quartals-Kaeufe > X * 5y-Durchschnitt",
+      "threshold": 1.5,
+      "unit": "Ratio vs 5-year average",
+      "temporal": "STRUCTURAL",
+      "lead_time": "Quarters to years"
+    },
+    "tic_treasury_shift": {
+      "name": "TIC Treasury Holdings Shift",
+      "method": "Top-10 Halter: Netto-Verkauf > $XB in einem Monat",
+      "threshold": 20,
+      "unit": "Billion USD",
+      "temporal": "CYCLICAL",
+      "lead_time": "Months"
+    },
+    "vvix_spike": {
+      "name": "Volatility of Volatility Spike",
+      "method": "VVIX > X oder Z-Score > 2",
+      "threshold": 120,
+      "unit": "VVIX Index Points",
+      "temporal": "TACTICAL",
+      "lead_time": "Days"
+    },
+    "worldmonitor_convergence": {
+      "name": "WorldMonitor Multi-Signal Convergence",
+      "method": "X+ Signal-Typen im selben Geo-Grid",
+      "threshold": 3,
+      "unit": "Concurrent signal types",
+      "temporal": "TACTICAL",
+      "lead_time": "Days"
+    },
+    "acled_protest_spike": {
+      "name": "Protest Activity Anomaly",
+      "method": "Welford Z-Score > X fuer Region/Weekday/Month Baseline",
+      "threshold": 2.0,
+      "unit": "Z-Score (Sigma)",
+      "temporal": "TACTICAL",
+      "lead_time": "Days to weeks"
+    },
+
+    "ewi_severity_levels": {
+      "_description": "Aggregierte EWI Severity basierend auf Anzahl aktiver Signale",
+      "NONE": {"min_active": 0, "max_active": 0},
+      "LOW": {"min_active": 1, "max_active": 1},
+      "MEDIUM": {"min_active": 2, "max_active": 3},
+      "HIGH": {"min_active": 4, "max_active": 10}
+    }
+  },
+
+  "overlay_weights": {
+    "_description": "Dimension-Gewichtung fuer Power Score Berechnung. Summe = 1.0. Referenz: G7 Spec Teil 2 §2.5",
+
+    "dimension_weights": {
+      "D1_economic": 0.12,
+      "D2_demographics": 0.10,
+      "D3_technology": 0.12,
+      "D4_energy": 0.08,
+      "D5_military": 0.08,
+      "D6_fiscal": 0.10,
+      "D7_currency": 0.10,
+      "D8_capital_mkt": 0.10,
+      "D9_flows": 0.05,
+      "D10_social": 0.05,
+      "D11_geopolitical": 0.05,
+      "D12_feedback": 0.05
+    },
+
+    "_sum_check": "Muss exakt 1.00 ergeben",
+    "_sum": 1.00
+  },
+
+  "overlay_index_parameters": {
+    "_description": "Parameter fuer die 4 Haupt-Indizes (SCSI, DDI, FDP, SIT). Referenz: G7 Spec Teil 3 §1-4",
+
+    "scsi": {
+      "_description": "Supply Chain Stress Index — Chokepoint Disruptions, Freight Anomalien, Inventory Shifts",
+      "chokepoint_weight": 0.40,
+      "freight_weight": 0.35,
+      "inventory_weight": 0.25,
+      "_sum_check": 1.00
+    },
+
+    "ddi": {
+      "_description": "Dollar Dominance Index — Composite aus Reserve Share, Payment Share, Debt Denomination",
+      "reserve_share_weight": 0.40,
+      "payment_share_weight": 0.30,
+      "debt_denomination_weight": 0.30,
+      "_sum_check": 1.00,
+      "scenario_boost_threshold": 55,
+      "scenario_boost_max": 0.10,
+      "_scenario_boost_logic": "DDI > 55 → S1 Probability boost = min(0.10, (DDI-55)/100)"
+    },
+
+    "fdp": {
+      "_description": "Fiscal Dominance Probability — Per-Region Composite Proximity to Fiscal Dominance",
+      "quarters_to_threshold_method": "linear extrapolation from quarterly change",
+      "scenario_boost_threshold": 0.65,
+      "scenario_boost_max": 0.05,
+      "_scenario_boost_logic": "FDP(USA) > 0.65 → S4 Probability boost = min(0.05, (FDP-0.65)*0.15)"
+    },
+
+    "sit": {
+      "_description": "Sanctions Impact Tracker — Messt Auswirkungen aktiver Sanktionsregime",
+      "integration_with_scsi": "SIT trend ESCALATING + SCSI > 60 → S3 Probability boost"
+    }
+  },
+
+  "feedback_loop_parameters": {
+    "_description": "Parameter fuer Feedback Loop Severity-Berechnung. Referenz: G7 Spec Teil 3 §1",
+
+    "severity_modes": {
+      "_description": "Jeder Loop hat einen Berechnungsmodus fuer seine Severity",
+      "product_above_threshold": {
+        "_description": "severity = momentum_a × momentum_b, wenn > threshold",
+        "dormant_below": 0,
+        "active_above": 0,
+        "elevated_above": 3,
+        "_logic": "product > 0 → ACTIVE, product > 3 → ELEVATED"
+      },
+      "dual_negative": {
+        "_description": "severity = abs(momentum_a) + abs(momentum_b) wenn beide negativ",
+        "_logic": "Beide Faktoren verschlechtern sich gleichzeitig"
+      },
+      "acceleration_match": {
+        "_description": "severity = acceleration_a × acceleration_b wenn gleiche Richtung",
+        "_logic": "Beide Faktoren beschleunigen in gleiche Richtung"
+      }
+    },
+
+    "trend_thresholds": {
+      "INTENSIFYING_min_severity": 3,
+      "STABLE_min_severity": 0,
+      "INACTIVE_max_severity": 0,
+      "_logic": "severity > 3 → INTENSIFYING, severity > 0 → STABLE, else INACTIVE"
+    }
+  },
+
+  "scenario_engine_parameters": {
+    "_description": "Parameter fuer die Szenario-Engine (4 Szenarien). Referenz: G7 Spec Teil 4 §4.1-4.3",
+
+    "base_probabilities": {
+      "_description": "Basis-Wahrscheinlichkeiten vor Overlay-Adjustments. Werden bei jedem Full Run vom LLM kalibriert, diese Werte sind Startwerte.",
+      "S1_status_quo": 0.45,
+      "S2_bifurcation": 0.30,
+      "S3_fragmentation": 0.15,
+      "S4_fiscal_dominance": 0.10,
+      "_sum_check": "Muss exakt 1.00 ergeben",
+      "_sum": 1.00
+    },
+
+    "overlay_boosts": {
+      "_description": "Wie Overlay-Indizes die Szenario-Wahrscheinlichkeiten beeinflussen",
+      "ddi_boost_S1": {
+        "trigger": "DDI composite > 55",
+        "max_boost": 0.10,
+        "formula": "min(0.10, (DDI-55)/100)"
+      },
+      "fdp_boost_S4": {
+        "trigger": "FDP(USA) composite_proximity > 0.65",
+        "max_boost": 0.05,
+        "formula": "min(0.05, (FDP-0.65)*0.15)"
+      },
+      "scsi_sit_boost_S3": {
+        "trigger": "SCSI > 60 AND SIT trend in (ESCALATING, CRITICAL)",
+        "description": "Combined supply chain stress and sanctions escalation boosts fragmentation scenario"
+      },
+      "feedback_boost_S2": {
+        "trigger": "DDI composite > 65 AND active_loop_count >= 3",
+        "description": "Strong dollar dominance with multiple active feedback loops boosts bifurcation"
+      }
+    },
+
+    "drift_tracking": {
+      "_description": "Schwellenwerte fuer Szenario-Drift-Erkennung",
+      "significant_drift_threshold": 0.05,
+      "critical_drift_threshold": 0.15,
+      "structural_break_drift": 0.20,
+      "_unit": "Probability Delta (0-1)",
+      "_logic": ">0.05 noted in drift summary, >0.15 flagged as significant, >0.20 triggers STRUCTURAL_BREAK check"
+    }
+  },
+
+  "interim_update_triggers": {
+    "_description": "Trigger fuer ausserplanmaessige Interim Updates (zwischen quartalsweisen Full Runs). Referenz: G7 Spec Teil 4 §4.8, Teil 6 §6.10",
+
+    "gpr_zscore_trigger": 2.0,
+    "chokepoint_score_trigger": 70,
+    "fdp_quarterly_jump_trigger": 0.10,
+    "polymarket_shift_trigger": 15,
+    "scenario_probability_shift_trigger": 0.10,
+
+    "_logic": {
+      "gpr_zscore": "GPR Z-Score > 2.0 vs 90d Baseline",
+      "chokepoint": "Irgendein Chokepoint Score > 70",
+      "fdp_jump": "FDP Quartalsdelta > 0.10",
+      "polymarket": "Polymarket Shift > 15pp in tracked market",
+      "scenario": "Szenario Probability shift > 0.10 vs letzte Thesis"
+    }
+  },
+
+  "attention_flag_thresholds": {
+    "_description": "Schwellenwerte fuer die Attention Flag Berechnung (CIO + DW Integration). Referenz: CIO Addendum G7, DW Addendum G7",
+
+    "levels": {
+      "NONE": {
+        "condition": "G7 nicht verfuegbar ODER staleness > 30d ODER (STABLE AND ewi_count == 0)"
+      },
+      "NOTE": {
+        "condition": "STABLE mit ewi_count > 0"
+      },
+      "ATTENTION": {
+        "condition": "overall_status in (SHIFTING, ELEVATED_RISK)"
+      },
+      "URGENT": {
+        "condition": "overall_status == STRUCTURAL_BREAK OR ewi_critical_count >= 2"
+      }
+    },
+
+    "urgent_critical_ewi_min": 2,
+    "staleness_fresh_days": 14,
+    "staleness_stale_days": 30,
+    "staleness_expired_days": 30
+  },
+
+  "freshness_confidence": {
+    "_description": "Confidence-Multiplikatoren basierend auf Datenfrische. Referenz: G7 Spec Teil 2 §2.7",
+
+    "RECENT": {
+      "description": "Aktualisiert in den letzten 30 Tagen",
+      "confidence": 0.9
+    },
+    "STALE": {
+      "description": "Aktualisiert vor 30-180 Tagen",
+      "confidence": 0.7
+    },
+    "STRUCTURAL": {
+      "description": "Jaehrlich oder seltener, aber stabil",
+      "confidence": 0.9
+    },
+    "UNAVAILABLE": {
+      "description": "Quelle nicht erreichbar. Letzter Wert verwendet",
+      "confidence": 0.5
+    }
+  },
+
+  "region_discounts": {
+    "_description": "Data Quality Discounts pro Region (reduzieren Score-Reliability). Referenz: G7 Spec Teil 2 §2.8",
+
+    "USA": {"discount": 0.0, "reason": "Best data availability"},
+    "China": {"discount": 0.25, "reason": "Official stats reliability concerns"},
+    "EU": {"discount": 0.0, "reason": "Eurostat high quality"},
+    "Japan_Korea_Taiwan": {"discount": 0.0, "reason": "Reliable data"},
+    "India": {"discount": 0.30, "reason": "Informal economy, data gaps"},
+    "MENA": {"discount": 0.35, "reason": "Limited transparency"},
+    "Rest_of_World": {"discount": 0.15, "reason": "Mixed quality"}
+  },
+
+  "narrative_generation": {
+    "_description": "LLM-Parameter fuer Narrative Generation. Referenz: G7 Spec Teil 5",
+
+    "llm_model": "claude-sonnet-4-20250514",
+    "temperature": 0.3,
+    "max_tokens_full_narrative": 2000,
+    "max_tokens_interim_narrative": 800,
+    "headline_max_words": 25,
+    "weekly_shift_max_words": 100,
+    "portfolio_context_max_words": 150,
+
+    "attention_hierarchy": {
+      "_description": "Nur Items mit Severity ueber Threshold in Narrative aufnehmen",
+      "min_severity_for_inclusion": "WARNING",
+      "max_items_per_level": 5
+    }
+  },
+
+  "pipeline_parameters": {
+    "_description": "Timing und Execution-Parameter. Referenz: G7 Spec Teil 6 §6.1",
+
+    "full_run_schedule": "Quartalsweise (0 6 1 1,4,7,10 *)",
+    "interim_check_schedule": "Wochentags (0 5 * * 1-5)",
+    "max_runtime_full_minutes": 15,
+    "max_runtime_interim_minutes": 5,
+    "max_llm_cost_per_full_run_usd": 2.50,
+    "max_llm_cost_per_interim_run_usd": 0.50,
+
+    "github_actions": {
+      "full_run_cron": "0 6 1 1,4,7,10 *",
+      "interim_cron": "0 5 * * 1-5",
+      "timeout_minutes": 20
+    }
+  }
+}

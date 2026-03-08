@@ -1,0 +1,96 @@
+name: "Step 0s — G7 World Order Monitor"
+
+on:
+  schedule:
+    # Woechentlich: Sonntag 08:00 UTC
+    - cron: "0 8 * * 0"
+
+  workflow_dispatch:
+    inputs:
+      run_type:
+        description: "Run type"
+        required: true
+        default: "WEEKLY"
+        type: choice
+        options:
+          - WEEKLY
+          - QUARTERLY
+          - INTERIM
+          - AD_HOC
+      dry_run:
+        description: "Dry run (no Sheet writes)"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  g7_monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install \
+            anthropic>=0.30.0 \
+            google-auth>=2.20.0 \
+            google-api-python-client>=2.90.0 \
+            requests>=2.31.0 \
+            yfinance>=0.2.30 \
+            pandas>=2.0.0 \
+            numpy>=1.24.0 \
+            openpyxl>=3.1.0
+
+      - name: Determine run type
+        id: run_type
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "type=${{ github.event.inputs.run_type }}" >> $GITHUB_OUTPUT
+            echo "dry_run=${{ github.event.inputs.dry_run }}" >> $GITHUB_OUTPUT
+          else
+            # Scheduled run: check if first week of quarter
+            DAY=$(date -u +%d)
+            MONTH=$(date -u +%m)
+            if [ "$DAY" -le 7 ] && ([ "$MONTH" = "01" ] || [ "$MONTH" = "04" ] || [ "$MONTH" = "07" ] || [ "$MONTH" = "10" ]); then
+              echo "type=QUARTERLY" >> $GITHUB_OUTPUT
+            else
+              echo "type=WEEKLY" >> $GITHUB_OUTPUT
+            fi
+            echo "dry_run=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run G7 Monitor
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ACLED_API_KEY: ${{ secrets.ACLED_API_KEY }}
+          EODHD_API_KEY: ${{ secrets.EODHD_API_KEY }}
+        run: |
+          DRY_FLAG=""
+          if [ "${{ steps.run_type.outputs.dry_run }}" = "true" ]; then
+            DRY_FLAG="--dry-run"
+          fi
+
+          python -m step_0s_g7_monitor.main \
+            --run-type ${{ steps.run_type.outputs.type }} \
+            $DRY_FLAG
+
+      - name: Upload run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g7-run-log-${{ github.run_number }}
+          path: |
+            step_0s_g7_monitor/cache/*.json
+          retention-days: 30
