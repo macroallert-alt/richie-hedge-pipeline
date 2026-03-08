@@ -38,6 +38,7 @@ from step_0s_g7_monitor.overlays import phase4_overlay_computation
 from step_0s_g7_monitor.scenario_engine import phase6_scenario_engine
 from step_0s_g7_monitor.narrative_engine import phase8_narrative_generation
 from step_0s_g7_monitor.sheet_writer import G7SheetWriter
+from step_0s_g7_monitor.display_writer import G7DisplayWriter
 
 # ============================================================
 # CONSTANTS
@@ -617,6 +618,26 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
             print("  G7_DATA_CACHE written")
             writer.write_g7_run_log(run_log)
             print("  G7_RUN_LOG appended")
+
+            # --- Display Writer: 11 Layout Tabs ---
+            try:
+                display = G7DisplayWriter(G7_SHEET_ID)
+                if display.connect():
+                    display.write_all(
+                        scoring_result=scoring,
+                        overlays=overlays,
+                        g7_status=g7_status,
+                        scenario_result=scenario_result,
+                        validated_data=validation.get("validated_data", {}),
+                        freshness_by_source=validation.get("freshness_by_source", {}),
+                        collection_errors=collection.get("errors", []),
+                    )
+                    print("  Display Writer: 11 layout tabs updated")
+                else:
+                    print("  Display Writer: connection failed — skipping")
+            except Exception as e:
+                print(f"  Display Writer ERROR: {e}"); traceback.print_exc()
+
             run_log["phases"]["P10"] = {"status": "OK", "duration_s": round(time.time() - ps, 1)}
         except Exception as e:
             print(f"[Phase 10] ERROR: {e}"); traceback.print_exc()
