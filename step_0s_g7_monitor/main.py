@@ -592,6 +592,14 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
 
     # ---- PHASE 10 ----
     ps = time.time()
+
+    # Finalize run_log BEFORE writing so Sheet gets complete data
+    total_time = time.time() - start_time
+    run_log["completed"] = now_utc().isoformat()
+    run_log["total_duration_s"] = round(total_time, 1)
+    run_log["final_status"] = g7_status["g7_status"]
+    run_log["errors_count"] = len(run_log["errors"])
+
     if writer and not dry_run:
         try:
             print("[Phase 10] Writing to Google Sheets...")
@@ -605,6 +613,8 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
             if narrative_result:
                 writer.write_g7_narrative(narrative_result)
                 print("  G7_NARRATIVE written")
+            writer.write_g7_data_cache(validation.get("validated_data", {}))
+            print("  G7_DATA_CACHE written")
             writer.write_g7_run_log(run_log)
             print("  G7_RUN_LOG appended")
             run_log["phases"]["P10"] = {"status": "OK", "duration_s": round(time.time() - ps, 1)}
@@ -619,16 +629,10 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
             print("\nG7_STATUS output:")
             print(json.dumps(g7_status, indent=2, default=str))
 
-    # ---- FINALIZE ----
-    total_time = time.time() - start_time
-    run_log["completed"] = now_utc().isoformat()
-    run_log["total_duration_s"] = round(total_time, 1)
-    run_log["final_status"] = g7_status["g7_status"]
-    run_log["errors_count"] = len(run_log["errors"])
-
+    # ---- PRINT SUMMARY ----
     print("\n" + "=" * 70)
     print(f"G7 MONITOR COMPLETE — {g7_status['g7_status']}")
-    print(f"Attention: {g7_status.get('attention_flag', 'NONE')} | {total_time:.1f}s | Errors: {len(run_log['errors'])}")
+    print(f"Attention: {g7_status.get('attention_flag', 'NONE')} | {run_log['total_duration_s']}s | Errors: {len(run_log['errors'])}")
     print("=" * 70)
 
     return {"g7_status": g7_status, "scenario_result": scenario_result, "narrative_result": narrative_result, "run_log": run_log}
