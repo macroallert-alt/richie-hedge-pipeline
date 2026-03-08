@@ -1,6 +1,6 @@
 {
   "date": "2026-03-07",
-  "run_timestamp": "2026-03-07T09:55:14.934068Z",
+  "run_timestamp": "2026-03-07T10:23:24.215789Z",
   "execution_assessment": {
     "total_score": 6,
     "raw_score": 6,
@@ -346,14 +346,17 @@
   },
   "recommendation": {
     "action": "EXECUTE_WITH_LIMITS",
-    "reasoning": "Heute KEINE Execution nötig — V16 hält alle Positionen.",
+    "reasoning": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
     "specific_actions": [],
     "would_change_my_mind": {
       "execute_if": [
-        "COT_GOLD_COMM_NET > -35% (aktuell -47.8%) — Smart Money reduziert Short-Position",
-        "Gold fällt unter $2.850 ODER DXY fällt unter 104.0 — Divergenz aufgelöst"
+        "VIX faellt unter 18.0 UND HY OAS faellt unter 280bps — Risiko-Appetit kehrt zurueck, COT-Warnung relativiert sich",
+        "COT Gold Commercial Net steigt ueber -35% — Smart Money reduziert Short-Positioning"
       ],
-      "hold_if": []
+      "hold_if": [
+        "VIX steigt ueber 25.0 ODER HY OAS steigt ueber 320bps — Stress-Regime, Liquiditaet verschlechtert sich",
+        "GLD faellt >3% vom aktuellen Kurs WAEHREND DXY weiter steigt — Gold-Dollar-Divergenz loest sich bearish auf"
+      ]
     }
   },
   "event_window": {
@@ -616,7 +619,7 @@
       }
     ]
   },
-  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Liquidität: Amihud 50.85 — alle Assets handelbar ohne Slippage-Risiko\n• Finanzstress: OFR Index -0.44 — entspanntes Marktumfeld, keine systemischen Spannungen\n• VIX Term Structure: Contango 0.9954 — Forward-Volatilität teurer als Spot, stabiles Umfeld\n• Commodity-Bestätigung: V16 39% Commodity-Exposure + Copper Rising — Trend intakt\n• Equity-Bestätigung: V16 33% Equity-Exposure + SPY Rising — kein Trendbruch\n• Gold-Real Yield: Gold 18% + Real Yields Falling — historisch positive Konstellation für Gold\n• Credit-Spreads: HY OAS 297bps — Normal-Range, keine Stress-Signale\n• MOVE Index: 74.53 — Bond-Volatilität im Normalbereich\n• Kein materielles Rebalancing: Alle Positionen HOLD — kein Execution-Risiko heute\n\nCONFLICTING:\n• COT Gold EXTREM: -47.8% Commercial Net — Smart Money massiv gegen GLD (18%) und DBC (21%)\n• COT S&P500 ELEVATED: -29.1% Commercial Net — Smart Money gegen HYG (28%), XLU (18%), XLP (15%)\n• Gold-DXY Divergenz: Gold +2.7% UND DXY +1.7% — beide steigen gleichzeitig, historisch unsustainable\n• GEX negativ: $-0.21B SLIGHTLY_NEGATIVE — Dealer-Hedging verstärkt Moves, erhöhte Intraday-Volatilität\n• Event Risk: 4 HIGH-Impact Events in 14d — Convergence Week aktiv\n• 100% Portfolio betroffen: Alle 5 Top-Positionen haben COT-Conflicts (entweder Gold oder S&P500)\n• Positioning-Dimension: 3/3 Punkte — maximale Warnung vor Crowding\n\nNETTO: 9 Confirming vs 7 Conflicting. Liquidität und Trend bestätigen Portfolio, aber Smart Money positioniert sich massiv dagegen — 100% des Portfolios betroffen.\n\nEMPFEHLUNG:\nHeute KEINE Execution nötig — V16 hält alle Positionen. Die Empfehlung gilt für den Fall eines Regime-Wechsels in den nächsten 48h: WAIT. Die COT-Divergenz ist zu extrem (Gold -47.8%, S&P -29.1%) und betrifft ALLE fünf Top-Positionen. Bei materiellem Rebalancing: GLD/DBC nur mit Limit-Orders (COT-Extreme), HYG/XLU/XLP ebenfalls Limits setzen (COT-Elevated). Convergence Week startet — warte auf Event-Cluster-Auflösung (14d). Wenn V16 montags switcht: Execution erst nach erstem HIGH-Event (frühestens Dienstag).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: COT_GOLD_COMM_NET > -35% (aktuell -47.8%) — Smart Money reduziert Short-Position\n• Execute sofort wenn: Gold fällt unter $2.850 ODER DXY fällt unter 104.0 — Divergenz aufgelöst\n• Eskaliere zu Hold wenn: COT_GOLD_COMM_NET < -55% — Smart Money erhöht Shorts weiter\n• Eskaliere zu Hold wenn: GEX fällt unter $-1.0B — Dealer-Hedging wird destabilisierend",
+  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Liquidität optimal: Amihud 50.85 — kein Slippage-Risiko bei Execution\n• Funding-Märkte stabil: SOFR-FFR 3.0bps, OFR Stress -0.44 — keine systemischen Spannungen\n• VIX-Struktur gesund: Term Structure 0.9954 (Contango) — Markt preist Entspannung\n• Commodity-Exposure bestätigt: DBC 21% + Copper Rising — Trend intakt\n• Equity-Exposure bestätigt: XLU+XLP 33% + SPY Rising — kein Trendbruch\n• Gold-Exposure fundamental unterstützt: GLD 18% + Real Yields Falling — historisch positiv\n• Sentiment neutral: CNN Fear & Greed 30.84, Put/Call 0.808 — keine Panik, keine Euphorie\n• HY-Spreads normal: HY OAS 297bps — Credit-Märkte entspannt\n• MOVE Index moderat: 74.53 — keine Bond-Volatilität\n• Kein materielles Rebalancing: Alle Positionen HOLD — kein Execution-Risiko heute\n\nCONFLICTING:\n• COT Gold extrem negativ: -47.8% — Smart Money gegen GLD (18%) und DBC (21%), insgesamt 39% des Portfolios\n• COT S&P500 elevated negativ: -29.1% — Smart Money gegen HYG (28%), XLU (18%), XLP (15%), insgesamt 61% des Portfolios\n• Gold-Dollar-Divergenz: Gold +2.7% UND DXY +1.7% — beide steigen gleichzeitig, historisch nicht nachhaltig\n• GEX leicht negativ: $-0.21B — Dealer-Hedging verstärkt Volatilität, erhöhtes Intraday-Risiko\n• Event-Cluster: 8 Events in 14d, davon 4 HIGH-Impact — Convergence Week aktiv\n• Positioning-Dimension: 3/3 Punkte — maximale Warnung vor Crowding\n• Cross-Asset-Dimension: 2/3 Punkte — Gold-DXY-Divergenz signalisiert Instabilität\n\nNETTO: 10 Confirming vs 7 Conflicting. Liquidität und Sentiment erlauben Execution, aber Positioning und Event-Risiko erfordern Vorsicht bei Timing.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall dass V16 Montag Regime wechselt. Bei Trades: Execution MÖGLICH, aber mit taktischer Vorsicht. HYG (28%): Limit-Orders setzen, nicht Market — COT-Warnung ernst nehmen. GLD/DBC (39% kombiniert): Execution in Tranchen über 2-3 Tage — COT -47.8% ist extrem, aber Gold-Real-Yield-Story intakt. XLU/XLP (33%): Standard-Execution, aber Intraday-Volatilität durch GEX beachten. Timing: Montag früh bevorzugt (vor Event-Cluster Mitte Woche). Convergence Week bedeutet: Events können Portfolio-Korrelationen erhöhen — bei grossen Trades Stop-Loss-Disziplin.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX faellt unter 18.0 UND HY OAS faellt unter 280bps — Risiko-Appetit kehrt zurueck, COT-Warnung relativiert sich\n• Execute sofort wenn: COT Gold Commercial Net steigt ueber -35% — Smart Money reduziert Short-Positioning\n• Eskaliere zu Wait/Hold wenn: VIX steigt ueber 25.0 ODER HY OAS steigt ueber 320bps — Stress-Regime, Liquiditaet verschlechtert sich\n• Eskaliere zu Wait/Hold wenn: GLD faellt >3% vom aktuellen Kurs WAEHREND DXY weiter steigt — Gold-Dollar-Divergenz loest sich bearish auf",
   "v16_context": {
     "regime": "SELECTIVE",
     "top5": [
@@ -659,7 +662,7 @@
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_used": true,
     "llm_fallback": false,
-    "engine_time_seconds": 18.61,
-    "total_time_seconds": 18.6
+    "engine_time_seconds": 21.15,
+    "total_time_seconds": 21.2
   }
 }
