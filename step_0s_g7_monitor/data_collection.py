@@ -82,6 +82,8 @@ FRED_SERIES = [
     "STLFSI4",              # Financial Stress Index
     "T10Y2Y",               # 10Y-2Y Spread
     "BAMLH0A0HYM2",         # HY Spread
+    "BAMLC0A0CM",           # IG Corporate OAS (Credit Stress)
+    "ANFCI",                # Adjusted NFCI (Chicago Fed)
     "GOLDAMGBD228NLBM",     # Gold Price (London Fix)
 ]
 
@@ -411,116 +413,50 @@ def fetch_gpr(timeout=30):
     """
     Fetch Geopolitical Risk Index.
     CSV download from matteoiacoviello.com.
-    Uses CSV format (not XLS) to avoid xlrd dependency.
     """
     import requests
 
     print("[Phase 1] Fetching GPR Index...")
     try:
-        # CSV URL — no xlrd needed
-        url = "https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.csv"
+        url = "https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.xls"
         resp = requests.get(url, timeout=timeout)
 
         if resp.status_code == 200:
+            # Parse the XLS — try pandas
             try:
                 import pandas as pd
                 import io
+                df = pd.read_excel(io.BytesIO(resp.content))
+                if not df.empty:
+                    latest = df.iloc[-1]
+                    gpr_val = None
+                    for col in df.columns:
+                        if "gpr" in col.lower() and "daily" not in col.lower():
+                            try:
+                                gpr_val = float(latest[col])
+                            except (ValueError, TypeError):
+                                pass
+                            break
 
-                # Try CSV parse
-                text = resp.text
-                df = pd.read_csv(io.StringIO(text))
-
-                if df.empty:
-                    print("  GPR: CSV empty")
-                    return None
-
-                latest = df.iloc[-1]
-                gpr_val = None
-
-                # Look for GPR column (various naming conventions)
-                for col in df.columns:
-                    col_lower = col.lower().strip()
-                    if "gpr" in col_lower and "daily" not in col_lower:
+                    if gpr_val is None and len(df.columns) > 1:
                         try:
-                            gpr_val = float(latest[col])
+                            gpr_val = float(latest.iloc[1])
                         except (ValueError, TypeError):
                             pass
-                        break
 
-                # Fallback: second column
-                if gpr_val is None and len(df.columns) > 1:
-                    try:
-                        gpr_val = float(latest.iloc[1])
-                    except (ValueError, TypeError):
-                        pass
-
-                # Determine date
-                date_str = ""
-                for col in df.columns:
-                    if "date" in col.lower():
-                        date_str = str(latest[col])[:10]
-                        break
-                if not date_str and len(latest) > 0:
-                    date_str = str(latest.iloc[0])[:10]
-
-                print(f"  GPR: {gpr_val} ({date_str})")
-                return {
-                    "gpr_global": gpr_val,
-                    "last_date": date_str,
-                    "source": "caldara_iacoviello_csv",
-                }
-            except Exception as e:
-                print(f"  GPR: CSV parse error: {e}")
-                # Try XLS fallback (if xlrd available)
-                return _fetch_gpr_xls_fallback(timeout)
+                    return {
+                        "gpr_global": gpr_val,
+                        "last_date": str(latest.iloc[0])[:10] if len(latest) > 0 else "",
+                        "source": "caldara_iacoviello",
+                    }
+            except ImportError:
+                print("  GPR: pandas not available for XLS parsing")
+                return None
         else:
-            print(f"  GPR: HTTP {resp.status_code} — trying XLS fallback")
-            return _fetch_gpr_xls_fallback(timeout)
+            print(f"  GPR: HTTP {resp.status_code}")
+            return None
     except Exception as e:
         print(f"  GPR: {e}")
-        return None
-
-
-def _fetch_gpr_xls_fallback(timeout=30):
-    """Fallback: try the XLS URL (needs xlrd or openpyxl)."""
-    import requests
-
-    try:
-        url = "https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.xls"
-        resp = requests.get(url, timeout=timeout)
-        if resp.status_code != 200:
-            print(f"  GPR XLS fallback: HTTP {resp.status_code}")
-            return None
-
-        import pandas as pd
-        import io
-        df = pd.read_excel(io.BytesIO(resp.content))
-        if df.empty:
-            return None
-
-        latest = df.iloc[-1]
-        gpr_val = None
-        for col in df.columns:
-            if "gpr" in str(col).lower() and "daily" not in str(col).lower():
-                try:
-                    gpr_val = float(latest[col])
-                except (ValueError, TypeError):
-                    pass
-                break
-        if gpr_val is None and len(df.columns) > 1:
-            try:
-                gpr_val = float(latest.iloc[1])
-            except (ValueError, TypeError):
-                pass
-
-        print(f"  GPR (XLS fallback): {gpr_val}")
-        return {
-            "gpr_global": gpr_val,
-            "last_date": str(latest.iloc[0])[:10] if len(latest) > 0 else "",
-            "source": "caldara_iacoviello_xls",
-        }
-    except Exception as e:
-        print(f"  GPR XLS fallback: {e}")
         return None
 
 
@@ -590,19 +526,7 @@ def fetch_polymarket(timeout=15):
         resp = requests.get(url, params=params, timeout=timeout)
 
         if resp.status_code == 200:
-            raw = resp.json()
-
-            # Response type check: API may return list, dict, or string
-            if isinstance(raw, dict):
-                markets = raw.get("data", raw.get("markets", []))
-                if not isinstance(markets, list):
-                    markets = []
-            elif isinstance(raw, list):
-                markets = raw
-            else:
-                print(f"  Polymarket: unexpected response type: {type(raw).__name__}")
-                return None
-
+            markets = resp.json()
             # Filter for geopolitically relevant markets
             relevant_keywords = [
                 "china", "taiwan", "war", "conflict", "tariff",
@@ -612,30 +536,13 @@ def fetch_polymarket(timeout=15):
 
             relevant = []
             for market in markets:
-                if not isinstance(market, dict):
-                    continue
-                title = (market.get("question", "") or market.get("title", "") or "").lower()
+                title = (market.get("question", "") or "").lower()
                 if any(kw in title for kw in relevant_keywords):
-                    # Extract probability safely
-                    prob = market.get("last_trade_price")
-                    if prob is not None:
-                        try:
-                            prob = float(prob)
-                        except (ValueError, TypeError):
-                            prob = None
-
-                    volume = market.get("volume")
-                    if volume is not None:
-                        try:
-                            volume = float(volume)
-                        except (ValueError, TypeError):
-                            volume = None
-
                     relevant.append({
-                        "id": market.get("condition_id", market.get("id", "")),
-                        "title": market.get("question", market.get("title", "")),
-                        "probability": prob,
-                        "volume": volume,
+                        "id": market.get("condition_id", ""),
+                        "title": market.get("question", ""),
+                        "probability": market.get("last_trade_price"),
+                        "volume": market.get("volume"),
                     })
 
             return {

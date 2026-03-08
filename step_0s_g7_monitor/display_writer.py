@@ -3,10 +3,9 @@ step_0s_g7_monitor/display_writer.py
 Phase 10 Extension: Display Writer for 11 Layout Tabs
 
 Uses batchUpdate to write all cells per tab in ONE API call.
-Total API writes: ~11 (one per tab) instead of ~100+.
-Google Sheets limit: 60 writes/min/user.
-
 Row numbers verified from actual Google Sheets CSV exports 2026-03-08.
+
+VOLLSTAENDIG — schreibt Enrichment-Daten in ALLE vorher leeren Zellen.
 """
 
 from datetime import datetime, timezone
@@ -56,6 +55,27 @@ def _quarter_label():
     return f"Q{(now.month - 1) // 3 + 1} {now.year}"
 
 
+# ============================================================
+# ENRICHMENT HELPER
+# ============================================================
+
+def _ev(enr, block, field, region):
+    """Extract enrichment value: enr[block][data][region] or enr[block][data][region][field]."""
+    b = enr.get(block, {})
+    data = b.get("data", {})
+    entry = data.get(region)
+    if isinstance(entry, dict) and field:
+        v = entry.get(field)
+        return _fmt(v) if v is not None else "—"
+    elif isinstance(entry, (int, float)):
+        return _fmt(entry)
+    return "—"
+
+def _ev_row(enr, block, field=None):
+    """Build a row of enrichment values for all 7 regions."""
+    return [_ev(enr, block, field, r) for r in REGIONS]
+
+
 class G7DisplayWriter:
 
     def __init__(self, spreadsheet_id):
@@ -66,12 +86,10 @@ class G7DisplayWriter:
         try:
             from google.oauth2 import service_account
             from googleapiclient.discovery import build
-
             creds_json = os.environ.get("GCP_SA_KEY") or os.environ.get("GOOGLE_CREDENTIALS")
             if not creds_json:
                 print("[G7DisplayWriter] No GCP_SA_KEY or GOOGLE_CREDENTIALS")
                 return False
-
             with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
                 f.write(creds_json)
                 creds_path = f.name
@@ -87,23 +105,13 @@ class G7DisplayWriter:
             return False
 
     def _batch_write(self, data_list):
-        """
-        Write multiple ranges in ONE API call.
-        data_list = [("SHEET!A1:B2", [[val, val], [val, val]]), ...]
-        """
         if not data_list:
             return
-        body = {
-            "valueInputOption": "USER_ENTERED",
-            "data": [
-                {"range": rng, "values": vals}
-                for rng, vals in data_list
-            ],
-        }
+        body = {"valueInputOption": "USER_ENTERED",
+                "data": [{"range": rng, "values": vals} for rng, vals in data_list]}
         try:
             self.service.spreadsheets().values().batchUpdate(
-                spreadsheetId=self.sheet_id, body=body
-            ).execute()
+                spreadsheetId=self.sheet_id, body=body).execute()
         except Exception as e:
             print(f"  [DisplayWriter] batchUpdate failed: {e}")
 
@@ -134,8 +142,6 @@ class G7DisplayWriter:
     def write_dashboard(self, power_scores, gap_data, overlays, g7_status, scenario_result):
         print("  [Display] DASHBOARD...")
         d = []
-
-        # Power Scores rows 5-11, cols B-G
         ps_rows = []
         for region in REGIONS:
             ps = power_scores.get(region, {})
@@ -146,7 +152,6 @@ class G7DisplayWriter:
                            CYCLE_PHASES.get(region, "—"), KEY_RISKS.get(region, "—"), "—"])
         d.append(("DASHBOARD!B5:G11", ps_rows))
 
-        # Differential rows 14-17, col D
         gap = gap_data.get("gap", 0)
         thuc = "LOW"
         for loop in overlays.get("feedback_loops", []):
@@ -157,11 +162,9 @@ class G7DisplayWriter:
             [_fmt(gap)], [gap_data.get("trend", "STABLE")], [thuc],
             ["N/A" if gap_data.get("trend") != "CLOSING" else "Monitor"]]))
 
-        # Scenarios rows 21-24, col B
         probs = self._extract_probs(scenario_result)
         d.append(("DASHBOARD!B21:B24", [[_fmt_pct(p * 100, 0)] for p in probs]))
 
-        # Schedule rows 39-42, col D
         d.append(("DASHBOARD!D39:D42", [
             [_now_iso()], ["Next scheduled run"], ["Weekly + Quarterly"],
             [g7_status.get("attention_flag", "NONE")]]))
@@ -175,7 +178,6 @@ class G7DisplayWriter:
     def write_power_scores(self, scores, momenta, power_scores):
         print("  [Display] POWER_SCORES...")
         d = []
-
         def _rv(dim):
             return [_fmt(scores.get(dim, {}).get(r)) for r in REGIONS]
 
@@ -187,11 +189,10 @@ class G7DisplayWriter:
         d.append(("POWER_SCORES!C28:I28", [[_fmt(power_scores.get(r, {}).get("score")) for r in REGIONS]]))
         d.append(("POWER_SCORES!C29:I29", [[_fmt_delta(power_scores.get(r, {}).get("momentum", 0)) for r in REGIONS]]))
         d.append(("POWER_SCORES!C30:I30", [[CYCLE_PHASES.get(r, "—") for r in REGIONS]]))
-
         self._batch_write(d)
 
     # ============================================================
-    # STRUCTURAL
+    # STRUCTURAL — ALL CELLS
     # ============================================================
 
     def write_structural(self, validated_data, scores):
@@ -205,83 +206,54 @@ class G7DisplayWriter:
         def _iv(ind, r):
             e = imf.get(f"{ind}_{r}")
             return _fmt(e["value"]) if isinstance(e, dict) and e.get("value") is not None else "—"
-
         def _wv(ind, r):
             e = wb.get(f"{ind}_{r}")
             return _fmt(e["value"]) if isinstance(e, dict) and e.get("value") is not None else "—"
 
-        def _ev(block, field, r):
-            """Extract enrichment value: enr[block][data][region][field] or enr[block][data][region]."""
-            b = enr.get(block, {})
-            data = b.get("data", {})
-            entry = data.get(r)
-            if isinstance(entry, dict):
-                v = entry.get(field)
-                return _fmt(v) if v is not None else "—"
-            elif isinstance(entry, (int, float)):
-                return _fmt(entry)
-            return "—"
-
-        def _ev_row(block, field):
-            """Build a row of enrichment values for all regions."""
-            return [_ev(block, field, r) for r in REGIONS]
-
-        # D1 rows 5-9
+        # D1 rows 5-9: Economic Weight
         d.append(("STRUCTURAL!D5:J5", [[_iv("NGDPD", r) for r in REGIONS]]))
         d.append(("STRUCTURAL!L5", [[now]]))
         d.append(("STRUCTURAL!D6:J6", [[_iv("NGDP_RPCH", r) for r in REGIONS]]))
         d.append(("STRUCTURAL!L6", [[now]]))
-        d.append(("STRUCTURAL!D7:J9", [["—"] * 7] * 3))
+        d.append(("STRUCTURAL!D7:J7", [_ev_row(enr, "gdp_per_capita_ppp")])); d.append(("STRUCTURAL!L7", [[now]]))
+        d.append(("STRUCTURAL!D8:J8", [_ev_row(enr, "labor_productivity_growth")])); d.append(("STRUCTURAL!L8", [[now]]))
+        d.append(("STRUCTURAL!D9:J9", [_ev_row(enr, "manufacturing_gdp_pct")])); d.append(("STRUCTURAL!L9", [[now]]))
 
-        # D2 rows 13-18
-        d.append(("STRUCTURAL!D13:J13", [["—"] * 7]))
-        d.append(("STRUCTURAL!D14:J14", [[_wv("SP.POP.DPND", r) for r in REGIONS]]))
-        d.append(("STRUCTURAL!L14", [[now]]))
-        d.append(("STRUCTURAL!D15:J15", [["—"] * 7]))
-        d.append(("STRUCTURAL!D16:J16", [[_wv("SP.DYN.TFRT.IN", r) for r in REGIONS]]))
-        d.append(("STRUCTURAL!L16", [[now]]))
-        d.append(("STRUCTURAL!D17:J18", [["—"] * 7] * 2))
+        # D2 rows 13-18: Demographics
+        d.append(("STRUCTURAL!D13:J13", [_ev_row(enr, "working_age_pop_growth")])); d.append(("STRUCTURAL!L13", [[now]]))
+        d.append(("STRUCTURAL!D14:J14", [[_wv("SP.POP.DPND", r) for r in REGIONS]])); d.append(("STRUCTURAL!L14", [[now]]))
+        d.append(("STRUCTURAL!D15:J15", [_ev_row(enr, "median_age")])); d.append(("STRUCTURAL!L15", [[now]]))
+        d.append(("STRUCTURAL!D16:J16", [[_wv("SP.DYN.TFRT.IN", r) for r in REGIONS]])); d.append(("STRUCTURAL!L16", [[now]]))
+        d.append(("STRUCTURAL!D17:J17", [_ev_row(enr, "net_migration_rate")])); d.append(("STRUCTURAL!L17", [[now]]))
+        d.append(("STRUCTURAL!D18:J18", [_ev_row(enr, "youth_unemployment")])); d.append(("STRUCTURAL!L18", [[now]]))
 
         # D3 rows 22-28: Technology / Innovation
-        d.append(("STRUCTURAL!D22:J22", [[_wv("GB.XPD.RSDV.GD.ZS", r) for r in REGIONS]]))
-        d.append(("STRUCTURAL!L22", [[now]]))
-        # Row 23: Patent Filings (from enrichment)
-        d.append(("STRUCTURAL!D23:J23", [_ev_row("wipo_patents", None)]))
-        d.append(("STRUCTURAL!L23", [[now]]))
-        # Row 24: AI Papers — still empty
-        d.append(("STRUCTURAL!D24:J24", [["—"] * 7]))
-        # Row 25: Semiconductor Revenue Share (from enrichment)
-        d.append(("STRUCTURAL!D25:J25", [_ev_row("semiconductor_revenue_share", None)]))
-        d.append(("STRUCTURAL!L25", [[now]]))
-        # Rows 26-28: remaining empty
-        d.append(("STRUCTURAL!D26:J28", [["—"] * 7] * 3))
+        d.append(("STRUCTURAL!D22:J22", [_ev_row(enr, "rd_spend_gdp_pct")])); d.append(("STRUCTURAL!L22", [[now]]))
+        d.append(("STRUCTURAL!D23:J23", [_ev_row(enr, "wipo_patents")])); d.append(("STRUCTURAL!L23", [[now]]))
+        d.append(("STRUCTURAL!D24:J24", [_ev_row(enr, "ai_papers_published")])); d.append(("STRUCTURAL!L24", [[now]]))
+        d.append(("STRUCTURAL!D25:J25", [_ev_row(enr, "semiconductor_revenue_share")])); d.append(("STRUCTURAL!L25", [[now]]))
+        d.append(("STRUCTURAL!D26:J26", [_ev_row(enr, "vc_deep_tech_bn")])); d.append(("STRUCTURAL!L26", [[now]]))
+        d.append(("STRUCTURAL!D27:J27", [_ev_row(enr, "top_100_tech_hq_count")])); d.append(("STRUCTURAL!L27", [[now]]))
+        d.append(("STRUCTURAL!D28:J28", [_ev_row(enr, "stem_graduates_thousands")])); d.append(("STRUCTURAL!L28", [[now]]))
 
-        # D4 rows 32-36: Energy Sovereignty (from enrichment)
-        # Row 32: Net Energy Import Dependency
-        d.append(("STRUCTURAL!D32:J32", [_ev_row("energy_import_dependency", None)]))
-        d.append(("STRUCTURAL!L32", [[now]]))
-        # Row 33: Renewable Electricity Share
-        d.append(("STRUCTURAL!D33:J33", [_ev_row("renewable_electricity_share", None)]))
-        d.append(("STRUCTURAL!L33", [[now]]))
-        # Rows 34-36: remaining
-        d.append(("STRUCTURAL!D34:J36", [["—"] * 7] * 3))
+        # D4 rows 32-36: Energy Sovereignty
+        d.append(("STRUCTURAL!D32:J32", [_ev_row(enr, "energy_import_dependency")])); d.append(("STRUCTURAL!L32", [[now]]))
+        d.append(("STRUCTURAL!D33:J33", [_ev_row(enr, "renewable_electricity_share")])); d.append(("STRUCTURAL!L33", [[now]]))
+        d.append(("STRUCTURAL!D34:J34", [_ev_row(enr, "critical_mineral_processing_share")])); d.append(("STRUCTURAL!L34", [[now]]))
+        d.append(("STRUCTURAL!D35:J35", [_ev_row(enr, "strategic_petroleum_reserves_days")])); d.append(("STRUCTURAL!L35", [[now]]))
+        d.append(("STRUCTURAL!D36:J36", [_ev_row(enr, "lng_export_capacity_bcm")])); d.append(("STRUCTURAL!L36", [[now]]))
 
-        # D5 rows 40-44: Military (enrichment + World Bank)
-        d.append(("STRUCTURAL!D40:J40", [[_wv("MS.MIL.XPND.GD.ZS", r) for r in REGIONS]]))
-        d.append(("STRUCTURAL!L40", [[now]]))
-        # Row 41: Defense Spend Absolute (from enrichment)
-        d.append(("STRUCTURAL!D41:J41", [_ev_row("sipri_military", "absolute_bn_usd")]))
-        d.append(("STRUCTURAL!L41", [[now]]))
-        # Row 42: Nuclear Warheads (from enrichment)
-        d.append(("STRUCTURAL!D42:J42", [_ev_row("nuclear_warheads", None)]))
-        d.append(("STRUCTURAL!L42", [[now]]))
-        # Rows 43-44: remaining
-        d.append(("STRUCTURAL!D43:J44", [["—"] * 7] * 2))
+        # D5 rows 40-44: Military / Projection
+        d.append(("STRUCTURAL!D40:J40", [[_wv("MS.MIL.XPND.GD.ZS", r) for r in REGIONS]])); d.append(("STRUCTURAL!L40", [[now]]))
+        d.append(("STRUCTURAL!D41:J41", [_ev_row(enr, "sipri_military", "absolute_bn_usd")])); d.append(("STRUCTURAL!L41", [[now]]))
+        d.append(("STRUCTURAL!D42:J42", [_ev_row(enr, "nuclear_warheads")])); d.append(("STRUCTURAL!L42", [[now]]))
+        d.append(("STRUCTURAL!D43:J43", [_ev_row(enr, "aircraft_carriers")])); d.append(("STRUCTURAL!L43", [[now]]))
+        d.append(("STRUCTURAL!D44:J44", [_ev_row(enr, "foreign_military_bases")])); d.append(("STRUCTURAL!L44", [[now]]))
 
         self._batch_write(d)
 
     # ============================================================
-    # FINANCIAL
+    # FINANCIAL — ALL CELLS
     # ============================================================
 
     def write_financial(self, validated_data, overlays):
@@ -298,46 +270,30 @@ class G7DisplayWriter:
             e = imf.get(f"{ind}_{r}")
             return _fmt(e["value"]) if isinstance(e, dict) and e.get("value") is not None else "—"
 
-        def _ev(block, field, r):
-            b = enr.get(block, {})
-            data = b.get("data", {})
-            entry = data.get(r)
-            if isinstance(entry, dict):
-                v = entry.get(field)
-                return _fmt(v) if v is not None else "—"
-            elif isinstance(entry, (int, float)):
-                return _fmt(entry)
-            return "—"
-
-        def _ev_row(block, field=None):
-            return [_ev(block, field, r) for r in REGIONS]
-
         # D6 Row 5: Debt/GDP
-        d.append(("FINANCIAL!D5:J5", [[_iv("GGXWDG_NGDP", r) for r in REGIONS]]))
-        d.append(("FINANCIAL!L5", [[now]]))
-        # Row 6: placeholder
+        d.append(("FINANCIAL!D5:J5", [[_iv("GGXWDG_NGDP", r) for r in REGIONS]])); d.append(("FINANCIAL!L5", [[now]]))
+        # Row 6: Debt/GDP 5Y Trajectory — placeholder (need IMF history computation)
         d.append(("FINANCIAL!D6:J6", [["—"] * 7]))
         # Row 7: ITR
         itr_row = ["—"] * 7
-        i_d = fred.get("A091RC1Q027SBEA")
-        r_d = fred.get("FGRECPT")
+        i_d = fred.get("A091RC1Q027SBEA"); r_d = fred.get("FGRECPT")
         if (isinstance(i_d, dict) and i_d.get("value") is not None
                 and isinstance(r_d, dict) and r_d.get("value") is not None and r_d["value"] > 0):
             itr_row[0] = _fmt(i_d["value"] / r_d["value"] * 100)
-        d.append(("FINANCIAL!D7:J7", [itr_row]))
-        d.append(("FINANCIAL!L7", [[now]]))
+        d.append(("FINANCIAL!D7:J7", [itr_row])); d.append(("FINANCIAL!L7", [[now]]))
         # Row 8: Deficit
         def_row = ["—"] * 7
         deficit = fred.get("FYFSGDA188S")
         if isinstance(deficit, dict) and deficit.get("value") is not None:
             def_row[0] = _fmt(deficit["value"])
         d.append(("FINANCIAL!D8:J8", [def_row]))
-        # Rows 9-10: placeholder
-        d.append(("FINANCIAL!D9:J10", [["—"] * 7] * 2))
+        # Row 9: CB Balance Sheet / GDP (enrichment)
+        d.append(("FINANCIAL!D9:J9", [_ev_row(enr, "cb_balance_sheet_gdp_pct")])); d.append(("FINANCIAL!L9", [[now]]))
+        # Row 10: M2 vs GDP — placeholder
+        d.append(("FINANCIAL!D10:J10", [["—"] * 7]))
         # Row 11: Real Rate
         rr_row = ["—"] * 7
-        dgs = fred.get("DGS10")
-        inf_u = imf.get("PCPIPCH_USA")
+        dgs = fred.get("DGS10"); inf_u = imf.get("PCPIPCH_USA")
         if (isinstance(dgs, dict) and dgs.get("value") is not None
                 and isinstance(inf_u, dict) and inf_u.get("value") is not None):
             rr_row[0] = _fmt(dgs["value"] - inf_u["value"])
@@ -348,49 +304,51 @@ class G7DisplayWriter:
         if isinstance(st, dict) and st.get("value") is not None:
             nfci_row[0] = _fmt(st["value"], 2)
         d.append(("FINANCIAL!D12:J12", [nfci_row]))
-        # Row 13: placeholder
-        d.append(("FINANCIAL!D13:J13", [["—"] * 7]))
+        # Row 13: ANFCI
+        anfci_row = ["—"] * 7
+        anfci = fred.get("ANFCI")
+        if isinstance(anfci, dict) and anfci.get("value") is not None:
+            anfci_row[0] = _fmt(anfci["value"], 2)
+        d.append(("FINANCIAL!D13:J13", [anfci_row]))
 
         # D7 Row 15: COFER
         c_row = ["—"] * 7
         c_row[0] = _fmt(cofer.get("USD_share"))
         c_row[1] = _fmt(cofer.get("CNY_share"))
         c_row[2] = _fmt(cofer.get("EUR_share"))
-        d.append(("FINANCIAL!D15:J15", [c_row]))
-        d.append(("FINANCIAL!L15", [[now]]))
+        d.append(("FINANCIAL!D15:J15", [c_row])); d.append(("FINANCIAL!L15", [[now]]))
         # Row 16: COFER 5Y Trend — placeholder
         d.append(("FINANCIAL!D16:J16", [["—"] * 7]))
-        # Row 17: CB Gold Holdings (from enrichment)
-        d.append(("FINANCIAL!D17:J17", [_ev_row("cb_gold_holdings_tonnes")]))
-        d.append(("FINANCIAL!L17", [[now]]))
-        # Row 18: Gold Purchases — global total from enrichment
-        gold_purchases = enr.get("cb_gold_purchases_tonnes_yr", {})
-        gp_total = gold_purchases.get("global_total")
-        gp_row = [_fmt(gp_total) if gp_total else "—"] + ["—"] * 6
-        d.append(("FINANCIAL!D18:J18", [gp_row]))
-        d.append(("FINANCIAL!L18", [[now]]))
-        # Row 19: SWIFT — placeholder
-        d.append(("FINANCIAL!D19:J19", [["—"] * 7]))
-        # Row 20: Currency vs USD — placeholder
-        d.append(("FINANCIAL!D20:J20", [["—"] * 7]))
+        # Row 17: CB Gold Holdings (enrichment)
+        d.append(("FINANCIAL!D17:J17", [_ev_row(enr, "cb_gold_holdings_tonnes")])); d.append(("FINANCIAL!L17", [[now]]))
+        # Row 18: Gold Purchases
+        gp = enr.get("cb_gold_purchases_tonnes_yr", {})
+        gp_total = gp.get("global_total")
+        d.append(("FINANCIAL!D18:J18", [[_fmt(gp_total) if gp_total else "—"] + ["—"] * 6])); d.append(("FINANCIAL!L18", [[now]]))
+        # Row 19: SWIFT Payment Share (enrichment)
+        d.append(("FINANCIAL!D19:J19", [_ev_row(enr, "swift_payment_share_pct")])); d.append(("FINANCIAL!L19", [[now]]))
+        # Row 20: Currency vs USD 5Y (enrichment)
+        d.append(("FINANCIAL!D20:J20", [_ev_row(enr, "currency_vs_usd_5y_pct")])); d.append(("FINANCIAL!L20", [[now]]))
         # Row 21: DXY
         dxy_row = ["—"] * 7
         dxy = yf.get("DX-Y.NYB")
         if isinstance(dxy, dict) and dxy.get("close") is not None:
             dxy_row[0] = _fmt(dxy["close"])
-        d.append(("FINANCIAL!D21:J21", [dxy_row]))
-        d.append(("FINANCIAL!L21", [[now]]))
+        d.append(("FINANCIAL!D21:J21", [dxy_row])); d.append(("FINANCIAL!L21", [[now]]))
 
-        # D8 Row 25: Stock Market Cap / GDP (from enrichment)
-        d.append(("FINANCIAL!D25:J25", [_ev_row("market_cap_gdp_pct")]))
-        d.append(("FINANCIAL!L25", [[now]]))
-        # Rows 26-31: remaining D8 placeholders
-        d.append(("FINANCIAL!D26:J31", [["—"] * 7] * 6))
+        # D8 Row 25-31: Capital Market Depth (ALL from enrichment)
+        d.append(("FINANCIAL!D25:J25", [_ev_row(enr, "market_cap_gdp_pct")])); d.append(("FINANCIAL!L25", [[now]]))
+        d.append(("FINANCIAL!D26:J26", [_ev_row(enr, "bond_market_gdp_pct")])); d.append(("FINANCIAL!L26", [[now]]))
+        d.append(("FINANCIAL!D27:J27", [["—"] * 7]))  # Daily Trading Volume — no good source yet
+        d.append(("FINANCIAL!D28:J28", [_ev_row(enr, "property_rights_score")])); d.append(("FINANCIAL!L28", [[now]]))
+        d.append(("FINANCIAL!D29:J29", [_ev_row(enr, "capital_controls_severity")])); d.append(("FINANCIAL!L29", [[now]]))
+        d.append(("FINANCIAL!D30:J30", [_ev_row(enr, "rule_of_law_score")])); d.append(("FINANCIAL!L30", [[now]]))
+        d.append(("FINANCIAL!D31:J31", [_ev_row(enr, "fdi_gdp_pct")])); d.append(("FINANCIAL!L31", [[now]]))
 
         self._batch_write(d)
 
     # ============================================================
-    # LEADING
+    # LEADING — ALL CELLS
     # ============================================================
 
     def write_leading(self, scores, momenta, overlays, validated_data):
@@ -399,60 +357,35 @@ class G7DisplayWriter:
         now = _today()
         d = []
 
-        def _ev(block, field, r):
-            b = enr.get(block, {})
-            data = b.get("data", {})
-            entry = data.get(r)
-            if isinstance(entry, dict):
-                v = entry.get(field)
-                return _fmt(v) if v is not None else "—"
-            elif isinstance(entry, (int, float)):
-                return _fmt(entry)
-            return "—"
-
-        def _ev_row(block, field=None):
-            return [_ev(block, field, r) for r in REGIONS]
-
         # D9 rows 5-9: Capital Flows
-        # Row 5: ETF Flows — still empty
-        d.append(("LEADING!D5:J5", [["—"] * 7]))
-        # Row 6: FDI Net Inflows (from enrichment)
-        d.append(("LEADING!D6:J6", [_ev_row("fdi_inflows_bn")]))
-        d.append(("LEADING!L6", [[now]]))
-        # Rows 7-9: remaining
-        d.append(("LEADING!D7:J9", [["—"] * 7] * 3))
+        d.append(("LEADING!D5:J5", [["—"] * 7]))  # ETF Flows — no source yet
+        d.append(("LEADING!D6:J6", [_ev_row(enr, "fdi_inflows_bn")])); d.append(("LEADING!L6", [[now]]))
+        d.append(("LEADING!D7:J7", [_ev_row(enr, "treasury_holdings_bn")])); d.append(("LEADING!L7", [[now]]))
+        d.append(("LEADING!D8:J8", [["—"] * 7]))  # Portfolio Flows — no source yet
+        d.append(("LEADING!D9:J9", [["—"] * 7]))  # SWF Activity — qualitative
 
         # D10 rows 13-18: Social Cohesion
-        # Row 13: Trust in Government (from enrichment)
-        d.append(("LEADING!D13:J13", [_ev_row("trust_in_government_pct")]))
-        d.append(("LEADING!L13", [[now]]))
-        # Row 14: Political Polarization — still empty
-        d.append(("LEADING!D14:J14", [["—"] * 7]))
-        # Row 15: Gini Coefficient (from enrichment)
-        d.append(("LEADING!D15:J15", [_ev_row("gini_coefficient")]))
-        d.append(("LEADING!L15", [[now]]))
-        # Rows 16-18: remaining
-        d.append(("LEADING!D16:J18", [["—"] * 7] * 3))
+        d.append(("LEADING!D13:J13", [_ev_row(enr, "trust_in_government_pct")])); d.append(("LEADING!L13", [[now]]))
+        d.append(("LEADING!D14:J14", [_ev_row(enr, "political_polarization_score")])); d.append(("LEADING!L14", [[now]]))
+        d.append(("LEADING!D15:J15", [_ev_row(enr, "gini_coefficient")])); d.append(("LEADING!L15", [[now]]))
+        d.append(("LEADING!D16:J16", [_ev_row(enr, "social_mobility_rank")])); d.append(("LEADING!L16", [[now]]))
+        d.append(("LEADING!D17:J17", [["—"] * 7]))  # Consumer Conf — no source yet
+        d.append(("LEADING!D18:J18", [["—"] * 7]))  # Protest Index — needs ACLED
 
         # D11 rows 22-27: Geopolitical Dynamics
-        # Row 22: Alliance Strength — still empty
-        d.append(("LEADING!D22:J22", [["—"] * 7]))
-        # Row 23: Active Sanctions (from enrichment)
-        d.append(("LEADING!D23:J23", [_ev_row("sanctions_active_count")]))
-        d.append(("LEADING!L23", [[now]]))
-        # Rows 24-25: remaining
-        d.append(("LEADING!D24:J25", [["—"] * 7] * 2))
+        d.append(("LEADING!D22:J22", [_ev_row(enr, "alliance_strength_score")])); d.append(("LEADING!L22", [[now]]))
+        d.append(("LEADING!D23:J23", [_ev_row(enr, "sanctions_active_count")])); d.append(("LEADING!L23", [[now]]))
+        d.append(("LEADING!D24:J24", [_ev_row(enr, "trade_gdp_ratio")])); d.append(("LEADING!L24", [[now]]))
+        d.append(("LEADING!D25:J25", [["—"] * 7]))  # Reshoring Index — Kearney annual only
         # Row 26: GPR
         gpr_row = ["—"] * 7
         gpr = overlays.get("gpr_index_current")
         if gpr is not None:
             gpr_row[0] = _fmt(gpr, 0)
-        d.append(("LEADING!D26:J26", [gpr_row]))
-        d.append(("LEADING!L26", [[now]]))
-        # Row 27: Conflict Proximity — still empty
-        d.append(("LEADING!D27:J27", [["—"] * 7]))
+        d.append(("LEADING!D26:J26", [gpr_row])); d.append(("LEADING!L26", [[now]]))
+        d.append(("LEADING!D27:J27", [_ev_row(enr, "conflict_proximity_score")])); d.append(("LEADING!L27", [[now]]))
 
-        # D12 rows 31-35
+        # D12 rows 31-35: Feedback Loop Intensity
         feedback_loops = overlays.get("feedback_loops", [])
         ls = {}
         for loop in feedback_loops:
@@ -492,7 +425,6 @@ class G7DisplayWriter:
             if lid not in ms or s > ms[lid]:
                 ms[lid] = s
 
-        # Neg spirals rows 5-10
         neg_rows = []
         for lid in ["debt_demographics", "currency_fiscal", "thucydides_trap",
                      "energy_conflict", "financial_contagion", "social_political"]:
@@ -500,11 +432,8 @@ class G7DisplayWriter:
             neg_rows.append([_fmt(sev) if sev > 0 else "INACTIVE",
                            "FAST" if sev > 5 else "SLOW" if sev > 0 else "—"])
         d.append(("FEEDBACK_LOOPS!D5:E10", neg_rows))
-
-        # Pos spirals rows 14-17
         d.append(("FEEDBACK_LOOPS!D14:E17", [["—", "—"]] * 4))
 
-        # Interaction matrix rows 21-27
         lbr = {}
         for loop in feedback_loops:
             r = loop.get("region", "")
@@ -527,7 +456,6 @@ class G7DisplayWriter:
             cells.append(_fmt(net) if net > 0 else "—")
             matrix.append(cells)
         d.append(("FEEDBACK_LOOPS!B21:L27", matrix))
-
         self._batch_write(d)
 
     # ============================================================
@@ -557,7 +485,6 @@ class G7DisplayWriter:
         def _yc(t):
             e = yf.get(t)
             return _fmt(e["close"]) if isinstance(e, dict) and e.get("close") is not None else "—"
-
         def _fv(s, dc=2):
             e = fred.get(s)
             return _fmt(e["value"], dc) if isinstance(e, dict) and e.get("value") is not None else "—"
@@ -567,10 +494,18 @@ class G7DisplayWriter:
         gp = gold.get("pct_change_1m") if isinstance(gold, dict) else None
 
         self._batch_write([("SCORING!B5:B16", [
-            [_yc("^VIX")], ["—"], [_fv("BAMLH0A0HYM2")],
-            [_fmt(gv, 0) if gv else "—"], [_fv("T10Y2Y")], ["—"],
-            [_fmt_pct(gp) if gp else "—"], [_yc("DX-Y.NYB")],
-            ["—"], ["—"], [_fv("STLFSI4")], ["—"],
+            [_yc("^VIX")],              # VIX
+            ["—"],                       # VIX3M — not in yfinance tickers yet
+            [_fv("BAMLH0A0HYM2")],      # HY Spread
+            [_fmt(gv, 0) if gv else "—"],# GPR
+            [_fv("T10Y2Y")],            # 2Y10Y
+            [_fv("BAMLC0A0CM")],        # Credit Stress IG OAS
+            [_fmt_pct(gp) if gp else "—"],# Gold 1M%
+            [_yc("DX-Y.NYB")],          # DXY
+            ["—"],                       # V16 State
+            ["—"],                       # MOVE — needs FRED series
+            [_fv("STLFSI4")],           # NFCI
+            [_fv("ANFCI")],             # ANFCI
         ])])
 
     # ============================================================
