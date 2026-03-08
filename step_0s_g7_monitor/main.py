@@ -33,6 +33,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 
 # --- Local module imports ---
 from step_0s_g7_monitor.data_collection import phase1_data_collection
+from step_0s_g7_monitor.data_enrichment import phase1b_data_enrichment
 from step_0s_g7_monitor.scoring_engine import phase3_scoring_engine
 from step_0s_g7_monitor.overlays import phase4_overlay_computation
 from step_0s_g7_monitor.scenario_engine import phase6_scenario_engine
@@ -510,10 +511,26 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
         run_log["phases"]["P1"] = {"status": "ERROR", "error": str(e)}
         run_log["errors"].append(f"P1: {e}")
 
+    # ---- PHASE 1b: DATA ENRICHMENT (Brave Search + LLM) ----
+    ps = time.time()
+    enrichment_data = None
+    try:
+        enrichment_data = phase1b_data_enrichment(run_type=run_type)
+        enrich_source = enrichment_data.get("enrichment_source", "UNKNOWN") if enrichment_data else "NONE"
+        run_log["phases"]["P1b"] = {"status": "OK", "source": enrich_source, "duration_s": round(time.time() - ps, 1)}
+    except Exception as e:
+        print(f"[Phase 1b] ERROR: {e}"); traceback.print_exc()
+        enrichment_data = None
+        run_log["phases"]["P1b"] = {"status": "ERROR", "error": str(e)}
+        run_log["errors"].append(f"P1b: {e}")
+
     # ---- PHASE 2 ----
     ps = time.time()
     try:
         validation = phase2_data_validation(collection)
+        # Inject enrichment extracted_data into validated_data
+        if enrichment_data and isinstance(enrichment_data, dict):
+            validation["validated_data"]["enrichment"] = enrichment_data.get("extracted_data", {})
         run_log["phases"]["P2"] = {"status": "OK", "available": validation.get("sources_available", 0), "duration_s": round(time.time() - ps, 1)}
     except Exception as e:
         print(f"[Phase 2] ERROR: {e}"); traceback.print_exc()
@@ -528,10 +545,11 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
             validated_data=validation["validated_data"],
             freshness=validation.get("freshness_by_dimension", {}),
             previous_scores=previous_scores or {},
+            enrichment_data=enrichment_data,
         )
         power_scores = scoring.get("power_scores", {})
         gap_data = scoring.get("gap_data", {"gap": 50, "trend": "STABLE", "gap_momentum": 0})
-        run_log["phases"]["P3"] = {"status": "OK", "quant_dims": scoring.get("quant_dimensions_complete", 0), "duration_s": round(time.time() - ps, 1)}
+        run_log["phases"]["P3"] = {"status": "OK", "quant_dims": scoring.get("quant_dimensions_complete", 0), "enriched_dims": scoring.get("llm_dimensions_enriched", 0), "duration_s": round(time.time() - ps, 1)}
     except Exception as e:
         print(f"[Phase 3] ERROR: {e}"); traceback.print_exc()
         scoring = {}

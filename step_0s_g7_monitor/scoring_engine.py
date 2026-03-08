@@ -545,9 +545,15 @@ def compute_data_quality(region, freshness_by_dimension):
 # MAIN SCORING FUNCTION
 # ============================================================
 
-def phase3_scoring_engine(validated_data, freshness, previous_scores):
+def phase3_scoring_engine(validated_data, freshness, previous_scores,
+                          enrichment_data=None):
     """
     Phase 3: Compute all 84 Signal-Triplets.
+
+    Args:
+      enrichment_data: Output from phase1b_data_enrichment() — contains
+        dimension_scores for D3, D5, D10, D11, D12 from LLM + Brave Search.
+        If None, falls back to 50.0 neutral stubs.
 
     Returns:
       - scores: dict[dim][region] = normalized score (0-100)
@@ -614,16 +620,67 @@ def phase3_scoring_engine(validated_data, freshness, previous_scores):
                 momenta[dim].get(region, 0), prev_mom
             )
 
-    # ---- Step 5: LLM Dimensions — Placeholder (Etappe 3) ----
+    # ---- Step 5: LLM Dimensions — from Enrichment Data or fallback ----
+    enrichment_scores = {}
+    if enrichment_data and isinstance(enrichment_data, dict):
+        enrichment_scores = enrichment_data.get("dimension_scores", {})
+
+    enrichment_used = 0
     for dim in LLM_DIMENSIONS:
         scores[dim] = {}
         momenta[dim] = {}
         accelerations[dim] = {}
+
+        dim_enrichment = enrichment_scores.get(dim, {})
+        has_enrichment = bool(dim_enrichment) and len(dim_enrichment) >= 7
+
         for region in REGIONS:
-            # Use neutral defaults — will be filled by LLM in Etappe 3
-            scores[dim][region] = 50.0
-            momenta[dim][region] = 0.0
-            accelerations[dim][region] = 0.0
+            # Try enrichment score first
+            if has_enrichment:
+                entry = dim_enrichment.get(region, {})
+                if isinstance(entry, dict):
+                    score_val = entry.get("score")
+                elif isinstance(entry, (int, float)):
+                    score_val = entry
+                else:
+                    score_val = None
+
+                if score_val is not None and isinstance(score_val, (int, float)):
+                    scores[dim][region] = float(max(10, min(95, score_val)))
+                else:
+                    scores[dim][region] = 50.0
+            else:
+                scores[dim][region] = 50.0
+
+            # Momentum: compare vs previous scores
+            prev = (
+                previous_scores.get(dim, {}).get(region, {}).get("score")
+                if isinstance(previous_scores.get(dim, {}).get(region), dict)
+                else previous_scores.get(dim, {}).get(region)
+            )
+            if prev is None:
+                prev = scores[dim][region]
+            momenta[dim][region] = compute_momentum(
+                scores[dim][region], prev, 1
+            )
+
+            # Acceleration
+            prev_mom = (
+                previous_scores.get(dim, {}).get(region, {}).get("momentum")
+                if isinstance(previous_scores.get(dim, {}).get(region), dict)
+                else 0
+            )
+            accelerations[dim][region] = compute_acceleration(
+                momenta[dim][region], prev_mom
+            )
+
+        if has_enrichment:
+            enrichment_used += 1
+
+    enrichment_source = "NONE"
+    if enrichment_data:
+        enrichment_source = enrichment_data.get("enrichment_source", "UNKNOWN")
+    print(f"  LLM dimensions: {enrichment_used}/{len(LLM_DIMENSIONS)} from enrichment [{enrichment_source}]")
 
     # ---- Step 6: Power Scores ----
     power_scores = compute_all_power_scores(scores, momenta, accelerations)
@@ -638,7 +695,7 @@ def phase3_scoring_engine(validated_data, freshness, previous_scores):
 
     # ---- Summary ----
     print(f"  Quant dimensions: {len(QUANT_DIMENSIONS)}")
-    print(f"  LLM dimensions (stub): {len(LLM_DIMENSIONS)}")
+    print(f"  LLM dimensions: {enrichment_used}/{len(LLM_DIMENSIONS)} enriched")
     print(f"  USA-China Gap: {gap_data['gap']} ({gap_data['trend']})")
     for region in REGIONS:
         ps = power_scores[region]
@@ -658,5 +715,6 @@ def phase3_scoring_engine(validated_data, freshness, previous_scores):
         "gap_data": gap_data,
         "data_quality": data_quality,
         "quant_dimensions_complete": len(QUANT_DIMENSIONS),
-        "llm_dimensions_pending": len(LLM_DIMENSIONS),
+        "llm_dimensions_enriched": enrichment_used,
+        "enrichment_source": enrichment_source,
     }

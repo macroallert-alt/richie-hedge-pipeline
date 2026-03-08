@@ -198,6 +198,7 @@ class G7DisplayWriter:
         print("  [Display] STRUCTURAL...")
         imf = validated_data.get("imf_weo", {})
         wb = validated_data.get("worldbank", {})
+        enr = validated_data.get("enrichment", {})
         now = _today()
         d = []
 
@@ -208,6 +209,22 @@ class G7DisplayWriter:
         def _wv(ind, r):
             e = wb.get(f"{ind}_{r}")
             return _fmt(e["value"]) if isinstance(e, dict) and e.get("value") is not None else "—"
+
+        def _ev(block, field, r):
+            """Extract enrichment value: enr[block][data][region][field] or enr[block][data][region]."""
+            b = enr.get(block, {})
+            data = b.get("data", {})
+            entry = data.get(r)
+            if isinstance(entry, dict):
+                v = entry.get(field)
+                return _fmt(v) if v is not None else "—"
+            elif isinstance(entry, (int, float)):
+                return _fmt(entry)
+            return "—"
+
+        def _ev_row(block, field):
+            """Build a row of enrichment values for all regions."""
+            return [_ev(block, field, r) for r in REGIONS]
 
         # D1 rows 5-9
         d.append(("STRUCTURAL!D5:J5", [[_iv("NGDPD", r) for r in REGIONS]]))
@@ -225,18 +242,41 @@ class G7DisplayWriter:
         d.append(("STRUCTURAL!L16", [[now]]))
         d.append(("STRUCTURAL!D17:J18", [["—"] * 7] * 2))
 
-        # D3 rows 22-28
+        # D3 rows 22-28: Technology / Innovation
         d.append(("STRUCTURAL!D22:J22", [[_wv("GB.XPD.RSDV.GD.ZS", r) for r in REGIONS]]))
         d.append(("STRUCTURAL!L22", [[now]]))
-        d.append(("STRUCTURAL!D23:J28", [["—"] * 7] * 6))
+        # Row 23: Patent Filings (from enrichment)
+        d.append(("STRUCTURAL!D23:J23", [_ev_row("wipo_patents", None)]))
+        d.append(("STRUCTURAL!L23", [[now]]))
+        # Row 24: AI Papers — still empty
+        d.append(("STRUCTURAL!D24:J24", [["—"] * 7]))
+        # Row 25: Semiconductor Revenue Share (from enrichment)
+        d.append(("STRUCTURAL!D25:J25", [_ev_row("semiconductor_revenue_share", None)]))
+        d.append(("STRUCTURAL!L25", [[now]]))
+        # Rows 26-28: remaining empty
+        d.append(("STRUCTURAL!D26:J28", [["—"] * 7] * 3))
 
-        # D4 rows 32-36
-        d.append(("STRUCTURAL!D32:J36", [["—"] * 7] * 5))
+        # D4 rows 32-36: Energy Sovereignty (from enrichment)
+        # Row 32: Net Energy Import Dependency
+        d.append(("STRUCTURAL!D32:J32", [_ev_row("energy_import_dependency", None)]))
+        d.append(("STRUCTURAL!L32", [[now]]))
+        # Row 33: Renewable Electricity Share
+        d.append(("STRUCTURAL!D33:J33", [_ev_row("renewable_electricity_share", None)]))
+        d.append(("STRUCTURAL!L33", [[now]]))
+        # Rows 34-36: remaining
+        d.append(("STRUCTURAL!D34:J36", [["—"] * 7] * 3))
 
-        # D5 rows 40-44
+        # D5 rows 40-44: Military (enrichment + World Bank)
         d.append(("STRUCTURAL!D40:J40", [[_wv("MS.MIL.XPND.GD.ZS", r) for r in REGIONS]]))
         d.append(("STRUCTURAL!L40", [[now]]))
-        d.append(("STRUCTURAL!D41:J44", [["—"] * 7] * 4))
+        # Row 41: Defense Spend Absolute (from enrichment)
+        d.append(("STRUCTURAL!D41:J41", [_ev_row("sipri_military", "absolute_bn_usd")]))
+        d.append(("STRUCTURAL!L41", [[now]]))
+        # Row 42: Nuclear Warheads (from enrichment)
+        d.append(("STRUCTURAL!D42:J42", [_ev_row("nuclear_warheads", None)]))
+        d.append(("STRUCTURAL!L42", [[now]]))
+        # Rows 43-44: remaining
+        d.append(("STRUCTURAL!D43:J44", [["—"] * 7] * 2))
 
         self._batch_write(d)
 
@@ -250,12 +290,27 @@ class G7DisplayWriter:
         imf = validated_data.get("imf_weo", {})
         cofer = validated_data.get("imf_cofer", {})
         yf = validated_data.get("yfinance", {})
+        enr = validated_data.get("enrichment", {})
         now = _today()
         d = []
 
         def _iv(ind, r):
             e = imf.get(f"{ind}_{r}")
             return _fmt(e["value"]) if isinstance(e, dict) and e.get("value") is not None else "—"
+
+        def _ev(block, field, r):
+            b = enr.get(block, {})
+            data = b.get("data", {})
+            entry = data.get(r)
+            if isinstance(entry, dict):
+                v = entry.get(field)
+                return _fmt(v) if v is not None else "—"
+            elif isinstance(entry, (int, float)):
+                return _fmt(entry)
+            return "—"
+
+        def _ev_row(block, field=None):
+            return [_ev(block, field, r) for r in REGIONS]
 
         # D6 Row 5: Debt/GDP
         d.append(("FINANCIAL!D5:J5", [[_iv("GGXWDG_NGDP", r) for r in REGIONS]]))
@@ -303,8 +358,21 @@ class G7DisplayWriter:
         c_row[2] = _fmt(cofer.get("EUR_share"))
         d.append(("FINANCIAL!D15:J15", [c_row]))
         d.append(("FINANCIAL!L15", [[now]]))
-        # Rows 16-20: placeholder
-        d.append(("FINANCIAL!D16:J20", [["—"] * 7] * 5))
+        # Row 16: COFER 5Y Trend — placeholder
+        d.append(("FINANCIAL!D16:J16", [["—"] * 7]))
+        # Row 17: CB Gold Holdings (from enrichment)
+        d.append(("FINANCIAL!D17:J17", [_ev_row("cb_gold_holdings_tonnes")]))
+        d.append(("FINANCIAL!L17", [[now]]))
+        # Row 18: Gold Purchases — global total from enrichment
+        gold_purchases = enr.get("cb_gold_purchases_tonnes_yr", {})
+        gp_total = gold_purchases.get("global_total")
+        gp_row = [_fmt(gp_total) if gp_total else "—"] + ["—"] * 6
+        d.append(("FINANCIAL!D18:J18", [gp_row]))
+        d.append(("FINANCIAL!L18", [[now]]))
+        # Row 19: SWIFT — placeholder
+        d.append(("FINANCIAL!D19:J19", [["—"] * 7]))
+        # Row 20: Currency vs USD — placeholder
+        d.append(("FINANCIAL!D20:J20", [["—"] * 7]))
         # Row 21: DXY
         dxy_row = ["—"] * 7
         dxy = yf.get("DX-Y.NYB")
@@ -313,8 +381,11 @@ class G7DisplayWriter:
         d.append(("FINANCIAL!D21:J21", [dxy_row]))
         d.append(("FINANCIAL!L21", [[now]]))
 
-        # D8 rows 25-31: placeholder
-        d.append(("FINANCIAL!D25:J31", [["—"] * 7] * 7))
+        # D8 Row 25: Stock Market Cap / GDP (from enrichment)
+        d.append(("FINANCIAL!D25:J25", [_ev_row("market_cap_gdp_pct")]))
+        d.append(("FINANCIAL!L25", [[now]]))
+        # Rows 26-31: remaining D8 placeholders
+        d.append(("FINANCIAL!D26:J31", [["—"] * 7] * 6))
 
         self._batch_write(d)
 
@@ -324,15 +395,53 @@ class G7DisplayWriter:
 
     def write_leading(self, scores, momenta, overlays, validated_data):
         print("  [Display] LEADING...")
+        enr = validated_data.get("enrichment", {})
         now = _today()
         d = []
 
-        # D9 rows 5-9
-        d.append(("LEADING!D5:J9", [["—"] * 7] * 5))
-        # D10 rows 13-18
-        d.append(("LEADING!D13:J18", [["—"] * 7] * 6))
-        # D11 rows 22-25
-        d.append(("LEADING!D22:J25", [["—"] * 7] * 4))
+        def _ev(block, field, r):
+            b = enr.get(block, {})
+            data = b.get("data", {})
+            entry = data.get(r)
+            if isinstance(entry, dict):
+                v = entry.get(field)
+                return _fmt(v) if v is not None else "—"
+            elif isinstance(entry, (int, float)):
+                return _fmt(entry)
+            return "—"
+
+        def _ev_row(block, field=None):
+            return [_ev(block, field, r) for r in REGIONS]
+
+        # D9 rows 5-9: Capital Flows
+        # Row 5: ETF Flows — still empty
+        d.append(("LEADING!D5:J5", [["—"] * 7]))
+        # Row 6: FDI Net Inflows (from enrichment)
+        d.append(("LEADING!D6:J6", [_ev_row("fdi_inflows_bn")]))
+        d.append(("LEADING!L6", [[now]]))
+        # Rows 7-9: remaining
+        d.append(("LEADING!D7:J9", [["—"] * 7] * 3))
+
+        # D10 rows 13-18: Social Cohesion
+        # Row 13: Trust in Government (from enrichment)
+        d.append(("LEADING!D13:J13", [_ev_row("trust_in_government_pct")]))
+        d.append(("LEADING!L13", [[now]]))
+        # Row 14: Political Polarization — still empty
+        d.append(("LEADING!D14:J14", [["—"] * 7]))
+        # Row 15: Gini Coefficient (from enrichment)
+        d.append(("LEADING!D15:J15", [_ev_row("gini_coefficient")]))
+        d.append(("LEADING!L15", [[now]]))
+        # Rows 16-18: remaining
+        d.append(("LEADING!D16:J18", [["—"] * 7] * 3))
+
+        # D11 rows 22-27: Geopolitical Dynamics
+        # Row 22: Alliance Strength — still empty
+        d.append(("LEADING!D22:J22", [["—"] * 7]))
+        # Row 23: Active Sanctions (from enrichment)
+        d.append(("LEADING!D23:J23", [_ev_row("sanctions_active_count")]))
+        d.append(("LEADING!L23", [[now]]))
+        # Rows 24-25: remaining
+        d.append(("LEADING!D24:J25", [["—"] * 7] * 2))
         # Row 26: GPR
         gpr_row = ["—"] * 7
         gpr = overlays.get("gpr_index_current")
@@ -340,7 +449,7 @@ class G7DisplayWriter:
             gpr_row[0] = _fmt(gpr, 0)
         d.append(("LEADING!D26:J26", [gpr_row]))
         d.append(("LEADING!L26", [[now]]))
-        # Row 27
+        # Row 27: Conflict Proximity — still empty
         d.append(("LEADING!D27:J27", [["—"] * 7]))
 
         # D12 rows 31-35
