@@ -947,6 +947,103 @@ def build_dashboard_json(v16_data):
 
 
 # ═══════════════════════════════════════════════════════
+# MERGE HELPER
+# ═══════════════════════════════════════════════════════
+# Keys die V16 IMMER ueberschreibt (V16 = Source of Truth)
+V16_OWNED_KEYS = {
+    "schema_version", "date", "weekday", "generated_at",
+    "v16", "timeseries_row", "temporal_map", "validation",
+}
+
+# Keys die V16 nur setzt wenn sie noch NICHT von einem
+# anderen Pipeline-Step mit echten Daten befuellt wurden.
+# Erkennbar daran dass der Block status != "AVAILABLE" hat
+# oder der Key noch gar nicht existiert.
+V16_PLACEHOLDER_KEYS = {
+    "header", "digest", "briefing", "action_items", "layers",
+    "signals", "risk", "intelligence", "f6", "pipeline_health",
+    "known_unknowns", "agent_r_context", "regime_context",
+    "consistency_flags", "overconfidence", "deltas",
+    "degradation_level", "degradation_banner",
+    "execution", "rotation",
+}
+
+
+def _block_has_real_data(existing_block) -> bool:
+    """Check if an existing dashboard block has real data from another step."""
+    if existing_block is None:
+        return False
+    if isinstance(existing_block, dict):
+        # Blocks mit status="AVAILABLE" oder source != "NONE" haben echte Daten
+        if existing_block.get("status") == "AVAILABLE":
+            return True
+        if existing_block.get("source") not in (None, "NONE"):
+            return True
+        # Blocks ohne status-Feld aber mit Inhalt (z.B. header, digest)
+        # Pruefen ob sie ueber den Platzhalter hinaus befuellt sind
+        if existing_block.get("system_conviction") not in (None, "N/A"):
+            return True
+        if existing_block.get("briefing_type") not in (None, "ROUTINE", "WATCH", "ACTION"):
+            # header hat immer briefing_type — pruefen ob conviction gesetzt
+            pass
+    return False
+
+
+def merge_dashboard(existing: dict, v16_new: dict) -> dict:
+    """
+    Merge V16-Daten in bestehendes Dashboard.
+    - V16_OWNED_KEYS: immer ueberschreiben
+    - V16_PLACEHOLDER_KEYS: nur ueberschreiben wenn existing leer/Platzhalter
+    - Alle anderen Keys im existing bleiben erhalten
+    """
+    merged = existing.copy()
+
+    # 1. V16-owned Keys: immer ueberschreiben
+    for key in V16_OWNED_KEYS:
+        if key in v16_new:
+            merged[key] = v16_new[key]
+
+    # 2. Placeholder Keys: nur setzen wenn existing leer oder Platzhalter
+    for key in V16_PLACEHOLDER_KEYS:
+        if key not in v16_new:
+            continue
+        existing_val = existing.get(key)
+        if existing_val is None:
+            # Key existiert nicht — V16 Platzhalter setzen
+            merged[key] = v16_new[key]
+        elif key == "pipeline_health":
+            # Spezialfall: V16 setzt v16_daily_runner auf OK,
+            # aber andere Steps (step_1, step_3 etc.) muessen erhalten bleiben
+            merged_ph = existing_val.copy()
+            v16_steps = v16_new[key].get("steps", {})
+            existing_steps = merged_ph.get("steps", {})
+            # Nur v16_daily_runner updaten, Rest behalten
+            existing_steps["v16_daily_runner"] = v16_steps.get("v16_daily_runner", {})
+            merged_ph["steps"] = existing_steps
+            merged[key] = merged_ph
+        elif key == "header":
+            # Header: V16 updated nur V16-spezifische Felder,
+            # CIO-Felder (conviction, da_*, action_items_*) bleiben
+            merged_header = existing_val.copy()
+            merged_header["date"] = v16_new[key].get("date", merged_header.get("date"))
+            merged_header["weekday"] = v16_new[key].get("weekday", merged_header.get("weekday"))
+            merged_header["v16_regime"] = v16_new[key].get("v16_regime", merged_header.get("v16_regime"))
+            merged_header["pipeline_status"] = v16_new[key].get("pipeline_status", merged_header.get("pipeline_status"))
+            merged[key] = merged_header
+        elif key == "known_unknowns":
+            # Behalte bestehende known_unknowns (andere Steps entfernen ihre Gaps)
+            merged[key] = existing_val
+        elif _block_has_real_data(existing_val):
+            # Block hat echte Daten von einem anderen Step — nicht ueberschreiben
+            pass
+        else:
+            # Block ist leer/Platzhalter — V16 Platzhalter setzen
+            merged[key] = v16_new[key]
+
+    return merged
+
+
+# ═══════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════
 def main():
@@ -970,15 +1067,38 @@ def main():
     print("\n" + "="*60)
     print("DASHBOARD JSON")
     print("="*60)
-    dashboard = build_dashboard_json(v16_data)
+    v16_dashboard = build_dashboard_json(v16_data)
 
-    # 4. Save
+    # 4. Save — MERGE with existing latest.json to preserve IC/G7/CIO data
     script_dir = os.path.dirname(os.path.abspath(__file__))
     out_dir = os.path.join(script_dir, "data", "dashboard")
     os.makedirs(out_dir, exist_ok=True)
 
-    # latest.json (fuer Frontend)
     latest_path = os.path.join(out_dir, "latest.json")
+
+    # Read existing dashboard (if present)
+    existing_dashboard = {}
+    if os.path.exists(latest_path):
+        try:
+            with open(latest_path, 'r', encoding='utf-8') as f:
+                existing_dashboard = json.load(f)
+            print(f"  Existing latest.json loaded ({len(existing_dashboard)} top-level keys)")
+        except Exception as e:
+            print(f"  WARNING: Could not read existing latest.json: {e} — creating fresh")
+            existing_dashboard = {}
+
+    # Merge V16 data into existing dashboard
+    if existing_dashboard:
+        dashboard = merge_dashboard(existing_dashboard, v16_dashboard)
+        preserved = [k for k in existing_dashboard if k not in V16_OWNED_KEYS
+                     and existing_dashboard.get(k) == dashboard.get(k)
+                     and _block_has_real_data(existing_dashboard.get(k))]
+        print(f"  Merged: V16 updated, preserved blocks: {preserved or 'none'}")
+    else:
+        dashboard = v16_dashboard
+        print(f"  Fresh dashboard (no existing file)")
+
+    # Write latest.json
     with open(latest_path, 'w') as f:
         json.dump(dashboard, f, indent=2, ensure_ascii=False)
     print(f"  latest.json ({os.path.getsize(latest_path)} bytes)")
