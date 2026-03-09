@@ -1,11 +1,13 @@
 """
 step7_execution_advisor/dashboard_update.py
-Dashboard execution Block Writer.
+Dashboard execution + rotation Block Writer.
 
-Reads existing dashboard.json, adds/updates the 'execution' block,
-writes back. Does NOT modify any other blocks.
+Reads existing dashboard.json (latest.json), adds/updates:
+  - 'execution' block (Trading Desk)
+  - 'rotation' block (Rotation Circle)
+  - 'v16.cluster_weights' updated to 9-cluster mapping
 
-Source: Trading Desk Spec Teil 4 §18, Teil 5 §24.2
+Source: Trading Desk Spec Teil 4 §18, Rotation Circle Spec Teil 4 §18.5
 """
 
 import json
@@ -18,20 +20,23 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DASHBOARD_PATH = os.path.join(
     os.path.dirname(BASE_DIR), "data", "dashboard", "latest.json"
 )
+CLUSTER_CONFIG_PATH = os.path.join(
+    os.path.dirname(BASE_DIR), "config", "cluster_config.json"
+)
 
 
 def update_dashboard_json(execution_output: dict) -> None:
     """
-    Add execution block to dashboard.json.
-    Read existing → add execution → write back.
+    Add execution + rotation blocks to dashboard.json.
+    Also updates v16.cluster_weights to 9-cluster mapping.
 
-    IMPORTANT: Only touches the 'execution' key. All other blocks untouched.
+    Read existing → update blocks → write back.
     """
     # Read existing
     try:
         with open(DASHBOARD_PATH, "r", encoding="utf-8") as f:
             dashboard = json.load(f)
-        logger.info("dashboard.json loaded for execution block update")
+        logger.info("dashboard.json loaded for update")
     except FileNotFoundError:
         logger.warning(f"dashboard.json not found at {DASHBOARD_PATH} — creating new")
         dashboard = {}
@@ -39,17 +44,77 @@ def update_dashboard_json(execution_output: dict) -> None:
         logger.error(f"Failed to read dashboard.json: {e}")
         return
 
-    # Build execution block
+    # 1. Build and write execution block
     dashboard["execution"] = _build_execution_block(execution_output)
+
+    # 2. Write rotation block (pass-through from engine output)
+    rotation_block = execution_output.get("rotation")
+    if rotation_block:
+        dashboard["rotation"] = rotation_block
+        logger.info("dashboard.json: rotation block written")
+    else:
+        logger.warning("dashboard.json: no rotation block in engine output")
+
+    # 3. Update v16.cluster_weights to 9-cluster mapping
+    _update_cluster_weights(dashboard)
 
     # Write back
     try:
         os.makedirs(os.path.dirname(DASHBOARD_PATH), exist_ok=True)
         with open(DASHBOARD_PATH, "w", encoding="utf-8") as f:
             json.dump(dashboard, f, indent=2, ensure_ascii=False, default=str)
-        logger.info("dashboard.json updated with execution block")
+        logger.info("dashboard.json updated with execution + rotation blocks")
     except Exception as e:
         logger.error(f"Failed to write dashboard.json: {e}")
+
+
+def _update_cluster_weights(dashboard: dict) -> None:
+    """
+    Update v16.cluster_weights to 9-cluster mapping.
+    HYG moves from BOND to own cluster CREDIT.
+
+    Source: Rotation Circle Spec Teil 4 §18.5
+    """
+    v16 = dashboard.get("v16")
+    if not v16:
+        return
+
+    target_weights = v16.get("target_weights", {})
+    if not target_weights:
+        return
+
+    # Load cluster config
+    cluster_config = _load_cluster_config()
+    if not cluster_config:
+        return
+
+    asset_to_cluster = cluster_config.get("asset_to_cluster", {})
+    all_cluster_keys = list(cluster_config.get("clusters", {}).keys())
+
+    # Recalculate cluster weights
+    new_cluster_weights = {}
+    for asset, weight in target_weights.items():
+        if weight <= 0:
+            continue
+        cluster = asset_to_cluster.get(asset, "UNKNOWN")
+        new_cluster_weights[cluster] = new_cluster_weights.get(cluster, 0.0) + weight
+
+    # Ensure all 9 clusters present (even if 0)
+    v16["cluster_weights"] = {
+        c: round(new_cluster_weights.get(c, 0.0), 4) for c in all_cluster_keys
+    }
+
+    logger.info("v16.cluster_weights updated to 9-cluster mapping")
+
+
+def _load_cluster_config() -> dict:
+    """Load cluster_config.json."""
+    try:
+        with open(CLUSTER_CONFIG_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        logger.error(f"Failed to load cluster_config.json: {e}")
+        return {}
 
 
 def _build_execution_block(output: dict) -> dict:

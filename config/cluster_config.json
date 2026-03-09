@@ -1,0 +1,71 @@
+{
+  "version": "2.0",
+  "change_note": "V1→V2: HYG aus BOND in eigenen Cluster CREDIT verschoben",
+  "clusters": {
+    "PM": {
+      "display_name": "Precious Metals",
+      "assets": ["GLD", "SLV", "GDX", "GDXJ", "SIL"],
+      "risk_profile": "safe_haven",
+      "color": "#FFD700"
+    },
+    "EQ_CYCL": {
+      "display_name": "Cyclical Equities",
+      "assets": ["SPY", "XLY", "XLI", "XLF", "XLE", "IWM"],
+      "risk_profile": "risk_on",
+      "color": "#3B82F6"
+    },
+    "EQ_DEFN": {
+      "display_name": "Defensive Equities",
+      "assets": ["XLV", "XLP", "XLU", "VNQ"],
+      "risk_profile": "defensive",
+      "color": "#8B9DC3"
+    },
+    "EQ_GROW": {
+      "display_name": "Growth Equities",
+      "assets": ["XLK"],
+      "risk_profile": "risk_on",
+      "color": "#06B6D4"
+    },
+    "EQ_INTL": {
+      "display_name": "International Equities",
+      "assets": ["EEM", "VGK"],
+      "risk_profile": "risk_on_em",
+      "color": "#A855F7"
+    },
+    "BOND": {
+      "display_name": "Government & IG Bonds",
+      "assets": ["TLT", "TIP", "LQD"],
+      "risk_profile": "duration",
+      "color": "#6B7280"
+    },
+    "CREDIT": {
+      "display_name": "High Yield Credit",
+      "assets": ["HYG"],
+      "risk_profile": "credit_risk",
+      "color": "#F97316"
+    },
+    "COMMOD": {
+      "display_name": "Commodities",
+      "assets": ["DBC"],
+      "risk_profile": "real_assets",
+      "color": "#84CC16"
+    },
+    "CRYPTO": {
+      "display_name": "Crypto",
+      "assets": ["BTC", "ETH"],
+      "risk_profile": "speculative",
+      "color": "#EC4899"
+    }
+  },
+  "asset_to_cluster": {
+    "GLD": "PM", "SLV": "PM", "GDX": "PM", "GDXJ": "PM", "SIL": "PM",
+    "SPY": "EQ_CYCL", "XLY": "EQ_CYCL", "XLI": "EQ_CYCL", "XLF": "EQ_CYCL", "XLE": "EQ_CYCL", "IWM": "EQ_CYCL",
+    "XLV": "EQ_DEFN", "XLP": "EQ_DEFN", "XLU": "EQ_DEFN", "VNQ": "EQ_DEFN",
+    "XLK": "EQ_GROW",
+    "EEM": "EQ_INTL", "VGK": "EQ_INTL",
+    "TLT": "BOND", "TIP": "BOND", "LQD": "BOND",
+    "HYG": "CREDIT",
+    "DBC": "COMMOD",
+    "BTC": "CRYPTO", "ETH": "CRYPTO"
+  }
+}

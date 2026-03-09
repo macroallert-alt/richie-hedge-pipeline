@@ -10,12 +10,14 @@ Phases:
   4. EXEC SCORE  — 6 dimensions + veto (deterministic)
   5. CONFIRM/CONFLICT — Pro/Contra aggregation
   6. LLM TEXT    — Generate briefing via Sonnet (with fallback)
+  6b. ROTATION   — Build rotation block + append weights_history
   7. ASSEMBLE    — Build step7_execution_advisor.json
 
-Source: Trading Desk Spec Teil 5 §22
+Source: Trading Desk Spec Teil 5 §22, Rotation Circle Spec Teil 4 §18.4
 """
 
 import logging
+import os
 import time
 from datetime import date, datetime
 
@@ -25,6 +27,8 @@ from .llm import generate_execution_briefing
 from .event_reader import compute_event_window
 
 logger = logging.getLogger("execution_advisor.engine")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def run_execution_advisor(inputs: dict, config: dict,
@@ -202,6 +206,59 @@ def run_execution_advisor(inputs: dict, config: dict,
     logger.info(f"  Text length: {llm_result.get('llm_raw_length', 0)} chars")
 
     # ============================================================
+    # PHASE 6b: ROTATION BLOCK
+    # ============================================================
+    logger.info("")
+    logger.info("PHASE 6b: ROTATION BLOCK")
+
+    from .rotation_builder import build_rotation_block
+
+    WEIGHTS_HISTORY_PATH = os.path.join(
+        os.path.dirname(BASE_DIR), "data", "weights_history", "weights_history.json"
+    )
+    CLUSTER_CONFIG_PATH = os.path.join(
+        os.path.dirname(BASE_DIR), "config", "cluster_config.json"
+    )
+
+    # Build latest_data dict for rotation_builder
+    latest_data_for_rotation = {
+        "v16": {
+            "regime": v16_regime,
+            "macro_state_num": v16_data.get("macro_state_num", 0),
+            "macro_state_name": v16_data.get("macro_state_name", "UNKNOWN"),
+            "target_weights": v16_weights,
+            "growth_signal": v16_data.get("growth_signal", "UNKNOWN"),
+            "liq_direction": v16_data.get("liq_direction", "UNKNOWN"),
+            "stress_score": v16_data.get("stress_score", 0),
+            "dd_protect_status": v16_data.get("dd_protect_status", "INACTIVE"),
+            "current_drawdown": v16_data.get("current_drawdown", 0),
+            "dd_protect_threshold": v16_data.get("dd_protect_threshold", -15),
+        },
+        "signals": {
+            "router_state": router_output.get("current_state", "UNKNOWN"),
+            "router_days_in_state": router_output.get("days_in_state", 0),
+        },
+        "execution": {
+            "execution_level": scoring_result.get("execution_level", "UNKNOWN"),
+        },
+    }
+
+    try:
+        rotation_block = build_rotation_block(
+            latest_data=latest_data_for_rotation,
+            weights_history_path=WEIGHTS_HISTORY_PATH,
+            cluster_config_path=CLUSTER_CONFIG_PATH,
+            today=today,
+        )
+        logger.info(f"  Status: {rotation_block.get('status')}")
+        logger.info(f"  Mode: {rotation_block.get('mode')}")
+        logger.info(f"  Material Shifts: {rotation_block.get('material_shifts_count')}")
+    except Exception as e:
+        logger.error(f"  Rotation block build FAILED: {e}")
+        rotation_block = None
+        degraded_reasons.append(f"Rotation Block fehlgeschlagen: {e}")
+
+    # ============================================================
     # PHASE 7: ASSEMBLE OUTPUT
     # ============================================================
     logger.info("")
@@ -262,6 +319,8 @@ def run_execution_advisor(inputs: dict, config: dict,
             "router_max_proximity": router_output.get("max_proximity", 0),
         },
 
+        "rotation": rotation_block,
+
         "meta": {
             "execution_path": "DEGRADED" if degraded_reasons else "FULL",
             "degraded": bool(degraded_reasons),
@@ -287,6 +346,8 @@ def run_execution_advisor(inputs: dict, config: dict,
     logger.info(f"  C/C: {cc_result['confirming_count']} vs "
                 f"{cc_result['conflicting_count']} — {cc_result['net_assessment']}")
     logger.info(f"  Action: {recommendation['action']}")
+    if rotation_block:
+        logger.info(f"  Rotation: {rotation_block['status']} ({rotation_block['mode']})")
     if degraded_reasons:
         logger.info(f"  DEGRADED: {', '.join(degraded_reasons)}")
     logger.info("=" * 60)
@@ -314,6 +375,13 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
             "current_weights": _normalize_weights(v16_trades.get("weights", {})),
             "weight_deltas": _normalize_weights(v16_trades.get("weight_deltas", {})),
             "macro_state_name": v16_trades.get("state_label", "UNKNOWN"),
+            "macro_state_num": v16_trades.get("macro_state_num", 0),
+            "growth_signal": v16_trades.get("growth_signal", 0),
+            "liq_direction": v16_trades.get("liq_direction", 0),
+            "stress_score": v16_trades.get("stress_score", 0),
+            "dd_protect_status": v16_trades.get("dd_protect_status", "INACTIVE"),
+            "current_drawdown": v16_trades.get("current_drawdown", 0),
+            "dd_protect_threshold": v16_trades.get("dd_protect_threshold", -15),
             "latest_prices": v16_trades.get("latest_prices", {}),
         }
 
@@ -325,6 +393,13 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
             "current_weights": _normalize_weights(v16_block.get("current_weights", {})),
             "weight_deltas": _normalize_weights(v16_block.get("weight_deltas", {})),
             "macro_state_name": v16_block.get("macro_state_name", "UNKNOWN"),
+            "macro_state_num": v16_block.get("macro_state_num", 0),
+            "growth_signal": v16_block.get("growth_signal", 0),
+            "liq_direction": v16_block.get("liq_direction", 0),
+            "stress_score": v16_block.get("stress_score", 0),
+            "dd_protect_status": v16_block.get("dd_protect_status", "INACTIVE"),
+            "current_drawdown": v16_block.get("current_drawdown", 0),
+            "dd_protect_threshold": v16_block.get("dd_protect_threshold", -15),
             "latest_prices": v16_block.get("latest_prices", {}),
         }
 
@@ -333,6 +408,13 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
         "current_weights": {},
         "weight_deltas": {},
         "macro_state_name": "UNKNOWN",
+        "macro_state_num": 0,
+        "growth_signal": 0,
+        "liq_direction": 0,
+        "stress_score": 0,
+        "dd_protect_status": "INACTIVE",
+        "current_drawdown": 0,
+        "dd_protect_threshold": -15,
         "latest_prices": {},
     }
 

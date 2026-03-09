@@ -34,6 +34,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           DATUM=$(date +%Y-%m-%d)
-          git add archive/ data/dashboard/
-          git diff --cached --quiet || git commit -m "Step 7 Execution Advisor: ${DATUM}"
+          git add archive/ data/dashboard/ data/weights_history/
+          git diff --cached --quiet || git commit -m "Step 7 Execution Advisor + Rotation: ${DATUM}"
           git push
