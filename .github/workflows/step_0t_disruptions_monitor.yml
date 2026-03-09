@@ -1,0 +1,58 @@
+# .github/workflows/step_0t_disruptions_monitor.yml
+# Disruptions Agent — Woechentlicher Scan
+# Frequenz: Sonntag 07:00 UTC (vor dem ersten V16-Lauf der Woche)
+# Standalone Workflow (NICHT in der taeglichen Pipeline-Kette)
+# Spec: DISRUPTIONS_AGENT_SPEC TEIL 1 §2.1
+
+name: Step 0t — Disruptions Monitor
+
+on:
+  schedule:
+    - cron: '0 7 * * 0'  # Sonntag 07:00 UTC
+  workflow_dispatch:       # Manueller Trigger
+
+jobs:
+  disruptions-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests google-auth google-api-python-client pytrends
+
+      - name: Create data directories
+        run: |
+          mkdir -p data/disruptions
+          mkdir -p data/dashboard
+
+      - name: Run Disruptions Monitor
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          EODHD_API_KEY: ${{ secrets.EODHD_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          DISRUPTIONS_SHEET_ID: ${{ secrets.DISRUPTIONS_SHEET_ID }}
+        run: |
+          cd step_0t_disruptions_monitor
+          python main.py
+
+      - name: Git Commit & Push
+        run: |
+          git config user.name "macro-rv-bot"
+          git config user.email "macro-rv-bot@users.noreply.github.com"
+          git add data/disruptions/ data/dashboard/latest.json
+          git diff --cached --quiet || git commit -m "Disruptions Monitor: weekly scan $(date +%Y-%m-%d)"
+          git push
