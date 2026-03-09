@@ -220,19 +220,24 @@ def run_execution_advisor(inputs: dict, config: dict,
         os.path.dirname(BASE_DIR), "config", "cluster_config.json"
     )
 
-    # Build latest_data dict for rotation_builder
+    # Build latest_data dict for rotation_builder.
+    # Signal Generator (v16_trades) only has: weights, v16_regime, v16_state.
+    # All other V16 fields (macro_state_num, growth_signal, liq_direction,
+    # stress_score, dd_protect_*) come from the dashboard v16 block.
+    dashboard_v16 = dashboard.get("v16", {})
+
     latest_data_for_rotation = {
         "v16": {
             "regime": v16_regime,
-            "macro_state_num": v16_data.get("macro_state_num", 0),
-            "macro_state_name": v16_data.get("macro_state_name", "UNKNOWN"),
+            "macro_state_num": dashboard_v16.get("macro_state_num", 0),
+            "macro_state_name": dashboard_v16.get("macro_state_name", "UNKNOWN"),
             "target_weights": v16_weights,
-            "growth_signal": v16_data.get("growth_signal", "UNKNOWN"),
-            "liq_direction": v16_data.get("liq_direction", "UNKNOWN"),
-            "stress_score": v16_data.get("stress_score", 0),
-            "dd_protect_status": v16_data.get("dd_protect_status", "INACTIVE"),
-            "current_drawdown": v16_data.get("current_drawdown", 0),
-            "dd_protect_threshold": v16_data.get("dd_protect_threshold", -15),
+            "growth_signal": dashboard_v16.get("growth_signal", 0),
+            "liq_direction": dashboard_v16.get("liq_direction", 0),
+            "stress_score": dashboard_v16.get("stress_score", 0),
+            "dd_protect_status": dashboard_v16.get("dd_protect_status", "INACTIVE"),
+            "current_drawdown": dashboard_v16.get("current_drawdown", 0),
+            "dd_protect_threshold": dashboard_v16.get("dd_protect_threshold", -15),
         },
         "signals": {
             "router_state": router_output.get("current_state", "UNKNOWN"),
@@ -242,6 +247,10 @@ def run_execution_advisor(inputs: dict, config: dict,
             "execution_level": scoring_result.get("execution_level", "UNKNOWN"),
         },
     }
+
+    logger.info(f"  macro_state_num: {latest_data_for_rotation['v16']['macro_state_num']}")
+    logger.info(f"  growth_signal: {latest_data_for_rotation['v16']['growth_signal']}")
+    logger.info(f"  liq_direction: {latest_data_for_rotation['v16']['liq_direction']}")
 
     try:
         rotation_block = build_rotation_block(
@@ -364,43 +373,49 @@ def _extract_v16_context(signal_gen: dict, dashboard: dict) -> dict:
     Extract V16 context from Signal Generator output or dashboard fallback.
 
     Returns dict with: regime, current_weights, weight_deltas, macro_state_name,
-                       latest_prices (V96: for LLM market data block)
+                       macro_state_num, growth_signal, liq_direction, stress_score,
+                       dd_protect_*, latest_prices
     Weights are normalized to {asset: float} format.
+
+    Note: Signal Generator v16_trades only has weights/regime/state.
+    All other fields (macro_state_num, growth_signal, etc.) are supplemented
+    from the dashboard v16 block.
     """
-    # Try Signal Generator first
+    dashboard_v16 = dashboard.get("v16", {})
+
+    # Try Signal Generator first (for weights and regime)
     v16_trades = signal_gen.get("v16_trades", {})
     if v16_trades and v16_trades.get("weights"):
         return {
             "regime": v16_trades.get("v16_regime", "UNKNOWN"),
             "current_weights": _normalize_weights(v16_trades.get("weights", {})),
             "weight_deltas": _normalize_weights(v16_trades.get("weight_deltas", {})),
-            "macro_state_name": v16_trades.get("state_label", "UNKNOWN"),
-            "macro_state_num": v16_trades.get("macro_state_num", 0),
-            "growth_signal": v16_trades.get("growth_signal", 0),
-            "liq_direction": v16_trades.get("liq_direction", 0),
-            "stress_score": v16_trades.get("stress_score", 0),
-            "dd_protect_status": v16_trades.get("dd_protect_status", "INACTIVE"),
-            "current_drawdown": v16_trades.get("current_drawdown", 0),
-            "dd_protect_threshold": v16_trades.get("dd_protect_threshold", -15),
+            "macro_state_name": dashboard_v16.get("macro_state_name", "UNKNOWN"),
+            "macro_state_num": dashboard_v16.get("macro_state_num", 0),
+            "growth_signal": dashboard_v16.get("growth_signal", 0),
+            "liq_direction": dashboard_v16.get("liq_direction", 0),
+            "stress_score": dashboard_v16.get("stress_score", 0),
+            "dd_protect_status": dashboard_v16.get("dd_protect_status", "INACTIVE"),
+            "current_drawdown": dashboard_v16.get("current_drawdown", 0),
+            "dd_protect_threshold": dashboard_v16.get("dd_protect_threshold", -15),
             "latest_prices": v16_trades.get("latest_prices", {}),
         }
 
     # Fallback: dashboard.json v16 block
-    v16_block = dashboard.get("v16", {})
-    if v16_block:
+    if dashboard_v16:
         return {
-            "regime": v16_block.get("regime", "UNKNOWN"),
-            "current_weights": _normalize_weights(v16_block.get("current_weights", {})),
-            "weight_deltas": _normalize_weights(v16_block.get("weight_deltas", {})),
-            "macro_state_name": v16_block.get("macro_state_name", "UNKNOWN"),
-            "macro_state_num": v16_block.get("macro_state_num", 0),
-            "growth_signal": v16_block.get("growth_signal", 0),
-            "liq_direction": v16_block.get("liq_direction", 0),
-            "stress_score": v16_block.get("stress_score", 0),
-            "dd_protect_status": v16_block.get("dd_protect_status", "INACTIVE"),
-            "current_drawdown": v16_block.get("current_drawdown", 0),
-            "dd_protect_threshold": v16_block.get("dd_protect_threshold", -15),
-            "latest_prices": v16_block.get("latest_prices", {}),
+            "regime": dashboard_v16.get("regime", "UNKNOWN"),
+            "current_weights": _normalize_weights(dashboard_v16.get("current_weights", {})),
+            "weight_deltas": _normalize_weights(dashboard_v16.get("weight_deltas", {})),
+            "macro_state_name": dashboard_v16.get("macro_state_name", "UNKNOWN"),
+            "macro_state_num": dashboard_v16.get("macro_state_num", 0),
+            "growth_signal": dashboard_v16.get("growth_signal", 0),
+            "liq_direction": dashboard_v16.get("liq_direction", 0),
+            "stress_score": dashboard_v16.get("stress_score", 0),
+            "dd_protect_status": dashboard_v16.get("dd_protect_status", "INACTIVE"),
+            "current_drawdown": dashboard_v16.get("current_drawdown", 0),
+            "dd_protect_threshold": dashboard_v16.get("dd_protect_threshold", -15),
+            "latest_prices": dashboard_v16.get("latest_prices", {}),
         }
 
     return {
