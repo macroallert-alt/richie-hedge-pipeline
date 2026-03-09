@@ -1,8 +1,6 @@
 name: IC Pipeline — Intelligence Collector
 
 on:
-  schedule:
-    - cron: '0 5 * * 1-5'  # Mo-Fr 05:00 UTC
   workflow_dispatch:
     inputs:
       stage:
@@ -56,3 +54,12 @@ jobs:
           git diff --staged --quiet || git commit -m "IC: Update state + dashboard + archive $(date +%Y-%m-%d)"
           git pull --rebase
           git push
+
+      - name: Trigger Step 1
+        if: success()
+        run: |
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/step1_market_analyst.yml/dispatches \
+            -d '{"ref":"main"}'

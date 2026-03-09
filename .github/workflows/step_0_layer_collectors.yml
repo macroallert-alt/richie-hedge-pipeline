@@ -1,0 +1,118 @@
+name: "Step 0 — Layer Collectors (Batch)"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  l2-sentiment:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0c_l2_sentiment/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L2 Sentiment Collector
+        run: python step_0c_l2_sentiment/main.py
+
+  l4-positioning:
+    runs-on: ubuntu-latest
+    env:
+      EODHD_API_KEY: ${{ secrets.EODHD_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0d_l4_positioning/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L4 Positioning Collector
+        run: python step_0d_l4_positioning/main.py
+
+  l5-fragility:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0e_l5_fragility/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L5 Fragility Collector
+        run: python step_0e_l5_fragility/main.py
+
+  l7-cross-asset:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0f_l7_cross_asset/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L7 Cross-Asset Collector
+        run: python step_0f_l7_cross_asset/main.py
+
+  l8-seasonality:
+    runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0g_l8_seasonality/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L8 Seasonality Collector
+        run: python step_0g_l8_seasonality/main.py
+
+  l6-geopolitik:
+    runs-on: ubuntu-latest
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcp_sa.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r step_0h_l6_geopolitik/requirements.txt
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+      - name: Run L6 Geopolitik Collector
+        run: python step_0h_l6_geopolitik/main.py
+
+  trigger-ic:
+    runs-on: ubuntu-latest
+    needs: [l2-sentiment, l4-positioning, l5-fragility, l7-cross-asset, l8-seasonality, l6-geopolitik]
+    steps:
+      - name: Trigger IC Pipeline
+        run: |
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/step0i_ic_pipeline.yml/dispatches \
+            -d '{"ref":"main"}'
