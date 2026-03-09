@@ -126,10 +126,10 @@ def load_v16_regime():
         return 'NEUTRAL'
     with open(DASHBOARD_PATH, 'r', encoding='utf-8') as f:
         dashboard = json.load(f)
-    # Regime aus verschiedenen moeglichen Pfaden
-    sig = dashboard.get('signal_generator', {})
-    v16_trades = sig.get('v16_trades', {})
-    regime = v16_trades.get('v16_regime', 'NEUTRAL')
+    # Regime aus verschiedenen moeglichen Pfaden (Prioritaet: v16.regime > header.v16_regime)
+    regime = dashboard.get('v16', {}).get('regime', '')
+    if not regime:
+        regime = dashboard.get('header', {}).get('v16_regime', '')
     if not regime:
         regime = 'NEUTRAL'
     print(f"[V16] Regime: {regime}")
