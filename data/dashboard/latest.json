@@ -579,13 +579,14 @@
       }
     ],
     "cluster_weights": {
-      "PM": 0.1802,
+      "PM": 0.1689,
       "EQ_CYCL": 0.0,
-      "EQ_DEFN": 0.3289,
+      "EQ_DEFN": 0.34,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2726,
-      "COMMOD": 0.2183,
+      "BOND": 0.0,
+      "CREDIT": 0.2883,
+      "COMMOD": 0.2027,
       "CRYPTO": 0.0
     },
     "weight_deltas": {
@@ -912,7 +913,7 @@
       "GEX negativ ($-0.32B) — SLIGHTLY_NEGATIVE — Dealer-Hedging verstärkt Moves — erhöhte Volatilität"
     ],
     "recommendation_action": "EXECUTE_WITH_LIMITS",
-    "recommendation_short": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
+    "recommendation_short": "Kein materielles Rebalancing heute nötig.",
     "specific_actions": [],
     "event_window": {
       "next_48h_count": 1,
@@ -1017,15 +1018,15 @@
         "impact": "HIGH"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING:\n• Liquidität optimal: Amihud 51.27 (LIQUID), SOFR-FFR 2.0bps (NORMAL), OFR Stress -0.44 (RELAXED) — beste Execution-Bedingungen\n• COT-Positioning sauber: S&P500 Commercial +3.5%, Gold Commercial +8.8% — keine Extrempositionen gegen Portfolio\n• Cross-Asset bestätigt Regime: Copper Rising + SPY Rising + Real Yields Falling — alle drei Trends unterstützen SELECTIVE-Allokation (40% Commodities, 33% Equities, 18% Gold)\n• Sentiment neutral: CNN Fear & Greed 25.95, VIX 23.75, Put/Call 0.898 — keine Panik, keine Euphorie\n• VIX Term Structure Contango 1.07: Forward-Volatilität teurer als Spot — Markt preist Beruhigung ein\n• HY OAS 300bps (NORMAL): Credit-Spreads stabil, HYG-Position (27.3%) nicht gefährdet\n• MOVE Index 81.26 (NORMAL): Bond-Volatilität unauffällig, XLU/XLP-Positionen (33% kombiniert) sicher\n• Kein materielles Rebalancing: Alle Positionen HOLD — kein Execution-Risiko heute\n\nCONFLICTING:\n• US CPI (February) in 48h (HIGH-Impact): Kann Fed-Erwartungen, Yields und Dollar drastisch bewegen — direkte Auswirkung auf alle fünf Top-Positionen\n• Gold/DXY-Divergenz unhaltbar: Gold +7.2% UND DXY +1.2% gleichzeitig — historisch korreliert eine Seite binnen 5-10 Tagen, GLD-Position (18%) exponiert\n• GEX negativ $-0.32B (SLIGHTLY_NEGATIVE): Dealer müssen Moves verstärken statt dämpfen — erhöhte Intraday-Volatilität, schlechtere Fills möglich\n\nNETTO: 8 Confirming vs 3 Conflicting. Liquidität und Positioning perfekt, aber CPI-Event in 48h und Gold/DXY-Divergenz erfordern Vorsicht.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Falls V16 morgen Regime wechselt: Warte bis Mittwoch 14:30 ET (nach CPI-Veröffentlichung). Die Gold/DXY-Divergenz wird sich binnen 48h auflösen — entweder Gold korrigiert (GLD-Verkauf günstiger) oder DXY dreht (GLD-Kauf teurer, aber bestätigt). Bei unverändertem Regime: Nutze heutige optimale Liquidität für Micro-Adjustments in HYG/DBC (größte Positionen), setze Limit-Orders 10-15bps unter Midpoint. XLU/XLP nicht anfassen vor CPI (Utilities/Staples reagieren stark auf Yield-Moves).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX springt über 28 (aktuell 23.75) — Volatilitäts-Spike macht Warten teurer als CPI-Risiko\n• Execute sofort wenn: HY OAS steigt über 350bps (aktuell 300bps) — Credit-Stress gefährdet HYG-Position (27.3%), sofortiger Abbau nötig\n• Eskaliere zu Wait/Hold wenn: GLD fällt >4% vom aktuellen Niveau — Gold/DXY-Divergenz löst sich bearish auf, GLD-Verkauf abwarten\n• Eskaliere zu Wait/Hold wenn: OFR Financial Stress Index steigt über 0.0 (aktuell -0.44) — systemisches Risiko, alle Trades pausieren",
+    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING:\n• Liquidität optimal: Amihud 51.27 (LIQUID), SOFR-FFR 1.0bp (NORMAL), OFR Stress -0.44 (RELAXED) — keine Slippage-Risiken\n• COT-Positioning sauber: S&P500 Commercial +3.5%, Gold Commercial +8.8% — keine Extrempositionen gegen Portfolio\n• Cross-Asset-Bestätigung: Copper Rising + V16 40% Commodities, SPY Rising + V16 33% Equities — Regime-Alignment intakt\n• Gold-Tailwind: Real Yields Falling + Gold +7.2% (20d) — fundamentale Unterstützung für 18% GLD-Position\n• Sentiment neutral: CNN Fear & Greed 25.95, VIX 23.75, Put/Call 0.892 — keine Panik, keine Euphorie\n• VIX Term Structure Contango 1.07 — Forward-Volatilität eingepreist, kein akuter Stress\n• HY OAS 300bps (NORMAL) — Credit-Spreads stabil, unterstützt 27.3% HYG-Exposure\n• Kein materielles Rebalancing: V16 alle Positionen HOLD — heute kein Execution-Risiko, Briefing gilt für potenzielle Regime-Wechsel\n\nCONFLICTING:\n• US CPI (February) Mittwoch 08:30 ET (in 48h): HIGH-Impact Event — kann Fed-Erwartungen, Yields und DXY schockartig bewegen\n• Gold/DXY-Divergenz unhaltbar: Gold +7.2% UND DXY +1.2% (beide 20d) — historisch kurzlebig, einer muss nachgeben, Risiko für 18% GLD + 21.8% DBC\n• GEX negativ $-0.32B (SLIGHTLY_NEGATIVE): Dealer-Hedging verstärkt Intraday-Moves — erhöhte Volatilität bei CPI-Überraschung\n\nNETTO: 21 Confirming vs 3 Conflicting. Technisch grünes Licht, aber CPI-Event in 48h dominiert Timing-Kalkül.\n\nEMPFEHLUNG:\nKein materielles Rebalancing heute nötig. Falls V16 morgen (Dienstag) Regime wechselt: WARTE bis Mittwoch 10:00 ET (90min nach CPI). Begründung: Gold/DXY-Divergenz löst sich bei CPI auf — entweder Gold korrigiert (schlecht für GLD/DBC) oder DXY dreht (gut für Commodities). Bei negativem GEX verstärkt CPI-Überraschung Moves um 20-40%. Liquidität ist exzellent (Amihud 51.27), aber Timing schlägt Liquidität. Spezifisch: HYG (27.3%) reagiert auf Fed-Pivot-Erwartungen via CPI — Limit-Orders 0.3% unter Market setzen falls Dienstag-Rebalance nötig. DBC/GLD: Abwarten ob Gold/DXY-Spread kollabiert. XLU/XLP: Defensives weniger CPI-sensitiv, Market-Orders akzeptabel.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX springt über 28 (aktuell 23.75) — Stress-Regime, Liquidität verschwindet schnell\n• Execute sofort wenn: HY OAS steigt über 350bps (aktuell 300bps) — Credit-Stress gefährdet HYG-Liquidität\n• Eskaliere zu Wait/Hold wenn: GEX fällt unter $-1.5B (aktuell $-0.32B) — stark negative Gamma verstärkt CPI-Whipsaw extrem\n• Eskaliere zu Wait/Hold wenn: OFR Financial Stress steigt über +0.2 (aktuell -0.44) — systemischer Stress, alle Korrelationen → 1",
     "would_change_my_mind": {
       "execute_if": [
-        "VIX springt über 28 (aktuell 23.75) — Volatilitäts-Spike macht Warten teurer als CPI-Risiko",
-        "HY OAS steigt über 350bps (aktuell 300bps) — Credit-Stress gefährdet HYG-Position (27.3%), sofortiger Abbau nötig"
+        "VIX springt über 28 (aktuell 23.75) — Stress-Regime, Liquidität verschwindet schnell",
+        "HY OAS steigt über 350bps (aktuell 300bps) — Credit-Stress gefährdet HYG-Liquidität"
       ],
       "hold_if": [
-        "GLD fällt >4% vom aktuellen Niveau — Gold/DXY-Divergenz löst sich bearish auf, GLD-Verkauf abwarten",
-        "OFR Financial Stress Index steigt über 0.0 (aktuell -0.44) — systemisches Risiko, alle Trades pausieren"
+        "GEX fällt unter $-1.5B (aktuell $-0.32B) — stark negative Gamma verstärkt CPI-Whipsaw extrem",
+        "OFR Financial Stress steigt über +0.2 (aktuell -0.44) — systemischer Stress, alle Korrelationen → 1"
       ]
     }
   },
