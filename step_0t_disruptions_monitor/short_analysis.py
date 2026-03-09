@@ -5,7 +5,7 @@ Drei-Stufen Short-Identifikation.
 Spec: DISRUPTIONS_AGENT_SPEC TEIL 2 §10
 
 Stufe 1: Bedrohte Sektoren identifizieren (aus Threat Map + Dependencies)
-Stufe 2: Fundamentale Schwaechen finden (EODHD/FMP Screening)
+Stufe 2: Fundamentale Schwaechen finden (FMP API Screening)
 Stufe 3: Disruptions-Overlay (LLM-Analyse: fundamental schwach + Disruptions-Exposure)
 
 Output: Short Candidates mit Thesis, Confidence, Pair Trades
@@ -16,10 +16,10 @@ import time
 import json
 import requests
 
-EODHD_API_KEY = os.environ.get('EODHD_API_KEY', '')
+FMP_API_KEY = os.environ.get('FMP_API_KEY', '')
 ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
 LLM_MODEL = 'claude-sonnet-4-20250514'
-EODHD_DELAY_S = 0.5
+FMP_DELAY_S = 0.3
 
 
 def run_short_analysis(trends, exposure_map, etf_universe):
@@ -63,7 +63,6 @@ def run_short_analysis(trends, exposure_map, etf_universe):
 
 # ===== STUFE 1: BEDROHTE SEKTOREN =====
 
-# Mapping: Disruptions-Kategorie → bedrohte Sektoren + Proxy-Tickers fuer Screening
 SECTOR_THREAT_MAP = {
     'D1': {
         'sectors': ['Traditional Media', 'Legacy IT Services', 'Content Production'],
@@ -117,20 +116,15 @@ SECTOR_THREAT_MAP = {
 
 
 def _identify_threatened_sectors(active_trends, exposure_map):
-    """
-    Identifiziere bedrohte Sektoren basierend auf ACTIVE/WATCH Trends.
-    """
+    """Identifiziere bedrohte Sektoren basierend auf ACTIVE/WATCH Trends."""
     threatened = []
-
     for t in active_trends:
         cat_id = t['id']
         threat_info = SECTOR_THREAT_MAP.get(cat_id, {})
         sectors = threat_info.get('sectors', [])
         tickers = threat_info.get('screen_tickers', [])
-
         if not tickers:
             continue
-
         threatened.append({
             'category_id': cat_id,
             'category_name': t['name'],
@@ -139,19 +133,18 @@ def _identify_threatened_sectors(active_trends, exposure_map):
             'sectors': sectors,
             'screen_tickers': tickers,
         })
-
     return threatened
 
 
-# ===== STUFE 2: FUNDAMENTALE SCHWAECHEN =====
+# ===== STUFE 2: FUNDAMENTALE SCHWAECHEN (FMP) =====
 
 def _screen_fundamental_weakness(threatened_sectors):
     """
-    Spec §10.2: Screening nach fundamental schwachen Unternehmen.
+    Spec §10.2: Screening nach fundamental schwachen Unternehmen via FMP API.
     Kriterien: Debt/Equity > 2.0, Revenue Growth < -5%, Negatives FCF, Short Interest > 10%.
     """
-    if not EODHD_API_KEY:
-        print("    [SKIP] Kein EODHD_API_KEY — Fundamental-Screening uebersprungen")
+    if not FMP_API_KEY:
+        print("    [SKIP] Kein FMP_API_KEY — verwende Fallback")
         return _fallback_fundamental_screen(threatened_sectors)
 
     candidates = []
@@ -159,7 +152,7 @@ def _screen_fundamental_weakness(threatened_sectors):
     for sector in threatened_sectors:
         for ticker in sector['screen_tickers']:
             try:
-                fundamentals = _get_fundamentals(ticker)
+                fundamentals = _get_fundamentals_fmp(ticker)
                 if not fundamentals:
                     continue
 
@@ -195,8 +188,9 @@ def _screen_fundamental_weakness(threatened_sectors):
                         'threat_phase': sector['phase'],
                         'threat_velocity': sector['velocity'],
                     })
+                    print(f"      [HIT] {ticker}: {', '.join(weakness_flags)}")
 
-                time.sleep(EODHD_DELAY_S)
+                time.sleep(FMP_DELAY_S)
 
             except Exception as e:
                 print(f"    [WARN] Fundamentals {ticker}: {e}")
@@ -204,56 +198,88 @@ def _screen_fundamental_weakness(threatened_sectors):
     return candidates
 
 
-def _get_fundamentals(ticker):
-    """Hole Fundamentaldaten via EODHD."""
-    url = f'https://eodhd.com/api/fundamentals/{ticker}.US'
-    params = {
-        'api_token': EODHD_API_KEY,
-        'fmt': 'json',
+def _get_fundamentals_fmp(ticker):
+    """
+    Hole Fundamentaldaten via FMP API.
+    Nutzt: profile, key-metrics-ttm, income-statement, cash-flow-statement.
+    """
+    result = {
+        'name': '',
+        'market_cap': 0,
+        'revenue_growth_yoy': 0,
+        'free_cash_flow': 0,
+        'debt_equity': 0,
+        'short_interest': 0,
     }
 
-    resp = requests.get(url, params=params, timeout=15)
-    resp.raise_for_status()
-    data = resp.json()
-
-    if not data or isinstance(data, list):
+    # --- 1. Company Profile ---
+    try:
+        url = f'https://financialmodelingprep.com/api/v3/profile/{ticker}'
+        resp = requests.get(url, params={'apikey': FMP_API_KEY}, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data and isinstance(data, list) and len(data) > 0:
+            profile = data[0]
+            result['name'] = profile.get('companyName', ticker)
+            result['market_cap'] = _safe_float(profile.get('mktCap', 0))
+        time.sleep(FMP_DELAY_S)
+    except Exception as e:
+        print(f"      [WARN] FMP profile {ticker}: {e}")
         return None
 
-    general = data.get('General', {})
-    highlights = data.get('Highlights', {})
-    balance = data.get('Financials', {}).get('Balance_Sheet', {}).get('quarterly', {})
-    valuation = data.get('Valuation', {})
+    # --- 2. Key Metrics TTM (D/E) ---
+    try:
+        url = f'https://financialmodelingprep.com/api/v3/key-metrics-ttm/{ticker}'
+        resp = requests.get(url, params={'apikey': FMP_API_KEY}, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data and isinstance(data, list) and len(data) > 0:
+            metrics = data[0]
+            result['debt_equity'] = _safe_float(metrics.get('debtToEquityTTM', 0))
+        time.sleep(FMP_DELAY_S)
+    except Exception as e:
+        print(f"      [WARN] FMP key-metrics {ticker}: {e}")
 
-    # Extrahiere relevante Felder
-    result = {
-        'name': general.get('Name', ''),
-        'market_cap': highlights.get('MarketCapitalization', 0),
-        'revenue_growth_yoy': _safe_float(highlights.get('QuarterlyRevenueGrowthYOY', 0)) * 100,
-        'free_cash_flow': _safe_float(highlights.get('FreeCashFlow', 0)),
-        'debt_equity': 0,
-        'short_interest': _safe_float(highlights.get('ShortPercentFloat', 0)),
-    }
+    # --- 3. Income Statement (Revenue Growth YoY) ---
+    try:
+        url = f'https://financialmodelingprep.com/api/v3/income-statement/{ticker}'
+        resp = requests.get(url, params={'apikey': FMP_API_KEY, 'period': 'annual', 'limit': 2}, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data and isinstance(data, list) and len(data) >= 2:
+            rev_current = _safe_float(data[0].get('revenue', 0))
+            rev_prior = _safe_float(data[1].get('revenue', 1))
+            if rev_prior > 0:
+                result['revenue_growth_yoy'] = round(((rev_current - rev_prior) / rev_prior) * 100, 1)
+        time.sleep(FMP_DELAY_S)
+    except Exception as e:
+        print(f"      [WARN] FMP income-statement {ticker}: {e}")
 
-    # Debt/Equity aus Balance Sheet
-    if balance:
-        latest_q = list(balance.values())[0] if balance else {}
-        total_debt = _safe_float(latest_q.get('shortLongTermDebtTotal', 0))
-        equity = _safe_float(latest_q.get('totalStockholderEquity', 1))
-        if equity > 0:
-            result['debt_equity'] = round(total_debt / equity, 2)
+    # --- 4. Cash Flow Statement (FCF) ---
+    try:
+        url = f'https://financialmodelingprep.com/api/v3/cash-flow-statement/{ticker}'
+        resp = requests.get(url, params={'apikey': FMP_API_KEY, 'period': 'annual', 'limit': 1}, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data and isinstance(data, list) and len(data) > 0:
+            result['free_cash_flow'] = _safe_float(data[0].get('freeCashFlow', 0))
+        time.sleep(FMP_DELAY_S)
+    except Exception as e:
+        print(f"      [WARN] FMP cash-flow {ticker}: {e}")
 
     return result
 
 
 def _fallback_fundamental_screen(threatened_sectors):
     """Fallback ohne API: Verwende bekannte schwache Kandidaten."""
-    # Hartcodierte bekannte schwache Unternehmen als Seed
     KNOWN_WEAK = {
         'PARA': {'name': 'Paramount Global', 'weakness_flags': ['High Debt', 'Falling Revenue', 'Legacy Media']},
         'WBD': {'name': 'Warner Bros Discovery', 'weakness_flags': ['High Debt', 'Streaming Losses']},
         'LUMN': {'name': 'Lumen Technologies', 'weakness_flags': ['High Debt', 'Falling Revenue', 'Legacy Telecom']},
         'PFE': {'name': 'Pfizer Inc', 'weakness_flags': ['Falling Revenue', 'Patent Cliffs']},
         'CHGG': {'name': 'Chegg Inc', 'weakness_flags': ['AI Disruption', 'Falling Revenue']},
+        'DISH': {'name': 'DISH Network', 'weakness_flags': ['High Debt', 'Subscriber Loss']},
+        'PTON': {'name': 'Peloton Interactive', 'weakness_flags': ['Negative FCF', 'Falling Revenue']},
     }
 
     candidates = []
@@ -283,10 +309,7 @@ def _fallback_fundamental_screen(threatened_sectors):
 # ===== STUFE 3: DISRUPTIONS-OVERLAY (LLM) =====
 
 def _disruptions_overlay(candidates, active_trends, etf_universe):
-    """
-    LLM analysiert die Kombination: fundamental schwach + Disruptions-bedroht.
-    Generiert: combined_thesis, confidence, pair_trade, squeeze_risk.
-    """
+    """LLM analysiert: fundamental schwach + Disruptions-bedroht."""
     if not ANTHROPIC_API_KEY:
         print("    [SKIP] Kein ANTHROPIC_API_KEY — verwende vereinfachte Short-Analyse")
         return _simplified_short_results(candidates)
@@ -294,7 +317,6 @@ def _disruptions_overlay(candidates, active_trends, etf_universe):
     if not candidates:
         return []
 
-    # Batch: Max 10 Kandidaten an LLM
     batch = candidates[:10]
 
     candidates_text = ""
@@ -303,7 +325,6 @@ def _disruptions_overlay(candidates, active_trends, etf_universe):
         candidates_text += f"Weakness: {', '.join(c['weakness_flags'])}. "
         candidates_text += f"Bedroht von: {c['threat_source_name']} ({c['threat_source_id']}, Phase: {c['threat_phase']}, Velocity: {c['threat_velocity']})"
 
-    # Relevante Long-ETFs fuer Pair Trades
     trend_etfs = {}
     for t in active_trends:
         cat_etfs = [e['ticker'] for e in etf_universe if t['id'] in e.get('category_ids', [])]
@@ -339,13 +360,12 @@ Fuer JEDEN Kandidaten, antworte mit diesem JSON-Array:
   }}
 ]
 
-Wenn ein Kandidat kein guter Short ist (zu viel Squeeze/Takeover/Turnaround Risiko), setze confidence auf LOW."""
+Wenn ein Kandidat kein guter Short ist, setze confidence auf LOW."""
 
     try:
         result = _call_anthropic(system_prompt, user_prompt)
         parsed = _parse_json_response(result)
         if parsed and isinstance(parsed, list):
-            # Merge LLM-Ergebnisse mit Fundamental-Daten
             return _merge_short_results(candidates, parsed)
         else:
             return _simplified_short_results(candidates)
@@ -358,11 +378,9 @@ def _merge_short_results(candidates, llm_results):
     """Merge Fundamental-Daten mit LLM-Analyse."""
     llm_map = {r['ticker']: r for r in llm_results if 'ticker' in r}
     merged = []
-
     for c in candidates:
         ticker = c['ticker']
         llm = llm_map.get(ticker, {})
-
         merged.append({
             'ticker': ticker,
             'name': c.get('name', ''),
@@ -380,7 +398,6 @@ def _merge_short_results(candidates, llm_results):
             'turnaround_risk': llm.get('turnaround_risk', False),
             'pair_trade': llm.get('pair_trade', {}),
         })
-
     return merged
 
 
@@ -441,7 +458,6 @@ def _parse_json_response(text):
     if cleaned.endswith('```'):
         cleaned = cleaned[:-3]
     cleaned = cleaned.strip()
-
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
