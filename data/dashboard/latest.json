@@ -2,7 +2,7 @@
   "schema_version": "2.0",
   "date": "2026-03-09",
   "weekday": "Monday",
-  "generated_at": "2026-03-09T10:41:12Z",
+  "generated_at": "2026-03-09T12:44:05Z",
   "degradation_level": "PARTIAL",
   "degradation_banner": "Pipeline Phase 1: Nur V16-Daten. Agenten-Pipeline noch nicht aktiv.",
   "header": {
@@ -29,9 +29,9 @@
     "is_draft_fallback": false
   },
   "digest": {
-    "line_1_type_and_delta": "ACTION — V16 Regime: SELECTIVE. Conviction: LOW. Risk: RED.",
-    "line_2_actions": "7 ACT, 0 REVIEW Items.",
-    "line_3_confidence": "Conviction: LOW. Fragility: HEALTHY. Data: DEGRADED."
+    "line_1_type_and_delta": "ROUTINE — V16 Regime: SELECTIVE (State 3: LATE_EXPANSION)",
+    "line_2_actions": "V16 DD-Protect: 0 Assets. Growth=1, Liq=-1, Stress=0.",
+    "line_3_confidence": "Pipeline Phase 1 (nur V16). CAGR=34.52%, Sharpe=2.74. Agenten-Pipeline noch nicht aktiv."
   },
   "deltas": {
     "has_yesterday": false
@@ -203,175 +203,18 @@
   },
   "action_items": {
     "summary": {
-      "act_count": 7,
+      "act_count": 0,
       "review_count": 0,
-      "watch_count": 5,
-      "total": 12,
+      "watch_count": 0,
+      "total": 0,
       "escalated_today": 0,
-      "new_today": 12,
+      "new_today": 0,
       "resolved_today": 0
     },
-    "prominent": [
-      {
-        "id": "action_2026-03-09_001",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A1: HYG-Konzentration Review (CRITICAL, Trade Class A) — Tag 10, ESKALIERT. HYG 27.3%, Target 28.8%, Schwelle 25%. Risk Officer CRITICAL ↑ (EVENT_IMMINENT Boost). Warum: V16 Target verletzt Schwelle weiter. CPI in 1d kann Credit-Spreads ausweiten (Forward Guidance warnt). [DA: da_20260309_001 und da_20260306_005 weisen auf Execution-Risiko hin. ACCEPTED — Execution-Strategie muss definiert werden wenn Trades noetig. Original Draft: Keine Erwaehnung von Execution-Strategie] Wie dringend: HEUTE. Naechste Schritte: (1) Pruefe HY OAS aktuell (Market Analyst zeigt 0, aber Daten koennen lagged sein). (2) Pruefe ob HYG-Spread sich seit Freitag bewegt hat (Pre-Market-Daten wenn verfuegbar). (3) Wenn Spreads stabil: Akzeptiere Schwellenverletzung (V16 validiert). Wenn Spreads weiten sich: Bereite Post-CPI-Review vor (A7). (4) KEINE Aktion auf V16-Gewichte (Master-Schutz). (5) NEU (DA): Wenn Trades noetig werden (Post-CPI oder frueher), definiere Execution-Strategie: (a) Limit-Orders statt Market-Orders um Slippage zu minimieren. (b) Gestufte Execution (Time-Weighted-Average-Price) wenn Trade-Size >1% Daily Volume. (c) HYG ADV $1.2bn, bei Portfolio >$50m ist HYG 27.3% = $13.65m = 1.14% Daily Volume — Slippage-Risiko moderat aber messbar (0.14% bei Event-Tag-Spreads). (d) Signal Generator zeigt keine Execution-Logik — Operator muss manuell definieren. Status: OPEN, Trigger aktiv (HYG Target > Schwelle).",
-        "source_alerts": [],
-        "source_patterns": []
-      },
-      {
-        "id": "action_2026-03-09_002",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A) — Tag 10, ESKALIERT. Warum: NFP/ECB waren letzte Woche (2026-03-06 laut gestriges Briefing). Monitoring sollte abgeschlossen sein. Wie dringend: HEUTE (Abschluss ueberfaellig). Naechste Schritte: (1) Pruefe ob NFP/ECB-Daten V16 Regime beeinflusst haben (V16 Regime SELECTIVE unveraendert seit Freitag → vermutlich nicht). (2) Pruefe ob Market Analyst Layer-Scores durch NFP/ECB bewegt wurden (alle Layer 1 Tag alt → Scores haben sich geaendert, aber unklar ob NFP/ECB-getrieben). (3) Schliesse Item wenn keine weiteren Implikationen. Status: OPEN, Trigger unklar (Event vorbei, aber Review nicht dokumentiert).",
-        "source_alerts": [],
-        "source_patterns": []
-      },
-      {
-        "id": "action_2026-03-09_003",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A3: CPI-Vorbereitung (MEDIUM, Trade Class A) — Tag 10, ESKALIERT. Warum: CPI in 1d (2026-03-11). Vorbereitung sollte laengst abgeschlossen sein. Wie dringend: HEUTE (Vorbereitung ueberfaellig, Event morgen). Naechste Schritte: (1) Definiere CPI-Szenarien (Upside/Inline/Downside). (2) Mappe Szenarien auf V16-Implikationen (z.B. Upside → Fed hawkish → HY-Spreads weiten → V16 reduziert HYG). (3) Bereite Post-CPI-Review vor (siehe A7). (4) Pruefe ob Pre-CPI-Hedges sinnvoll sind (vermutlich nicht — V16 ist bereits defensiv positioniert). Status: OPEN, Trigger aktiv (CPI morgen).",
-        "source_alerts": [],
-        "source_patterns": []
-      },
-      {
-        "id": "action_2026-03-09_004",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B) — Tag 10, ESKALIERT. Warum: Howell meldet Liquidity Peak Februar 2026. Market Analyst L1 (Liquidity) zeigt 0 TRANSITION (nicht DOWN). Divergenz muss aufgeloest werden. Wie dringend: THIS_WEEK (nicht HEUTE — Trade Class B). Naechste Schritte: (1) Pruefe ob Howell \"Peak\" bedeutet \"Momentum peaked\" (Leading) oder \"Level peaked\" (Lagging). (2) Pruefe ob Market Analyst L1 Daten (Net Liquidity, WALCL, TGA, RRP) Howell-Thesis stuetzen oder widersprechen. (3) Wenn Howell korrekt: Erwarte Market Analyst L1 Score faellt naechste Wochen. Wenn Market Analyst korrekt: Howell war zu frueh. (4) Dokumentiere Mechanik fuer zukuenftige Referenz. Status: OPEN, Trigger aktiv (Divergenz unaufgeloest).",
-        "source_alerts": [],
-        "source_patterns": []
-      },
-      {
-        "id": "action_2026-03-09_005",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A5: Post-NFP/ECB System-Review (HIGH, Trade Class A) — Tag 8, ESKALIERT. Warum: Duplicate von A2 (beide beziehen sich auf NFP/ECB). Wie dringend: HEUTE (Abschluss ueberfaellig). Naechste Schritte: Merge mit A2. Schliesse beide Items gemeinsam. Status: OPEN, Trigger unklar (Event vorbei).",
-        "source_alerts": [],
-        "source_patterns": []
-      }
-    ],
+    "prominent": [],
     "aggregated": {
-      "count": 12,
-      "items": [
-        {
-          "type": "ACT",
-          "description": "A1: HYG-Konzentration Review (CRITICAL, Trade Class A) — Tag 10, ESKALIERT. HYG 27.3%, Target 28.8%, Schwelle 25%. Risk Officer CRITICAL ↑ (EVENT_IMMINENT Boost). Warum: V16 Target verletzt Schwelle weiter. CPI in 1d kann Credit-Spreads ausweiten (Forward Guidance warnt). [DA: da_20260309_001 und da_20260306_005 weisen auf Execution-Risiko hin. ACCEPTED — Execution-Strategie muss definiert werden wenn Trades noetig. Original Draft: Keine Erwaehnung von Execution-Strategie] Wie dringend: HEUTE. Naechste Schritte: (1) Pruefe HY OAS aktuell (Market Analyst zeigt 0, aber Daten koennen lagged sein). (2) Pruefe ob HYG-Spread sich seit Freitag bewegt hat (Pre-Market-Daten wenn verfuegbar). (3) Wenn Spreads stabil: Akzeptiere Schwellenverletzung (V16 validiert). Wenn Spreads weiten sich: Bereite Post-CPI-Review vor (A7). (4) KEINE Aktion auf V16-Gewichte (Master-Schutz). (5) NEU (DA): Wenn Trades noetig werden (Post-CPI oder frueher), definiere Execution-Strategie: (a) Limit-Orders statt Market-Orders um Slippage zu minimieren. (b) Gestufte Execution (Time-Weighted-Average-Price) wenn Trade-Size >1% Daily Volume. (c) HYG ADV $1.2bn, bei Portfolio >$50m ist HYG 27.3% = $13.65m = 1.14% Daily Volume — Slippage-Risiko moderat aber messbar (0.14% bei Event-Tag-Spreads). (d) Signal Generator zeigt keine Execution-Logik — Operator muss manuell definieren. Status: OPEN, Trigger aktiv (HYG Target > Schwelle).",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-03-09_001"
-        },
-        {
-          "type": "ACT",
-          "description": "A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A) — Tag 10, ESKALIERT. Warum: NFP/ECB waren letzte Woche (2026-03-06 laut gestriges Briefing). Monitoring sollte abgeschlossen sein. Wie dringend: HEUTE (Abschluss ueberfaellig). Naechste Schritte: (1) Pruefe ob NFP/ECB-Daten V16 Regime beeinflusst haben (V16 Regime SELECTIVE unveraendert seit Freitag → vermutlich nicht). (2) Pruefe ob Market Analyst Layer-Scores durch NFP/ECB bewegt wurden (alle Layer 1 Tag alt → Scores haben sich geaendert, aber unklar ob NFP/ECB-getrieben). (3) Schliesse Item wenn keine weiteren Implikationen. Status: OPEN, Trigger unklar (Event vorbei, aber Review nicht dokumentiert).",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-03-09_002"
-        },
-        {
-          "type": "ACT",
-          "description": "A3: CPI-Vorbereitung (MEDIUM, Trade Class A) — Tag 10, ESKALIERT. Warum: CPI in 1d (2026-03-11). Vorbereitung sollte laengst abgeschlossen sein. Wie dringend: HEUTE (Vorbereitung ueberfaellig, Event morgen). Naechste Schritte: (1) Definiere CPI-Szenarien (Upside/Inline/Downside). (2) Mappe Szenarien auf V16-Implikationen (z.B. Upside → Fed hawkish → HY-Spreads weiten → V16 reduziert HYG). (3) Bereite Post-CPI-Review vor (siehe A7). (4) Pruefe ob Pre-CPI-Hedges sinnvoll sind (vermutlich nicht — V16 ist bereits defensiv positioniert). Status: OPEN, Trigger aktiv (CPI morgen).",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-03-09_003"
-        },
-        {
-          "type": "ACT",
-          "description": "A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B) — Tag 10, ESKALIERT. Warum: Howell meldet Liquidity Peak Februar 2026. Market Analyst L1 (Liquidity) zeigt 0 TRANSITION (nicht DOWN). Divergenz muss aufgeloest werden. Wie dringend: THIS_WEEK (nicht HEUTE — Trade Class B). Naechste Schritte: (1) Pruefe ob Howell \"Peak\" bedeutet \"Momentum peaked\" (Leading) oder \"Level peaked\" (Lagging). (2) Pruefe ob Market Analyst L1 Daten (Net Liquidity, WALCL, TGA, RRP) Howell-Thesis stuetzen oder widersprechen. (3) Wenn Howell korrekt: Erwarte Market Analyst L1 Score faellt naechste Wochen. Wenn Market Analyst korrekt: Howell war zu frueh. (4) Dokumentiere Mechanik fuer zukuenftige Referenz. Status: OPEN, Trigger aktiv (Divergenz unaufgeloest).",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-03-09_004"
-        },
-        {
-          "type": "ACT",
-          "description": "A5: Post-NFP/ECB System-Review (HIGH, Trade Class A) — Tag 8, ESKALIERT. Warum: Duplicate von A2 (beide beziehen sich auf NFP/ECB). Wie dringend: HEUTE (Abschluss ueberfaellig). Naechste Schritte: Merge mit A2. Schliesse beide Items gemeinsam. Status: OPEN, Trigger unklar (Event vorbei).",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-03-09_005"
-        },
-        {
-          "type": "ACT",
-          "description": "A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A) — Tag 3. Warum: System Conviction LOW. Data Quality DEGRADED. IC Intelligence hat 5 Quellen verarbeitet (gut) aber viele Anti-Patterns (32 High-Novelty Claims, Signal 0). Wie dringend: THIS_WEEK (nicht HEUTE — aber dringend). Naechste Schritte: (1) Pruefe ob IC-Quellen aktuell sind (Howell/Forward Guidance/Doomberg Content-Dates 2026-03-06 bis 2026-03-08 → aktuell). (2) Pruefe ob zusaetzliche Quellen verfuegbar sind (z.B. Macro Alf, Luke Gromen — nicht in heutigem IC). (3) Wenn Quellen fehlen: Eskaliere an Data-Pipeline. Wenn Quellen vorhanden aber nicht verarbeitet: Pruefe Processor-Logs. (4) Ziel: System Conviction von LOW auf MEDIUM heben. Status: OPEN, Trigger aktiv (LOW Conviction).",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-03-09_006"
-        },
-        {
-          "type": "ACT",
-          "description": "A7: Post-CPI System-Review (HIGH, Trade Class A, NEU) — UPGRADED von REVIEW zu ACT (LOW System Conviction). Warum: CPI morgen (2026-03-11). HYG CRITICAL, 3x WARNING, System Conviction LOW, alle Market Analyst Layer 1 Tag alt (keine Regime-Stabilitaet). Wie dringend: 2026-03-11 (Post-CPI, HEUTE ABEND wenn CPI morgens). Naechste Schritte: (1) CPI-Daten analysieren (Headline/Core, MoM/YoY). (2) Pruefe Market Analyst Layer-Reaktion (besonders L2 Macro, L7 CB Policy). (3) Pruefe V16 Regime-Stabilitaet (bleibt SELECTIVE oder shiftet?). (4) Pruefe HYG-Spread-Bewegung (HY OAS). (5) Pruefe ob Risk Officer Alerts eskalieren (HYG CRITICAL → EMERGENCY?). (6) Dokumentiere Implikationen fuer naechste Woche. (7) Wenn V16 shiftet oder HYG-Spreads weiten: Bereite Rebalance-Kommunikation vor. (8) NEU (DA): Wenn Trades noetig, definiere Execution-Strategie (siehe A1 Punkt 5). Status: OPEN, Trigger aktiv (CPI morgen).",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-03-09_007"
-        },
-        {
-          "type": "WATCH",
-          "description": "W1: Breadth-Deterioration (Hussman-Warnung) — Tag 10. Market Analyst L3 (Earnings) zeigt 76.0% above 200d MA (+9 Score, HEALTHY). Naechster Check: Woechentlich. Trigger: Pct above 200d MA faellt unter 50%. Status: OPEN, Trigger nicht aktiv (Breadth stark).",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-03-09_008"
-        },
-        {
-          "type": "WATCH",
-          "description": "W2: Japan JGB-Stress (Luke Gromen-Szenario) — Tag 10. Keine Japan-Daten in Market Analyst (USDJPY Score 0). IC Intelligence: Keine Japan-Claims. Naechster Check: Woechentlich. Trigger: USDJPY volatility spike oder Japan 10Y yield spike. Status: OPEN, Trigger nicht aktiv (keine Daten).",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-03-09_009"
-        },
-        {
-          "type": "WATCH",
-          "description": "W3: Geopolitik-Eskalation (Doomberg/ZeroHedge) — Tag 10. [DA: da_20260309_003 stellt in Frage ob Geopolitik Tail-Risk oder Base-Case ist. NOTED — Wenn Base-Case, ist Commodities-Schwelle (35%) moeglicherweise zu niedrig. Operator sollte pruefen. Original Draft: \"Geopolitik-Eskalation als WATCH\"] IC Consensus GEOPOLITICS -4.85 (HIGH Confidence). Doomberg: Qatar LNG shutdown 4+ Wochen. Naechster Check: Taeglich (Event in Progress). Trigger: LNG-Restart-Ankuendigung oder weitere Eskalation (Strait of Hormuz Closure). NEU (DA): Wenn Geopolitik BASE-CASE (nicht Tail-Risk), ist Commodities-Exposure 37.2% (WARNING, Schwelle 35%) moeglicherweise UNTER-gewichtet, nicht UEBER-gewichtet. Operator sollte pruefen ob Commodities-Schwelle (35%) unter Base-Case-Geopolitik angepasst werden sollte. Vier unabhaengige IC-Quellen konvergieren auf HOHE Eskalations-Wahrscheinlichkeit. Qatar LNG ist BEREITS offline (Fact, nicht Prediction). Market Analyst L8 (Tail Risk) CALM ist LAGGING Indicator bei realized events. Status: OPEN, Trigger aktiv (LNG shutdown ongoing).",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-03-09_010"
-        },
-        {
-          "type": "WATCH",
-          "description": "W4: Commodities-Rotation (Crescat vs. Doomberg) — Tag 10. DBC 21.8%, GLD 18.0%. Doomberg stuetzt kurzfristig (Energy-Disruption). Howell warnt langfristig (Liquidity Peak). Naechster Check: Post-CPI (2026-03-11). Trigger: (a) LNG-Restart-Ankuendigung (bearish fuer DBC), oder (b) V16 Regime-Shift (koennte DBC-Gewicht aendern). Status: OPEN, Trigger teilweise aktiv (Energy-Disruption ongoing, aber Liquidity Peak unbestaetigt).",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-03-09_011"
-        },
-        {
-          "type": "WATCH",
-          "description": "W5: V16 Regime-Shift Proximity — Tag 8. V16 SELECTIVE seit wann? (Nicht dokumentiert, aber Drawdown -0.15% zeigt keine grosse Bewegung). Market Analyst System Regime NEUTRAL, alle Layer LOW/CONFLICTED Conviction. Naechster Check: Post-CPI (2026-03-11). Trigger: Market Analyst System Regime shiftet zu RISK_OFF oder RISK_ON (aktuell NEUTRAL). Status: OPEN, Trigger nicht aktiv (aber Proximity unklar weil alle Regimes 1 Tag alt).",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-03-09_012"
-        }
-      ]
+      "count": 0,
+      "items": []
     },
     "ongoing_conditions": []
   },
@@ -610,14 +453,13 @@
       }
     ],
     "cluster_weights": {
-      "PM": 0.1689,
+      "PM": 0.1802,
       "EQ_CYCL": 0.0,
-      "EQ_DEFN": 0.34,
+      "EQ_DEFN": 0.3289,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.0,
-      "CREDIT": 0.2883,
-      "COMMOD": 0.2027,
+      "BOND": 0.2726,
+      "COMMOD": 0.2183,
       "CRYPTO": 0.0
     },
     "weight_deltas": {
@@ -793,7 +635,7 @@
     "steps": {
       "v16_daily_runner": {
         "status": "OK",
-        "completed_at": "2026-03-09T10:41:12Z",
+        "completed_at": "2026-03-09T12:44:05Z",
         "summary": "V16 Gewichte berechnet"
       },
       "step_0a_dc": {
@@ -855,7 +697,7 @@
   "temporal_map": {
     "market_data_as_of": "2026-03-09T21:00:00Z",
     "v16_regime_based_on": "2026-03-09 close",
-    "dashboard_rendered_at": "2026-03-09T10:41:12Z"
+    "dashboard_rendered_at": "2026-03-09T12:44:05Z"
   },
   "agent_r_context": {
     "date": "2026-03-09",
