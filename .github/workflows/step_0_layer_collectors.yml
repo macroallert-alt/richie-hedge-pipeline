@@ -107,6 +107,8 @@ jobs:
 
   trigger-ic:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     needs: [l2-sentiment, l4-positioning, l5-fragility, l7-cross-asset, l8-seasonality, l6-geopolitik]
     steps:
       - name: Trigger IC Pipeline
