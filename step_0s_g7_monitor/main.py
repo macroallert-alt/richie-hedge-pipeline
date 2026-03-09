@@ -678,7 +678,7 @@ def run_g7_monitor(run_type="WEEKLY", dry_run=False):
     # ---- PHASE 10b: Dashboard JSON (g7 block for Vercel) ----
     try:
         print("[Phase 10b] Updating dashboard.json g7 block...")
-        sit_result = overlays.get("sit", {})
+        sit_result = overlays.get("sanctions", overlays.get("sit", {}))
         update_g7_dashboard(
             dashboard_json_path=DASHBOARD_JSON_PATH,
             power_scores=power_scores,
