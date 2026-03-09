@@ -94,6 +94,11 @@ def _build_narrative_prompt(power_scores, gap_data, overlays, g7_status,
     return f"""You are the G7 World Order Monitor Narrative Engine for Baldur Creek Capital,
 a systematic macro trading operation.
 
+CRITICAL: ALL output text MUST be in GERMAN (Deutsch). Every field — headline,
+weekly_shift_narrative, scenario_implications, portfolio_context, counter_narrative,
+unasked_question, cascade_watch, dashboard_explanations — everything in German.
+Technical terms (SCSI, DDI, FDP, EWI, ETF tickers) stay in English.
+
 DESIGN PRINCIPLES — FOLLOW STRICTLY:
 1. PORTFOLIO-FIRST: Every insight references specific portfolio impact. Not "DDI rising"
    but "DDI at 42.7 — with majority of portfolio USD-denominated, this is still below
@@ -330,30 +335,30 @@ def _build_fallback_narrative(power_scores, gap_data, overlays, g7_status):
     ewi_count = overlays.get("ewi", {}).get("active_signals", 0)
 
     return {
-        "headline": f"G7 Status {status} — Gap {gap:.1f}, SCSI {scsi:.0f}, DDI {ddi:.0f}",
+        "headline": f"G7 Status {status} — Abstand {gap:.1f}, SCSI {scsi:.0f}, DDI {ddi:.0f}",
         "weekly_shift_narrative": (
-            f"G7 World Order Monitor reports status {status}. "
-            f"USA-China power gap stands at {gap:.1f} points. "
-            f"Supply chain stress (SCSI) at {scsi:.0f}/100. "
-            f"De-dollarization index (DDI) at {ddi:.0f}/100. "
-            f"US fiscal dominance proximity at {fdp_usa:.0%}. "
-            f"Early warning index shows {ewi_count} active signals. "
-            f"Full narrative pending LLM availability."
+            f"G7 Weltordnungs-Monitor meldet Status {status}. "
+            f"USA-China Machtabstand beträgt {gap:.1f} Punkte. "
+            f"Supply Chain Stress (SCSI) bei {scsi:.0f}/100. "
+            f"De-Dollarisierungs-Index (DDI) bei {ddi:.0f}/100. "
+            f"US Fiskal-Dominanz-Nähe bei {fdp_usa:.0%}. "
+            f"Frühwarnsystem zeigt {ewi_count} aktive Signale. "
+            f"Vollständige Narrative ausstehend — LLM nicht verfügbar."
         ),
         "top_signals": [],
-        "scenario_implications": "Scenario analysis pending LLM availability.",
-        "portfolio_context": "Portfolio-first framing pending LLM availability.",
+        "scenario_implications": "Szenario-Analyse ausstehend — LLM nicht verfügbar.",
+        "portfolio_context": "Portfolio-Kontext ausstehend — LLM nicht verfügbar.",
         "counter_narrative": {
-            "our_thesis": "Current positioning",
-            "strongest_counter": "Pending LLM analysis",
+            "our_thesis": "Aktuelle Positionierung",
+            "strongest_counter": "Ausstehend — LLM-Analyse",
             "data_supporting_counter": [],
-            "our_response": "Pending",
-            "action": "Review when narrative engine online",
+            "our_response": "Ausstehend",
+            "action": "Prüfen wenn Narrative Engine verfügbar",
         },
         "unasked_question": "",
         "cascade_watch": [],
         "regime_congruence": {"congruent": True, "tension": None,
-                             "operator_implication": "Pending LLM analysis"},
+                             "operator_implication": "Ausstehend — LLM-Analyse"},
         "historical_analog": {},
         "dashboard_explanations": _build_deterministic_explanations(
             gap_data, overlays, g7_status),
@@ -377,88 +382,88 @@ def _build_deterministic_explanations(gap_data, overlays, g7_status):
 
     # Gap explanation
     if gap > 15:
-        gap_ex = (f"USA leads China by {gap:.1f} points — a comfortable margin. "
-                  f"Gap is {trend}. At this level, Thucydides Trap risk is LOW. "
-                  f"Primary US advantages: capital markets depth, reserve currency, energy independence. "
-                  f"A gap below 15 would trigger SHIFTING status, below 10 ELEVATED_RISK.")
+        gap_ex = (f"USA führt China mit {gap:.1f} Punkten — ein komfortabler Vorsprung. "
+                  f"Trend: {trend}. Auf diesem Niveau ist das Thukydides-Fallen-Risiko NIEDRIG. "
+                  f"Primäre US-Vorteile: Kapitalmarkttiefe, Reservewährung, Energieunabhängigkeit. "
+                  f"Ein Abstand unter 15 würde VERSCHIEBUNG auslösen, unter 10 ERHÖHTES RISIKO.")
     elif gap > 10:
-        gap_ex = (f"USA leads China by {gap:.1f} points — moderate margin, trend {trend}. "
-                  f"This triggers SHIFTING status as the gap is below 15. "
-                  f"China's gains are driven by economic weight and demographics momentum. "
-                  f"Monitor for acceleration — if gap drops below 10, status escalates to ELEVATED_RISK.")
+        gap_ex = (f"USA führt China mit {gap:.1f} Punkten — moderater Vorsprung, Trend {trend}. "
+                  f"Dies löst VERSCHIEBUNG aus, da der Abstand unter 15 liegt. "
+                  f"Chinas Zugewinne kommen durch wirtschaftliches Gewicht und Demografie. "
+                  f"Bei weiterem Rückgang unter 10 eskaliert der Status zu ERHÖHTES RISIKO.")
     else:
-        gap_ex = (f"USA leads China by only {gap:.1f} points — narrow margin, trend {trend}. "
-                  f"ELEVATED_RISK territory. Historical power transitions become volatile "
-                  f"when the gap narrows this far. Portfolio implications: increase hedges, "
-                  f"monitor Taiwan Strait, consider gold overweight.")
+        gap_ex = (f"USA führt China mit nur {gap:.1f} Punkten — enger Vorsprung, Trend {trend}. "
+                  f"ERHÖHTES RISIKO. Historische Machttransitionen werden volatil wenn der "
+                  f"Abstand so eng wird. Portfolio: Absicherungen erhöhen, Taiwan-Straße "
+                  f"beobachten, Gold-Übergewichtung erwägen.")
 
     # SCSI
     if scsi < 20:
-        scsi_ex = (f"Supply chain stress at {scsi:.0f}/100 — minimal disruption. "
-                   f"No chokepoint alerts active. Shipping costs normal. "
-                   f"No portfolio action needed on supply chain front.")
+        scsi_ex = (f"Supply-Chain-Stress bei {scsi:.0f}/100 — minimale Störung. "
+                   f"Keine Chokepoint-Alarme aktiv. Frachtkosten normal. "
+                   f"Keine Portfolio-Aktion nötig auf Lieferketten-Seite.")
     elif scsi < 50:
-        scsi_ex = (f"Supply chain stress at {scsi:.0f}/100 — moderate. "
-                   f"Freight costs elevated. Monitor for chokepoint escalation. "
-                   f"Energy-importing regions (JP/KR/TW, EU, India) most exposed.")
+        scsi_ex = (f"Supply-Chain-Stress bei {scsi:.0f}/100 — moderat. "
+                   f"Frachtkosten erhöht. Chokepoint-Eskalation beobachten. "
+                   f"Energieimportierende Regionen (JP/KR/TW, EU, Indien) am stärksten exponiert.")
     else:
-        scsi_ex = (f"Supply chain stress at {scsi:.0f}/100 — ELEVATED. "
-                   f"Active disruptions in shipping routes. Direct portfolio impact "
-                   f"on energy-sensitive and trade-dependent positions.")
+        scsi_ex = (f"Supply-Chain-Stress bei {scsi:.0f}/100 — ERHÖHT. "
+                   f"Aktive Störungen in Schifffahrtsrouten. Direkter Portfolio-Impact "
+                   f"auf energiesensitive und handelsabhängige Positionen.")
 
     # DDI
     if ddi < 50:
-        ddi_ex = (f"De-dollarization index at {ddi:.0f}/100 — below neutral. "
-                  f"USD dominance still intact. COFER reserve share stable. "
-                  f"Current gold allocation adequate, no urgency to increase.")
+        ddi_ex = (f"De-Dollarisierungs-Index bei {ddi:.0f}/100 — unter neutral. "
+                  f"USD-Dominanz weiterhin intakt. COFER-Reserveanteil stabil. "
+                  f"Aktuelle Gold-Allokation angemessen, kein Handlungsdruck.")
     elif ddi < 65:
-        ddi_ex = (f"De-dollarization index at {ddi:.0f}/100 — approaching threshold. "
-                  f"COFER USD share declining, CB gold purchases elevated. "
-                  f"Supports current gold overweight. Monitor SWIFT share for acceleration.")
+        ddi_ex = (f"De-Dollarisierungs-Index bei {ddi:.0f}/100 — nähert sich Schwelle. "
+                  f"COFER-USD-Anteil rückläufig, Zentralbank-Goldkäufe erhöht. "
+                  f"Stützt aktuelle Gold-Übergewichtung. SWIFT-Anteil für Beschleunigung beobachten.")
     else:
-        ddi_ex = (f"De-dollarization index at {ddi:.0f}/100 — ACTIVE de-dollarization. "
-                  f"Consider increasing gold allocation. PermOpt review warranted. "
-                  f"USD-denominated portfolio faces structural headwind.")
+        ddi_ex = (f"De-Dollarisierungs-Index bei {ddi:.0f}/100 — AKTIVE De-Dollarisierung. "
+                  f"Gold-Allokation erhöhen erwägen. PermOpt-Überprüfung angebracht. "
+                  f"USD-denominiertes Portfolio steht vor strukturellem Gegenwind.")
 
     # FDP
     if fdp_usa < 0.60:
-        fdp_ex = (f"US fiscal dominance proximity at {fdp_usa:.0%} — manageable. "
-                  f"Interest costs significant but not yet constraining Fed policy. "
-                  f"TLT position safe for now, but monitor debt trajectory.")
+        fdp_ex = (f"US Fiskal-Dominanz-Nähe bei {fdp_usa:.0%} — handhabbar. "
+                  f"Zinskosten signifikant aber noch nicht Fed-Politik einschränkend. "
+                  f"TLT-Position vorerst sicher, Schuldenentwicklung beobachten.")
     elif fdp_usa < 0.85:
-        fdp_ex = (f"US fiscal dominance proximity at {fdp_usa:.0%} — fiscal space narrowing. "
-                  f"Interest payments consuming growing share of revenue. "
-                  f"Bond market repricing risk rising. Review TLT duration exposure.")
+        fdp_ex = (f"US Fiskal-Dominanz-Nähe bei {fdp_usa:.0%} — Fiskalspielraum verengt sich. "
+                  f"Zinszahlungen verbrauchen wachsenden Anteil der Einnahmen. "
+                  f"Anleihenmarkt-Neubewertungsrisiko steigt. TLT-Duration prüfen.")
     else:
-        fdp_ex = (f"US fiscal dominance proximity at {fdp_usa:.0%} — CRITICAL. "
-                  f"Approaching fiscal dominance threshold. Fed policy increasingly "
-                  f"constrained by fiscal needs. Reduce long-duration bond exposure.")
+        fdp_ex = (f"US Fiskal-Dominanz-Nähe bei {fdp_usa:.0%} — KRITISCH. "
+                  f"Nähert sich der Fiskal-Dominanz-Schwelle. Fed-Politik zunehmend "
+                  f"durch Fiskalbedürfnisse eingeschränkt. Langläufer-Exposure reduzieren.")
 
     # EWI
     if ewi_count == 0:
-        ewi_ex = "No early warning signals active. System calm across all monitored indicators."
+        ewi_ex = "Keine Frühwarnsignale aktiv. System ruhig über alle überwachten Indikatoren."
     elif ewi_count <= 2:
-        ewi_ex = (f"{ewi_count} early warning signal(s) active, severity {ewi_sev}. "
-                  f"Elevated but not alarming. Monitor for clustering — "
-                  f"3+ signals would trigger SHIFTING contribution.")
+        ewi_ex = (f"{ewi_count} Frühwarnsignal(e) aktiv, Schwere {ewi_sev}. "
+                  f"Erhöht aber nicht alarmierend. Auf Clustering achten — "
+                  f"3+ Signale würden zur VERSCHIEBUNG beitragen.")
     else:
-        ewi_ex = (f"{ewi_count} early warning signals active, severity {ewi_sev}. "
-                  f"Multiple independent warning systems firing. "
-                  f"Historically this level of alertness precedes regime shifts.")
+        ewi_ex = (f"{ewi_count} Frühwarnsignale aktiv, Schwere {ewi_sev}. "
+                  f"Mehrere unabhängige Warnsysteme schlagen an. "
+                  f"Historisch geht dieses Alarmniveau Regimewechseln voraus.")
 
     # Status
     status_map = {
-        "STABLE": (f"G7 status STABLE — no triggers active. All monitored thresholds "
-                   f"within normal range. No immediate risk management action needed."),
-        "SHIFTING": (f"G7 status SHIFTING — the world order is in transition. "
-                     f"Triggered by: {', '.join(g7_status.get('active_shifts', ['Gap < 15'])[:2])}. "
-                     f"This means increased monitoring, not panic. Portfolio review quarterly."),
-        "ELEVATED_RISK": (f"G7 status ELEVATED_RISK — multiple stress indicators active. "
-                          f"Triggered by: {', '.join(g7_status.get('active_shifts', [])[:2])}. "
-                          f"Review all positions, increase hedges, ensure stop-losses current."),
-        "STRUCTURAL_BREAK": (f"G7 status STRUCTURAL_BREAK — major regime change detected. "
-                             f"Immediate portfolio review required. "
-                             f"Risk management takes priority over return optimization."),
+        "STABLE": (f"G7 Status STABIL — keine Auslöser aktiv. Alle überwachten Schwellenwerte "
+                   f"im Normalbereich. Keine sofortige Risikomanagement-Aktion nötig."),
+        "SHIFTING": (f"G7 Status IM WANDEL — die Weltordnung ist in Transition. "
+                     f"Ausgelöst durch: {', '.join(g7_status.get('active_shifts', ['Gap < 15'])[:2])}. "
+                     f"Bedeutet erhöhte Beobachtung, keine Panik. Portfolio-Review quartalsweise."),
+        "ELEVATED_RISK": (f"G7 Status ERHÖHTES RISIKO — mehrere Stress-Indikatoren aktiv. "
+                          f"Ausgelöst durch: {', '.join(g7_status.get('active_shifts', [])[:2])}. "
+                          f"Alle Positionen prüfen, Absicherungen erhöhen, Stop-Losses aktualisieren."),
+        "STRUCTURAL_BREAK": (f"G7 Status STRUKTURBRUCH — großer Regimewechsel erkannt. "
+                             f"Sofortige Portfolio-Überprüfung erforderlich. "
+                             f"Risikomanagement hat Vorrang vor Renditeoptimierung."),
     }
     status_ex = status_map.get(status, f"G7 status {status}.")
 
