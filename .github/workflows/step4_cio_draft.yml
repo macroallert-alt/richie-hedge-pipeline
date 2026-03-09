@@ -1,15 +1,11 @@
 name: Step 4 — CIO Draft
 
 on:
-  workflow_run:
-    workflows: ["Step 3 — Risk Officer"]
-    types: [completed]
   workflow_dispatch:
 
 jobs:
   cio-draft:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout repo
@@ -41,3 +37,12 @@ jobs:
           git diff --staged --quiet || git commit -m "Archive: CIO Draft $(date +%Y-%m-%d)"
           git pull --rebase
           git push
+
+      - name: Trigger Step 5
+        if: success()
+        run: |
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/step5_devils_advocate.yml/dispatches \
+            -d '{"ref":"main"}'

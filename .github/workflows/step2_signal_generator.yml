@@ -1,15 +1,11 @@
 name: Step 2 Signal Generator
 
 on:
-  workflow_run:
-    workflows: ["Step 1 — Market Analyst"]
-    types: [completed]
   workflow_dispatch:
 
 jobs:
   signal-generator:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout
@@ -38,4 +34,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add archive/ || true
           git diff --cached --quiet || git commit -m "Step 2: Signal Generator archive $(date -u +%Y-%m-%d)"
-          git push || true
+          git pull --rebase
+          git push
+
+      - name: Trigger Step 3
+        if: success()
+        run: |
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/step3_risk_officer.yml/dispatches \
+            -d '{"ref":"main"}'

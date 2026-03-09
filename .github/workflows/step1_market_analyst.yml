@@ -41,6 +41,15 @@ jobs:
           git pull --rebase
           git push
 
+      - name: Trigger Step 2
+        if: success()
+        run: |
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/step2_signal_generator.yml/dispatches \
+            -d '{"ref":"main"}'
+
       - name: Cleanup credentials
         if: always()
         run: rm -f /tmp/gcp_sa.json

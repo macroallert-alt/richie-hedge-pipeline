@@ -1,15 +1,11 @@
 name: "Step 7 — Execution Advisor"
 
 on:
-  workflow_run:
-    workflows: ["Step 6 — CIO Final"]
-    types: [completed]
   workflow_dispatch:
 
 jobs:
   execution-advisor:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -36,4 +32,5 @@ jobs:
           DATUM=$(date +%Y-%m-%d)
           git add archive/ data/dashboard/ data/weights_history/
           git diff --cached --quiet || git commit -m "Step 7 Execution Advisor + Rotation: ${DATUM}"
+          git pull --rebase
           git push
