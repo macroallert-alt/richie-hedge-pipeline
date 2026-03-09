@@ -1,6 +1,6 @@
 {
   "date": "2026-03-09",
-  "run_timestamp": "2026-03-09T11:38:37.141604Z",
+  "run_timestamp": "2026-03-09T12:32:49.554008Z",
   "execution_assessment": {
     "total_score": 5,
     "raw_score": 5,
@@ -60,7 +60,7 @@
           "confirmations": [
             {
               "asset": "HYG",
-              "weight": 0.276558,
+              "weight": 0.272636,
               "cot_field": "COT_SP500_COMM_NET",
               "cot_value": 3.478,
               "direction": "long",
@@ -68,7 +68,15 @@
             },
             {
               "asset": "DBC",
-              "weight": 0.212411,
+              "weight": 0.218278,
+              "cot_field": "COT_GOLD_COMM_NET",
+              "cot_value": 8.8329,
+              "direction": "long",
+              "severity": "NONE"
+            },
+            {
+              "asset": "GLD",
+              "weight": 0.180173,
               "cot_field": "COT_GOLD_COMM_NET",
               "cot_value": 8.8329,
               "direction": "long",
@@ -76,23 +84,15 @@
             },
             {
               "asset": "XLU",
-              "weight": 0.181962,
+              "weight": 0.179645,
               "cot_field": "COT_SP500_COMM_NET",
               "cot_value": 3.478,
               "direction": "long",
               "severity": "NONE"
             },
             {
-              "asset": "GLD",
-              "weight": 0.17904,
-              "cot_field": "COT_GOLD_COMM_NET",
-              "cot_value": 8.8329,
-              "direction": "long",
-              "severity": "NONE"
-            },
-            {
               "asset": "XLP",
-              "weight": 0.150029,
+              "weight": 0.149269,
               "cot_field": "COT_SP500_COMM_NET",
               "cot_value": 3.478,
               "direction": "long",
@@ -154,7 +154,7 @@
           "confirmations": [
             {
               "type": "COMMODITY_COPPER_CONFIRMED",
-              "detail": "V16 39% Commodity + Copper Rising — bestätigt"
+              "detail": "V16 40% Commodity + Copper Rising — bestätigt"
             },
             {
               "type": "EQUITY_TREND_CONFIRMED",
@@ -235,14 +235,14 @@
         "detail": "COT_GOLD_COMM_NET = 8.8% — kein Conflict"
       },
       {
-        "signal": "COT XLU bestätigt",
-        "source": "DW_L4_COT",
-        "detail": "COT_SP500_COMM_NET = 3.5% — kein Conflict"
-      },
-      {
         "signal": "COT GLD bestätigt",
         "source": "DW_L4_COT",
         "detail": "COT_GOLD_COMM_NET = 8.8% — kein Conflict"
+      },
+      {
+        "signal": "COT XLU bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 3.5% — kein Conflict"
       },
       {
         "signal": "COT XLP bestätigt",
@@ -277,7 +277,7 @@
       {
         "signal": "COMMODITY_COPPER_CONFIRMED",
         "source": "DW_L7",
-        "detail": "V16 39% Commodity + Copper Rising — bestätigt"
+        "detail": "V16 40% Commodity + Copper Rising — bestätigt"
       },
       {
         "signal": "EQUITY_TREND_CONFIRMED",
@@ -353,16 +353,16 @@
   },
   "recommendation": {
     "action": "EXECUTE_WITH_LIMITS",
-    "reasoning": "Kein Rebalancing heute nötig — V16 hält alle Positionen.",
+    "reasoning": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
     "specific_actions": [],
     "would_change_my_mind": {
       "execute_if": [
-        "VIX fällt unter 18.0 UND HY OAS fällt unter 275bps — Risiko-Appetit steigt, Event-Prämie verschwindet",
-        "GEX steigt über +$2.0B — Dealer-Hedging stabilisiert Markt, Volatilität gedämpft"
+        "VIX springt über 28 (aktuell 23.75) — Volatilitäts-Spike macht Warten teurer als CPI-Risiko",
+        "HY OAS steigt über 350bps (aktuell 300bps) — Credit-Stress gefährdet HYG-Position (27.3%), sofortiger Abbau nötig"
       ],
       "hold_if": [
-        "VIX steigt über 28.0 ODER HY OAS steigt über 350bps — Stress-Regime, warte auf Stabilisierung",
-        "Gold fällt >5% vom aktuellen Niveau (GLD-Preis nicht verfügbar, nutze Gold Return 20d als Proxy) ODER DXY steigt >3% — Divergenz löst sich gegen Gold auf"
+        "GLD fällt >4% vom aktuellen Niveau — Gold/DXY-Divergenz löst sich bearish auf, GLD-Verkauf abwarten",
+        "OFR Financial Stress Index steigt über 0.0 (aktuell -0.44) — systemisches Risiko, alle Trades pausieren"
       ]
     }
   },
@@ -639,33 +639,33 @@
       }
     ]
   },
-  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING:\n• Liquidität optimal: Amihud 51.27 (LIQUID), SOFR-FFR 2.0bps (NORMAL), OFR Stress -0.44 (RELAXED) — keine Slippage-Risiken\n• COT-Positioning sauber: S&P500 Commercial +3.5%, Gold Commercial +8.8% — keine Extrempositionen gegen Portfolio\n• Cross-Asset bestätigt V16-Logik: Copper Rising + 39% Commodity-Exposure, SPY Rising + 33% Equity-Exposure, Real Yields Falling + 18% Gold — alle Trends aligned\n• VIX Term Structure 1.07 (CONTANGO): Forward-Volatilität niedriger als Spot — kein unmittelbarer Stress-Spike erwartet\n• Sentiment neutral kalibriert: CNN Fear & Greed 25.95, Put/Call 0.898, HY OAS 300bps — keine Panik, keine Euphorie\n• Kein materielles Rebalancing: V16 hält alle Positionen HOLD (Delta <1%) — heute kein Execution-Risiko, Empfehlung gilt für potenzielle Regime-Wechsel\n\nCONFLICTING:\n• US CPI (February) in 48h (HIGH-Impact): Kann HYG (27.7% Portfolio) und DBC (21.2%) stark bewegen — Richtung unklar, Liquidität könnte einbrechen\n• Gold-DXY Divergenz: Gold +7.2% UND DXY +1.2% gleichzeitig — historisch unsustainable, einer muss nachgeben, GLD (17.9%) Risiko\n• GEX negativ $-0.32B (SLIGHTLY_NEGATIVE): Dealer-Hedging verstärkt Intraday-Moves — erhöhte Volatilität bei News-Flow\n\nNETTO: 21 Confirming vs 3 Conflicting. Marktstruktur ist gesund, aber CPI-Event in 48h schafft binäres Risiko für 67% des Portfolios (HYG+DBC+GLD).\n\nEMPFEHLUNG:\nKein Rebalancing heute nötig — V16 hält alle Positionen. Falls V16 morgen oder Mittwoch Regime wechselt: WARTE bis CPI-Veröffentlichung (Mittwoch 08:30 ET). Führe Trades erst NACH CPI aus, wenn Richtung klar ist. HYG und DBC haben hohes Slippage-Risiko bei überraschenden Inflationsdaten. GLD: Beobachte Gold-DXY Divergenz — wenn DXY nach CPI nachgibt, ist Gold-Rally bestätigt; wenn Gold korrigiert, reduziere Position-Size um 20-30%. XLU und XLP (33% Portfolio) sind defensiv, können bei Volatilität sofort ausgeführt werden.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 18.0 UND HY OAS fällt unter 275bps — Risiko-Appetit steigt, Event-Prämie verschwindet\n• Execute sofort wenn: GEX steigt über +$2.0B — Dealer-Hedging stabilisiert Markt, Volatilität gedämpft\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 28.0 ODER HY OAS steigt über 350bps — Stress-Regime, warte auf Stabilisierung\n• Eskaliere zu Wait/Hold wenn: Gold fällt >5% vom aktuellen Niveau (GLD-Preis nicht verfügbar, nutze Gold Return 20d als Proxy) ODER DXY steigt >3% — Divergenz löst sich gegen Gold auf",
+  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING:\n• Liquidität optimal: Amihud 51.27 (LIQUID), SOFR-FFR 2.0bps (NORMAL), OFR Stress -0.44 (RELAXED) — beste Execution-Bedingungen\n• COT-Positioning sauber: S&P500 Commercial +3.5%, Gold Commercial +8.8% — keine Extrempositionen gegen Portfolio\n• Cross-Asset bestätigt Regime: Copper Rising + SPY Rising + Real Yields Falling — alle drei Trends unterstützen SELECTIVE-Allokation (40% Commodities, 33% Equities, 18% Gold)\n• Sentiment neutral: CNN Fear & Greed 25.95, VIX 23.75, Put/Call 0.898 — keine Panik, keine Euphorie\n• VIX Term Structure Contango 1.07: Forward-Volatilität teurer als Spot — Markt preist Beruhigung ein\n• HY OAS 300bps (NORMAL): Credit-Spreads stabil, HYG-Position (27.3%) nicht gefährdet\n• MOVE Index 81.26 (NORMAL): Bond-Volatilität unauffällig, XLU/XLP-Positionen (33% kombiniert) sicher\n• Kein materielles Rebalancing: Alle Positionen HOLD — kein Execution-Risiko heute\n\nCONFLICTING:\n• US CPI (February) in 48h (HIGH-Impact): Kann Fed-Erwartungen, Yields und Dollar drastisch bewegen — direkte Auswirkung auf alle fünf Top-Positionen\n• Gold/DXY-Divergenz unhaltbar: Gold +7.2% UND DXY +1.2% gleichzeitig — historisch korreliert eine Seite binnen 5-10 Tagen, GLD-Position (18%) exponiert\n• GEX negativ $-0.32B (SLIGHTLY_NEGATIVE): Dealer müssen Moves verstärken statt dämpfen — erhöhte Intraday-Volatilität, schlechtere Fills möglich\n\nNETTO: 8 Confirming vs 3 Conflicting. Liquidität und Positioning perfekt, aber CPI-Event in 48h und Gold/DXY-Divergenz erfordern Vorsicht.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Falls V16 morgen Regime wechselt: Warte bis Mittwoch 14:30 ET (nach CPI-Veröffentlichung). Die Gold/DXY-Divergenz wird sich binnen 48h auflösen — entweder Gold korrigiert (GLD-Verkauf günstiger) oder DXY dreht (GLD-Kauf teurer, aber bestätigt). Bei unverändertem Regime: Nutze heutige optimale Liquidität für Micro-Adjustments in HYG/DBC (größte Positionen), setze Limit-Orders 10-15bps unter Midpoint. XLU/XLP nicht anfassen vor CPI (Utilities/Staples reagieren stark auf Yield-Moves).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX springt über 28 (aktuell 23.75) — Volatilitäts-Spike macht Warten teurer als CPI-Risiko\n• Execute sofort wenn: HY OAS steigt über 350bps (aktuell 300bps) — Credit-Stress gefährdet HYG-Position (27.3%), sofortiger Abbau nötig\n• Eskaliere zu Wait/Hold wenn: GLD fällt >4% vom aktuellen Niveau — Gold/DXY-Divergenz löst sich bearish auf, GLD-Verkauf abwarten\n• Eskaliere zu Wait/Hold wenn: OFR Financial Stress Index steigt über 0.0 (aktuell -0.44) — systemisches Risiko, alle Trades pausieren",
   "v16_context": {
     "regime": "SELECTIVE",
     "top5": [
       {
         "asset": "HYG",
-        "weight": 0.276558
+        "weight": 0.272636
       },
       {
         "asset": "DBC",
-        "weight": 0.212411
-      },
-      {
-        "asset": "XLU",
-        "weight": 0.181962
+        "weight": 0.218278
       },
       {
         "asset": "GLD",
-        "weight": 0.17904
+        "weight": 0.180173
+      },
+      {
+        "asset": "XLU",
+        "weight": 0.179645
       },
       {
         "asset": "XLP",
-        "weight": 0.150029
+        "weight": 0.149269
       }
     ],
     "material_rebalance_trades": 0,
-    "total_weight": 1.0
+    "total_weight": 1.000001
   },
   "pipeline_context": {
     "risk_ampel": "UNKNOWN",
@@ -695,19 +695,19 @@
     },
     "cluster_current": {
       "EQ_DEFN": {
-        "weight": 0.332,
+        "weight": 0.3289,
         "display_name": "Defensive Equities"
       },
       "CREDIT": {
-        "weight": 0.2766,
+        "weight": 0.2726,
         "display_name": "High Yield Credit"
       },
       "COMMOD": {
-        "weight": 0.2124,
+        "weight": 0.2183,
         "display_name": "Commodities"
       },
       "PM": {
-        "weight": 0.179,
+        "weight": 0.1802,
         "display_name": "Precious Metals"
       }
     },
@@ -747,7 +747,7 @@
     },
     "asset_details": {
       "HYG": {
-        "weight": 0.2766,
+        "weight": 0.2726,
         "cluster": "CREDIT",
         "cluster_name": "High Yield Credit",
         "delta_1d": 0.0,
@@ -759,7 +759,7 @@
         "label": "HOLD"
       },
       "DBC": {
-        "weight": 0.2124,
+        "weight": 0.2183,
         "cluster": "COMMOD",
         "cluster_name": "Commodities",
         "delta_1d": 0.0,
@@ -770,20 +770,8 @@
         "direction": "STABLE",
         "label": "HOLD"
       },
-      "XLU": {
-        "weight": 0.182,
-        "cluster": "EQ_DEFN",
-        "cluster_name": "Defensive Equities",
-        "delta_1d": 0.0,
-        "delta_1w": null,
-        "delta_1m": null,
-        "delta_3m": null,
-        "materiality": "GREEN",
-        "direction": "STABLE",
-        "label": "HOLD"
-      },
       "GLD": {
-        "weight": 0.179,
+        "weight": 0.1802,
         "cluster": "PM",
         "cluster_name": "Precious Metals",
         "delta_1d": 0.0,
@@ -794,8 +782,20 @@
         "direction": "STABLE",
         "label": "HOLD"
       },
+      "XLU": {
+        "weight": 0.1796,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
       "XLP": {
-        "weight": 0.15,
+        "weight": 0.1493,
         "cluster": "EQ_DEFN",
         "cluster_name": "Defensive Equities",
         "delta_1d": 0.0,
@@ -816,17 +816,17 @@
       "1d": {
         "date": "2026-03-09",
         "weights": {
-          "GLD": 0.179,
-          "XLP": 0.15,
-          "XLU": 0.182,
-          "HYG": 0.2766,
-          "DBC": 0.2124
+          "GLD": 0.1802,
+          "XLP": 0.1493,
+          "XLU": 0.1796,
+          "HYG": 0.2726,
+          "DBC": 0.2183
         },
         "cluster_weights": {
-          "PM": 0.179,
-          "EQ_DEFN": 0.332,
-          "CREDIT": 0.2766,
-          "COMMOD": 0.2124
+          "PM": 0.1802,
+          "EQ_DEFN": 0.3289,
+          "CREDIT": 0.2726,
+          "COMMOD": 0.2183
         }
       },
       "1w": null,
@@ -844,7 +844,7 @@
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_used": true,
     "llm_fallback": false,
-    "engine_time_seconds": 25.35,
-    "total_time_seconds": 25.4
+    "engine_time_seconds": 25.09,
+    "total_time_seconds": 25.1
   }
 }
