@@ -11,6 +11,11 @@ Hybrid-Ansatz:
                     asymmetric_payoffs (Szenarien), vulnerability recommendations,
                     second_order_effects, g7_cross_references, regime_fit pro Trend
 
+LLM-Calls aufgeteilt in 3 kleinere Calls fuer robustes JSON-Parsing:
+  Call 1: briefing + regime_fits + decision_matrix
+  Call 2: asymmetric_payoffs + vulnerability_texts
+  Call 3: second_order_effects + g7_cross_references
+
 Wird NACH Dependencies und Vulnerability Analysis aufgerufen, VOR Sheet Write.
 """
 
@@ -34,340 +39,98 @@ def generate_intelligence_briefing(trends, exposure_result, contrarian_alerts,
     Generiere alle Phase-A Erweiterungs-Bloecke.
 
     Returns:
-        Dict mit allen neuen Bloecken fuer latest.json:
-        {
-            'briefing': {},
-            'decision_matrix': [],
-            'regime_context': {},
-            'conviction_scores': {},
-            'asymmetric_payoffs': {},
-            'crowding_alerts': [],
-            'vulnerability_watchlist': [],  # angereichert mit LLM-Texten
-            'second_order_effects_zones': [],  # erweiterte convergence_zones
-            'regime_heatmap': {},
-            'g7_cross_references': [],
-        }
+        Dict mit allen neuen Bloecken fuer latest.json.
     """
     print("\n--- INTELLIGENCE BRIEFING ---")
 
     result = {}
 
-    # ===== 1. REGIME CONTEXT (Python — deterministisch) =====
+    # ===== 1. REGIME CONTEXT (Python) =====
     regime_context = _build_regime_context(v16_regime)
     result['regime_context'] = regime_context
-    print(f"    [REGIME] {regime_context['current_regime']} — Sizing ×{regime_context['regime_rules']['sizing_multiplier']}")
+    print(f"    [REGIME] {regime_context['current_regime']} — Sizing x{regime_context['regime_rules']['sizing_multiplier']}")
 
-    # ===== 2. CONVICTION SCORES (Python — Formel, OHNE regime_fit) =====
-    # regime_fit kommt vom LLM spaeter, wird dann nachtraeglich eingerechnet
+    # ===== 2. CONVICTION SCORES PARTIAL (Python) =====
     conviction_partial = _calculate_conviction_scores_partial(trends)
 
-    # ===== 3. CROWDING ALERTS (Python — regelbasiert) =====
+    # ===== 3. CROWDING ALERTS (Python) =====
     crowding_alerts = _detect_crowding_alerts(trends)
     result['crowding_alerts'] = crowding_alerts
     print(f"    [CROWDING] {len(crowding_alerts)} Alerts")
 
-    # ===== 4. REGIME HEATMAP (Python — statische Matrix) =====
+    # ===== 4. REGIME HEATMAP (Python) =====
     regime_heatmap = _build_regime_heatmap(trends, v16_regime)
     result['regime_heatmap'] = regime_heatmap
     print(f"    [HEATMAP] {len(regime_heatmap.get('matrix', {}))} Trends in Matrix")
 
-    # ===== 5. LLM CALL — Texte und Einschaetzungen =====
+    # ===== 5. LLM CALLS — 3 separate Calls =====
+    ctx = _build_shared_context(trends, exposure_result, contrarian_alerts,
+                                causal_chains, convergence_zones,
+                                vulnerability_watchlist, v16_weights,
+                                regime_context, config, run_date)
+
+    call1_result = {}
+    call2_result = {}
+    call3_result = {}
+
     if ANTHROPIC_API_KEY:
         try:
-            llm_result = _run_llm_briefing(
-                trends=trends,
-                exposure_result=exposure_result,
-                contrarian_alerts=contrarian_alerts,
-                causal_chains=causal_chains,
-                convergence_zones=convergence_zones,
-                vulnerability_watchlist=vulnerability_watchlist,
-                v16_weights=v16_weights,
-                regime_context=regime_context,
-                config=config,
-                run_date=run_date,
-            )
-            print(f"    [LLM] Briefing generiert")
+            call1_result = _llm_call_1_briefing(ctx)
+            print(f"    [LLM-1] Briefing + Decision Matrix OK")
         except Exception as e:
-            print(f"    [ERROR] LLM Briefing fehlgeschlagen: {e}")
-            llm_result = _fallback_llm_result(trends, regime_context, run_date)
-    else:
-        print("    [SKIP] Kein ANTHROPIC_API_KEY — verwende Fallback")
-        llm_result = _fallback_llm_result(trends, regime_context, run_date)
+            print(f"    [ERROR] LLM Call 1 fehlgeschlagen: {e}")
 
-    # ===== 6. CONVICTION SCORES FINALISIEREN (Python + LLM regime_fit) =====
-    regime_fits = llm_result.get('regime_fits', {})
+        try:
+            call2_result = _llm_call_2_payoffs(ctx)
+            print(f"    [LLM-2] Payoffs + Vulnerability OK")
+        except Exception as e:
+            print(f"    [ERROR] LLM Call 2 fehlgeschlagen: {e}")
+
+        try:
+            call3_result = _llm_call_3_effects(ctx)
+            print(f"    [LLM-3] Second Order + G7 OK")
+        except Exception as e:
+            print(f"    [ERROR] LLM Call 3 fehlgeschlagen: {e}")
+    else:
+        print("    [SKIP] Kein ANTHROPIC_API_KEY")
+
+    # ===== 6. CONVICTION SCORES FINALISIEREN =====
+    regime_fits = call1_result.get('regime_fits', {})
     conviction_scores = _finalize_conviction_scores(conviction_partial, regime_fits, regime_context)
     result['conviction_scores'] = conviction_scores
     print(f"    [CONVICTION] {len(conviction_scores)} Scores berechnet")
 
     # ===== 7. VULNERABILITY WATCHLIST ANREICHERN =====
     vuln_enriched = _enrich_vulnerability_watchlist(
-        vulnerability_watchlist, llm_result.get('vulnerability_texts', {})
+        vulnerability_watchlist, call2_result.get('vulnerability_texts', {})
     )
     result['vulnerability_watchlist'] = vuln_enriched
 
     # ===== 8. CONVERGENCE ZONES MIT SECOND ORDER EFFECTS =====
     enriched_zones = _enrich_convergence_zones(
-        convergence_zones, llm_result.get('second_order_effects', [])
+        convergence_zones, call3_result.get('second_order_effects', [])
     )
     result['second_order_effects_zones'] = enriched_zones
 
-    # ===== 9. RESTLICHE LLM-BLOECKE UEBERNEHMEN =====
-    result['briefing'] = llm_result.get('briefing', {})
-    result['decision_matrix'] = llm_result.get('decision_matrix', [])
-    result['asymmetric_payoffs'] = llm_result.get('asymmetric_payoffs', {})
-    result['g7_cross_references'] = llm_result.get('g7_cross_references', [])
+    # ===== 9. RESTLICHE BLOECKE =====
+    result['briefing'] = call1_result.get('briefing', _fallback_briefing(trends, regime_context, run_date))
+    result['decision_matrix'] = call1_result.get('decision_matrix', _fallback_decision_matrix(trends, regime_context))
+    result['asymmetric_payoffs'] = call2_result.get('asymmetric_payoffs', {})
+    result['g7_cross_references'] = call3_result.get('g7_cross_references', [])
 
     print(f"    [BRIEFING] Komplett: {len(result)} Bloecke generiert")
     return result
 
 
 # =====================================================================
-# PYTHON-BERECHNUNGEN (deterministisch)
+# SHARED CONTEXT BUILDER
 # =====================================================================
 
-# ----- REGIME CONTEXT -----
-
-REGIME_RULES = {
-    'EXPANSION':        {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
-    'RISK_ON':          {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
-    'BROAD_RISK_ON':    {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
-    'SELECTIVE':        {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
-    'TRANSITION':       {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
-    'NEUTRAL':          {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
-    'CONFLICTED':       {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
-    'CONTRACTION':      {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
-    'RISK_OFF':         {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
-    'BROAD_RISK_OFF':   {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
-    'CRISIS':           {'sizing_multiplier': 0.0,  'min_conviction': 999, 'min_asymmetry': 999, 'trigger_strictness': 'BLOCKED'},
-    'RISK_OFF_FORCED':  {'sizing_multiplier': 0.0,  'min_conviction': 999, 'min_asymmetry': 999, 'trigger_strictness': 'BLOCKED'},
-}
-
-REGIME_COLORS = {
-    'EXPANSION': '#22C55E', 'RISK_ON': '#22C55E', 'BROAD_RISK_ON': '#22C55E', 'SELECTIVE': '#22C55E',
-    'TRANSITION': '#EAB308', 'NEUTRAL': '#EAB308', 'CONFLICTED': '#EAB308',
-    'CONTRACTION': '#F97316', 'RISK_OFF': '#F97316', 'BROAD_RISK_OFF': '#F97316',
-    'CRISIS': '#EF4444', 'RISK_OFF_FORCED': '#EF4444',
-}
-
-
-def _build_regime_context(v16_regime):
-    """Spec §4.2: Baue regime_context Block."""
-    regime = v16_regime if v16_regime in REGIME_RULES else 'NEUTRAL'
-    rules = REGIME_RULES[regime]
-    color = REGIME_COLORS.get(regime, '#EAB308')
-
-    # Impact Summary Text
-    mult = rules['sizing_multiplier']
-    if mult == 0:
-        summary = "CRISIS MODUS — Keine neuen Disruption-Trades. Alle Positionen auf HOLD/AVOID."
-    elif mult < 1.0:
-        summary = (f"Sizing auf {int(mult * 100)}% reduziert. "
-                   f"Nur Trends mit Conviction >{rules['min_conviction']} "
-                   f"und Asymmetrie >{rules['min_asymmetry']}:1 kommen in Frage. "
-                   f"Trigger Events verschaerft.")
-    else:
-        summary = "Volle Auslastung. Standard-Thresholds aktiv."
-
-    return {
-        'current_regime': regime,
-        'regime_color': color,
-        'regime_impact_summary': summary,
-        'regime_rules': {
-            'sizing_multiplier': mult,
-            'min_conviction_threshold': rules['min_conviction'],
-            'min_asymmetry_threshold': rules['min_asymmetry'],
-            'trigger_strictness': rules['trigger_strictness'],
-        },
-        'regime_history_4w': [],  # Wird von main.py aus History befuellt
-    }
-
-
-# ----- CONVICTION SCORES (Partial — ohne regime_fit) -----
-
-def _calculate_conviction_scores_partial(trends):
-    """
-    Spec §7.1: Berechne Conviction-Komponenten OHNE regime_fit.
-    Formel: Conviction = 0.30×Mom + 0.25×Inflection + 0.25×(100-Crowd) + 0.20×Regime_Fit
-    regime_fit kommt vom LLM und wird spaeter eingerechnet.
-    """
-    partial = {}
-    for t in trends:
-        if t.get('watchlist_status') not in ('ACTIVE', 'WATCH'):
-            continue
-
-        tid = t['id']
-        momentum = t.get('momentum', 0)
-        inflection = t.get('inflection_score', 0)
-        crowding = t.get('crowding', 0)
-
-        # Inflection Proximity: min(100, inflection_score × 1.3)
-        inflection_proximity = min(100, inflection * 1.3)
-
-        momentum_contrib = 0.30 * momentum
-        inflection_contrib = 0.25 * inflection_proximity
-        crowding_inv_contrib = 0.25 * (100 - crowding)
-        # regime_fit_contrib wird spaeter ergaenzt
-
-        partial[tid] = {
-            'momentum': momentum,
-            'inflection_proximity': round(inflection_proximity, 1),
-            'crowding': crowding,
-            'momentum_contrib': round(momentum_contrib, 1),
-            'inflection_contrib': round(inflection_contrib, 1),
-            'crowding_inv_contrib': round(crowding_inv_contrib, 1),
-            'partial_sum': round(momentum_contrib + inflection_contrib + crowding_inv_contrib, 1),
-        }
-
-    return partial
-
-
-def _finalize_conviction_scores(partial, regime_fits, regime_context):
-    """Finalisiere Conviction Scores mit regime_fit vom LLM."""
-    scores = {}
-    for tid, p in partial.items():
-        # regime_fit: 0-100, default 50 wenn LLM nichts liefert
-        regime_fit = regime_fits.get(tid, {}).get('score', 50)
-        regime_fit_reason = regime_fits.get(tid, {}).get('reason', 'Keine LLM-Einschaetzung verfuegbar')
-
-        regime_fit_contrib = 0.20 * regime_fit
-        conviction = round(p['partial_sum'] + regime_fit_contrib)
-        conviction = max(0, min(100, conviction))
-
-        if conviction > 70:
-            label = 'HIGH'
-        elif conviction >= 40:
-            label = 'MEDIUM'
-        else:
-            label = 'LOW'
-
-        scores[tid] = {
-            'conviction': conviction,
-            'label': label,
-            'components': {
-                'momentum_contrib': p['momentum_contrib'],
-                'inflection_contrib': p['inflection_contrib'],
-                'crowding_inv_contrib': p['crowding_inv_contrib'],
-                'regime_fit_contrib': round(regime_fit_contrib, 1),
-            },
-            'regime_fit': regime_fit,
-            'regime_fit_reason': regime_fit_reason,
-        }
-
-    return scores
-
-
-# ----- CROWDING ALERTS -----
-
-def _detect_crowding_alerts(trends):
-    """
-    Spec §6.2: Regelbasierte Crowding Alerts.
-    DANGER:   Crowding >75 UND Momentum 4W Delta < -5
-    WARNING:  Crowding >75 UND Momentum stagnierend (4W Delta -5 bis 0)
-    ELEVATED: Crowding >65 UND Momentum 4W Delta < -10
-    """
-    alerts = []
-    for t in trends:
-        if t.get('watchlist_status') not in ('ACTIVE', 'WATCH'):
-            continue
-
-        crowding = t.get('crowding', 0)
-        momentum = t.get('momentum', 0)
-        # acceleration dient als Proxy fuer 4W Delta (positiv = steigend)
-        momentum_delta = t.get('acceleration', 0)
-
-        alert_level = None
-
-        if crowding > 75 and momentum_delta < -5:
-            alert_level = 'DANGER'
-        elif crowding > 75 and -5 <= momentum_delta <= 0:
-            alert_level = 'WARNING'
-        elif crowding > 65 and momentum_delta < -10:
-            alert_level = 'ELEVATED'
-
-        if alert_level:
-            alerts.append({
-                'trend_id': t['id'],
-                'trend_name': t['name'],
-                'crowding': crowding,
-                'momentum': momentum,
-                'momentum_4w_delta': momentum_delta,
-                'alert_level': alert_level,
-                'description': f"Crowding {crowding} bei "
-                               f"{'fallender' if momentum_delta < 0 else 'stagnierender'} "
-                               f"Momentum ({momentum_delta:+d} in 4W). "
-                               f"{'Klassisches Distribution-Muster.' if alert_level == 'DANGER' else 'Aufmerksamkeit erhoehen.'}",
-                'recommendation': '',  # Wird vom LLM ergaenzt
-                'top_etf': t.get('top_etf', ''),
-                'historical_parallel': '',  # Wird vom LLM ergaenzt
-            })
-
-    return alerts
-
-
-# ----- REGIME HEATMAP (statische Matrix aus Spec §16.2) -----
-
-REGIME_HEATMAP_SCORES = {
-    'D1':  {'name': 'AI',           'EXPANSION': 90, 'TRANSITION': 70, 'CONTRACTION': 40, 'CRISIS': 20},
-    'D2':  {'name': 'Robotics',     'EXPANSION': 80, 'TRANSITION': 55, 'CONTRACTION': 35, 'CRISIS': 15},
-    'D3':  {'name': 'Energy',       'EXPANSION': 65, 'TRANSITION': 60, 'CONTRACTION': 50, 'CRISIS': 70},
-    'D4':  {'name': 'Biotech',      'EXPANSION': 60, 'TRANSITION': 55, 'CONTRACTION': 50, 'CRISIS': 40},
-    'D5':  {'name': 'Space',        'EXPANSION': 70, 'TRANSITION': 65, 'CONTRACTION': 55, 'CRISIS': 60},
-    'D6':  {'name': 'Quantum',      'EXPANSION': 75, 'TRANSITION': 50, 'CONTRACTION': 30, 'CRISIS': 15},
-    'D7':  {'name': 'Fintech',      'EXPANSION': 85, 'TRANSITION': 60, 'CONTRACTION': 45, 'CRISIS': 20},
-    'D8':  {'name': 'Supply Chain', 'EXPANSION': 70, 'TRANSITION': 75, 'CONTRACTION': 60, 'CRISIS': 45},
-    'D9':  {'name': 'Climate',      'EXPANSION': 75, 'TRANSITION': 70, 'CONTRACTION': 40, 'CRISIS': 25},
-    'D10': {'name': 'Cyber',        'EXPANSION': 65, 'TRANSITION': 70, 'CONTRACTION': 75, 'CRISIS': 85},
-    'D11': {'name': 'Demographics', 'EXPANSION': 50, 'TRANSITION': 55, 'CONTRACTION': 55, 'CRISIS': 50},
-    'D12': {'name': 'Regulatory',   'EXPANSION': 40, 'TRANSITION': 55, 'CONTRACTION': 65, 'CRISIS': 80},
-}
-
-
-def _build_regime_heatmap(trends, v16_regime):
-    """Spec §16.2: Baue regime_heatmap Block."""
-    # Mappe V16 Regime auf Heatmap-Regime (4 Buckets)
-    regime_bucket_map = {
-        'EXPANSION': 'EXPANSION', 'RISK_ON': 'EXPANSION', 'BROAD_RISK_ON': 'EXPANSION', 'SELECTIVE': 'EXPANSION',
-        'TRANSITION': 'TRANSITION', 'NEUTRAL': 'TRANSITION', 'CONFLICTED': 'TRANSITION',
-        'CONTRACTION': 'CONTRACTION', 'RISK_OFF': 'CONTRACTION', 'BROAD_RISK_OFF': 'CONTRACTION',
-        'CRISIS': 'CRISIS', 'RISK_OFF_FORCED': 'CRISIS',
-    }
-    current_bucket = regime_bucket_map.get(v16_regime, 'TRANSITION')
-
-    # Nur aktive Trends in die Matrix
-    active_ids = {t['id'] for t in trends if t.get('watchlist_status') in ('ACTIVE', 'WATCH')}
-
-    matrix = {}
-    for tid, data in REGIME_HEATMAP_SCORES.items():
-        # Alle 12 Trends aufnehmen (auch ARCHIVED fuer vollstaendige Matrix)
-        matrix[tid] = {
-            'name': data['name'],
-            'scores': {
-                'EXPANSION': data['EXPANSION'],
-                'TRANSITION': data['TRANSITION'],
-                'CONTRACTION': data['CONTRACTION'],
-                'CRISIS': data['CRISIS'],
-            }
-        }
-
-    return {
-        'regimes': ['EXPANSION', 'TRANSITION', 'CONTRACTION', 'CRISIS'],
-        'current_regime': current_bucket,
-        'matrix': matrix,
-    }
-
-
-# =====================================================================
-# LLM CALL
-# =====================================================================
-
-def _run_llm_briefing(trends, exposure_result, contrarian_alerts,
-                      causal_chains, convergence_zones, vulnerability_watchlist,
-                      v16_weights, regime_context, config, run_date):
-    """
-    EIN grosser Sonnet-Call der alle textbasierten Bloecke generiert.
-    """
-    # --- Input zusammenbauen ---
+def _build_shared_context(trends, exposure_result, contrarian_alerts,
+                          causal_chains, convergence_zones,
+                          vulnerability_watchlist, v16_weights,
+                          regime_context, config, run_date):
+    """Baue gemeinsamen Input-Kontext fuer alle 3 LLM-Calls."""
     active_watch = [t for t in trends if t.get('watchlist_status') in ('ACTIVE', 'WATCH')]
     archived = [t for t in trends if t.get('watchlist_status') == 'ARCHIVED']
 
@@ -404,171 +167,394 @@ def _run_llm_briefing(trends, exposure_result, contrarian_alerts,
 
     v16_text = ', '.join(f"{k}:{v:.1f}%" for k, v in v16_weights.items() if v != 0) if v16_weights else 'Keine Gewichte'
 
-    g7_crossref = config.get('g7_disruptions_crossref', {})
-    g7_text = json.dumps(g7_crossref, indent=2)
-
     regime = regime_context['current_regime']
     regime_mult = regime_context['regime_rules']['sizing_multiplier']
 
-    system_prompt = """Du bist der Chief Intelligence Officer eines systematischen Macro Hedge Fund (Baldur Creek Capital).
+    return {
+        'run_date': run_date,
+        'regime': regime,
+        'regime_mult': regime_mult,
+        'trends_text': trends_text,
+        'archived_text': ', '.join(f"{t['id']} {t['name']}" for t in archived),
+        'bs_text': bs_text or 'Keine',
+        'convergence_text': convergence_text or ' Keine',
+        'contrarian_text': contrarian_text or ' Keine',
+        'chains_text': chains_text or ' Keine',
+        'vuln_text': vuln_text or ' Keine',
+        'v16_text': v16_text,
+        'g7_crossref': config.get('g7_disruptions_crossref', {}),
+        'active_watch': [t for t in trends if t.get('watchlist_status') in ('ACTIVE', 'WATCH')],
+        'convergence_zones': convergence_zones,
+        'vulnerability_watchlist': vulnerability_watchlist,
+    }
+
+
+SYSTEM_PROMPT = """Du bist der Chief Intelligence Officer eines systematischen Macro Hedge Fund (Baldur Creek Capital).
 Du schreibst auf Deutsch. Alle Analysen sind regime-konditioniert.
-Antworte AUSSCHLIESSLICH mit validem JSON. Kein Markdown, keine Erklaerungen ausserhalb des JSON."""
+Antworte AUSSCHLIESSLICH mit validem JSON. Kein Markdown, keine Erklaerungen, kein Text vor oder nach dem JSON.
+Das JSON muss mit { beginnen und mit } enden. Keine ```json Bloecke."""
 
-    user_prompt = f"""Generiere den woechentlichen Intelligence Briefing fuer {run_date}.
 
-AKTUELLES V16 REGIME: {regime} (Sizing-Multiplier: {regime_mult})
+# =====================================================================
+# LLM CALL 1: Briefing + Regime Fits + Decision Matrix
+# =====================================================================
 
-AKTIVE/WATCH TRENDS:{trends_text}
+def _llm_call_1_briefing(ctx):
+    """Call 1: Briefing Text + Regime Fits + Decision Matrix."""
 
-ARCHIVED TRENDS: {', '.join(f"{t['id']} {t['name']}" for t in archived)}
+    active_ids = [t['id'] for t in ctx['active_watch']]
+    regime_fits_template = ', '.join(f'"{tid}": {{"score": <0-100>, "reason": "<1 Satz>"}}' for tid in active_ids)
 
-BLIND SPOTS: {bs_text if bs_text else 'Keine'}
+    user_prompt = f"""Generiere den woechentlichen Intelligence Briefing fuer {ctx['run_date']}.
 
-CONVERGENCE ZONES:{convergence_text if convergence_text else ' Keine'}
+REGIME: {ctx['regime']} (Sizing x{ctx['regime_mult']})
+TRENDS:{ctx['trends_text']}
+ARCHIVED: {ctx['archived_text']}
+BLIND SPOTS: {ctx['bs_text']}
+CONVERGENCE:{ctx['convergence_text']}
+CONTRARIAN:{ctx['contrarian_text']}
+CAUSAL CHAINS:{ctx['chains_text']}
 
-CONTRARIAN ALERTS:{contrarian_text if contrarian_text else ' Keine'}
+Generiere dieses JSON (EXAKT diese Struktur):
 
-CAUSAL CHAINS:{chains_text if chains_text else ' Keine'}
+{{
+  "briefing": {{
+    "date": "{ctx['run_date']}",
+    "regime_context": "{ctx['regime']}",
+    "headline": "<Knackige Headline, 1 Satz>",
+    "body": "<300-500 Woerter Fliesstext, kein Markdown>",
+    "sections": [
+      {{"title": "Strukturelle Verschiebungen", "content": "<2-3 Saetze>"}},
+      {{"title": "Convergence-Analyse", "content": "<2-3 Saetze>"}},
+      {{"title": "Regime-Konditionierung", "content": "<2-3 Saetze>"}},
+      {{"title": "Blind Spots & Contrarian", "content": "<2-3 Saetze>"}},
+      {{"title": "Causal Chain Fruehwarnung", "content": "<2-3 Saetze>"}},
+      {{"title": "Model Risk Bewertung", "content": "<2-3 Saetze>"}}
+    ],
+    "key_changes_this_week": ["<Aenderung 1>", "<Aenderung 2>", "<Aenderung 3>"]
+  }},
+  "regime_fits": {{
+    {regime_fits_template}
+  }},
+  "decision_matrix": [
+    <Ein Objekt pro ACTIVE/WATCH Trend mit: "trend_id", "trend_name", "conviction" (int), "conviction_label" (HIGH/MEDIUM/LOW), "asymmetry" (float), "asymmetry_bull_pct" (int), "asymmetry_bear_pct" (negative int), "timeframe" (6M/12M/18M), "instrument" (ETF), "sizing_hint_pct" (float 1-5), "sizing_regime_adjusted_pct" (= sizing_hint_pct x {ctx['regime_mult']}), "trigger_event" (1 Satz), "regime_impact" (1 Satz), "status" (EXECUTE/WATCH_FOR_TRIGGER/HOLD/AVOID)>
+  ]
+}}"""
 
-VULNERABLE ASSETS:{vuln_text if vuln_text else ' Keine'}
+    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=3000)
+    parsed = _parse_json_response(text)
+    if not parsed:
+        print(f"    [WARN] Call 1 Parse fehlgeschlagen. Erste 300 Zeichen: {text[:300]}")
+        return {}
+    return parsed
 
-V16 PORTFOLIO: {v16_text}
+
+# =====================================================================
+# LLM CALL 2: Asymmetric Payoffs + Vulnerability Texts
+# =====================================================================
+
+def _llm_call_2_payoffs(ctx):
+    """Call 2: Asymmetric Payoffs + Vulnerability Texts."""
+
+    user_prompt = f"""Generiere Payoff-Analysen fuer Disruption-Trends.
+
+REGIME: {ctx['regime']}
+TRENDS:{ctx['trends_text']}
+VULNERABLE ASSETS:{ctx['vuln_text']}
+V16 PORTFOLIO: {ctx['v16_text']}
+
+Generiere dieses JSON:
+
+{{
+  "asymmetric_payoffs": {{
+    "<Trend-ID fuer JEDEN ACTIVE/WATCH Trend>": {{
+      "bull_return_pct": <positiv, z.B. 35>,
+      "bear_return_pct": <negativ, z.B. -12>,
+      "ratio": <bull/abs(bear), z.B. 2.9>,
+      "ratio_label": "<EXCEPTIONAL(>4)/EXCELLENT(3-4)/GOOD(2-3)/MARGINAL(1.5-2)/UNFAVORABLE(<1.5)>",
+      "instrument": "<ETF Ticker>",
+      "bull_scenario": "<1 Satz>",
+      "bear_scenario": "<1 Satz>",
+      "base_scenario": "<1 Satz>",
+      "probability_bull": <int>,
+      "probability_bear": <int>,
+      "probability_base": <int>
+    }}
+  }},
+  "vulnerability_texts": {{
+    "<Asset-Ticker fuer JEDES vulnerable Asset>": {{
+      "recommendation": "<1-2 Saetze>",
+      "hedge_instrument": "<Konkreter Hedge-Vorschlag>"
+    }}
+  }}
+}}
+
+probability_bull + probability_bear + probability_base = 100.
+ratio = abs(bull_return_pct / bear_return_pct). Alle Texte Deutsch."""
+
+    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=2500)
+    parsed = _parse_json_response(text)
+    if not parsed:
+        print(f"    [WARN] Call 2 Parse fehlgeschlagen. Erste 300 Zeichen: {text[:300]}")
+        return {}
+    return parsed
+
+
+# =====================================================================
+# LLM CALL 3: Second Order Effects + G7 Cross-References
+# =====================================================================
+
+def _llm_call_3_effects(ctx):
+    """Call 3: Second Order Effects + G7 Cross-References."""
+
+    g7_text = json.dumps(ctx['g7_crossref'], indent=2)
+
+    convergence_detail = ""
+    for z in ctx['convergence_zones']:
+        trends_str = ' + '.join(z.get('trend_names', z.get('trends', [])))
+        convergence_detail += f"\n- {trends_str}: {z.get('description', '')}"
+
+    user_prompt = f"""Generiere Second Order Effects und G7 Cross-References.
+
+REGIME: {ctx['regime']}
+TRENDS:{ctx['trends_text']}
+V16 PORTFOLIO: {ctx['v16_text']}
+
+CONVERGENCE ZONES:{convergence_detail if convergence_detail else ' Keine'}
 
 G7-DISRUPTIONS CROSS-REF MAP:
 {g7_text}
 
-Generiere folgendes JSON-Objekt (ALLE Felder sind Pflicht):
+Generiere dieses JSON:
 
 {{
-  "briefing": {{
-    "date": "{run_date}",
-    "regime_context": "{regime}",
-    "headline": "<Knackige Headline, 1 Satz, Deutsch>",
-    "body": "<800-1200 Woerter Fliesstext. Kein Markdown, nur Fliesstext. Deutsch.>",
-    "sections": [
-      {{"title": "Strukturelle Verschiebungen", "content": "<Analyse der wichtigsten Trend-Bewegungen>"}},
-      {{"title": "Convergence-Analyse", "content": "<Convergence Zones und deren Bedeutung>"}},
-      {{"title": "Regime-Konditionierung", "content": "<Was bedeutet {regime} fuer Disruption-Trades?>"}},
-      {{"title": "Blind Spots & Contrarian", "content": "<Blind Spots und Contrarian Opportunities>"}},
-      {{"title": "Causal Chain Fruehwarnung", "content": "<Welche Chains stehen vor dem naechsten Schritt?>"}},
-      {{"title": "Model Risk Bewertung", "content": "<Wo koennten unsere Modelle falsch liegen?>"}}
-    ],
-    "key_changes_this_week": ["<Aenderung 1>", "<Aenderung 2>", "<Aenderung 3>"]
-  }},
-
-  "decision_matrix": [
-    {{
-      "trend_id": "<ID>",
-      "trend_name": "<Name>",
-      "conviction": 0,
-      "conviction_label": "<HIGH/MEDIUM/LOW>",
-      "asymmetry": 0.0,
-      "asymmetry_bull_pct": 0,
-      "asymmetry_bear_pct": 0,
-      "timeframe": "<3M/6M/12M/18M/24M>",
-      "instrument": "<ETF Ticker>",
-      "sizing_hint_pct": 0.0,
-      "sizing_regime_adjusted_pct": 0.0,
-      "trigger_event": "<Konkretes Event das den Einstieg triggert>",
-      "regime_impact": "<Text: Was bedeutet {regime} fuer diesen Trade?>",
-      "status": "<EXECUTE/WATCH_FOR_TRIGGER/HOLD/AVOID>"
-    }}
-  ],
-
-  "asymmetric_payoffs": {{
-    "<Trend-ID>": {{
-      "bull_return_pct": 0,
-      "bear_return_pct": 0,
-      "ratio": 0.0,
-      "ratio_label": "<EXCEPTIONAL/EXCELLENT/GOOD/MARGINAL/UNFAVORABLE>",
-      "instrument": "<ETF>",
-      "bull_scenario": "<1-2 Saetze Bull Case>",
-      "bear_scenario": "<1-2 Saetze Bear Case>",
-      "base_scenario": "<1-2 Saetze Base Case>",
-      "probability_bull": 0,
-      "probability_bear": 0,
-      "probability_base": 0
-    }}
-  }},
-
-  "regime_fits": {{
-    "<Trend-ID>": {{
-      "score": 0,
-      "reason": "<1 Satz: Warum passt/passt nicht dieser Trend zum aktuellen Regime?>"
-    }}
-  }},
-
-  "vulnerability_texts": {{
-    "<Asset-Ticker>": {{
-      "recommendation": "<1-2 Saetze: Was soll Richie mit dieser Position tun?>",
-      "hedge_instrument": "<Konkreter Hedge-Vorschlag mit Instrument>"
-    }}
-  }},
-
   "second_order_effects": [
     {{
       "zone_trends": ["<ID1>", "<ID2>"],
       "primary_effects": [
-        {{"asset": "<Ticker>", "direction": "BULLISH", "mechanism": "<1 Satz>"}}
+        {{"asset": "<ETF>", "direction": "BULLISH", "mechanism": "<1 Satz>"}}
       ],
       "second_order_effects": [
         {{
-          "asset": "<Ticker>",
+          "asset": "<ETF/Asset>",
           "direction": "<BULLISH/BEARISH>",
-          "mechanism": "<1 Satz: Wie genau wirkt der indirekte Effekt?>",
+          "mechanism": "<1 Satz>",
           "confidence": "<HIGH/MEDIUM/LOW>",
-          "timeframe": "<6-12M/12-18M/12-24M/18-36M>"
+          "timeframe": "<6-12M/12-18M/12-24M>"
         }}
       ],
-      "net_portfolio_impact": "<1-2 Saetze: Netto-Effekt auf V16 Portfolio>"
+      "net_portfolio_impact": "<1 Satz>"
     }}
   ],
-
   "g7_cross_references": [
     {{
       "disruption_trend_id": "<D-ID>",
       "disruption_trend_name": "<Name>",
       "g7_event_id": "<evt_id>",
-      "g7_event_title": "<Titel des G7 Events>",
-      "g7_country": "<Laenderkuerzel>",
+      "g7_event_title": "<Titel>",
+      "g7_country": "<Kuerzel>",
       "relationship": "<ACCELERATES/AMPLIFIES/ENABLES/DECELERATES/DISRUPTS>",
-      "description": "<1-2 Saetze>",
-      "impact_on_portfolio": "<1 Satz Portfolio-Impact>"
+      "description": "<1 Satz>",
+      "impact_on_portfolio": "<1 Satz>"
     }}
   ]
 }}
 
-REGELN:
-- decision_matrix: NUR fuer ACTIVE und WATCH Trends (keine ARCHIVED). sizing_hint_pct = sinnvolle Allocation (1-5%). sizing_regime_adjusted_pct = sizing_hint_pct × {regime_mult}. In CRISIS: alle Status = AVOID.
-- asymmetric_payoffs: NUR fuer ACTIVE und WATCH Trends. ratio = abs(bull_return_pct / bear_return_pct). probability_bull + probability_bear + probability_base = 100.
-- ratio_label: >4.0=EXCEPTIONAL, 3.0-4.0=EXCELLENT, 2.0-3.0=GOOD, 1.5-2.0=MARGINAL, <1.5=UNFAVORABLE
-- regime_fits: Fuer JEDEN ACTIVE/WATCH Trend. Score 0-100 (100=perfekt zum Regime passend).
-- vulnerability_texts: Fuer JEDES Asset in der Vulnerability Watchlist.
-- second_order_effects: Fuer JEDE Convergence Zone. Mindestens 2 Second Order Effects pro Zone.
-- g7_cross_references: Basierend auf der G7-Disruptions Cross-Ref Map. Nur relevante aktuelle Verbindungen.
-- Alle Texte auf Deutsch.
-- conviction und conviction_label in decision_matrix werden spaeter von Python ueberschrieben — trotzdem schaetzen.
-"""
+second_order_effects: Mindestens 2 Effects pro Zone. Alle Texte Deutsch."""
 
-    response_text = _call_anthropic(system_prompt, user_prompt, max_tokens=4096)
-    parsed = _parse_json_response(response_text)
-
+    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=2500)
+    parsed = _parse_json_response(text)
     if not parsed:
-        print("    [WARN] LLM Response konnte nicht geparst werden")
-        return _fallback_llm_result(trends, regime_context, run_date)
-
+        print(f"    [WARN] Call 3 Parse fehlgeschlagen. Erste 300 Zeichen: {text[:300]}")
+        return {}
     return parsed
 
 
 # =====================================================================
-# ENRICHMENT FUNCTIONS
+# PYTHON-BERECHNUNGEN (deterministisch)
+# =====================================================================
+
+REGIME_RULES = {
+    'EXPANSION':        {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
+    'RISK_ON':          {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
+    'BROAD_RISK_ON':    {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
+    'SELECTIVE':        {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
+    'TRANSITION':       {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
+    'NEUTRAL':          {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
+    'CONFLICTED':       {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
+    'CONTRACTION':      {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
+    'RISK_OFF':         {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
+    'BROAD_RISK_OFF':   {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
+    'CRISIS':           {'sizing_multiplier': 0.0,  'min_conviction': 999, 'min_asymmetry': 999, 'trigger_strictness': 'BLOCKED'},
+    'RISK_OFF_FORCED':  {'sizing_multiplier': 0.0,  'min_conviction': 999, 'min_asymmetry': 999, 'trigger_strictness': 'BLOCKED'},
+}
+
+REGIME_COLORS = {
+    'EXPANSION': '#22C55E', 'RISK_ON': '#22C55E', 'BROAD_RISK_ON': '#22C55E', 'SELECTIVE': '#22C55E',
+    'TRANSITION': '#EAB308', 'NEUTRAL': '#EAB308', 'CONFLICTED': '#EAB308',
+    'CONTRACTION': '#F97316', 'RISK_OFF': '#F97316', 'BROAD_RISK_OFF': '#F97316',
+    'CRISIS': '#EF4444', 'RISK_OFF_FORCED': '#EF4444',
+}
+
+
+def _build_regime_context(v16_regime):
+    regime = v16_regime if v16_regime in REGIME_RULES else 'NEUTRAL'
+    rules = REGIME_RULES[regime]
+    color = REGIME_COLORS.get(regime, '#EAB308')
+
+    mult = rules['sizing_multiplier']
+    if mult == 0:
+        summary = "CRISIS MODUS — Keine neuen Disruption-Trades. Alle Positionen auf HOLD/AVOID."
+    elif mult < 1.0:
+        summary = (f"Sizing auf {int(mult * 100)}% reduziert. "
+                   f"Nur Trends mit Conviction >{rules['min_conviction']} "
+                   f"und Asymmetrie >{rules['min_asymmetry']}:1 kommen in Frage. "
+                   f"Trigger Events verschaerft.")
+    else:
+        summary = "Volle Auslastung. Standard-Thresholds aktiv."
+
+    return {
+        'current_regime': regime,
+        'regime_color': color,
+        'regime_impact_summary': summary,
+        'regime_rules': {
+            'sizing_multiplier': mult,
+            'min_conviction_threshold': rules['min_conviction'],
+            'min_asymmetry_threshold': rules['min_asymmetry'],
+            'trigger_strictness': rules['trigger_strictness'],
+        },
+        'regime_history_4w': [],
+    }
+
+
+def _calculate_conviction_scores_partial(trends):
+    partial = {}
+    for t in trends:
+        if t.get('watchlist_status') not in ('ACTIVE', 'WATCH'):
+            continue
+        tid = t['id']
+        momentum = t.get('momentum', 0)
+        inflection = t.get('inflection_score', 0)
+        crowding = t.get('crowding', 0)
+        inflection_proximity = min(100, inflection * 1.3)
+        momentum_contrib = 0.30 * momentum
+        inflection_contrib = 0.25 * inflection_proximity
+        crowding_inv_contrib = 0.25 * (100 - crowding)
+        partial[tid] = {
+            'momentum_contrib': round(momentum_contrib, 1),
+            'inflection_contrib': round(inflection_contrib, 1),
+            'crowding_inv_contrib': round(crowding_inv_contrib, 1),
+            'partial_sum': round(momentum_contrib + inflection_contrib + crowding_inv_contrib, 1),
+        }
+    return partial
+
+
+def _finalize_conviction_scores(partial, regime_fits, regime_context):
+    scores = {}
+    for tid, p in partial.items():
+        regime_fit = regime_fits.get(tid, {}).get('score', 50)
+        regime_fit_reason = regime_fits.get(tid, {}).get('reason', 'Keine LLM-Einschaetzung verfuegbar')
+        regime_fit_contrib = 0.20 * regime_fit
+        conviction = round(p['partial_sum'] + regime_fit_contrib)
+        conviction = max(0, min(100, conviction))
+        if conviction > 70:
+            label = 'HIGH'
+        elif conviction >= 40:
+            label = 'MEDIUM'
+        else:
+            label = 'LOW'
+        scores[tid] = {
+            'conviction': conviction,
+            'label': label,
+            'components': {
+                'momentum_contrib': p['momentum_contrib'],
+                'inflection_contrib': p['inflection_contrib'],
+                'crowding_inv_contrib': p['crowding_inv_contrib'],
+                'regime_fit_contrib': round(regime_fit_contrib, 1),
+            },
+            'regime_fit': regime_fit,
+            'regime_fit_reason': regime_fit_reason,
+        }
+    return scores
+
+
+def _detect_crowding_alerts(trends):
+    alerts = []
+    for t in trends:
+        if t.get('watchlist_status') not in ('ACTIVE', 'WATCH'):
+            continue
+        crowding = t.get('crowding', 0)
+        momentum_delta = t.get('acceleration', 0)
+        alert_level = None
+        if crowding > 75 and momentum_delta < -5:
+            alert_level = 'DANGER'
+        elif crowding > 75 and -5 <= momentum_delta <= 0:
+            alert_level = 'WARNING'
+        elif crowding > 65 and momentum_delta < -10:
+            alert_level = 'ELEVATED'
+        if alert_level:
+            alerts.append({
+                'trend_id': t['id'],
+                'trend_name': t['name'],
+                'crowding': crowding,
+                'momentum': t.get('momentum', 0),
+                'momentum_4w_delta': momentum_delta,
+                'alert_level': alert_level,
+                'description': f"Crowding {crowding} bei "
+                               f"{'fallender' if momentum_delta < 0 else 'stagnierender'} "
+                               f"Momentum ({momentum_delta:+d} in 4W). "
+                               f"{'Klassisches Distribution-Muster.' if alert_level == 'DANGER' else 'Aufmerksamkeit erhoehen.'}",
+                'recommendation': '',
+                'top_etf': t.get('top_etf', ''),
+                'historical_parallel': '',
+            })
+    return alerts
+
+
+REGIME_HEATMAP_SCORES = {
+    'D1':  {'name': 'AI',           'EXPANSION': 90, 'TRANSITION': 70, 'CONTRACTION': 40, 'CRISIS': 20},
+    'D2':  {'name': 'Robotics',     'EXPANSION': 80, 'TRANSITION': 55, 'CONTRACTION': 35, 'CRISIS': 15},
+    'D3':  {'name': 'Energy',       'EXPANSION': 65, 'TRANSITION': 60, 'CONTRACTION': 50, 'CRISIS': 70},
+    'D4':  {'name': 'Biotech',      'EXPANSION': 60, 'TRANSITION': 55, 'CONTRACTION': 50, 'CRISIS': 40},
+    'D5':  {'name': 'Space',        'EXPANSION': 70, 'TRANSITION': 65, 'CONTRACTION': 55, 'CRISIS': 60},
+    'D6':  {'name': 'Quantum',      'EXPANSION': 75, 'TRANSITION': 50, 'CONTRACTION': 30, 'CRISIS': 15},
+    'D7':  {'name': 'Fintech',      'EXPANSION': 85, 'TRANSITION': 60, 'CONTRACTION': 45, 'CRISIS': 20},
+    'D8':  {'name': 'Supply Chain', 'EXPANSION': 70, 'TRANSITION': 75, 'CONTRACTION': 60, 'CRISIS': 45},
+    'D9':  {'name': 'Climate',      'EXPANSION': 75, 'TRANSITION': 70, 'CONTRACTION': 40, 'CRISIS': 25},
+    'D10': {'name': 'Cyber',        'EXPANSION': 65, 'TRANSITION': 70, 'CONTRACTION': 75, 'CRISIS': 85},
+    'D11': {'name': 'Demographics', 'EXPANSION': 50, 'TRANSITION': 55, 'CONTRACTION': 55, 'CRISIS': 50},
+    'D12': {'name': 'Regulatory',   'EXPANSION': 40, 'TRANSITION': 55, 'CONTRACTION': 65, 'CRISIS': 80},
+}
+
+
+def _build_regime_heatmap(trends, v16_regime):
+    regime_bucket_map = {
+        'EXPANSION': 'EXPANSION', 'RISK_ON': 'EXPANSION', 'BROAD_RISK_ON': 'EXPANSION', 'SELECTIVE': 'EXPANSION',
+        'TRANSITION': 'TRANSITION', 'NEUTRAL': 'TRANSITION', 'CONFLICTED': 'TRANSITION',
+        'CONTRACTION': 'CONTRACTION', 'RISK_OFF': 'CONTRACTION', 'BROAD_RISK_OFF': 'CONTRACTION',
+        'CRISIS': 'CRISIS', 'RISK_OFF_FORCED': 'CRISIS',
+    }
+    current_bucket = regime_bucket_map.get(v16_regime, 'TRANSITION')
+    matrix = {}
+    for tid, data in REGIME_HEATMAP_SCORES.items():
+        matrix[tid] = {
+            'name': data['name'],
+            'scores': {r: data[r] for r in ['EXPANSION', 'TRANSITION', 'CONTRACTION', 'CRISIS']},
+        }
+    return {
+        'regimes': ['EXPANSION', 'TRANSITION', 'CONTRACTION', 'CRISIS'],
+        'current_regime': current_bucket,
+        'matrix': matrix,
+    }
+
+
+# =====================================================================
+# ENRICHMENT
 # =====================================================================
 
 def _enrich_vulnerability_watchlist(vulnerability_watchlist, vulnerability_texts):
-    """Ergaenze Vulnerability Watchlist mit LLM-Texten."""
     for v in vulnerability_watchlist:
-        asset = v['asset']
-        texts = vulnerability_texts.get(asset, {})
+        texts = vulnerability_texts.get(v['asset'], {})
         if texts:
             v['recommendation'] = texts.get('recommendation', v.get('recommendation', ''))
             v['hedge_instrument'] = texts.get('hedge_instrument', v.get('hedge_instrument', ''))
@@ -576,8 +562,6 @@ def _enrich_vulnerability_watchlist(vulnerability_watchlist, vulnerability_texts
 
 
 def _enrich_convergence_zones(convergence_zones, second_order_effects):
-    """Ergaenze Convergence Zones mit Second Order Effects vom LLM."""
-    # Baue Lookup: frozenset(trend_ids) → effects
     effects_map = {}
     for soe in second_order_effects:
         zone_key = frozenset(soe.get('zone_trends', []))
@@ -587,7 +571,6 @@ def _enrich_convergence_zones(convergence_zones, second_order_effects):
     for z in convergence_zones:
         zone_copy = dict(z)
         zone_key = frozenset(z.get('trends', []))
-
         effects = effects_map.get(zone_key)
         if effects:
             zone_copy['primary_effects'] = effects.get('primary_effects', [])
@@ -597,70 +580,50 @@ def _enrich_convergence_zones(convergence_zones, second_order_effects):
             zone_copy['primary_effects'] = []
             zone_copy['second_order_effects'] = []
             zone_copy['net_portfolio_impact'] = ''
-
         enriched.append(zone_copy)
-
     return enriched
 
 
 # =====================================================================
-# FALLBACK (wenn kein API Key oder LLM-Fehler)
+# FALLBACKS
 # =====================================================================
 
-def _fallback_llm_result(trends, regime_context, run_date):
-    """Minimale Fallback-Daten wenn LLM nicht verfuegbar."""
+def _fallback_briefing(trends, regime_context, run_date):
     active_watch = [t for t in trends if t.get('watchlist_status') in ('ACTIVE', 'WATCH')]
-    regime = regime_context['current_regime']
-    mult = regime_context['regime_rules']['sizing_multiplier']
-
-    # Fallback Briefing
-    briefing = {
+    return {
         'date': run_date,
-        'regime_context': regime,
-        'headline': f'Woechentlicher Disruptions-Scan — {regime} Regime',
+        'regime_context': regime_context['current_regime'],
+        'headline': f'Woechentlicher Disruptions-Scan — {regime_context["current_regime"]} Regime',
         'body': f'LLM-Briefing nicht verfuegbar. {len(active_watch)} aktive Trends werden ueberwacht.',
         'sections': [],
         'key_changes_this_week': ['LLM-Analyse nicht verfuegbar — nur regelbasierte Daten'],
     }
 
-    # Fallback Decision Matrix
-    decision_matrix = []
+
+def _fallback_decision_matrix(trends, regime_context):
+    active_watch = [t for t in trends if t.get('watchlist_status') in ('ACTIVE', 'WATCH')]
+    mult = regime_context['regime_rules']['sizing_multiplier']
+    dm = []
     for t in active_watch:
         status = 'AVOID' if mult == 0 else 'WATCH_FOR_TRIGGER'
-        decision_matrix.append({
-            'trend_id': t['id'],
-            'trend_name': t['name'],
-            'conviction': 0,
-            'conviction_label': 'LOW',
-            'asymmetry': 0.0,
-            'asymmetry_bull_pct': 0,
-            'asymmetry_bear_pct': 0,
-            'timeframe': '12M',
-            'instrument': t.get('top_etf', ''),
-            'sizing_hint_pct': 0.0,
-            'sizing_regime_adjusted_pct': 0.0,
+        dm.append({
+            'trend_id': t['id'], 'trend_name': t['name'],
+            'conviction': 0, 'conviction_label': 'LOW',
+            'asymmetry': 0.0, 'asymmetry_bull_pct': 0, 'asymmetry_bear_pct': 0,
+            'timeframe': '12M', 'instrument': t.get('top_etf', ''),
+            'sizing_hint_pct': 0.0, 'sizing_regime_adjusted_pct': 0.0,
             'trigger_event': 'LLM nicht verfuegbar',
-            'regime_impact': f'{regime}: LLM-Analyse nicht verfuegbar',
+            'regime_impact': f'{regime_context["current_regime"]}: LLM-Analyse nicht verfuegbar',
             'status': status,
         })
-
-    return {
-        'briefing': briefing,
-        'decision_matrix': decision_matrix,
-        'asymmetric_payoffs': {},
-        'regime_fits': {},
-        'vulnerability_texts': {},
-        'second_order_effects': [],
-        'g7_cross_references': [],
-    }
+    return dm
 
 
 # =====================================================================
 # HELPERS
 # =====================================================================
 
-def _call_anthropic(system_prompt, user_prompt, max_tokens=4096):
-    """Anthropic API Call."""
+def _call_anthropic(system_prompt, user_prompt, max_tokens=3000):
     url = 'https://api.anthropic.com/v1/messages'
     headers = {
         'x-api-key': ANTHROPIC_API_KEY,
@@ -681,8 +644,12 @@ def _call_anthropic(system_prompt, user_prompt, max_tokens=4096):
 
 
 def _parse_json_response(text):
-    """Parse JSON aus LLM Response."""
+    """Parse JSON aus LLM Response — robust mit mehreren Fallbacks."""
+    if not text or not text.strip():
+        return None
+
     cleaned = text.strip()
+
     # Markdown Fences entfernen
     if cleaned.startswith('```json'):
         cleaned = cleaned[7:]
@@ -692,15 +659,36 @@ def _parse_json_response(text):
         cleaned = cleaned[:-3]
     cleaned = cleaned.strip()
 
+    # Versuch 1: Direktes Parsing
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
-        # Versuche erstes { bis letztes } zu finden
-        start = cleaned.find('{')
-        end = cleaned.rfind('}')
-        if start >= 0 and end > start:
-            try:
-                return json.loads(cleaned[start:end + 1])
-            except json.JSONDecodeError:
-                pass
+        pass
+
+    # Versuch 2: Erstes { bis letztes }
+    start = cleaned.find('{')
+    end = cleaned.rfind('}')
+    if start >= 0 and end > start:
+        try:
+            return json.loads(cleaned[start:end + 1])
+        except json.JSONDecodeError:
+            pass
+
+    # Versuch 3: Reparatur abgeschnittener JSON
+    fragment = cleaned[start:] if start >= 0 else cleaned
+    open_braces = fragment.count('{') - fragment.count('}')
+    open_brackets = fragment.count('[') - fragment.count(']')
+    if open_braces > 0 or open_brackets > 0:
+        repair = fragment.rstrip()
+        if repair.endswith(','):
+            repair = repair[:-1]
+        elif repair.endswith('"'):
+            repair += '"'
+        repair += ']' * open_brackets
+        repair += '}' * open_braces
+        try:
+            return json.loads(repair)
+        except json.JSONDecodeError:
+            pass
+
     return None
