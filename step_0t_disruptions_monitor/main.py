@@ -3,13 +3,14 @@
 step_0t_disruptions_monitor/main.py
 Disruptions Agent — Entry Point + Orchestrierung
 Frequenz: Woechentlich (Sonntag)
-Spec: DISRUPTIONS_AGENT_SPEC TEIL 1-3
+Spec: DISRUPTIONS_AGENT_SPEC TEIL 1-3 + DISRUPTIONS_FRONTEND_ERWEITERUNG_SPEC
 
 Pipeline:
   Stufe 1: Automatisches Screening (alle Kategorien, ~5 min)
   Stufe 2: LLM Deep Dive (Top 5 nach Screening-Score, ~25 min)
-  → Score-Berechnung → Exposure Check → Short-Analyse
+  → Score-Berechnung → Exposure Check → Vulnerability Analysis
   → Contrarian Scanner → Causal Chains → Dependencies
+  → Intelligence Briefing (Phase A)
   → Sheet Write → Dashboard Update → Git Commit
 """
 
@@ -25,10 +26,11 @@ from screening import run_screening
 from deep_dive import run_deep_dive
 from scoring import calculate_scores, determine_phases, determine_watchlist_status
 from exposure_check import run_exposure_check
-from short_analysis import run_short_analysis
+from vulnerability_analysis import run_vulnerability_analysis
 from contrarian import run_contrarian_scan
 from causal_chains import run_causal_chains
 from dependencies import update_dependencies, detect_convergence_zones
+from intelligence_briefing import generate_intelligence_briefing
 from sheet_writer import write_all_tabs
 from dashboard_update import update_dashboard_json
 
@@ -118,6 +120,42 @@ def load_v16_weights():
     return weights
 
 
+def load_v16_regime():
+    """Lade aktuelles V16 Regime aus latest.json."""
+    if not os.path.exists(DASHBOARD_PATH):
+        return 'NEUTRAL'
+    with open(DASHBOARD_PATH, 'r', encoding='utf-8') as f:
+        dashboard = json.load(f)
+    # Regime aus verschiedenen moeglichen Pfaden
+    sig = dashboard.get('signal_generator', {})
+    v16_trades = sig.get('v16_trades', {})
+    regime = v16_trades.get('v16_regime', 'NEUTRAL')
+    if not regime:
+        regime = 'NEUTRAL'
+    print(f"[V16] Regime: {regime}")
+    return regime
+
+
+def load_regime_history():
+    """Lade Regime-History aus disruptions_history.json fuer 4W Sparkline."""
+    if not os.path.exists(DASHBOARD_PATH):
+        return []
+    # Versuche aus vorherigen disruptions Bloecken
+    try:
+        with open(DASHBOARD_PATH, 'r', encoding='utf-8') as f:
+            dashboard = json.load(f)
+        existing_history = (
+            dashboard.get('disruptions', {})
+            .get('regime_context', {})
+            .get('regime_history_4w', [])
+        )
+        if existing_history:
+            return existing_history
+    except Exception:
+        pass
+    return []
+
+
 def main():
     """Hauptorchestierung des Disruptions Agent."""
     start_time = time.time()
@@ -136,6 +174,7 @@ def main():
     thresholds = config['thresholds']
     previous_history = load_previous_trends()
     v16_weights = load_v16_weights()
+    v16_regime = load_v16_regime()
 
     errors = []
     meta = {
@@ -228,27 +267,28 @@ def main():
             thresholds=thresholds
         )
         blind_spots = exposure_result.get('blind_spots', [])
-        threats = exposure_result.get('threats', [])
-        print(f"[EXPOSURE] {len(blind_spots)} Blind Spots, {len(threats)} Threats")
+        threats_list = exposure_result.get('threats', [])
+        print(f"[EXPOSURE] {len(blind_spots)} Blind Spots, {len(threats_list)} Threats")
     except Exception as e:
         print(f"[ERROR] Exposure Check fehlgeschlagen: {e}")
         traceback.print_exc()
         errors.append(f"Exposure: {str(e)}")
 
-    # ===== SHORT-ANALYSE =====
-    print(f"\n--- SHORT-ANALYSE ---")
-    short_results = []
+    # ===== VULNERABILITY ANALYSIS (ersetzt Short-Analyse) =====
+    print(f"\n--- VULNERABILITY ANALYSIS ---")
+    vulnerability_watchlist = []
     try:
-        short_results = run_short_analysis(
+        vulnerability_watchlist = run_vulnerability_analysis(
             trends=trends,
+            v16_weights=v16_weights,
             exposure_map=exposure_map,
             etf_universe=etf_universe
         )
-        print(f"[SHORTS] {len(short_results)} Short-Kandidaten identifiziert")
+        print(f"[VULN] {len(vulnerability_watchlist)} vulnerable Assets")
     except Exception as e:
-        print(f"[ERROR] Short-Analyse fehlgeschlagen: {e}")
+        print(f"[ERROR] Vulnerability Analysis fehlgeschlagen: {e}")
         traceback.print_exc()
-        errors.append(f"Shorts: {str(e)}")
+        errors.append(f"Vulnerability: {str(e)}")
 
     # ===== CONTRARIAN SCAN =====
     print(f"\n--- CONTRARIAN SCAN ---")
@@ -299,6 +339,41 @@ def main():
         traceback.print_exc()
         errors.append(f"Dependencies: {str(e)}")
 
+    # ===== INTELLIGENCE BRIEFING (Phase A — NEU) =====
+    print(f"\n--- INTELLIGENCE BRIEFING ---")
+    intelligence_result = None
+    try:
+        intelligence_result = generate_intelligence_briefing(
+            trends=trends,
+            exposure_result=exposure_result,
+            contrarian_alerts=contrarian_alerts,
+            causal_chains=causal_chains,
+            convergence_zones=convergence_zones,
+            vulnerability_watchlist=vulnerability_watchlist,
+            v16_weights=v16_weights,
+            v16_regime=v16_regime,
+            config=config,
+            run_date=run_date,
+        )
+
+        # Regime History 4W aktualisieren
+        if intelligence_result and intelligence_result.get('regime_context'):
+            regime_history = load_regime_history()
+            # Neuen Eintrag hinzufuegen
+            regime_history.append({
+                'date': run_date,
+                'regime': v16_regime,
+            })
+            # Nur letzte 4 behalten
+            regime_history = regime_history[-4:]
+            intelligence_result['regime_context']['regime_history_4w'] = regime_history
+
+        print(f"[INTEL] Intelligence Briefing generiert")
+    except Exception as e:
+        print(f"[ERROR] Intelligence Briefing fehlgeschlagen: {e}")
+        traceback.print_exc()
+        errors.append(f"Intelligence: {str(e)}")
+
     # ===== READINESS SCORE =====
     print(f"\n--- READINESS SCORE ---")
     readiness_score = 0
@@ -324,7 +399,7 @@ def main():
             trends=trends,
             screening_results=screening_results,
             exposure_result=exposure_result,
-            short_results=short_results,
+            short_results=[],  # Legacy — leer, Vulnerability Watchlist uebernimmt
             contrarian_alerts=contrarian_alerts,
             causal_chains=causal_chains,
             dependencies=dependencies,
@@ -352,14 +427,15 @@ def main():
             dashboard_path=DASHBOARD_PATH,
             trends=trends,
             exposure_result=exposure_result,
-            short_results=short_results,
+            short_results=[],  # Legacy — leer
             contrarian_alerts=contrarian_alerts,
             causal_chains=causal_chains,
             dependencies=dependencies,
             convergence_zones=convergence_zones,
             readiness_score=readiness_score,
             readiness_label=readiness_label,
-            meta=meta
+            meta=meta,
+            intelligence_result=intelligence_result,  # Phase A NEU
         )
         print("[DASHBOARD] latest.json aktualisiert")
     except Exception as e:
@@ -383,10 +459,12 @@ def main():
     print(f"  Trends: {len(trends)} bewertet")
     print(f"  Blind Spots: {len(exposure_result.get('blind_spots', []))}")
     print(f"  Threats: {len(exposure_result.get('threats', []))}")
-    print(f"  Shorts: {len(short_results)}")
+    print(f"  Vulnerable Assets: {len(vulnerability_watchlist)}")
     print(f"  Contrarian: {len(contrarian_alerts)}")
     print(f"  Causal Chains: {len(causal_chains)}")
     print(f"  Convergence Zones: {len(convergence_zones)}")
+    print(f"  Intelligence Briefing: {'OK' if intelligence_result else 'FEHLT'}")
+    print(f"  V16 Regime: {v16_regime}")
     print(f"  Readiness: {readiness_score} ({readiness_label})")
     print(f"  Errors: {len(errors)}")
     if errors:
