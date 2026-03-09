@@ -1,11 +1,11 @@
 {
   "date": "2026-03-09",
-  "run_timestamp": "2026-03-09T08:36:11.117199Z",
+  "run_timestamp": "2026-03-09T11:38:37.141604Z",
   "execution_assessment": {
-    "total_score": 8,
-    "raw_score": 8,
+    "total_score": 5,
+    "raw_score": 5,
     "max_possible": 18,
-    "execution_level": "WAIT",
+    "execution_level": "CAUTION",
     "veto_applied": false,
     "veto_reason": null,
     "dimensions": {
@@ -52,57 +52,57 @@
         }
       },
       "positioning_conflict": {
-        "score": 3,
+        "score": 0,
         "max": 3,
-        "label": "COT DBC -47.8%",
+        "label": "No conflicts",
         "detail": {
-          "conflicts": [
+          "conflicts": [],
+          "confirmations": [
             {
               "asset": "HYG",
               "weight": 0.276558,
               "cot_field": "COT_SP500_COMM_NET",
-              "cot_value": -29.0875,
+              "cot_value": 3.478,
               "direction": "long",
-              "severity": "ELEVATED"
+              "severity": "NONE"
             },
             {
               "asset": "DBC",
               "weight": 0.212411,
               "cot_field": "COT_GOLD_COMM_NET",
-              "cot_value": -47.7902,
+              "cot_value": 8.8329,
               "direction": "long",
-              "severity": "EXTREME"
+              "severity": "NONE"
             },
             {
               "asset": "XLU",
               "weight": 0.181962,
               "cot_field": "COT_SP500_COMM_NET",
-              "cot_value": -29.0875,
+              "cot_value": 3.478,
               "direction": "long",
-              "severity": "ELEVATED"
+              "severity": "NONE"
             },
             {
               "asset": "GLD",
               "weight": 0.17904,
               "cot_field": "COT_GOLD_COMM_NET",
-              "cot_value": -47.7902,
+              "cot_value": 8.8329,
               "direction": "long",
-              "severity": "EXTREME"
+              "severity": "NONE"
             },
             {
               "asset": "XLP",
               "weight": 0.150029,
               "cot_field": "COT_SP500_COMM_NET",
-              "cot_value": -29.0875,
+              "cot_value": 3.478,
               "direction": "long",
-              "severity": "ELEVATED"
+              "severity": "NONE"
             }
           ],
-          "confirmations": [],
           "fund_flows": -0.1,
           "flow_conflict": false,
-          "extreme_count": 2,
-          "elevated_count": 3
+          "extreme_count": 0,
+          "elevated_count": 0
         }
       },
       "liquidity_risk": {
@@ -112,12 +112,12 @@
         "detail": {
           "signals": {
             "amihud": {
-              "value": 50.85,
+              "value": 51.27,
               "assessment": "LIQUID",
               "score": 0
             },
             "sofr_ffr": {
-              "value": 3.0,
+              "value": 2.0,
               "assessment": "NORMAL",
               "score": 0
             },
@@ -127,12 +127,12 @@
               "score": 0
             },
             "vix_term": {
-              "value": 0.9954,
+              "value": 1.07,
               "assessment": "CONTANGO",
               "score": 0
             },
             "avg_corr": {
-              "value": 0.3045,
+              "value": 0.2981,
               "assessment": "NORMAL",
               "score": 0
             }
@@ -147,7 +147,7 @@
           "divergences": [
             {
               "type": "GOLD_DXY_DIVERGENCE",
-              "detail": "Gold +2.7% UND DXY +1.7% — beide steigen, unsustainable",
+              "detail": "Gold +7.2% UND DXY +1.2% — beide steigen, unsustainable",
               "severity": "HIGH"
             }
           ],
@@ -172,9 +172,9 @@
       "gex_regime": {
         "score": 1,
         "max": 3,
-        "label": "GEX $-0.21B — SLIGHTLY_NEGATIVE",
+        "label": "GEX $-0.32B — SLIGHTLY_NEGATIVE",
         "detail": {
-          "gex": -0.2132,
+          "gex": -0.323,
           "assessment": "SLIGHTLY_NEGATIVE",
           "has_imminent_event": true,
           "note": "Positive GEX = Dealer dampen moves. Negative = Dealer amplify moves."
@@ -187,22 +187,22 @@
         "detail": {
           "signals": {
             "cnn_fg": {
-              "value": 30.84,
+              "value": 25.95,
               "assessment": "NEUTRAL",
               "warning": false
             },
             "vix": {
-              "value": 21.15,
+              "value": 23.75,
               "assessment": "NORMAL",
               "warning": false
             },
             "pcr": {
-              "value": 0.808,
+              "value": 0.898,
               "assessment": "NORMAL",
               "warning": false
             },
             "hy_oas": {
-              "value": 297.0,
+              "value": 300.0,
               "assessment": "NORMAL",
               "warning": false
             },
@@ -212,7 +212,7 @@
               "warning": false
             },
             "move": {
-              "value": 74.53,
+              "value": 81.26,
               "assessment": "NORMAL",
               "warning": false
             }
@@ -225,14 +225,39 @@
   "confirming_conflicting": {
     "confirming": [
       {
+        "signal": "COT HYG bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 3.5% — kein Conflict"
+      },
+      {
+        "signal": "COT DBC bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = 8.8% — kein Conflict"
+      },
+      {
+        "signal": "COT XLU bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 3.5% — kein Conflict"
+      },
+      {
+        "signal": "COT GLD bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = 8.8% — kein Conflict"
+      },
+      {
+        "signal": "COT XLP bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 3.5% — kein Conflict"
+      },
+      {
         "signal": "amihud: LIQUID",
         "source": "DW_L5",
-        "detail": "Wert: 50.85"
+        "detail": "Wert: 51.27"
       },
       {
         "signal": "sofr_ffr: NORMAL",
         "source": "DW_L5",
-        "detail": "Wert: 3.0"
+        "detail": "Wert: 2.0"
       },
       {
         "signal": "fin_stress: RELAXED",
@@ -242,12 +267,12 @@
       {
         "signal": "vix_term: CONTANGO",
         "source": "DW_L5",
-        "detail": "Wert: 0.9954"
+        "detail": "Wert: 1.07"
       },
       {
         "signal": "avg_corr: NORMAL",
         "source": "DW_L5",
-        "detail": "Wert: 0.3045"
+        "detail": "Wert: 0.2981"
       },
       {
         "signal": "COMMODITY_COPPER_CONFIRMED",
@@ -267,22 +292,22 @@
       {
         "signal": "cnn_fg: NEUTRAL",
         "source": "DW_L2",
-        "detail": "Wert: 30.84"
+        "detail": "Wert: 25.95"
       },
       {
         "signal": "vix: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 21.15"
+        "detail": "Wert: 23.75"
       },
       {
         "signal": "pcr: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 0.808"
+        "detail": "Wert: 0.898"
       },
       {
         "signal": "hy_oas: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 297.0"
+        "detail": "Wert: 300.0"
       },
       {
         "signal": "insider: NORMAL",
@@ -292,7 +317,7 @@
       {
         "signal": "move: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 74.53"
+        "detail": "Wert: 81.26"
       },
       {
         "signal": "Router inaktiv (Proximity < 10%)",
@@ -312,57 +337,32 @@
         "detail": "HIGH-Impact Event kann Richtung und Liquidität verändern"
       },
       {
-        "signal": "COT HYG Conflict (ELEVATED)",
-        "source": "DW_L4_COT",
-        "detail": "COT_SP500_COMM_NET = -29.1% — Smart Money gegen HYG (28% im Portfolio)"
-      },
-      {
-        "signal": "COT DBC Conflict (EXTREME)",
-        "source": "DW_L4_COT",
-        "detail": "COT_GOLD_COMM_NET = -47.8% — Smart Money gegen DBC (21% im Portfolio)"
-      },
-      {
-        "signal": "COT XLU Conflict (ELEVATED)",
-        "source": "DW_L4_COT",
-        "detail": "COT_SP500_COMM_NET = -29.1% — Smart Money gegen XLU (18% im Portfolio)"
-      },
-      {
-        "signal": "COT GLD Conflict (EXTREME)",
-        "source": "DW_L4_COT",
-        "detail": "COT_GOLD_COMM_NET = -47.8% — Smart Money gegen GLD (18% im Portfolio)"
-      },
-      {
-        "signal": "COT XLP Conflict (ELEVATED)",
-        "source": "DW_L4_COT",
-        "detail": "COT_SP500_COMM_NET = -29.1% — Smart Money gegen XLP (15% im Portfolio)"
-      },
-      {
         "signal": "GOLD_DXY_DIVERGENCE",
         "source": "DW_L7",
-        "detail": "Gold +2.7% UND DXY +1.7% — beide steigen, unsustainable"
+        "detail": "Gold +7.2% UND DXY +1.2% — beide steigen, unsustainable"
       },
       {
-        "signal": "GEX negativ ($-0.21B) — SLIGHTLY_NEGATIVE",
+        "signal": "GEX negativ ($-0.32B) — SLIGHTLY_NEGATIVE",
         "source": "DW_L4_GEX",
         "detail": "Dealer-Hedging verstärkt Moves — erhöhte Volatilität"
       }
     ],
-    "confirming_count": 16,
-    "conflicting_count": 8,
+    "confirming_count": 21,
+    "conflicting_count": 3,
     "net_assessment": "STRONGLY_CONFIRMING"
   },
   "recommendation": {
-    "action": "WAIT_FOR_CLARITY",
-    "reasoning": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
+    "action": "EXECUTE_WITH_LIMITS",
+    "reasoning": "Kein Rebalancing heute nötig — V16 hält alle Positionen.",
     "specific_actions": [],
     "would_change_my_mind": {
       "execute_if": [
-        "VIX steigt über 28 UND HY OAS über 350bps — dann ist Event-Risk bereits eingepreist, warten bringt nichts",
-        "COT Gold Commercial Net steigt über -30% (von aktuell -47.8%) — Smart Money reduziert Shorts, Divergenz löst sich auf"
+        "VIX fällt unter 18.0 UND HY OAS fällt unter 275bps — Risiko-Appetit steigt, Event-Prämie verschwindet",
+        "GEX steigt über +$2.0B — Dealer-Hedging stabilisiert Markt, Volatilität gedämpft"
       ],
       "hold_if": [
-        "GEX fällt unter $-1.0B (von aktuell $-0.21B) — Dealer-Hedging wird destabilisierend, Slippage-Risiko steigt massiv",
-        "Gold-DXY Divergenz verschärft sich (Gold >+5% UND DXY >+3% über 20d) — unsustainable Konstellation vor Korrektur"
+        "VIX steigt über 28.0 ODER HY OAS steigt über 350bps — Stress-Regime, warte auf Stabilisierung",
+        "Gold fällt >5% vom aktuellen Niveau (GLD-Preis nicht verfügbar, nutze Gold Return 20d als Proxy) ODER DXY steigt >3% — Divergenz löst sich gegen Gold auf"
       ]
     }
   },
@@ -639,7 +639,7 @@
       }
     ]
   },
-  "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 8/18) ===\n\nCONFIRMING:\n• Liquidität optimal: Amihud 50.85, SOFR-FFR 3.0bps, OFR Stress -0.44 — beste Bedingungen für Execution\n• VIX Term Structure Contango (0.9954): Markt preist Ruhe ein, keine Panik-Prämie\n• Thematische Bestätigung: V16's 39% Commodities aligned mit Copper Rising, 33% Equities aligned mit SPY Rising, 18% Gold profitiert von Falling Real Yields\n• Sentiment neutral (CNN F&G 30.84, Put/Call 0.808): Keine Extrempositionen, kein Crowding\n• HY OAS 297bps im Normalbereich: Credit-Märkte entspannt, HYG (28% Portfolio) nicht unter Stress\n• MOVE Index 74.53: Bond-Volatilität moderat, XLU/XLP Execution ohne Slippage-Risiko\n• Kein materielles Rebalancing: V16 hält alle Positionen — kein Execution-Risiko heute\n\nCONFLICTING:\n• US CPI (February) in 48h (HIGH-Impact): Event kann Richtung und Liquidität fundamental verändern — Timing-Risiko\n• COT Extreme Divergenz: Gold Commercial Net -47.8% (gegen GLD 18% + DBC 21%), S&P500 Commercial Net -29.1% (gegen HYG 28%, XLU 18%, XLP 15%) — Smart Money massiv short\n• Gold-DXY Divergenz: Gold +2.7% UND DXY +1.7% gleichzeitig — historisch unsustainable, einer muss nachgeben\n• GEX negativ $-0.21B: Dealer-Hedging verstärkt Moves, erhöhte Intraday-Volatilität möglich\n• 100% Portfolio-Exposure zu COT-Conflicts: Alle Top-5 Positionen (HYG, DBC, XLU, GLD, XLP) stehen gegen Smart Money Positioning\n\nNETTO: 7 Confirming vs 5 Conflicting. Liquidität perfekt, aber CPI in 48h + extreme COT-Divergenz rechtfertigen 48h Pause.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall dass V16 morgen Regime wechselt: WARTE bis CPI-Ergebnis (Mittwoch 08:30 ET). Liquidität ist optimal, aber Event-Risk + COT-Extremwerte (Gold -47.8%, S&P -29.1%) rechtfertigen 48h Geduld. Falls V16 post-CPI Trades generiert: HYG und GLD via Limit-Orders (Credit/Gold können volatil reagieren), DBC Market-Orders akzeptabel (Commodity-Basket weniger CPI-sensitiv), XLU/XLP normale Execution (Defensives profitieren von Rate-Klarheit). Beobachte Gold-DXY Divergenz — wenn Gold fällt aber DXY steigt post-CPI, bestätigt das COT-Signal.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX steigt über 28 UND HY OAS über 350bps — dann ist Event-Risk bereits eingepreist, warten bringt nichts\n• Execute sofort wenn: COT Gold Commercial Net steigt über -30% (von aktuell -47.8%) — Smart Money reduziert Shorts, Divergenz löst sich auf\n• Eskaliere zu Wait/Hold wenn: GEX fällt unter $-1.0B (von aktuell $-0.21B) — Dealer-Hedging wird destabilisierend, Slippage-Risiko steigt massiv\n• Eskaliere zu Wait/Hold wenn: Gold-DXY Divergenz verschärft sich (Gold >+5% UND DXY >+3% über 20d) — unsustainable Konstellation vor Korrektur",
+  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING:\n• Liquidität optimal: Amihud 51.27 (LIQUID), SOFR-FFR 2.0bps (NORMAL), OFR Stress -0.44 (RELAXED) — keine Slippage-Risiken\n• COT-Positioning sauber: S&P500 Commercial +3.5%, Gold Commercial +8.8% — keine Extrempositionen gegen Portfolio\n• Cross-Asset bestätigt V16-Logik: Copper Rising + 39% Commodity-Exposure, SPY Rising + 33% Equity-Exposure, Real Yields Falling + 18% Gold — alle Trends aligned\n• VIX Term Structure 1.07 (CONTANGO): Forward-Volatilität niedriger als Spot — kein unmittelbarer Stress-Spike erwartet\n• Sentiment neutral kalibriert: CNN Fear & Greed 25.95, Put/Call 0.898, HY OAS 300bps — keine Panik, keine Euphorie\n• Kein materielles Rebalancing: V16 hält alle Positionen HOLD (Delta <1%) — heute kein Execution-Risiko, Empfehlung gilt für potenzielle Regime-Wechsel\n\nCONFLICTING:\n• US CPI (February) in 48h (HIGH-Impact): Kann HYG (27.7% Portfolio) und DBC (21.2%) stark bewegen — Richtung unklar, Liquidität könnte einbrechen\n• Gold-DXY Divergenz: Gold +7.2% UND DXY +1.2% gleichzeitig — historisch unsustainable, einer muss nachgeben, GLD (17.9%) Risiko\n• GEX negativ $-0.32B (SLIGHTLY_NEGATIVE): Dealer-Hedging verstärkt Intraday-Moves — erhöhte Volatilität bei News-Flow\n\nNETTO: 21 Confirming vs 3 Conflicting. Marktstruktur ist gesund, aber CPI-Event in 48h schafft binäres Risiko für 67% des Portfolios (HYG+DBC+GLD).\n\nEMPFEHLUNG:\nKein Rebalancing heute nötig — V16 hält alle Positionen. Falls V16 morgen oder Mittwoch Regime wechselt: WARTE bis CPI-Veröffentlichung (Mittwoch 08:30 ET). Führe Trades erst NACH CPI aus, wenn Richtung klar ist. HYG und DBC haben hohes Slippage-Risiko bei überraschenden Inflationsdaten. GLD: Beobachte Gold-DXY Divergenz — wenn DXY nach CPI nachgibt, ist Gold-Rally bestätigt; wenn Gold korrigiert, reduziere Position-Size um 20-30%. XLU und XLP (33% Portfolio) sind defensiv, können bei Volatilität sofort ausgeführt werden.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 18.0 UND HY OAS fällt unter 275bps — Risiko-Appetit steigt, Event-Prämie verschwindet\n• Execute sofort wenn: GEX steigt über +$2.0B — Dealer-Hedging stabilisiert Markt, Volatilität gedämpft\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 28.0 ODER HY OAS steigt über 350bps — Stress-Regime, warte auf Stabilisierung\n• Eskaliere zu Wait/Hold wenn: Gold fällt >5% vom aktuellen Niveau (GLD-Preis nicht verfügbar, nutze Gold Return 20d als Proxy) ODER DXY steigt >3% — Divergenz löst sich gegen Gold auf",
   "v16_context": {
     "regime": "SELECTIVE",
     "top5": [
@@ -691,7 +691,7 @@
     "dd_protect": {
       "active": false,
       "threshold": -10.0,
-      "current_drawdown": -1.11
+      "current_drawdown": -0.15
     },
     "cluster_current": {
       "EQ_DEFN": {
@@ -844,7 +844,7 @@
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_used": true,
     "llm_fallback": false,
-    "engine_time_seconds": 23.0,
-    "total_time_seconds": 23.0
+    "engine_time_seconds": 25.35,
+    "total_time_seconds": 25.4
   }
 }
