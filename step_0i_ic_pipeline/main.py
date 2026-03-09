@@ -524,6 +524,10 @@ def update_dashboard_json(intel: dict, briefing: dict) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
     update pipeline_health, and write back.
+
+    Guard: If no new claims were extracted, keep the existing intelligence
+    block in dashboard.json so that previous IC data remains available
+    for CIO and other downstream consumers.
     """
     if not os.path.exists(DASHBOARD_JSON_PATH):
         logger.warning(
@@ -532,11 +536,37 @@ def update_dashboard_json(intel: dict, briefing: dict) -> None:
         )
         return
 
+    # Guard: Only update intelligence block if we have new data
+    claims_count = intel.get("extraction_summary", {}).get("total_claims", 0)
+    if claims_count == 0:
+        logger.info(
+            "No new claims — keeping existing intelligence block in dashboard. "
+            "Pipeline health updated to reflect successful run with 0 new claims."
+        )
+        # Still update pipeline_health to show IC ran successfully
+        try:
+            with open(DASHBOARD_JSON_PATH, "r") as f:
+                dashboard = json.load(f)
+            now_utc = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+            steps = dashboard.get("pipeline_health", {}).get("steps", {})
+            steps["step_0b_ic"] = {
+                "status": "OK",
+                "completed_at": now_utc,
+                "summary": "0 new claims — previous data retained",
+            }
+            dashboard.setdefault("pipeline_health", {})["steps"] = steps
+            with open(DASHBOARD_JSON_PATH, "w") as f:
+                json.dump(dashboard, f, indent=2, ensure_ascii=False)
+            logger.info("Dashboard pipeline_health updated (intelligence block unchanged)")
+        except Exception as e:
+            logger.error(f"Dashboard pipeline_health update failed: {e}")
+        return
+
     try:
         with open(DASHBOARD_JSON_PATH, "r") as f:
             dashboard = json.load(f)
 
-        # Replace intelligence block
+        # Replace intelligence block (only when we have new data)
         dashboard["intelligence"] = build_intelligence_block(intel, briefing)
 
         # Update pipeline health
