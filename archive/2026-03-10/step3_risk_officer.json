@@ -1,42 +1,10 @@
 {
   "date": "2026-03-10",
-  "run_timestamp": "2026-03-10T12:28:33Z",
+  "run_timestamp": "2026-03-10T12:45:34Z",
   "execution_path": "FULL_PATH",
-  "portfolio_status": "RED",
-  "portfolio_status_reason": "1 CRITICAL alert(s). Immediate review recommended.",
+  "portfolio_status": "YELLOW",
+  "portfolio_status_reason": "4 WARNING(s). Review recommended.",
   "alerts": [
-    {
-      "id": "RO-20260310-003",
-      "severity": "CRITICAL",
-      "check_id": "EXP_SINGLE_NAME",
-      "message": "Single position HYG (V16) at 28.8% exceeds 25%.",
-      "affected_positions": [
-        "HYG"
-      ],
-      "affected_systems": [
-        "V16"
-      ],
-      "trade_class": "A",
-      "current_value": 0.2883,
-      "threshold": 0.25,
-      "recommendation": "",
-      "context": {
-        "fragility_state": "HEALTHY",
-        "event_in_48h": true,
-        "next_event": "CPI",
-        "next_event_days": 0,
-        "g7_status": "UNAVAILABLE",
-        "v16_state": "Risk-On",
-        "dd_protect_active": false
-      },
-      "previous_severity": "WARNING",
-      "trend": "ESCALATING",
-      "days_active": 12,
-      "base_severity": "WARNING",
-      "boost_applied": "EVENT_IMMINENT"
-    }
-  ],
-  "ongoing_conditions": [
     {
       "id": "RO-20260310-002",
       "severity": "WARNING",
@@ -57,9 +25,9 @@
         "v16_state": "Risk-On",
         "dd_protect_active": false
       },
-      "previous_severity": "WARNING",
-      "trend": "ONGOING",
-      "days_active": 4,
+      "previous_severity": null,
+      "trend": "NEW",
+      "days_active": 1,
       "base_severity": "MONITOR",
       "boost_applied": "EVENT_IMMINENT"
     },
@@ -85,9 +53,9 @@
         "v16_state": "Risk-On",
         "dd_protect_active": false
       },
-      "previous_severity": "WARNING",
-      "trend": "ONGOING",
-      "days_active": 12,
+      "previous_severity": "CRITICAL",
+      "trend": "DEESCALATING",
+      "days_active": 13,
       "base_severity": "MONITOR",
       "boost_applied": "EVENT_IMMINENT"
     },
@@ -114,9 +82,9 @@
         "v16_state": "Risk-On",
         "dd_protect_active": false
       },
-      "previous_severity": "WARNING",
-      "trend": "ONGOING",
-      "days_active": 4,
+      "previous_severity": null,
+      "trend": "NEW",
+      "days_active": 1,
       "base_severity": "MONITOR",
       "boost_applied": "EVENT_IMMINENT"
     },
@@ -140,10 +108,42 @@
         "v16_state": "Risk-On",
         "dd_protect_active": false
       },
-      "previous_severity": "WARNING",
-      "trend": "ONGOING",
-      "days_active": 4,
+      "previous_severity": null,
+      "trend": "NEW",
+      "days_active": 1,
       "base_severity": "MONITOR",
+      "boost_applied": "EVENT_IMMINENT"
+    }
+  ],
+  "ongoing_conditions": [
+    {
+      "id": "RO-20260310-003",
+      "severity": "CRITICAL",
+      "check_id": "EXP_SINGLE_NAME",
+      "message": "Single position HYG (V16) at 28.8% exceeds 25%.",
+      "affected_positions": [
+        "HYG"
+      ],
+      "affected_systems": [
+        "V16"
+      ],
+      "trade_class": "A",
+      "current_value": 0.2883,
+      "threshold": 0.25,
+      "recommendation": "",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": true,
+        "next_event": "CPI",
+        "next_event_days": 0,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": "CRITICAL",
+      "trend": "ONGOING",
+      "days_active": 13,
+      "base_severity": "WARNING",
       "boost_applied": "EVENT_IMMINENT"
     }
   ],
@@ -165,12 +165,12 @@
     "last_update": null,
     "severity_impact": "NONE"
   },
-  "risk_summary": "PORTFOLIO STATUS: RED. 1 CRITICAL \u2191.\nSensitivity: not available (V1).\nCRITICAL\u2191: Single position HYG (V16) at 28.8% exceeds 25%.\nOngoing: EXP_SECTOR_CONCENTRATION (WARNING, day 4), EXP_SINGLE_NAME (WARNING, day 12), INT_REGIME_CONFLICT (WARNING, day 4)\nNext event: CPI in 0d",
+  "risk_summary": "PORTFOLIO STATUS: YELLOW. 4 WARNING.\nSensitivity: not available (V1).\nWARNING\u25cf: Effective Commodities Exposure 37.2% approaching warning level (35%).\nWARNING\u2193: Single position DBC (V16) at 20.3% approaching limit.\nWARNING\u25cf: V16 state 'Risk-On' (regime: STEADY_GROWTH) diverges from Market Analyst assessment 'NEUTRAL' (lean: UNKNOWN). V16 operates on validated signals \u2014 thi\n(+1 more alerts, see full report)\nOngoing: EXP_SINGLE_NAME (CRITICAL, day 13)\nNext event: CPI in 0d",
   "metadata": {
     "execution_path": "FULL_PATH",
     "checks_run": 6,
     "checks_skipped": 0,
-    "execution_time_ms": 53,
+    "execution_time_ms": 34,
     "config_version": "1.0.0",
     "fast_path_taken": false,
     "signal_generator_available": false,
@@ -179,8 +179,8 @@
     "v16_state": "Risk-On",
     "router_state": "US_DOMESTIC",
     "fragility_state": "HEALTHY",
-    "alerts_count": 1,
-    "ongoing_conditions_count": 4,
+    "alerts_count": 4,
+    "ongoing_conditions_count": 1,
     "dod_checklist": {
       "portfolio_status_set": true,
       "checks_executed": true,
