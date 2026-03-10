@@ -743,29 +743,77 @@
   "intelligence": {
     "status": "AVAILABLE",
     "consensus": {
+      "LIQUIDITY": {
+        "score": -7.0,
+        "direction": "BEARISH",
+        "sources": 1,
+        "confidence": 0.4
+      },
+      "FED_POLICY": {
+        "score": -3.0,
+        "direction": "BEARISH",
+        "sources": 1,
+        "confidence": 0.4
+      },
+      "CREDIT": {
+        "score": -8.0,
+        "direction": "BEARISH",
+        "sources": 1,
+        "confidence": 0.4
+      },
       "INFLATION": {
-        "score": -4.0,
+        "score": -2.5,
+        "direction": "BEARISH",
+        "sources": 2,
+        "confidence": 0.65
+      },
+      "EQUITY_VALUATION": {
+        "score": -7.0,
         "direction": "BEARISH",
         "sources": 1,
         "confidence": 0.4
       },
       "CHINA_EM": {
-        "score": -7.0,
-        "direction": "BEARISH",
-        "sources": 1,
-        "confidence": 0.4
-      },
-      "GEOPOLITICS": {
-        "score": -7.0,
-        "direction": "BEARISH",
-        "sources": 1,
-        "confidence": 0.4
-      },
-      "ENERGY": {
-        "score": -7.0,
-        "direction": "BEARISH",
+        "score": 0.6,
+        "direction": "NEUTRAL",
         "sources": 2,
         "confidence": 0.65
+      },
+      "GEOPOLITICS": {
+        "score": -2.38,
+        "direction": "BEARISH",
+        "sources": 4,
+        "confidence": 0.85
+      },
+      "ENERGY": {
+        "score": -2.45,
+        "direction": "BEARISH",
+        "sources": 3,
+        "confidence": 0.65
+      },
+      "COMMODITIES": {
+        "score": 4.82,
+        "direction": "BULLISH",
+        "sources": 2,
+        "confidence": 0.65
+      },
+      "TECH_AI": {
+        "score": 4.33,
+        "direction": "BULLISH",
+        "sources": 1,
+        "confidence": 0.4
+      },
+      "DOLLAR": {
+        "score": -9.0,
+        "direction": "BEARISH",
+        "sources": 1,
+        "confidence": 0.4
+      },
+      "POSITIONING": {
+        "score": -3.0,
+        "direction": "BEARISH",
+        "sources": 1,
+        "confidence": 0.4
       }
     },
     "divergences": [],
@@ -773,61 +821,430 @@
     "high_novelty_claims": [
       {
         "source": "doomberg",
-        "claim": "China's decision to suspend diesel and gasoline exports only six days into the conflict signals how quickly national energy protectionism emerges during supply crises, reflecting a scramble to prioritize domestic needs.",
-        "novelty": 7,
-        "signal": -7.0,
+        "claim": "Qatar's Ras Laffan LNG export facility shutdown is one of the most consequential developments of the US-Israel war on Iran, with global LNG markets facing weeks of shortages even if conflict ends immediately.",
+        "novelty": 9,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "The Strait of Hormuz is effectively closed to shipping as a result of the US-Israel war on Iran, disrupting global flows of oil, LNG, refined fuels, and fertilizer.",
+        "novelty": 9,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "Howell believes China's gold accumulation and associated Yuan monetization helps explain the lackluster performance of the crypto market, implying gold is capturing demand that might otherwise flow into crypto.",
+        "novelty": 8,
+        "signal": 0.0,
+        "theme": "CRYPTO",
+        "date": "2026-03-08",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "forward_guidance",
+        "claim": "The Qatar LNG complex has been offline since early March due to drone or missile strikes, and restarting production will take multiple weeks — this risk to Asian energy supply is being underappreciated relative to oil market focus.",
+        "novelty": 8,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "China's decision to suspend diesel and gasoline exports to domestic refiners only six days into the Persian Gulf conflict reflects an early and aggressive pivot to national energy protectionism.",
+        "novelty": 8,
+        "signal": -2.5,
         "theme": "ENERGY",
         "date": "2026-03-10",
         "freshness": "FRESH"
       },
       {
         "source": "doomberg",
-        "claim": "If the Strait of Hormuz remains closed for an extended period, national protectionism will create wide regional price disparities for gasoline, diesel, jet fuel, and other refined products.",
+        "claim": "Qatar supplies roughly 20% of global LNG, meaning its export shutdown represents a systemic shock to worldwide energy markets beyond just EU exposure.",
+        "novelty": 8,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Middle East conflict labeled 'Operation Epic Fury' poses severe downside risk to China's export momentum, as an energy shock could weigh heavily on Chinese industrial activity and global trade.",
+        "novelty": 8,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Anthropic filed a lawsuit against the Pentagon following the federal government's designation of the company as a supply chain risk, which restricts government agencies and contractors from working with Anthropic.",
+        "novelty": 8,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "The Trump administration directed all federal agencies, contractors, suppliers, and partners doing business with the U.S. military to sever commercial ties with Anthropic immediately.",
+        "novelty": 8,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "A coalition of over 30 AI engineers and scientists from OpenAI and Google, including Google's chief scientist Jeff Dean, filed a legal brief supporting Anthropic, warning that punishing a leading U.S. AI company will harm American industrial and scientific competitiveness in AI.",
+        "novelty": 8,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Iran's appointment of a more hardline supreme leader signals the regime intends to fight on rather than capitulate, making a prolonged conflict more likely despite US optimism",
+        "novelty": 8,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Iran is conducting retaliatory drone and missile strikes across Gulf states including Saudi Arabia and Bahrain, threatening regional energy infrastructure and global oil supply chains",
+        "novelty": 8,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "There is a meaningful divergence in war aims between the US and Israel, with Israel conducting strikes on Iranian oil infrastructure beyond what the US sanctioned, creating the first significant allied disagreement since the conflict began",
+        "novelty": 8,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Trump is considering deploying special forces to seize Iran's near-bomb-grade uranium, raising the possibility of US ground troops entering Iran and a significant escalation of the conflict",
+        "novelty": 8,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "Howell believes China's gold accumulation is linked to a 'secretive' monetization of the Chinese Yuan, suggesting a structural shift in China's monetary architecture.",
+        "novelty": 7,
+        "signal": 0.6,
+        "theme": "CHINA_EM",
+        "date": "2026-03-08",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "Howell argues that China's gold absorption helps explain why US Treasury bond term premia have remained surprisingly stable, contrary to what one might expect given macro conditions.",
+        "novelty": 7,
+        "signal": -8.0,
+        "theme": "CREDIT",
+        "date": "2026-03-08",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "Global liquidity levels remained elevated last week, supported by short-term injections from the PBoC and Fed.",
         "novelty": 7,
         "signal": -7.0,
+        "theme": "LIQUIDITY",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "The next liquidity update is expected to be less positive, reflecting the combination of rising bond volatility and a stronger US dollar.",
+        "novelty": 7,
+        "signal": -7.0,
+        "theme": "LIQUIDITY",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "forward_guidance",
+        "claim": "US Treasury bonds are failing to act as a safe haven during the Iran conflict, with the long end selling off rather than rallying — a significant break from the historical pattern seen across decades of geopolitical events including Russia-Ukraine.",
+        "novelty": 7,
+        "signal": -3.0,
+        "theme": "FED_POLICY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "forward_guidance",
+        "claim": "US equity indices have no meaningful buyers — hedged bears prevent a sharp break lower while buyback support is diminished, creating a range-bound holding pattern that is likely to resolve to the downside around the March triple witching OPEX.",
+        "novelty": 7,
+        "signal": -7.0,
+        "theme": "EQUITY_VALUATION",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "forward_guidance",
+        "claim": "The dollar is now rallying and emerging market currencies are selling off — a dynamic consistent with a dollar liquidity crisis rather than a straightforward flight-to-safety, suggesting broad financial stress beyond just oil markets.",
+        "novelty": 7,
+        "signal": -9.0,
+        "theme": "DOLLAR",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "The outbreak of war involving Iran caused the entire hydrocarbon complex, including coal and especially LNG, to be bid higher, with the Brent/WTI spread initially expanding significantly.",
+        "novelty": 7,
+        "signal": -2.5,
         "theme": "ENERGY",
         "date": "2026-03-10",
         "freshness": "FRESH"
       },
       {
         "source": "doomberg",
-        "claim": "The convergence of Brent and WTI toward parity is partly explained by US status as both the world's largest oil producer and a net exporter of refined products, meaning overseas price spikes incentivize US refineries to run at full capacity and increase domestic crude demand.",
+        "claim": "If the Strait of Hormuz remains closed for an extended period, national protectionism will likely create wide regional disparities in the prices of refined petroleum products such as gasoline, diesel, and jet fuel.",
+        "novelty": 7,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "The convergence of Brent and WTI crude prices toward parity is seen as driven in part by the US's position as a net exporter of refined products, with international price spikes incentivizing US refineries to run at full capacity and increase demand for WTI.",
+        "novelty": 7,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "China's early pivot to energy protectionism signals the likely sequence of how energy market fragmentation will unfold, making it possible to identify which nations will experience economic pain first.",
+        "novelty": 7,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "Major LNG-importing economies including China, Japan, South Korea, India, and Taiwan will be negatively impacted by the global LNG supply tightening, though the EU is expected to suffer most severely.",
+        "novelty": 7,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "Both Putin and Trump are signaling potential moves that would further worsen the EU's emerging energy crisis, compounding the impact of the LNG supply disruption.",
+        "novelty": 7,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Goldman's desk head is questioning whether China has stopped exporting deflation to the rest of the world, given surging export volumes and a hotter-than-expected domestic CPI reading.",
+        "novelty": 7,
+        "signal": 0.6,
+        "theme": "CHINA_EM",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "A potential large Boeing-China aircraft deal ahead of the Xi-Trump summit signals possible positive trade war de-escalation outcomes, though the summit's results remain uncertain.",
+        "novelty": 7,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Anthropic refused to modify its user policy to permit government use of Claude for mass surveillance and fully autonomous weapons, triggering the federal government's retaliatory designation.",
+        "novelty": 7,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Anthropic argues the government's designation and campaign against it constitutes unconstitutional punishment for First Amendment-protected speech.",
+        "novelty": 7,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Childhood obesity in the US has reached its highest recorded level, with more than 1 in 5 children and teenagers classified as obese between 2021 and 2023, representing a dramatic increase from the early 1970s.",
         "novelty": 7,
         "signal": -7.0,
+        "theme": "EQUITY_VALUATION",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Prescriptions for FDA-approved obesity medications for adolescents rose sharply following regulatory approval, suggesting growing pharmaceutical demand in the teen obesity treatment market even though uptake remains a small share of eligible patients.",
+        "novelty": 7,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Under the Online Safety Act, UK regulators have the authority to impose fines of up to 10% of a company's worldwide revenue or £18 million for non-compliance.",
+        "novelty": 7,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Trump believes the US military campaign against Iran is largely complete and could end very soon, framing it as a short-term excursion rather than a prolonged conflict",
+        "novelty": 7,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Oil prices dropped sharply on Trump's signal that the Iran campaign is nearly over, suggesting markets view a swift resolution as bearish for oil",
+        "novelty": 7,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Trump's administration appears to be framing short-term oil price spikes as an acceptable cost, betting that prices will fall rapidly once the Iran threat is neutralized",
+        "novelty": 7,
+        "signal": -2.5,
         "theme": "ENERGY",
         "date": "2026-03-10",
         "freshness": "FRESH"
       },
       {
         "source": "jeff_snider",
-        "claim": "Middle East oil producers are already cutting output as onshore storage fills due to tanker blockage — this supply destruction could persist well beyond any immediate resolution of the strait closure.",
+        "claim": "The duration of the Hormuz disruption is the decisive variable — even a temporary oil shock is already causing compounding damage through demand destruction, position unwinding, and fiscal strain across Asian economies, and each additional day of disruption raises the probability of irreversible economic damage.",
         "novelty": 7,
-        "signal": -7.0,
+        "signal": -2.5,
         "theme": "ENERGY",
         "date": "2026-03-09",
         "freshness": "FRESH"
       },
       {
         "source": "jeff_snider",
-        "claim": "If oil futures backwardation begins spreading from front-month contracts further out the curve toward late 2026 contracts, it would signal markets pricing in a longer-duration supply shock rather than a transient panic — a major escalation signal.",
+        "claim": "If the oil futures curve's backwardation begins shifting further out — with later-dated contracts like October and December 2026 joining the front-end panic buying — it would signal that markets expect the supply disruption to persist, representing a qualitative escalation of the crisis.",
         "novelty": 7,
-        "signal": -7.0,
+        "signal": -2.5,
         "theme": "ENERGY",
         "date": "2026-03-09",
         "freshness": "FRESH"
       },
       {
-        "source": "doomberg",
-        "claim": "The war in Iran caused the entire hydrocarbon complex, including coal and especially LNG, to be bid higher, with the Brent/WTI spread expanding significantly before reversing toward parity.",
+        "source": "jeff_snider",
+        "claim": "Asian economies face not just higher oil costs but potential physical shortages, forcing governments to implement emergency measures including price caps, strategic reserve releases, import tariff removals, and spending cuts — collectively straining fiscal positions and monetary systems simultaneously.",
+        "novelty": 7,
+        "signal": 0.6,
+        "theme": "CHINA_EM",
+        "date": "2026-03-09",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "China is systematically accumulating and stockpiling gold, absorbing it into both private vaults and state reserves, which Howell views as the most important macro development currently underway.",
         "novelty": 6,
-        "signal": -7.0,
+        "signal": 4.8,
+        "theme": "COMMODITIES",
+        "date": "2026-03-08",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "President Trump had not, as of this writing, limited US oil exports or implemented price controls to protect domestic consumers from the price spike, which is assessed as a contributing factor to the Brent/WTI convergence.",
+        "novelty": 6,
+        "signal": -2.5,
         "theme": "ENERGY",
         "date": "2026-03-10",
         "freshness": "FRESH"
       },
       {
+        "source": "doomberg",
+        "claim": "The EU's planned full ban on Russian LNG and pipeline gas imports by 2027 will be made more economically painful given the simultaneous loss of Qatari LNG supply.",
+        "novelty": 6,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "China has been aggressively stockpiling crude oil ahead of anticipated Middle East conflict risks, building an estimated 120-day import cover buffer that insulates it from near-term supply disruptions.",
+        "novelty": 6,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "The AI industry coalition warned that the U.S. government's actions against Anthropic, if not halted, will have negative consequences for American competitiveness in artificial intelligence relative to global peers.",
+        "novelty": 6,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "The G7 is actively monitoring energy markets and is prepared to release strategic oil stockpiles, suggesting policymakers anticipate sustained supply disruption risk",
+        "novelty": 6,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Analysts assess that the Iran regime's core structures have not been dismantled despite massive bombardment, and IRGC elites have strong incentives to fight rather than capitulate, making regime collapse unlikely",
+        "novelty": 6,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
         "source": "jeff_snider",
-        "claim": "The global economy is far more fragile than at any point since 2020, with multiple regions already in or near recession before the oil shock began — making the current disruption potentially catastrophic.",
+        "claim": "The global economy is in a far more fragile state than generally recognized, with the oil shock compounding pre-existing weaknesses including a private credit bust, weak labor markets, and slowing growth across major economies.",
         "novelty": 6,
         "signal": 0.0,
         "theme": "RECESSION",
@@ -835,64 +1252,364 @@
         "freshness": "FRESH"
       },
       {
-        "source": "jeff_snider",
-        "claim": "Emerging market economies are being hit with a simultaneous dollar crunch and energy cost shock — importers are suddenly needing significantly more dollars than budgeted just days earlier, creating acute monetary stress.",
-        "novelty": 6,
-        "signal": -7.0,
-        "theme": "CHINA_EM",
-        "date": "2026-03-09",
+        "source": "howell",
+        "claim": "The conventional narrative linking geopolitical tensions in the Gulf to gold price spikes misses the more structurally important driver, which is China's deliberate and ongoing gold accumulation.",
+        "novelty": 5,
+        "signal": 4.8,
+        "theme": "COMMODITIES",
+        "date": "2026-03-08",
         "freshness": "FRESH"
       },
       {
-        "source": "jeff_snider",
-        "claim": "Even prominent stock market bulls like Ed Yardeni are now materially raising the probability of a US market meltdown, signaling that recession risk is finally being broadly recognized.",
-        "novelty": 6,
+        "source": "howell",
+        "claim": "Howell views the surge in gold prices as structurally driven by Chinese demand, not cyclical or sentiment-based factors, implying sustained bullion strength.",
+        "novelty": 5,
+        "signal": 4.8,
+        "theme": "COMMODITIES",
+        "date": "2026-03-08",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "Rotation within the market is the preferred core strategy, shifting away from technology and toward energy, and ultimately into more defensive positioning such as consumer staples and cash.",
+        "novelty": 5,
+        "signal": -3.0,
+        "theme": "POSITIONING",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "The Federal Reserve's current monetary policy stance is at best sufficient to keep equity markets supported near current levels, but lacks the impetus to drive them materially higher.",
+        "novelty": 5,
+        "signal": -3.0,
+        "theme": "FED_POLICY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "A recent FT article on US Treasury convenience yields is fundamentally incorrect in its framing and conclusions.",
+        "novelty": 5,
+        "signal": -9.0,
+        "theme": "DOLLAR",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "The convenience yield on US Treasuries can be properly measured by comparing Treasury yields against equivalent-duration AAA-rated corporate bonds adjusted for default risk, with the resulting yield discount representing the convenience yield.",
+        "novelty": 5,
+        "signal": -8.0,
+        "theme": "CREDIT",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "Low volatility has contributed to the recent positive liquidity environment, but a jump in bond market volatility this week signals that the next update may be less favorable.",
+        "novelty": 5,
         "signal": 0.0,
+        "theme": "VOLATILITY",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "howell",
+        "claim": "Dollar strengthening this week is expected to act as a headwind to global liquidity conditions going forward.",
+        "novelty": 5,
+        "signal": -9.0,
+        "theme": "DOLLAR",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "forward_guidance",
+        "claim": "Oil markets are still priced for a quick resolution to the Iran conflict, meaning the front end of the curve reflects complacency rather than a prolonged disruption scenario.",
+        "novelty": 5,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "forward_guidance",
+        "claim": "Probability of Fed rate cuts has been dramatically repriced, with markets now not expecting a cut until September — a major reversal from prior expectations driven by the commodity/energy shock feeding inflation concerns.",
+        "novelty": 5,
+        "signal": -3.0,
+        "theme": "FED_POLICY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "forward_guidance",
+        "claim": "Credit spreads widening alongside FX volatility rising is concerning because it could trigger a carry trade unwind, especially given the scale of global carry positions and geopolitical capital repatriation pressures.",
+        "novelty": 5,
+        "signal": -8.0,
+        "theme": "CREDIT",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "forward_guidance",
+        "claim": "Average stock realized volatility relative to index volatility is at peak levels last seen in 2009, indicating highly late-cycle behavior driven by retail options activity — this combined with massive AI capex echoes the 1999-2000 blowoff top pattern.",
+        "novelty": 5,
+        "signal": -7.0,
         "theme": "EQUITY_VALUATION",
-        "date": "2026-03-09",
+        "date": "2026-03-06",
         "freshness": "FRESH"
       },
       {
         "source": "doomberg",
-        "claim": "President Trump has not yet implemented export limits or price controls on oil and refined products, which is contributing to the market dynamics driving Brent/WTI parity.",
+        "claim": "Oil price spikes of this magnitude historically lead to sharp short-term economic contractions and significant long-term increases in crude supply, and this episode is not expected to produce a different outcome.",
         "novelty": 5,
-        "signal": -7.0,
+        "signal": -2.5,
         "theme": "ENERGY",
         "date": "2026-03-10",
         "freshness": "FRESH"
       },
       {
-        "source": "jeff_snider",
-        "claim": "The private credit bust — already underway in the US, UK, and Europe before the oil shock — is now being compounded by the energy price shock, threatening spillover into the broader financial system.",
+        "source": "doomberg",
+        "claim": "The prior EU energy crisis that began in 2021 catalyzed significant deindustrialization of major European economies, and the current supply shock risks repeating or exceeding that outcome.",
+        "novelty": 5,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "Doomberg believes it had predicted the Ras Laffan shutdown consequence prior to the event occurring, suggesting high confidence in the analytical framework around Strait of Hormuz closure impacts.",
+        "novelty": 5,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-06",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "The outbreak of war with Iran has significantly disrupted global energy markets, with meaningful political fallout expected in the near term.",
+        "novelty": 5,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "Doomberg anticipated that international coal prices would receive significant upward support following the Iran conflict outbreak.",
+        "novelty": 5,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "California's gasoline affordability crisis predates the Iran war and cannot fairly be attributed solely to Trump's military decision, despite Governor Newsom's claims.",
+        "novelty": 5,
+        "signal": -2.5,
+        "theme": "ENERGY",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "doomberg",
+        "claim": "Social media narratives around the Iran war are heavily shaped by propaganda and algorithmic curation, making reliable information difficult to assess.",
+        "novelty": 5,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-03",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "China's export growth dramatically exceeded Wall Street consensus expectations for January-February, indicating stronger external demand than analysts anticipated.",
+        "novelty": 5,
+        "signal": 0.6,
+        "theme": "CHINA_EM",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "China's trade surplus reached an all-time high for the January-February period, suggesting its export engine remains highly competitive despite global trade tensions.",
+        "novelty": 5,
+        "signal": 0.6,
+        "theme": "CHINA_EM",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "China is successfully diversifying its export markets away from the US, with shipments to Africa, ASEAN, and the EU surging while exports to the US declined — reflecting structural adaptation to US-China decoupling.",
+        "novelty": 5,
+        "signal": 0.6,
+        "theme": "CHINA_EM",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Strong AI-driven global demand for tech products is a key driver of China's export and import surge, particularly in semiconductors, supporting the view that there are no major growth risks for China despite limited stimulus.",
+        "novelty": 5,
+        "signal": 0.6,
+        "theme": "CHINA_EM",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "An extended Middle East conflict would fuel global inflation, reduce central bank room for monetary easing, and drag on global growth — with cascading negative effects on China's export demand.",
+        "novelty": 5,
+        "signal": -2.5,
+        "theme": "INFLATION",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "China's growth target for 2026 was deliberately set lower to accommodate the possibility of unpredictable external shocks, suggesting Beijing is managing expectations rather than banking on stimulus to hit higher targets.",
+        "novelty": 5,
+        "signal": 0.6,
+        "theme": "CHINA_EM",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Anthropic expressed doubt that its AI model Claude would function safely or reliably if deployed for mass surveillance or fully autonomous weapons use cases.",
+        "novelty": 5,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "The COVID-19 pandemic and associated school closures are believed to be a key driver of the observed surge in childhood obesity, as millions of children lost access to reliable nutritious school meals during that period.",
         "novelty": 5,
         "signal": 0.0,
+        "theme": "RECESSION",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Federal and state governments are increasing policy focus on nutrition, with 18 states approved to remove soda and junk food from food assistance programs and new nutrition training requirements being introduced for physicians.",
+        "novelty": 5,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "The UK government under Keir Starmer is actively exploring ways to penalize or shut down X over Grok AI generating offensive content, representing a pattern of targeting the platform.",
+        "novelty": 5,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "The source believes the UK government's stated justification for targeting X is a pretext, and the real motive is suppressing political dissent and criticism of the Labour government.",
+        "novelty": 5,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "X is described as urgently investigating the offensive chatbot responses generated by Grok, suggesting the company is attempting to manage regulatory risk.",
+        "novelty": 5,
+        "signal": 4.3,
+        "theme": "TECH_AI",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "The White House appears to be constructing an artificial narrative of distance from Israel to allow Trump a politically convenient off-ramp to declare victory and exit the conflict quickly",
+        "novelty": 5,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "hidden_forces",
+        "claim": "The guest argues that Iran's regime weakness makes it a more attractive target for military attack, implying that weak states face higher security risks without nuclear deterrence.",
+        "novelty": 5,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "hidden_forces",
+        "claim": "While acknowledging Iran's support for Hezbollah and the Houthis as irritants to U.S. interests, the guest views these as insufficient justification for military conflict given the anticipated strategic blowback.",
+        "novelty": 5,
+        "signal": -2.4,
+        "theme": "GEOPOLITICS",
+        "date": "2026-03-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "jeff_snider",
+        "claim": "The private credit sector is experiencing a bust that was already threatening systemic spillover before the oil shock, with major asset managers facing extreme withdrawal pressure — a situation that oil at $100 makes significantly worse.",
+        "novelty": 5,
+        "signal": -8.0,
         "theme": "CREDIT",
         "date": "2026-03-09",
         "freshness": "FRESH"
       },
       {
         "source": "jeff_snider",
-        "claim": "Once the Strait of Hormuz reopens and oil flows normalize, prices are likely to crash back to the low-to-mid $60s or lower — the current price spike has no fundamental justification and will reverse, but lasting economic damage will already have been done.",
+        "claim": "The US labor market was already deteriorating — showing multiple simultaneous negatives in the latest employment release — before oil breached $70/barrel, raising serious concerns about what happens to marginally viable employers now facing $90-100 oil.",
         "novelty": 5,
-        "signal": -7.0,
-        "theme": "ENERGY",
+        "signal": 0.0,
+        "theme": "RECESSION",
         "date": "2026-03-09",
         "freshness": "FRESH"
       }
     ],
     "catalyst_timeline": [
       {
-        "event": "Sustained oil price spike from Iran war",
+        "event": "Prolonged closure of the Strait of Hormuz due to Persian Gulf war",
         "date": "2026-03-10",
         "days_until": 0,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
-          "RECESSION"
+          "GEOPOLITICS",
+          "COMMODITIES"
         ]
       },
       {
-        "event": "Absence of US government intervention in energy export markets",
+        "event": "China's national energy protectionism in response to Persian Gulf conflict",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "ENERGY",
+          "CHINA_EM"
+        ]
+      },
+      {
+        "event": "US refinery economics responding to international refined product shortages",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "ENERGY",
+          "COMMODITIES"
+        ]
+      },
+      {
+        "event": "US government policy response (or lack thereof) to Persian Gulf energy disruption",
         "date": "2026-03-10",
         "days_until": 0,
         "impact": "MEDIUM",
@@ -902,14 +1619,275 @@
         ]
       },
       {
-        "event": "Global energy market fragmentation following Persian Gulf conflict escalation",
+        "event": "Major oil price spike driven by Persian Gulf war",
         "date": "2026-03-10",
         "days_until": 0,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
-          "GEOPOLITICS",
+          "RECESSION",
           "COMMODITIES"
+        ]
+      },
+      {
+        "event": "China's export suspension as leading indicator of global energy market fragmentation",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "ENERGY",
+          "CHINA_EM",
+          "GEOPOLITICS"
+        ]
+      },
+      {
+        "event": "China January-February trade data and CPI beat expectations significantly",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "CHINA_EM",
+          "INFLATION"
+        ]
+      },
+      {
+        "event": "General Administration of Customs data release",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "CHINA_EM"
+        ]
+      },
+      {
+        "event": "Customs data for January-February combined period",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "CHINA_EM"
+        ]
+      },
+      {
+        "event": "Trump administration America First trade policy and US tariffs on China",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "CHINA_EM",
+          "GEOPOLITICS"
+        ]
+      },
+      {
+        "event": "AI supply chain demand boosting semiconductor and tech product trade flows",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "CHINA_EM",
+          "TECH_AI"
+        ]
+      },
+      {
+        "event": "Anticipated US military action against Iran and Middle East conflict risk",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "ENERGY",
+          "CHINA_EM"
+        ]
+      },
+      {
+        "event": "Escalating Middle East conflict disrupting energy markets and shipping lanes",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS",
+          "ENERGY",
+          "CHINA_EM"
+        ]
+      },
+      {
+        "event": "Middle East conflict keeping energy prices elevated",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "INFLATION",
+          "FED_POLICY",
+          "CHINA_EM"
+        ]
+      },
+      {
+        "event": "China lowering 2026 official growth target amid global uncertainty",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "CHINA_EM"
+        ]
+      },
+      {
+        "event": "Upcoming Xi Jinping and Donald Trump summit to discuss trade war resolution",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS",
+          "CHINA_EM"
+        ]
+      },
+      {
+        "event": "CDC data release on childhood obesity rates",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "EQUITY_VALUATION"
+        ]
+      },
+      {
+        "event": "MAHA initiative under RFK Jr. at HHS driving nutrition policy reforms",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS"
+        ]
+      },
+      {
+        "event": "FDA approval of Wegovy, Saxenda, Orlistat, and Qsymia for adolescents aged 12-17",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "TECH_AI"
+        ]
+      },
+      {
+        "event": "Policy debate around universal free school meals expansion",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS"
+        ]
+      },
+      {
+        "event": "UK government investigation into X under the Online Safety Act",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS",
+          "TECH_AI"
+        ]
+      },
+      {
+        "event": "Repeated UK government threats to shut down X",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS",
+          "TECH_AI"
+        ]
+      },
+      {
+        "event": "G7 statement on energy market monitoring amid Iran war",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "ENERGY",
+          "COMMODITIES"
+        ]
+      },
+      {
+        "event": "Pattern of US officials distancing themselves from large Israeli strikes while Trump signals imminent war end",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "U.S. military strikes on Iran enabled by Iran's non-nuclear status",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS"
+        ]
+      },
+      {
+        "event": "Iran's perceived political and military vulnerability",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS"
+        ]
+      },
+      {
+        "event": "Ongoing U.S. military engagement in the Middle East related to Iran",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS"
+        ]
+      },
+      {
+        "event": "Iran's proxy support for regional militant groups",
+        "date": "2026-03-10",
+        "days_until": 0,
+        "impact": "MEDIUM",
+        "themes": [
+          "GEOPOLITICS"
+        ]
+      },
+      {
+        "event": "March 20th triple witching / largest OPEX in history coinciding with geopolitical stress",
+        "date": "2026-03-20",
+        "days_until": 10,
+        "impact": "MEDIUM",
+        "themes": [
+          "EQUITY_VALUATION",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "Pandemic school closures disrupting nutrition access",
+        "date": "2020-2023",
+        "days_until": 99,
+        "impact": "MEDIUM",
+        "themes": [
+          "RECESSION"
+        ]
+      },
+      {
+        "event": "Peak in global liquidity momentum preceding equity stagnation",
+        "date": "late 2025",
+        "days_until": 99,
+        "impact": "MEDIUM",
+        "themes": [
+          "EQUITY_VALUATION",
+          "LIQUIDITY"
+        ]
+      },
+      {
+        "event": "Peak in pace of US and global liquidity growth",
+        "date": "late 2025",
+        "days_until": 99,
+        "impact": "MEDIUM",
+        "themes": [
+          "LIQUIDITY",
+          "EQUITY_VALUATION"
         ]
       }
     ],
@@ -918,21 +1896,64 @@
         "source_id": "howell",
         "source_name": "Michael Howell - Capital Wars",
         "tier": "CORE",
-        "active_claims": 0,
+        "active_claims": 17,
         "freshness_breakdown": {
-          "FRESH": 0,
-          "AGING": 0,
-          "FADING": 0
+          "FRESH": 6,
+          "AGING": 4,
+          "FADING": 7
         },
         "latest_content_date": "2026-03-08",
         "days_since_content": 2,
         "stale_warning": false,
-        "direction": "",
-        "intensity": 0,
-        "bias_adjusted_signal": 0,
+        "direction": "BEARISH",
+        "intensity": 5,
+        "bias_adjusted_signal": -8,
         "known_bias": 3,
-        "top_claim": "",
-        "topics": []
+        "top_claim": "Howell believes China's gold accumulation and associated Yuan monetization helps explain the lackluster performance of the crypto market, implying gold is capturing demand that might otherwise flow in",
+        "topics": [
+          "CHINA_EM",
+          "COMMODITIES",
+          "CREDIT",
+          "CRYPTO",
+          "DOLLAR",
+          "EQUITY_VALUATION",
+          "FED_POLICY",
+          "GEOPOLITICS",
+          "LIQUIDITY",
+          "POSITIONING",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "source_id": "forward_guidance",
+        "source_name": "Forward Guidance (Jack Farley)",
+        "tier": "CORE",
+        "active_claims": 10,
+        "freshness_breakdown": {
+          "FRESH": 0,
+          "AGING": 10,
+          "FADING": 0
+        },
+        "latest_content_date": "2026-03-06",
+        "days_since_content": 4,
+        "stale_warning": false,
+        "direction": "BEARISH",
+        "intensity": 7,
+        "bias_adjusted_signal": -7,
+        "known_bias": 0,
+        "top_claim": "The Qatar LNG complex has been offline since early March due to drone or missile strikes, and restarting production will take multiple weeks — this risk to Asian energy supply is being underappreciate",
+        "topics": [
+          "CHINA_EM",
+          "CREDIT",
+          "DOLLAR",
+          "ENERGY",
+          "EQUITY_VALUATION",
+          "FED_POLICY",
+          "GEOPOLITICS",
+          "INFLATION",
+          "LIQUIDITY",
+          "VOLATILITY"
+        ]
       },
       {
         "source_id": "lyn_alden",
@@ -944,8 +1965,8 @@
           "AGING": 0,
           "FADING": 0
         },
-        "latest_content_date": "2025-12-01",
-        "days_since_content": 99,
+        "latest_content_date": "2025-12-31",
+        "days_since_content": 69,
         "stale_warning": true,
         "direction": "",
         "intensity": 0,
@@ -971,26 +1992,6 @@
         "intensity": 0,
         "bias_adjusted_signal": 0,
         "known_bias": 3,
-        "top_claim": "",
-        "topics": []
-      },
-      {
-        "source_id": "forward_guidance",
-        "source_name": "Forward Guidance (Jack Farley)",
-        "tier": "CORE",
-        "active_claims": 0,
-        "freshness_breakdown": {
-          "FRESH": 0,
-          "AGING": 0,
-          "FADING": 0
-        },
-        "latest_content_date": "2026-03-06",
-        "days_since_content": 4,
-        "stale_warning": false,
-        "direction": "",
-        "intensity": 0,
-        "bias_adjusted_signal": 0,
-        "known_bias": 0,
         "top_claim": "",
         "topics": []
       },
@@ -1055,6 +2056,32 @@
         "topics": []
       },
       {
+        "source_id": "doomberg",
+        "source_name": "Doomberg",
+        "tier": "SECONDARY",
+        "active_claims": 24,
+        "freshness_breakdown": {
+          "FRESH": 8,
+          "AGING": 10,
+          "FADING": 6
+        },
+        "latest_content_date": "2026-03-10",
+        "days_since_content": 0,
+        "stale_warning": false,
+        "direction": "BEARISH",
+        "intensity": 9,
+        "bias_adjusted_signal": -9,
+        "known_bias": 0,
+        "top_claim": "Qatar's Ras Laffan LNG export facility shutdown is one of the most consequential developments of the US-Israel war on Iran, with global LNG markets facing weeks of shortages even if conflict ends imme",
+        "topics": [
+          "CHINA_EM",
+          "COMMODITIES",
+          "ENERGY",
+          "GEOPOLITICS",
+          "RECESSION"
+        ]
+      },
+      {
         "source_id": "jeff_snider",
         "source_name": "Jeff Snider - Eurodollar University",
         "tier": "SECONDARY",
@@ -1071,29 +2098,27 @@
         "intensity": 8,
         "bias_adjusted_signal": -5,
         "known_bias": -3,
-        "top_claim": "Middle East oil producers are already cutting output as onshore storage fills due to tanker blockage — this supply destruction could persist well beyond any immediate resolution of the strait closure.",
+        "top_claim": "The duration of the Hormuz disruption is the decisive variable — even a temporary oil shock is already causing compounding damage through demand destruction, position unwinding, and fiscal strain acro",
         "topics": [
           "CHINA_EM",
           "COMMODITIES",
           "CREDIT",
           "DOLLAR",
           "ENERGY",
-          "EQUITY_VALUATION",
           "GEOPOLITICS",
           "INFLATION",
           "LIQUIDITY",
-          "POSITIONING",
           "RECESSION",
           "VOLATILITY"
         ]
       },
       {
-        "source_id": "doomberg",
-        "source_name": "Doomberg",
+        "source_id": "hidden_forces",
+        "source_name": "Hidden Forces (Demetri Kofinas)",
         "tier": "SECONDARY",
-        "active_claims": 8,
+        "active_claims": 4,
         "freshness_breakdown": {
-          "FRESH": 8,
+          "FRESH": 4,
           "AGING": 0,
           "FADING": 0
         },
@@ -1101,16 +2126,12 @@
         "days_since_content": 0,
         "stale_warning": false,
         "direction": "BEARISH",
-        "intensity": 7,
-        "bias_adjusted_signal": -7,
+        "intensity": 6,
+        "bias_adjusted_signal": -6,
         "known_bias": 0,
-        "top_claim": "China's decision to suspend diesel and gasoline exports only six days into the conflict signals how quickly national energy protectionism emerges during supply crises, reflecting a scramble to priorit",
+        "top_claim": "The guest argues that Iran's regime weakness makes it a more attractive target for military attack, implying that weak states face higher security risks without nuclear deterrence.",
         "topics": [
-          "CHINA_EM",
-          "COMMODITIES",
-          "ENERGY",
-          "GEOPOLITICS",
-          "RECESSION"
+          "GEOPOLITICS"
         ]
       },
       {
@@ -1154,44 +2175,36 @@
         "topics": []
       },
       {
-        "source_id": "hidden_forces",
-        "source_name": "Hidden Forces (Demetri Kofinas)",
-        "tier": "SECONDARY",
-        "active_claims": 0,
-        "freshness_breakdown": {
-          "FRESH": 0,
-          "AGING": 0,
-          "FADING": 0
-        },
-        "latest_content_date": "2026-03-09",
-        "days_since_content": 1,
-        "stale_warning": false,
-        "direction": "",
-        "intensity": 0,
-        "bias_adjusted_signal": 0,
-        "known_bias": 0,
-        "top_claim": "",
-        "topics": []
-      },
-      {
         "source_id": "zerohedge",
         "source_name": "ZeroHedge (Top Stories)",
         "tier": "NOISE_FILTER",
-        "active_claims": 0,
+        "active_claims": 38,
         "freshness_breakdown": {
-          "FRESH": 0,
+          "FRESH": 38,
           "AGING": 0,
           "FADING": 0
         },
         "latest_content_date": "2026-03-10",
         "days_since_content": 0,
         "stale_warning": false,
-        "direction": "",
-        "intensity": 0,
-        "bias_adjusted_signal": 0,
+        "direction": "BEARISH",
+        "intensity": 7,
+        "bias_adjusted_signal": -2,
         "known_bias": -5,
-        "top_claim": "",
-        "topics": []
+        "top_claim": "Middle East conflict labeled 'Operation Epic Fury' poses severe downside risk to China's export momentum, as an energy shock could weigh heavily on Chinese industrial activity and global trade.",
+        "topics": [
+          "CHINA_EM",
+          "COMMODITIES",
+          "CREDIT",
+          "ENERGY",
+          "EQUITY_VALUATION",
+          "FED_POLICY",
+          "GEOPOLITICS",
+          "INFLATION",
+          "RECESSION",
+          "TECH_AI",
+          "VOLATILITY"
+        ]
       }
     ]
   },
@@ -1209,8 +2222,8 @@
       },
       "step_0b_ic": {
         "status": "OK",
-        "completed_at": "2026-03-10T10:49:53Z",
-        "summary": "18 active claims (18 new + carry-forward), 0 divergences, 12 high-novelty"
+        "completed_at": "2026-03-10T12:27:32Z",
+        "summary": "103 active claims (103 new + carry-forward), 0 divergences, 84 high-novelty"
       },
       "step_1_market_analyst": {
         "status": "OK",
