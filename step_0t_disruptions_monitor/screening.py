@@ -272,17 +272,21 @@ def _brave_search_with_freshness(query, count=10, freshness='pw'):
     return data.get('web', {}).get('results', [])
 
 
-# ===== ETF FLOWS (EODHD) =====
+# ===== ETF FLOWS (FMP primary, EODHD fallback) =====
+
+FMP_API_KEY = os.environ.get('FMP_API_KEY', '')
+FMP_DELAY_S = 0.3
+
 
 def _etf_flow_category(category_id, etf_universe):
     """
     Berechne aggregierte ETF-Performance/Flows fuer eine Kategorie.
-    Nutzt EODHD API fuer Preis-Daten als Flow-Proxy.
+    Nutzt FMP stable API (primary) oder EODHD (fallback) fuer Preis-Daten als Flow-Proxy.
 
     Returns: Flow-Score 0-100 (50 = neutral, >50 = Inflows, <50 = Outflows)
     """
-    if not EODHD_API_KEY:
-        print("    [SKIP] Kein EODHD_API_KEY")
+    if not FMP_API_KEY and not EODHD_API_KEY:
+        print("    [SKIP] Kein FMP_API_KEY oder EODHD_API_KEY")
         return 50
 
     # Finde ETFs fuer diese Kategorie
@@ -297,13 +301,26 @@ def _etf_flow_category(category_id, etf_universe):
     price_changes = []
     for etf in cat_etfs[:5]:  # max 5 ETFs pro Kategorie
         ticker = etf['ticker']
-        try:
-            change_1w = _get_etf_price_change(ticker, period='1w')
-            if change_1w is not None:
-                price_changes.append(change_1w)
-            time.sleep(EODHD_DELAY_S)
-        except Exception as e:
-            print(f"    [WARN] EODHD {ticker} fehlgeschlagen: {e}")
+        change_1w = None
+
+        # Try FMP first
+        if FMP_API_KEY and change_1w is None:
+            try:
+                change_1w = _get_etf_price_change_fmp(ticker)
+                time.sleep(FMP_DELAY_S)
+            except Exception as e:
+                print(f"    [WARN] FMP {ticker} fehlgeschlagen: {e}")
+
+        # Fallback to EODHD
+        if EODHD_API_KEY and change_1w is None:
+            try:
+                change_1w = _get_etf_price_change_eodhd(ticker)
+                time.sleep(EODHD_DELAY_S)
+            except Exception as e:
+                print(f"    [WARN] EODHD {ticker} fehlgeschlagen: {e}")
+
+        if change_1w is not None:
+            price_changes.append(change_1w)
 
     if not price_changes:
         return 50
@@ -317,25 +334,50 @@ def _etf_flow_category(category_id, etf_universe):
     return round(flow_score, 1)
 
 
-def _get_etf_price_change(ticker, period='1w'):
-    """
-    Hole Kursaenderung fuer einen ETF via EODHD.
+def _get_etf_price_change_fmp(ticker):
+    """Hole 1-Wochen Kursaenderung via FMP stable endpoint."""
+    from datetime import datetime, timedelta
 
-    Returns: Prozentuale Aenderung (z.B. 2.5 fuer +2.5%)
-    """
+    from_date = (datetime.now() - timedelta(days=14)).strftime('%Y-%m-%d')
+    to_date = datetime.now().strftime('%Y-%m-%d')
+
+    url = 'https://financialmodelingprep.com/stable/historical-price-eod/full'
+    params = {
+        'symbol': ticker,
+        'apikey': FMP_API_KEY,
+        'from': from_date,
+        'to': to_date,
+    }
+
+    resp = requests.get(url, params=params, timeout=15)
+    resp.raise_for_status()
+    data = resp.json()
+
+    if not data or not isinstance(data, list) or len(data) < 2:
+        return None
+
+    latest = float(data[0].get('close', 0))
+    oldest = float(data[-1].get('close', 0))
+
+    if oldest == 0:
+        return None
+
+    return round(((latest - oldest) / oldest) * 100, 2)
+
+
+def _get_etf_price_change_eodhd(ticker):
+    """Hole 1-Wochen Kursaenderung via EODHD (fallback)."""
+    from datetime import datetime, timedelta
+
     url = f'https://eodhd.com/api/eod/{ticker}.US'
+    from_date = (datetime.now() - timedelta(days=14)).strftime('%Y-%m-%d')
     params = {
         'api_token': EODHD_API_KEY,
         'fmt': 'json',
         'period': 'd',
         'order': 'd',
-        'from': '',  # letzten 10 Tage reichen
+        'from': from_date,
     }
-
-    # Berechne from-Datum (10 Tage zurueck fuer 1w)
-    from datetime import datetime, timedelta
-    from_date = (datetime.now() - timedelta(days=14)).strftime('%Y-%m-%d')
-    params['from'] = from_date
 
     resp = requests.get(url, params=params, timeout=15)
     resp.raise_for_status()
@@ -344,12 +386,10 @@ def _get_etf_price_change(ticker, period='1w'):
     if not data or len(data) < 2:
         return None
 
-    # Neuester und aeltester Kurs in der Range
     latest = float(data[0].get('adjusted_close', data[0].get('close', 0)))
     oldest = float(data[-1].get('adjusted_close', data[-1].get('close', 0)))
 
     if oldest == 0:
         return None
 
-    change_pct = ((latest - oldest) / oldest) * 100
-    return round(change_pct, 2)
+    return round(((latest - oldest) / oldest) * 100, 2)

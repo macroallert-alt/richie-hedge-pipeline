@@ -274,14 +274,15 @@ def _check_hated_signals(etf_ticker, outflow_threshold, short_threshold, pe_thre
 
 
 def _get_price_change_pct_fmp(ticker, days=90):
-    """Hole Kursaenderung ueber N Tage via FMP."""
+    """Hole Kursaenderung ueber N Tage via FMP (stable endpoint)."""
     from datetime import datetime, timedelta
 
     from_date = (datetime.now() - timedelta(days=days + 7)).strftime('%Y-%m-%d')
     to_date = datetime.now().strftime('%Y-%m-%d')
 
-    url = f'https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}'
+    url = 'https://financialmodelingprep.com/stable/historical-price-eod/full'
     params = {
+        'symbol': ticker,
         'apikey': FMP_API_KEY,
         'from': from_date,
         'to': to_date,
@@ -291,13 +292,12 @@ def _get_price_change_pct_fmp(ticker, days=90):
     resp.raise_for_status()
     data = resp.json()
 
-    historical = data.get('historical', [])
-    if not historical or len(historical) < 2:
+    # stable endpoint returns flat array (newest first)
+    if not data or not isinstance(data, list) or len(data) < 2:
         return None
 
-    # FMP returns newest first
-    latest = float(historical[0].get('adjClose', historical[0].get('close', 0)))
-    oldest = float(historical[-1].get('adjClose', historical[-1].get('close', 0)))
+    latest = float(data[0].get('close', 0))
+    oldest = float(data[-1].get('close', 0))
 
     if oldest == 0:
         return None
@@ -374,16 +374,12 @@ def _get_price_change_pct_eodhd(ticker, days=90):
 
 
 def _get_short_interest_fmp(ticker):
-    """Hole Short Interest via FMP."""
-    url = f'https://financialmodelingprep.com/api/v4/institutional-holder/{ticker}'
-    params = {'apikey': FMP_API_KEY}
-
-    # Try key-metrics first for short percent
-    url2 = f'https://financialmodelingprep.com/api/v3/key-metrics/{ticker}'
-    params2 = {'apikey': FMP_API_KEY, 'limit': 1}
+    """Hole Short Interest via FMP (stable endpoint)."""
+    url = 'https://financialmodelingprep.com/stable/key-metrics'
+    params = {'symbol': ticker, 'apikey': FMP_API_KEY, 'limit': 1}
 
     try:
-        resp = requests.get(url2, params=params2, timeout=15)
+        resp = requests.get(url, params=params, timeout=15)
         resp.raise_for_status()
         data = resp.json()
         if data and isinstance(data, list) and len(data) > 0:
