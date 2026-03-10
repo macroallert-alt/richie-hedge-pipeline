@@ -315,7 +315,7 @@ def load_data():
     base = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet="
 
     def load_tab(name):
-        df = pd.read_csv(base + name, decimal=',', thousands='.')
+        df = pd.read_csv(base + name)
         df.columns = df.columns.str.strip()
         df = df.rename(columns={df.columns[0]: 'Date'})
         if not str(df.iloc[0]['Date'])[:4].isdigit():
@@ -324,7 +324,6 @@ def load_data():
         return df.dropna(subset=['Date']).sort_values('Date').reset_index(drop=True)
 
     prices = load_tab("DATA_Prices")
-    print(f"  DEBUG RAW CSV: cols={list(prices.columns[:6])}, row0={prices.iloc[0].tolist()[:4]}, row0_str={[str(x) for x in prices.iloc[0].tolist()[:4]]}")
     all_tickers = list(set(ASSETS + ['VGK','PLATINUM','PLAT','COPPER']))
     col_rename = {}
     for col in prices.columns:
@@ -380,9 +379,6 @@ def load_data():
             rv_pct[pair_z] = (pct - 0.5) * 2
             computed += 1
     print(f"{computed} Pairs OK")
-    print(f"  DEBUG DATA: SPY dtype={prices['SPY'].dtype}, first5={prices['SPY'].head().tolist()}")
-    print(f"  DEBUG COLS: {list(prices.columns[:10])}")
-    print(f"  DEBUG RAW0: {prices.iloc[0].tolist()[:5]}")
     print("DATEN GELADEN")
     return prices, macro, k16, rv_pct, cm
 
@@ -618,7 +614,6 @@ def run_engine(prices, macro, k16, rv, cm):
     dates_s = pd.Series(dates[sl]).reset_index(drop=True)
 
     # Performance metrics
-    print(f"  DEBUG: pr_s len={len(pr_s)}, sum={pr_s.sum()}, cumret={(1+pr_s).cumprod().iloc[-1]}, dd_total={int(dd_prot_active.sum())}")
     m_prod = mets(pr_s)
     m_spy = mets(spy_s)
 
@@ -649,23 +644,16 @@ def run_engine(prices, macro, k16, rv, cm):
         cw = sum(today_weights.get(a, 0) for a in ca)
         cluster_weights[cn] = round(cw, 4)
 
-    # State name mapping
+    # State name mapping (12 offizielle Macro States aus Excel CALC_Macro_State)
     STATE_NAMES = {
-        1: "EARLY_RECOVERY", 2: "RECOVERY_MOMENTUM", 3: "LATE_EXPANSION",
-        4: "PEAK_DEFENSIVE", 5: "EARLY_BULL", 6: "QUALITY_GROWTH",
-        7: "STAGFLATION_FEAR", 8: "LIQUIDITY_OVERRIDE", 9: "REFLATION",
-        10: "RISK_OFF_DEEP", 11: "FLIGHT_TO_SAFETY", 12: "CRISIS_ALPHA"
+        1: "FULL_EXPANSION", 2: "STEADY_GROWTH", 3: "FRAGILE_EXPANSION",
+        4: "LATE_EXPANSION", 5: "REFLATION", 6: "NEUTRAL",
+        7: "SOFT_LANDING", 8: "EARLY_RECOVERY", 9: "CONTRACTION",
+        10: "DEEP_CONTRACTION", 11: "STRESS_ELEVATED", 12: "FINANCIAL_CRISIS"
     }
 
-    # Regime mapping (simplified)
-    if today_macro_state in [1, 2, 5, 9]:
-        regime = "RISK_ON"
-    elif today_macro_state in [3, 6, 8]:
-        regime = "SELECTIVE"
-    elif today_macro_state in [4, 7]:
-        regime = "TRANSITION"
-    else:
-        regime = "RISK_OFF"
+    # Regime = offizieller State Name (1:1 aus Excel, kein Bucketing)
+    regime = STATE_NAMES.get(today_macro_state, "NEUTRAL")
 
     return {
         "date": today_date.strftime('%Y-%m-%d'),
@@ -947,103 +935,6 @@ def build_dashboard_json(v16_data):
 
 
 # ═══════════════════════════════════════════════════════
-# MERGE HELPER
-# ═══════════════════════════════════════════════════════
-# Keys die V16 IMMER ueberschreibt (V16 = Source of Truth)
-V16_OWNED_KEYS = {
-    "schema_version", "date", "weekday", "generated_at",
-    "v16", "timeseries_row", "temporal_map", "validation",
-}
-
-# Keys die V16 nur setzt wenn sie noch NICHT von einem
-# anderen Pipeline-Step mit echten Daten befuellt wurden.
-# Erkennbar daran dass der Block status != "AVAILABLE" hat
-# oder der Key noch gar nicht existiert.
-V16_PLACEHOLDER_KEYS = {
-    "header", "digest", "briefing", "action_items", "layers",
-    "signals", "risk", "intelligence", "f6", "pipeline_health",
-    "known_unknowns", "agent_r_context", "regime_context",
-    "consistency_flags", "overconfidence", "deltas",
-    "degradation_level", "degradation_banner",
-    "execution", "rotation",
-}
-
-
-def _block_has_real_data(existing_block) -> bool:
-    """Check if an existing dashboard block has real data from another step."""
-    if existing_block is None:
-        return False
-    if isinstance(existing_block, dict):
-        # Blocks mit status="AVAILABLE" oder source != "NONE" haben echte Daten
-        if existing_block.get("status") == "AVAILABLE":
-            return True
-        if existing_block.get("source") not in (None, "NONE"):
-            return True
-        # Blocks ohne status-Feld aber mit Inhalt (z.B. header, digest)
-        # Pruefen ob sie ueber den Platzhalter hinaus befuellt sind
-        if existing_block.get("system_conviction") not in (None, "N/A"):
-            return True
-        if existing_block.get("briefing_type") not in (None, "ROUTINE", "WATCH", "ACTION"):
-            # header hat immer briefing_type — pruefen ob conviction gesetzt
-            pass
-    return False
-
-
-def merge_dashboard(existing: dict, v16_new: dict) -> dict:
-    """
-    Merge V16-Daten in bestehendes Dashboard.
-    - V16_OWNED_KEYS: immer ueberschreiben
-    - V16_PLACEHOLDER_KEYS: nur ueberschreiben wenn existing leer/Platzhalter
-    - Alle anderen Keys im existing bleiben erhalten
-    """
-    merged = existing.copy()
-
-    # 1. V16-owned Keys: immer ueberschreiben
-    for key in V16_OWNED_KEYS:
-        if key in v16_new:
-            merged[key] = v16_new[key]
-
-    # 2. Placeholder Keys: nur setzen wenn existing leer oder Platzhalter
-    for key in V16_PLACEHOLDER_KEYS:
-        if key not in v16_new:
-            continue
-        existing_val = existing.get(key)
-        if existing_val is None:
-            # Key existiert nicht — V16 Platzhalter setzen
-            merged[key] = v16_new[key]
-        elif key == "pipeline_health":
-            # Spezialfall: V16 setzt v16_daily_runner auf OK,
-            # aber andere Steps (step_1, step_3 etc.) muessen erhalten bleiben
-            merged_ph = existing_val.copy()
-            v16_steps = v16_new[key].get("steps", {})
-            existing_steps = merged_ph.get("steps", {})
-            # Nur v16_daily_runner updaten, Rest behalten
-            existing_steps["v16_daily_runner"] = v16_steps.get("v16_daily_runner", {})
-            merged_ph["steps"] = existing_steps
-            merged[key] = merged_ph
-        elif key == "header":
-            # Header: V16 updated nur V16-spezifische Felder,
-            # CIO-Felder (conviction, da_*, action_items_*) bleiben
-            merged_header = existing_val.copy()
-            merged_header["date"] = v16_new[key].get("date", merged_header.get("date"))
-            merged_header["weekday"] = v16_new[key].get("weekday", merged_header.get("weekday"))
-            merged_header["v16_regime"] = v16_new[key].get("v16_regime", merged_header.get("v16_regime"))
-            merged_header["pipeline_status"] = v16_new[key].get("pipeline_status", merged_header.get("pipeline_status"))
-            merged[key] = merged_header
-        elif key == "known_unknowns":
-            # Behalte bestehende known_unknowns (andere Steps entfernen ihre Gaps)
-            merged[key] = existing_val
-        elif _block_has_real_data(existing_val):
-            # Block hat echte Daten von einem anderen Step — nicht ueberschreiben
-            pass
-        else:
-            # Block ist leer/Platzhalter — V16 Platzhalter setzen
-            merged[key] = v16_new[key]
-
-    return merged
-
-
-# ═══════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════
 def main():
@@ -1067,38 +958,15 @@ def main():
     print("\n" + "="*60)
     print("DASHBOARD JSON")
     print("="*60)
-    v16_dashboard = build_dashboard_json(v16_data)
+    dashboard = build_dashboard_json(v16_data)
 
-    # 4. Save — MERGE with existing latest.json to preserve IC/G7/CIO data
+    # 4. Save
     script_dir = os.path.dirname(os.path.abspath(__file__))
     out_dir = os.path.join(script_dir, "data", "dashboard")
     os.makedirs(out_dir, exist_ok=True)
 
+    # latest.json (fuer Frontend)
     latest_path = os.path.join(out_dir, "latest.json")
-
-    # Read existing dashboard (if present)
-    existing_dashboard = {}
-    if os.path.exists(latest_path):
-        try:
-            with open(latest_path, 'r', encoding='utf-8') as f:
-                existing_dashboard = json.load(f)
-            print(f"  Existing latest.json loaded ({len(existing_dashboard)} top-level keys)")
-        except Exception as e:
-            print(f"  WARNING: Could not read existing latest.json: {e} — creating fresh")
-            existing_dashboard = {}
-
-    # Merge V16 data into existing dashboard
-    if existing_dashboard:
-        dashboard = merge_dashboard(existing_dashboard, v16_dashboard)
-        preserved = [k for k in existing_dashboard if k not in V16_OWNED_KEYS
-                     and existing_dashboard.get(k) == dashboard.get(k)
-                     and _block_has_real_data(existing_dashboard.get(k))]
-        print(f"  Merged: V16 updated, preserved blocks: {preserved or 'none'}")
-    else:
-        dashboard = v16_dashboard
-        print(f"  Fresh dashboard (no existing file)")
-
-    # Write latest.json
     with open(latest_path, 'w') as f:
         json.dump(dashboard, f, indent=2, ensure_ascii=False)
     print(f"  latest.json ({os.path.getsize(latest_path)} bytes)")
@@ -1108,49 +976,6 @@ def main():
     with open(dated_path, 'w') as f:
         json.dump(dashboard, f, indent=2, ensure_ascii=False)
     print(f"  dashboard_{v16_data['date']}.json (Backup)")
-
-    # 4b. Write to SIGNAL_HISTORY (V16 Sheet)
-    print("\n" + "="*60)
-    print("SIGNAL_HISTORY WRITE")
-    print("="*60)
-    try:
-        from google.oauth2.service_account import Credentials
-        from googleapiclient.discovery import build
-        import tempfile
-
-        creds_json = os.environ.get("GCP_SA_KEY") or os.environ.get("GOOGLE_CREDENTIALS")
-        if creds_json:
-            with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
-                f.write(creds_json)
-                creds_path = f.name
-            creds = Credentials.from_service_account_file(
-                creds_path, scopes=["https://www.googleapis.com/auth/spreadsheets"]
-            )
-            os.unlink(creds_path)
-            sheets = build("sheets", "v4", credentials=creds).spreadsheets()
-
-            # Zeile: Date, Macro_State, Growth, Liq_Dir, Stress, FM_GLD...FM_ETH
-            tw = v16_data["target_weights"]
-            row = [
-                v16_data["date"],
-                str(v16_data["macro_state_num"]),
-                str(v16_data["growth_signal"]),
-                str(v16_data["liq_direction"]),
-                str(v16_data["stress_score"]),
-            ] + [str(round(tw.get(a, 0), 6)) for a in ASSETS]
-
-            sheets.values().append(
-                spreadsheetId=SHEET_ID,
-                range="SIGNAL_HISTORY!A:AD",
-                valueInputOption="RAW",
-                body={"values": [row]}
-            ).execute()
-            print(f"  Appended row for {v16_data['date']}: {sum(1 for a in ASSETS if tw.get(a,0) > 0)} active positions")
-        else:
-            print("  SKIP: No GCP_SA_KEY/GOOGLE_CREDENTIALS found")
-    except Exception as e:
-        print(f"  WARNING: SIGNAL_HISTORY write failed: {e}")
-        print("  (Non-fatal — dashboard.json was saved successfully)")
 
     # 5. Summary
     elapsed = (datetime.now() - t0).total_seconds()
