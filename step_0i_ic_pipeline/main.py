@@ -63,6 +63,7 @@ CLAIMS_ARCHIVE_PATH = os.path.join(DATA_DIR, "history", "claims_archive.json")
 SOURCE_HISTORY_PATH = os.path.join(DATA_DIR, "history", "source_history.json")
 THREADS_PATH = os.path.join(DATA_DIR, "history", "threads.json")
 PRE_MORTEMS_PATH = os.path.join(DATA_DIR, "history", "pre_mortems.json")
+BELIEF_STATE_PATH = os.path.join(DATA_DIR, "history", "belief_state.json")
 
 # Path to Vercel dashboard JSON (written by V16_DAILY_RUNNER, updated by IC)
 DASHBOARD_JSON_PATH = os.path.join(
@@ -1857,6 +1858,448 @@ def _compute_aggregate_risk(scenarios: list[dict]) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Bayesian Belief State (IC V2 Phase 3, Spec Kapitel 6)
+# ---------------------------------------------------------------------------
+BELIEF_NEUTRAL = 5.0
+BELIEF_MIN = 0.0
+BELIEF_MAX = 10.0
+BELIEF_BASE_LEARNING_RATE = 0.15
+BELIEF_EVIDENCE_DAMPING = 0.05  # lr = base / (1 + damping * evidence_count)
+BELIEF_UNCERTAINTY_MIN = 0.10
+BELIEF_UNCERTAINTY_MAX = 0.90
+BELIEF_UNCERTAINTY_CONFIRM_DELTA = -0.02
+BELIEF_UNCERTAINTY_CONTRADICT_DELTA = 0.05
+BELIEF_DAILY_DECAY_RATE = 0.02  # toward neutral per day without evidence
+BELIEF_DAILY_UNCERTAINTY_RISE = 0.005  # per day without evidence
+BELIEF_SIGNIFICANT_SHIFT = 1.5
+BELIEF_STALE_DAYS = 7
+BELIEF_STALE_UNCERTAINTY_THRESHOLD = 0.60
+BELIEF_HISTORY_WEEKS = 4
+
+ALL_TOPICS = [
+    "LIQUIDITY", "FED_POLICY", "CREDIT", "RECESSION", "INFLATION",
+    "EQUITY_VALUATION", "CHINA_EM", "GEOPOLITICS", "ENERGY",
+    "COMMODITIES", "TECH_AI", "CRYPTO", "DOLLAR", "VOLATILITY", "POSITIONING",
+]
+
+
+def _load_belief_state() -> dict:
+    """Load belief_state.json from data/history/."""
+    if os.path.exists(BELIEF_STATE_PATH):
+        try:
+            return _load_json(BELIEF_STATE_PATH)
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.warning(f"Belief state corrupt, starting fresh: {e}")
+    return {"beliefs": {}, "belief_shifts": [], "stale_beliefs": [], "last_updated": None}
+
+
+def _save_belief_state(bs: dict) -> None:
+    """Save belief_state.json to data/history/."""
+    bs["last_updated"] = date.today().isoformat()
+    _save_json(bs, BELIEF_STATE_PATH)
+
+
+def _initialize_belief(topic: str) -> dict:
+    """Create a new topic belief with neutral defaults."""
+    return {
+        "belief_score": BELIEF_NEUTRAL,
+        "belief_direction": "NEUTRAL",
+        "uncertainty": 0.50,
+        "evidence_count": 0,
+        "evidence_count_7d": 0,
+        "last_evidence_date": None,
+        "last_significant_shift": None,
+        "shift_magnitude": 0.0,
+        "shift_cause": None,
+        "strongest_bull": None,
+        "strongest_bear": None,
+        "stale_warning": False,
+        "history_4w": [],
+    }
+
+
+def _compute_evidence_weight(
+    thesis: dict,
+    source_config: dict,
+    expertise_matrix: dict,
+) -> float:
+    """Compute evidence weight for a single thesis.
+
+    weight = (expertise/10) * (conviction/10) * freshness_decay * bias_adjustment
+
+    bias_adjustment rewards sources speaking AGAINST their known bias:
+      alignment_with_bias: 1.0 if direction matches bias sign, -1.0 if opposite
+      adjustment = 1.0 - (alignment * abs(known_bias) / 20)
+      Range: ~0.65 (max bias-aligned) to ~1.35 (max bias-contrary)
+    """
+    source_id = thesis.get("source_id", "")
+    topics = thesis.get("topics", [])
+    primary_topic = topics[0] if topics else ""
+
+    # Expertise score (0-10) for the primary topic
+    expertise = (
+        expertise_matrix.get("expertise", {})
+        .get(source_id, {})
+        .get(primary_topic, 3)
+    )
+    expertise_norm = expertise / 10.0
+
+    # Speaker confidence / conviction (1-10)
+    conviction = thesis.get("speaker_confidence", 5)
+    if not isinstance(conviction, (int, float)):
+        conviction = 5
+    conviction_norm = max(1, min(10, conviction)) / 10.0
+
+    # Freshness decay
+    freshness = thesis.get("freshness", "FRESH")
+    decay_map = {"FRESH": 1.0, "AGING": 0.7, "FADING": 0.4, "ARCHIVED": 0.15}
+    freshness_decay = decay_map.get(freshness, 1.0)
+
+    # Bias adjustment
+    known_bias = source_config.get("known_bias", 0)
+    direction = thesis.get("sentiment", {}).get("direction", "NEUTRAL")
+
+    if known_bias != 0 and direction in ("BULLISH", "BEARISH"):
+        # Determine if direction aligns with bias
+        # Positive bias = expected to be bullish
+        # Negative bias = expected to be bearish
+        bias_sign = 1 if known_bias > 0 else -1
+        dir_sign = 1 if direction == "BULLISH" else -1
+        alignment = 1.0 if bias_sign == dir_sign else -1.0
+        bias_adjustment = 1.0 - (alignment * abs(known_bias) / 20.0)
+        # Clamp to reasonable range
+        bias_adjustment = max(0.5, min(1.5, bias_adjustment))
+    else:
+        bias_adjustment = 1.0
+
+    weight = expertise_norm * conviction_norm * freshness_decay * bias_adjustment
+    return max(0.0, min(1.0, weight))
+
+
+def _update_belief_for_thesis(
+    belief: dict,
+    thesis: dict,
+    evidence_weight: float,
+    source_config: dict,
+    expertise_matrix: dict,
+) -> dict:
+    """Update a topic belief with a single thesis.
+
+    Applies:
+      1. Dynamic learning rate (slower with more evidence)
+      2. Direction signal (+weight for BULLISH, -weight for BEARISH)
+      3. Uncertainty adjustment (down for confirm, up for contradict)
+      4. Strongest bull/bear tracking
+    """
+    direction = thesis.get("sentiment", {}).get("direction", "NEUTRAL")
+
+    if direction == "NEUTRAL":
+        # Neutral evidence doesn't move the belief
+        belief["evidence_count"] = belief.get("evidence_count", 0) + 1
+        return belief
+
+    # Dynamic learning rate
+    evidence_count = belief.get("evidence_count", 0)
+    lr = BELIEF_BASE_LEARNING_RATE / (1.0 + BELIEF_EVIDENCE_DAMPING * evidence_count)
+
+    # Direction signal
+    signal = evidence_weight if direction == "BULLISH" else -evidence_weight
+
+    # Update belief score
+    old_score = belief.get("belief_score", BELIEF_NEUTRAL)
+    new_score = old_score + lr * signal
+    new_score = max(BELIEF_MIN, min(BELIEF_MAX, new_score))
+    belief["belief_score"] = round(new_score, 2)
+
+    # Update direction label
+    if new_score > 5.5:
+        belief["belief_direction"] = "BULLISH"
+    elif new_score < 4.5:
+        belief["belief_direction"] = "BEARISH"
+    else:
+        belief["belief_direction"] = "NEUTRAL"
+
+    # Update uncertainty
+    old_uncertainty = belief.get("uncertainty", 0.50)
+    belief_is_bullish = old_score > BELIEF_NEUTRAL
+    signal_is_bullish = direction == "BULLISH"
+
+    if belief_is_bullish == signal_is_bullish:
+        # Confirmation — reduce uncertainty
+        new_uncertainty = old_uncertainty + BELIEF_UNCERTAINTY_CONFIRM_DELTA
+    else:
+        # Contradiction — increase uncertainty
+        new_uncertainty = old_uncertainty + BELIEF_UNCERTAINTY_CONTRADICT_DELTA
+
+    belief["uncertainty"] = round(
+        max(BELIEF_UNCERTAINTY_MIN, min(BELIEF_UNCERTAINTY_MAX, new_uncertainty)), 3
+    )
+
+    # Update evidence count
+    belief["evidence_count"] = evidence_count + 1
+
+    # Track strongest bull/bear
+    source_id = thesis.get("source_id", "")
+    topics = thesis.get("topics", [])
+    primary_topic = topics[0] if topics else ""
+    expertise = (
+        expertise_matrix.get("expertise", {})
+        .get(source_id, {})
+        .get(primary_topic, 0)
+    )
+
+    if direction == "BULLISH":
+        current_bull = belief.get("strongest_bull")
+        if not current_bull or expertise > current_bull.get("expertise", 0):
+            belief["strongest_bull"] = {
+                "source_id": source_id,
+                "expertise": expertise,
+            }
+    elif direction == "BEARISH":
+        current_bear = belief.get("strongest_bear")
+        if not current_bear or expertise > current_bear.get("expertise", 0):
+            belief["strongest_bear"] = {
+                "source_id": source_id,
+                "expertise": expertise,
+            }
+
+    return belief
+
+
+def _apply_daily_decay(beliefs: dict, today: date) -> dict:
+    """Apply daily decay toward neutral for topics without new evidence.
+
+    Per Spec Kapitel 6.4:
+      belief_score += 0.02 * (5.0 - belief_score)  per day without evidence
+      uncertainty += 0.005 per day without evidence
+    """
+    today_str = today.isoformat()
+    week_ago = (today - timedelta(days=7)).isoformat()
+
+    for topic, belief in beliefs.items():
+        last_ev = belief.get("last_evidence_date")
+
+        if last_ev == today_str:
+            # Had evidence today — no decay
+            belief["stale_warning"] = False
+            continue
+
+        # Apply decay
+        old_score = belief.get("belief_score", BELIEF_NEUTRAL)
+        decay_step = BELIEF_DAILY_DECAY_RATE * (BELIEF_NEUTRAL - old_score)
+        new_score = old_score + decay_step
+        belief["belief_score"] = round(new_score, 2)
+
+        # Update direction
+        if new_score > 5.5:
+            belief["belief_direction"] = "BULLISH"
+        elif new_score < 4.5:
+            belief["belief_direction"] = "BEARISH"
+        else:
+            belief["belief_direction"] = "NEUTRAL"
+
+        # Uncertainty rises
+        old_unc = belief.get("uncertainty", 0.50)
+        new_unc = min(BELIEF_UNCERTAINTY_MAX, old_unc + BELIEF_DAILY_UNCERTAINTY_RISE)
+        belief["uncertainty"] = round(new_unc, 3)
+
+        # Stale warning
+        if last_ev and last_ev < week_ago and new_unc >= BELIEF_STALE_UNCERTAINTY_THRESHOLD:
+            belief["stale_warning"] = True
+        elif not last_ev:
+            belief["stale_warning"] = False
+
+    return beliefs
+
+
+def _update_belief_history(beliefs: dict, today: date) -> dict:
+    """Update weekly history snapshots for each belief."""
+    today_str = today.isoformat()
+
+    for topic, belief in beliefs.items():
+        history = belief.get("history_4w", [])
+
+        # Add today's snapshot if not already present for this date
+        if not history or history[-1].get("date") != today_str:
+            history.append({
+                "date": today_str,
+                "belief": belief.get("belief_score", BELIEF_NEUTRAL),
+                "uncertainty": belief.get("uncertainty", 0.50),
+            })
+
+        # Keep only last 4 weeks (28 entries max if daily, typically ~20)
+        if len(history) > 28:
+            history = history[-28:]
+
+        belief["history_4w"] = history
+
+    return beliefs
+
+
+def _update_belief_state(
+    new_claims: list[dict],
+    belief_state: dict,
+    expertise_matrix: dict,
+    sources_config: list[dict],
+) -> dict:
+    """Orchestrate Bayesian Belief State update.
+
+    Steps:
+      1. Initialize missing topic beliefs
+      2. For each new FRESH claim: compute evidence weight, update belief
+      3. Update evidence_count_7d for all topics
+      4. Apply daily decay for topics without new evidence
+      5. Detect significant belief shifts
+      6. Update weekly history
+      7. Build stale_beliefs list
+
+    Returns: updated belief_state dict
+    """
+    today = date.today()
+    today_str = today.isoformat()
+    week_ago = (today - timedelta(days=7)).isoformat()
+
+    beliefs = belief_state.get("beliefs", {})
+    source_lookup = {s["source_id"]: s for s in sources_config}
+
+    # 1. Initialize missing topics
+    for topic in ALL_TOPICS:
+        if topic not in beliefs:
+            beliefs[topic] = _initialize_belief(topic)
+
+    # Save previous scores for shift detection
+    previous_scores = {t: b.get("belief_score", BELIEF_NEUTRAL) for t, b in beliefs.items()}
+
+    # Track which topics received new evidence today
+    topics_with_evidence_today = set()
+
+    # 2. Process new FRESH claims
+    for thesis in new_claims:
+        if thesis.get("freshness", "FRESH") != "FRESH":
+            continue
+
+        source_id = thesis.get("source_id", "")
+        src_config = source_lookup.get(source_id, {})
+        topics = thesis.get("topics", [])
+
+        # Compute evidence weight once per thesis
+        weight = _compute_evidence_weight(thesis, src_config, expertise_matrix)
+
+        # Apply to each topic the thesis covers
+        for topic in topics:
+            if topic not in beliefs:
+                beliefs[topic] = _initialize_belief(topic)
+
+            beliefs[topic] = _update_belief_for_thesis(
+                beliefs[topic], thesis, weight, src_config, expertise_matrix
+            )
+            beliefs[topic]["last_evidence_date"] = today_str
+            topics_with_evidence_today.add(topic)
+
+    # 3. Update evidence_count_7d
+    # Count from claims_archive would be more accurate, but for simplicity
+    # we increment for topics that got evidence today and decay for others
+    for topic in ALL_TOPICS:
+        if topic in topics_with_evidence_today:
+            # Rough count: increment by number of new claims for this topic
+            count_7d = beliefs[topic].get("evidence_count_7d", 0)
+            new_for_topic = sum(
+                1 for c in new_claims
+                if c.get("freshness") == "FRESH" and topic in c.get("topics", [])
+            )
+            beliefs[topic]["evidence_count_7d"] = count_7d + new_for_topic
+        # Note: 7d count will be recalculated properly when we have enough data
+
+    # 4. Apply daily decay
+    beliefs = _apply_daily_decay(beliefs, today)
+
+    # 5. Detect significant shifts
+    belief_shifts = []
+    for topic in ALL_TOPICS:
+        if topic not in beliefs:
+            continue
+        old_score = previous_scores.get(topic, BELIEF_NEUTRAL)
+        new_score = beliefs[topic].get("belief_score", BELIEF_NEUTRAL)
+        magnitude = round(new_score - old_score, 2)
+
+        if abs(magnitude) >= BELIEF_SIGNIFICANT_SHIFT:
+            # Find cause (highest-weight thesis for this topic)
+            cause = "Decay/accumulation"
+            for thesis in new_claims:
+                if topic in thesis.get("topics", []) and thesis.get("freshness") == "FRESH":
+                    cause = f"{thesis.get('source_id', '?')}: {thesis.get('claim_text', '')[:80]}"
+                    break
+
+            shift = {
+                "topic": topic,
+                "from_score": round(old_score, 2),
+                "to_score": round(new_score, 2),
+                "magnitude": magnitude,
+                "cause": cause,
+                "date": today_str,
+            }
+            belief_shifts.append(shift)
+
+            beliefs[topic]["last_significant_shift"] = today_str
+            beliefs[topic]["shift_magnitude"] = magnitude
+            beliefs[topic]["shift_cause"] = cause
+
+            logger.info(
+                f"BELIEF SHIFT: {topic} {old_score:.1f} → {new_score:.1f} "
+                f"({magnitude:+.1f}) — {cause[:60]}"
+            )
+
+    # 6. Update history
+    beliefs = _update_belief_history(beliefs, today)
+
+    # 7. Build stale_beliefs list
+    stale_beliefs = []
+    for topic in ALL_TOPICS:
+        if beliefs.get(topic, {}).get("stale_warning"):
+            last_ev = beliefs[topic].get("last_evidence_date", "")
+            days_stale = 0
+            if last_ev:
+                try:
+                    led = datetime.strptime(last_ev, "%Y-%m-%d").date()
+                    days_stale = (today - led).days
+                except (ValueError, TypeError):
+                    pass
+            stale_beliefs.append({
+                "topic": topic,
+                "belief_score": beliefs[topic].get("belief_score", BELIEF_NEUTRAL),
+                "uncertainty": beliefs[topic].get("uncertainty", 0.50),
+                "days_without_evidence": days_stale,
+            })
+
+    belief_state["beliefs"] = beliefs
+    belief_state["belief_shifts"] = belief_shifts
+    belief_state["stale_beliefs"] = stale_beliefs
+
+    # Log summary
+    non_neutral = {
+        t: round(b.get("belief_score", 5.0), 1)
+        for t, b in beliefs.items()
+        if abs(b.get("belief_score", 5.0) - 5.0) > 0.3
+    }
+    logger.info(
+        f"Belief State: {len(beliefs)} topics, "
+        f"{len(topics_with_evidence_today)} updated today, "
+        f"{len(belief_shifts)} significant shifts, "
+        f"{len(stale_beliefs)} stale"
+    )
+    if non_neutral:
+        logger.info(f"Non-neutral beliefs: {non_neutral}")
+    if belief_shifts:
+        for s in belief_shifts:
+            logger.info(
+                f"  SHIFT: {s['topic']} {s['from_score']} → {s['to_score']} "
+                f"({s['magnitude']:+.1f})"
+            )
+
+    return belief_state
+
+
+# ---------------------------------------------------------------------------
 # Google Drive Output
 # ---------------------------------------------------------------------------
 DRIVE_ROOT_ID = "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
@@ -2388,6 +2831,7 @@ def build_intelligence_block(
     cadence_anomalies: list[dict] | None = None,
     threads_data: dict | None = None,
     pm_data: dict | None = None,
+    belief_state: dict | None = None,
 ) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
@@ -2566,6 +3010,23 @@ def build_intelligence_block(
         # Sort by weight descending
         pre_mortems_out.sort(key=lambda p: p["v16_weight_pct"], reverse=True)
 
+    # --- Belief State (IC V2 Phase 3) ---
+    belief_state_out = {}
+    belief_shifts_out = []
+    stale_beliefs_out = []
+    if belief_state:
+        for topic, b in belief_state.get("beliefs", {}).items():
+            belief_state_out[topic] = {
+                "belief": round(b.get("belief_score", 5.0), 1),
+                "direction": b.get("belief_direction", "NEUTRAL"),
+                "uncertainty": round(b.get("uncertainty", 0.50), 2),
+                "evidence_count": b.get("evidence_count", 0),
+                "last_evidence_date": b.get("last_evidence_date"),
+                "stale_warning": b.get("stale_warning", False),
+            }
+        belief_shifts_out = belief_state.get("belief_shifts", [])
+        stale_beliefs_out = belief_state.get("stale_beliefs", [])
+
     return {
         "status": "AVAILABLE",
         "consensus": consensus_out,
@@ -2577,6 +3038,9 @@ def build_intelligence_block(
         "cadence_anomalies": cadence_anomalies or [],
         "active_threads": active_threads_out,
         "pre_mortems": pre_mortems_out,
+        "belief_state": belief_state_out,
+        "belief_shifts": belief_shifts_out,
+        "stale_beliefs": stale_beliefs_out,
     }
 
 
@@ -2589,6 +3053,7 @@ def update_dashboard_json(
     cadence_anomalies: list[dict] | None = None,
     threads_data: dict | None = None,
     pm_data: dict | None = None,
+    belief_state: dict | None = None,
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -2639,7 +3104,7 @@ def update_dashboard_json(
         # Replace intelligence block (with source_cards + cadence_anomalies + threads + pre-mortems)
         dashboard["intelligence"] = build_intelligence_block(
             intel, briefing, claims_archive, sources_config,
-            cadence_anomalies, threads_data, pm_data
+            cadence_anomalies, threads_data, pm_data, belief_state
         )
 
         # Update pipeline health
@@ -2717,6 +3182,7 @@ def main():
     cadence_anomalies = []
     threads_data = None
     pm_data = None
+    belief_state = None
 
     # Load claims archive for carry-forward
     claims_archive = _load_claims_archive()
@@ -2795,6 +3261,13 @@ def main():
         )
         _save_pre_mortems(pm_data)
 
+        # Bayesian Belief State (IC V2 Phase 3)
+        belief_state = _load_belief_state()
+        belief_state = _update_belief_state(
+            new_claims, belief_state, expertise_matrix, sources
+        )
+        _save_belief_state(belief_state)
+
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
             if args.stage == "intelligence" and not active_claims:
@@ -2838,7 +3311,7 @@ def main():
             update_dashboard_json(
                 intel, briefing, active_claims_count,
                 claims_archive, sources, cadence_anomalies, threads_data,
-                pm_data
+                pm_data, belief_state
             )
 
     except Exception as e:
