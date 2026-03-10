@@ -2653,6 +2653,133 @@ def _detect_disagreements(
 
 
 # ---------------------------------------------------------------------------
+# Silence Map & Coverage Gaps (IC V2 Phase 3, Spec Kapitel 11)
+# ---------------------------------------------------------------------------
+def _compute_silence_map(
+    active_claims: list[dict],
+    claims_archive: dict,
+    v16_context: dict | None,
+    taxonomy: dict,
+) -> list[dict]:
+    """Detect topics with no IC coverage (silence) or fading coverage.
+
+    Coverage-based approach (no external price data needed):
+      1. Count active claims per topic (FRESH+AGING+FADING)
+      2. Topics with 0 claims -> SILENT
+      3. SILENT topics affecting V16 positions -> CRITICAL silence
+      4. Topics with claims only in FADING -> FADING_COVERAGE
+
+    Full Spec version (with asset price moves >3%) deferred until
+    EODHD price data is available in IC pipeline context.
+
+    Returns: list of silence_map entries sorted by priority
+    """
+    topic_to_assets = taxonomy.get("topic_to_assets", {})
+
+    # Get V16 position assets
+    v16_assets = set()
+    if v16_context:
+        weights = v16_context.get("current_weights", {})
+        v16_assets = {
+            a.upper() for a, w in weights.items()
+            if isinstance(w, (int, float)) and w > 0.005
+        }
+
+    # Count claims per topic by freshness
+    topic_claims: dict[str, dict[str, int]] = {}
+    for topic in ALL_TOPICS:
+        topic_claims[topic] = {"FRESH": 0, "AGING": 0, "FADING": 0, "total": 0}
+
+    for claim in active_claims:
+        freshness = claim.get("freshness", "FRESH")
+        if freshness not in ("FRESH", "AGING", "FADING"):
+            continue
+        for topic in claim.get("topics", []):
+            if topic in topic_claims:
+                topic_claims[topic][freshness] = topic_claims[topic].get(freshness, 0) + 1
+                topic_claims[topic]["total"] += 1
+
+    # Check for ARCHIVED claims (had coverage recently but now fading out)
+    topic_had_recent = set()
+    for claim in claims_archive.get("claims", []):
+        if claim.get("freshness") == "ARCHIVED":
+            for topic in claim.get("topics", []):
+                topic_had_recent.add(topic)
+
+    silence_map = []
+
+    for topic in ALL_TOPICS:
+        counts = topic_claims.get(topic, {})
+        total = counts.get("total", 0)
+        fresh = counts.get("FRESH", 0)
+        fading = counts.get("FADING", 0)
+
+        # Determine silence type
+        silence_type = None
+        detail = ""
+
+        if total == 0:
+            if topic in topic_had_recent:
+                silence_type = "COVERAGE_LOST"
+                detail = "Had coverage recently but all claims now archived"
+            else:
+                silence_type = "SILENT"
+                detail = "No IC coverage at all"
+        elif fresh == 0 and fading > 0 and fading == total:
+            silence_type = "FADING_COVERAGE"
+            detail = f"Only {fading} fading claims remain, no fresh evidence"
+        else:
+            # Has active coverage — no silence
+            continue
+
+        # Check portfolio relevance
+        topic_assets = set(topic_to_assets.get(topic, []))
+        portfolio_overlap = topic_assets & v16_assets
+        portfolio_relevant = len(portfolio_overlap) > 0
+
+        # Calculate priority
+        if portfolio_relevant and silence_type in ("SILENT", "COVERAGE_LOST"):
+            priority = "HIGH"
+        elif portfolio_relevant and silence_type == "FADING_COVERAGE":
+            priority = "MEDIUM"
+        elif silence_type in ("SILENT", "COVERAGE_LOST"):
+            priority = "LOW"
+        else:
+            priority = "LOW"
+
+        overlap_str = ", ".join(sorted(portfolio_overlap)) if portfolio_overlap else ""
+
+        silence_map.append({
+            "topic": topic,
+            "silence_type": silence_type,
+            "detail": detail,
+            "claims_count": total,
+            "portfolio_relevant": portfolio_relevant,
+            "portfolio_assets": overlap_str,
+            "priority": priority,
+        })
+
+    # Sort by priority (HIGH first)
+    priority_order = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
+    silence_map.sort(key=lambda s: priority_order.get(s["priority"], 9))
+
+    # Log
+    high_silence = [s for s in silence_map if s["priority"] == "HIGH"]
+    if high_silence:
+        for s in high_silence:
+            logger.warning(
+                f"SILENCE MAP: {s['topic']} — {s['silence_type']} "
+                f"(portfolio: {s['portfolio_assets']}) — {s['detail']}"
+            )
+    logger.info(
+        f"Silence Map: {len(silence_map)} gaps detected "
+        f"({len(high_silence)} HIGH priority)"
+    )
+
+    return silence_map
+
+
+# ---------------------------------------------------------------------------
 # Google Drive Output
 # ---------------------------------------------------------------------------
 DRIVE_ROOT_ID = "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
@@ -3187,6 +3314,7 @@ def build_intelligence_block(
     belief_state: dict | None = None,
     cross_system: list | None = None,
     expert_disagreements: list | None = None,
+    silence_map: list | None = None,
 ) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
@@ -3401,6 +3529,7 @@ def build_intelligence_block(
         "stale_beliefs": stale_beliefs_out,
         "cross_system": cross_system_out,
         "expert_disagreements": expert_disagreements or [],
+        "silence_map": silence_map or [],
     }
 
 
@@ -3416,6 +3545,7 @@ def update_dashboard_json(
     belief_state: dict | None = None,
     cross_system: list | None = None,
     expert_disagreements: list | None = None,
+    silence_map: list | None = None,
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -3467,7 +3597,7 @@ def update_dashboard_json(
         dashboard["intelligence"] = build_intelligence_block(
             intel, briefing, claims_archive, sources_config,
             cadence_anomalies, threads_data, pm_data, belief_state,
-            cross_system, expert_disagreements
+            cross_system, expert_disagreements, silence_map
         )
 
         # Update pipeline health
@@ -3548,6 +3678,7 @@ def main():
     belief_state = None
     cross_system = None
     expert_disagreements = None
+    silence_map = None
 
     # Load claims archive for carry-forward
     claims_archive = _load_claims_archive()
@@ -3650,6 +3781,11 @@ def main():
             source_history, v16_context
         )
 
+        # Silence Map (IC V2 Phase 3)
+        silence_map = _compute_silence_map(
+            active_claims, claims_archive, v16_context, taxonomy
+        )
+
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
             if args.stage == "intelligence" and not active_claims:
@@ -3694,7 +3830,7 @@ def main():
                 intel, briefing, active_claims_count,
                 claims_archive, sources, cadence_anomalies, threads_data,
                 pm_data, belief_state, cross_system,
-                expert_disagreements
+                expert_disagreements, silence_map
             )
 
     except Exception as e:
