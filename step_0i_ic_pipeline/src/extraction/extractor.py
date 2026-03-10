@@ -179,18 +179,28 @@ def _build_source_history(
     """Build source history JSON string from claims archive for Call B.
 
     Returns: (history_json_string, post_count)
-    Groups claims by content_date, returns most recent 4 dates (excluding current).
+    Groups claims by content_date, returns most recent 4 dates.
+    Excludes claims that were extracted TODAY (same extraction_date) to avoid
+    including claims from the current batch. Uses extraction_date instead of
+    content_date for filtering because multiple posts can share the same
+    content_date (e.g. ZeroHedge posts 5 articles on the same day).
     """
     if not claims_archive:
         return "[]", 0
 
+    today_str = date.today().isoformat()
+
     # Collect claims for this source, grouped by content_date
+    # Exclude claims extracted today (current run's output)
     date_claims: dict[str, list[dict]] = {}
     for claim in claims_archive.get("claims", []):
         if claim.get("source_id") != source_id:
             continue
+        # Skip claims from current extraction run
+        if claim.get("extraction_date", "") == today_str:
+            continue
         cd = claim.get("content_date", "")
-        if not cd or cd == current_content_date:
+        if not cd:
             continue
         if cd not in date_claims:
             date_claims[cd] = []
@@ -507,7 +517,7 @@ def extract_claims(
     try:
         response_a = client.messages.create(
             model=model,
-            max_tokens=4096,
+            max_tokens=8192,
             system=system_prompt_a,
             messages=[{"role": "user", "content": user_prompt_a}],
         )
