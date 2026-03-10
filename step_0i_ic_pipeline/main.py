@@ -2539,6 +2539,10 @@ def _detect_disagreements(
         best_bull = max(bulls, key=lambda s: (s["expertise"], s["novelty_score"]))
         best_bear = max(bears, key=lambda s: (s["expertise"], s["novelty_score"]))
 
+        # Skip self-disagreements (same source on both sides)
+        if best_bull["source_id"] == best_bear["source_id"]:
+            continue
+
         # V16 alignment: check belief state direction or layer scores
         v16_alignment = "UNKNOWN"
         if v16_context:
