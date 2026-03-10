@@ -41,6 +41,7 @@ CONFIG_DIR = os.path.join(BASE_DIR, "config")
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
 CLAIMS_ARCHIVE_PATH = os.path.join(DATA_DIR, "history", "claims_archive.json")
+SOURCE_HISTORY_PATH = os.path.join(DATA_DIR, "history", "source_history.json")
 
 # Path to Vercel dashboard JSON (written by V16_DAILY_RUNNER, updated by IC)
 DASHBOARD_JSON_PATH = os.path.join(
@@ -347,6 +348,245 @@ def _detect_cadence_anomalies(
         logger.info("Cadence Anomaly Detection: no anomalies detected")
 
     return anomalies
+
+
+# ---------------------------------------------------------------------------
+# Source Conviction History (IC V2 Phase 2, Spec Kapitel 9)
+# ---------------------------------------------------------------------------
+def _load_source_history() -> dict:
+    """Load source_history.json from data/history/."""
+    if os.path.exists(SOURCE_HISTORY_PATH):
+        try:
+            return _load_json(SOURCE_HISTORY_PATH)
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.warning(f"Source history corrupt, starting fresh: {e}")
+    return {"sources": {}, "last_updated": None}
+
+
+def _save_source_history(history: dict) -> None:
+    """Save source_history.json to data/history/."""
+    history["last_updated"] = date.today().isoformat()
+    _save_json(history, SOURCE_HISTORY_PATH)
+
+
+def _update_source_history(
+    new_claims: list[dict],
+    sources_config: list[dict],
+    source_history: dict,
+) -> dict:
+    """Update source conviction history with new extraction data.
+
+    Per IC V2 Spec Kapitel 9: 4-week rolling window per source tracking
+    conviction direction, intensity, bias-adjusted signal, temperature,
+    and speaker confidence per content_date.
+
+    Detects:
+      - conviction_trend: RISING / STABLE / FALLING
+      - temperature_trend: RISING / STABLE / FALLING
+      - shift_detected: true if direction changed or intensity jumped >=3
+
+    Args:
+        new_claims: claims from current extraction (may be empty)
+        sources_config: list of source configs from sources.json
+        source_history: existing history dict
+
+    Returns:
+        updated source_history dict
+    """
+    today = date.today()
+    cutoff = today - timedelta(days=30)
+
+    source_lookup = {s["source_id"]: s for s in sources_config}
+    sources_dict = source_history.get("sources", {})
+
+    # Group new claims by source_id + content_date
+    new_by_source: dict[str, dict[str, list[dict]]] = {}
+    for claim in new_claims:
+        sid = claim.get("source_id", "")
+        cd = claim.get("content_date", "")
+        if not sid or not cd:
+            continue
+        if sid not in new_by_source:
+            new_by_source[sid] = {}
+        if cd not in new_by_source[sid]:
+            new_by_source[sid][cd] = []
+        new_by_source[sid][cd].append(claim)
+
+    # Update history for each source that has new claims
+    for sid, date_claims in new_by_source.items():
+        if sid not in sources_dict:
+            sources_dict[sid] = {"conviction_history": []}
+
+        src_config = source_lookup.get(sid, {})
+        known_bias = src_config.get("known_bias", 0)
+
+        for cd, claims_list in date_claims.items():
+            # Aggregate claims for this date: use highest-novelty claim
+            # for direction/intensity, average for temperature/confidence
+            best_novelty = -1
+            direction = "NEUTRAL"
+            intensity = 5
+            temperatures = []
+            confidences = []
+
+            for c in claims_list:
+                nov = c.get("novelty_score", 0)
+                if nov > best_novelty:
+                    best_novelty = nov
+                    sent = c.get("sentiment", {})
+                    direction = sent.get("direction", "NEUTRAL")
+                    intensity = sent.get("intensity", 5)
+
+                lt = c.get("linguistic_temperature")
+                if isinstance(lt, (int, float)) and lt > 0:
+                    temperatures.append(lt)
+
+                sc = c.get("speaker_confidence")
+                if isinstance(sc, (int, float)) and sc > 0:
+                    confidences.append(sc)
+
+            # Bias-adjusted signal
+            signed = intensity if direction == "BULLISH" else (
+                -intensity if direction == "BEARISH" else 0
+            )
+            bias_adjusted = signed - known_bias
+
+            avg_temperature = (
+                round(sum(temperatures) / len(temperatures), 1)
+                if temperatures else None
+            )
+            avg_confidence = (
+                round(sum(confidences) / len(confidences), 1)
+                if confidences else None
+            )
+
+            # Check for duplicate entry (same source + date)
+            existing_dates = {
+                e["date"] for e in sources_dict[sid]["conviction_history"]
+            }
+            if cd in existing_dates:
+                # Update existing entry
+                for entry in sources_dict[sid]["conviction_history"]:
+                    if entry["date"] == cd:
+                        entry["direction"] = direction
+                        entry["intensity"] = intensity
+                        entry["bias_adjusted"] = bias_adjusted
+                        entry["temperature"] = avg_temperature
+                        entry["speaker_confidence"] = avg_confidence
+                        break
+            else:
+                sources_dict[sid]["conviction_history"].append({
+                    "date": cd,
+                    "direction": direction,
+                    "intensity": intensity,
+                    "bias_adjusted": bias_adjusted,
+                    "temperature": avg_temperature,
+                    "speaker_confidence": avg_confidence,
+                })
+
+    # For ALL sources: prune old entries + compute trends
+    for sid in list(sources_dict.keys()):
+        history_list = sources_dict[sid].get("conviction_history", [])
+
+        # Remove entries older than 30 days
+        history_list = [
+            e for e in history_list
+            if e.get("date", "") >= cutoff.isoformat()
+        ]
+
+        # Sort by date ascending
+        history_list.sort(key=lambda e: e.get("date", ""))
+
+        # Compute conviction_trend from last 4 entries
+        conviction_trend = "STABLE"
+        temperature_trend = "STABLE"
+        shift_detected = False
+        shift_detail = None
+        conviction_4w_delta = 0
+
+        if len(history_list) >= 2:
+            # Conviction trend based on bias_adjusted signal
+            recent = history_list[-4:] if len(history_list) >= 4 else history_list
+            signals = [e.get("bias_adjusted", 0) for e in recent]
+
+            if len(signals) >= 2:
+                first_half = sum(signals[:len(signals)//2]) / max(len(signals)//2, 1)
+                second_half = sum(signals[len(signals)//2:]) / max(len(signals) - len(signals)//2, 1)
+                delta = second_half - first_half
+                conviction_4w_delta = round(delta, 1)
+
+                if delta > 1.5:
+                    conviction_trend = "RISING"
+                elif delta < -1.5:
+                    conviction_trend = "FALLING"
+
+            # Temperature trend
+            temps = [
+                e.get("temperature") for e in recent
+                if e.get("temperature") is not None
+            ]
+            if len(temps) >= 2:
+                t_first = sum(temps[:len(temps)//2]) / max(len(temps)//2, 1)
+                t_second = sum(temps[len(temps)//2:]) / max(len(temps) - len(temps)//2, 1)
+                t_delta = t_second - t_first
+                if t_delta > 1.5:
+                    temperature_trend = "RISING"
+                elif t_delta < -1.5:
+                    temperature_trend = "FALLING"
+
+            # Shift detection: direction change or intensity jump >= 3
+            if len(history_list) >= 2:
+                prev = history_list[-2]
+                curr = history_list[-1]
+                prev_dir = prev.get("direction", "NEUTRAL")
+                curr_dir = curr.get("direction", "NEUTRAL")
+                prev_int = prev.get("intensity", 5)
+                curr_int = curr.get("intensity", 5)
+
+                if (prev_dir in ("BULLISH", "BEARISH") and
+                        curr_dir in ("BULLISH", "BEARISH") and
+                        prev_dir != curr_dir):
+                    shift_detected = True
+                    shift_detail = f"Direction change: {prev_dir} -> {curr_dir}"
+                elif abs(curr_int - prev_int) >= 3:
+                    shift_detected = True
+                    shift_detail = (
+                        f"Intensity jump: {prev_int} -> {curr_int} "
+                        f"(delta {curr_int - prev_int:+d})"
+                    )
+
+        sources_dict[sid]["conviction_history"] = history_list
+        sources_dict[sid]["conviction_trend"] = conviction_trend
+        sources_dict[sid]["conviction_4w_delta"] = conviction_4w_delta
+        sources_dict[sid]["temperature_trend"] = temperature_trend
+        sources_dict[sid]["shift_detected"] = shift_detected
+        sources_dict[sid]["shift_detail"] = shift_detail
+        sources_dict[sid]["entry_count"] = len(history_list)
+
+    source_history["sources"] = sources_dict
+
+    # Log summary
+    trends = {}
+    shifts = []
+    for sid, data in sources_dict.items():
+        ct = data.get("conviction_trend", "STABLE")
+        if ct != "STABLE":
+            trends[sid] = ct
+        if data.get("shift_detected"):
+            shifts.append(f"{sid}: {data.get('shift_detail', '')}")
+
+    total_entries = sum(d.get("entry_count", 0) for d in sources_dict.values())
+    logger.info(
+        f"Source Conviction History: {len(sources_dict)} sources, "
+        f"{total_entries} total entries (30d window)"
+    )
+    if trends:
+        logger.info(f"Conviction trends: {trends}")
+    if shifts:
+        for s in shifts:
+            logger.info(f"SHIFT DETECTED: {s}")
+
+    return source_history
 
 
 # ---------------------------------------------------------------------------
@@ -1197,6 +1437,13 @@ def main():
 
         # Cadence Anomaly Detection (IC V2 Phase 2)
         cadence_anomalies = _detect_cadence_anomalies(claims_archive, sources)
+
+        # Source Conviction History (IC V2 Phase 2)
+        source_history = _load_source_history()
+        source_history = _update_source_history(
+            new_claims, sources, source_history
+        )
+        _save_source_history(source_history)
 
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
