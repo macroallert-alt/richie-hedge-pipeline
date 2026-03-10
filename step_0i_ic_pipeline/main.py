@@ -2,6 +2,12 @@
 IC Intelligence Pipeline — Main Entry Point
 Usage: python -m step_0i_ic_pipeline.main --stage all
 Stages: extraction, intelligence, briefing, all
+
+IC V2 Phase 1: 7-Day Claims Carry-Forward
+- claims_archive.json persists ALL claims from last 7 days
+- New claims are ADDED (not replaced)
+- Old claims get Freshness tags: FRESH/AGING/FADING/ARCHIVED/EXPIRED
+- Intelligence Engine receives ALL active claims, not just today's
 """
 
 import argparse
@@ -9,7 +15,7 @@ import json
 import logging
 import os
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 # ---------------------------------------------------------------------------
 # Logging Setup
@@ -28,6 +34,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_DIR = os.path.join(BASE_DIR, "config")
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
+CLAIMS_ARCHIVE_PATH = os.path.join(DATA_DIR, "history", "claims_archive.json")
+
 # Path to Vercel dashboard JSON (written by V16_DAILY_RUNNER, updated by IC)
 DASHBOARD_JSON_PATH = os.path.join(
     os.path.dirname(BASE_DIR), "data", "dashboard", "latest.json"
@@ -44,6 +52,151 @@ def _save_json(data: dict, path: str) -> None:
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
     logger.info(f"Saved: {path}")
+
+
+# ---------------------------------------------------------------------------
+# Claims Archive — 7-Day Carry-Forward (IC V2 Phase 1)
+# ---------------------------------------------------------------------------
+def _compute_freshness(content_date_str: str, today: date) -> dict:
+    """Compute freshness category and decay weight for a claim.
+
+    Categories per IC V2 Spec Teil 5, Kapitel 17 / Teil 3, Kapitel 7:
+      FRESH:    0-2 days,  decay 1.0
+      AGING:    3-5 days,  decay 0.7
+      FADING:   6-7 days,  decay 0.4
+      ARCHIVED: 8-14 days, decay 0.15
+      EXPIRED:  15+ days,  decay 0.0 (removed from active archive)
+    """
+    try:
+        content_date = datetime.strptime(content_date_str, "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        content_date = today
+
+    age_days = (today - content_date).days
+
+    if age_days <= 2:
+        return {"freshness": "FRESH", "decay_weight": 1.0, "age_days": age_days}
+    elif age_days <= 5:
+        return {"freshness": "AGING", "decay_weight": 0.7, "age_days": age_days}
+    elif age_days <= 7:
+        return {"freshness": "FADING", "decay_weight": 0.4, "age_days": age_days}
+    elif age_days <= 14:
+        return {"freshness": "ARCHIVED", "decay_weight": 0.15, "age_days": age_days}
+    else:
+        return {"freshness": "EXPIRED", "decay_weight": 0.0, "age_days": age_days}
+
+
+def _load_claims_archive() -> dict:
+    """Load claims_archive.json from data/history/."""
+    if os.path.exists(CLAIMS_ARCHIVE_PATH):
+        try:
+            return _load_json(CLAIMS_ARCHIVE_PATH)
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.warning(f"Claims archive corrupt, starting fresh: {e}")
+    return {"claims": [], "last_updated": None}
+
+
+def _save_claims_archive(archive: dict) -> None:
+    """Save claims_archive.json to data/history/."""
+    archive["last_updated"] = date.today().isoformat()
+    _save_json(archive, CLAIMS_ARCHIVE_PATH)
+
+
+def _make_claim_key(claim: dict) -> str:
+    """Create a unique key for deduplication.
+
+    Key = source_id + content_date + first 80 chars of claim_text.
+    This catches exact repeats from same source on same date.
+    """
+    text_prefix = claim.get("claim_text", "")[:80].strip().lower()
+    return f"{claim.get('source_id', '')}|{claim.get('content_date', '')}|{text_prefix}"
+
+
+def merge_claims_into_archive(
+    new_claims: list[dict], archive: dict
+) -> tuple[list[dict], dict]:
+    """Merge new claims into the archive and return all active claims.
+
+    Steps:
+      1. Build key set from existing archive claims for dedup
+      2. Add new claims that aren't duplicates
+      3. Update freshness tags on ALL claims
+      4. Remove EXPIRED claims (>14 days)
+      5. Return (active_claims for Intelligence Engine, updated archive)
+
+    Active claims = FRESH + AGING + FADING (0-7 days, used for scoring).
+    ARCHIVED claims (8-14 days) stay in archive but are NOT passed to
+    Intelligence Engine — they're only visible in thread detail (Phase 2+).
+    """
+    today = date.today()
+
+    # Index existing claims by key for dedup
+    existing_keys = {}
+    for i, claim in enumerate(archive.get("claims", [])):
+        key = _make_claim_key(claim)
+        existing_keys[key] = i
+
+    # Add new claims (skip duplicates)
+    added_count = 0
+    duplicate_count = 0
+    for claim in new_claims:
+        key = _make_claim_key(claim)
+        if key in existing_keys:
+            # Duplicate — update freshness on existing claim (reset to FRESH)
+            idx = existing_keys[key]
+            freshness = _compute_freshness(claim.get("content_date", ""), today)
+            archive["claims"][idx]["freshness"] = freshness["freshness"]
+            archive["claims"][idx]["decay_weight"] = freshness["decay_weight"]
+            archive["claims"][idx]["age_days"] = freshness["age_days"]
+            duplicate_count += 1
+        else:
+            # New claim — add with freshness
+            freshness = _compute_freshness(claim.get("content_date", ""), today)
+            claim["freshness"] = freshness["freshness"]
+            claim["decay_weight"] = freshness["decay_weight"]
+            claim["age_days"] = freshness["age_days"]
+            archive["claims"].append(claim)
+            existing_keys[key] = len(archive["claims"]) - 1
+            added_count += 1
+
+    # Update freshness on ALL existing claims and filter out EXPIRED
+    surviving_claims = []
+    for claim in archive["claims"]:
+        freshness = _compute_freshness(claim.get("content_date", ""), today)
+        claim["freshness"] = freshness["freshness"]
+        claim["decay_weight"] = freshness["decay_weight"]
+        claim["age_days"] = freshness["age_days"]
+        if freshness["freshness"] != "EXPIRED":
+            surviving_claims.append(claim)
+
+    expired_count = len(archive["claims"]) - len(surviving_claims)
+    archive["claims"] = surviving_claims
+
+    # Active claims = FRESH + AGING + FADING (passed to Intelligence Engine)
+    active_claims = [
+        c for c in surviving_claims
+        if c.get("freshness") in ("FRESH", "AGING", "FADING")
+    ]
+
+    # Log summary
+    freshness_counts = {}
+    for c in surviving_claims:
+        f = c.get("freshness", "UNKNOWN")
+        freshness_counts[f] = freshness_counts.get(f, 0) + 1
+
+    logger.info(
+        f"Claims Archive: +{added_count} new, {duplicate_count} dupes, "
+        f"{expired_count} expired, {len(surviving_claims)} total in archive"
+    )
+    logger.info(
+        f"Claims Freshness: {freshness_counts}"
+    )
+    logger.info(
+        f"Active claims for Intelligence Engine: {len(active_claims)} "
+        f"(FRESH+AGING+FADING)"
+    )
+
+    return active_claims, archive
 
 
 # ---------------------------------------------------------------------------
@@ -120,7 +273,7 @@ def _upload_to_drive(service, data: dict, filename: str, folder_id: str) -> None
 
 
 def write_drive_outputs(
-    claims_output: dict, intel: dict, briefing: dict
+    claims_output: dict, intel: dict, briefing: dict, claims_archive: dict
 ) -> None:
     """Write all outputs to Google Drive CURRENT/ and HISTORY/ic/YYYY-MM-DD/."""
     try:
@@ -138,7 +291,10 @@ def write_drive_outputs(
         _upload_to_drive(service, intel, "step0b_ic_intelligence.json", current_id)
         _upload_to_drive(service, claims_output, "step0b_ic_claims.json", current_id)
         _upload_to_drive(service, briefing, "step0b_ic_briefing.json", current_id)
-        logger.info("Drive: CURRENT/ updated")
+        _upload_to_drive(
+            service, claims_archive, "step0b_ic_claims_archive.json", current_id
+        )
+        logger.info("Drive: CURRENT/ updated (4 files incl. claims_archive)")
 
         # Write to HISTORY/ic/YYYY-MM-DD/ via local archive (committed by GitHub Actions)
         _write_local_archive(claims_output, "step0b_ic_claims.json", today_str)
@@ -166,6 +322,8 @@ def _write_local_archive(data: dict, filename: str, date_str: str) -> None:
         logger.info(f"  Local archive: archive/{date_str}/{filename}")
     except Exception as e:
         logger.warning(f"  Local archive write failed (non-fatal): {e}")
+
+
 DW_SHEET_ID = "1sZeZ4VVztAqjBjyfXcCfhpSWJ4pCGF8ip1ksu_TYMHY"
 
 
@@ -520,14 +678,16 @@ def build_intelligence_block(intel: dict, briefing: dict) -> dict:
     }
 
 
-def update_dashboard_json(intel: dict, briefing: dict) -> None:
+def update_dashboard_json(
+    intel: dict, briefing: dict, active_claims_count: int
+) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
     update pipeline_health, and write back.
 
-    Guard: If no new claims were extracted, keep the existing intelligence
-    block in dashboard.json so that previous IC data remains available
-    for CIO and other downstream consumers.
+    IC V2: Uses active_claims_count (from archive, includes carry-forward)
+    instead of just today's new claims. Dashboard always gets updated
+    as long as there are active claims in the 7-day window.
     """
     if not os.path.exists(DASHBOARD_JSON_PATH):
         logger.warning(
@@ -536,14 +696,13 @@ def update_dashboard_json(intel: dict, briefing: dict) -> None:
         )
         return
 
-    # Guard: Only update intelligence block if we have new data
-    claims_count = intel.get("extraction_summary", {}).get("total_claims", 0)
-    if claims_count == 0:
+    # Guard: Only update intelligence block if we have active claims
+    # (either new or carried forward from last 7 days)
+    if active_claims_count == 0:
         logger.info(
-            "No new claims — keeping existing intelligence block in dashboard. "
-            "Pipeline health updated to reflect successful run with 0 new claims."
+            "No active claims (new or carry-forward) — keeping existing "
+            "intelligence block in dashboard."
         )
-        # Still update pipeline_health to show IC ran successfully
         try:
             with open(DASHBOARD_JSON_PATH, "r") as f:
                 dashboard = json.load(f)
@@ -552,12 +711,14 @@ def update_dashboard_json(intel: dict, briefing: dict) -> None:
             steps["step_0b_ic"] = {
                 "status": "OK",
                 "completed_at": now_utc,
-                "summary": "0 new claims — previous data retained",
+                "summary": "0 active claims — previous data retained",
             }
             dashboard.setdefault("pipeline_health", {})["steps"] = steps
             with open(DASHBOARD_JSON_PATH, "w") as f:
                 json.dump(dashboard, f, indent=2, ensure_ascii=False)
-            logger.info("Dashboard pipeline_health updated (intelligence block unchanged)")
+            logger.info(
+                "Dashboard pipeline_health updated (intelligence block unchanged)"
+            )
         except Exception as e:
             logger.error(f"Dashboard pipeline_health update failed: {e}")
         return
@@ -566,17 +727,19 @@ def update_dashboard_json(intel: dict, briefing: dict) -> None:
         with open(DASHBOARD_JSON_PATH, "r") as f:
             dashboard = json.load(f)
 
-        # Replace intelligence block (only when we have new data)
+        # Replace intelligence block
         dashboard["intelligence"] = build_intelligence_block(intel, briefing)
 
         # Update pipeline health
         now_utc = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+        new_claims = intel.get("extraction_summary", {}).get("total_claims", 0)
         steps = dashboard.get("pipeline_health", {}).get("steps", {})
         steps["step_0b_ic"] = {
             "status": "OK",
             "completed_at": now_utc,
             "summary": (
-                f"{intel.get('extraction_summary', {}).get('total_claims', 0)} claims, "
+                f"{active_claims_count} active claims "
+                f"({new_claims} new + carry-forward), "
                 f"{len(intel.get('divergences', []))} divergences, "
                 f"{intel.get('extraction_summary', {}).get('high_novelty_claims', 0)} high-novelty"
             ),
@@ -624,37 +787,60 @@ def main():
     expertise_matrix = _load_json(os.path.join(CONFIG_DIR, "expertise_matrix.json"))
     taxonomy = _load_json(os.path.join(CONFIG_DIR, "taxonomy.json"))
 
-    claims = []
+    new_claims = []
     claims_output = {}
     intel = {}
     briefing = {}
+    active_claims_count = 0
+
+    # Load claims archive for carry-forward
+    claims_archive = _load_claims_archive()
+    logger.info(
+        f"Claims archive loaded: {len(claims_archive.get('claims', []))} "
+        f"existing claims"
+    )
 
     try:
-        # Stufe 1
+        # Stufe 1: Extraction
         if args.stage in ("extraction", "all"):
-            claims, claims_output = run_extraction(sources)
+            new_claims, claims_output = run_extraction(sources)
 
-        # Stufe 2
+        # Merge new claims into archive + get all active claims
+        active_claims, claims_archive = merge_claims_into_archive(
+            new_claims, claims_archive
+        )
+        active_claims_count = len(active_claims)
+
+        # Save updated archive
+        _save_claims_archive(claims_archive)
+
+        # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
-            if args.stage == "intelligence" and not claims:
+            if args.stage == "intelligence" and not active_claims:
                 # Load today's claims from file
                 today = date.today().isoformat()
-                claims_path = os.path.join(DATA_DIR, "claims", f"claims_{today}.json")
+                claims_path = os.path.join(
+                    DATA_DIR, "claims", f"claims_{today}.json"
+                )
                 if os.path.exists(claims_path):
                     claims_data = _load_json(claims_path)
-                    claims = claims_data.get("claims", [])
+                    active_claims = claims_data.get("claims", [])
                     claims_output = claims_data
                 else:
                     logger.error("No claims file found for today")
                     sys.exit(1)
 
-            intel = run_intelligence(claims, sources, expertise_matrix, taxonomy)
+            intel = run_intelligence(
+                active_claims, sources, expertise_matrix, taxonomy
+            )
 
-        # Stufe 3
+        # Stufe 3: Briefing
         if args.stage in ("briefing", "all"):
             if args.stage == "briefing" and not intel:
                 today = date.today().isoformat()
-                intel_path = os.path.join(DATA_DIR, "intelligence", f"intel_{today}.json")
+                intel_path = os.path.join(
+                    DATA_DIR, "intelligence", f"intel_{today}.json"
+                )
                 if os.path.exists(intel_path):
                     intel = _load_json(intel_path)
                 else:
@@ -665,10 +851,10 @@ def main():
 
         # Write to Google Drive + Sheets
         if args.stage == "all":
-            write_drive_outputs(claims_output, intel, briefing)
-            write_intelligence_tab(claims, sources)
+            write_drive_outputs(claims_output, intel, briefing, claims_archive)
+            write_intelligence_tab(active_claims, sources)
             write_agent_summary_tab(briefing)
-            update_dashboard_json(intel, briefing)
+            update_dashboard_json(intel, briefing, active_claims_count)
 
     except Exception as e:
         logger.exception(f"Pipeline failed: {e}")
