@@ -960,22 +960,77 @@ def main():
     print("="*60)
     dashboard = build_dashboard_json(v16_data)
 
-    # 4. Save
+    # 4. Save — MERGE mit bestehender latest.json (nicht ueberschreiben!)
     script_dir = os.path.dirname(os.path.abspath(__file__))
     out_dir = os.path.join(script_dir, "data", "dashboard")
     os.makedirs(out_dir, exist_ok=True)
-
-    # latest.json (fuer Frontend)
     latest_path = os.path.join(out_dir, "latest.json")
-    with open(latest_path, 'w') as f:
-        json.dump(dashboard, f, indent=2, ensure_ascii=False)
+
+    # Bestehende latest.json laden (falls vorhanden)
+    existing = {}
+    if os.path.exists(latest_path):
+        try:
+            with open(latest_path, 'r', encoding='utf-8') as f:
+                existing = json.load(f)
+            print(f"  Bestehende latest.json geladen ({os.path.getsize(latest_path)} bytes)")
+        except (json.JSONDecodeError, IOError):
+            print("  [WARN] latest.json nicht lesbar — schreibe komplett neu")
+            existing = {}
+
+    # V16-eigene Bloecke in bestehende JSON mergen
+    # Diese Bloecke gehoeren dem V16 Runner und werden IMMER ueberschrieben:
+    v16_owned_keys = [
+        'schema_version', 'date', 'weekday', 'generated_at',
+        'header', 'digest', 'deltas', 'v16',
+        'timeseries_row', 'temporal_map', 'agent_r_context', 'validation',
+    ]
+
+    if existing:
+        # Merge: V16-Bloecke updaten, Rest behalten
+        for key in v16_owned_keys:
+            if key in dashboard:
+                existing[key] = dashboard[key]
+
+        # Spezielle Felder die V16 in anderen Bloecken updaten muss:
+        # - layers.system_regime
+        if 'layers' in existing and existing['layers']:
+            existing['layers']['system_regime'] = regime
+        # - regime_context bleibt (wird von Steps gesetzt), V16 setzt nur Fallback
+        if 'regime_context' not in existing or not existing.get('regime_context'):
+            existing['regime_context'] = dashboard.get('regime_context', {})
+        # - degradation_level/banner nur setzen wenn noch kein besserer Status
+        if existing.get('degradation_level') in (None, 'PARTIAL', 'UNAVAILABLE'):
+            existing['degradation_level'] = dashboard.get('degradation_level', 'PARTIAL')
+            existing['degradation_banner'] = dashboard.get('degradation_banner', '')
+
+        # Bloecke die V16 NUR als Platzhalter hat — NICHT ueberschreiben wenn bereits befuellt:
+        placeholder_keys = [
+            'briefing', 'action_items', 'layers', 'f6', 'signals', 'risk',
+            'intelligence', 'pipeline_health', 'known_unknowns',
+            'consistency_flags', 'overconfidence',
+            'execution', 'rotation', 'g7_summary', 'disruptions',
+        ]
+        for key in placeholder_keys:
+            if key not in existing and key in dashboard:
+                existing[key] = dashboard[key]
+
+        merged = existing
+        print(f"  MERGE: {len(v16_owned_keys)} V16-Bloecke aktualisiert, Rest beibehalten")
+    else:
+        # Kein bestehendes File — schreibe alles (erster Run)
+        merged = dashboard
+        print("  FRESH: Neue latest.json erstellt (kein bestehendes File)")
+
+    # latest.json schreiben
+    with open(latest_path, 'w', encoding='utf-8') as f:
+        json.dump(merged, f, indent=2, ensure_ascii=False)
     print(f"  latest.json ({os.path.getsize(latest_path)} bytes)")
 
-    # Datiertes Backup
+    # Datiertes Backup (immer nur V16-Daten, nicht merged)
     dated_path = os.path.join(out_dir, f"dashboard_{v16_data['date']}.json")
-    with open(dated_path, 'w') as f:
+    with open(dated_path, 'w', encoding='utf-8') as f:
         json.dump(dashboard, f, indent=2, ensure_ascii=False)
-    print(f"  dashboard_{v16_data['date']}.json (Backup)")
+    print(f"  dashboard_{v16_data['date']}.json (Backup, V16-only)")
 
     # 5. Summary
     elapsed = (datetime.now() - t0).total_seconds()
