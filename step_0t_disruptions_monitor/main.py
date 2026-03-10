@@ -104,14 +104,11 @@ def load_v16_weights():
         return {}
     with open(DASHBOARD_PATH, 'r', encoding='utf-8') as f:
         dashboard = json.load(f)
-    # V16 Gewichte aus verschiedenen moeglichen Pfaden
+    # V16 Gewichte: current_weights (V16_DAILY_RUNNER) > weights (Legacy)
     v16 = dashboard.get('v16', {})
-    weights = v16.get('weights', {})
+    weights = v16.get('current_weights', {})
     if not weights:
-        # Fallback: aus signal_generator
-        sig = dashboard.get('signal_generator', {})
-        v16_trades = sig.get('v16_trades', {})
-        weights = v16_trades.get('weights', {})
+        weights = v16.get('weights', {})
     if weights:
         non_zero = {k: v for k, v in weights.items() if v != 0}
         print(f"[V16] Gewichte geladen: {len(non_zero)} aktive Positionen")
