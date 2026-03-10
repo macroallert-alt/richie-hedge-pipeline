@@ -3309,13 +3309,102 @@ def run_intelligence(
     return intel
 
 
-def run_briefing(intel: dict) -> dict:
-    """Run Stufe 3: Agent 0 Briefing."""
+def run_briefing(
+    intel: dict,
+    belief_state: dict | None = None,
+    cross_system: list | None = None,
+    expert_disagreements: list | None = None,
+    silence_map: list | None = None,
+    intelligence_gaps: list | None = None,
+    threads_data: dict | None = None,
+) -> dict:
+    """Run Stufe 3: Agent 0 Briefing.
+
+    IC V2 Phase 3: Enriches intel with Belief Diffs, Cross-System,
+    Disagreements, Silence Map, and Intelligence Gaps before briefing.
+    Agent0 picks up these fields automatically from the intel dict.
+    """
     from step_0i_ic_pipeline.src.briefing.agent0 import generate_briefing
 
     logger.info("=" * 60)
-    logger.info("STUFE 3: AGENT 0 BRIEFING")
+    logger.info("STUFE 3: AGENT 0 BRIEFING (V2 — Belief Diffs)")
     logger.info("=" * 60)
+
+    # Inject Phase 3 context into intel for richer briefing
+    if belief_state:
+        # Belief shifts summary
+        shifts = belief_state.get("belief_shifts", [])
+        if shifts:
+            shift_lines = []
+            for s in shifts:
+                shift_lines.append(
+                    f"{s['topic']}: {s['from_score']:.1f} → {s['to_score']:.1f} "
+                    f"({s['magnitude']:+.1f}) — {s.get('cause', '')[:80]}"
+                )
+            intel["belief_shift_summary"] = "\n".join(shift_lines)
+        else:
+            intel["belief_shift_summary"] = "No significant belief shifts today."
+
+        # Stale beliefs summary
+        stale = belief_state.get("stale_beliefs", [])
+        if stale:
+            stale_lines = [
+                f"{s['topic']}: belief {s['belief_score']:.1f}, "
+                f"uncertainty {s['uncertainty']:.2f}, "
+                f"{s['days_without_evidence']}d without evidence"
+                for s in stale
+            ]
+            intel["stale_beliefs_summary"] = "\n".join(stale_lines)
+
+    if cross_system:
+        contradictions = [c for c in cross_system if c["alignment"] == "CONTRADICTING"]
+        divergences_cs = [c for c in cross_system if c["alignment"] == "DIVERGING"]
+        if contradictions:
+            lines = [
+                f"CONTRADICTING: {c['topic']} — IC {c['ic_direction']} vs V16 {c['v16_direction']} ({c['v16_layers']})"
+                for c in contradictions
+            ]
+            intel["cross_system_alerts"] = "\n".join(lines)
+        if divergences_cs:
+            lines = [
+                f"DIVERGING: {c['topic']} — IC {c['ic_direction']} vs V16 {c['v16_direction']}"
+                for c in divergences_cs
+            ]
+            intel["cross_system_divergences"] = "\n".join(lines)
+
+    if expert_disagreements:
+        lines = [
+            f"{d['topic']}: {d['side_a']['source_id']} (BULL, exp {d['side_a']['expertise']}) "
+            f"vs {d['side_b']['source_id']} (BEAR, exp {d['side_b']['expertise']}) "
+            f"| Portfolio: {d['portfolio_exposure']}"
+            for d in expert_disagreements
+        ]
+        intel["expert_disagreement_summary"] = "\n".join(lines)
+
+    if silence_map:
+        high_silence = [s for s in silence_map if s["priority"] == "HIGH"]
+        if high_silence:
+            lines = [
+                f"{s['topic']}: {s['silence_type']} — portfolio: {s['portfolio_assets']}"
+                for s in high_silence
+            ]
+            intel["silence_map_alerts"] = "\n".join(lines)
+
+    if intelligence_gaps:
+        high_gaps = [g for g in intelligence_gaps if g["priority"] == "HIGH"]
+        if high_gaps:
+            lines = [g["question"][:120] for g in high_gaps[:5]]
+            intel["intelligence_gaps_summary"] = "\n".join(lines)
+
+    if threads_data:
+        active = threads_data.get("active_threads", [])
+        threatening = [t for t in active if t.get("portfolio_alignment") == "THREATENING"]
+        if threatening:
+            lines = [
+                f"{t.get('core_hypothesis', '')[:80]} | Conv: {t.get('conviction', 0):.1f}"
+                for t in threatening
+            ]
+            intel["threatening_threads_summary"] = "\n".join(lines)
 
     briefing = generate_briefing(intel)
 
@@ -4015,7 +4104,15 @@ def main():
                     logger.error("No intel file found for today")
                     sys.exit(1)
 
-            briefing = run_briefing(intel)
+            briefing = run_briefing(
+                intel,
+                belief_state=belief_state,
+                cross_system=cross_system,
+                expert_disagreements=expert_disagreements,
+                silence_map=silence_map,
+                intelligence_gaps=intelligence_gaps,
+                threads_data=threads_data,
+            )
 
         # Write to Google Drive + Sheets
         if args.stage == "all":
