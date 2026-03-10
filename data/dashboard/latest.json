@@ -2114,14 +2114,14 @@
         "source_id": "howell",
         "source_name": "Michael Howell - Capital Wars",
         "tier": "CORE",
-        "active_claims": 17,
+        "active_claims": 20,
         "freshness_breakdown": {
-          "FRESH": 6,
+          "FRESH": 9,
           "AGING": 4,
           "FADING": 7
         },
-        "latest_content_date": "2026-03-08",
-        "days_since_content": 2,
+        "latest_content_date": "2026-03-10",
+        "days_since_content": 0,
         "stale_warning": false,
         "direction": "BEARISH",
         "intensity": 5,
@@ -2262,6 +2262,18 @@
             "intensity": 4
           },
           {
+            "claim_text": "Despite the liquidity pullback, investor sentiment remains broadly risk-on, though with selective downward adjustments in both Emerging and Developed Markets.",
+            "freshness": "FRESH",
+            "content_date": "2026-03-10",
+            "topics": [
+              "POSITIONING",
+              "LIQUIDITY"
+            ],
+            "novelty_score": 4,
+            "direction": "MIXED",
+            "intensity": 4
+          },
+          {
             "claim_text": "Global liquidity momentum peaked several weeks before equity markets stalled, suggesting the liquidity cycle is leading the equity cycle lower.",
             "freshness": "AGING",
             "content_date": "2026-03-06",
@@ -2270,6 +2282,30 @@
               "EQUITY_VALUATION"
             ],
             "novelty_score": 4,
+            "direction": "BEARISH",
+            "intensity": 4
+          },
+          {
+            "claim_text": "Global liquidity experienced a short-term pullback driven by dollar strength and rising bond market volatility, even as central bank injections partially offset the decline.",
+            "freshness": "FRESH",
+            "content_date": "2026-03-10",
+            "topics": [
+              "LIQUIDITY",
+              "DOLLAR"
+            ],
+            "novelty_score": 3,
+            "direction": "BEARISH",
+            "intensity": 3
+          },
+          {
+            "claim_text": "Multi-regional QT (Japan, Europe, UK) is acting as a persistent structural drag on global liquidity that central bank injections elsewhere cannot fully counteract.",
+            "freshness": "FRESH",
+            "content_date": "2026-03-10",
+            "topics": [
+              "LIQUIDITY",
+              "FED_POLICY"
+            ],
+            "novelty_score": 3,
             "direction": "BEARISH",
             "intensity": 4
           },
@@ -3888,9 +3924,9 @@
       {
         "source_id": "howell",
         "source_name": "Michael Howell - Capital Wars",
-        "anomaly_level": "HIGH",
-        "cadence_ratio": 3.0,
-        "actual_posts_7d": 3,
+        "anomaly_level": "EXTREME",
+        "cadence_ratio": 4.0,
+        "actual_posts_7d": 4,
         "baseline_posts_week": 1.0,
         "cadence": "weekly",
         "topics": [
@@ -3921,35 +3957,35 @@
         "failure_scenarios": [
           {
             "scenario_id": "PM_HYG_001",
-            "description": "Private credit contagion spreads to public high-yield markets as at least one major asset manager's loan book implosion triggers forced liquidation of HYG and peer ETFs, collapsing spreads violently.",
+            "description": "Private credit contagion spreads to public high-yield markets as at least one major asset manager's loan book writedown triggers forced selling and spread widening across HYG constituents.",
             "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "HYG 5-day rolling average spread (vs. IEF) widens >80bps while HYG daily volume exceeds 3x its 20-day average — signaling forced liquidation, not orderly repositioning",
-            "portfolio_impact": "-12 to -20% on HYG position"
+            "early_warning_indicator": "HYG bid-ask spreads widen above 0.15% intraday AND CDX HY 5Y index jumps >50bps in a single week, especially if accompanied by visible LBO or leveraged loan headlines from a marquee PE firm",
+            "portfolio_impact": "-12 to -20% on HYG position; given 28.8% weight, approximately -3.5 to -5.8% at portfolio level"
           },
           {
             "scenario_id": "PM_HYG_002",
-            "description": "A rapid re-escalation of the US-Iran conflict — driven by the US-Israel strategic divergence over Iranian oil infrastructure strikes — triggers a stagflationary oil shock that crushes high-yield energ",
+            "description": "A breakdown in the US-Iran ceasefire or unexpected Israeli escalation against Iranian oil infrastructure triggers an oil price spike that simultaenously crushes high-yield energy issuers (large HYG co",
             "failure_category": "EXTERNAL_SHOCK",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "WTI crude rises >8% in a single session OR Brent backwardation (front-month vs. 6-month) widens past $6/bbl while HYG falls >2% intraday on volume >150% of 20-day average",
-            "portfolio_impact": "-15 to -22% on HYG position"
+            "early_warning_indicator": "Brent crude futures spike >8% in a 3-day window while VIX rises above 25 AND HYG sees outflows exceeding $500M in a single session",
+            "portfolio_impact": "-10 to -16% on HYG position; approximately -2.9 to -4.6% at portfolio level"
           },
           {
             "scenario_id": "PM_HYG_003",
-            "description": "China's transition from deflationary to inflationary exporter — as evidenced by surging exports and imports — reignites global inflation expectations, forcing the Fed to abandon any near-term rate cut",
-            "failure_category": "NARRATIVE_COLLAPSE",
+            "description": "A sudden rotation out of all yield-carry positions — HYG, XLU, XLP — as China's inflationary export shift forces a global repricing of real rates, causing simultaneous drawdown across the entire Baldu",
+            "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "US 5-year breakeven inflation rate (T5YIE) rises above 2.60% on a weekly close AND 2-year Treasury yield rises >25bps over 3 weeks while HYG fails to make new highs — confirming spread compression is ",
-            "portfolio_impact": "-10 to -18% on HYG position"
+            "early_warning_indicator": "US 10Y Treasury yield rises above 4.80% within 3 weeks AND HYG daily NAV falls >1.5% in consecutive sessions while XLU and XLP also decline >2% in the same week",
+            "portfolio_impact": "-13 to -22% on HYG position; with correlated losses in XLU and XLP, total portfolio drawdown could r"
           },
           {
             "scenario_id": "PM_HYG_004",
-            "description": "Portfolio concentration risk materializes as a correlated drawdown across HYG, XLU, and XLP simultaneously — the defensive/yield-seeking cluster that represents 63% of the portfolio — triggering a sel",
-            "failure_category": "LIQUIDITY_FLOW",
+            "description": "The FRAGILE_EXPANSION regime assumption collapses as a combination of weak labor data, private credit writedowns, and AI sector regulatory shock triggers a sudden consensus shift to recession pricing,",
+            "failure_category": "NARRATIVE_COLLAPSE",
             "probability_label": "LOW",
-            "early_warning_indicator": "HYG, XLU, and XLP all decline >1.5% on the same trading day while the 10-year real yield (TIPS) rises >10bps intraday — confirming a duration/yield-factor unwind rather than idiosyncratic sector stres",
-            "portfolio_impact": "-8 to -14% on HYG position (amplified by simultaneous losses in XLU and XLP creating total portfolio"
+            "early_warning_indicator": "CDX HY 5Y index gaps wider by >75bps in a single week AND HYG weekly volume exceeds 3x its 20-day average, signaling panic redemptions rather than orderly repositioning",
+            "portfolio_impact": "-18 to -25% on HYG position; approximately -5.2 to -7.2% at portfolio level"
           }
         ]
       },
@@ -3963,35 +3999,35 @@
         "failure_scenarios": [
           {
             "scenario_id": "PM_DBC_001",
-            "description": "US-Iran conflict resolution collapses the geopolitical risk premium embedded in energy commodities, triggering a rapid 15-20% drawdown in DBC.",
+            "description": "US-Iran conflict resolves rapidly, collapsing the geopolitical risk premium embedded in energy commodities and triggering a sharp reversal in DBC.",
             "failure_category": "NARRATIVE_COLLAPSE",
             "probability_label": "HIGH",
-            "early_warning_indicator": "WTI front-month futures drop >5% intraday on ceasefire/de-escalation headlines, combined with oil futures curve backwardation collapsing (Dec 2025 - Dec 2026 spread narrowing by >$3/bbl within 48 hour",
+            "early_warning_indicator": "WTI crude oil front-month contract drops >6% in a single session on ceasefire headlines while the DBC/GLD ratio breaks below its 10-day moving average, signaling commodity complex deflation rather tha",
             "portfolio_impact": "-12 to -20% on DBC position"
           },
           {
             "scenario_id": "PM_DBC_002",
-            "description": "Global demand destruction driven by a synchronized growth slowdown overwhelms supply-side commodity support, causing DBC to sell off despite ongoing geopolitical tensions.",
+            "description": "China's commodity import surge reverses as domestic stimulus disappoints, removing the key demand-side support for industrial commodities within DBC.",
             "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "DBC's industrial metals sub-components (copper, aluminum via underlying index exposure) underperform energy components for 5+ consecutive trading days, with Dr. Copper dropping >3% while crude holds —",
+            "early_warning_indicator": "China official NBS Manufacturing PMI prints below 49.5 in the next monthly release AND LME copper 3-month contract drops >4% within 5 trading days, confirming industrial demand deterioration rather th",
             "portfolio_impact": "-10 to -16% on DBC position"
           },
           {
             "scenario_id": "PM_DBC_003",
-            "description": "Risk-off crowding unwind hits DBC simultaneously with HYG as the FRAGILE_EXPANSION regime tips to contraction, creating correlated losses across 49% of the portfolio.",
-            "failure_category": "LIQUIDITY_FLOW",
+            "description": "Correlated sell-off across HYG and DBC simultaneously as FRAGILE_EXPANSION regime tips into contraction, destroying the portfolio's core diversification assumption.",
+            "failure_category": "CORRELATION_BREAK",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "HYG drops >2% in a single session while DBC drops >1.5% simultaneously, with the DXY rising >1% — a tri-factor signal indicating flight-to-cash rather than flight-to-safety, confirming correlated risk",
-            "portfolio_impact": "-11 to -18% on DBC position (with compounding effect as HYG simultaneously loses -8 to -12%, creatin"
+            "early_warning_indicator": "HYG drops >3% and DBC drops >3% in the same 5-day rolling window while XLU fails to rally >1% — confirming all three correlation legs (credit, commodity, defensive equity) are breaking down together.",
+            "portfolio_impact": "-14 to -22% on DBC position; compounded portfolio-level loss of -18 to -28% across HYG+DBC combined"
           },
           {
             "scenario_id": "PM_DBC_004",
-            "description": "A surprise diplomatic breakthrough reopens Hormuz while China demand data disappoints, creating a double-barrel collapse of both the geopolitical and reflation narratives underpinning DBC's current pr",
-            "failure_category": "EXTERNAL_SHOCK",
+            "description": "Commodity futures roll costs and contango structure in natural gas and agriculture spike after Hormuz resolution, causing DBC NAV to bleed even if spot commodity prices stabilize.",
+            "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "LOW",
-            "early_warning_indicator": "Oil futures Dec 2025 - Dec 2026 spread NARROWS by >$4/bbl (backwardation NOT spreading to deferred contracts) within 72 hours of any ceasefire headline, combined with Chinese Caixin PMI printing below",
-            "portfolio_impact": "-15 to -25% on DBC position"
+            "early_warning_indicator": "NYMEX natural gas 12-month calendar spread (front vs. 12th month) flips from backwardation to contango of >$0.30/MMBtu AND WTI 6-month calendar spread compresses to within $0.50/bbl of flat — signalin",
+            "portfolio_impact": "-10 to -18% on DBC position over 3-6 months"
           }
         ]
       },
@@ -4000,40 +4036,40 @@
         "v16_weight_pct": 18.0,
         "regime": "FRAGILE_EXPANSION",
         "generated_at": "2026-03-10",
-        "aggregate_risk": "HIGH",
+        "aggregate_risk": "MEDIUM",
         "scenario_count": 4,
         "failure_scenarios": [
           {
             "scenario_id": "PM_XLU_001",
-            "description": "China's shift from deflationary to inflationary exporter reignites global inflation expectations, forcing a 'higher-for-longer' Fed pivot that crushes rate-sensitive utilities.",
+            "description": "China's inflationary export surge reignites global inflation, forcing the Fed to hold rates higher for longer and crushing rate-sensitive utility valuations.",
             "failure_category": "MACRO_REGIME_SHIFT",
-            "probability_label": "HIGH",
-            "early_warning_indicator": "10Y Treasury yield rises above 4.70% within 3 weeks AND Fed funds futures for Dec 2025 price fewer than 1 cut (currently priced); XLU underperforms SPY by >3% in a single week",
-            "portfolio_impact": "-12 to -20% on XLU position"
+            "probability_label": "MEDIUM",
+            "early_warning_indicator": "US 10-year Treasury yield breaks above 4.65% on a weekly close while XLU's price/book premium to its 52-week average compresses by more than 8% within 10 trading days",
+            "portfolio_impact": "-12 to -18% on XLU position"
           },
           {
             "scenario_id": "PM_XLU_002",
-            "description": "Escalating Middle East conflict (Operation Epic Fury) triggers sustained Gulf energy infrastructure attacks, causing a stagflationary spike that simultaneously hammers rate-sensitive utilities while c",
-            "failure_category": "EXTERNAL_SHOCK",
+            "description": "Middle East conflict escalation spikes energy input costs for utilities while simultaneously triggering a risk-off rotation OUT of defensives as geopolitical risk premium overwhelms safe-haven demand,",
+            "failure_category": "CORRELATION_BREAK",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "WTI crude rises above $95/bbl within 2 weeks AND 10Y TIPS breakeven inflation rate rises above 2.6% simultaneously; XLU fails to rally despite equity risk-off (negative beta divergence)",
-            "portfolio_impact": "-10 to -18% on XLU position; portfolio-level correlation spike could add -4 to -7% additional drawdo"
+            "early_warning_indicator": "Henry Hub natural gas spot price rises >15% in under 3 weeks while XLU fails to hold its 50-day moving average on a 3-day closing basis, confirming the correlation break",
+            "portfolio_impact": "-10 to -16% on XLU position"
           },
           {
             "scenario_id": "PM_XLU_003",
-            "description": "A 'risk-on' regime shift driven by US-Iran ceasefire and AI capex optimism triggers a violent rotation out of defensive sectors, with XLU suffering outsized redemptions as crowded defensive positionin",
+            "description": "Concentrated defensive positioning across XLU (18%), XLP (16.1%), and GLD (16.9%) triggers a simultaneous unwind across the entire defensive sleeve when the FRAGILE_EXPANSION regime resolves upward ra",
             "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "XLU drops >3% in a single session on above-average volume (>2x 30-day ADV) while SPY rises >1%; put/call ratio on XLU falls below 0.6 indicating options market pricing out downside protection",
-            "portfolio_impact": "-10 to -15% on XLU position"
+            "early_warning_indicator": "XLU and XLP both decline more than 3% in the same week while SPY rallies >2%, confirming a regime upgrade/rotation dynamic rather than broad market stress",
+            "portfolio_impact": "-13 to -20% on XLU position (amplified by concurrent XLP/GLD drawdown creating portfolio-level loss "
           },
           {
             "scenario_id": "PM_XLU_004",
-            "description": "AI-driven data center electricity demand narrative — typically bullish for utilities — inverts as regulatory backlash against AI companies (Anthropic blacklisting) triggers capex pullback, collapsing ",
-            "failure_category": "CORRELATION_BREAK",
+            "description": "Escalating US executive power overreach — exemplified by the Anthropic blacklisting — extends to utility sector regulation, with forced AI/grid infrastructure mandates or abrupt FERC policy reversals ",
+            "failure_category": "EXTERNAL_SHOCK",
             "probability_label": "LOW",
-            "early_warning_indicator": "NEE, SO, or AEP management teams cite slowing data center interconnection requests in quarterly earnings commentary; XLU P/E premium vs. 10Y earnings yield contracts by >1.5x within one earnings cycle",
-            "portfolio_impact": "-10 to -14% on XLU position"
+            "early_warning_indicator": "A FERC docket filing or White House executive order specifically addressing utility pricing for AI data centers or military grid demand within the next 30 days, combined with XLU sector underperforman",
+            "portfolio_impact": "-10 to -15% on XLU position"
           }
         ]
       },
@@ -4047,35 +4083,35 @@
         "failure_scenarios": [
           {
             "scenario_id": "PM_GLD_001",
-            "description": "A rapid energy-shock-driven liquidity crisis forces institutional investors to sell gold as collateral, triggering a 'dash for cash' similar to March 2020.",
+            "description": "Persian Gulf energy shock triggers a deflationary demand collapse rather than inflationary safe-haven bid, as oil-price-driven recession fears overwhelm gold's store-of-value narrative and real yields",
             "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "GLD drops >3% in a single session while HYG credit spreads widen >50bps simultaneously, and CME gold futures open interest falls >8% in one week (forced long liquidation signal)",
-            "portfolio_impact": "-12 to -20% on GLD position"
+            "early_warning_indicator": "DXY rises >3% over 5 trading days while GLD fails to hold above its 50-day moving average AND TIPS breakeven 5y5y drops below 2.0% — confirming deflation fears are overtaking safe-haven demand.",
+            "portfolio_impact": "-12 to -18% on GLD position"
           },
           {
             "scenario_id": "PM_GLD_002",
-            "description": "A surprise ceasefire or diplomatic resolution in the Persian Gulf rapidly deflates geopolitical risk premium embedded in gold, causing a sharp mean-reversion selloff.",
-            "failure_category": "NARRATIVE_COLLAPSE",
+            "description": "Crowded gold long positioning unwinds rapidly as sovereign and institutional flows reverse — specifically if China pauses or reverses its gold accumulation program in response to domestic economic str",
+            "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "Any credible diplomatic back-channel report (UN, Qatar mediators, Turkey) causes WTI crude to drop >5% in a single session while GLD fails to hold the $2,300/oz level on a closing basis",
-            "portfolio_impact": "-10 to -18% on GLD position"
+            "early_warning_indicator": "PBOC gold reserve monthly update shows zero or negative net purchases for two consecutive months, OR USD/CNH breaks above 7.40 while GLD open interest on COMEX drops >15% in a 2-week window.",
+            "portfolio_impact": "-10 to -20% on GLD position"
           },
           {
             "scenario_id": "PM_GLD_003",
-            "description": "Gold's crowd positioning becomes dangerously extended as the geopolitical narrative attracts momentum capital, and a positioning unwind causes outsized losses when the narrative moderates.",
-            "failure_category": "LIQUIDITY_FLOW",
+            "description": "A rapid de-escalation or ceasefire in the Iran-Israel conflict collapses the geopolitical risk premium embedded in gold, causing a sharp mean-reversion selloff of 10-15% within days.",
+            "failure_category": "EXTERNAL_SHOCK",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "CFTC Commitments of Traders shows managed money net long in gold futures exceeds 250,000 contracts (historical crowding threshold), coinciding with GLD 14-day RSI above 72",
+            "early_warning_indicator": "Brent crude drops >8% in a single session on ceasefire headlines while VIX collapses below 18 and HYG rallies >2% — confirming a broad risk-on de-escalation trade that would overwhelm gold's safe-have",
             "portfolio_impact": "-10 to -15% on GLD position"
           },
           {
             "scenario_id": "PM_GLD_004",
-            "description": "A stagflationary energy shock causes the USD to strengthen sharply (flight to dollar safety rather than gold), breaking the historical inverse DXY-gold relationship and pressuring GLD from both the do",
+            "description": "The traditional gold-as-portfolio-hedge function breaks down as GLD correlates positively with HYG and DBC in a simultaneous commodity-credit selloff, leaving the portfolio with no uncorrelated anchor",
             "failure_category": "CORRELATION_BREAK",
             "probability_label": "LOW",
-            "early_warning_indicator": "DXY rises above 106.5 while GLD simultaneously fails to break above its prior 20-day high — a divergence where dollar strength and gold strength decouple, confirmed over 5 consecutive trading sessions",
-            "portfolio_impact": "-10 to -14% on GLD position"
+            "early_warning_indicator": "30-day rolling correlation between GLD and HYG rises above +0.65 (from typical near-zero) while both assets are declining — measured on Bloomberg CORR function — confirming the portfolio's internal di",
+            "portfolio_impact": "-8 to -14% on GLD position (with amplified total portfolio impact of -15 to -25% simultaneously acro"
           }
         ]
       },
@@ -4089,37 +4125,506 @@
         "failure_scenarios": [
           {
             "scenario_id": "PM_XLP_001",
-            "description": "China's transition from deflationary to inflationary exporter triggers a global reflation surge that rotates capital violently out of defensives into cyclicals, crushing XLP's relative and absolute pe",
+            "description": "China's transition from deflationary to inflationary exporter reignites global inflation, forcing the Fed to hike or hold rates higher-for-longer, crushing consumer staples valuations and discretionar",
             "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "5-year breakeven inflation rate rises above 2.6% while the MSCI EM Consumer Discretionary index outperforms XLP by more than 5% over a rolling 10-day period; simultaneously, XLP/SPY ratio breaks below",
+            "early_warning_indicator": "CPI ex-shelter prints above 3.5% MoM annualized for two consecutive months, AND XLP 30-day implied volatility rises above 18 while 10Y real yield (TIPS) climbs above 2.5%",
             "portfolio_impact": "-12 to -18% on XLP position"
           },
           {
             "scenario_id": "PM_XLP_002",
-            "description": "Portfolio crowding in defensive yield-proxies (XLP + XLU = 34.1% of book) creates a self-reinforcing unwind when risk appetite recovers, as the entire defensive cluster gets sold simultaneously and am",
+            "description": "A crowded 'defensive rotation' unwind hits XLP simultaneously with XLU (18% portfolio weight) as risk-on sentiment hardens and institutional investors rotate out of defensives en masse, creating ampli",
             "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "XLU and XLP both decline more than 3% in the same 5-session window while IWM (small caps) rises more than 4%, signaling a cross-asset defensive unwind rather than broad market selloff.",
-            "portfolio_impact": "-10 to -16% on XLP position"
+            "early_warning_indicator": "XLP/SPY ratio breaks below its 50-day moving average while XLY (Consumer Discretionary) outperforms XLP by >4% over a rolling 10-day window, AND IWM (small caps) surges >3% in a single week signaling ",
+            "portfolio_impact": "-10 to -15% on XLP position (amplified to -8 to -12% portfolio-level via XLU correlation)"
           },
           {
             "scenario_id": "PM_XLP_003",
-            "description": "A rapid de-escalation of the US-Iran conflict causes a sharp drop in oil prices that paradoxically signals global demand weakness, prompting markets to price a hard landing rather than relief, and rot",
-            "failure_category": "EXTERNAL_SHOCK",
+            "description": "MAHA (Make America Healthy Again) regulatory agenda targeting ultra-processed foods, artificial ingredients, and high-calorie products directly disrupts revenue models of core XLP holdings including P",
+            "failure_category": "NARRATIVE_COLLAPSE",
             "probability_label": "LOW",
-            "early_warning_indicator": "WTI crude falls below $58/barrel within 10 trading days of an announced US-Iran ceasefire while HYG simultaneously sells off more than 2%, indicating markets are reading the event as demand destructio",
-            "portfolio_impact": "-10 to -15% on XLP position"
+            "early_warning_indicator": "FDA or HHS announces formal rulemaking process on GRAS (Generally Recognized as Safe) ingredient review affecting Red 40, HFCS, or artificial preservatives, AND PepsiCo or Kraft Heinz equity drops >5%",
+            "portfolio_impact": "-10 to -20% on XLP position"
           },
           {
             "scenario_id": "PM_XLP_004",
-            "description": "The MAHA (Make America Healthy Again) regulatory agenda accelerates beyond GLP-1 tailwinds into direct punitive action against processed food manufacturers, causing analysts to slash forward earnings ",
-            "failure_category": "NARRATIVE_COLLAPSE",
-            "probability_label": "LOW",
-            "early_warning_indicator": "PepsiCo or Kraft Heinz stock declines more than 5% on above-average volume following any FDA/USDA policy announcement related to processed food regulation, with options implied volatility on PEP risin",
-            "portfolio_impact": "-11 to -20% on XLP position"
+            "description": "A sharp, trade-war-driven commodity cost shock — triggered by retaliatory tariffs on agricultural inputs, packaging materials, or energy following escalation in Middle East or US-China trade tensions ",
+            "failure_category": "EXTERNAL_SHOCK",
+            "probability_label": "MEDIUM",
+            "early_warning_indicator": "DBC (commodity ETF) rises >8% over 3 weeks while XLP forward earnings estimates are revised DOWN by >3% in Bloomberg consensus, AND freight rate indices (Baltic Dry or Freightos FBX) spike >15% month-",
+            "portfolio_impact": "-11 to -16% on XLP position"
           }
         ]
+      }
+    ],
+    "belief_state": {
+      "LIQUIDITY": {
+        "belief": 4.8,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.44,
+        "evidence_count": 3,
+        "last_evidence_date": "2026-03-10",
+        "stale_warning": false
+      },
+      "FED_POLICY": {
+        "belief": 4.9,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.48,
+        "evidence_count": 1,
+        "last_evidence_date": "2026-03-10",
+        "stale_warning": false
+      },
+      "CREDIT": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "RECESSION": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "INFLATION": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "EQUITY_VALUATION": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "CHINA_EM": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "GEOPOLITICS": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "ENERGY": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "COMMODITIES": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "TECH_AI": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "CRYPTO": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "DOLLAR": {
+        "belief": 4.9,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.48,
+        "evidence_count": 1,
+        "last_evidence_date": "2026-03-10",
+        "stale_warning": false
+      },
+      "VOLATILITY": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.51,
+        "evidence_count": 0,
+        "last_evidence_date": null,
+        "stale_warning": false
+      },
+      "POSITIONING": {
+        "belief": 5.0,
+        "direction": "NEUTRAL",
+        "uncertainty": 0.48,
+        "evidence_count": 1,
+        "last_evidence_date": "2026-03-10",
+        "stale_warning": false
+      }
+    },
+    "belief_shifts": [],
+    "stale_beliefs": [],
+    "cross_system": [
+      {
+        "topic": "LIQUIDITY",
+        "ic_belief": 4.8,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.44,
+        "v16_layers": "L1=0, L7=0",
+        "v16_avg_score": 0.0,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "FED_POLICY",
+        "ic_belief": 4.9,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.48,
+        "v16_layers": "L1=0, L2=-1, L7=0",
+        "v16_avg_score": -0.3,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "CREDIT",
+        "ic_belief": 5.0,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.51,
+        "v16_layers": "L2=-1, L5=0",
+        "v16_avg_score": -0.5,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "RECESSION",
+        "ic_belief": 5.0,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.51,
+        "v16_layers": "L2=-1, L3=4, L5=0",
+        "v16_avg_score": 1.0,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "INFLATION",
+        "ic_belief": 5.0,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.51,
+        "v16_layers": "L2=-1, L7=0",
+        "v16_avg_score": -0.5,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "CHINA_EM",
+        "ic_belief": 5.0,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.51,
+        "v16_layers": "L4=0, L6=-1",
+        "v16_avg_score": -0.5,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "ENERGY",
+        "ic_belief": 5.0,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.51,
+        "v16_layers": "L3=4, L6=-1",
+        "v16_avg_score": 1.5,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "COMMODITIES",
+        "ic_belief": 5.0,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.51,
+        "v16_layers": "L3=4, L6=-1",
+        "v16_avg_score": 1.5,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "DOLLAR",
+        "ic_belief": 4.9,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.48,
+        "v16_layers": "L4=0, L6=-1, L7=0",
+        "v16_avg_score": -0.3,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "VOLATILITY",
+        "ic_belief": 5.0,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.51,
+        "v16_layers": "L5=0, L8=2",
+        "v16_avg_score": 1.0,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      },
+      {
+        "topic": "POSITIONING",
+        "ic_belief": 5.0,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.48,
+        "v16_layers": "L5=0, L8=2",
+        "v16_avg_score": 1.0,
+        "v16_direction": "NEUTRAL",
+        "alignment": "CONFIRMING"
+      }
+    ],
+    "expert_disagreements": [
+      {
+        "topic": "COMMODITIES",
+        "side_a": {
+          "source_id": "doomberg",
+          "direction": "BULLISH",
+          "expertise": 7,
+          "intensity": 5,
+          "claim_text": "The convergence of Brent and WTI crude prices toward parity is seen as driven in part by the US's position as a net exporter of refined products, with international price spikes incentivizing US refin",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "side_b": {
+          "source_id": "doomberg",
+          "direction": "BEARISH",
+          "expertise": 7,
+          "intensity": 9,
+          "claim_text": "The Strait of Hormuz is effectively closed to shipping as a result of the US-Israel war on Iran, disrupting global flows of oil, LNG, refined fuels, and fertilizer.",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "v16_alignment": "NEUTRAL",
+        "portfolio_exposure": "HIGH",
+        "second_derivative_signal": null
+      },
+      {
+        "topic": "LIQUIDITY",
+        "side_a": {
+          "source_id": "howell",
+          "direction": "BULLISH",
+          "expertise": 10,
+          "intensity": 3,
+          "claim_text": "Firm collateral values have been a supportive factor for recent liquidity momentum.",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "side_b": {
+          "source_id": "howell",
+          "direction": "BEARISH",
+          "expertise": 10,
+          "intensity": 4,
+          "claim_text": "The next liquidity update is expected to be less positive, reflecting the combination of rising bond volatility and a stronger US dollar.",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "v16_alignment": "NEUTRAL",
+        "portfolio_exposure": "MEDIUM",
+        "second_derivative_signal": null
+      },
+      {
+        "topic": "FED_POLICY",
+        "side_a": {
+          "source_id": "howell",
+          "direction": "BULLISH",
+          "expertise": 7,
+          "intensity": 4,
+          "claim_text": "Global liquidity levels remained elevated last week, supported by short-term injections from the PBoC and Fed.",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "side_b": {
+          "source_id": "forward_guidance",
+          "direction": "BEARISH",
+          "expertise": 10,
+          "intensity": 8,
+          "claim_text": "US Treasury bonds are failing to act as a safe haven during the Iran conflict, with the long end selling off rather than rallying — a significant break from the historical pattern seen across decades ",
+          "conviction_trend": "STABLE",
+          "supporter_count": 2
+        },
+        "v16_alignment": "NEUTRAL",
+        "portfolio_exposure": "MEDIUM",
+        "second_derivative_signal": null
+      },
+      {
+        "topic": "CHINA_EM",
+        "side_a": {
+          "source_id": "howell",
+          "direction": "BULLISH",
+          "expertise": 6,
+          "intensity": 8,
+          "claim_text": "China is systematically accumulating and stockpiling gold, absorbing it into both private vaults and state reserves, which Howell views as the most important macro development currently underway.",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "side_b": {
+          "source_id": "howell",
+          "direction": "BEARISH",
+          "expertise": 6,
+          "intensity": 6,
+          "claim_text": "Howell believes China's gold accumulation is linked to a 'secretive' monetization of the Chinese Yuan, suggesting a structural shift in China's monetary architecture.",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "v16_alignment": "NEUTRAL",
+        "portfolio_exposure": "MEDIUM",
+        "second_derivative_signal": null
+      },
+      {
+        "topic": "ENERGY",
+        "side_a": {
+          "source_id": "doomberg",
+          "direction": "BULLISH",
+          "expertise": 10,
+          "intensity": 7,
+          "claim_text": "The outbreak of war involving Iran caused the entire hydrocarbon complex, including coal and especially LNG, to be bid higher, with the Brent/WTI spread initially expanding significantly.",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "side_b": {
+          "source_id": "doomberg",
+          "direction": "BEARISH",
+          "expertise": 10,
+          "intensity": 9,
+          "claim_text": "Qatar's Ras Laffan LNG export facility shutdown is one of the most consequential developments of the US-Israel war on Iran, with global LNG markets facing weeks of shortages even if conflict ends imme",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "v16_alignment": "NEUTRAL",
+        "portfolio_exposure": "NONE",
+        "second_derivative_signal": null
+      }
+    ],
+    "silence_map": [],
+    "intelligence_gaps": [
+      {
+        "gap_id": "GAP_DISSENT_COMMODITIES_2026-03-10",
+        "question": "COMMODITIES: doomberg says BULLISH vs doomberg says BEARISH. Who is right?",
+        "generated_by": "disagreement",
+        "priority": "HIGH",
+        "topics": [
+          "COMMODITIES"
+        ],
+        "assigned_sources": [
+          {
+            "source_id": "crescat",
+            "expertise": 9
+          },
+          {
+            "source_id": "doomberg",
+            "expertise": 7
+          },
+          {
+            "source_id": "lyn_alden",
+            "expertise": 5
+          }
+        ],
+        "detail": "Portfolio exposure: HIGH"
+      },
+      {
+        "gap_id": "GAP_DISSENT_LIQUIDITY_2026-03-10",
+        "question": "LIQUIDITY: howell says BULLISH vs howell says BEARISH. Who is right?",
+        "generated_by": "disagreement",
+        "priority": "HIGH",
+        "topics": [
+          "LIQUIDITY"
+        ],
+        "assigned_sources": [
+          {
+            "source_id": "howell",
+            "expertise": 10
+          },
+          {
+            "source_id": "lyn_alden",
+            "expertise": 9
+          },
+          {
+            "source_id": "macro_alf",
+            "expertise": 6
+          }
+        ],
+        "detail": "Portfolio exposure: MEDIUM"
+      },
+      {
+        "gap_id": "GAP_DISSENT_FED_POLICY_2026-03-10",
+        "question": "FED POLICY: howell says BULLISH vs forward_guidance says BEARISH. Who is right?",
+        "generated_by": "disagreement",
+        "priority": "HIGH",
+        "topics": [
+          "FED_POLICY"
+        ],
+        "assigned_sources": [
+          {
+            "source_id": "forward_guidance",
+            "expertise": 10
+          },
+          {
+            "source_id": "lyn_alden",
+            "expertise": 8
+          },
+          {
+            "source_id": "macro_alf",
+            "expertise": 8
+          }
+        ],
+        "detail": "Portfolio exposure: MEDIUM"
+      },
+      {
+        "gap_id": "GAP_DISSENT_CHINA_EM_2026-03-10",
+        "question": "CHINA EM: howell says BULLISH vs howell says BEARISH. Who is right?",
+        "generated_by": "disagreement",
+        "priority": "HIGH",
+        "topics": [
+          "CHINA_EM"
+        ],
+        "assigned_sources": [
+          {
+            "source_id": "howell",
+            "expertise": 6
+          }
+        ],
+        "detail": "Portfolio exposure: MEDIUM"
+      },
+      {
+        "gap_id": "GAP_DISSENT_ENERGY_2026-03-10",
+        "question": "ENERGY: doomberg says BULLISH vs doomberg says BEARISH. Who is right?",
+        "generated_by": "disagreement",
+        "priority": "MEDIUM",
+        "topics": [
+          "ENERGY"
+        ],
+        "assigned_sources": [
+          {
+            "source_id": "doomberg",
+            "expertise": 10
+          },
+          {
+            "source_id": "crescat",
+            "expertise": 8
+          }
+        ],
+        "detail": "Portfolio exposure: NONE"
       }
     ]
   },
@@ -4137,8 +4642,8 @@
       },
       "step_0b_ic": {
         "status": "OK",
-        "completed_at": "2026-03-10T14:40:56Z",
-        "summary": "120 active claims (120 new + carry-forward), 0 divergences, 91 high-novelty, 1 cadence anomalies, 5 pre-mortems"
+        "completed_at": "2026-03-10T15:34:25Z",
+        "summary": "123 active claims (123 new + carry-forward), 0 divergences, 91 high-novelty, 1 cadence anomalies, 5 pre-mortems"
       },
       "step_1_market_analyst": {
         "status": "OK",
