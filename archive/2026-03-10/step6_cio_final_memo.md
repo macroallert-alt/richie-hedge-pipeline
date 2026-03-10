@@ -2,7 +2,7 @@
 
 **Briefing-Typ:** ACTION  
 **System Conviction:** LOW  
-**Risk Ampel:** RED  
+**Risk Ampel:** YELLOW  
 **Fragility State:** HEALTHY  
 **Data Quality:** DEGRADED  
 **V16 Regime:** FRAGILE_EXPANSION  
@@ -13,74 +13,62 @@
 
 ## S1: DELTA
 
-V16: HOLD auf allen 5 Positionen. Keine Trades. Regime-Shift: SELECTIVE → FRAGILE_EXPANSION. Gewichte durch Marktbewegung: HYG 28.8% (+1.5pp seit gestern, CRITICAL-Schwelle 25% überschritten), DBC 20.3% (-1.5pp), XLU 18.0% (+0.1pp), GLD 16.9% (-1.1pp), XLP 16.1% (+0.6pp). HYG-Konzentration eskaliert von WARNING zu CRITICAL — erste CRITICAL-Stufe seit 8 Tagen.
+V16 HOLD auf allen 5 Positionen. Keine Rebalance-Trades. Regime-Wechsel: SELECTIVE → FRAGILE_EXPANSION (Macro State 3). Gewichte unverändert durch HOLD-Modus: HYG 28.8% (gestern: 27.3%, +1.5pp Marktbewegung), DBC 20.3% (gestern: 21.8%, -1.5pp), XLU 18.0% (gestern: 17.5%, +0.5pp), GLD 16.9% (gestern: 18.0%, -1.1pp), XLP 16.1% (gestern: 15.4%, +0.7pp).
 
-Risk Officer: Portfolio-Status YELLOW → RED. 1 CRITICAL Alert (HYG >25%), 4 WARNING Conditions (Commodities-Exposure 37.2%, DBC 20.3%, Regime-Konflikt V16/Market Analyst, CPI heute). HYG-Alert eskaliert durch EVENT_IMMINENT Boost (CPI heute).
+Router: COMMODITY_SUPER Proximity 0% → 100% (SPRUNG). Alle drei Bedingungen erfüllt: DBC/SPY 6M Relative 100%, V16 Regime erlaubt 100%, DXY nicht steigend 100%. Nächste Entry-Evaluation: 2026-04-01 (22 Tage). EM_BROAD und CHINA_STIMULUS weiterhin 0%.
 
-Signal Generator: Router COMMODITY_SUPER Proximity 0% → 100% (DBC/SPY 6m relative erfüllt, V16-Regime erlaubt, DXY nicht steigend). Alle drei Bedingungen erstmals gleichzeitig erfüllt. Nächste Entry-Evaluation: 2026-04-01 (22 Tage). Router bleibt US_DOMESTIC bis dahin.
+Market Analyst: System Regime NEUTRAL (gestern: NEUTRAL). Layer Scores: L1 (Liquidity) 0 (gestern: 0), L2 (Macro) -1 (gestern: -1), L3 (Earnings) +5 (gestern: +5), L4 (FX) 0 (gestern: 0), L5 (Sentiment) 0 (gestern: 0), L6 (RV) -2 (gestern: -2), L7 (CB Policy) 0 (gestern: 0), L8 (Tail Risk) +2 (gestern: +2). Alle Layer STABLE Direction, STEADY Velocity. Conviction durchgehend LOW oder CONFLICTED — keine Layer mit HIGH Conviction.
 
-Market Analyst: System Regime NEUTRAL (gestern: NEUTRAL). Layer Scores: L1 (Liquidity) 0, L2 (Macro) -1, L3 (Earnings) +4, L6 (RV) -1, Rest 0. Alle Layer STABLE Direction, STEADY Velocity. Conviction durchgehend LOW/CONFLICTED (regime_duration 1 Tag, data_clarity 0.0-0.5). Fragility HEALTHY (Breadth 77.2%, keine Trigger aktiv).
+Risk Officer: Portfolio Status YELLOW (gestern: YELLOW). 4 WARNING-Alerts (gestern: 4). HYG CRITICAL Alert (28.8%, Schwelle 25%) besteht seit 9 Tagen ONGOING. DBC WARNING deeskaliert von CRITICAL → WARNING (20.3%, Schwelle 20%, -2.8pp seit Freitag). Neue Alerts: Commodities Exposure 37.2% (Schwelle 35%, +2.2pp), V16/Market Analyst Regime Conflict (V16 Risk-On vs. Market Analyst NEUTRAL), Event Calendar (CPI heute, ECB in 2d).
 
-IC Intelligence: 1 Quelle (ZeroHedge), 37 Claims, 26 High-Novelty (alle Signal 0, Anti-Pattern). Consensus: RECESSION -4 (LOW Confidence), EQUITY_VALUATION +9 (LOW), ENERGY +1.5 (LOW), TECH_AI -0.5 (LOW). Keine actionable Signale. Confidence Marker: IC Consensus Reliability LOW (1 Quelle).
+F6: UNAVAILABLE (V2).
 
-F6: UNAVAILABLE.
+IC Intelligence: 0 Quellen verarbeitet. Alle Consensus-Scores 0.0, Confidence NO_DATA.
 
-**CIO OBSERVATION:** V16-Regime-Shift SELECTIVE → FRAGILE_EXPANSION bei gleichzeitigem Router-Proximity-Sprung auf 100% ist ungewöhnlich. V16 signalisiert Vorsicht (FRAGILE), Router signalisiert Commodity-Opportunity. Divergenz zwischen internem Regime-Read (fragil) und externem Trigger-Proximity (maximal). Kein Widerspruch — Router evaluiert erst 2026-04-01 — aber Spannung zwischen kurzfristiger Vorsicht und mittelfristigem Setup.
+**DELTA-SYNTHESE:** V16 Regime-Shift ohne Trade-Konsequenz (HOLD bleibt HOLD). Router-Proximity-Sprung von 0% auf 100% ist das einzige materielle Signal — aber Entry-Evaluation erst in 22 Tagen. DBC-Deeskalation (CRITICAL → WARNING) durch Marktbewegung, nicht durch V16-Aktion. HYG-Konzentration persistiert seit 9 Tagen. IC-Blackout dauert an (Data Quality DEGRADED).
 
 ---
 
 ## S2: CATALYSTS & TIMING
 
-**CPI (Feb data) — HEUTE (2026-03-11, 24h):** Tier 1, HIGH Impact, BINARY Direction. Treibt Fed-Erwartungen. Hot CPI → Tightening-Narrativ, Druck auf HYG/DBC. Cool CPI → Risk-On-Bestätigung. Market Analyst reduziert Conviction in L2/L7 wegen Event-Proximity (Pre-Event Action: REDUCE_CONVICTION). Risk Officer stuft alle Alerts auf WARNING hoch (EVENT_IMMINENT Boost aktiv). V16 reagiert post-CPI — kein Pre-Positioning.
+**CPI (2026-03-11, morgen, T+1):** Tier-1-Event. Market Analyst markiert L2 (Macro) und L7 (CB Policy) mit "REDUCE_CONVICTION" Pre-Event-Action. Beide Layer bereits CONFLICTED Conviction. CPI treibt Fed-Erwartungen — Hot Print verstärkt Tightening-Narrativ, Cold Print öffnet Easing-Window. V16 in FRAGILE_EXPANSION (Macro State 3) — Regime ist per Definition instabil. Risk Officer boosted alle Alerts auf WARNING wegen EVENT_IMMINENT (CPI in 0d). Post-CPI: A7 (Post-CPI System-Review) offen seit 4 Tagen, eskaliert.
 
-**ECB Rate Decision — 2026-03-12 (48h):** Tier 1, Sekundär-Katalysator nach CPI. Divergenz Fed/ECB könnte DXY bewegen, relevant für Router COMMODITY_SUPER (Bedingung: DXY nicht steigend). Aktuell erfüllt, aber ECB-Überraschung könnte kippen.
+[DA: da_20260310_001 stellt die ungestellte Frage nach REAKTIONSZEIT-VERTEILUNG des Systems auf CPI. NOTED — auf Watchlist, nicht Briefing-ändernd. Begründung: Die Frage ist valide (Market Analyst reagiert in Minuten, V16 in Stunden/Tagen, erzeugt Timing-Gap bei moderaten CPI-Überraschungen). Aber: V16 ist explizit End-of-Day-Strategie, Intraday-Lag ist Design, nicht Bug. A3 (CPI-Vorbereitung) adressiert bereits "Operator-Playbook für CPI-Outcomes" — Timing-Frage ist dort implizit enthalten. Kein separates Action Item nötig, aber Operator sollte sich bewusst sein: Bei moderatem CPI (weder extrem hot noch cold) könnte Market Analyst 24-48h volatil sein während V16 stabil bleibt — das ist erwartbar und kein Fehler. Original Draft: "A3 sollte klären: (1) Welche CPI-Outcomes triggern V16-Regime-Shift? (2) Welche Outcomes triggern Risk Officer Severity-Changes? (3) Ist Post-CPI-Rebalance wahrscheinlich?" — erweitere mental um (4) Timing-Erwartung: V16 reagiert End-of-Day, nicht Intraday.]
 
-**Router Entry Evaluation — 2026-04-01 (22 Tage):** COMMODITY_SUPER Proximity 100%, aber Entry-Check erst Monatsende. 22 Tage Wartezeit bei maximaler Trigger-Nähe. Kein Emergency Override aktiv (Fragility HEALTHY). Frage: Bleibt Proximity bis dahin stabil? DBC/SPY 6m Relative aktuell erfüllt — Momentum-Indikator, kann drehen.
+**ECB Rate Decision (2026-03-12, T+2):** Tier-1-Event. Risk Officer nennt explizit. A2 (NFP/ECB Event-Monitoring) offen seit 13 Tagen, eskaliert. Keine spezifische Market Analyst Catalyst-Exposure für ECB — aber L7 (CB Policy) generell CONFLICTED.
 
-**V16 Rebalance Proximity:** 0.0 (kein Trigger nah). Nächster Check unbekannt. Regime FRAGILE_EXPANSION seit 1 Tag — historisch instabil (siehe Market Analyst regime_duration 0.2). Shift-Risiko erhöht.
+**Router Entry-Evaluation (2026-04-01, T+22):** COMMODITY_SUPER Proximity 100%. Entry-Evaluation ist NICHT automatisch — es ist ein Review-Termin. Kein Trigger vor diesem Datum möglich (Router-Logik). A8 (Router-Proximity Persistenz-Check) neu eröffnet, Urgency THIS_WEEK.
 
-**Timing-Konflikt:** CPI heute, ECB morgen, Router-Evaluation in 22 Tagen. Kurzfristige Event-Dichte (48h) trifft auf mittelfristige Router-Latenz (22d). HYG-Konzentration CRITICAL während Event-Window — maximale Exposure bei maximaler Unsicherheit.
+[DA: da_20260310_002 zeigt dass Router-Proximity 100% ein TIMING-PARADOX erzeugt — die drei Bedingungen haben unterschiedliche Persistenz-Wahrscheinlichkeiten, und KA1 ist implizit eine Wette auf Cold CPI. ACCEPTED — A8 wird angepasst. Begründung: Devil's Advocate hat recht dass "täglich Proximity loggen bis April" Ressourcen-Verschwendung ist. Die kritische Periode ist die nächsten 48h (CPI + ECB). Wenn Proximity nach diesen Events noch 100% ist, steigt Persistenz-Wahrscheinlichkeit dramatisch. Original Draft A8: "Täglich: Router-Proximity loggen... bis 2026-04-01." Neue Formulierung siehe S7.]
+
+**V16 Regime-Shift Proximity:** V16 in FRAGILE_EXPANSION. Market Analyst zeigt keine Transition Proximity für V16-relevante Layer. Aber: Risk Officer Alert RO-20260310-005 (INT_REGIME_CONFLICT) sagt explizit "V16 may transition soon" basierend auf V16/Market Analyst Divergenz. W5 (V16 Regime-Shift Proximity) offen seit 11 Tagen.
+
+**F6 CC Expiry:** Keine Daten (F6 UNAVAILABLE).
+
+**TIMING-SYNTHESE:** CPI morgen ist der unmittelbare Katalysator. V16 Regime-Shift-Risiko besteht (Risk Officer nennt es explizit), aber kein Timing-Signal. Router-Entry frühestens in 22 Tagen, aber Proximity-Persistenz hängt von CPI/ECB ab (siehe S7 A8). ECB in 2 Tagen sekundär (US-fokussiertes Portfolio). Post-Event-Reviews (A7, A2) überfällig.
 
 ---
 
 ## S3: RISK & ALERTS
 
-**CRITICAL (Trade Class A, ESCALATING):**  
-RO-20260310-003: HYG 28.8%, Schwelle 25%, +3.8pp Überschreitung. Tag 8, Trend ESCALATING (gestern WARNING, heute CRITICAL durch EVENT_IMMINENT Boost). CPI heute — HYG reagiert direkt auf Fed-Erwartungen. Empfehlung Risk Officer: Keine (V16-Gewichte sakrosankt).
+**CRITICAL (ONGOING, Tag 9):**  
+RO-20260310-003 (EXP_SINGLE_NAME): HYG 28.8%, Schwelle 25%, +3.8pp Überschreitung. Trade Class A. V16-Position. Keine Empfehlung vom Risk Officer (V16 sakrosankt). Kontext: Fragility HEALTHY, Event in 0d (CPI), V16 Risk-On. Trend: ONGOING seit 9 Tagen. **Operator-Implikation:** HYG-Konzentration ist strukturell (V16-Gewicht), nicht taktisch korrigierbar. A1 (HYG-Konzentration Review) offen seit 13 Tagen, eskaliert — MUSS heute geschlossen werden (siehe S7).
 
-[DA: da_20260310_003 stellt fest dass HYG >25% seit 8 Tagen besteht, BEVOR Event-Boost aktiv wurde. ACCEPTED — Draft-Formulierung "kein strukturelles Risiko, sondern Event-Timing" ist ungenau. Original Draft: "CRITICAL-Stufe ist offiziell, aber technisch bedingt durch Event-Boost. Base Severity: WARNING. Post-CPI fällt Boost weg — wenn HYG <27.5% rutscht, zurück auf WARNING. Kein strukturelles Risiko, sondern Event-Timing."]
+**WARNING (NEW, Tag 1):**  
+RO-20260310-002 (EXP_SECTOR_CONCENTRATION): Effective Commodities Exposure 37.2%, Schwelle 35%, +2.2pp. Trade Class A. Recommendation: "Monitor for further increases." Base Severity MONITOR, boosted zu WARNING durch EVENT_IMMINENT. **Operator-Implikation:** DBC 20.3% + GLD 16.9% = 37.2% Commodities. Router COMMODITY_SUPER Proximity 100% — wenn Entry erfolgt, steigt Commodities-Exposure weiter. W14 (HYG Post-CPI Rebalance-Watch) neu eröffnet für mögliche Entlastung durch V16-Rebalance nach CPI.
 
-**CIO CONTEXT KORRIGIERT:** CRITICAL-Stufe ist offiziell. Base Severity: WARNING — aber WARNING besteht seit 8 Tagen, nicht erst seit Event-Boost. Event-Boost hat WARNING → CRITICAL eskaliert, aber die UNDERLYING Condition (HYG >25%) ist strukturell, nicht Event-bedingt. Post-CPI fällt Boost weg — HYG kehrt zu WARNING zurück (falls >25% bleibt), aber WARNING ist IMMER NOCH eine aktive Alert-Stufe. Das ist NICHT "kein strukturelles Risiko" — es ist ein 8-Tage-Persistenz-Problem. V16 rebalanced nicht seit 8 Tagen trotz >25%. Zwei mögliche Erklärungen: (1) V16-Logik erlaubt >25% in FRAGILE_EXPANSION (Credit-Spread-Regime braucht Credit-Exposure), oder (2) Risk Officer Schwelle 25% ist zu niedrig für dieses Regime (regime-agnostische Schwelle trifft auf regime-spezifische Allokation = Kalibrierungs-Mismatch). Frage an Operator: Ist V16-Logik für HYG-Konzentration >25% in FRAGILE_EXPANSION intended? (Siehe A1, Tag 12 offen — genau diese Frage).
+**WARNING (DEESCALATING, Tag 9):**  
+RO-20260310-004 (EXP_SINGLE_NAME): DBC 20.3%, Schwelle 20%, +0.3pp. Trade Class A. Previous Severity CRITICAL (Freitag: 23.1%). Deeskalation durch Marktbewegung (-2.8pp), nicht durch V16-Trade. Base Severity MONITOR, boosted zu WARNING durch EVENT_IMMINENT. **Operator-Implikation:** DBC knapp über Schwelle. Weitere Marktbewegung oder V16-Rebalance könnte unter 20% bringen. Aber: Router COMMODITY_SUPER Entry würde DBC-Exposure wieder erhöhen.
 
-**WARNING (Trade Class A, ONGOING):**  
-RO-20260310-002: Commodities-Exposure 37.2%, Schwelle 35%, +2.2pp. Tag 4. Effektive Exposure (GLD 16.9% + DBC 20.3% = 37.2%). Monitor-Stufe, kein Action-Bedarf. Kontext: Router COMMODITY_SUPER 100% — System positioniert sich bereits maximal in Commodities ohne Router-Entry. Frage: Ist 37.2% Vorbereitung oder Zufall?
+**WARNING (NEW, Tag 1):**  
+RO-20260310-005 (INT_REGIME_CONFLICT): V16 Risk-On (Regime FRAGILE_EXPANSION, Macro State 3) vs. Market Analyst NEUTRAL (Lean UNKNOWN). Trade Class A. Recommendation: "V16 validated — no action on V16 required. Monitor for V16 regime transition." Base Severity MONITOR, boosted zu WARNING durch EVENT_IMMINENT. **Operator-Implikation:** Risk Officer sagt explizit "V16 may transition soon." V16 und Market Analyst teilen Datenbasis (teilweise zirkulär) — Divergenz hat BEGRENZTEN Bestätigungswert. Aber: Divergenz ist ungewöhnlich genug für Risk Officer Alert. W5 (V16 Regime-Shift Proximity) aktiv.
 
-RO-20260310-004: DBC 20.3%, Schwelle 20%, +0.3pp. Tag 8. Knapp über Monitor-Level. Gestern 21.8%, heute 20.3% (-1.5pp durch Marktbewegung). Trend: Rückläufig. Kein Action-Bedarf.
+**WARNING (NEW, Tag 1):**  
+RO-20260310-001 (TMP_EVENT_CALENDAR): CPI in 0d, ECB in 2d. Trade Class A. Recommendation: "Existing risk assessments carry elevated uncertainty." Base Severity MONITOR, boosted zu WARNING durch EVENT_IMMINENT. **Operator-Implikation:** Alle anderen Alerts sind EVENT_IMMINENT-geboosted. Nach CPI-Print fallen Boosts weg — Severities könnten sinken (oder steigen, je nach CPI-Outcome).
 
-[DA: da_20260309_003 (PERSISTENT Tag 1) stellt fest dass DBC 20.3% das FRAGILERE Asset ist (6.06% Daily Volume bei $50m AUM vs HYG 1.14%, Spreads 5x vs 3x Erweiterung bei Events), aber Risk Officer zeigt es als WARNING (niedrigere Severity als HYG CRITICAL). ACCEPTED — Risk Officer Severities messen Threshold-Proximity, nicht Impact. Original Draft hatte keine Priorisierung zwischen HYG und DBC basierend auf Execution-Risk.]
+[DA: da_20260310_003 greift die Prämisse an dass EVENT_IMMINENT-Boosts die Severity-Landschaft "verfälschen". ACCEPTED — Formulierung wird präzisiert. Begründung: Devil's Advocate hat recht dass EVENT_IMMINENT keine "künstliche Verfälschung" ist, sondern eine zeitliche Diskontierung von Risiko. Risk Officer sagt: "Dieses Risiko ist JETZT relevanter weil ein Katalysator die Wahrscheinlichkeit/Magnitude erhöht." Post-Event fallen Boosts weg NICHT weil das Risiko sich "normalisiert", sondern weil der Katalysator durch ist — das Risiko hat sich realisiert oder nicht realisiert. Original Draft: "Event-Boosts verfälschen Severity-Bild — nach CPI Neubewertung nötig." Neue Formulierung: "EVENT_IMMINENT-Boosts sind Forward-Looking Risk Adjustment — nach CPI: Alerts die sich gelöst haben (durch Event-Outcome) schließen, Alerts die persistieren bleiben, neue Alerts durch Event-Outcome möglich."]
 
-**CIO CONTEXT ERGÄNZT:** DBC 20.3% ist knapp über Schwelle (WARNING), aber Execution-Risk ist HÖHER als HYG trotz niedrigerer Severity. Bei $50m AUM (angenommen): DBC $10.15m = 5.6% Daily Volume ($180m ADV), HYG $14.4m = 1.2% Daily Volume ($1.2bn ADV). DBC Bid-Ask-Spreads erweitern sich 5x bei Events (0.05%→0.25%), HYG nur 3x (0.01%→0.03%). DBC ist Broad Commodities (hohe Intra-ETF-Korrelation bei Macro-Shocks), HYG ist High Yield Credit (disperse Issuer-Basis). Bei CPI-Shock ist DBC das FRAGILER Asset für Execution — aber Risk Officer kann das nicht messen (regelbasiertes System, keine Liquidity-Stress-Tests für Instrumente). Operator sollte DBC-Liquidity-Risk GLEICHWERTIG zu HYG-Konzentration behandeln, unabhängig von Severity-Levels. (Siehe A9, neu).
-
-RO-20260310-005: V16 Risk-On (FRAGILE_EXPANSION) vs. Market Analyst NEUTRAL. Tag 4. Divergenz erwartet — V16 operiert auf validierten Signalen, Market Analyst auf aktuellen Layer Scores (alle LOW Conviction, regime_duration 1 Tag). Market Analyst sagt: "V16 wird bald transitionieren." Risk Officer sagt: "Monitor für Transition." **CIO SYNTHESIS:** Divergenz ist Frühindikator, kein Fehler. V16 hält FRAGILE_EXPANSION trotz schwacher Layer-Bestätigung — entweder V16-Momentum-Lag oder Market Analyst zu vorsichtig. Regime-Shift-Proximity erhöht (siehe S4).
-
-RO-20260310-001: Event-Calendar-Warning (CPI heute, ECB +2d). Tag 4. Standard-Warnung bei Tier-1-Events. Kein Action-Bedarf, aber Kontext für alle anderen Alerts.
-
-**ONGOING CONDITIONS:** Keine zusätzlichen.
-
-**THREADS (12 Tage aktiv):**  
-EXP_SINGLE_NAME (HYG): Tag 12, ESCALATING heute.  
-EXP_SINGLE_NAME (DBC): Tag 12, ONGOING.  
-EXP_SECTOR_CONCENTRATION: Tag 4, ONGOING (resolved Tag 8, neu Tag 4 — Oscillation).  
-INT_REGIME_CONFLICT: Tag 4, ONGOING (resolved Tag 8, neu Tag 4 — Oscillation).  
-TMP_EVENT_CALENDAR: Tag 4, ONGOING (resolved Tag 8, neu Tag 4 — Oscillation).
-
-**RESOLVED THREADS (letzte 7d):** 3 Threads resolved 2026-03-06, alle re-opened 2026-03-09. Pattern: Event-getriebene Oscillation (NFP/ECB → CPI/ECB).
-
-**EMERGENCY TRIGGERS:** Keine aktiv. Max Drawdown: 0.0%. Correlation Crisis: Nein. Liquidity Crisis: Nein. Regime Forced: Nein.
-
-**SENSITIVITY:** SPY Beta UNAVAILABLE (V1). Effective Positions: 5 (V16-only). Correlation Update: Keine Daten.
-
-**G7 CONTEXT:** UNAVAILABLE.
+**RISK-SYNTHESE:** HYG CRITICAL seit 9 Tagen ist der strukturelle Anker. DBC deeskaliert, aber fragil (knapp über Schwelle). Commodities-Exposure-Warnung neu, getrieben durch Router-Proximity. V16/Market Analyst Conflict ist ein Regime-Shift-Frühwarnsignal, kein Trade-Signal. EVENT_IMMINENT-Boosts sind Forward-Looking Risk Adjustment — nach CPI: Alerts die sich gelöst haben (durch Event-Outcome) schließen, Alerts die persistieren bleiben, neue Alerts durch Event-Outcome möglich.
 
 ---
 
@@ -88,214 +76,178 @@ TMP_EVENT_CALENDAR: Tag 4, ONGOING (resolved Tag 8, neu Tag 4 — Oscillation).
 
 **AKTIVE PATTERNS (Klasse A):** Keine vom Pre-Processor geliefert.
 
-**CIO OBSERVATION — REGIME-SHIFT PROXIMITY (Klasse B):**  
-V16 FRAGILE_EXPANSION seit 1 Tag. Market Analyst: Alle Layer regime_duration 0.2 (20% Confidence-Faktor), Conviction durchgehend LOW/CONFLICTED. Transition Proximity: L1 (Liquidity) 0.2 zu TIGHTENING, L2 (Macro) 1.0 zu RECESSION (Boundary erreicht), L3 (Earnings) 0.71 zu MIXED, L8 (Tail Risk) 1.0 zu ELEVATED. Vier Layer an oder nahe Regime-Grenzen. V16-Regime historisch instabil in ersten 5 Tagen (siehe Market Analyst regime_changes_30d: 0, aber duration_days: 1). **INTERPRETATION:** V16 könnte innerhalb 48-72h shiften. CPI heute ist Katalysator. Wenn CPI hot → L2 kippt zu RECESSION, L1 zu TIGHTENING, V16 folgt zu CONTRACTION. Wenn CPI cool → Layer stabilisieren, V16 bleibt FRAGILE_EXPANSION oder hebt zu STEADY_GROWTH. Regime-Shift-Wahrscheinlichkeit: 60% innerhalb 3 Tagen (CIO-Schätzung, nicht quantifiziert).
+**CIO OBSERVATION — Router-Proximity-Sprung (Klasse B):**  
+COMMODITY_SUPER Proximity 0% → 100% in einem Tag. Alle drei Bedingungen gleichzeitig erfüllt: DBC/SPY 6M Relative 100% (DBC outperformt SPY über 6 Monate), V16 Regime erlaubt 100% (FRAGILE_EXPANSION ist erlaubt), DXY nicht steigend 100% (DXY flat/fallend). **Pattern-Mechanik:** Router-Proximity ist NICHT ein Entry-Trigger. Es ist ein Eligibility-Signal. Entry-Evaluation erfolgt nur am Monatsanfang (nächste: 2026-04-01). Proximity kann vor Evaluation wieder fallen. **Historischer Kontext:** Router-History zeigt Proximity-Sprünge sind selten — letzte 30 Tage alle 0%, dann plötzlich 100%. **Implikation:** Wenn Proximity bis 2026-04-01 hält UND Fragility HEALTHY bleibt UND keine Crisis-Override, dann Entry-Evaluation. Aber: 22 Tage sind lang. Viele Katalysatoren dazwischen (CPI morgen, ECB T+2, potentieller V16-Shift). A8 (Router-Proximity Persistenz-Check) adressiert das — aber mit angepasster Methodik (siehe S7).
 
-[DA: da_20260310_004 stellt fest dass "moderate CPI" (weder hot noch cool) nicht durchgespielt ist — V16 bleibt FRAGILE_EXPANSION, Market Analyst Layer Scores oszillieren, Divergenz prolongiert sich auf 10+ Tage. NOTED — Szenario ist valide, aber nicht stark genug um Briefing zu ändern. Moderate CPI ist wahrscheinlicher als extreme Überraschung, aber Operator kann darauf nicht pre-positionieren (V16 reagiert post-Event). Watchlist-Item.]
+**CIO OBSERVATION — V16 Regime-Shift ohne Trade-Konsequenz (Klasse B):**  
+V16 Regime SELECTIVE → FRAGILE_EXPANSION (Macro State 2 → 3). Aber: Alle Positionen HOLD. Gewichte unverändert (nur Marktbewegung). **Pattern-Mechanik:** V16 Regime-Shift bedeutet NICHT automatisch Rebalance. V16 kann Regime wechseln und trotzdem HOLD signalisieren, wenn die Regime-spezifischen Gewichte zufällig identisch sind ODER wenn V16 in einem "Übergangs"-Zustand ist. **Implikation:** Regime-Name (FRAGILE_EXPANSION) signalisiert Instabilität, aber V16-Logik sieht (noch) keinen Trade. Risk Officer Alert RO-20260310-005 interpretiert das als "V16 may transition soon" — d.h. nächster Shift könnte Trades auslösen. **Operator-Relevanz:** V16 ist in einem fragilen Zustand, aber noch nicht am Kipppunkt. CPI morgen könnte der Trigger sein.
 
-**CIO OBSERVATION — ROUTER-PROXIMITY SPIKE (Klasse B):**  
-COMMODITY_SUPER 0% → 100% in 24h. Bedingungen: DBC/SPY 6m relative 1.0 (erfüllt), V16-Regime erlaubt 1.0 (FRAGILE_EXPANSION erlaubt Commodities), DXY nicht steigend 1.0 (erfüllt). Alle drei erstmals gleichzeitig erfüllt. **ABER:** Entry-Evaluation erst 2026-04-01 (22 Tage). Proximity-Spike ohne sofortige Action. Frage: Warum jetzt? DBC/SPY 6m ist Momentum-Indikator — 6-Monats-Fenster, langsam bewegend. Sprung 0% → 100% bedeutet: Schwelle wurde in letzten 24h überschritten, aber Momentum baut seit Wochen. V16 hält DBC 20.3% seit Tagen — System war bereits positioniert, bevor Router-Trigger feuerte. **INTERPRETATION:** Router bestätigt V16-Positioning ex-post. Kein Widerspruch, sondern Konvergenz. ABER: Router-Entry in 22 Tagen könnte zu spät sein, wenn DBC-Momentum bereits dreht. Proximity-Persistenz unsicher.
+**CIO OBSERVATION — DBC Deeskalation ist Markt-getrieben, nicht System-getrieben (Klasse B):**  
+DBC WARNING (heute 20.3%) war Freitag CRITICAL (23.1%). Deeskalation -2.8pp. Aber: V16 hat KEINEN Trade gemacht (HOLD). Deeskalation ist reine Marktbewegung (DBC underperformte relativ zu Portfolio). **Pattern-Mechanik:** Risk Officer Severities reagieren auf IST-Gewichte, nicht auf SOLL-Gewichte. Marktbewegung kann Alerts eskalieren oder deeskalieren, ohne dass das System handelt. **Implikation:** DBC-Deeskalation ist NICHT ein "Problem gelöst"-Signal. Es ist ein "Problem temporär gemildert durch Zufall"-Signal. Nächste Marktbewegung oder V16-Rebalance könnte DBC wieder über 25% bringen (CRITICAL). **Operator-Relevanz:** Keine Entwarnung. DBC bleibt auf Watchlist.
 
-**CIO OBSERVATION — PORTFOLIO-LEVEL LIQUIDITY BEI CPI-SHOCK (Klasse B, NEU):**
+**CIO OBSERVATION — IC-Blackout dauert an (Klasse B):**  
+IC Intelligence: 0 Quellen verarbeitet (gestern: 0, Freitag: 0). Alle Consensus-Scores 0.0, Confidence NO_DATA. Data Quality DEGRADED (Header). **Pattern-Mechanik:** IC ist die einzige unabhängige qualitative Quelle. V16 und Market Analyst teilen quantitative Datenbasis. Ohne IC fehlt die narrative Bestätigung/Widerlegung der quantitativen Signale. **Implikation:** System Conviction LOW (Header) ist teilweise durch IC-Blackout getrieben. A6 (IC-Daten-Refresh-Eskalation) offen seit 6 Tagen, eskaliert — aber keine Lösung sichtbar. **Operator-Relevanz:** Entscheidungen basieren auf quantitativen Signalen allein. Erhöhtes Risiko von Fehlinterpretation ohne qualitative Triangulation.
 
-[DA: da_20260309_001 (PERSISTENT Tag 3, FORCED DECISION) und da_20260310_001 stellen fest dass System Liquidity auf falscher Ebene misst — nicht Portfolio-Level Correlation Stress bei Known Events. ACCEPTED — substantieller Punkt, nicht im Draft adressiert.]
-
-V16 hält HYG 28.8% + DBC 20.3% = 49.1% in Assets die bei CPI-Shocks GEMEINSAM bewegen — nicht weil fundamental korreliert (Credit vs Commodities), sondern weil beide "Inflation-Sensitive" sind. CPI heute 08:30 ET ist Known Event — alle Participants wissen es kommt. Bei Known Events komprimiert sich Liquidity nicht primär durch Spread-Erweiterung (das ist Noise), sondern durch CORRELATION SURGE. Market Makers ziehen Liquidity aus BEIDEN Assets gleichzeitig wenn CPI überrascht. Das bedeutet: Execution-Slippage ist NICHT linear (HYG Slippage + DBC Slippage = Summe), sondern KONVEX — wenn beide Trades im selben 15-Minuten-Fenster post-CPI kommen, weitet sich kombinierter Slippage auf ~2-3x weil Market Makers die Korrelation einpreisen.
-
-**QUANTIFIZIERUNG (bei $50m AUM angenommen):** HYG 28.8% = $14.4m = 1.2% Daily Volume ($1.2bn ADV). DBC 20.3% = $10.15m = 5.6% Daily Volume ($180m ADV). Wenn beide im selben Event-Window verkauft werden: Combined Market Impact ~7-8% Daily Volume in korrelierten Assets. Bei normalen Spreads (HYG 0.01%, DBC 0.05%): Slippage ~$68k HYG + $27k DBC = $95k. Bei Event-Spreads (HYG 0.03%, DBC 0.25%) PLUS Correlation-Prämie: Slippage ~$122k-$244k = 0.24-0.49% Performance-Drag nur durch Execution-Timing.
-
-**PROBLEM:** V16 Signal Generator zeigt "FAST_PATH, V16 weights unmodified" — keine Hinweise auf Order-Staging, Correlation-Hedging, oder Time-Spread-Execution. Risk Officer misst Concentration (HYG CRITICAL 28.8%, Commodities WARNING 37.2%) aber NICHT Portfolio-Level Correlation Stress. Market Analyst L5 (Sentiment) misst nur VIX 16.2 (neutral) — kein Correlation-Regime-Indikator. System hat keine Execution-Logik-Dokumentation.
-
-**FRAGE AN OPERATOR:** Wenn V16 Post-CPI rebalanced (A7 "Post-CPI System-Review"), wird der Trade als ATOMIC Order executed (alle Positionen gleichzeitig = maximaler Correlation-Impact) oder STAGED (zeitlich versetzt = Correlation-Bleed reduziert aber Regime-Drift-Risiko erhöht)? (Siehe A10, neu — CRITICAL).
-
-**EPISTEMISCHE SYNTHESE:**  
-V16 (FRAGILE_EXPANSION) + Market Analyst (NEUTRAL, LOW Conviction) + Router (COMMODITY_SUPER 100%) + IC (NO_DATA/LOW Confidence). Vier Systeme, vier verschiedene Reads. V16 und Market Analyst teilen Datenbasis (zirkulär, begrenzter Bestätigungswert). Router unabhängig (Momentum-basiert). IC unabhängig, aber UNAVAILABLE (1 Quelle, 0 Signal). **KONVERGENZ:** V16 + Router beide bullish auf Commodities (DBC/GLD 37.2% combined). **DIVERGENZ:** V16 Risk-On vs. Market Analyst NEUTRAL. **INTERPRETATION:** System ist intern kohärent (Commodities-Tilt), aber extern unsicher (Market Analyst LOW Conviction, IC NO_DATA). Conviction-Gap zwischen Positioning (hoch) und Bestätigung (niedrig). CPI heute schließt Gap oder vergrößert ihn.
+**PATTERN-SYNTHESE:** Router-Proximity-Sprung ist das stärkste Signal, aber zeitlich entkoppelt (Entry frühestens T+22) und fragil (Persistenz hängt von CPI/ECB ab). V16 Regime-Shift ohne Trade ist ein Frühwarnsignal für kommende Volatilität. DBC-Deeskalation ist trügerisch (Markt, nicht System). IC-Blackout schwächt Conviction strukturell.
 
 ---
 
 ## S5: INTELLIGENCE DIGEST
 
-**CONSENSUS (LOW Confidence, 1 Quelle):**  
-RECESSION -4 (ZeroHedge, 1 Claim). EQUITY_VALUATION +9 (ZeroHedge, 1 Claim). ENERGY +1.5 (ZeroHedge, 6 Claims, avg). TECH_AI -0.5 (ZeroHedge, 2 Claims). GEOPOLITICS 0.0 (ZeroHedge, 4 Claims, neutral). Alle anderen Topics: NO_DATA.
+**IC-STATUS:** 0 Quellen verarbeitet. Alle Themen (LIQUIDITY, FED_POLICY, CREDIT, RECESSION, INFLATION, EQUITY_VALUATION, CHINA_EM, GEOPOLITICS, ENERGY, COMMODITIES, TECH_AI, CRYPTO, DOLLAR, VOLATILITY, POSITIONING) Consensus-Score 0.0, Confidence NO_DATA. Keine Divergenzen, keine High-Novelty-Claims, keine Catalyst-Timeline.
 
-**DIVERGENCES:** Keine (nur 1 Quelle).
+**CONFIDENCE MARKER (Pre-Processor):** S5_INTELLIGENCE Confidence LOW, Basis "0 sources processed."
 
-**HIGH-NOVELTY CLAIMS (26 total, alle Signal 0):**  
-Top-Themen: AI in Geopolitics (Strikes auf Amazon Data Centers UAE/Bahrain, Anthropic-Removal aus US-Netzwerken, OpenAI Defense Agreement), China-Iran Missile Fuel Precursors (2 Schiffe, Sodium Perchlorate), Corpus Christi Water Crisis (Refineries/Exports bedroht, Desalination gescheitert, Legal Challenges). **ASSESSMENT:** Hohe Novelty, aber kein Market-Signal (Anti-Pattern). Geopolitik-Eskalation (Iran/China) + Infrastruktur-Risiko (Texas Water) + AI-Militarisierung — alles narrativ interessant, aber nicht tradeable. ZeroHedge-Bias: Doom-Framing ohne Timing oder Magnitude. **CIO FILTER:** Ignoriere für Positioning. Relevant nur wenn: (1) WTI-Curve kippt (Corpus Christi → Supply-Shock), (2) DXY spikt (China-Sanktionen), (3) VIX >20 (Geopolitik-Prämie). Aktuell: WTI-Curve -10 (Contango, bearish), DXY 50th pctl (neutral), VIX 50th pctl (calm). Kein Signal.
+**IMPLIKATION:** Keine narrative Triangulation möglich. V16 und Market Analyst Signale stehen ohne qualitative Bestätigung. CPI morgen wird ohne IC-Kontext interpretiert werden müssen. A6 (IC-Daten-Refresh-Eskalation) adressiert das Problem, aber keine Lösung vor CPI.
 
-**CATALYST TIMELINE:**  
-2026-03-01: Iran Strikes auf Amazon Data Centers (TECH_AI, GEOPOLITICS). 2026-03-01: Anthropic-Removal, OpenAI Defense Agreement (TECH_AI, GEOPOLITICS). 2026-02-01: Corpus Christi Legal Challenges (ENERGY, GEOPOLITICS). 2025-02-13: Iran Sodium Perchlorate Shipment aus China (GEOPOLITICS, CHINA_EM). **TIMING:** Alle Events 1-12 Monate alt. Keine neuen Katalysatoren in 48h-Fenster außer CPI/ECB.
-
-**IC-LAYER CROSS-CHECK:**  
-IC RECESSION -4 vs. Market Analyst L2 (Macro) -1 (SLOWDOWN). Richtung aligned (bearish), Magnitude divergent (IC stärker bearish). IC EQUITY_VALUATION +9 vs. Market Analyst L3 (Earnings) +4 (HEALTHY). Richtung aligned (bullish), Magnitude divergent (IC stärker bullish). **INTERPRETATION:** IC extremer als Market Analyst in beide Richtungen — typisch für ZeroHedge (Volatility-Bias). Kein unabhängiger Bestätigungswert. Market Analyst Layer Scores sind quantitative Autorität.
-
-**NARRATIVE-VAKUUM:**  
-Kein Macro Alf, kein Howell, kein Crescat, kein Doomberg, kein Gromen. 1 Quelle (ZeroHedge), 37 Claims, 0 Signal. IC-System degradiert. **IMPACT:** Keine qualitative Kontextualisierung für V16/Market Analyst. System operiert auf quantitativen Signalen ohne narratives Overlay. CPI heute ohne IC-Vorpositionierung — keine "Smart Money"-Reads verfügbar. **RISK:** Blind für qualitative Regime-Shifts die quantitative Daten noch nicht zeigen.
+**OPERATOR-GUIDANCE:** Entscheidungen heute basieren auf quantitativen Signalen (V16, Market Analyst, Risk Officer) allein. Erhöhte Vorsicht bei Interpretation von Regime-Shifts und Proximity-Signalen ohne IC-Bestätigung.
 
 ---
 
 ## S6: PORTFOLIO CONTEXT
 
-**V16 (100% AUM):**  
-5 Positionen, FRAGILE_EXPANSION, Tag 1. HYG 28.8% (High-Yield Credit), DBC 20.3% (Commodities Broad), XLU 18.0% (Utilities), GLD 16.9% (Gold), XLP 16.1% (Consumer Staples). Defensive Tilt (XLU/XLP 34.1%) + Commodity Tilt (DBC/GLD 37.2%) + Credit (HYG 28.8%). Kein Equity (SPY/XLK/XLF 0%), kein Duration (TLT/TIP 0%), kein EM (EEM/VGK 0%). **INTERPRETATION:** V16 positioniert für Stagflation-Lite (Commodities hoch, Growth niedrig, Credit noch OK). FRAGILE_EXPANSION = Expansion mit Risiko — daher Defensives + Commodities, aber kein reines Risk-Off (sonst TLT/GLD 100%).
+**V16 (100% Portfolio-Gewicht):**  
+5 Positionen, alle HOLD. HYG 28.8% (CRITICAL Alert, Tag 9), DBC 20.3% (WARNING, deeskaliert), XLU 18.0%, GLD 16.9%, XLP 16.1%. Regime FRAGILE_EXPANSION (Macro State 3). DD-Protect INACTIVE (Current Drawdown 0.0%). Performance-Metriken alle 0 (vermutlich Daten-Issue oder zu kurze Historie).
 
-**F6:** UNAVAILABLE. Kein Single-Stock-Overlay, kein Covered-Call-Income. V16-only Portfolio.
+[DA: da_20260306_005 (PERSISTENT, Tag 13, FORCED DECISION) stellt die Frage nach Instrument-Liquidität (nicht Markt-Liquidität). ACCEPTED — S6 wird erweitert, A1 wird angepasst. Begründung: Devil's Advocate hat recht dass HYG 28.8% + DBC 20.3% = 49.1% in Instrumenten mit strukturell schlechteren Liquiditätsprofilen als SPY/TLT. Bei geschätztem AUM $50m ist HYG-Position $14.4m = 1.2% des Daily Volume ($1.2bn ADV), DBC $10.15m = 5.6% des Daily Volume ($180m ADV). An Event-Tagen (CPI morgen, ECB T+2) erweitern sich Bid-Ask-Spreads typisch 3x (HYG) bis 5x (DBC). Bei Market-Order auf $14.4m HYG an Event-Tag ist Slippage ~0.5% = $72k Loss BEVOR Trade executed ist. Das ist MESSBAR und VERMEIDBAR durch Limit-Orders oder gestufte Execution. A1 (HYG-Konzentration Review) sollte NICHT nur "Ist HYG-Gewicht V16-intern gerechtfertigt?" fragen, sondern auch "Wie wird HYG-Reduktion (falls nötig) executed ohne Slippage-Bleed?" Original Draft A1: "Nächste Schritte: (1) V16-Code-Review... (4) Entscheidung: Alert akzeptieren ODER externe Maßnahme ODER V16-Logik-Anpassung." Neue Formulierung siehe S7.]
 
-**SECTOR EXPOSURE:**  
-Commodities 37.2% (effektiv), Credit 28.8%, Defensives 34.1%, Rest 0%. Top-5 Concentration 100% (nur 5 Assets). HHI: Nicht berechnet (V1), aber visuell hoch (28.8% Single-Name). **FRAGILITY CHECK:** Breadth 77.2% (HEALTHY), HHI UNAVAILABLE, SPY/RSP Delta UNAVAILABLE, AI-Capex Gap UNAVAILABLE. Fragility-State HEALTHY trotz hoher Konzentration — Breadth kompensiert.
+**F6:** UNAVAILABLE (V2).
 
-**PERFORMANCE:**  
-CAGR 0.0%, Sharpe 0, MaxDD 0.0%, Vol 0.0%, Calmar 0. **INTERPRETATION:** Daten nicht initialisiert oder zu kurze Historie. Keine Performance-Attribution möglich.
+**Router:** US_DOMESTIC seit 433 Tagen. COMMODITY_SUPER Proximity 100% (Sprung von 0%). Entry-Evaluation 2026-04-01 (T+22). EM_BROAD 0%, CHINA_STIMULUS 0%.
 
-**DRAWDOWN:**  
-Current: 0.0%. DD-Protect: INACTIVE. Kein Drawdown-Schutz aktiv, kein Emergency-Regime.
+**PermOpt:** UNAVAILABLE (V2).
 
-**CORRELATION:**  
-SPY Beta UNAVAILABLE (V1). Effective Positions: 5. **RISK:** Ohne Beta/Correlation ist Sensitivity zu Macro-Events unbekannt. HYG/DBC/XLU reagieren unterschiedlich auf CPI — Portfolio-Delta zu CPI nicht quantifizierbar.
+**Sector Exposure (Baseline):** GLD 16.9%, XLP 16.1%, XLU 18.0%, HYG 28.8%, DBC 20.3%. Effective Commodities 37.2% (GLD + DBC). Effective Tech 10% (Concentration Check). Top-5 Concentration 100% (nur 5 Positionen).
 
-**LIQUIDITY:**  
-Alle 5 Assets hochliquide ETFs (HYG, DBC, XLU, GLD, XLP). Kein Liquidity-Risk auf Instrument-Ebene. ABER: Portfolio-Level Liquidity bei korrelierten Exits ist UNBEKANNT (siehe S4, neue Observation). Bei $50m AUM: HYG+DBC = 49.1% = $24.55m = kombiniert 7-8% Daily Volume bei gleichzeitigem Exit. Correlation-adjustierte Slippage $122k-$244k bei CPI-Shock (0.24-0.49% Performance-Drag). System hat keine Execution-Logik für korrelierte Exits.
+**Sensitivity:** SPY Beta null, Effective Positions null (V1, nicht verfügbar). G7 Context UNAVAILABLE.
 
-**PORTFOLIO-KOHÄRENZ:**  
-V16-Gewichte intern konsistent mit FRAGILE_EXPANSION-Regime. Risk Officer Alerts (HYG CRITICAL, Commodities WARNING) sind Konzentrationsrisiken, keine Regime-Fehler. Router COMMODITY_SUPER 100% bestätigt Commodities-Tilt ex-post. **SPANNUNG:** V16 hält FRAGILE_EXPANSION (vorsichtig), aber Positioning ist aggressiv (37.2% Commodities, 28.8% HYG). Regime-Name sagt "fragil", Gewichte sagen "committed". Widerspruch oder Feature? (Siehe A1).
+**Instrument-Liquidität (neu):** HYG ADV $1.2bn, DBC ADV $180m. Bei geschätztem AUM $50m: HYG-Position $14.4m (1.2% Daily Volume), DBC-Position $10.15m (5.6% Daily Volume). An Event-Tagen (CPI morgen, ECB T+2) erweitern sich Bid-Ask-Spreads: HYG 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Execution-Risiko bei großen Trades: Market-Order auf $14.4m HYG an Event-Tag → Slippage ~0.5% = $72k ($50m AUM angenommen). Limit-Orders oder Time-Slicing reduzieren Slippage, aber verlängern Execution-Zeit.
+
+**PORTFOLIO-SYNTHESE:** Portfolio ist V16-only, 5-Asset-Konzentration. HYG dominiert (28.8%), Commodities-Exposure hoch (37.2%). Regime FRAGILE_EXPANSION signalisiert Instabilität, aber keine Trades (noch). Router-Proximity 100% ist latentes Risiko für weitere Commodities-Erhöhung bei Entry. Keine Diversifikation durch F6 oder PermOpt (V2). Instrument-Liquidität ist strukturelles Risiko: HYG/DBC haben schlechtere Liquiditätsprofile als SPY/TLT, Execution an Event-Tagen teuer (Slippage-Risiko).
 
 ---
 
 ## S7: ACTION ITEMS & WATCHLIST
 
-**KRITISCHE ESKALATION (5 ACT-Items, alle >3 Tage offen):**
+**ESKALIERTE ACT-ITEMS (offen ≥4 Tage, Trade Class A, DRINGEND):**
 
-**A1: HYG-Konzentration Review (CRITICAL, Trade Class A) — TAG 12, ESKALIERT**  
-**Was:** HYG 28.8%, >25% seit 8 Tagen, V16 rebalanced nicht. Risk Officer meldet CRITICAL (heute durch Event-Boost), aber V16 ignoriert. Ist V16-Logik für HYG-Konzentration >25% intended oder Bug?  
-**Warum:** CRITICAL-Alert offiziell, aber Base Severity WARNING besteht seit 8 Tagen (nicht erst seit Event-Boost). Post-CPI fällt Boost weg, aber WARNING bleibt aktiv falls HYG >25%. Das ist NICHT "Event-Timing" — das ist 8-Tage-Persistenz. Operator muss V16-Logik prüfen: (1) Erlaubt V16 >25% in FRAGILE_EXPANSION? (2) Ist Rebalance-Schwelle >25%? (3) Ist Risk Officer Schwelle 25% zu niedrig für dieses Regime (regime-agnostische Schwelle vs regime-spezifische Allokation)? (4) Bug?  
-**Wie dringend:** HEUTE. CPI heute — HYG reagiert direkt. Wenn V16-Logik unklar, kann Operator nicht beurteilen ob CRITICAL-Alert actionable ist.  
-**Nächste Schritte:** (1) Prüfe V16-Code: HYG-Konzentrations-Limits in FRAGILE_EXPANSION. (2) Prüfe Rebalance-Logik: Schwelle für HYG-Reduktion. (3) Prüfe Risk Officer: Sind Schwellen regime-spezifisch oder absolut? (4) Wenn intended: Dokumentiere Rationale. Wenn Bug: Fix + Rebalance. (5) Wenn Kalibrierungs-Mismatch: Adjustiere Risk Officer Schwellen für FRAGILE_EXPANSION.  
-**Trigger noch aktiv:** Ja (HYG 28.8%).  
-**Conviction Upgrade:** Nein (bereits ACT seit Tag 1).
+**A1: HYG-Konzentration Review (CRITICAL, Trade Class A) — 13 Tage offen, HEUTE:**  
+**Was:** HYG 28.8%, CRITICAL Alert seit 9 Tagen. V16-Position, sakrosankt.  
+**Warum:** Strukturelle Überkonzentration. Kein automatischer Fix (V16 bestimmt Gewicht). Review soll klären: (1) Ist HYG-Gewicht V16-intern gerechtfertigt (Regime-Logik)? (2) Gibt es Portfolio-externe Hedges (Optionen, Spreads)? (3) Soll HYG-Schwelle im Risk Officer angepasst werden (Policy-Frage)? (4) **NEU:** Wie wird HYG-Reduktion (falls nötig) executed ohne Slippage-Bleed?  
+**Wie dringend:** HEUTE. 13 Tage offen ist inakzeptabel für CRITICAL Alert. CPI morgen könnte HYG bewegen — Review MUSS vor CPI abgeschlossen sein.  
+**Nächste Schritte:** (1) V16-Code-Review: Warum HYG 28.8% in FRAGILE_EXPANSION? (2) Risk Officer Policy-Review: Ist 25%-Schwelle für V16-Positionen sinnvoll? (3) Hedge-Optionen prüfen (außerhalb V16). (4) **NEU:** Execution-Plan für HYG-Reduktion: Limit-Orders vs. Market-Orders, Time-Slicing-Strategie, Slippage-Budget. Bei $14.4m HYG-Position (1.2% Daily Volume) an Event-Tag ist Market-Order Slippage ~$72k — Limit-Orders reduzieren Slippage, aber verlängern Execution. (5) Entscheidung: Alert akzeptieren (Policy-Change) ODER externe Maßnahme (Hedge) ODER V16-Logik-Anpassung (nur wenn Fehler gefunden) ODER Execution-Optimierung (Limit-Orders, Time-Slicing).
 
-**A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A) — TAG 12, ESKALIERT**  
-**Was:** NFP (2026-03-07) + ECB (2026-03-06) sind vorbei. Item offen seit 12 Tagen. Warum nicht closed?  
-**Warum:** Event-Monitoring-Items sollten post-Event geschlossen werden. Offen seit 12 Tagen bedeutet: (1) Operator hat nicht reviewed, oder (2) Follow-up-Action fehlt.  
-**Wie dringend:** HEUTE. CPI heute ist nächstes Tier-1-Event — NFP/ECB-Review muss abgeschlossen sein bevor CPI-Cycle startet.  
-**Nächste Schritte:** (1) Review NFP/ECB Impact auf V16/Market Analyst (bereits erfolgt? Wenn ja: Close Item). (2) Wenn Follow-up nötig: Erstelle neues ACT-Item. (3) Close A2.  
-**Trigger noch aktiv:** Nein (Events vorbei).  
-**Conviction Upgrade:** Nein.
+[DA: da_20260306_005 ACCEPTED — A1 erweitert um Execution-Frage. Original Draft: "Nächste Schritte: (1) V16-Code-Review... (4) Entscheidung: Alert akzeptieren ODER externe Maßnahme ODER V16-Logik-Anpassung." Neue Formulierung fügt Execution-Plan hinzu (Schritt 4) und erweitert Entscheidungs-Optionen um "Execution-Optimierung".]
 
-**A3: CPI-Vorbereitung (MEDIUM, Trade Class A) — TAG 12, ESKALIERT**  
-**Was:** CPI-Vorbereitung seit 12 Tagen offen. CPI ist HEUTE.  
-**Warum:** Item sollte pre-CPI geschlossen werden. Offen bedeutet: Vorbereitung nicht abgeschlossen oder Item nicht maintained.  
-**Wie dringend:** HEUTE VORMITTAG (vor CPI-Release).  
-**Nächste Schritte:** (1) Prüfe: Ist Portfolio CPI-ready? (HYG 28.8% = max Exposure zu Fed-Erwartungen, DBC 20.3% = Inflation-Hedge). (2) Prüfe: Sind Post-CPI-Checks definiert? (V16 Rebalance-Trigger, Market Analyst Layer-Updates, Risk Officer Alert-Refresh). (3) Close A3 oder upgrade zu A7 (Post-CPI Review).  
-**Trigger noch aktiv:** Ja (CPI heute).  
-**Conviction Upgrade:** Ja (MEDIUM → HIGH durch Event-Imminenz).
+**A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A) — 13 Tage offen, HEUTE:**  
+**Was:** NFP war 2026-03-07 (T-3), ECB ist 2026-03-12 (T+2). Monitoring überfällig.  
+**Warum:** Post-NFP: Keine System-Reaktion sichtbar (V16 HOLD, Market Analyst Layer unverändert). Pre-ECB: Keine spezifische Vorbereitung. A2 sollte klären: Hat NFP Regime-Signale ausgelöst die noch nicht in V16/Market Analyst sichtbar sind? Ist ECB-Vorbereitung nötig?  
+**Wie dringend:** HEUTE (NFP-Teil) und MORGEN (ECB-Teil). CPI morgen überlagert ECB-Vorbereitung.  
+**Nächste Schritte:** (1) NFP-Daten-Review: Arbeitsmarkt-Überraschung? (2) Market Analyst L7 (CB Policy) Review: ECB-Erwartungen embedded? (3) Risk Officer: ECB-spezifische Alerts? (4) Entscheidung: NFP-Teil schließen (keine Aktion nötig) ODER ECB-Teil auf MORGEN verschieben (nach CPI).
 
-**A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A) — TAG 5, ESKALIERT**  
-**Was:** IC-System degradiert (1 Quelle, 0 Signal). LOW System Conviction seit 5 Tagen. IC-Refresh überfällig.  
-**Warum:** System operiert ohne qualitative Intelligence. CPI heute ohne IC-Vorpositionierung. Macro Alf, Howell, Crescat, Doomberg, Gromen — alle UNAVAILABLE. Narrativ-Vakuum.  
-**Wie dringend:** DIESE WOCHE. CPI heute ist zu spät für Pre-Positioning, aber Post-CPI-Interpretation braucht IC-Context.  
-**Nächste Schritte:** (1) Prüfe: Warum nur 1 Quelle? (Scraper-Fehler, API-Limit, Source-Unavailability?). (2) Prüfe: Sind andere Quellen verfügbar aber nicht prozessiert? (3) Wenn technisches Problem: Fix. Wenn Source-Problem: Eskaliere. (4) Ziel: 5+ Quellen, 3+ Topics mit MEDIUM+ Confidence bis 2026-03-15.  
-**Trigger noch aktiv:** Ja (IC degradiert).  
-**Conviction Upgrade:** Ja (REVIEW → ACT durch LOW System Conviction).
+**A3: CPI-Vorbereitung (MEDIUM, Trade Class A) — 13 Tage offen, HEUTE:**  
+**Was:** CPI morgen (2026-03-11). Vorbereitung überfällig.  
+**Warum:** CPI ist Tier-1-Event. Market Analyst markiert L2/L7 mit "REDUCE_CONVICTION" Pre-Event-Action. V16 in FRAGILE_EXPANSION (instabil). Risk Officer boosted alle Alerts wegen EVENT_IMMINENT. A3 sollte klären: (1) Welche CPI-Outcomes triggern V16-Regime-Shift? (2) Welche Outcomes triggern Risk Officer Severity-Changes? (3) Ist Post-CPI-Rebalance wahrscheinlich? (4) **NEU:** Timing-Erwartung: V16 reagiert End-of-Day, nicht Intraday — bei moderatem CPI könnte Market Analyst 24-48h volatil sein während V16 stabil bleibt (erwartbar, kein Fehler).  
+**Wie dringend:** HEUTE. CPI morgen früh (vermutlich 8:30 ET). Vorbereitung MUSS heute abgeschlossen sein.  
+**Nächste Schritte:** (1) V16-Regime-Logik-Review: CPI-Sensitivität von FRAGILE_EXPANSION? (2) Market Analyst: Welche Layer reagieren auf CPI (L2, L7, andere)? (3) Risk Officer: Post-CPI Severity-Projektion (Hot vs. Cold Print). (4) Operator-Playbook: Wenn CPI hot → erwarte V16-Shift zu X (aber erst End-of-Day), wenn cold → erwarte Y. Bei moderatem CPI: Market Analyst volatil, V16 stabil — kein Fehler, sondern Design. (5) A7 (Post-CPI System-Review) vorbereiten.
 
-**A7: Post-CPI System-Review (HIGH, Trade Class A) — TAG 3, ESKALIERT**  
-**Was:** Post-CPI Review aller Systeme (V16, Market Analyst, Risk Officer, Router). Regime-Shift-Check, Alert-Refresh, Conviction-Update.  
-**Warum:** CPI heute ist Tier-1-Katalysator. V16 könnte shiften (Regime-Shift Proximity hoch, siehe S4). Market Analyst Layer Scores updaten (L2/L7 Pre-Event Conviction reduziert). Risk Officer EVENT_IMMINENT Boost fällt weg (HYG CRITICAL → WARNING?). Router COMMODITY_SUPER Proximity könnte kippen (ECB morgen → DXY-Bewegung).  
-**Wie dringend:** HEUTE ABEND (post-CPI, pre-ECB).  
-**Nächste Schritte:** (1) V16: Check ob Regime shifted (FRAGILE_EXPANSION → CONTRACTION/STEADY_GROWTH?). (2) Market Analyst: Layer Score Refresh, Conviction-Update. (3) Risk Officer: Alert-Refresh ohne Event-Boost, HYG-Status. (4) Router: Proximity-Update (DXY-Check post-CPI). (5) CIO Briefing: Post-CPI Special Edition (optional, wenn Material Changes).  
-**Trigger noch aktiv:** Ja (CPI heute).  
-**Conviction Upgrade:** Ja (REVIEW → ACT durch LOW System Conviction).
+[DA: da_20260310_001 NOTED — A3 erweitert um Timing-Erwartung. Original Draft: "A3 sollte klären: (1) Welche CPI-Outcomes triggern V16-Regime-Shift? (2) Welche Outcomes triggern Risk Officer Severity-Changes? (3) Ist Post-CPI-Rebalance wahrscheinlich?" Neue Formulierung fügt (4) Timing-Erwartung hinzu.]
 
-**NEUE KRITISCHE ITEMS (HEUTE):**
+**A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A) — 6 Tage offen, THIS_WEEK:**  
+**Was:** IC Intelligence 0 Quellen seit Tagen. Data Quality DEGRADED.  
+**Warum:** IC ist einzige unabhängige qualitative Quelle. Ohne IC: System Conviction strukturell LOW, keine narrative Triangulation, erhöhtes Fehlinterpretations-Risiko.  
+**Wie dringend:** THIS_WEEK. Nicht HEUTE (CPI hat Priorität), aber dringend. 6 Tage offen, eskaliert.  
+**Nächste Schritte:** (1) IC-Pipeline-Diagnose: Warum 0 Quellen? Technisches Problem? Daten-Quelle down? (2) Manuelle IC-Substitution: Operator liest Macro Alf, Howell, Crescat direkt (Notlösung). (3) IC-Pipeline-Fix: Technisches Team einbinden. (4) Entscheidung: Wenn Fix >3 Tage dauert → manuelle IC-Digest als Interim-Lösung.
 
-**A9: DBC Execution-Risk Assessment (HIGH, Trade Class A) — NEU**  
-**Was:** DBC 20.3% hat höheres Execution-Risk als HYG trotz niedrigerer Risk Officer Severity (WARNING vs CRITICAL). Bei $50m AUM: DBC $10.15m = 5.6% Daily Volume, Spreads 5x Erweiterung bei Events, hohe Intra-ETF-Korrelation.  
-**Warum:** Risk Officer Severities messen Threshold-Proximity, nicht Impact. DBC ist FRAGILERES Asset für Execution bei CPI-Shock. Operator sollte DBC-Liquidity-Risk gleichwertig zu HYG-Konzentration behandeln.  
-**Wie dringend:** HEUTE (vor CPI). Wenn V16 post-CPI rebalanced, ist DBC-Exit schwieriger als HYG-Exit.  
-**Nächste Schritte:** (1) Quantifiziere DBC Execution-Slippage bei Event-Spreads (0.25% vs normal 0.05%). (2) Prüfe: Hat V16 Limit-Order-Logik oder nur Market-Orders? (3) Wenn Market-Orders: Erwarteter Slippage $25k-$50k bei $10m Trade. (4) Wenn Limit-Orders: Execution-Risk niedriger, aber Fill-Risk höher (Partial Fills bei volatilen Events). (5) Dokumentiere Execution-Strategie für DBC.  
-**Trigger:** DBC >20% + Event in 48h.
+**A7: Post-CPI System-Review (HIGH, Trade Class A) — 4 Tage offen, THIS_WEEK:**  
+**Was:** Post-CPI-Review aller Systeme (V16, Market Analyst, Risk Officer, Router).  
+**Warum:** CPI morgen ist Tier-1-Event. Post-Event-Review ist Standard-Prozedur. A7 wurde VOR CPI eröffnet (Vorbereitung), aber noch nicht geschlossen.  
+**Wie dringend:** THIS_WEEK. Konkret: MORGEN NACHMITTAG (nach CPI-Print und initialer System-Reaktion).  
+**Nächste Schritte:** (1) CPI-Print abwarten (morgen früh). (2) V16: Regime-Shift? Rebalance-Trades? (3) Market Analyst: Layer-Score-Changes? Conviction-Updates? (4) Risk Officer: Severity-Changes (EVENT_IMMINENT-Boosts fallen weg — Alerts die sich gelöst haben schließen, Alerts die persistieren bleiben, neue Alerts durch Event-Outcome möglich)? (5) Router: Proximity-Changes? (6) Synthese: Hat CPI die Regime-Landschaft verändert? (7) A7 schließen mit Summary.
 
-**A10: Portfolio-Level Execution-Logik Review (CRITICAL, Trade Class A) — NEU**  
-**Was:** V16 hält HYG 28.8% + DBC 20.3% = 49.1% in Inflation-Sensitive Assets. Bei CPI-Shock bewegen sich beide GEMEINSAM (Correlation Surge bei Known Events). Execution-Slippage ist KONVEX (nicht linear). System hat keine dokumentierte Execution-Logik für korrelierte Exits.  
-**Warum:** Bei $50m AUM: HYG+DBC = $24.55m = kombiniert 7-8% Daily Volume bei gleichzeitigem Exit. Correlation-adjustierte Slippage $122k-$244k (0.24-0.49% Performance-Drag) bei CPI-Shock. Signal Generator zeigt "FAST_PATH" — keine Order-Staging, Correlation-Hedging, Time-Spread-Execution sichtbar. Wenn V16 post-CPI rebalanced: Wird Trade ATOMIC (alle Positionen gleichzeitig = maximaler Correlation-Impact) oder STAGED (zeitlich versetzt = Correlation-Bleed reduziert, aber Regime-Drift-Risiko erhöht)?  
-**Wie dringend:** HEUTE VORMITTAG (vor CPI). Execution-Strategie muss definiert sein bevor Event eintritt.  
-**Nächste Schritte:** (1) Prüfe V16 Signal Generator: Execution-Logik-Dokumentation. (2) Prüfe: ATOMIC vs STAGED Orders bei Rebalances. (3) Wenn ATOMIC: Quantifiziere Correlation-Prämie (2-3x normale Slippage). (4) Wenn STAGED: Definiere Time-Spread (15min? 1h? 4h?) und Regime-Drift-Toleranz. (5) Wenn UNDEFINED: Eskaliere zu V16-Entwickler — CRITICAL Gap in System-Design.  
-**Trigger:** Portfolio >40% in korrelierten Assets + Event in 48h.
+**A8: Router-Proximity Persistenz-Check (MEDIUM, Trade Class B) — 1 Tag offen, THIS_WEEK:**  
+**Was:** COMMODITY_SUPER Proximity 100% (Sprung von 0%). Entry-Evaluation 2026-04-01 (T+22). A8 soll Persistenz tracken.  
+**Warum:** Proximity kann vor Evaluation wieder fallen. 22 Tage sind lang. Viele Katalysatoren dazwischen (CPI, ECB, potentieller V16-Shift). Wenn Proximity fällt → Entry-Evaluation irrelevant. **NEU:** Die drei Bedingungen (DBC/SPY 6M Relative, V16 Regime erlaubt, DXY nicht steigend) haben unterschiedliche Persistenz-Wahrscheinlichkeiten. CPI morgen beeinflusst DIREKT DXY (Hot CPI → DXY steigt, Bedingung 3 fällt) und INDIREKT V16 Regime (Shift zu Risk-Off → Bedingung 2 fällt). Die kritische Periode ist die nächsten 48h (CPI + ECB) — wenn Proximity nach diesen Events noch 100% ist, steigt Persistenz-Wahrscheinlichkeit dramatisch.  
+**Wie dringend:** THIS_WEEK. Konkret: **Post-CPI/ECB (2026-03-12 Abend): Proximity-Check. Wenn 100% → Upgrade zu ACT (Entry-Vorbereitung). Wenn <100% → Close (Entry irrelevant).**  
+**Nächste Schritte:** (1) **Post-CPI/ECB (2026-03-12 Abend):** Router-Proximity checken (COMMODITY_SUPER, EM_BROAD, CHINA_STIMULUS). (2) Wenn Proximity <100% → A8 schließen mit "Proximity lost, Entry irrelevant." (3) Wenn Proximity 100% → A8 upgraden zu ACT (Entry-Vorbereitung für 2026-04-01). (4) Wenn Proximity 100% hält: Drei Bedingungen separat tracken (DBC/SPY Relative, V16 Regime, DXY) — wie nah ist jede an ihrer Schwelle? (5) Entry-Evaluation 2026-04-01 vorbereiten (nur wenn Proximity bis dahin hält).
 
-**AKTIVE WATCH-ITEMS (5 Items konsolidiert):**
+[DA: da_20260310_002 ACCEPTED — A8 komplett umgeschrieben. Original Draft: "Täglich: Router-Proximity loggen... bis 2026-04-01." Neue Formulierung: Post-CPI/ECB Proximity-Check (2026-03-12 Abend) entscheidet über Upgrade zu ACT oder Close. Begründung: Devil's Advocate hat recht dass "täglich loggen bis April" Ressourcen-Verschwendung ist. Die kritische Periode ist die nächsten 48h (CPI + ECB). Wenn Proximity nach diesen Events noch 100% ist, steigt Persistenz-Wahrscheinlichkeit dramatisch (Event-Risiko ist durch). Wenn Proximity <100% ist, ist Entry irrelevant und A8 kann geschlossen werden.]
 
-**W1: Breadth-Deterioration (Hussman-Warnung) — TAG 12**  
-Breadth aktuell 77.2% (HEALTHY). Hussman-Warnung (Breadth-Deterioration bei Valuation-Extremen) nicht aktiv. Monitor: Breadth <70% = Trigger. Status: STABLE.
+**AKTIVE WATCH-ITEMS (Auswahl, relevanteste):**
 
-**W2: Japan JGB-Stress (Luke Gromen-Szenario) — TAG 12**  
-Kein Signal in Market Analyst (USDJPY 0, Japan 10Y nicht getrackt). IC NO_DATA. Monitor: USDJPY >155 oder Japan 10Y >2.0% = Trigger. Status: NO_DATA.
+**W5: V16 Regime-Shift Proximity — 11 Tage offen:**  
+**Was:** V16 in FRAGILE_EXPANSION. Risk Officer Alert RO-20260310-005 sagt "V16 may transition soon."  
+**Monitoring:** Täglich V16 Regime loggen. Wenn Shift → neues ACT-Item (Post-Shift-Review).  
+**Trigger noch aktiv:** Ja. V16/Market Analyst Divergenz besteht.  
+**Status:** OPEN. Kein Close-Kriterium (Regime-Shift ist binär — entweder passiert oder nicht).
 
-**W3: Geopolitik-Eskalation (Doomberg/ZeroHedge) — TAG 12**  
-IC GEOPOLITICS 0.0 (neutral, 4 Claims). High-Novelty Claims (Iran/China, AI-Militarisierung) ohne Signal. Monitor: VIX >20 oder WTI-Curve inversion = Trigger. Status: CALM (VIX 50th pctl, WTI-Curve -10 Contango).
+**W14: HYG Post-CPI Rebalance-Watch — NEU:**  
+**Was:** HYG 28.8% CRITICAL. CPI morgen könnte V16-Rebalance triggern. Wenn V16 HYG reduziert → CRITICAL Alert könnte sich lösen.  
+**Monitoring:** Post-CPI (morgen nachmittag): V16 Rebalance-Trades checken. Wenn HYG-Gewicht sinkt → W14 schließen mit "Alert resolved by V16." Wenn HYG-Gewicht steigt oder gleich bleibt → W14 in ACT upgraden (HYG-Problem persistiert).  
+**Trigger noch aktiv:** Ja. HYG CRITICAL besteht.  
+**Status:** OPEN.
 
-**W4: Commodities-Rotation (Crescat vs. Doomberg) — TAG 12**  
-Router COMMODITY_SUPER 100% (bullish). V16 DBC/GLD 37.2% (bullish). IC COMMODITIES NO_DATA, ENERGY +1.5 (schwach bullish). Monitor: DBC/SPY 6m relative <1.0 = Trigger. Status: ACTIVE (Proximity maximal, aber Entry erst 2026-04-01).
+**W1: Breadth-Deterioration (Hussman-Warnung) — 13 Tage offen:**  
+**Was:** Hussman warnt vor Breadth-Verschlechterung (historisch Crash-Vorbote). Market Analyst L3 (Earnings) zeigt Breadth 77.2% (HEALTHY). Widerspruch.  
+**Monitoring:** Wöchentlich Market Analyst L3 Breadth checken. Wenn <70% → W1 in ACT upgraden.  
+**Trigger noch aktiv:** Nein (Breadth 77.2% ist stark). Aber: Hussman-Warnung ist qualitativ, nicht quantitativ. IC-Blackout verhindert Auflösung.  
+**Status:** OPEN. Close-Empfehlung: NEIN (Hussman-Warnung bleibt relevant bis IC-Bestätigung/Widerlegung).
 
-**W5: V16 Regime-Shift Proximity — TAG 10**  
-Siehe S4 (CIO OBSERVATION). V16 FRAGILE_EXPANSION Tag 1, Market Analyst Transition Proximity hoch (4 Layer an Grenzen). Monitor: V16 Regime-Change innerhalb 72h post-CPI. Status: ACTIVE (Shift-Wahrscheinlichkeit 60%, CIO-Schätzung).
+**W2: Japan JGB-Stress (Luke Gromen-Szenario) — 13 Tage offen:**  
+**Was:** Gromen warnt vor Japan-JGB-Krise (Yen-Abwertung, Kapitalflucht). Market Analyst L4 (FX) zeigt USDJPY 0 (neutral). Kein Signal.  
+**Monitoring:** Wöchentlich Market Analyst L4 USDJPY checken. Wenn USDJPY >150 oder <130 (extreme Moves) → W2 in ACT upgraden.  
+**Trigger noch aktiv:** Nein (USDJPY neutral).  
+**Status:** OPEN. Close-Empfehlung: NEIN (Tail-Risk-Watch, kein Expiry).
 
-**W15: Moderate CPI Szenario (Devil's Advocate) — NEU**  
-**Was:** CPI moderat überrascht (+0.1pp über Konsens, nicht +0.3pp). V16 bleibt FRAGILE_EXPANSION (keine klaren Trigger), Market Analyst Layer Scores oszillieren (hohe Sensitivity zu Daten-Updates). Divergenz V16/Market Analyst prolongiert sich auf 10+ Tage.  
-**Warum:** Moderate Überraschungen sind häufiger als extreme. V16 reagiert auf klare Schwellen-Überschreitungen (deterministisch), Market Analyst auf Layer Score Volatility (probabilistisch). Bei moderatem CPI: V16 stabil, Market Analyst volatil = prolongierte Divergenz = strukturelles Signal dass eines der Systeme falsch kalibriert ist.  
-**Monitoring:** Post-CPI: Wenn V16 NICHT shiftet UND Market Analyst Conviction bleibt LOW/CONFLICTED = Szenario aktiv. Dann: Kosten-Funktion von prolongierter Divergenz quantifizieren (Performance-Drag durch suboptimale Allokation vs Conviction-Verlust).  
-**Trigger:** V16 Regime unchanged + Market Analyst Conviction <0.3 für 5+ Tage post-CPI.
+**CLOSE-EMPFEHLUNGEN:** Keine. Alle offenen WATCH-Items haben entweder aktive Trigger (W5, W14) oder sind Tail-Risk-Watches ohne Expiry (W1, W2, W3, W4). Die duplizierten/fehlerhaften WATCH-Items (W6-W13: "Was", "Warum", "Monitoring", etc.) sind Daten-Artefakte — Operator soll diese manuell aus Action-Item-DB entfernen (kein Briefing-Inhalt).
 
-**CLOSE-EMPFEHLUNGEN:**  
-W6-W13 (fragmentierte Items aus Vortagen: "Was", "Warum", "Monitoring", "Trigger noch aktiv", "Status", "Nächster Check", "Urgency", "HEUTE", "THIS_WEEK", "Post-CPI", "CLOSE-Empfehlungen", "AKTIVE WATCH") — alle schließen. Artefakte aus Pre-Processor-Fehlern, keine actionable Information.
-
-**NEUE WATCH-ITEMS (HEUTE):**
-
-**W14: HYG Post-CPI Rebalance-Watch — NEU**  
-**Was:** HYG 28.8% CRITICAL. Post-CPI: Prüfe ob V16 rebalanced (HYG-Reduktion).  
-**Warum:** Wenn V16 nicht rebalanced post-CPI, bestätigt das: V16-Logik erlaubt >25% (intended). Wenn V16 rebalanced, war >25% temporär (Event-bedingt).  
-**Monitoring:** V16 Rebalance post-CPI. Wenn HYG <27.5%: V16 hat reagiert. Wenn HYG >28%: V16 hält Position.  
-**Trigger:** V16 Rebalance-Trade (HYG SELL).
-
-**W16: Router-Proximity Persistenz-Check — NEU**  
-**Was:** COMMODITY_SUPER Proximity 100%, aber Entry erst 2026-04-01 (22 Tage). Prüfe ob Proximity bis dahin stabil bleibt.  
-**Warum:** DBC/SPY 6m relative ist Momentum-Indikator — kann drehen. Wenn Proximity <100% vor 2026-04-01, verpasst System Entry-Opportunity.  
-**Monitoring:** Daily Check: Router Proximity (COMMODITY_SUPER). Wenn Proximity <80%: Eskaliere zu ACT (Early Entry Evaluation?). Wenn Proximity stabil: Monitor bis 2026-04-01.  
-**Trigger:** Proximity <80%.
+**ACTION-SYNTHESE:** 4 ACT-Items HEUTE fällig (A1, A2, A3, A6 teilweise). A7 MORGEN. A8 POST-CPI/ECB (2026-03-12 Abend). Priorität: A3 (CPI-Vorbereitung) > A1 (HYG-Review inkl. Execution-Plan) > A2 (NFP/ECB) > A6 (IC-Refresh). Post-CPI: A7 durchführen, W14 evaluieren. Router-Proximity (A8) Post-CPI/ECB entscheidend (Upgrade zu ACT oder Close).
 
 ---
 
 ## KEY ASSUMPTIONS
 
-**KA1: cpi_binary_regime_determinant** — CPI heute bestimmt V16-Regime-Shift (Hot → CONTRACTION, Cool → STEADY_GROWTH/FRAGILE_EXPANSION hold).  
-Wenn falsch: V16 shiftet aus anderen Gründen (Liquidity, Credit Spreads) oder bleibt FRAGILE_EXPANSION unabhängig von CPI (moderate Überraschung, siehe W15). Impact: Regime-Shift-Timing falsch, Post-CPI-Review greift ins Leere, prolongierte Divergenz V16/Market Analyst.
+**KA1: router_proximity_persistence** — COMMODITY_SUPER Proximity 100% hält bis 2026-04-01 (Entry-Evaluation).  
+     Wenn falsch: Entry-Evaluation irrelevant. Router bleibt US_DOMESTIC. Commodities-Exposure-Warnung (RO-20260310-002) verliert Dringlichkeit. A8 kann geschlossen werden. **ANMERKUNG:** KA1 ist implizit eine Wette auf Cold CPI (siehe DA Resolution da_20260310_002) — Hot CPI würde DXY steigen lassen (Bedingung 3 fällt) und V16 zu Risk-Off shiften (Bedingung 2 fällt). Post-CPI/ECB Proximity-Check (A8) entscheidet über Persistenz-Wahrscheinlichkeit.
 
-**KA2: router_proximity_persistence** — COMMODITY_SUPER Proximity 100% bleibt stabil bis 2026-04-01 Entry-Evaluation.  
-Wenn falsch: DBC/SPY 6m relative dreht <1.0 oder DXY steigt (ECB-getrieben), Proximity fällt <100%, Entry-Opportunity verpasst. Impact: Router-Signal war Fehlalarm, V16 Commodities-Tilt (37.2%) ohne Router-Bestätigung.
+**KA2: v16_regime_stability** — V16 bleibt in FRAGILE_EXPANSION (oder ähnlichem Risk-On-Regime) über CPI hinaus.  
+     Wenn falsch: V16-Regime-Shift zu Risk-Off (z.B. DEEP_CONTRACTION) würde Portfolio radikal umbauen (HYG/DBC raus, TLT/GLD rein). HYG CRITICAL Alert würde sich lösen (durch V16-Trade). DBC WARNING würde sich lösen. Aber: Neue Alerts möglich (z.B. TLT-Konzentration). Risk Officer Alert RO-20260310-005 deutet auf möglichen Shift hin — KA2 ist FRAGIL.
 
-**KA3: hyg_concentration_intended** — V16-Logik erlaubt HYG >25% in FRAGILE_EXPANSION (Credit-Spread-Regime), kein Bug. ALTERNATIV: Risk Officer Schwelle 25% ist zu niedrig für FRAGILE_EXPANSION (regime-agnostische Schwelle vs regime-spezifische Allokation = Kalibrierungs-Mismatch).  
-Wenn falsch: V16-Bug, HYG sollte <25% sein, Portfolio-Risk höher als intended. ODER: Risk Officer produziert False Positives (CRITICAL Alerts die nicht actionable sind). Impact: CRITICAL-Alert ist echter Fehler (sofortige Rebalance nötig, aber Master-Schutz verhindert Override — Operator muss manuell eingreifen) ODER Risk Officer Schwellen müssen regime-spezifisch kalibriert werden.
-
-**KA4: execution_logic_exists** — V16 hat dokumentierte Execution-Logik für korrelierte Exits (Order-Staging, Correlation-Hedging, Time-Spread).  
-Wenn falsch: System hat KEINE Execution-Logik für Portfolio-Level Correlation Stress. Bei CPI-Shock: ATOMIC Orders auf HYG+DBC = $24.55m = 7-8% Daily Volume = Correlation-adjustierte Slippage $122k-$244k (0.24-0.49% Performance-Drag). Impact: CRITICAL Gap in System-Design, Execution-Risk nicht gemanaged, Performance-Drag bei jedem Rebalance während Events.
+**KA3: cpi_print_neutral_to_cold** — CPI morgen kommt neutral (in-line) oder cold (unter Erwartung).  
+     Wenn falsch: Hot CPI (über Erwartung) verstärkt Tightening-Narrativ. Market Analyst L2/L7 Scores sinken (bearish). V16 könnte zu Risk-Off shiften (siehe KA2). Risk Officer Severities könnten steigen (Credit-Spreads weiten sich). Router-Proximity könnte fallen (DXY steigt bei Tightening-Erwartung, siehe KA1). KA3 ist BINARY — CPI-Outcome bestimmt die nächsten Tage.
 
 ---
 
 ## DA RESOLUTION SUMMARY
 
-**ACCEPTED (3):**
+**da_20260306_005 (PERSISTENT, Tag 13, FORCED DECISION): ACCEPTED**  
+**Challenge:** Instrument-Liquidität (HYG/DBC) ist strukturelles Risiko. Bei $50m AUM ist HYG-Position $14.4m (1.2% Daily Volume), DBC $10.15m (5.6% Daily Volume). An Event-Tagen erweitern sich Bid-Ask-Spreads 3x-5x. Market-Order auf $14.4m HYG an Event-Tag → Slippage ~$72k. System hat keinen Liquidity-Stress-Test für Holdings selbst, nur für Märkte.  
+**Resolution:** ACCEPTED. S6 erweitert um Instrument-Liquidität-Abschnitt. A1 (HYG-Konzentration Review) erweitert um Execution-Plan: "Wie wird HYG-Reduktion (falls nötig) executed ohne Slippage-Bleed?" Nächste Schritte fügen hinzu: Limit-Orders vs. Market-Orders, Time-Slicing-Strategie, Slippage-Budget. Entscheidungs-Optionen erweitert um "Execution-Optimierung".  
+**Impact:** A1 ist jetzt vollständiger — adressiert nicht nur "Ist HYG-Gewicht gerechtfertigt?" sondern auch "Wie wird HYG-Trade executed?" Das ist operativ relevant vor CPI (morgen).
 
-**da_20260310_003 (PREMISE_ATTACK auf S3, KA3):** HYG >25% seit 8 Tagen ist STRUKTURELL, nicht Event-bedingt. Event-Boost hat WARNING → CRITICAL eskaliert, aber Base Severity WARNING besteht seit 8 Tagen. Draft-Formulierung "kein strukturelles Risiko, sondern Event-Timing" war ungenau. **IMPACT:** S3 CIO CONTEXT korrigiert. KA3 erweitert um Alternative (Kalibrierungs-Mismatch Risk Officer Schwellen). A1 Nächste Schritte erweitert um Risk Officer Schwellen-Check.
+**da_20260310_001 (UNASKED_QUESTION, Tag 1): NOTED**  
+**Challenge:** System stellt Liquiditäts-Frage auf falscher Zeitskala. Market Analyst reagiert auf CPI in Minuten, V16 in Stunden/Tagen — erzeugt Timing-Gap bei moderaten CPI-Überraschungen. Bei HYG 28.8% + DBC 20.3% = 49.1% in volatilen Assets ist 8.5h Reaktions-Lag messbar (Portfolio verliert 0.58% bei Hot CPI + HYG -2% Intraday). Frage: Sollte System bei Known Events beschleunigte Rebalance-Logik haben?  
+**Resolution:** NOTED. A3 (CPI-Vorbereitung) erweitert um Timing-Erwartung: "V16 reagiert End-of-Day, nicht Intraday — bei moderatem CPI könnte Market Analyst 24-48h volatil sein während V16 stabil bleibt (erwartbar, kein Fehler)." Aber: Kein separates Action Item. Begründung: V16 ist explizit End-of-Day-Strategie, Intraday-Lag ist Design, nicht Bug. Die Frage ist valide, aber die Antwort ist: Lag ist akzeptabel weil V16 auf Tages-Schlusskursen basiert. Operator sollte sich bewusst sein, aber keine System-Änderung nötig.  
+**Impact:** A3 ist jetzt präziser — Operator weiß dass bei moderatem CPI Market Analyst/V16 Divergenz für 24-48h erwartbar ist (kein Fehler-Signal).
 
-**da_20260309_003 (PREMISE_ATTACK auf S3, PERSISTENT Tag 1):** DBC 20.3% hat höheres Execution-Risk als HYG (6.06% Daily Volume vs 1.14%, Spreads 5x vs 3x Erweiterung), aber Risk Officer zeigt niedrigere Severity (WARNING vs CRITICAL). Risk Officer misst Threshold-Proximity, nicht Impact. **IMPACT:** S3 CIO CONTEXT ergänzt für DBC. Neues ACT-Item A9 (DBC Execution-Risk Assessment).
+**da_20260310_002 (UNASKED_QUESTION, Tag 2): ACCEPTED**  
+**Challenge:** Router-Proximity 100% ist Timing-Paradox. Die drei Bedingungen haben unterschiedliche Persistenz-Wahrscheinlichkeiten. CPI morgen beeinflusst DIREKT DXY (Hot CPI → DXY steigt, Bedingung 3 fällt) und INDIREKT V16 Regime (Shift zu Risk-Off → Bedingung 2 fällt). KA1 ("Proximity hält bis 2026-04-01") ist implizit eine Wette auf Cold CPI. A8 ("täglich Proximity loggen bis April") ist Ressourcen-Verschwendung — kritische Periode ist die nächsten 48h (CPI + ECB).  
+**Resolution:** ACCEPTED. A8 komplett umgeschrieben. Neue Methodik: Post-CPI/ECB (2026-03-12 Abend) Proximity-Check entscheidet über Upgrade zu ACT (Entry-Vorbereitung) oder Close (Entry irrelevant). Wenn Proximity nach CPI/ECB noch 100% ist, steigt Persistenz-Wahrscheinlichkeit dramatisch (Event-Risiko ist durch). Wenn Proximity <100% ist, ist Entry irrelevant. KA1 erweitert um Anmerkung: "KA1 ist implizit eine Wette auf Cold CPI — Hot CPI würde DXY steigen lassen (Bedingung 3 fällt) und V16 zu Risk-Off shiften (Bedingung 2 fällt)."  
+**Impact:** A8 ist jetzt effizienter — fokussiert auf kritische Periode (CPI/ECB) statt auf 22-Tage-Tracking. KA1 ist jetzt transparenter — macht implizite CPI-Abhängigkeit explizit.
 
-**da_20260309_001 + da_20260310_001 (UNASKED_QUESTION, PERSISTENT Tag 3, FORCED DECISION):** System misst Liquidity auf falscher Ebene — nicht Portfolio-Level Correlation Stress bei Known Events. HYG+DBC = 49.1% bewegen sich GEMEINSAM bei CPI-Shocks (Correlation Surge). Execution-Slippage ist KONVEX, nicht linear. System hat keine dokumentierte Execution-Logik für korrelierte Exits. **IMPACT:** Neue CIO OBSERVATION in S4 (Portfolio-Level Liquidity bei CPI-Shock). S6 Liquidity-Abschnitt erweitert. Neues CRITICAL ACT-Item A10 (Portfolio-Level Execution-Logik Review). Neue KEY ASSUMPTION KA4 (execution_logic_exists).
+**da_20260310_003 (PREMISE_ATTACK, Tag 1): ACCEPTED**  
+**Challenge:** CIO nimmt an dass EVENT_IMMINENT-Boosts die Severity-Landschaft "verfälschen" — aber das ist Fehlinterpretation. EVENT_IMMINENT ist keine "künstliche Verfälschung", sondern zeitliche Diskontierung von Risiko. Post-Event fallen Boosts weg NICHT weil Risiko sich "normalisiert", sondern weil Katalysator durch ist — Risiko hat sich realisiert oder nicht realisiert.  
+**Resolution:** ACCEPTED. S3 RISK-SYNTHESE umformuliert. Original: "Event-Boosts verfälschen Severity-Bild — nach CPI Neubewertung nötig." Neu: "EVENT_IMMINENT-Boosts sind Forward-Looking Risk Adjustment — nach CPI: Alerts die sich gelöst haben (durch Event-Outcome) schließen, Alerts die persistieren bleiben, neue Alerts durch Event-Outcome möglich." A7 (Post-CPI System-Review) Nächste Schritte erweitert: "Risk Officer: Severity-Changes (EVENT_IMMINENT-Boosts fallen weg — Alerts die sich gelöst haben schließen, Alerts die persistieren bleiben, neue Alerts durch Event-Outcome möglich)?"  
+**Impact:** S3 ist jetzt präziser — EVENT_IMMINENT-Boosts werden korrekt als Forward-Looking Risk Adjustment interpretiert, nicht als "Noise". A7 ist jetzt klarer — Post-CPI Severity-Interpretation ist differenzierter.
 
-**NOTED (1):**
+**da_20260310_004 (UNASKED_QUESTION, Tag 1): NOTED**  
+**Challenge:** CIO schätzt "Regime-Shift Proximity 60%" (S4) aber liefert KEINE Quantifizierung für "was passiert wenn V16NICHT shiftet". Bei moderatem CPI (weder hot noch cool) bleibt V16 FRAGILE_EXPANSION (keine klaren Trigger), aber Market Analyst Layer Scores oszillieren (hohe Sensitivity zu Daten-Updates). Das führt zu prolongierter Divergenz zwischen V16 (stabil) und Market Analyst (volatil) — genau die Situation die Risk Officer als "Regime-Konflikt" meldet (RO-20260310-005 WARNING). Moderate CPI würde Divergenz auf 10+ Tage verlängern. Ungestellte Frage: Was ist die KOSTEN-FUNKTION von prolongierter V16/Market Analyst Divergenz?  
+**Resolution:** NOTED. Kein Briefing-Change. Begründung: Die Frage ist valide, aber das Szenario "moderate CPI → prolongierte Divergenz" ist spekulativ. CIO kann nicht alle möglichen CPI-Outcomes durchspielen (Hot, Cold, Moderate-High, Moderate-Low, etc.). A3 (CPI-Vorbereitung) adressiert bereits "Operator-Playbook für CPI-Outcomes" — Moderate CPI ist implizit enthalten ("wenn weder hot noch cold → V16 bleibt stabil, Market Analyst volatil"). Die Kosten-Funktion von prolongierter Divergenz ist: Wenn V16 "falsch" liegt → Performance-Loss durch suboptimale Allokation. Wenn Market Analyst "falsch" liegt → System Conviction sinkt, aber keine Trade-Konsequenz (V16 ist sakrosankt). Das ist bereits im System-Design eingebaut — V16 ist Master, Market Analyst ist Kontext. Keine Action Item nötig.  
+**Impact:** Keine. Aber Operator sollte sich bewusst sein: Moderate CPI könnte V16/Market Analyst Divergenz verlängern — das ist erwartbar und kein Fehler-Signal.
 
-**da_20260310_004 (UNASKED_QUESTION auf S4):** Moderate CPI (weder hot noch cool) ist wahrscheinlicheres Szenario als extreme Überraschung. V16 bleibt FRAGILE_EXPANSION (keine klaren Trigger), Market Analyst Layer Scores oszillieren, Divergenz prolongiert sich auf 10+ Tage. **ASSESSMENT:** Valider Punkt, aber nicht stark genug um Briefing zu ändern. Operator kann nicht pre-positionieren für "moderate Überraschung" (V16 reagiert post-Event). Szenario ist relevant für Post-CPI-Interpretation. **IMPACT:** Neues WATCH-Item W15 (Moderate CPI Szenario). KA1 erweitert um "Wenn falsch"-Klausel (moderate Überraschung).
+**da_20260309_005 (PREMISE_ATTACK, Tag 2, INCOMPLETE): REJECTED**  
+**Challenge:** CIO nimmt an dass "Item offen seit X Tagen" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle "Tag 11" oder "Tag 9") haben UNTERSCHIEDLICHE... [Challenge ist unvollständig, bricht ab]  
+**Resolution:** REJECTED. Begründung: Challenge ist unvollständig (kein vollständiger Satz, keine Evidence). Kann nicht bewertet werden. Vermutlich Daten-Artefakt. Wenn Devil's Advocate die Prämisse "Item offen seit X Tagen = Dringlichkeit" angreifen will, muss die Challenge vollständig formuliert sein. Aktuell: Keine substanzielle Kritik erkennbar.  
+**Impact:** Keine.
 
-**REJECTED (0):**
-
-Keine Gegenargumente zurückgewiesen.
-
-**SUMMARY:**  
-4 von 7 Devil's Advocate Challenges waren substantiell. 3 ACCEPTED (Material Changes in S3, S4, S6, S7, KEY ASSUMPTIONS). 1 NOTED (Watchlist). 0 REJECTED. Hauptthema: **Execution-Risk bei korrelierten Assets während Known Events** — System misst Instrument-Liquidity und Concentration, aber NICHT Portfolio-Level Correlation Stress. CRITICAL Gap identifiziert (A10). Zweites Thema: **HYG >25% ist strukturell (8 Tage), nicht Event-bedingt** — entweder V16-Logik intended oder Risk Officer Schwellen falsch kalibriert (A1 erweitert).
+**SUMMARY:** 2 ACCEPTED (da_20260306_005, da_20260310_002, da_20260310_003), 2 NOTED (da_20260310_001, da_20260310_004), 1 REJECTED (da_20260309_005). Substantielle Änderungen: S6 erweitert um Instrument-Liquidität, A1 erweitert um Execution-Plan, A8 komplett umgeschrieben (Post-CPI/ECB Proximity-Check statt tägliches Logging), S3 RISK-SYNTHESE präzisiert (EVENT_IMMINENT-Boosts korrekt interpretiert), A3 erweitert um Timing-Erwartung, KA1 erweitert um CPI-Abhängigkeit. Keine Änderungen an V16-Gewichten, F6-Signalen, Risk Officer Severities (Master-Schutz eingehalten).
