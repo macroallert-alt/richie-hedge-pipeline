@@ -1,16 +1,29 @@
 {
   "date": "2026-03-10",
-  "run_id": "da_20260310_080609",
-  "draft_run_id": "cio_draft_20260310_080110",
+  "run_id": "da_20260310_104426",
+  "draft_run_id": "cio_draft_20260310_103741",
   "primary_focus": "UNASKED_QUESTION",
   "perspective_seed": "Makro-Trader",
   "challenges": [
+    {
+      "id": "da_20260309_005",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S7",
+      "target_assumption": null,
+      "challenge_text": "FORCED DECISION (Tag 3, 3x NOTED): Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle \"Tag 11\" oder \"Tag 9\") haben UNTERSCHIEDLICHE\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 3,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
     {
       "id": "da_20260306_005",
       "type": "PREMISE_ATTACK",
       "target_section": "S6",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 13, 5x NOTED): FORCED DECISION (Tag 12, 4x NOTED): FORCED DECISION (Tag 11, 3x NOTED): [PERSISTENT da_20260306_002, Tag 6] Was ist der Liquiditaets-Zustand der INSTRUMENTE im Portfolio, nicht der Maerkte? CIO fokussiert auf Macro-Liquidity (IC DEGRADED, keine Liquidity-Daten, Market Analyst L1 TRANSITION), aber HYG 28.8% + DBC 20.3% = 49.1% in Instrumenten mit strukturell schlechteren Liquiditaetsprofilen als SPY/TLT. HYG Average Daily Volume historisch $1.2bn, DBC ADV $180m. V16 AUM unbekannt, aber falls Portfolio >$50m, ist HYG 28.8% = $14.4m = 1.2% des Daily Volume. NFP heute 08:30 ET = Event-Tag mit typischer Liquidity-Kompression: HYG Bid-Ask-Spreads erweitern sich 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Das ist KEIN Credit-Risiko (KA2 adressiert Regime-Signale) und KEIN Commodities-Risiko (W4 adressiert Allocation) — das ist Execution-Risiko. CIO S7 A1 sagt \"Post-NFP: Wenn HYG -2% oder mehr, pruefe Regime-Signale\" und empfiehlt potentiell \"mechanische Gewichtsreduktion\" — aber bei Market-Order auf $14.4m HYG an einem Event-Tag mit 3x Spread-Erweiterung ist Slippage ~0.5% = $72k Loss BEVOR Trade executed ist. Risk Officer meldet Concentration (RO-20260306-003 CRITICAL), aber NICHT Instrument-Liquidity-Stress. System hat keinen Liquidity-Stress-Test fuer die Holdings selbst — nur fuer Maerkte (Market Analyst L1). NEUE DATEN HEUTE: NFP in 0d (Event-Tag), ECB in 0d, CPI in 5d = drei aufeinanderfolgende Event-Tage mit Liquidity-Kompression. Wenn A1 zu HYG-Reduktion fuehrt UND A3 (CPI-Vorbereitung) auch zu Trades fuehrt, koennte Portfolio in 5 Tagen ZWEI grosse HYG-Trades machen (heute Post-NFP + Montag Pre-CPI) = kumulativer Slippage $72k + $72k = $144k auf $50m AUM = 0.29% Performance-Drag nur durch Execution. Das ist MESSBAR und VERMEIDBAR durch Limit-Orders oder gestufte Execution, aber Signal Generator zeigt nur \"FAST_PATH, V16 weights unmodified\" — keine Execution-Logik sichtbar.\n[PERSISTENT: Tag 9, erneuert aus History]\n[PERSISTENT: Tag 10, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "challenge_text": "FORCED DECISION (Tag 14, 6x NOTED): FORCED DECISION (Tag 13, 5x NOTED): FORCED DECISION (Tag 12, 4x NOTED): FORCED DECISION (Tag 11, 3x NOTED): [PERSISTENT da_20260306_002, Tag 6] Was ist der Liquiditaets-Zustand der INSTRUMENTE im Portfolio, nicht der Maerkte? CIO fokussiert auf Macro-Liquidity (IC DEGRADED, keine Liquidity-Daten, Market Analyst L1 TRANSITION), aber HYG 28.8% + DBC 20.3% = 49.1% in Instrumenten mit strukturell schlechteren Liquiditaetsprofilen als SPY/TLT. HYG Average Daily Volume historisch $1.2bn, DBC ADV $180m. V16 AUM unbekannt, aber falls Portfolio >$50m, ist HYG 28.8% = $14.4m = 1.2% des Daily Volume. NFP heute 08:30 ET = Event-Tag mit typischer Liquidity-Kompression: HYG Bid-Ask-Spreads erweitern sich 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Das ist KEIN Credit-Risiko (KA2 adressiert Regime-Signale) und KEIN Commodities-Risiko (W4 adressiert Allocation) — das ist Execution-Risiko. CIO S7 A1 sagt \"Post-NFP: Wenn HYG -2% oder mehr, pruefe Regime-Signale\" und empfiehlt potentiell \"mechanische Gewichtsreduktion\" — aber bei Market-Order auf $14.4m HYG an einem Event-Tag mit 3x Spread-Erweiterung ist Slippage ~0.5% = $72k Loss BEVOR Trade executed ist. Risk Officer meldet Concentration (RO-20260306-003 CRITICAL), aber NICHT Instrument-Liquidity-Stress. System hat keinen Liquidity-Stress-Test fuer die Holdings selbst — nur fuer Maerkte (Market Analyst L1). NEUE DATEN HEUTE: NFP in 0d (Event-Tag), ECB in 0d, CPI in 5d = drei aufeinanderfolgende Event-Tage mit Liquidity-Kompression. Wenn A1 zu HYG-Reduktion fuehrt UND A3 (CPI-Vorbereitung) auch zu Trades fuehrt, koennte Portfolio in 5 Tagen ZWEI grosse HYG-Trades machen (heute Post-NFP + Montag Pre-CPI) = kumulativer Slippage $72k + $72k = $144k auf $50m AUM = 0.29% Performance-Drag nur durch Execution. Das ist MESSBAR und VERMEIDBAR durch Limit-Orders oder gestufte Execution, aber Signal Generator zeigt nur \"FAST_PATH, V16 weights unmodified\" — keine Execution-Logik sichtbar.\n[PERSISTENT: Tag 9, erneuert aus History]\n[PERSISTENT: Tag 10, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
       "evidence": [
         "HYG 28.8% = $14.4m bei $50m AUM (geschaetzt), DBC 20.3% = $10.15m",
         "HYG ADV $1.2bn (historisch), DBC ADV $180m → HYG Trade = 1.2% Daily Volume, DBC = 5.6%",
@@ -21,7 +34,7 @@
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 13,
+      "persistent_days": 14,
       "is_forced_decision": true,
       "validation_warnings": []
     },
@@ -30,18 +43,18 @@
       "type": "UNASKED_QUESTION",
       "target_section": "SYSTEM",
       "target_assumption": null,
-      "challenge_text": "Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen Zeitskala stellt? CIO fokussiert auf Macro-Liquidity (L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m aus Persistent Challenge da_20260310_001) — aber die EIGENTLICHE Frage vor CPI MORGEN ist: Wie schnell kann das System die Liquiditaets-Bedingungen POST-EVENT neu bewerten? V16 ist deterministisch — reagiert auf quantitative Schwellen mit LAG. Market Analyst Layer Scores haben BEREITS Pre-Event Conviction reduziert (L2/L7 \"REDUCE_CONVICTION\") — das bedeutet post-CPI werden Layer Scores mit HOHER Velocity updaten (Pre-Event Conviction-Reduktion ist explizit designed um Post-Event Sensitivity zu erhoehen). Aber: V16 Regime-Shift braucht klare Schwellen-Ueberschreitungen in Growth/Liq/Stress — nicht nur Layer-Score-Volatilitaet. Das erzeugt ein TIMING-GAP: Market Analyst reagiert auf CPI in Minuten (Layer Scores updaten sobald Daten verfuegbar), V16 reagiert in Stunden oder Tagen (braucht mehrere Datenpunkte um Schwellen zu ueberschreiten), Risk Officer reagiert INSTANTAN auf Gewichts-Aenderungen (aber nur wenn V16 tradet). Wenn CPI moderat ueberrascht (weder extrem hot noch extrem cold), koennte Market Analyst fuer 24-48h volatil sein (Layer Scores oszillieren zwischen bullish/bearish Interpretationen) WAEHREND V16 stabil bleibt (keine klaren Trigger) — genau die prolongierte Divergenz die Risk Officer als \"Regime-Konflikt\" meldet (RO-20260310-005 bereits aktiv seit heute, sagt \"V16 may transition soon\" aber kein Timing). Die ungestellte Frage: Was ist die REAKTIONSZEIT-VERTEILUNG des Systems auf CPI-Outcomes? Nicht \"wird V16 shiften\" (KA2 adressiert das), sondern \"WANN wird V16 shiften relativ zu Market Analyst\"? Wenn Market Analyst um 08:31 ET (1 Minute post-CPI) bearish wird aber V16 erst um 17:00 ET (End-of-Day nach Settlement) shiftet, haelt Portfolio suboptimale Allokation fuer 8.5 Stunden waehrend Maerkte reprisen. Bei HYG 28.8% + DBC 20.3% = 49.1% in volatilen Assets ist das MESSBAR: Wenn CPI hot und HYG faellt -2% intraday (typisch fuer Credit bei Tightening-Shock), verliert Portfolio 0.58% ($290k auf $50m AUM angenommen) nur durch Reaktions-Lag. Das ist NICHT ein V16-Fehler (V16 ist designed fuer multi-day Holding, nicht Intraday) — aber es ist ein SYSTEM-DESIGN-GAP dass vor Known Events wie CPI relevant wird. A3 (CPI-Vorbereitung) sagt \"Operator-Playbook: Wenn CPI hot → erwarte V16-Shift zu X\" aber gibt kein TIMING. A7 (Post-CPI System-Review) ist fuer \"morgen nachmittag\" geplant — aber wenn V16 erst End-of-Day shiftet, ist Review NACH dem Trade, nicht davor. Die Frage ist: Sollte das System bei Known Tier-1-Events (CPI, NFP, FOMC) eine BESCHLEUNIGTE Rebalance-Logik haben — nicht um V16 zu overriden (sakrosankt), sondern um die EXECUTION von V16-Signalen zu timen? Oder ist der 8.5h-Lag akzeptabel weil V16 auf Tages-Schlusskursen basiert (End-of-Day-Strategie)? Das ist eine Policy-Frage die HEUTE beantwortet werden muss, nicht post-CPI.",
+      "challenge_text": "Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen EBENE stellt? CIO fokussiert auf Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m) — aber die EIGENTLICHE Frage vor CPI MORGEN ist: Wie liquide ist das DOLLAR-FUNDING-SYSTEM das diese Maerkte traegt? Jeff Snider Claim jeff_snider_005 sagt explizit \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted.\" Das ist kein EM-Problem — das ist ein GLOBALES Dollar-Liquidity-Problem. Wenn EM-Importeure mehr Dollars brauchen (Energie-Schock) GLEICHZEITIG mit Private-Credit-Bust in US/UK/Europe (Claim jeff_snider_002), entsteht Dollar-Nachfrage-Spike. Market Analyst L4 (Cross-Border Flows) zeigt DXY Score 0 (50. Perzentil, STABLE) — aber das misst DXY-PREIS, nicht Dollar-VERFUEGBARKEIT. DXY kann stabil sein waehrend Dollar-Funding-Stress steigt (2019 Repo-Krise: DXY flat, aber Repo-Rates explodierten). Das System hat KEINEN direkten Dollar-Liquidity-Indikator — kein LIBOR-OIS, kein FRA-OIS, kein Cross-Currency-Basis-Spread, kein Repo-Rate-Monitoring. V16 liq_direction -1 aggregiert Net Liquidity/WALCL/TGA/RRP — das sind FED-Balance-Sheet-Metriken (US-zentrisch). Aber Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System, das Snider staendig betont). Wenn CPI morgen hot → Fed-Tightening-Expectations → Dollar-Funding-Kosten steigen → Eurodollar-Stress verschaerft sich → das trifft HYG (28.8%) NICHT durch Credit-Spreads (die misst Market Analyst L2 HY OAS Score 0), sondern durch FUNDING-Kosten der Emittenten. High-Yield-Unternehmen die auf Dollar-Funding angewiesen sind (viele sind international operierend) bekommen Refinanzierungs-Probleme wenn Eurodollar-Maerkte zufrieren — das zeigt sich NICHT in HY OAS (das misst Spread zu Treasuries), sondern in ISSUANCE-Volumina (neue Bonds koennen nicht platziert werden). System trackt HY OAS, aber nicht HY-Issuance. Die ungestellte Frage: Was ist der Zustand des OFFSHORE-Dollar-Funding-Systems, und wie schnell kann es sich verschlechtern post-CPI? Snider argumentiert dass Private-Credit-Bust (Claim jeff_snider_002) bereits Dollar-Nachfrage erhoehen sollte (Deleveraging = Dollar-Bedarf) — aber DXY Score 0 zeigt keine Reaktion. Das bedeutet entweder: (1) Snider liegt falsch (kein Bust), oder (2) Dollar-Nachfrage wird durch andere Flows kompensiert (z.B. EM-Kapitalflucht in Dollars, die Doomberg-Szenario impliziert), oder (3) Stress ist noch nicht in DXY-Preis sichtbar (Lag). Bei (3) ist CPI der Katalysator der latenten Stress SICHTBAR macht — aehnlich wie Lehman 2008 latenten Subprime-Stress sichtbar machte. Portfolio-Implikation: HYG 28.8% ist exponiert gegen Dollar-Funding-Stress den das System nicht misst. V16 FRAGILE_EXPANSION-Regime hat kein \"Eurodollar-Stress\"-Signal — V16 wuerde erst reagieren wenn HY OAS steigt (Score <-5), aber dann ist es zu spaet (Funding-Maerkte frieren VOR Spread-Ausweitung ein, nicht danach). A1 (HYG-Konzentration Review) adressiert Tail-Hedges (VIX Calls, TLT) — aber die RICHTIGE Hedge gegen Dollar-Funding-Stress waere CASH oder ULTRA-SHORT-DURATION (T-Bills), nicht TLT (20Y Duration, exponiert gegen Zinsen). System hat keine Cash-Position (V16 current_weights zeigt 0% Cash) — 100% invested. Das ist Standard fuer Momentum-Strategien, aber bei Funding-Stress ist Cash King.",
       "evidence": [
-        "Market Analyst L2/L7 \"REDUCE_CONVICTION\" Pre-Event-Action (Rohdaten Market Analyst Layer Scores, impliziert Post-Event High Sensitivity)",
-        "Risk Officer RO-20260310-005 \"V16 may transition soon\" (WARNING, kein Timing gegeben)",
-        "V16 Regime FRAGILE_EXPANSION (Macro State 3, instabil per Definition, aber HOLD-Modus aktiv)",
-        "CPI morgen 08:30 ET (vermutlich, Standard US CPI Release Time)",
-        "A7 Post-CPI System-Review geplant fuer \"morgen nachmittag\" (nach Event, nach potentiellem V16-Trade)",
-        "HYG 28.8% + DBC 20.3% = 49.1% Portfolio-Gewicht in volatilen Assets (Persistent Challenge da_20260310_001 nennt HYG -2% Intraday-Move als typisch bei Tightening-Shock)"
+        "Jeff Snider Claim jeff_snider_005: \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted\"",
+        "Jeff Snider Claim jeff_snider_002: \"private credit bust already underway in US/UK/Europe before oil shock — now compounded by energy price shock\"",
+        "Market Analyst L4 DXY Score 0 (50. Perzentil, STABLE) — misst Preis, nicht Verfuegbarkeit",
+        "V16 liq_direction -1 basiert auf Fed-Balance-Sheet-Metriken (WALCL/TGA/RRP) — kein Offshore-Dollar-Tracking",
+        "HYG 28.8% Exposure ohne Dollar-Funding-Stress-Indikator im System",
+        "V16 current_weights: 0% Cash — 100% invested in illiquiden Event-Tag (CPI morgen)"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 1,
+      "persistent_days": 2,
       "is_forced_decision": false,
       "validation_warnings": []
     },
@@ -49,8 +62,44 @@
       "id": "da_20260310_002",
       "type": "UNASKED_QUESTION",
       "target_section": "S4",
+      "target_assumption": null,
+      "challenge_text": "Ist dir aufgefallen dass OBS-2 (IC-Intelligence Epistemische Schwaeche) die FALSCHE Diagnose stellt? CIO sagt \"IC-Basis zu duenn fuer robuste Regime-Bestaetigung\" und eskaliert A6 (IC-Daten-Refresh) zu HIGH — aber das Problem ist nicht QUANTITAET (2 Quellen), sondern TIMING. Alle 18 Claims haben content_date \"2026-03-10\" (heute) — aber die beschriebenen Events (Iran-Krieg Start 2026-03-03, China Export-Stopp 2026-03-05, Hormuz Closure 2026-03-09) liegen 1-7 Tage ZURUECK. Das bedeutet: Doomberg und Snider schreiben heute RUECKBLICKEND ueber Events die bereits eingepreist sind. Claim doomberg_001 \"war caused hydrocarbon complex to be bid higher\" — Past Tense. Claim doomberg_002 \"China suspended exports six days into conflict\" — das war 2026-03-04, vor 6 Tagen. Market Analyst L6 WTI Curve Score -10 (bearish) zeigt dass Maerkte BEREITS auf Supply-Shock reagiert haben. V16 Regime FRAGILE_EXPANSION (growth +1, liq -1) zeigt dass V16 BEREITS Makro-Implikationen verarbeitet hat. Die Frage ist nicht \"was sagen mehr ICs\" (A6-Loesung), sondern \"was sagen ICs ueber die NAECHSTEN 7 Tage\"? Alle High-Novelty-Claims (12 von 18) sind DESKRIPTIV (was passiert ist), nicht PREDIKTIV (was passieren wird). Einzige Forward-Looking-Claims: jeff_snider_007 \"if backwardation spreads to late-2026 contracts → market prices longer-duration shock\" (Conditional, keine Wahrscheinlichkeit), jeff_snider_010 \"once Hormuz reopens, prices crash back to low-$70s\" (Timing unbekannt). Doomberg-Claims sind alle \"if Strait remains closed\" (doomberg_003) — aber KEINE Einschaetzung wie lange es geschlossen bleibt. Das ist das KRITISCHE Gap: System weiss was passiert IST (Hormuz zu, Preise hoch), aber nicht was passieren WIRD (Hormuz-Duration, Preis-Trajektorie). CPI morgen ist ein FORWARD-LOOKING-Event — Maerkte preisen Inflation-Erwartungen, nicht Inflation-Historie. Aber IC-Intelligence liefert nur Historie. Die ungestellte Frage: Wo sind die FORWARD-LOOKING-SIGNALE in der IC-Basis? Snider argumentiert \"oil shock creates short-run price pressures that squeeze growth\" (Claim jeff_snider_004) — das ist eine THESE ueber Kausalitaet, keine Prognose. Doomberg argumentiert \"national protectionism creates regional price disparities\" (Claim doomberg_003) — das ist eine BESCHREIBUNG von Mechanik, keine Prognose. Kein IC sagt \"CPI wird X sein\" oder \"Fed wird Y tun\" oder \"HYG-Spreads werden Z\". A6 (IC-Daten-Refresh) plant \"mindestens 5 Quellen fuer naechstes Briefing\" — aber wenn alle 5 Quellen RUECKBLICKEND schreiben (typisch fuer Newsletter die Wochenend-Recap machen), hilft das nicht. Das System braucht REAL-TIME-SIGNALE — Futures-Curves (WTI Backwardation-Spread, den Snider erwaehnt aber System nicht trackt), Credit-Issuance-Daten (HY-Emissionen diese Woche), Repo-Rates (Dollar-Funding-Stress), FX-Volatility (USDJPY Implied Vol, nicht nur Spot). Diese Daten existieren NICHT in IC-Intelligence (Newsletter-basiert, Lag 12-48h) — sie existieren in MARKET-DATA-FEEDS die Market Analyst theoretisch zugreifen koennte, aber nicht tut. Market Analyst L6 zeigt \"WTI Curve Score -10\" aber keine Curve-Details (Backwardation-Magnitude, Spread M1-M6, Spread M6-M12). L4 zeigt \"DXY Score 0\" aber keine FX-Vol-Daten. L1 zeigt \"Net Liquidity Score 0\" aber keine Repo-Rate-Daten. Das Problem ist nicht IC-ABDECKUNG (A6), sondern MARKET-DATA-GRANULARITAET. A6 ist Ressourcen-Verschwendung wenn die Loesung \"mehr Newsletter lesen\" ist. Die Loesung ist \"Market Analyst Sub-Scores erweitern um Forward-Looking-Metriken\" — aber das ist ein SYSTEM-DESIGN-Gap, kein Daten-Refresh-Problem.",
+      "evidence": [
+        "Alle 18 IC-Claims content_date \"2026-03-10\" beschreiben Events von 2026-03-03 bis 2026-03-09 (1-7 Tage Lag)",
+        "High-Novelty-Claims (12 von 18) sind deskriptiv (Past Tense: \"war caused\", \"China suspended\"), nicht prediktiv",
+        "Einzige Forward-Looking-Claims sind Conditionals ohne Wahrscheinlichkeiten (jeff_snider_007 \"if backwardation spreads\", doomberg_003 \"if Strait remains closed\")",
+        "Market Analyst L6 WTI Curve Score -10 ohne Curve-Details (Backwardation-Magnitude, Tenor-Spreads)",
+        "Market Analyst L4 DXY Score 0 ohne FX-Vol-Daten (USDJPY Implied Vol)",
+        "Market Analyst L1 Net Liquidity Score 0 ohne Repo-Rate-Daten",
+        "A6 plant \"5 Quellen\" aber keine Methodik fuer Forward-Looking-Signal-Extraktion"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 2,
+      "is_forced_decision": false,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260310_003",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S4",
+      "target_assumption": null,
+      "challenge_text": "Ist dir aufgefallen dass OBS-3 (V16 Regime-Shift ohne Trade-Aenderung) die IMPLIKATION falsch interpretiert? CIO sagt \"Regime-Label-Aenderung ist informativer Signal als Trade-Aenderung\" und \"V16 sieht Expansion, aber fragil\" — aber wenn FRAGILE_EXPANSION-Allokation IDENTISCH ist mit SELECTIVE-Allokation (beide Male HYG/DBC/XLU/GLD/XLP, alle HOLD), dann ist das Regime-Label BEDEUTUNGSLOS fuer Portfolio-Konstruktion. V16-Regime-Definitionen: SELECTIVE = \"unsichere Signallage, selektive Positionen\", FRAGILE_EXPANSION = \"growth_signal +1, liq_direction -1, stress_score 0\". CIO argumentiert Shift indiziert dass V16 \"jetzt klare Wachstumssignale sieht (growth_signal +1 statt 0)\" — aber V16-Daten zeigen growth_signal war GESTERN auch +1 (sonst waere Regime nicht SELECTIVE gewesen, sondern CONTRACTION). Signal Generator History (truncated, aber Pattern erkennbar): 2026-03-06 bis 2026-03-09 alle HOLD, heute auch HOLD. Das bedeutet: Gewichte sind seit MINDESTENS 5 Tagen unveraendert. Wenn Gewichte 5 Tage stabil sind TROTZ Regime-Shift, dann ist entweder: (1) V16-Regime-Logik entkoppelt von Portfolio-Optimierung (Regime-Label ist nur Deskriptor, keine Trade-Trigger), oder (2) SELECTIVE und FRAGILE_EXPANSION haben identische Optimal-Allokation (dann sind sie faktisch dasselbe Regime mit unterschiedlichen Namen). Bei (1): Regime-Shift ist KEIN \"informatives Signal\" (contra CIO) — es ist nur ein Label-Change ohne Handelsimplikation. Bei (2): V16 hat zu viele Regime-Definitionen — SELECTIVE und FRAGILE_EXPANSION sollten zusammengefasst werden. CIO sagt \"V16 liq_direction -1 ist staerkere Aussage\" als Market Analyst L1 Score 0 — aber wenn liq_direction -1 KEINE Trade-Aenderung triggert, ist es keine \"staerkere Aussage\", sondern eine IGNORIERTE Aussage. Das Problem: V16 ist eine Black Box. CIO sieht Regime-Label und Gewichte, aber nicht die TRANSFER-FUNKTION (wie mappt Regime auf Gewichte). Wenn FRAGILE_EXPANSION und SELECTIVE identische Gewichte produzieren, koennte das bedeuten: V16-Optimierung ist REGIME-AGNOSTISCH innerhalb einer Regime-KLASSE (z.B. alle \"Expansion\"-Regime haben aehnliche Allokation, alle \"Contraction\"-Regime haben andere Allokation), und SELECTIVE/FRAGILE_EXPANSION sind beide in derselben Klasse. Dann ist der Shift von SELECTIVE zu FRAGILE_EXPANSION ein INTRA-CLASS-Shift (keine Portfolio-Implikation), und der RELEVANTE Shift waere FRAGILE_EXPANSION zu CONTRACTION (INTER-CLASS-Shift, Portfolio-Rebalance). Aber CIO behandelt SELECTIVE→FRAGILE_EXPANSION als bedeutsam (\"Regime-Label-Aenderung ist informativer Signal\") obwohl es keine Trades triggert. Das fuehrt zu FALSCHEN Erwartungen: W5 (V16",
+      "evidence": [],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": false,
+      "persistent_days": 0,
+      "is_forced_decision": false,
+      "validation_warnings": [
+        "MISSING_EVIDENCE"
+      ]
+    },
+    {
+      "id": "da_20260309_002",
+      "type": "UNASKED_QUESTION",
+      "target_section": "S4",
       "target_assumption": "KA1",
-      "challenge_text": "Ist dir aufgefallen dass Router-Proximity 100% ein TIMING-PARADOX erzeugt das KA1 nicht adressiert? CIO nimmt an \"COMMODITY_SUPER Proximity 100% haelt bis 2026-04-01\" (KA1) — aber die DREI Bedingungen die Proximity auf 100% gebracht haben sind unterschiedlich PERSISTENT: (1) DBC/SPY 6M Relative 100% ist ein MOMENTUM-Signal (DBC outperformt SPY ueber 6 Monate) — Momentum ist per Definition MEAN-REVERTING auf laengeren Zeitskalen. 6-Monats-Outperformance bedeutet NICHT 7-Monats-Outperformance (Momentum-Strategien haben typisch 3-9 Monate Persistenz, dann Reversal). (2) V16 Regime erlaubt 100% ist REGIME-ABHAENGIG — V16 in FRAGILE_EXPANSION erlaubt COMMODITY_SUPER, aber wenn V16 zu CONTRACTION shiftet (Risk Officer sagt \"V16 may transition soon\"), faellt diese Bedingung auf 0%. (3) DXY nicht steigend 100% ist ein FX-SIGNAL — DXY ist aktuell flat/fallend, aber CPI morgen DIREKT beeinflusst DXY (Hot CPI → Fed Tightening Expectations → DXY steigt, Cold CPI → Easing Expectations → DXY faellt weiter). Das bedeutet: Proximity 100% ist MAXIMAL FRAGIL vor CPI. Wenn CPI hot → DXY steigt (Bedingung 3 faellt), V16 shiftet zu Risk-Off (Bedingung 2 faellt), DBC/SPY Momentum reverst (Bedingung 1 faellt, verzoegert). Alle drei Bedingungen koennten in 24-48h kollabieren. Wenn CPI cold → DXY faellt (Bedingung 3 bleibt), V16 bleibt Risk-On oder shiftet zu STEADY_GROWTH (Bedingung 2 bleibt), DBC/SPY Momentum beschleunigt (Bedingung 1 bleibt, kurzfristig). Proximity koennte 100% bleiben. Das bedeutet: KA1 ist NICHT eine neutrale Annahme (\"Proximity haelt\"), sondern eine IMPLIZITE WETTE auf Cold CPI. Aber CIO listet KA3 separat (\"CPI neutral to cold\") — das bedeutet CIO behandelt KA1 und KA3 als UNABHAENGIG, obwohl sie KAUSAL VERKNUEPFT sind. Die ungestellte Frage: Was ist die BEDINGTE WAHRSCHEINLICHKEIT von KA1 GEGEBEN KA3? Wenn KA3 wahr (CPI cold) → KA1 Wahrscheinlichkeit ~70-80% (Proximity bleibt, aber Momentum-Reversal-Risiko bleibt). Wenn KA3 falsch (CPI hot) → KA1 Wahrscheinlichkeit ~10-20% (nur wenn DXY nicht reagiert UND V16 nicht shiftet, beides unwahrscheinlich). Das bedeutet: A8 (Router-Proximity Persistenz-Check) sollte NICHT taeglich Proximity loggen (das ist Symptom-Tracking) — A8 sollte die DREI BEDINGUNGEN separat tracken und ihre Persistenz-Wahrscheinlichkeiten schaetzen. Konkret: (1) DBC/SPY 6M Relative — wie nah ist es an der Schwelle? Wenn DBC/SPY nur knapp ueber SPY liegt, kann kleine Underperformance Bedingung kippen. (2) V16 Regime — Risk Officer sagt \"may transition soon\", das ist KEIN \"taeglich loggen\"-Item, das ist ein \"Shift-Wahrscheinlichkeit quantifizieren\"-Item. (3) DXY — CPI-Sensitivity von DXY ist MESSBAR (historisch: Hot CPI → DXY +0.5-1.0% in 24h, Cold CPI → DXY -0.3-0.7%). A8 hat Urgency THIS_WEEK aber keine Methodik. Entry-Evaluation 2026-04-01 ist in 22 Tagen — aber die KRITISCHE PERIODE ist die naechsten 48h (CPI + ECB). Wenn Proximity nach CPI/ECB noch 100% ist, steigt Persistenz-Wahrscheinlichkeit dramatisch (Event-Risiko ist durch). Wenn Proximity nach CPI/ECB <100% ist, ist Entry irrelevant und A8 kann geschlossen werden. CIO behandelt A8 als \"taeglich loggen bis April\" — aber das ist Ressourcen-Verschwendung. A8 sollte sein: \"Post-CPI/ECB (2026-03-12 Abend): Proximity-Check. Wenn 100% → Upgrade zu ACT (Entry-Vorbereitung). Wenn <100% → Close (Entry irrelevant).\"",
+      "challenge_text": "Ist dir aufgefallen dass Router-Proximity 100% ein TIMING-PARADOX erzeugt das KA1 nicht adressiert? CIO nimmt an \"COMMODITY_SUPER Proximity 100% haelt bis 2026-04-01\" (KA1) — aber die DREI Bedingungen die Proximity auf 100% gebracht haben sind unterschiedlich PERSISTENT: (1) DBC/SPY 6M Relative 100% ist ein MOMENTUM-Signal (DBC outperformt SPY ueber 6 Monate) — Momentum ist per Definition MEAN-REVERTING auf laengeren Zeitskalen. 6-Monats-Outperformance bedeutet NICHT 7-Monats-Outperformance (Momentum-Strategien haben typisch 3-9 Monate Persistenz, dann Reversal). (2) V16 Regime erlaubt 100% ist REGIME-ABHAENGIG — V16 in FRAGILE_EXPANSION erlaubt COMMODITY_SUPER, aber wenn V16 zu CONTRACTION shiftet (Risk Officer sagt \"V16 may transition soon\"), faellt diese Bedingung auf 0%. (3) DXY nicht steigend 100% ist ein FX-SIGNAL — DXY ist aktuell flat/fallend, aber CPI morgen DIREKT beeinflusst DXY (Hot CPI → Fed Tightening Expectations → DXY steigt, Cold CPI → Easing Expectations → DXY faellt weiter). Das bedeutet: Proximity 100% ist MAXIMAL FRAGIL vor CPI. Wenn CPI hot → DXY steigt (Bedingung 3 faellt), V16 shiftet zu Risk-Off (Bedingung 2 faellt), DBC/SPY Momentum reverst (Bedingung 1 faellt, verzoegert). Alle drei Bedingungen koennten in 24-48h kollabieren. Wenn CPI cold → DXY faellt (Bedingung 3 bleibt), V16 bleibt Risk-On oder shiftet zu STEADY_GROWTH (Bedingung 2 bleibt), DBC/SPY Momentum beschleunigt (Bedingung 1 bleibt, kurzfristig). Proximity koennte 100% bleiben. Das bedeutet: KA1 ist NICHT eine neutrale Annahme (\"Proximity haelt\"), sondern eine IMPLIZITE WETTE auf Cold CPI. Aber CIO listet KA3 separat (\"CPI neutral to cold\") — das bedeutet CIO behandelt KA1 und KA3 als UNABHAENGIG, obwohl sie KAUSAL VERKNUEPFT sind. Die ungestellte Frage: Was ist die BEDINGTE WAHRSCHEINLICHKEIT von KA1 GEGEBEN KA3? Wenn KA3 wahr (CPI cold) → KA1 Wahrscheinlichkeit ~70-80% (Proximity bleibt, aber Momentum-Reversal-Risiko bleibt). Wenn KA3 falsch (CPI hot) → KA1 Wahrscheinlichkeit ~10-20% (nur wenn DXY nicht reagiert UND V16 nicht shiftet, beides unwahrscheinlich). Das bedeutet: A8 (Router-Proximity Persistenz-Check) sollte NICHT taeglich Proximity loggen (das ist Symptom-Tracking) — A8 sollte die DREI BEDINGUNGEN separat tracken und ihre Persistenz-Wahrscheinlichkeiten schaetzen. Konkret: (1) DBC/SPY 6M Relative — wie nah ist es an der Schwelle? Wenn DBC/SPY nur knapp ueber SPY liegt, kann kleine Underperformance Bedingung kippen. (2) V16 Regime — Risk Officer sagt \"may transition soon\", das ist KEIN \"taeglich loggen\"-Item, das ist ein \"Shift-Wahrscheinlichkeit quantifizieren\"-Item. (3) DXY — CPI-Sensitivity von DXY ist MESSBAR (historisch: Hot CPI → DXY +0.5-1.0% in 24h, Cold CPI → DXY -0.3-0.7%). A8 hat Urgency THIS_WEEK aber keine Methodik. Entry-Evaluation 2026-04-01 ist in 22 Tagen — aber die KRITISCHE PERIODE ist die naechsten 48h (CPI + ECB). Wenn Proximity nach CPI/ECB noch 100% ist, steigt Persistenz-Wahrscheinlichkeit dramatisch (Event-Risiko ist durch). Wenn Proximity nach CPI/ECB <100% ist, ist Entry irrelevant und A8 kann geschlossen werden. CIO behandelt A8 als \"taeglich loggen bis April\" — aber das ist Ressourcen-Verschwendung. A8 sollte sein: \"Post-CPI/ECB (2026-03-12 Abend): Proximity-Check. Wenn 100% → Upgrade zu ACT (Entry-Vorbereitung). Wenn <100% → Close (Entry irrelevant).\"\n[PERSISTENT: Tag 3, erneuert aus History]",
       "evidence": [
         "Router COMMODITY_SUPER Proximity 0% → 100% in einem Tag (Signal Generator Rohdaten, \"sprung\")",
         "Drei Bedingungen: DBC/SPY 6M Relative 100%, V16 Regime erlaubt 100%, DXY nicht steigend 100% (S1 DELTA)",
@@ -62,83 +111,77 @@
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 2,
-      "is_forced_decision": false,
-      "validation_warnings": []
-    },
-    {
-      "id": "da_20260310_003",
-      "type": "PREMISE_ATTACK",
-      "target_section": "S3",
-      "target_assumption": null,
-      "challenge_text": "Der CIO nimmt an dass Risk Officer EVENT_IMMINENT-Boosts die Severity-Landschaft \"verfaelschen\" (S3: \"Event-Boosts verfaelschen Severity-Bild — nach CPI Neubewertung noetig\") — aber das ist eine Fehlinterpretation von EVENT_IMMINENT-Logik. EVENT_IMMINENT ist KEIN \"kuenstlicher Boost\" der post-Event verschwindet und die \"wahre\" Severity enthuellt. EVENT_IMMINENT ist eine ZEITLICHE DISKONTIERUNG von Risiko. Risk Officer sagt: \"Dieses Risiko ist JETZT relevanter weil ein Katalysator in 0-2 Tagen die Wahrscheinlichkeit/Magnitude erhoeht.\" Post-Event faellt der Boost weg NICHT weil das Risiko sich \"normalisiert\", sondern weil der KATALYSATOR durch ist — das Risiko hat sich REALISIERT oder NICHT REALISIERT. Konkret: RO-20260310-002 (Commodities Exposure 37.2%) ist Base Severity MONITOR, geboosted zu WARNING durch EVENT_IMMINENT (CPI in 0d). CIO interpretiert: \"Nach CPI faellt Boost weg, Severity sinkt zurueck zu MONITOR, Problem geloest.\" Aber: Wenn CPI hot → Commodities fallen (Tightening-Narrativ) → Exposure sinkt durch Marktbewegung → Severity sinkt zu MONITOR, ABER das ist KEIN \"Boost-Wegfall\", das ist \"Problem hat sich durch Markt-Event geloest.\" Wenn CPI cold → Commodities steigen (Easing-Narrativ) → Exposure steigt ueber 40% → Severity steigt zu CRITICAL, AUCH OHNE Boost (40% ist CRITICAL-Schwelle). Das bedeutet: Post-CPI Severity ist NICHT \"Boost faellt weg = Severity sinkt\" — Post-CPI Severity ist \"Event-Outcome bestimmt neue Severity unabhaengig von Boost.\" EVENT_IMMINENT-Boost ist eine VORWEGNAHME dieser Dynamik. Risk Officer sagt: \"Ich weiss nicht ob CPI hot oder cold wird, aber ich weiss dass Commodities-Exposure VOLATIL sein wird in den naechsten 24h, also behandle ich 37.2% heute als WARNING statt MONITOR.\" Das ist KORREKT — nicht \"Verfaelschung.\" Die Praemisse \"nach CPI Neubewertung noetig\" ist richtig, aber die IMPLIKATION \"Boosts verfaelschen, wahre Severities sind niedriger\" ist falsch. Die wahre Implikation: \"Boosts signalisieren dass Severities POST-EVENT dramatisch aendern koennen (hoch oder runter), also ist Pre-Event-Vorsicht gerechtfertigt.\" CIO sollte EVENT_IMMINENT-Boosts als FORWARD-LOOKING RISK ADJUSTMENT behandeln, nicht als \"Noise der post-Event verschwindet.\" Das aendert die Interpretation aller 5 Alerts: RO-20260310-001 (Event Calendar WARNING) ist KEIN \"generischer Event-Hinweis\" — es ist ein \"alle anderen Alerts sind zeitlich diskontiert, nach Event neu bewerten.\" RO-20260310-003 (HYG CRITICAL) ist NICHT geboosted (schon CRITICAL ohne Boost) — aber es ist IMMUN gegen Event-Outcome (HYG-Konzentration 28.8% aendert sich nicht durch CPI, nur durch V16-Trade). RO-20260310-004 (DBC WARNING, deeskaliert) ist geboosted — nach CPI koennte es zu MONITOR fallen (wenn DBC weiter faellt) oder zu CRITICAL steigen (wenn DBC steigt). RO-20260310-005 (Regime Conflict WARNING) ist geboosted — nach CPI koennte es sich LOESEN (wenn V16 shiftet und Divergenz verschwindet) oder ESKALIEREN (wenn Divergenz persistiert). CIO-Guidance \"nach CPI Neubewertung\" ist korrekt, aber sollte lauten: \"Nach CPI: Alerts die sich GELOEST haben (durch",
-      "evidence": [],
-      "severity": "SUBSTANTIVE",
-      "is_persistent": false,
-      "persistent_days": 0,
-      "is_forced_decision": false,
-      "validation_warnings": [
-        "MISSING_EVIDENCE"
-      ]
-    },
-    {
-      "id": "da_20260310_004",
-      "type": "UNASKED_QUESTION",
-      "target_section": "S4",
-      "target_assumption": null,
-      "challenge_text": "Ist dir aufgefallen dass der CIO \"Regime-Shift Proximity 60%\" schaetzt (S4) aber KEINE Quantifizierung fuer \"was passiert wenn V16 NICHT shiftet\" liefert? CIO fokussiert auf \"CPI bestimmt Shift\" (KA1) — aber was wenn CPI MODERAT ueberrascht (+0.1pp ueber Konsens, nicht +0.3pp) und V16 FRAGILE_EXPANSION haelt? Das ist das WAHRSCHEINLICHERE Szenario (moderate Ueberraschungen sind haeufiger als extreme), aber CIO adressiert es nicht. S4 sagt: \"Wenn CPI hot → V16 zu CONTRACTION. Wenn CPI cool → V16 zu STEADY_GROWTH oder haelt FRAGILE_EXPANSION.\" Aber \"moderate CPI\" (weder hot noch cool, nur leicht ueber/unter Konsens) → V16 bleibt FRAGILE_EXPANSION ist nicht durchgespielt. Das Problem: Market Analyst Layer Scores haben BEREITS Pre-Event Conviction reduziert (L2/L7 \"Pre-Event Action: REDUCE_CONVICTION\") — das bedeutet post-CPI werden Layer Scores VOLATIL sein (hohe Sensitivity zu Daten-Updates). Wenn CPI moderat ist, koennen Layer Scores in BEIDE Richtungen springen (L2 zu RECESSION oder zu EXPANSION, je nach Interpretation). V16 reagiert auf Layer Scores mit LAG (V16 ist deterministisch, braucht klare Schwellen-Ueberschreitungen). Das bedeutet: Bei moderatem CPI bleibt V16 FRAGILE_EXPANSION (keine klaren Trigger), aber Market Analyst Layer Scores oszillieren (hohe Conviction-Varianz). Das fuehrt zu PROLONGIERTER Divergenz zwischen V16 (stabil) und Market Analyst (volatil) — genau die Situation die Risk Officer als \"Regime-Konflikt\" meldet (RO-20260310-005 WARNING). Diese Divergenz besteht BEREITS seit 4 Tagen — moderates CPI wuerde sie auf 10+ Tage verlaengern. Die ungestellte Frage: Was ist die KOSTEN-FUNKTION von prolongierter V16/Market Analyst Divergenz? Wenn V16 \"falsch\" liegt (haelt FRAGILE_EXPANSION waehrend Market Analyst zu NEUTRAL/RISK-OFF tendiert), verliert Portfolio Performance durch suboptimale Allokation. Wenn Market Analyst \"falsch\" liegt (oszilliert waehrend V16 korrekt FRAGILE_EXPANSION haelt), verliert System Conviction und CIO-Vertrauen. CIO sagt \"Divergenz ist Fruehindikator, kein Fehler\" (S3) — aber das gilt nur wenn Divergenz TEMPORAER ist (1-3 Tage). Bei 4+ Tagen ist Divergenz ein STRUKTURELLES Signal dass eines der Systeme falsch kalibriert ist. Moderate CPI wuerde das nicht resolven — es wuerde die Frage nur vertagen.\n[PERSISTENT: Tag 1, erneuert aus History]",
-      "evidence": [
-        "Market Analyst Layer Scores: \"regime_duration 0.2\" (20% Confidence-Faktor) = alle Layer instabil",
-        "Market Analyst \"Pre-Event Action: REDUCE_CONVICTION\" fuer L2/L7 = post-CPI hohe Volatility erwartet",
-        "Risk Officer RO-20260310-005: V16/Market Analyst Divergenz seit 4 Tagen, WARNING-"
-      ],
-      "severity": "SUBSTANTIVE",
-      "is_persistent": true,
-      "persistent_days": 1,
-      "is_forced_decision": false,
-      "validation_warnings": []
-    },
-    {
-      "id": "da_20260309_005",
-      "type": "PREMISE_ATTACK",
-      "target_section": "S7",
-      "target_assumption": null,
-      "challenge_text": "Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle \"Tag 11\" oder \"Tag 9\") haben UNTERSCHIEDLICHE\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]",
-      "evidence": [],
-      "severity": "SUBSTANTIVE",
-      "is_persistent": true,
-      "persistent_days": 2,
+      "persistent_days": 3,
       "is_forced_decision": false,
       "validation_warnings": []
     }
   ],
-  "preprocessor_flags_unused": [],
+  "preprocessor_flags_unused": [
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    }
+  ],
   "persistent_challenges_renewed": [
     {
-      "original_id": "da_20260306_005",
-      "original_challenge": "FORCED DECISION (Tag 13, 5x NOTED): FORCED DECISION (Tag 12, 4x NOTED): FORCED DECISION (Tag 11, 3x ",
-      "days_open": 13,
+      "original_id": "da_20260309_005",
+      "original_challenge": "FORCED DECISION (Tag 3, 3x NOTED): Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, ",
+      "days_open": 3,
       "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 3 Tagen"
+    },
+    {
+      "original_id": "da_20260306_005",
+      "original_challenge": "FORCED DECISION (Tag 14, 6x NOTED): FORCED DECISION (Tag 13, 5x NOTED): FORCED DECISION (Tag 12, 4x ",
+      "days_open": 14,
+      "cio_response_history": [
+        "NOTED",
         "NOTED",
         "NOTED",
         "NOTED",
         "NOTED",
         "NOTED"
       ],
-      "escalation_note": "FORCED DECISION nach 13 Tagen"
+      "escalation_note": "FORCED DECISION nach 14 Tagen"
     },
     {
       "original_id": "da_20260310_001",
-      "original_challenge": "Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen Zeitskala stellt? CIO fo",
-      "days_open": 1,
-      "cio_response_history": [
-        "NOTED"
-      ],
-      "escalation_note": "Tag 1, erneuert"
-    },
-    {
-      "original_id": "da_20260309_002",
-      "original_challenge": "Ist dir aufgefallen dass Router-Proximity 100% ein TIMING-PARADOX erzeugt das KA1 nicht adressiert? ",
+      "original_challenge": "Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen EBENE stellt? CIO fokuss",
       "days_open": 2,
       "cio_response_history": [
         "NOTED",
@@ -148,22 +191,23 @@
     },
     {
       "original_id": "da_20260310_004",
-      "original_challenge": "Ist dir aufgefallen dass der CIO \"Regime-Shift Proximity 60%\" schaetzt (S4) aber KEINE Quantifizieru",
-      "days_open": 1,
-      "cio_response_history": [
-        "NOTED"
-      ],
-      "escalation_note": "Tag 1, erneuert"
-    },
-    {
-      "original_id": "da_20260309_005",
-      "original_challenge": "Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items (A1, ",
+      "original_challenge": "Ist dir aufgefallen dass OBS-2 (IC-Intelligence Epistemische Schwaeche) die FALSCHE Diagnose stellt?",
       "days_open": 2,
       "cio_response_history": [
         "NOTED",
         "NOTED"
       ],
       "escalation_note": "Tag 2, erneuert"
+    },
+    {
+      "original_id": "da_20260309_002",
+      "original_challenge": "Ist dir aufgefallen dass Router-Proximity 100% ein TIMING-PARADOX erzeugt das KA1 nicht adressiert? ",
+      "days_open": 3,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "Tag 3, erneuert"
     }
   ],
   "confidence_saturation": {
@@ -193,12 +237,12 @@
       "MINOR": 0
     },
     "persistent_renewed": 5,
-    "forced_decisions": 1,
-    "preprocessor_flags_total": 3,
-    "preprocessor_flags_used": 3,
+    "forced_decisions": 2,
+    "preprocessor_flags_total": 12,
+    "preprocessor_flags_used": 5,
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_temperature": 0.4,
     "llm_attempt": 1,
-    "generation_time_seconds": 99.1
+    "generation_time_seconds": 98.7
   }
 }
