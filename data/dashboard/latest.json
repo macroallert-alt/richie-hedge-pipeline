@@ -582,7 +582,8 @@
       "EQ_DEFN": 0.34,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2883,
+      "BOND": 0.0,
+      "CREDIT": 0.2883,
       "COMMOD": 0.2027,
       "CRYPTO": 0.0
     },
@@ -1283,5 +1284,377 @@
       "Pipeline Phase 1: Nur V16-Daten verfuegbar"
     ],
     "errors": []
+  },
+  "execution": {
+    "date": "2026-03-10",
+    "execution_level": "CAUTION",
+    "total_score": 6,
+    "max_score": 18,
+    "veto_applied": false,
+    "dimensions": {
+      "event_risk": {
+        "score": 3,
+        "max": 3,
+        "label": "US CPI (February)"
+      },
+      "positioning_conflict": {
+        "score": 0,
+        "max": 3,
+        "label": "No conflicts"
+      },
+      "liquidity_risk": {
+        "score": 0,
+        "max": 3,
+        "label": "All clear"
+      },
+      "cross_asset_confirmation": {
+        "score": 2,
+        "max": 3,
+        "label": "GOLD_DXY_DIVERGENCE"
+      },
+      "gex_regime": {
+        "score": 1,
+        "max": 3,
+        "label": "GEX $-0.19B — SLIGHTLY_NEGATIVE"
+      },
+      "sentiment_extreme": {
+        "score": 0,
+        "max": 3,
+        "label": "Neutral"
+      }
+    },
+    "confirming_count": 20,
+    "conflicting_count": 5,
+    "net_assessment": "STRONGLY_CONFIRMING",
+    "top_confirming": [
+      "COT HYG bestätigt — COT_SP500_COMM_NET = 3.5% — kein Conflict",
+      "COT DBC bestätigt — COT_GOLD_COMM_NET = 8.8% — kein Conflict",
+      "COT XLU bestätigt — COT_SP500_COMM_NET = 3.5% — kein Conflict"
+    ],
+    "top_conflicting": [
+      "US CPI (February) in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
+      "Convergence Week aktiv — Mehrere HIGH Events: US CPI (February), US PCE Price Index (January), US PCE Price Index (January)",
+      "GOLD_DXY_DIVERGENCE — Gold +3.7% UND DXY +1.6% — beide steigen, unsustainable"
+    ],
+    "recommendation_action": "EXECUTE_WITH_LIMITS",
+    "recommendation_short": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
+    "specific_actions": [],
+    "event_window": {
+      "next_48h_count": 1,
+      "next_48h_events": [
+        "US CPI (February) (24h)"
+      ],
+      "next_14d_count": 8,
+      "convergence_week": true,
+      "event_density_label": "HIGH"
+    },
+    "calendar_upcoming": [
+      {
+        "date": "2026-03-11",
+        "event": "US CPI (February)",
+        "impact": "HIGH",
+        "hours_until": 24
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US PCE Price Index (January)",
+        "impact": "HIGH",
+        "days_until": 3
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US GDP Q4 2025 (Second Estimate)",
+        "impact": "MEDIUM",
+        "days_until": 3
+      },
+      {
+        "date": "2026-03-18",
+        "event": "FOMC Meeting (March)",
+        "impact": "HIGH",
+        "days_until": 8
+      },
+      {
+        "date": "2026-03-19",
+        "event": "ECB Monetary Policy Meeting",
+        "impact": "MEDIUM",
+        "days_until": 9
+      }
+    ],
+    "calendar_monthly": [
+      {
+        "date": "2026-03-11",
+        "event": "US CPI (February)",
+        "type": "CPI",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US PCE Price Index (January)",
+        "type": "PCE",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US GDP Q4 2025 (Second Estimate)",
+        "type": "GDP",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-18",
+        "event": "FOMC Meeting (March)",
+        "type": "FOMC",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-19",
+        "event": "ECB Monetary Policy Meeting",
+        "type": "ECB",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-19",
+        "event": "Bank of Japan Monetary Policy Meeting",
+        "type": "BOJ",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-20",
+        "event": "China LPR (March)",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-20",
+        "event": "Quad Witching",
+        "type": "OPEX",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-04-01",
+        "event": "ISM Manufacturing PMI (March)",
+        "type": "ISM_MFG",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-04-03",
+        "event": "US Nonfarm Payrolls (March)",
+        "type": "NFP",
+        "impact": "HIGH"
+      }
+    ],
+    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Kein materielles Rebalancing: V16 hält alle Positionen (HOLD), Delta < 1% — kein Execution-Risiko heute\n• COT-Positionierung neutral: S&P500 Commercial Net +3.5%, Gold Commercial Net +8.8% — keine Extrempositionen gegen Portfolio\n• Liquidität intakt: Amihud 38.56 (LIQUID), SOFR-FFR 1.0bp (NORMAL), OFR Stress -0.44 (RELAXED) — technisch ausführbar\n• Makro-Themen bestätigt: Copper Rising + 37% Commodities, SPY Rising + 34% Equities, Real Yields Falling + 17% Gold — alle Portfolio-Exposures fundamental unterstützt\n• VIX Term Structure Contango 1.01: Markt preist Beruhigung ein, kein akuter Stress-Spike erwartet\n• Sentiment neutral: CNN Fear & Greed 27.3 (NEUTRAL), Put/Call 0.82 (NORMAL), HY OAS 313bps (NORMAL) — keine Panik, keine Euphorie\n• Cross-Asset-Korrelation 0.30 (NORMAL): Diversifikation funktioniert, kein systemischer Gleichlauf\n\nCONFLICTING:\n• US CPI (February) morgen (2026-03-11): HIGH-Impact Event kann Zinspfad, Dollar und Risk-Assets binnen Stunden drehen — Timing-Risiko\n• Convergence Week aktiv: 3 HIGH-Events in 7 Tagen (CPI, 2x PCE) — erhöhte Makro-Volatilität wahrscheinlich\n• Gold-Dollar-Divergenz: Gold +3.7% UND DXY +1.6% über 20 Tage — beide steigen gleichzeitig, historisch instabil, einer muss nachgeben\n• GEX negativ $-0.19B (SLIGHTLY_NEGATIVE): Dealer-Hedging verstärkt Preisbewegungen — Slippage-Risiko bei plötzlichen Moves erhöht\n• Router Proximity 100%: COMMODITY_SUPER-Trigger nah — V16 könnte morgen Regime wechseln und materielles Rebalancing auslösen\n\nNETTO: 7 Confirming vs 5 Conflicting. Technisch grünes Licht, aber CPI morgen und Gold-DXY-Spannung rechtfertigen 24h Geduld.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall, dass V16 morgen nach CPI das Regime wechselt: **WARTE bis CPI-Ergebnis (morgen 08:30 ET)**. Grund: Gold-DXY-Divergenz (+3.7%/+1.6%) ist instabil — CPI entscheidet, welche Seite nachgibt. Bei heißer Inflation (>0.4% MoM) profitiert DXY, Gold korrigiert → bessere GLD-Einstiegskurse. Bei kühler Inflation (<0.2%) dreht DXY, Gold steigt weiter → DBC/HYG profitieren von Risk-On. Negatives GEX ($-0.19B) verstärkt Post-CPI-Moves — warte auf initiale Reaktion (erste 2h), dann ausführen. Falls V16 heute doch tradet (unwahrscheinlich): HYG und XLU via Limit-Orders (Liquidität gut, aber GEX-Regime erhöht Spreads), DBC Market-Orders akzeptabel (Commodity-Liquidität robust).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX springt über 35 (aktuell 29.5) — dann ist CPI-Risiko bereits eingepreist, weiteres Warten bringt nichts\n• Execute sofort wenn: HY OAS steigt über 400bps (aktuell 313) — Credit-Stress eskaliert, Regime-Wechsel wahrscheinlich obsolet\n• Eskaliere zu Wait/Hold wenn: GEX fällt unter $-1.0B (aktuell $-0.19B) — Dealer-Hedging wird destabilisierend, Execution-Risiko zu hoch\n• Eskaliere zu Wait/Hold wenn: OFR Financial Stress Index steigt über +0.5 (aktuell -0.44) — systemischer Stress, alle Rebalances pausieren bis Entspannung",
+    "would_change_my_mind": {
+      "execute_if": [
+        "VIX springt über 35 (aktuell 29.5) — dann ist CPI-Risiko bereits eingepreist, weiteres Warten bringt nichts",
+        "HY OAS steigt über 400bps (aktuell 313) — Credit-Stress eskaliert, Regime-Wechsel wahrscheinlich obsolet"
+      ],
+      "hold_if": [
+        "GEX fällt unter $-1.0B (aktuell $-0.19B) — Dealer-Hedging wird destabilisierend, Execution-Risiko zu hoch",
+        "OFR Financial Stress Index steigt über +0.5 (aktuell -0.44) — systemischer Stress, alle Rebalances pausieren bis Entspannung"
+      ]
+    }
+  },
+  "rotation": {
+    "date": "2026-03-10",
+    "status": "ALIGNED",
+    "mode": "STABLE",
+    "total_absolute_delta_pp": 5.4,
+    "material_shifts_count": 0,
+    "days_since_material_rotation": 999,
+    "days_since_state_change": 433,
+    "trigger": {
+      "type": "NONE",
+      "label": "Keine materielle Rotation",
+      "detail": null
+    },
+    "dd_protect": {
+      "active": false,
+      "threshold": -10.0,
+      "current_drawdown": 0.0
+    },
+    "cluster_current": {
+      "EQ_DEFN": {
+        "weight": 0.34,
+        "display_name": "Defensive Equities"
+      },
+      "CREDIT": {
+        "weight": 0.2883,
+        "display_name": "High Yield Credit"
+      },
+      "COMMOD": {
+        "weight": 0.2027,
+        "display_name": "Commodities"
+      },
+      "PM": {
+        "weight": 0.1689,
+        "display_name": "Precious Metals"
+      }
+    },
+    "cluster_deltas": {
+      "EQ_DEFN": {
+        "delta_1d": 0.0111,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "RISING"
+      },
+      "CREDIT": {
+        "delta_1d": 0.0157,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "RISING"
+      },
+      "COMMOD": {
+        "delta_1d": -0.0156,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "FALLING"
+      },
+      "PM": {
+        "delta_1d": -0.0113,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "FALLING"
+      }
+    },
+    "asset_details": {
+      "HYG": {
+        "weight": 0.2883,
+        "cluster": "CREDIT",
+        "cluster_name": "High Yield Credit",
+        "delta_1d": 0.0157,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "RISING",
+        "label": "SHIFT"
+      },
+      "DBC": {
+        "weight": 0.2027,
+        "cluster": "COMMOD",
+        "cluster_name": "Commodities",
+        "delta_1d": -0.0156,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "FALLING",
+        "label": "SHIFT"
+      },
+      "XLU": {
+        "weight": 0.1795,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": -0.0001,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "GLD": {
+        "weight": 0.1689,
+        "cluster": "PM",
+        "cluster_name": "Precious Metals",
+        "delta_1d": -0.0113,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "FALLING",
+        "label": "SHIFT"
+      },
+      "XLP": {
+        "weight": 0.1605,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": 0.0112,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "RISING",
+        "label": "SHIFT"
+      }
+    },
+    "new_positions": [],
+    "exited_positions": [],
+    "sparkline_data": {
+      "COMMOD": {
+        "dates": [
+          "2026-03-09",
+          "2026-03-10"
+        ],
+        "values": [
+          0.2183,
+          0.2027
+        ]
+      },
+      "CREDIT": {
+        "dates": [
+          "2026-03-09",
+          "2026-03-10"
+        ],
+        "values": [
+          0.2726,
+          0.2883
+        ]
+      },
+      "EQ_DEFN": {
+        "dates": [
+          "2026-03-09",
+          "2026-03-10"
+        ],
+        "values": [
+          0.3289,
+          0.34
+        ]
+      },
+      "PM": {
+        "dates": [
+          "2026-03-09",
+          "2026-03-10"
+        ],
+        "values": [
+          0.1802,
+          0.1689
+        ]
+      }
+    },
+    "sparkline_state_changes": [],
+    "state_history": [],
+    "comparison_snapshots": {
+      "1d": {
+        "date": "2026-03-09",
+        "weights": {
+          "GLD": 0.1802,
+          "XLP": 0.1493,
+          "XLU": 0.1796,
+          "HYG": 0.2726,
+          "DBC": 0.2183
+        },
+        "cluster_weights": {
+          "PM": 0.1802,
+          "EQ_DEFN": 0.3289,
+          "CREDIT": 0.2726,
+          "COMMOD": 0.2183
+        }
+      },
+      "1w": null,
+      "1m": null,
+      "3m": null,
+      "6m": null,
+      "9m": null,
+      "1y": null
+    }
   }
 }
