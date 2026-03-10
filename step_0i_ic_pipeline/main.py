@@ -2300,6 +2300,158 @@ def _update_belief_state(
 
 
 # ---------------------------------------------------------------------------
+# Cross-System Confirmation: IC vs V16 (IC V2 Phase 3, Spec Kapitel 13)
+# ---------------------------------------------------------------------------
+# Layer name mapping from latest.json to short codes
+LAYER_NAME_TO_CODE = {
+    "Global Liquidity Cycle (L1)": "L1",
+    "Macro Regime (L2)": "L2",
+    "Earnings & Fundamentals (L3)": "L3",
+    "Cross-Border Flows & FX (L4)": "L4",
+    "Risk Appetite & Sentiment (L5)": "L5",
+    "Relative Value & Asset Rotation (L6)": "L6",
+    "Central Bank Policy Divergence (L7)": "L7",
+    "Tail Risk & Black Swan (L8)": "L8",
+}
+
+
+def _get_layer_scores_from_dashboard(dashboard_data: dict) -> dict:
+    """Extract layer scores from latest.json, mapped to L1-L8 codes.
+
+    Returns: {"L1": {"score": 0, "direction": "STABLE"}, ...}
+    """
+    layer_scores = {}
+    raw_layers = (
+        dashboard_data.get("layers", {}).get("layer_scores", {})
+    )
+    for full_name, data in raw_layers.items():
+        code = LAYER_NAME_TO_CODE.get(full_name)
+        if code and isinstance(data, dict):
+            layer_scores[code] = {
+                "score": data.get("score", 0),
+                "direction": data.get("direction", "STABLE"),
+            }
+    return layer_scores
+
+
+def _layer_score_to_direction(score: int | float) -> str:
+    """Convert V16 layer score (-5 to +5) to direction label."""
+    if score >= 2:
+        return "BULLISH"
+    elif score <= -2:
+        return "BEARISH"
+    else:
+        return "NEUTRAL"
+
+
+def _compute_cross_system_confirmation(
+    belief_state: dict,
+    taxonomy: dict,
+    dashboard_data: dict,
+) -> list[dict]:
+    """Compare IC Belief State against V16 Layer Scores.
+
+    Per Spec Kapitel 13: For each topic with divergence_possible=true,
+    compare IC belief direction against V16 layer signal.
+
+    Alignment types:
+      CONFIRMING:    IC and V16 same direction
+      DIVERGING:     One is NEUTRAL, other has direction
+      CONTRADICTING: IC and V16 opposite directions (CRITICAL)
+
+    Returns: list of cross_system dicts
+    """
+    if not belief_state or not dashboard_data:
+        return []
+
+    beliefs = belief_state.get("beliefs", {})
+    layer_scores = _get_layer_scores_from_dashboard(dashboard_data)
+    topic_to_layers = taxonomy.get("topic_to_layers", {})
+    divergence_config = taxonomy.get("divergence_config", {})
+
+    if not layer_scores:
+        logger.info("Cross-System: No layer scores available — skipping")
+        return []
+
+    results = []
+
+    for topic, config in divergence_config.items():
+        if not config.get("divergence_possible", False):
+            continue
+
+        belief = beliefs.get(topic)
+        if not belief:
+            continue
+
+        ic_score = belief.get("belief_score", 5.0)
+        ic_direction = belief.get("belief_direction", "NEUTRAL")
+
+        # Get V16 layers for this topic
+        layers_for_topic = topic_to_layers.get(topic, [])
+        if not layers_for_topic:
+            continue
+
+        # Average the layer scores for this topic
+        layer_vals = []
+        layer_details = []
+        for layer_code in layers_for_topic:
+            ls = layer_scores.get(layer_code)
+            if ls:
+                layer_vals.append(ls["score"])
+                layer_details.append(f"{layer_code}={ls['score']}")
+
+        if not layer_vals:
+            continue
+
+        avg_layer_score = sum(layer_vals) / len(layer_vals)
+        v16_direction = _layer_score_to_direction(avg_layer_score)
+
+        # Determine alignment
+        if ic_direction == v16_direction:
+            alignment = "CONFIRMING"
+        elif ic_direction == "NEUTRAL" or v16_direction == "NEUTRAL":
+            alignment = "DIVERGING"
+        elif (ic_direction == "BULLISH" and v16_direction == "BEARISH") or \
+             (ic_direction == "BEARISH" and v16_direction == "BULLISH"):
+            alignment = "CONTRADICTING"
+        else:
+            alignment = "DIVERGING"
+
+        results.append({
+            "topic": topic,
+            "ic_belief": round(ic_score, 1),
+            "ic_direction": ic_direction,
+            "ic_uncertainty": round(belief.get("uncertainty", 0.50), 2),
+            "v16_layers": ", ".join(layer_details),
+            "v16_avg_score": round(avg_layer_score, 1),
+            "v16_direction": v16_direction,
+            "alignment": alignment,
+        })
+
+    # Sort: CONTRADICTING first, then DIVERGING, then CONFIRMING
+    alignment_order = {"CONTRADICTING": 0, "DIVERGING": 1, "CONFIRMING": 2}
+    results.sort(key=lambda r: alignment_order.get(r["alignment"], 9))
+
+    # Log
+    contradictions = [r for r in results if r["alignment"] == "CONTRADICTING"]
+    divergences = [r for r in results if r["alignment"] == "DIVERGING"]
+    confirmations = [r for r in results if r["alignment"] == "CONFIRMING"]
+
+    logger.info(
+        f"Cross-System Confirmation: {len(results)} topics checked — "
+        f"{len(confirmations)} confirming, {len(divergences)} diverging, "
+        f"{len(contradictions)} contradicting"
+    )
+    for c in contradictions:
+        logger.warning(
+            f"  CONTRADICTING: {c['topic']} — IC {c['ic_direction']} "
+            f"({c['ic_belief']}) vs V16 {c['v16_direction']} ({c['v16_layers']})"
+        )
+
+    return results
+
+
+# ---------------------------------------------------------------------------
 # Google Drive Output
 # ---------------------------------------------------------------------------
 DRIVE_ROOT_ID = "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
@@ -2832,6 +2984,7 @@ def build_intelligence_block(
     threads_data: dict | None = None,
     pm_data: dict | None = None,
     belief_state: dict | None = None,
+    cross_system: list | None = None,
 ) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
@@ -3027,6 +3180,9 @@ def build_intelligence_block(
         belief_shifts_out = belief_state.get("belief_shifts", [])
         stale_beliefs_out = belief_state.get("stale_beliefs", [])
 
+    # --- Cross-System Confirmation (IC V2 Phase 3) ---
+    cross_system_out = cross_system or []
+
     return {
         "status": "AVAILABLE",
         "consensus": consensus_out,
@@ -3041,6 +3197,7 @@ def build_intelligence_block(
         "belief_state": belief_state_out,
         "belief_shifts": belief_shifts_out,
         "stale_beliefs": stale_beliefs_out,
+        "cross_system": cross_system_out,
     }
 
 
@@ -3054,6 +3211,7 @@ def update_dashboard_json(
     threads_data: dict | None = None,
     pm_data: dict | None = None,
     belief_state: dict | None = None,
+    cross_system: list | None = None,
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -3104,7 +3262,8 @@ def update_dashboard_json(
         # Replace intelligence block (with source_cards + cadence_anomalies + threads + pre-mortems)
         dashboard["intelligence"] = build_intelligence_block(
             intel, briefing, claims_archive, sources_config,
-            cadence_anomalies, threads_data, pm_data, belief_state
+            cadence_anomalies, threads_data, pm_data, belief_state,
+            cross_system
         )
 
         # Update pipeline health
@@ -3183,6 +3342,7 @@ def main():
     threads_data = None
     pm_data = None
     belief_state = None
+    cross_system = None
 
     # Load claims archive for carry-forward
     claims_archive = _load_claims_archive()
@@ -3268,6 +3428,17 @@ def main():
         )
         _save_belief_state(belief_state)
 
+        # Cross-System Confirmation: IC vs V16 (IC V2 Phase 3)
+        if belief_state and os.path.exists(DASHBOARD_JSON_PATH):
+            try:
+                dashboard_for_cs = _load_json(DASHBOARD_JSON_PATH)
+                cross_system = _compute_cross_system_confirmation(
+                    belief_state, taxonomy, dashboard_for_cs
+                )
+            except Exception as e:
+                logger.warning(f"Cross-System Confirmation failed: {e}")
+                cross_system = []
+
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
             if args.stage == "intelligence" and not active_claims:
@@ -3311,7 +3482,7 @@ def main():
             update_dashboard_json(
                 intel, briefing, active_claims_count,
                 claims_archive, sources, cadence_anomalies, threads_data,
-                pm_data, belief_state
+                pm_data, belief_state, cross_system
             )
 
     except Exception as e:
