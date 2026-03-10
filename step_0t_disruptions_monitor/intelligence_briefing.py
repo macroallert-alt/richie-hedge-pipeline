@@ -305,7 +305,7 @@ Generiere dieses JSON:
 probability_bull + probability_bear + probability_base = 100.
 ratio = abs(bull_return_pct / bear_return_pct). Alle Texte Deutsch."""
 
-    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=2500)
+    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=6000)
     parsed = _parse_json_response(text)
     if not parsed:
         print(f"    [WARN] Call 2 Parse fehlgeschlagen. Response-Laenge: {len(text)} chars")
@@ -380,7 +380,7 @@ Generiere dieses JSON:
 
 second_order_effects: Mindestens 2 Effects pro Zone. Alle Texte Deutsch."""
 
-    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=6000)
+    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=10000)
     parsed = _parse_json_response(text)
     if not parsed:
         print(f"    [WARN] Call 3 Parse fehlgeschlagen. Response-Laenge: {len(text)} chars")
