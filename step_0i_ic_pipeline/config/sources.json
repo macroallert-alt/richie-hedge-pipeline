@@ -28,11 +28,29 @@
         "full_text_in_rss": false,
         "scrape_full_article": true
       },
-      "cadence": "bi-weekly",
-      "cadence_note": "Newsletter every ~2 weeks, podcasts irregular",
+      "cadence": "irregular",
+      "cadence_note": "Blog posts irregular, sometimes months between free posts. Premium content behind paywall. YouTube channel added as separate source (lyn_alden_yt).",
       "known_bias": 3,
       "bias_label": "fiscal dominance bull, bitcoin bull",
       "bias_description": "Lyn Alden is structurally bullish on hard assets and BTC as inflation hedges. Bearish on long-duration bonds. Her baseline is moderately bullish.",
+      "tier": "CORE",
+      "extraction_context": "This source discusses liquidity cycles, fiscal dominance, and Bitcoin with reference to specific macro data. Extract her THESIS UPDATES and PREDICTIONS, not the specific net liquidity, breakeven, or DXY numbers she references."
+    },
+    {
+      "source_id": "lyn_alden_yt",
+      "source_name": "Lyn Alden (YouTube)",
+      "active": true,
+      "fetch_method": "youtube",
+      "fetch_config": {
+        "channel_url": "https://www.youtube.com/@LynAldenMedia",
+        "channel_id": "UC26OTzxt9ixdrr3qdUJrYBQ",
+        "language": "en"
+      },
+      "cadence": "irregular",
+      "cadence_note": "Small channel (21K subs), infrequent uploads. Supplements blog RSS.",
+      "known_bias": 3,
+      "bias_label": "fiscal dominance bull, bitcoin bull",
+      "bias_description": "Same as lyn_alden RSS source. Lyn Alden is structurally bullish on hard assets and BTC as inflation hedges.",
       "tier": "CORE",
       "extraction_context": "This source discusses liquidity cycles, fiscal dominance, and Bitcoin with reference to specific macro data. Extract her THESIS UPDATES and PREDICTIONS, not the specific net liquidity, breakeven, or DXY numbers she references."
     },
@@ -64,8 +82,8 @@
         "full_text_in_rss": true,
         "scrape_full_article": false
       },
-      "cadence": "2x_weekly",
-      "cadence_note": "Regular newsletter schedule",
+      "cadence": "irregular_free",
+      "cadence_note": "Most content is paid-only and does NOT appear in Substack RSS. Free posts appear roughly monthly. Do not flag as stale unless >60 days without content.",
       "known_bias": 0,
       "bias_label": "rates specialist, institutional perspective",
       "bias_description": "Macro Alf focuses on rates, credit, and macro flows. Former institutional portfolio manager. Neutral baseline with strong rates expertise.",
@@ -129,7 +147,8 @@
     {
       "source_id": "pettis",
       "source_name": "Michael Pettis",
-      "active": true,
+      "active": false,
+      "active_note": "DEACTIVATED 2026-03-10: Carnegie RSS (carnegieendowment.org/experts/pettis/feed) returns 404. Carnegie removed their RSS infrastructure. Pettis publishes via FT op-eds and Twitter/X threads — no scrapeable RSS available. Reactivate if alternative source found.",
       "fetch_method": "rss",
       "fetch_config": {
         "rss_url": "https://carnegieendowment.org/experts/pettis/feed",
@@ -240,12 +259,12 @@
       "active": true,
       "fetch_method": "youtube",
       "fetch_config": {
-        "channel_url": "https://www.youtube.com/@JeffSnider",
-        "channel_id": "UCVGGcJiM7EgQ8ZyYz0PN4bQ",
+        "channel_url": "https://www.youtube.com/@EurodollarUniversity",
+        "channel_id": "UCrXNkk4IESnqU-8GMad2vyA",
         "language": "en"
       },
-      "cadence": "2x_weekly",
-      "cadence_note": "Regular eurodollar and plumbing analysis",
+      "cadence": "5x_weekly",
+      "cadence_note": "Almost daily uploads, very active channel (194K subs, 1000+ videos)",
       "known_bias": -3,
       "bias_label": "structurally deflationary/bearish, eurodollar focused",
       "bias_description": "Jeff Snider has a persistent deflationary/bearish view based on eurodollar system analysis. His baseline is -3, so bearish plumbing statements are expected.",
