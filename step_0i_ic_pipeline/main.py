@@ -2780,6 +2780,191 @@ def _compute_silence_map(
 
 
 # ---------------------------------------------------------------------------
+# Directed Collection: Intelligence Gaps (IC V2 Phase 3, Spec Kapitel 8)
+# ---------------------------------------------------------------------------
+def _generate_intelligence_gaps(
+    belief_state: dict | None,
+    expert_disagreements: list | None,
+    pm_data: dict | None,
+    silence_map: list | None,
+    threads_data: dict | None,
+    expertise_matrix: dict,
+    sources_config: list[dict],
+) -> list[dict]:
+    """Auto-generate intelligence requirements from system state.
+
+    Gap sources:
+      1. STALE_BELIEF: Topic >7d without evidence + high uncertainty
+      2. UNRESOLVED_DISAGREEMENT: Expert dissent active
+      3. PRE_MORTEM_GAP: Failure scenario lacking counter-evidence
+      4. SILENCE_HIGH: Portfolio-relevant topic with no coverage
+      5. THREATENING_THREAD: Thread threatens position, needs more intel
+
+    For each gap, assigns relevant sources based on expertise_matrix.
+
+    Returns: list of gap dicts sorted by priority
+    """
+    gaps = []
+    today_str = date.today().isoformat()
+    expertise = expertise_matrix.get("expertise", {})
+    source_lookup = {s["source_id"]: s for s in sources_config if s.get("active", True)}
+
+    def _top_sources_for_topic(topic: str, n: int = 3) -> list[dict]:
+        """Find top N sources by expertise for a topic."""
+        scored = []
+        for sid, topics in expertise.items():
+            if sid not in source_lookup:
+                continue
+            exp = topics.get(topic, 0)
+            if exp >= 5:
+                scored.append({"source_id": sid, "expertise": exp})
+        scored.sort(key=lambda s: s["expertise"], reverse=True)
+        return scored[:n]
+
+    # 1. Stale Beliefs
+    if belief_state:
+        for stale in belief_state.get("stale_beliefs", []):
+            topic = stale.get("topic", "")
+            assigned = _top_sources_for_topic(topic)
+            gaps.append({
+                "gap_id": f"GAP_STALE_{topic}_{today_str}",
+                "question": f"What is the current outlook for {topic.replace('_', ' ')}? No expert coverage for {stale.get('days_without_evidence', '?')} days.",
+                "generated_by": "stale_belief",
+                "priority": "MEDIUM",
+                "topics": [topic],
+                "assigned_sources": assigned,
+                "detail": f"Belief {stale.get('belief_score', 5.0):.1f}, uncertainty {stale.get('uncertainty', 0.5):.2f}, {stale.get('days_without_evidence', 0)}d stale",
+            })
+
+    # 2. Unresolved Disagreements
+    if expert_disagreements:
+        for dis in expert_disagreements:
+            topic = dis.get("topic", "")
+            side_a = dis.get("side_a", {})
+            side_b = dis.get("side_b", {})
+            gaps.append({
+                "gap_id": f"GAP_DISSENT_{topic}_{today_str}",
+                "question": (
+                    f"{topic.replace('_', ' ')}: {side_a.get('source_id', '?')} says "
+                    f"{side_a.get('direction', '?')} vs {side_b.get('source_id', '?')} says "
+                    f"{side_b.get('direction', '?')}. Who is right?"
+                ),
+                "generated_by": "disagreement",
+                "priority": "HIGH" if dis.get("portfolio_exposure") in ("HIGH", "MEDIUM") else "MEDIUM",
+                "topics": [topic],
+                "assigned_sources": _top_sources_for_topic(topic),
+                "detail": (
+                    f"Portfolio exposure: {dis.get('portfolio_exposure', 'NONE')}"
+                    + (f" | {dis.get('second_derivative_signal', '')}" if dis.get('second_derivative_signal') else "")
+                ),
+            })
+
+    # 3. Pre-Mortem Gaps (scenarios with weak counter-evidence)
+    if pm_data:
+        for asset, pos in pm_data.get("positions", {}).items():
+            for scenario in pos.get("failure_scenarios", []):
+                evidence_against = scenario.get("ic_evidence_against", [])
+                prob = scenario.get("probability_label", "LOW")
+
+                # Gap if MEDIUM/HIGH probability but no counter-evidence
+                if prob in ("MEDIUM", "HIGH") and len(evidence_against) == 0:
+                    category = scenario.get("failure_category", "")
+                    gaps.append({
+                        "gap_id": f"GAP_PM_{asset}_{scenario.get('scenario_id', '')}_{today_str}",
+                        "question": (
+                            f"Pre-mortem {asset}: \"{scenario.get('description', '')[:100]}\" "
+                            f"— no counter-evidence found. Is this risk real?"
+                        ),
+                        "generated_by": "pre_mortem",
+                        "priority": "HIGH" if prob == "HIGH" else "MEDIUM",
+                        "topics": [],
+                        "assigned_sources": [],
+                        "detail": f"{asset} {pos.get('v16_weight_pct', 0)}%, {prob} probability, category {category}",
+                    })
+
+    # 4. Silence Map HIGH priority
+    if silence_map:
+        for silence in silence_map:
+            if silence.get("priority") != "HIGH":
+                continue
+            topic = silence.get("topic", "")
+            assigned = _top_sources_for_topic(topic)
+            gaps.append({
+                "gap_id": f"GAP_SILENCE_{topic}_{today_str}",
+                "question": (
+                    f"No IC coverage for {topic.replace('_', ' ')} — "
+                    f"portfolio has exposure via {silence.get('portfolio_assets', '?')}. "
+                    f"What are experts saying?"
+                ),
+                "generated_by": "silence_map",
+                "priority": "HIGH",
+                "topics": [topic],
+                "assigned_sources": assigned,
+                "detail": silence.get("detail", ""),
+            })
+
+    # 5. Threatening Threads needing more evidence
+    if threads_data:
+        for thread in threads_data.get("active_threads", []):
+            if thread.get("portfolio_alignment") != "THREATENING":
+                continue
+            if thread.get("source_count", 0) < 2:
+                # Only 1 source — need confirmation
+                topics = thread.get("topics", [])
+                primary_topic = topics[0] if topics else ""
+                assigned = _top_sources_for_topic(primary_topic)
+                gaps.append({
+                    "gap_id": f"GAP_THREAT_{thread.get('thread_id', '')}_{today_str}",
+                    "question": (
+                        f"Threatening thread \"{thread.get('core_hypothesis', '')[:80]}\" "
+                        f"has only {thread.get('source_count', 1)} source. "
+                        f"Is this threat confirmed by other experts?"
+                    ),
+                    "generated_by": "threatening_thread",
+                    "priority": "HIGH",
+                    "topics": topics,
+                    "assigned_sources": assigned,
+                    "detail": (
+                        f"Conv: {thread.get('conviction', 0):.1f}, "
+                        f"threatens: {', '.join(p.get('asset', '') for p in thread.get('threatened_positions', []))}"
+                    ),
+                })
+
+    # Deduplicate by topic (keep highest priority)
+    seen_topics = {}
+    deduped = []
+    for gap in gaps:
+        key = f"{gap['generated_by']}_{'-'.join(gap.get('topics', []))}"
+        if key in seen_topics:
+            existing = seen_topics[key]
+            priority_order = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
+            if priority_order.get(gap["priority"], 9) < priority_order.get(existing["priority"], 9):
+                deduped.remove(existing)
+                deduped.append(gap)
+                seen_topics[key] = gap
+        else:
+            deduped.append(gap)
+            seen_topics[key] = gap
+
+    # Sort by priority
+    priority_order = {"HIGH": 0, "MEDIUM": 1, "LOW": 2}
+    deduped.sort(key=lambda g: priority_order.get(g["priority"], 9))
+
+    # Log
+    high_gaps = [g for g in deduped if g["priority"] == "HIGH"]
+    logger.info(
+        f"Intelligence Gaps: {len(deduped)} total "
+        f"({len(high_gaps)} HIGH priority)"
+    )
+    for g in high_gaps:
+        logger.info(
+            f"  GAP [{g['generated_by']}]: {g['question'][:80]}"
+        )
+
+    return deduped
+
+
+# ---------------------------------------------------------------------------
 # Google Drive Output
 # ---------------------------------------------------------------------------
 DRIVE_ROOT_ID = "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
@@ -3315,6 +3500,7 @@ def build_intelligence_block(
     cross_system: list | None = None,
     expert_disagreements: list | None = None,
     silence_map: list | None = None,
+    intelligence_gaps: list | None = None,
 ) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
@@ -3530,6 +3716,7 @@ def build_intelligence_block(
         "cross_system": cross_system_out,
         "expert_disagreements": expert_disagreements or [],
         "silence_map": silence_map or [],
+        "intelligence_gaps": intelligence_gaps or [],
     }
 
 
@@ -3546,6 +3733,7 @@ def update_dashboard_json(
     cross_system: list | None = None,
     expert_disagreements: list | None = None,
     silence_map: list | None = None,
+    intelligence_gaps: list | None = None,
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -3597,7 +3785,8 @@ def update_dashboard_json(
         dashboard["intelligence"] = build_intelligence_block(
             intel, briefing, claims_archive, sources_config,
             cadence_anomalies, threads_data, pm_data, belief_state,
-            cross_system, expert_disagreements, silence_map
+            cross_system, expert_disagreements, silence_map,
+            intelligence_gaps
         )
 
         # Update pipeline health
@@ -3679,6 +3868,7 @@ def main():
     cross_system = None
     expert_disagreements = None
     silence_map = None
+    intelligence_gaps = None
 
     # Load claims archive for carry-forward
     claims_archive = _load_claims_archive()
@@ -3786,6 +3976,12 @@ def main():
             active_claims, claims_archive, v16_context, taxonomy
         )
 
+        # Directed Collection: Intelligence Gaps (IC V2 Phase 3)
+        intelligence_gaps = _generate_intelligence_gaps(
+            belief_state, expert_disagreements, pm_data,
+            silence_map, threads_data, expertise_matrix, sources
+        )
+
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
             if args.stage == "intelligence" and not active_claims:
@@ -3830,7 +4026,8 @@ def main():
                 intel, briefing, active_claims_count,
                 claims_archive, sources, cadence_anomalies, threads_data,
                 pm_data, belief_state, cross_system,
-                expert_disagreements, silence_map
+                expert_disagreements, silence_map,
+                intelligence_gaps
             )
 
     except Exception as e:
