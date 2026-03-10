@@ -1,6 +1,6 @@
 {
   "date": "2026-03-10",
-  "run_timestamp": "2026-03-10T15:52:25.118446Z",
+  "run_timestamp": "2026-03-10T16:25:56.338122Z",
   "execution_assessment": {
     "total_score": 6,
     "raw_score": 6,
@@ -358,16 +358,16 @@
   },
   "recommendation": {
     "action": "EXECUTE_WITH_LIMITS",
-    "reasoning": "Kein materielles Rebalancing nötig heute.",
+    "reasoning": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
     "specific_actions": [],
     "would_change_my_mind": {
       "execute_if": [
-        "VIX fällt unter 22 UND HY OAS fällt unter 280bps — Stress-Signale verschwinden, CPI-Risiko irrelevant",
-        "Router triggert COMMODITY_SUPER vor CPI (unwahrscheinlich) — dann Regime-Logik überschreibt Event-Timing"
+        "VIX fällt unter 22 UND HY OAS fällt unter 280bps — Risiko-Appetit normalisiert, Event-Prämien raus",
+        "Gold Return 20d fällt unter 0% ODER DXY Return 20d fällt unter -2% — Divergenz aufgelöst, klare Richtung"
       ],
       "hold_if": [
-        "VIX steigt über 35 ODER HY OAS steigt über 380bps — akuter Stress, warte auf Stabilisierung",
-        "GLD fällt >5% vom aktuellen Niveau innerhalb 24h vor CPI — Gold-Dollar-Divergenz löst sich bearish, warte Boden ab"
+        "VIX steigt über 35 ODER HY OAS steigt über 400bps — Stress-Regime, CPI-Schock eingepreist",
+        "Router triggert COMMODITY_SUPER UND CPI noch nicht veröffentlicht — warte auf Event-Klarheit vor großem DBC/GLD-Rebalance"
       ]
     }
   },
@@ -644,7 +644,7 @@
       }
     ]
   },
-  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Kein materielles Rebalancing: V16 hält alle Positionen (HOLD), Delta < 1% — kein Execution-Risiko heute\n• COT-Positionierung neutral: S&P500 Commercial Net +3.5%, Gold Commercial Net +8.8% — keine extremen Positionierungen gegen Portfolio\n• Liquidität intakt: Amihud 38.56 (LIQUID), SOFR-FFR 1.0bp (NORMAL), OFR Financial Stress -0.44 (RELAXED) — normale Marktbedingungen\n• VIX Term Structure Contango: 1.0063 — Volatilitätserwartung steigt mit Laufzeit, kein akuter Stress\n• Thematische Bestätigung: Copper Rising bestätigt DBC (20.3%), SPY Rising bestätigt XLU/XLP (34%), Real Yields Falling bestätigt GLD (16.9%)\n• HY OAS 313bps: NORMAL-Range — kein Credit-Stress für HYG (28.8%)\n• Sentiment neutral: CNN Fear & Greed 27.9 (NEUTRAL), Put/Call 0.796 (NORMAL) — keine Panik, keine Euphorie\n\nCONFLICTING:\n• US CPI (February) in 24h: HIGH-Impact Event — kann Zinspfad, Dollar und Commodities bewegen, direkt relevant für DBC/GLD/HYG\n• Convergence Week aktiv: 3 HIGH-Events in 14d (CPI, 2x PCE) — erhöhtes Regime-Wechsel-Risiko\n• Gold-Dollar-Divergenz: Gold +3.7% UND DXY +1.6% über 20d — beide steigen gleichzeitig, historisch unsustainable, einer muss nachgeben\n• GEX negativ $-0.19B: SLIGHTLY_NEGATIVE — Dealer-Hedging verstärkt Moves, erhöhte Intraday-Volatilität möglich\n• Router Proximity 100%: Router steht unmittelbar vor COMMODITY_SUPER-Trigger — V16 könnte morgen materiell umschichten\n\nNETTO: 7 Confirming vs 5 Conflicting. Technisch grünes Licht, aber CPI morgen und Router-Trigger schaffen taktisches Warte-Fenster.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig heute. Falls V16 morgen nach CPI Regime wechselt (Router 100% Proximity): Warte CPI-Ergebnis ab (morgen 08:30 ET), dann execute innerhalb 2h nach Veröffentlichung. Nutze initiale Volatilität für Limit-Orders: HYG bei Spread-Weitung (>320bps OAS) kaufen, DBC bei Commodity-Spike verkaufen. Gold-Dollar-Divergenz beobachten: Wenn CPI heiß (>0.4% MoM), löst sich Divergenz vermutlich via Dollar-Stärke — GLD könnte kurzfristig unter Druck. XLU/XLP als Defensiv-Anker halten, keine Eile.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 22 UND HY OAS fällt unter 280bps — Stress-Signale verschwinden, CPI-Risiko irrelevant\n• Execute sofort wenn: Router triggert COMMODITY_SUPER vor CPI (unwahrscheinlich) — dann Regime-Logik überschreibt Event-Timing\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 35 ODER HY OAS steigt über 380bps — akuter Stress, warte auf Stabilisierung\n• Eskaliere zu Wait/Hold wenn: GLD fällt >5% vom aktuellen Niveau innerhalb 24h vor CPI — Gold-Dollar-Divergenz löst sich bearish, warte Boden ab",
+  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Keine materiellen Trades: V16 hält alle Positionen (HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%) — kein Execution-Risiko heute\n• COT-Positionierung neutral: S&P500 Commercial Net 3.5%, Gold Commercial Net 8.8% — keine extremen Crowding-Signale\n• Liquidität intakt: Amihud 38.56 (LIQUID), SOFR-FFR 1.0bp (NORMAL), OFR Financial Stress -0.44 (RELAXED)\n• VIX Term Structure Contango: 1.0063 — Volatilitätsmarkt entspannt, keine Panik-Prämien\n• Commodity-Trend bestätigt: DBC 20.3% + Copper Rising — V16 Positioning aligned mit Trend\n• Equity-Trend bestätigt: XLU/XLP 34% kombiniert + SPY Rising — Defensive Equities im Aufwärtstrend\n• Gold/Real Yield Setup: GLD 16.9% + Real Yields Falling — historisch positives Umfeld für Gold\n• Sentiment neutral: CNN Fear & Greed 27.92, Put/Call 0.796, HY OAS 313bps — keine Extremwerte\n• Cross-Asset Indikatoren normal: VIX 29.49 (NORMAL), MOVE 79.74 (NORMAL), Insider Buy/Sell 2.5 (NORMAL)\n\nCONFLICTING:\n• US CPI (February) in 24h: HIGH-Impact Event — kann Zinspfad, Dollar und Risk Assets gleichzeitig bewegen\n• Convergence Week aktiv: 3 HIGH-Events (CPI, 2x PCE) — erhöhtes Regime-Wechsel-Risiko\n• Gold/DXY Divergenz: Gold +3.7% UND DXY +1.6% (beide 20d) — historisch unsustainable, einer muss nachgeben\n• GEX leicht negativ: $-0.19B (SLIGHTLY_NEGATIVE) — Dealer-Hedging verstärkt Moves, erhöhte Intraday-Volatilität\n• Router Proximity 100%: COMMODITY_SUPER-Trigger nah — V16 könnte morgen DBC/GLD hochfahren\n\nNETTO: 9 Confirming vs 5 Conflicting. Technisch grünes Licht, aber CPI morgen und Gold/DXY-Divergenz erfordern Vorsicht.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall dass V16 morgen nach CPI das Regime wechselt. **Heute: Nichts tun.** Falls V16 morgen Nachmittag (nach CPI 8:30 ET) Trades generiert: **HYG** (28.8%) und **DBC** (20.3%) mit Limit-Orders ausführen (HY Spreads 313bps können bei CPI-Überraschung spiken, Commodities reagieren volatil auf Dollar-Moves). **GLD** (16.9%): Abwarten bis Gold/DXY-Divergenz sich auflöst — wenn CPI heiß läuft und DXY steigt, könnte Gold korrigieren. **XLU/XLP** (34% kombiniert): Defensive Equities weniger sensibel, Market Orders akzeptabel. GEX leicht negativ bedeutet: Intraday-Swings möglich, keine MOC-Orders bei großen Positionen.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 22 UND HY OAS fällt unter 280bps — Risiko-Appetit normalisiert, Event-Prämien raus\n• Execute sofort wenn: Gold Return 20d fällt unter 0% ODER DXY Return 20d fällt unter -2% — Divergenz aufgelöst, klare Richtung\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 35 ODER HY OAS steigt über 400bps — Stress-Regime, CPI-Schock eingepreist\n• Eskaliere zu Wait/Hold wenn: Router triggert COMMODITY_SUPER UND CPI noch nicht veröffentlicht — warte auf Event-Klarheit vor großem DBC/GLD-Rebalance",
   "v16_context": {
     "regime": "FRAGILE_EXPANSION",
     "top5": [
@@ -890,7 +890,7 @@
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_used": true,
     "llm_fallback": false,
-    "engine_time_seconds": 22.04,
-    "total_time_seconds": 22.0
+    "engine_time_seconds": 25.05,
+    "total_time_seconds": 25.0
   }
 }
