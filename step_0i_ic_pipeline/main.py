@@ -26,6 +26,13 @@ IC V2 Phase 2: Narrative Threads
   + numeric portfolio_relevance_score
 - Thread creation gated: Novelty >= 7, CORE/Expert >= 7, V16 asset overlap
 - Aggressive decay: FADING 10d (17d for THREATENING), ARCHIVED 21d (28d)
+
+IC V2 Phase 2: Position Pre-Mortems
+- pre_mortems.json persists failure scenarios for V16 positions >10%
+- LLM-generated weekly (or on V16 position change >5%)
+- Daily deterministic evidence update (new claims matched against scenarios)
+- 2-4 failure scenarios per position with early warning indicators
+- Output: pre_mortems[] in latest.json intelligence block
 """
 
 import argparse
@@ -55,6 +62,7 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 CLAIMS_ARCHIVE_PATH = os.path.join(DATA_DIR, "history", "claims_archive.json")
 SOURCE_HISTORY_PATH = os.path.join(DATA_DIR, "history", "source_history.json")
 THREADS_PATH = os.path.join(DATA_DIR, "history", "threads.json")
+PRE_MORTEMS_PATH = os.path.join(DATA_DIR, "history", "pre_mortems.json")
 
 # Path to Vercel dashboard JSON (written by V16_DAILY_RUNNER, updated by IC)
 DASHBOARD_JSON_PATH = os.path.join(
@@ -1338,6 +1346,517 @@ def _update_threads(
 
 
 # ---------------------------------------------------------------------------
+# Position Pre-Mortems (IC V2 Phase 2, Spec Kapitel 14)
+# ---------------------------------------------------------------------------
+PRE_MORTEM_POSITION_THRESHOLD = 0.10  # Only positions >10% weight
+PRE_MORTEM_REGEN_DAYS = 7  # Regenerate weekly
+PRE_MORTEM_WEIGHT_CHANGE_TRIGGER = 0.05  # Regenerate if weight changed >5%
+PRE_MORTEM_MODEL = "claude-sonnet-4-6"
+
+
+def _load_pre_mortems() -> dict:
+    """Load pre_mortems.json from data/history/."""
+    if os.path.exists(PRE_MORTEMS_PATH):
+        try:
+            return _load_json(PRE_MORTEMS_PATH)
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.warning(f"Pre-mortems file corrupt, starting fresh: {e}")
+    return {"positions": {}, "last_updated": None, "last_generated": None}
+
+
+def _save_pre_mortems(pm_data: dict) -> None:
+    """Save pre_mortems.json to data/history/."""
+    pm_data["last_updated"] = date.today().isoformat()
+    _save_json(pm_data, PRE_MORTEMS_PATH)
+
+
+def _needs_regeneration(
+    pm_data: dict,
+    asset: str,
+    current_weight: float,
+    today: date,
+) -> bool:
+    """Check if pre-mortem for this asset needs LLM regeneration.
+
+    Triggers:
+      1. No existing pre-mortem for this asset
+      2. Last generation >7 days ago
+      3. V16 weight changed by >5% since last generation
+      4. A THREATENING thread was created (checked by caller)
+    """
+    pos_data = pm_data.get("positions", {}).get(asset)
+    if not pos_data:
+        return True
+
+    # Check age
+    last_gen = pos_data.get("generated_at", "")
+    if last_gen:
+        try:
+            gen_date = datetime.strptime(last_gen, "%Y-%m-%d").date()
+            if (today - gen_date).days >= PRE_MORTEM_REGEN_DAYS:
+                return True
+        except (ValueError, TypeError):
+            return True
+    else:
+        return True
+
+    # Check weight change
+    prev_weight = pos_data.get("v16_weight", 0)
+    if abs(current_weight - prev_weight) > PRE_MORTEM_WEIGHT_CHANGE_TRIGGER:
+        return True
+
+    return False
+
+
+def _build_pre_mortem_claims_text(
+    asset: str,
+    claims_archive: dict,
+) -> str:
+    """Build claims text relevant to an asset for pre-mortem prompt."""
+    relevant_claims = []
+    asset_upper = asset.upper()
+
+    for claim in claims_archive.get("claims", []):
+        if claim.get("freshness") not in ("FRESH", "AGING", "FADING"):
+            continue
+
+        # Check if claim mentions this asset in affected_assets
+        claim_assets = set()
+        for aa in claim.get("affected_assets", []):
+            if isinstance(aa, dict):
+                claim_assets.add(aa.get("asset", "").upper())
+            elif isinstance(aa, str):
+                claim_assets.add(aa.upper())
+
+        # Also check v16_position_impact
+        for vpi in claim.get("v16_position_impact", []):
+            if isinstance(vpi, dict):
+                claim_assets.add(vpi.get("position", "").upper())
+
+        # Also check system_relevance.affected_assets
+        sr = claim.get("system_relevance", {})
+        for a in sr.get("affected_assets", []):
+            claim_assets.add(a.upper())
+
+        if asset_upper not in claim_assets:
+            continue
+
+        source = claim.get("source_id", "unknown")
+        text = claim.get("claim_text", "")[:200]
+        direction = claim.get("sentiment", {}).get("direction", "")
+        novelty = claim.get("novelty_score", 0)
+        relevant_claims.append({
+            "source": source,
+            "text": text,
+            "direction": direction,
+            "novelty": novelty,
+        })
+
+    # Sort by novelty descending, take top 10
+    relevant_claims.sort(key=lambda c: c["novelty"], reverse=True)
+    relevant_claims = relevant_claims[:10]
+
+    if not relevant_claims:
+        return "No IC claims directly reference this asset in the last 7 days."
+
+    lines = []
+    for c in relevant_claims:
+        lines.append(
+            f"- [{c['source']}] ({c['direction']}, novelty {c['novelty']}): "
+            f"{c['text']}"
+        )
+    return "\n".join(lines)
+
+
+def _build_pre_mortem_threads_text(
+    asset: str,
+    threads_data: dict,
+) -> str:
+    """Build threads text relevant to an asset for pre-mortem prompt."""
+    if not threads_data:
+        return "No active narrative threads."
+
+    relevant = []
+    asset_upper = asset.upper()
+
+    for thread in threads_data.get("active_threads", []):
+        if asset_upper in [a.upper() for a in thread.get("affected_assets", [])]:
+            relevant.append(thread)
+
+    if not relevant:
+        return "No active threads directly reference this asset."
+
+    lines = []
+    for t in relevant:
+        alignment = t.get("portfolio_alignment", "NEUTRAL")
+        lines.append(
+            f"- [{t['thread_id']}] \"{t.get('core_hypothesis', '')[:100]}\" "
+            f"| Status: {t.get('status', '?')} | Conviction: {t.get('conviction', 0)} "
+            f"| Alignment: {alignment} | Sources: {', '.join(t.get('sources', []))}"
+        )
+    return "\n".join(lines)
+
+
+def _generate_pre_mortem_llm(
+    asset: str,
+    weight_pct: float,
+    regime: str,
+    portfolio_text: str,
+    claims_text: str,
+    threads_text: str,
+    previous_pm_text: str,
+) -> list[dict]:
+    """Call LLM to generate failure scenarios for a position.
+
+    Returns list of scenario dicts, or empty list on failure.
+    """
+    import anthropic
+
+    prompts_dir = os.path.join(BASE_DIR, "src", "extraction", "prompts")
+
+    try:
+        with open(os.path.join(prompts_dir, "pre_mortem_system.txt"), "r") as f:
+            system_prompt = f.read()
+        with open(os.path.join(prompts_dir, "pre_mortem_user.txt"), "r") as f:
+            user_template = f.read()
+    except FileNotFoundError as e:
+        logger.error(f"Pre-mortem prompt file not found: {e}")
+        return []
+
+    user_prompt = user_template.format(
+        asset=asset,
+        weight_pct=weight_pct,
+        regime=regime,
+        portfolio_text=portfolio_text,
+        claims_text=claims_text,
+        threads_text=threads_text,
+        previous_pm_text=previous_pm_text,
+    )
+
+    try:
+        client = anthropic.Anthropic()
+        response = client.messages.create(
+            model=PRE_MORTEM_MODEL,
+            max_tokens=4096,
+            system=system_prompt,
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+        raw_text = response.content[0].text.strip()
+
+        # Parse JSON (reuse pattern from extractor)
+        import re
+        raw_text = re.sub(r"^```(?:json)?\s*", "", raw_text)
+        raw_text = re.sub(r"\s*```\s*$", "", raw_text)
+
+        bracket_pos = raw_text.find("[")
+        if bracket_pos == -1:
+            logger.error(f"[PM:{asset}] No JSON array in LLM response")
+            return []
+
+        decoder = json.JSONDecoder()
+        parsed, _ = decoder.raw_decode(raw_text, bracket_pos)
+
+        if not isinstance(parsed, list):
+            logger.error(f"[PM:{asset}] LLM returned non-list: {type(parsed)}")
+            return []
+
+        # Validate scenarios
+        valid_categories = {
+            "MACRO_REGIME_SHIFT", "NARRATIVE_COLLAPSE",
+            "LIQUIDITY_FLOW", "EXTERNAL_SHOCK", "CORRELATION_BREAK",
+        }
+        valid_prob = {"LOW", "MEDIUM", "HIGH"}
+        valid_horizon = {"IMMEDIATE", "SHORT", "MEDIUM", "LONG"}
+
+        validated = []
+        for i, sc in enumerate(parsed[:4]):  # max 4
+            if not isinstance(sc, dict):
+                continue
+            if not sc.get("description"):
+                continue
+
+            # Normalize fields
+            sc["scenario_id"] = f"PM_{asset}_{i + 1:03d}"
+            cat = str(sc.get("failure_category", "")).upper()
+            if cat not in valid_categories:
+                cat = "MACRO_REGIME_SHIFT"
+            sc["failure_category"] = cat
+
+            prob = str(sc.get("probability_label", "MEDIUM")).upper()
+            if prob not in valid_prob:
+                prob = "MEDIUM"
+            sc["probability_label"] = prob
+
+            horizon = str(sc.get("time_horizon", "MEDIUM")).upper()
+            if horizon not in valid_horizon:
+                horizon = "MEDIUM"
+            sc["time_horizon"] = horizon
+
+            sc["reasoning"] = str(sc.get("reasoning", ""))[:500]
+            sc["early_warning_indicator"] = str(
+                sc.get("early_warning_indicator", "")
+            )[:300]
+            sc["early_warning_source"] = str(
+                sc.get("early_warning_source", "")
+            )[:200]
+            sc["portfolio_impact"] = str(sc.get("portfolio_impact", ""))[:100]
+
+            # Ensure evidence arrays
+            if not isinstance(sc.get("ic_evidence_for"), list):
+                sc["ic_evidence_for"] = []
+            sc["ic_evidence_for"] = [
+                str(e)[:200] for e in sc["ic_evidence_for"][:5]
+            ]
+            if not isinstance(sc.get("ic_evidence_against"), list):
+                sc["ic_evidence_against"] = []
+            sc["ic_evidence_against"] = [
+                str(e)[:200] for e in sc["ic_evidence_against"][:5]
+            ]
+
+            validated.append(sc)
+
+        logger.info(
+            f"[PM:{asset}] LLM generated {len(validated)} failure scenarios"
+        )
+        return validated
+
+    except Exception as e:
+        logger.error(f"[PM:{asset}] LLM call failed: {e}")
+        return []
+
+
+def _update_evidence_deterministic(
+    pm_position: dict,
+    claims_archive: dict,
+    asset: str,
+) -> dict:
+    """Deterministically update ic_evidence_for/against from new claims.
+
+    This runs daily (no LLM). It scans active claims for the asset and
+    checks if they support or contradict any existing failure scenario.
+    Simple heuristic: BEARISH claims on the asset = evidence_for failure,
+    BULLISH claims = evidence_against failure.
+    """
+    asset_upper = asset.upper()
+    today_str = date.today().isoformat()
+
+    # Collect today's relevant claims
+    todays_claims = []
+    for claim in claims_archive.get("claims", []):
+        if claim.get("freshness") != "FRESH":
+            continue
+        if claim.get("extraction_date", "") != today_str:
+            continue
+
+        # Check if claim mentions this asset
+        claim_assets = set()
+        for aa in claim.get("affected_assets", []):
+            if isinstance(aa, dict):
+                claim_assets.add(aa.get("asset", "").upper())
+        for vpi in claim.get("v16_position_impact", []):
+            if isinstance(vpi, dict):
+                claim_assets.add(vpi.get("position", "").upper())
+
+        if asset_upper in claim_assets:
+            todays_claims.append(claim)
+
+    if not todays_claims:
+        return pm_position
+
+    # For each scenario, add relevant claims as evidence
+    for scenario in pm_position.get("failure_scenarios", []):
+        for claim in todays_claims:
+            source = claim.get("source_id", "unknown")
+            direction = claim.get("sentiment", {}).get("direction", "")
+            text = claim.get("claim_text", "")[:150]
+            evidence_str = f"{source}: {text}"
+
+            if direction == "BEARISH":
+                # Bearish on asset = supports the failure scenario
+                if evidence_str not in scenario.get("ic_evidence_for", []):
+                    scenario.setdefault("ic_evidence_for", []).append(
+                        evidence_str
+                    )
+            elif direction == "BULLISH":
+                # Bullish on asset = argues against failure
+                if evidence_str not in scenario.get("ic_evidence_against", []):
+                    scenario.setdefault("ic_evidence_against", []).append(
+                        evidence_str
+                    )
+
+    pm_position["evidence_last_updated"] = today_str
+    return pm_position
+
+
+def _run_pre_mortems(
+    v16_context: dict | None,
+    claims_archive: dict,
+    threads_data: dict | None,
+    pm_data: dict,
+) -> dict:
+    """Orchestrate pre-mortem generation and updates.
+
+    Daily:
+      - Identify V16 positions >10%
+      - For positions needing regeneration: LLM call
+      - For all positions: deterministic evidence update
+      - Remove pre-mortems for positions no longer >10%
+
+    Returns: updated pm_data dict
+    """
+    if not v16_context:
+        logger.info("Pre-Mortems: No V16 context — skipping")
+        return pm_data
+
+    today = date.today()
+    today_str = today.isoformat()
+    regime = v16_context.get("regime", "UNKNOWN")
+    weights = v16_context.get("current_weights", {})
+
+    # Find positions >10%
+    large_positions = {
+        asset.upper(): w
+        for asset, w in weights.items()
+        if isinstance(w, (int, float)) and w > PRE_MORTEM_POSITION_THRESHOLD
+    }
+
+    if not large_positions:
+        logger.info("Pre-Mortems: No positions >10% — skipping")
+        return pm_data
+
+    # Build portfolio text for prompt
+    portfolio_lines = []
+    for asset, w in sorted(large_positions.items(), key=lambda x: -x[1]):
+        portfolio_lines.append(f"  {asset}: {round(w * 100, 1)}%")
+    portfolio_text = "\n".join(portfolio_lines)
+
+    positions_dict = pm_data.get("positions", {})
+    generated_count = 0
+    updated_count = 0
+
+    # Check for new THREATENING threads (trigger for regeneration)
+    has_new_threatening = False
+    if threads_data:
+        for t in threads_data.get("active_threads", []):
+            if t.get("portfolio_alignment") == "THREATENING":
+                # Check if thread was recently created or updated
+                last_ev = t.get("last_evidence_date", "")
+                if last_ev == today_str:
+                    has_new_threatening = True
+                    break
+
+    for asset, weight in large_positions.items():
+        weight_pct = round(weight * 100, 1)
+
+        needs_regen = _needs_regeneration(pm_data, asset, weight, today)
+
+        # Also regenerate if new threatening thread appeared
+        if has_new_threatening and not needs_regen:
+            # Check if any threatening thread affects THIS asset
+            if threads_data:
+                for t in threads_data.get("active_threads", []):
+                    if (t.get("portfolio_alignment") == "THREATENING" and
+                            asset in [a.upper() for a in t.get("affected_assets", [])]):
+                        needs_regen = True
+                        logger.info(
+                            f"[PM:{asset}] Regenerating due to THREATENING "
+                            f"thread {t['thread_id']}"
+                        )
+                        break
+
+        if needs_regen:
+            # Build context for LLM
+            claims_text = _build_pre_mortem_claims_text(asset, claims_archive)
+            threads_text = _build_pre_mortem_threads_text(asset, threads_data)
+
+            # Previous pre-mortem text for continuity
+            prev_pm = positions_dict.get(asset, {})
+            if prev_pm.get("failure_scenarios"):
+                previous_pm_text = json.dumps(
+                    prev_pm["failure_scenarios"], indent=2
+                )[:2000]
+            else:
+                previous_pm_text = "No previous pre-mortem exists."
+
+            scenarios = _generate_pre_mortem_llm(
+                asset, weight_pct, regime, portfolio_text,
+                claims_text, threads_text, previous_pm_text,
+            )
+
+            if scenarios:
+                positions_dict[asset] = {
+                    "asset": asset,
+                    "v16_weight": weight,
+                    "v16_weight_pct": weight_pct,
+                    "regime": regime,
+                    "generated_at": today_str,
+                    "evidence_last_updated": today_str,
+                    "failure_scenarios": scenarios,
+                    "scenario_count": len(scenarios),
+                    "aggregate_risk": _compute_aggregate_risk(scenarios),
+                }
+                generated_count += 1
+            else:
+                logger.warning(
+                    f"[PM:{asset}] LLM generation failed — keeping previous"
+                )
+        else:
+            # Deterministic evidence update only
+            if asset in positions_dict:
+                positions_dict[asset] = _update_evidence_deterministic(
+                    positions_dict[asset], claims_archive, asset
+                )
+                # Update weight in case it changed slightly
+                positions_dict[asset]["v16_weight"] = weight
+                positions_dict[asset]["v16_weight_pct"] = weight_pct
+                updated_count += 1
+
+    # Remove pre-mortems for positions no longer >10%
+    removed = []
+    for asset in list(positions_dict.keys()):
+        if asset not in large_positions:
+            removed.append(asset)
+            del positions_dict[asset]
+
+    pm_data["positions"] = positions_dict
+    if generated_count > 0:
+        pm_data["last_generated"] = today_str
+
+    # Log summary
+    logger.info(
+        f"Pre-Mortems: {len(positions_dict)} positions tracked "
+        f"({generated_count} regenerated, {updated_count} evidence-updated"
+        f"{f', {len(removed)} removed' if removed else ''})"
+    )
+    for asset, pos in positions_dict.items():
+        sc_count = pos.get("scenario_count", 0)
+        risk = pos.get("aggregate_risk", "UNKNOWN")
+        logger.info(
+            f"  {asset} ({pos.get('v16_weight_pct', 0)}%): "
+            f"{sc_count} scenarios, aggregate risk {risk}"
+        )
+
+    return pm_data
+
+
+def _compute_aggregate_risk(scenarios: list[dict]) -> str:
+    """Compute aggregate risk from failure scenarios.
+
+    HIGH if any scenario is HIGH probability.
+    MEDIUM if any scenario is MEDIUM or 2+ are LOW.
+    LOW if all scenarios are LOW.
+    """
+    probs = [s.get("probability_label", "LOW") for s in scenarios]
+    if "HIGH" in probs:
+        return "HIGH"
+    if "MEDIUM" in probs:
+        return "MEDIUM"
+    if len([p for p in probs if p == "LOW"]) >= 2:
+        return "MEDIUM"
+    return "LOW"
+
+
+# ---------------------------------------------------------------------------
 # Google Drive Output
 # ---------------------------------------------------------------------------
 DRIVE_ROOT_ID = "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
@@ -1868,6 +2387,7 @@ def build_intelligence_block(
     sources_config: list[dict],
     cadence_anomalies: list[dict] | None = None,
     threads_data: dict | None = None,
+    pm_data: dict | None = None,
 ) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
@@ -1878,7 +2398,8 @@ def build_intelligence_block(
       catalyst_timeline[] = {event, date, days_until, impact, themes}
       source_cards[] = {source_id, source_name, tier, active_claims, ...}
       cadence_anomalies[] = {source_id, anomaly_level, cadence_ratio, ...}
-      active_threads[] = {thread_id, core_hypothesis, status, conviction, ...}  (NEW)
+      active_threads[] = {thread_id, core_hypothesis, status, conviction, ...}
+      pre_mortems[] = {asset, weight_pct, scenarios, aggregate_risk, ...}  (NEW)
     """
     today = date.today()
 
@@ -2019,6 +2540,32 @@ def build_intelligence_block(
                 "threatened_positions": t.get("threatened_positions", []),
             })
 
+    # --- Pre-Mortems (IC V2 Phase 2) ---
+    pre_mortems_out = []
+    if pm_data:
+        for asset, pos in pm_data.get("positions", {}).items():
+            pre_mortems_out.append({
+                "asset": pos.get("asset", asset),
+                "v16_weight_pct": pos.get("v16_weight_pct", 0),
+                "regime": pos.get("regime", ""),
+                "generated_at": pos.get("generated_at", ""),
+                "aggregate_risk": pos.get("aggregate_risk", "LOW"),
+                "scenario_count": pos.get("scenario_count", 0),
+                "failure_scenarios": [
+                    {
+                        "scenario_id": s.get("scenario_id", ""),
+                        "description": s.get("description", "")[:200],
+                        "failure_category": s.get("failure_category", ""),
+                        "probability_label": s.get("probability_label", "LOW"),
+                        "early_warning_indicator": s.get("early_warning_indicator", "")[:200],
+                        "portfolio_impact": s.get("portfolio_impact", ""),
+                    }
+                    for s in pos.get("failure_scenarios", [])
+                ],
+            })
+        # Sort by weight descending
+        pre_mortems_out.sort(key=lambda p: p["v16_weight_pct"], reverse=True)
+
     return {
         "status": "AVAILABLE",
         "consensus": consensus_out,
@@ -2029,6 +2576,7 @@ def build_intelligence_block(
         "source_cards": source_cards,
         "cadence_anomalies": cadence_anomalies or [],
         "active_threads": active_threads_out,
+        "pre_mortems": pre_mortems_out,
     }
 
 
@@ -2040,6 +2588,7 @@ def update_dashboard_json(
     sources_config: list[dict],
     cadence_anomalies: list[dict] | None = None,
     threads_data: dict | None = None,
+    pm_data: dict | None = None,
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -2087,10 +2636,10 @@ def update_dashboard_json(
         with open(DASHBOARD_JSON_PATH, "r") as f:
             dashboard = json.load(f)
 
-        # Replace intelligence block (with source_cards + cadence_anomalies + threads)
+        # Replace intelligence block (with source_cards + cadence_anomalies + threads + pre-mortems)
         dashboard["intelligence"] = build_intelligence_block(
             intel, briefing, claims_archive, sources_config,
-            cadence_anomalies, threads_data
+            cadence_anomalies, threads_data, pm_data
         )
 
         # Update pipeline health
@@ -2100,6 +2649,9 @@ def update_dashboard_json(
         thread_count = len(
             threads_data.get("active_threads", [])
         ) if threads_data else 0
+        pm_count = len(
+            pm_data.get("positions", {})
+        ) if pm_data else 0
         steps = dashboard.get("pipeline_health", {}).get("steps", {})
         steps["step_0b_ic"] = {
             "status": "OK",
@@ -2111,6 +2663,7 @@ def update_dashboard_json(
                 f"{intel.get('extraction_summary', {}).get('high_novelty_claims', 0)} high-novelty"
                 f"{f', {anomaly_count} cadence anomalies' if anomaly_count else ''}"
                 f"{f', {thread_count} threads' if thread_count else ''}"
+                f"{f', {pm_count} pre-mortems' if pm_count else ''}"
             ),
         }
 
@@ -2163,6 +2716,7 @@ def main():
     active_claims_count = 0
     cadence_anomalies = []
     threads_data = None
+    pm_data = None
 
     # Load claims archive for carry-forward
     claims_archive = _load_claims_archive()
@@ -2234,6 +2788,13 @@ def main():
         )
         _save_threads(threads_data)
 
+        # Position Pre-Mortems (IC V2 Phase 2)
+        pm_data = _load_pre_mortems()
+        pm_data = _run_pre_mortems(
+            v16_context, claims_archive, threads_data, pm_data
+        )
+        _save_pre_mortems(pm_data)
+
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
             if args.stage == "intelligence" and not active_claims:
@@ -2276,7 +2837,8 @@ def main():
             write_agent_summary_tab(briefing)
             update_dashboard_json(
                 intel, briefing, active_claims_count,
-                claims_archive, sources, cadence_anomalies, threads_data
+                claims_archive, sources, cadence_anomalies, threads_data,
+                pm_data
             )
 
     except Exception as e:
