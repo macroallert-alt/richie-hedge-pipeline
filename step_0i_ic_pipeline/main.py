@@ -14,6 +14,18 @@ IC V2 Phase 2: Cadence Anomaly Detection + 90-Day Archive
 - cadence_anomalies[] in latest.json intelligence block
 - ARCHIVED window extended to 90 days (was 14)
 - EXPIRED threshold moved from 15 to 91 days
+
+IC V2 Phase 2: Narrative Threads
+- threads.json persists active narrative threads across runs
+- Deterministic thread matching (Topic + Direction + Asset overlap)
+- Lifecycle: SEED -> BUILDING -> ESTABLISHED -> FADING -> ARCHIVED
+- challenged flag (not a status — can coexist with any lifecycle status)
+- Conviction formula: Max Expertise 35%, Source Diversity 20% (capped 4),
+  Data Confirmation 20%, Freshness 15%, Conviction Trend 10%
+- Portfolio Alignment: CONFIRMING/THREATENING/MIXED/OPPORTUNITY/NEUTRAL
+  + numeric portfolio_relevance_score
+- Thread creation gated: Novelty >= 7, CORE/Expert >= 7, V16 asset overlap
+- Aggressive decay: FADING 10d (17d for THREATENING), ARCHIVED 21d (28d)
 """
 
 import argparse
@@ -42,6 +54,7 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 
 CLAIMS_ARCHIVE_PATH = os.path.join(DATA_DIR, "history", "claims_archive.json")
 SOURCE_HISTORY_PATH = os.path.join(DATA_DIR, "history", "source_history.json")
+THREADS_PATH = os.path.join(DATA_DIR, "history", "threads.json")
 
 # Path to Vercel dashboard JSON (written by V16_DAILY_RUNNER, updated by IC)
 DASHBOARD_JSON_PATH = os.path.join(
@@ -590,6 +603,741 @@ def _update_source_history(
 
 
 # ---------------------------------------------------------------------------
+# Narrative Threads (IC V2 Phase 2)
+# ---------------------------------------------------------------------------
+THREAD_MATCH_THRESHOLD = 0.55
+THREAD_SEED_MIN_NOVELTY = 7
+THREAD_SEED_MIN_EXPERTISE = 7
+THREAD_FADING_DAYS = 10
+THREAD_FADING_DAYS_THREATENING = 17
+THREAD_ARCHIVED_DAYS = 21
+THREAD_ARCHIVED_DAYS_THREATENING = 28
+THREAD_SOURCE_DIVERSITY_CAP = 4
+
+
+def _load_threads() -> dict:
+    """Load threads.json from data/history/."""
+    if os.path.exists(THREADS_PATH):
+        try:
+            return _load_json(THREADS_PATH)
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.warning(f"Threads file corrupt, starting fresh: {e}")
+    return {"active_threads": [], "archived_threads": [], "last_updated": None}
+
+
+def _save_threads(threads_data: dict) -> None:
+    """Save threads.json to data/history/."""
+    threads_data["last_updated"] = date.today().isoformat()
+    _save_json(threads_data, THREADS_PATH)
+
+
+def _generate_thread_id(primary_topic: str, today_str: str, existing_ids: set) -> str:
+    """Generate unique thread ID: THR_{TOPIC}_{YYYYMMDD}_{seq}."""
+    date_part = today_str.replace("-", "")
+    seq = 1
+    while True:
+        tid = f"THR_{primary_topic}_{date_part}_{seq:03d}"
+        if tid not in existing_ids:
+            return tid
+        seq += 1
+
+
+def _jaccard(set_a: set, set_b: set) -> float:
+    """Jaccard similarity between two sets. Returns 0.0 if both empty."""
+    if not set_a and not set_b:
+        return 0.0
+    intersection = len(set_a & set_b)
+    union = len(set_a | set_b)
+    return intersection / union if union > 0 else 0.0
+
+
+def _compute_thread_match_score(thesis: dict, thread: dict) -> float:
+    """Compute deterministic match score between a thesis and a thread.
+
+    Weights:
+      0.35 Topic Overlap (Jaccard)
+      0.30 Direction Alignment (same=1.0, NEUTRAL=0.5, opposite=0.0)
+      0.35 Asset Overlap (Jaccard on affected_assets)
+
+    Returns: float 0.0-1.0
+    """
+    # Topic overlap
+    thesis_topics = set(thesis.get("topics", []))
+    thread_topics = set(thread.get("topics", []))
+    topic_score = _jaccard(thesis_topics, thread_topics)
+
+    # Direction alignment
+    thesis_dir = thesis.get("sentiment", {}).get("direction", "NEUTRAL")
+    thread_dir = thread.get("direction", "NEUTRAL")
+
+    if thesis_dir == thread_dir:
+        dir_score = 1.0
+    elif thesis_dir == "NEUTRAL" or thread_dir == "NEUTRAL":
+        dir_score = 0.5
+    elif thesis_dir == "MIXED" or thread_dir == "MIXED":
+        dir_score = 0.5
+    else:
+        # Opposite directions (BULLISH vs BEARISH)
+        dir_score = 0.0
+
+    # Asset overlap
+    thesis_assets = set()
+    for aa in thesis.get("affected_assets", []):
+        if isinstance(aa, dict):
+            thesis_assets.add(aa.get("asset", ""))
+        elif isinstance(aa, str):
+            thesis_assets.add(aa)
+    thesis_assets.discard("")
+
+    thread_assets = set(thread.get("affected_assets", []))
+    asset_score = _jaccard(thesis_assets, thread_assets)
+
+    return 0.35 * topic_score + 0.30 * dir_score + 0.35 * asset_score
+
+
+def _get_thesis_assets(thesis: dict) -> list[str]:
+    """Extract asset tickers from thesis affected_assets (handles V1+V2 format)."""
+    assets = set()
+    for aa in thesis.get("affected_assets", []):
+        if isinstance(aa, dict):
+            a = aa.get("asset", "")
+            if a:
+                assets.add(a.upper())
+        elif isinstance(aa, str) and aa:
+            assets.add(aa.upper())
+    return sorted(assets)
+
+
+def _get_v16_assets(v16_context: dict | None) -> set[str]:
+    """Get set of active V16 position tickers."""
+    if not v16_context:
+        return set()
+    weights = v16_context.get("current_weights", {})
+    return {
+        asset.upper() for asset, w in weights.items()
+        if isinstance(w, (int, float)) and w > 0.005
+    }
+
+
+def _thesis_qualifies_for_seed(
+    thesis: dict,
+    source_config: dict,
+    expertise_matrix: dict,
+    v16_assets: set[str],
+) -> bool:
+    """Check if a thesis qualifies to create a new SEED thread.
+
+    Requirements (ALL must be met):
+      1. novelty_score >= 7
+      2. Source is CORE tier OR has expertise >= 7 in primary_topic
+      3. At least 1 affected_asset is a current V16 position
+    """
+    # Requirement 1: Novelty
+    if thesis.get("novelty_score", 0) < THREAD_SEED_MIN_NOVELTY:
+        return False
+
+    # Requirement 2: Source quality
+    tier = source_config.get("tier", "")
+    source_id = thesis.get("source_id", "")
+    primary_topic = thesis.get("primary_topic", thesis.get("topics", [""])[0])
+
+    source_expertise = (
+        expertise_matrix.get("expertise", {})
+        .get(source_id, {})
+        .get(primary_topic, 0)
+    )
+
+    if tier != "CORE" and source_expertise < THREAD_SEED_MIN_EXPERTISE:
+        return False
+
+    # Requirement 3: V16 asset overlap
+    thesis_assets = set(_get_thesis_assets(thesis))
+    if not thesis_assets & v16_assets:
+        return False
+
+    return True
+
+
+def _create_seed_thread(
+    thesis: dict,
+    source_config: dict,
+    expertise_matrix: dict,
+    today_str: str,
+    existing_ids: set,
+) -> dict:
+    """Create a new SEED thread from a qualifying thesis."""
+    source_id = thesis.get("source_id", "")
+    primary_topic = thesis.get("primary_topic", thesis.get("topics", [""])[0])
+    thesis_assets = _get_thesis_assets(thesis)
+    direction = thesis.get("sentiment", {}).get("direction", "NEUTRAL")
+
+    thread_id = _generate_thread_id(primary_topic, today_str, existing_ids)
+
+    # core_hypothesis = claim_text (deterministic; later LLM-generated)
+    core_hypothesis = thesis.get("claim_text", "")[:300]
+
+    # Get expertise score for conviction
+    source_expertise = (
+        expertise_matrix.get("expertise", {})
+        .get(source_id, {})
+        .get(primary_topic, 5)
+    )
+
+    return {
+        "thread_id": thread_id,
+        "core_hypothesis": core_hypothesis,
+        "status": "SEED",
+        "challenged": False,
+        "challenger_detail": None,
+        "created_at": today_str,
+        "last_evidence_date": thesis.get("content_date", today_str),
+        "topics": list(thesis.get("topics", [primary_topic])),
+        "direction": direction,
+        "sources": [source_id],
+        "source_count": 1,
+        "evidence": [
+            {
+                "thesis_id": thesis.get("id", ""),
+                "source_id": source_id,
+                "claim_text": thesis.get("claim_text", "")[:200],
+                "content_date": thesis.get("content_date", today_str),
+                "direction": direction,
+                "novelty_score": thesis.get("novelty_score", 0),
+                "speaker_confidence": thesis.get("speaker_confidence", 5),
+            }
+        ],
+        "affected_assets": thesis_assets,
+        "max_expertise": source_expertise,
+        "max_expertise_source": source_id,
+        "conviction": 0.0,  # Computed after creation
+        "conviction_components": {},
+        "portfolio_alignment": "NEUTRAL",
+        "portfolio_detail": "",
+        "portfolio_relevance_score": 0.0,
+        "threatened_positions": [],
+    }
+
+
+def _add_evidence_to_thread(thread: dict, thesis: dict, expertise_matrix: dict) -> dict:
+    """Add a thesis as evidence to an existing thread."""
+    source_id = thesis.get("source_id", "")
+    direction = thesis.get("sentiment", {}).get("direction", "NEUTRAL")
+    content_date = thesis.get("content_date", "")
+
+    # Add evidence entry
+    thread["evidence"].append({
+        "thesis_id": thesis.get("id", ""),
+        "source_id": source_id,
+        "claim_text": thesis.get("claim_text", "")[:200],
+        "content_date": content_date,
+        "direction": direction,
+        "novelty_score": thesis.get("novelty_score", 0),
+        "speaker_confidence": thesis.get("speaker_confidence", 5),
+    })
+
+    # Update last_evidence_date
+    if content_date > thread.get("last_evidence_date", ""):
+        thread["last_evidence_date"] = content_date
+
+    # Update sources list (unique)
+    if source_id not in thread["sources"]:
+        thread["sources"].append(source_id)
+    thread["source_count"] = len(thread["sources"])
+
+    # Update topics (union)
+    for t in thesis.get("topics", []):
+        if t not in thread["topics"]:
+            thread["topics"].append(t)
+
+    # Update affected_assets (union)
+    for a in _get_thesis_assets(thesis):
+        if a not in thread["affected_assets"]:
+            thread["affected_assets"].append(a)
+
+    # Update max_expertise
+    primary_topic = thread["topics"][0] if thread["topics"] else ""
+    source_expertise = (
+        expertise_matrix.get("expertise", {})
+        .get(source_id, {})
+        .get(primary_topic, 0)
+    )
+    if source_expertise > thread.get("max_expertise", 0):
+        thread["max_expertise"] = source_expertise
+        thread["max_expertise_source"] = source_id
+
+    # Check for challenge: opposite direction from expert
+    if direction in ("BULLISH", "BEARISH") and thread["direction"] in ("BULLISH", "BEARISH"):
+        if direction != thread["direction"] and source_expertise >= 6:
+            thread["challenged"] = True
+            thread["challenger_detail"] = (
+                f"{source_id} (expertise {source_expertise}) says {direction} "
+                f"vs thread direction {thread['direction']}"
+            )
+
+    return thread
+
+
+def _compute_thread_conviction(
+    thread: dict,
+    expertise_matrix: dict,
+    source_history: dict,
+    v16_context: dict | None,
+    taxonomy: dict | None,
+) -> float:
+    """Compute thread conviction score (0.0-10.0).
+
+    Formula:
+      0.35 x max_single_expertise (normalized /10)
+      0.20 x source_diversity (unique_sources / 4, capped 1.0)
+      0.20 x data_confirmation (1.0 V16-aligned, 0.5 neutral, 0.0 contra)
+      0.15 x freshness (avg decay_weight of evidence)
+      0.10 x conviction_trend (from source_history: RISING=1.0, STABLE=0.5, FALLING=0.0)
+
+    Returns: float 0.0-10.0
+    """
+    # 1. Max single expertise (already tracked on thread)
+    max_exp = thread.get("max_expertise", 5)
+    exp_score = max_exp / 10.0  # 0.0-1.0
+
+    # 2. Source diversity (capped at 4)
+    source_count = thread.get("source_count", 1)
+    diversity_score = min(source_count / THREAD_SOURCE_DIVERSITY_CAP, 1.0)
+
+    # 3. Data confirmation (V16 alignment)
+    data_score = 0.5  # default: neutral
+    if v16_context and taxonomy:
+        thread_topics = thread.get("topics", [])
+        thread_dir = thread.get("direction", "NEUTRAL")
+        topic_to_layers = taxonomy.get("topic_to_layers", {})
+
+        # Check if V16 regime aligns with thread direction
+        # Simple heuristic: if thread is BULLISH and touches V16-related topics,
+        # check if V16 has corresponding positions
+        v16_weights = v16_context.get("current_weights", {})
+        thread_assets = set(thread.get("affected_assets", []))
+        v16_assets = {
+            a.upper() for a, w in v16_weights.items()
+            if isinstance(w, (int, float)) and w > 0.005
+        }
+
+        overlap = thread_assets & v16_assets
+        if overlap:
+            # V16 has positions in assets the thread discusses
+            # If thread says BULLISH and V16 is long -> CONFIRMING
+            if thread_dir in ("BULLISH", "NEUTRAL"):
+                data_score = 0.8
+            elif thread_dir == "BEARISH":
+                # Thread bearish but V16 is long -> contradicting
+                data_score = 0.2
+            else:
+                data_score = 0.5
+        # No overlap = neutral
+
+    # 4. Freshness (avg decay_weight of evidence)
+    evidence = thread.get("evidence", [])
+    if evidence:
+        today = date.today()
+        weights = []
+        for e in evidence:
+            f = _compute_freshness(e.get("content_date", ""), today)
+            weights.append(f["decay_weight"])
+        freshness_score = sum(weights) / len(weights) if weights else 0.5
+    else:
+        freshness_score = 0.0
+
+    # 5. Conviction trend (from source_history for thread's primary source)
+    trend_score = 0.5  # default: STABLE
+    sources_data = source_history.get("sources", {})
+    # Use the max_expertise source's conviction trend
+    primary_source = thread.get("max_expertise_source", "")
+    if primary_source in sources_data:
+        ct = sources_data[primary_source].get("conviction_trend", "STABLE")
+        if ct == "RISING":
+            trend_score = 1.0
+        elif ct == "FALLING":
+            trend_score = 0.0
+
+    # Weighted combination -> scale to 0-10
+    raw = (
+        0.35 * exp_score
+        + 0.20 * diversity_score
+        + 0.20 * data_score
+        + 0.15 * freshness_score
+        + 0.10 * trend_score
+    )
+
+    conviction = round(raw * 10.0, 1)
+    conviction = max(0.0, min(10.0, conviction))
+
+    # Store components for transparency
+    thread["conviction_components"] = {
+        "max_expertise": max_exp,
+        "max_expertise_source": primary_source,
+        "source_diversity": round(diversity_score, 2),
+        "data_confirmation": round(data_score, 2),
+        "freshness": round(freshness_score, 2),
+        "conviction_trend": trend_score,
+    }
+    thread["conviction"] = conviction
+
+    return conviction
+
+
+def _compute_portfolio_alignment(
+    thread: dict,
+    v16_context: dict | None,
+) -> dict:
+    """Compute portfolio alignment and relevance score for a thread.
+
+    Categories:
+      CONFIRMING:  Thread direction supports V16 position direction
+      THREATENING: Thread direction opposes V16 position
+      MIXED:       Some positions confirmed, some threatened
+      OPPORTUNITY: Thread affects asset NOT in V16 portfolio
+      NEUTRAL:     No overlap between thread assets and V16 positions
+
+    portfolio_relevance_score = SUM(position_weight_pct * severity)
+      THREATENING=1.0, MIXED=0.5, CONFIRMING=0.3, NEUTRAL/OPPORTUNITY=0.0
+
+    Returns: dict with alignment, detail, relevance_score, threatened_positions
+    """
+    if not v16_context:
+        return {
+            "portfolio_alignment": "NEUTRAL",
+            "portfolio_detail": "No V16 context available",
+            "portfolio_relevance_score": 0.0,
+            "threatened_positions": [],
+        }
+
+    weights = v16_context.get("current_weights", {})
+    v16_positions = {
+        a.upper(): w for a, w in weights.items()
+        if isinstance(w, (int, float)) and w > 0.005
+    }
+
+    thread_assets = set(thread.get("affected_assets", []))
+    thread_dir = thread.get("direction", "NEUTRAL")
+
+    if not thread_assets or not v16_positions:
+        return {
+            "portfolio_alignment": "NEUTRAL",
+            "portfolio_detail": "No asset overlap or no V16 positions",
+            "portfolio_relevance_score": 0.0,
+            "threatened_positions": [],
+        }
+
+    overlap = thread_assets & set(v16_positions.keys())
+    non_overlap = thread_assets - set(v16_positions.keys())
+
+    if not overlap:
+        if non_overlap:
+            return {
+                "portfolio_alignment": "OPPORTUNITY",
+                "portfolio_detail": (
+                    f"Thread affects {', '.join(sorted(non_overlap))} "
+                    f"— not in V16 portfolio"
+                ),
+                "portfolio_relevance_score": 0.0,
+                "threatened_positions": [],
+            }
+        return {
+            "portfolio_alignment": "NEUTRAL",
+            "portfolio_detail": "No relevance to current portfolio",
+            "portfolio_relevance_score": 0.0,
+            "threatened_positions": [],
+        }
+
+    # For each overlapping position, determine alignment
+    confirmed = []
+    threatened = []
+    relevance_score = 0.0
+
+    for asset in sorted(overlap):
+        weight_pct = round(v16_positions[asset] * 100, 1)
+
+        # V16 is LONG all positions (weight > 0)
+        # Thread BULLISH on asset = CONFIRMING (supports long position)
+        # Thread BEARISH on asset = THREATENING (opposes long position)
+        # Check per-asset direction from evidence if available
+        asset_dir = thread_dir  # fallback to thread-level direction
+
+        # Try to find asset-specific direction from affected_assets in evidence
+        for ev in thread.get("evidence", []):
+            # This is a simplification; full per-asset tracking in Phase B
+            pass
+
+        if asset_dir == "BULLISH":
+            confirmed.append(f"{asset} {weight_pct}%")
+            relevance_score += weight_pct * 0.3
+        elif asset_dir == "BEARISH":
+            threatened.append({"asset": asset, "weight_pct": weight_pct})
+            relevance_score += weight_pct * 1.0
+        else:
+            relevance_score += weight_pct * 0.1
+
+    # Determine overall alignment
+    if threatened and confirmed:
+        alignment = "MIXED"
+    elif threatened:
+        alignment = "THREATENING"
+    elif confirmed:
+        alignment = "CONFIRMING"
+    else:
+        alignment = "NEUTRAL"
+
+    detail_parts = []
+    if confirmed:
+        detail_parts.append(f"Confirms: {', '.join(confirmed)}")
+    if threatened:
+        threat_strs = [f"{t['asset']} {t['weight_pct']}%" for t in threatened]
+        detail_parts.append(f"Threatens: {', '.join(threat_strs)}")
+    if non_overlap:
+        detail_parts.append(f"Opportunity: {', '.join(sorted(non_overlap))}")
+
+    return {
+        "portfolio_alignment": alignment,
+        "portfolio_detail": "; ".join(detail_parts) if detail_parts else "",
+        "portfolio_relevance_score": round(relevance_score, 1),
+        "threatened_positions": threatened,
+    }
+
+
+def _update_thread_lifecycle(thread: dict, today: date) -> str:
+    """Update thread lifecycle status based on evidence and time.
+
+    Lifecycle: SEED -> BUILDING -> ESTABLISHED -> FADING -> ARCHIVED
+    challenged is a flag, not a status.
+
+    Transitions:
+      SEED -> BUILDING: 2+ unique sources OR same source 2+ weeks
+      BUILDING -> ESTABLISHED: 3+ unique sources OR data confirmation
+      any -> FADING: no new evidence for 10d (17d if THREATENING)
+      FADING -> ARCHIVED: no new evidence for 21d (28d if THREATENING)
+
+    Returns: new status string
+    """
+    old_status = thread.get("status", "SEED")
+
+    # If already ARCHIVED, stay ARCHIVED
+    if old_status == "ARCHIVED":
+        return "ARCHIVED"
+
+    last_evidence_str = thread.get("last_evidence_date", "")
+    try:
+        last_evidence = datetime.strptime(last_evidence_str, "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        last_evidence = today
+
+    days_silent = (today - last_evidence).days
+
+    # Determine decay thresholds based on portfolio alignment
+    is_threatening = thread.get("portfolio_alignment") == "THREATENING"
+    fading_threshold = (
+        THREAD_FADING_DAYS_THREATENING if is_threatening
+        else THREAD_FADING_DAYS
+    )
+    archived_threshold = (
+        THREAD_ARCHIVED_DAYS_THREATENING if is_threatening
+        else THREAD_ARCHIVED_DAYS
+    )
+
+    # Check for ARCHIVED first (takes precedence)
+    if days_silent >= archived_threshold:
+        thread["status"] = "ARCHIVED"
+        return "ARCHIVED"
+
+    # Check for FADING
+    if days_silent >= fading_threshold:
+        thread["status"] = "FADING"
+        return "FADING"
+
+    # Forward transitions (only if not fading)
+    source_count = thread.get("source_count", 1)
+    data_conf = thread.get("conviction_components", {}).get("data_confirmation", 0.5)
+
+    if old_status == "SEED":
+        # SEED -> BUILDING: 2+ unique sources
+        if source_count >= 2:
+            thread["status"] = "BUILDING"
+            return "BUILDING"
+        # OR same source posting about this over 2+ weeks
+        evidence = thread.get("evidence", [])
+        if len(evidence) >= 2:
+            dates = sorted(set(e.get("content_date", "") for e in evidence))
+            if len(dates) >= 2:
+                try:
+                    first = datetime.strptime(dates[0], "%Y-%m-%d").date()
+                    last = datetime.strptime(dates[-1], "%Y-%m-%d").date()
+                    if (last - first).days >= 14:
+                        thread["status"] = "BUILDING"
+                        return "BUILDING"
+                except (ValueError, TypeError):
+                    pass
+
+    if old_status in ("SEED", "BUILDING"):
+        # -> ESTABLISHED: 3+ unique sources OR strong data confirmation
+        if source_count >= 3 or data_conf >= 0.8:
+            thread["status"] = "ESTABLISHED"
+            return "ESTABLISHED"
+
+    # No transition — keep current status
+    return old_status
+
+
+def _update_threads(
+    new_claims: list[dict],
+    threads_data: dict,
+    v16_context: dict | None,
+    expertise_matrix: dict,
+    sources_config: list[dict],
+    source_history: dict,
+    taxonomy: dict | None,
+) -> dict:
+    """Orchestrate narrative thread updates for this run.
+
+    Steps:
+      1. For each new thesis: match against active threads
+      2. If match: add evidence, update conviction + lifecycle
+      3. If no match + seed criteria met: create new SEED thread
+      4. For all threads: lifecycle decay check (FADING, ARCHIVED)
+      5. Recompute portfolio alignment for all active threads
+      6. Move ARCHIVED threads to archived_threads list
+
+    Returns: updated threads_data dict
+    """
+    today = date.today()
+    today_str = today.isoformat()
+
+    active_threads = threads_data.get("active_threads", [])
+    archived_threads = threads_data.get("archived_threads", [])
+
+    source_lookup = {s["source_id"]: s for s in sources_config}
+    v16_assets = _get_v16_assets(v16_context)
+
+    # Collect all existing thread IDs for unique ID generation
+    all_ids = {t["thread_id"] for t in active_threads}
+    all_ids.update(t["thread_id"] for t in archived_threads)
+
+    matched_count = 0
+    new_thread_count = 0
+    unmatched_count = 0
+
+    for thesis in new_claims:
+        # Only process FRESH claims (just extracted)
+        if thesis.get("freshness", "FRESH") not in ("FRESH",):
+            continue
+
+        # Find best matching thread
+        best_score = 0.0
+        best_thread_idx = -1
+
+        for i, thread in enumerate(active_threads):
+            if thread.get("status") == "ARCHIVED":
+                continue
+            score = _compute_thread_match_score(thesis, thread)
+            if score > best_score:
+                best_score = score
+                best_thread_idx = i
+
+        if best_score >= THREAD_MATCH_THRESHOLD and best_thread_idx >= 0:
+            # Match found — add evidence to existing thread
+            active_threads[best_thread_idx] = _add_evidence_to_thread(
+                active_threads[best_thread_idx], thesis, expertise_matrix
+            )
+            matched_count += 1
+            logger.debug(
+                f"Thread match: {thesis.get('id', '')} -> "
+                f"{active_threads[best_thread_idx]['thread_id']} "
+                f"(score {best_score:.2f})"
+            )
+        else:
+            # No match — check if this thesis qualifies for a new thread
+            src_config = source_lookup.get(thesis.get("source_id", ""), {})
+            if _thesis_qualifies_for_seed(
+                thesis, src_config, expertise_matrix, v16_assets
+            ):
+                new_thread = _create_seed_thread(
+                    thesis, src_config, expertise_matrix, today_str, all_ids
+                )
+                active_threads.append(new_thread)
+                all_ids.add(new_thread["thread_id"])
+                new_thread_count += 1
+                logger.info(
+                    f"NEW THREAD: {new_thread['thread_id']} — "
+                    f"'{new_thread['core_hypothesis'][:80]}...'"
+                )
+            else:
+                unmatched_count += 1
+
+    # Recompute conviction and portfolio alignment for ALL active threads
+    newly_archived = []
+    surviving_active = []
+
+    for thread in active_threads:
+        # Compute conviction
+        _compute_thread_conviction(
+            thread, expertise_matrix, source_history, v16_context, taxonomy
+        )
+
+        # Compute portfolio alignment
+        pa = _compute_portfolio_alignment(thread, v16_context)
+        thread["portfolio_alignment"] = pa["portfolio_alignment"]
+        thread["portfolio_detail"] = pa["portfolio_detail"]
+        thread["portfolio_relevance_score"] = pa["portfolio_relevance_score"]
+        thread["threatened_positions"] = pa["threatened_positions"]
+
+        # Update lifecycle (needs portfolio_alignment for decay thresholds)
+        new_status = _update_thread_lifecycle(thread, today)
+
+        if new_status == "ARCHIVED":
+            newly_archived.append(thread)
+        else:
+            surviving_active.append(thread)
+
+    # Move archived threads
+    archived_threads.extend(newly_archived)
+
+    # Cap archived_threads to last 50 (prevent unbounded growth)
+    if len(archived_threads) > 50:
+        archived_threads = archived_threads[-50:]
+
+    # Sort active threads by portfolio_relevance_score descending
+    surviving_active.sort(
+        key=lambda t: t.get("portfolio_relevance_score", 0), reverse=True
+    )
+
+    threads_data["active_threads"] = surviving_active
+    threads_data["archived_threads"] = archived_threads
+
+    # Log summary
+    status_counts = {}
+    for t in surviving_active:
+        s = t.get("status", "UNKNOWN")
+        status_counts[s] = status_counts.get(s, 0) + 1
+
+    challenged = [t["thread_id"] for t in surviving_active if t.get("challenged")]
+    threatening = [
+        t["thread_id"] for t in surviving_active
+        if t.get("portfolio_alignment") == "THREATENING"
+    ]
+
+    logger.info(
+        f"Narrative Threads: {len(surviving_active)} active "
+        f"({status_counts}), {len(newly_archived)} newly archived"
+    )
+    logger.info(
+        f"Thread matching: {matched_count} matched, {new_thread_count} new seeds, "
+        f"{unmatched_count} unmatched (below seed threshold)"
+    )
+    if challenged:
+        logger.warning(f"CHALLENGED threads: {', '.join(challenged)}")
+    if threatening:
+        logger.warning(f"THREATENING threads: {', '.join(threatening)}")
+
+    return threads_data
+
+
+# ---------------------------------------------------------------------------
 # Google Drive Output
 # ---------------------------------------------------------------------------
 DRIVE_ROOT_ID = "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
@@ -1119,6 +1867,7 @@ def build_intelligence_block(
     claims_archive: dict,
     sources_config: list[dict],
     cadence_anomalies: list[dict] | None = None,
+    threads_data: dict | None = None,
 ) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
@@ -1128,7 +1877,8 @@ def build_intelligence_block(
       high_novelty_claims[] = {source, claim, novelty, signal, theme}
       catalyst_timeline[] = {event, date, days_until, impact, themes}
       source_cards[] = {source_id, source_name, tier, active_claims, ...}
-      cadence_anomalies[] = {source_id, anomaly_level, cadence_ratio, ...}  (NEW Phase 2)
+      cadence_anomalies[] = {source_id, anomaly_level, cadence_ratio, ...}
+      active_threads[] = {thread_id, core_hypothesis, status, conviction, ...}  (NEW)
     """
     today = date.today()
 
@@ -1246,6 +1996,29 @@ def build_intelligence_block(
         claims_archive, sources_config, fetch_state_path
     )
 
+    # --- Active Threads (IC V2 Phase 2) ---
+    active_threads_out = []
+    if threads_data:
+        for t in threads_data.get("active_threads", []):
+            # Compact version for dashboard (no full evidence array)
+            active_threads_out.append({
+                "thread_id": t.get("thread_id", ""),
+                "core_hypothesis": t.get("core_hypothesis", "")[:200],
+                "status": t.get("status", "SEED"),
+                "challenged": t.get("challenged", False),
+                "conviction": t.get("conviction", 0.0),
+                "direction": t.get("direction", "NEUTRAL"),
+                "topics": t.get("topics", []),
+                "sources": t.get("sources", []),
+                "source_count": t.get("source_count", 0),
+                "affected_assets": t.get("affected_assets", []),
+                "created_at": t.get("created_at", ""),
+                "last_evidence_date": t.get("last_evidence_date", ""),
+                "portfolio_alignment": t.get("portfolio_alignment", "NEUTRAL"),
+                "portfolio_relevance_score": t.get("portfolio_relevance_score", 0.0),
+                "threatened_positions": t.get("threatened_positions", []),
+            })
+
     return {
         "status": "AVAILABLE",
         "consensus": consensus_out,
@@ -1255,6 +2028,7 @@ def build_intelligence_block(
         "catalyst_timeline": catalysts_out,
         "source_cards": source_cards,
         "cadence_anomalies": cadence_anomalies or [],
+        "active_threads": active_threads_out,
     }
 
 
@@ -1265,6 +2039,7 @@ def update_dashboard_json(
     claims_archive: dict,
     sources_config: list[dict],
     cadence_anomalies: list[dict] | None = None,
+    threads_data: dict | None = None,
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -1312,15 +2087,19 @@ def update_dashboard_json(
         with open(DASHBOARD_JSON_PATH, "r") as f:
             dashboard = json.load(f)
 
-        # Replace intelligence block (with source_cards + cadence_anomalies)
+        # Replace intelligence block (with source_cards + cadence_anomalies + threads)
         dashboard["intelligence"] = build_intelligence_block(
-            intel, briefing, claims_archive, sources_config, cadence_anomalies
+            intel, briefing, claims_archive, sources_config,
+            cadence_anomalies, threads_data
         )
 
         # Update pipeline health
         now_utc = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
         new_claims = intel.get("extraction_summary", {}).get("total_claims", 0)
         anomaly_count = len(cadence_anomalies) if cadence_anomalies else 0
+        thread_count = len(
+            threads_data.get("active_threads", [])
+        ) if threads_data else 0
         steps = dashboard.get("pipeline_health", {}).get("steps", {})
         steps["step_0b_ic"] = {
             "status": "OK",
@@ -1331,6 +2110,7 @@ def update_dashboard_json(
                 f"{len(intel.get('divergences', []))} divergences, "
                 f"{intel.get('extraction_summary', {}).get('high_novelty_claims', 0)} high-novelty"
                 f"{f', {anomaly_count} cadence anomalies' if anomaly_count else ''}"
+                f"{f', {thread_count} threads' if thread_count else ''}"
             ),
         }
 
@@ -1382,6 +2162,7 @@ def main():
     briefing = {}
     active_claims_count = 0
     cadence_anomalies = []
+    threads_data = None
 
     # Load claims archive for carry-forward
     claims_archive = _load_claims_archive()
@@ -1445,6 +2226,14 @@ def main():
         )
         _save_source_history(source_history)
 
+        # Narrative Threads (IC V2 Phase 2)
+        threads_data = _load_threads()
+        threads_data = _update_threads(
+            new_claims, threads_data, v16_context,
+            expertise_matrix, sources, source_history, taxonomy
+        )
+        _save_threads(threads_data)
+
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
             if args.stage == "intelligence" and not active_claims:
@@ -1487,7 +2276,7 @@ def main():
             write_agent_summary_tab(briefing)
             update_dashboard_json(
                 intel, briefing, active_claims_count,
-                claims_archive, sources, cadence_anomalies
+                claims_archive, sources, cadence_anomalies, threads_data
             )
 
     except Exception as e:
