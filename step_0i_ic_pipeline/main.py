@@ -3,11 +3,12 @@ IC Intelligence Pipeline — Main Entry Point
 Usage: python -m step_0i_ic_pipeline.main --stage all
 Stages: extraction, intelligence, briefing, all
 
-IC V2 Phase 1: 7-Day Claims Carry-Forward
+IC V2 Phase 1: 7-Day Claims Carry-Forward + Source Cards
 - claims_archive.json persists ALL claims from last 7 days
 - New claims are ADDED (not replaced)
 - Old claims get Freshness tags: FRESH/AGING/FADING/ARCHIVED/EXPIRED
 - Intelligence Engine receives ALL active claims, not just today's
+- source_cards[] in latest.json intelligence block
 """
 
 import argparse
@@ -548,9 +549,155 @@ def run_briefing(intel: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Source Cards Builder (IC V2 Phase 1)
+# ---------------------------------------------------------------------------
+def _build_source_cards(
+    claims_archive: dict,
+    sources_config: list[dict],
+    fetch_state_path: str,
+) -> list[dict]:
+    """Build source_cards[] array for latest.json intelligence block.
+
+    Per source: name, tier, active claims count, freshness breakdown,
+    latest content date, days since content, stale warning, direction,
+    bias-adjusted signal, top claim text, topics covered.
+    """
+    today = date.today()
+
+    # Load fetch_state for last_content_date per source
+    fetch_state = {}
+    fs_path = os.path.normpath(fetch_state_path)
+    if os.path.exists(fs_path):
+        try:
+            with open(fs_path, "r") as f:
+                fs_data = json.load(f)
+            fetch_state = fs_data.get("fetch_state", {})
+        except Exception:
+            pass
+
+    # Build source lookup
+    source_lookup = {s["source_id"]: s for s in sources_config}
+
+    # Group archive claims by source_id (only active: FRESH/AGING/FADING)
+    source_claims = {}
+    for claim in claims_archive.get("claims", []):
+        if claim.get("freshness") not in ("FRESH", "AGING", "FADING"):
+            continue
+        sid = claim.get("source_id", "")
+        if sid not in source_claims:
+            source_claims[sid] = []
+        source_claims[sid].append(claim)
+
+    cards = []
+    for src in sources_config:
+        sid = src["source_id"]
+        if not src.get("active", True):
+            continue
+
+        claims_list = source_claims.get(sid, [])
+
+        # Freshness breakdown
+        freshness_breakdown = {"FRESH": 0, "AGING": 0, "FADING": 0}
+        for c in claims_list:
+            f = c.get("freshness", "")
+            if f in freshness_breakdown:
+                freshness_breakdown[f] += 1
+
+        # Latest content date from fetch_state
+        fs_entry = fetch_state.get(sid, {})
+        last_content_date = fs_entry.get("last_content_date", "")
+        days_since = None
+        if last_content_date and last_content_date != "2000-01-01":
+            try:
+                lcd = datetime.strptime(last_content_date, "%Y-%m-%d").date()
+                days_since = (today - lcd).days
+            except (ValueError, TypeError):
+                pass
+
+        # Stale warning: CORE source >14 days without content
+        tier = src.get("tier", "")
+        stale_warning = False
+        if tier == "CORE" and days_since is not None and days_since > 14:
+            stale_warning = True
+
+        # Direction + intensity from highest-novelty active claim
+        direction = ""
+        intensity = 0
+        bias_adj = 0
+        top_claim_text = ""
+        all_topics = set()
+        best_novelty = -1
+
+        known_bias = src.get("known_bias", 0)
+
+        for c in claims_list:
+            # Collect topics
+            for t in c.get("topics", []):
+                all_topics.add(t)
+
+            nov = c.get("novelty_score", 0)
+            if nov > best_novelty:
+                best_novelty = nov
+                sentiment = c.get("sentiment", {})
+                direction = sentiment.get("direction", "")
+                intensity = sentiment.get("intensity", 0)
+                top_claim_text = c.get("claim_text", "")[:200]
+
+                # Bias-adjusted signal
+                signed = intensity if direction == "BULLISH" else (
+                    -intensity if direction == "BEARISH" else 0
+                )
+                bias_adj = signed - known_bias
+
+        cards.append({
+            "source_id": sid,
+            "source_name": src.get("source_name", sid),
+            "tier": tier,
+            "active_claims": len(claims_list),
+            "freshness_breakdown": freshness_breakdown,
+            "latest_content_date": last_content_date,
+            "days_since_content": days_since,
+            "stale_warning": stale_warning,
+            "direction": direction,
+            "intensity": intensity,
+            "bias_adjusted_signal": bias_adj,
+            "known_bias": known_bias,
+            "top_claim": top_claim_text,
+            "topics": sorted(all_topics),
+        })
+
+    # Sort: CORE first, then by active_claims descending
+    tier_order = {"CORE": 0, "SECONDARY": 1, "NOISE_FILTER": 2}
+    cards.sort(key=lambda c: (
+        tier_order.get(c["tier"], 9),
+        -c["active_claims"],
+    ))
+
+    # Log stale warnings
+    stale_sources = [c["source_id"] for c in cards if c["stale_warning"]]
+    if stale_sources:
+        logger.warning(
+            f"STALE SOURCE WARNING: {', '.join(stale_sources)} "
+            f"(CORE, >14 days without content)"
+        )
+
+    logger.info(
+        f"Source cards built: {len(cards)} sources, "
+        f"{sum(c['active_claims'] for c in cards)} total active claims"
+    )
+
+    return cards
+
+
+# ---------------------------------------------------------------------------
 # Dashboard Intelligence Block Builder
 # ---------------------------------------------------------------------------
-def build_intelligence_block(intel: dict, briefing: dict) -> dict:
+def build_intelligence_block(
+    intel: dict,
+    briefing: dict,
+    claims_archive: dict,
+    sources_config: list[dict],
+) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
     Format matches IntelDetail.jsx expectations exactly:
@@ -558,6 +705,7 @@ def build_intelligence_block(intel: dict, briefing: dict) -> dict:
       divergences[] = {theme, divergence_type, magnitude, ic_signal, dc_signal, ...}
       high_novelty_claims[] = {source, claim, novelty, signal, theme}
       catalyst_timeline[] = {event, date, days_until, impact, themes}
+      source_cards[] = {source_id, source_name, tier, active_claims, ...}  (NEW)
     """
     today = date.today()
 
@@ -630,6 +778,7 @@ def build_intelligence_block(intel: dict, briefing: dict) -> dict:
             "signal": round(signal, 1),
             "theme": primary_topic,
             "date": hn.get("content_date", ""),
+            "freshness": hn.get("freshness", "FRESH"),
         })
 
     claims_out.sort(key=lambda x: x["novelty"], reverse=True)
@@ -668,6 +817,12 @@ def build_intelligence_block(intel: dict, briefing: dict) -> dict:
 
     catalysts_out.sort(key=lambda x: x["days_until"])
 
+    # --- Source Cards (IC V2 Phase 1) ---
+    fetch_state_path = os.path.join(DATA_DIR, "history", "fetch_state.json")
+    source_cards = _build_source_cards(
+        claims_archive, sources_config, fetch_state_path
+    )
+
     return {
         "status": "AVAILABLE",
         "consensus": consensus_out,
@@ -675,11 +830,16 @@ def build_intelligence_block(intel: dict, briefing: dict) -> dict:
         "divergences_count": len(divergences_out),
         "high_novelty_claims": claims_out,
         "catalyst_timeline": catalysts_out,
+        "source_cards": source_cards,
     }
 
 
 def update_dashboard_json(
-    intel: dict, briefing: dict, active_claims_count: int
+    intel: dict,
+    briefing: dict,
+    active_claims_count: int,
+    claims_archive: dict,
+    sources_config: list[dict],
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -727,8 +887,10 @@ def update_dashboard_json(
         with open(DASHBOARD_JSON_PATH, "r") as f:
             dashboard = json.load(f)
 
-        # Replace intelligence block
-        dashboard["intelligence"] = build_intelligence_block(intel, briefing)
+        # Replace intelligence block (with source_cards)
+        dashboard["intelligence"] = build_intelligence_block(
+            intel, briefing, claims_archive, sources_config
+        )
 
         # Update pipeline health
         now_utc = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -854,7 +1016,10 @@ def main():
             write_drive_outputs(claims_output, intel, briefing, claims_archive)
             write_intelligence_tab(active_claims, sources)
             write_agent_summary_tab(briefing)
-            update_dashboard_json(intel, briefing, active_claims_count)
+            update_dashboard_json(
+                intel, briefing, active_claims_count,
+                claims_archive, sources
+            )
 
     except Exception as e:
         logger.exception(f"Pipeline failed: {e}")
