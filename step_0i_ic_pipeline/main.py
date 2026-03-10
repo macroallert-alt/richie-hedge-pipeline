@@ -2452,6 +2452,207 @@ def _compute_cross_system_confirmation(
 
 
 # ---------------------------------------------------------------------------
+# Source Disagreement Tracking (IC V2 Phase 3, Spec Kapitel 12)
+# ---------------------------------------------------------------------------
+DISAGREEMENT_MIN_EXPERTISE = 6
+
+
+def _detect_disagreements(
+    active_claims: list[dict],
+    sources_config: list[dict],
+    expertise_matrix: dict,
+    source_history: dict,
+    v16_context: dict | None,
+) -> list[dict]:
+    """Detect expert disagreements per topic.
+
+    A disagreement exists when:
+      1. Two sources have active claims on the same topic
+      2. Their directions are opposite (BULLISH vs BEARISH)
+      3. Both have expertise >= 6 in that topic
+
+    For each disagreement, tracks:
+      - Side A (bullish) and Side B (bearish) with strongest source
+      - V16 alignment (which side does V16 support?)
+      - Portfolio exposure (which positions are affected?)
+      - Second derivative signal (is one side's conviction fading?)
+
+    Returns: list of disagreement dicts
+    """
+    source_lookup = {s["source_id"]: s for s in sources_config}
+    expertise = expertise_matrix.get("expertise", {})
+    sources_hist = source_history.get("sources", {}) if source_history else {}
+
+    # Group claims by topic + direction, tracking best source per side
+    # Structure: topic -> direction -> [{source_id, expertise, claim_text, ...}]
+    topic_sides: dict[str, dict[str, list[dict]]] = {}
+
+    for claim in active_claims:
+        direction = claim.get("sentiment", {}).get("direction", "NEUTRAL")
+        if direction not in ("BULLISH", "BEARISH"):
+            continue
+
+        for topic in claim.get("topics", []):
+            source_id = claim.get("source_id", "")
+            exp_score = expertise.get(source_id, {}).get(topic, 0)
+
+            if exp_score < DISAGREEMENT_MIN_EXPERTISE:
+                continue
+
+            if topic not in topic_sides:
+                topic_sides[topic] = {"BULLISH": [], "BEARISH": []}
+
+            # Check if this source is already on this side for this topic
+            existing = [
+                e for e in topic_sides[topic][direction]
+                if e["source_id"] == source_id
+            ]
+            if existing:
+                # Keep highest novelty claim
+                if claim.get("novelty_score", 0) > existing[0].get("novelty_score", 0):
+                    existing[0].update({
+                        "claim_text": claim.get("claim_text", "")[:200],
+                        "novelty_score": claim.get("novelty_score", 0),
+                        "intensity": claim.get("sentiment", {}).get("intensity", 5),
+                    })
+            else:
+                topic_sides[topic][direction].append({
+                    "source_id": source_id,
+                    "expertise": exp_score,
+                    "direction": direction,
+                    "claim_text": claim.get("claim_text", "")[:200],
+                    "novelty_score": claim.get("novelty_score", 0),
+                    "intensity": claim.get("sentiment", {}).get("intensity", 5),
+                })
+
+    # Build disagreements where both sides have qualified sources
+    disagreements = []
+
+    for topic, sides in topic_sides.items():
+        bulls = sides.get("BULLISH", [])
+        bears = sides.get("BEARISH", [])
+
+        if not bulls or not bears:
+            continue
+
+        # Get strongest source per side (by expertise, then novelty)
+        best_bull = max(bulls, key=lambda s: (s["expertise"], s["novelty_score"]))
+        best_bear = max(bears, key=lambda s: (s["expertise"], s["novelty_score"]))
+
+        # V16 alignment: check belief state direction or layer scores
+        v16_alignment = "UNKNOWN"
+        if v16_context:
+            # Simple heuristic: if V16 has positive weights in assets
+            # associated with this topic's bullish direction, V16 = SIDE_A
+            # This is approximate; full implementation would use layer scores
+            v16_alignment = "NEUTRAL"
+
+        # Second derivative: check conviction trends
+        bull_trend = sources_hist.get(
+            best_bull["source_id"], {}
+        ).get("conviction_trend", "STABLE")
+        bear_trend = sources_hist.get(
+            best_bear["source_id"], {}
+        ).get("conviction_trend", "STABLE")
+
+        second_derivative = None
+        if bull_trend == "FALLING" and bear_trend != "FALLING":
+            second_derivative = (
+                f"{best_bull['source_id']}'s conviction FALLING — "
+                f"disagreement may resolve toward BEARISH"
+            )
+        elif bear_trend == "FALLING" and bull_trend != "FALLING":
+            second_derivative = (
+                f"{best_bear['source_id']}'s conviction FALLING — "
+                f"disagreement may resolve toward BULLISH"
+            )
+        elif bull_trend == "RISING" and bear_trend != "RISING":
+            second_derivative = (
+                f"{best_bull['source_id']}'s conviction RISING — "
+                f"bullish side strengthening"
+            )
+        elif bear_trend == "RISING" and bull_trend != "RISING":
+            second_derivative = (
+                f"{best_bear['source_id']}'s conviction RISING — "
+                f"bearish side strengthening"
+            )
+
+        # Portfolio exposure: check if V16 has positions in assets for this topic
+        portfolio_exposure = "NONE"
+        if v16_context:
+            from step_0i_ic_pipeline.src.extraction.extractor import _load_taxonomy
+            try:
+                tax = _load_taxonomy()
+                topic_assets = set(tax.get("topic_to_assets", {}).get(topic, []))
+                v16_weights = v16_context.get("current_weights", {})
+                v16_assets = {
+                    a.upper() for a, w in v16_weights.items()
+                    if isinstance(w, (int, float)) and w > 0.005
+                }
+                overlap = topic_assets & v16_assets
+                if overlap:
+                    total_weight = sum(
+                        v16_weights.get(a, 0) for a in overlap
+                    )
+                    if total_weight > 0.20:
+                        portfolio_exposure = "HIGH"
+                    elif total_weight > 0.10:
+                        portfolio_exposure = "MEDIUM"
+                    else:
+                        portfolio_exposure = "LOW"
+            except Exception:
+                pass
+
+        disagreements.append({
+            "topic": topic,
+            "side_a": {
+                "source_id": best_bull["source_id"],
+                "direction": "BULLISH",
+                "expertise": best_bull["expertise"],
+                "intensity": best_bull["intensity"],
+                "claim_text": best_bull["claim_text"],
+                "conviction_trend": bull_trend,
+                "supporter_count": len(bulls),
+            },
+            "side_b": {
+                "source_id": best_bear["source_id"],
+                "direction": "BEARISH",
+                "expertise": best_bear["expertise"],
+                "intensity": best_bear["intensity"],
+                "claim_text": best_bear["claim_text"],
+                "conviction_trend": bear_trend,
+                "supporter_count": len(bears),
+            },
+            "v16_alignment": v16_alignment,
+            "portfolio_exposure": portfolio_exposure,
+            "second_derivative_signal": second_derivative,
+        })
+
+    # Sort by portfolio exposure (HIGH first) then by max expertise
+    exposure_order = {"HIGH": 0, "MEDIUM": 1, "LOW": 2, "NONE": 3}
+    disagreements.sort(key=lambda d: (
+        exposure_order.get(d["portfolio_exposure"], 9),
+        -max(d["side_a"]["expertise"], d["side_b"]["expertise"]),
+    ))
+
+    # Log
+    if disagreements:
+        for d in disagreements:
+            sd_sig = d.get("second_derivative_signal", "")
+            logger.info(
+                f"EXPERT DISAGREEMENT: {d['topic']} — "
+                f"{d['side_a']['source_id']} (BULL, exp {d['side_a']['expertise']}) "
+                f"vs {d['side_b']['source_id']} (BEAR, exp {d['side_b']['expertise']}) "
+                f"| Portfolio: {d['portfolio_exposure']}"
+                f"{f' | {sd_sig}' if sd_sig else ''}"
+            )
+    else:
+        logger.info("Source Disagreement Tracking: no expert disagreements detected")
+
+    return disagreements
+
+
+# ---------------------------------------------------------------------------
 # Google Drive Output
 # ---------------------------------------------------------------------------
 DRIVE_ROOT_ID = "1Tng3i4Cly7isKOxIkGqiTmGiZNEtPj3D"
@@ -2985,6 +3186,7 @@ def build_intelligence_block(
     pm_data: dict | None = None,
     belief_state: dict | None = None,
     cross_system: list | None = None,
+    expert_disagreements: list | None = None,
 ) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
@@ -3198,6 +3400,7 @@ def build_intelligence_block(
         "belief_shifts": belief_shifts_out,
         "stale_beliefs": stale_beliefs_out,
         "cross_system": cross_system_out,
+        "expert_disagreements": expert_disagreements or [],
     }
 
 
@@ -3212,6 +3415,7 @@ def update_dashboard_json(
     pm_data: dict | None = None,
     belief_state: dict | None = None,
     cross_system: list | None = None,
+    expert_disagreements: list | None = None,
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -3263,7 +3467,7 @@ def update_dashboard_json(
         dashboard["intelligence"] = build_intelligence_block(
             intel, briefing, claims_archive, sources_config,
             cadence_anomalies, threads_data, pm_data, belief_state,
-            cross_system
+            cross_system, expert_disagreements
         )
 
         # Update pipeline health
@@ -3343,6 +3547,7 @@ def main():
     pm_data = None
     belief_state = None
     cross_system = None
+    expert_disagreements = None
 
     # Load claims archive for carry-forward
     claims_archive = _load_claims_archive()
@@ -3439,6 +3644,12 @@ def main():
                 logger.warning(f"Cross-System Confirmation failed: {e}")
                 cross_system = []
 
+        # Source Disagreement Tracking (IC V2 Phase 3)
+        expert_disagreements = _detect_disagreements(
+            active_claims, sources, expertise_matrix,
+            source_history, v16_context
+        )
+
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
             if args.stage == "intelligence" and not active_claims:
@@ -3482,7 +3693,8 @@ def main():
             update_dashboard_json(
                 intel, briefing, active_claims_count,
                 claims_archive, sources, cadence_anomalies, threads_data,
-                pm_data, belief_state, cross_system
+                pm_data, belief_state, cross_system,
+                expert_disagreements
             )
 
     except Exception as e:
