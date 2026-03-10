@@ -1,46 +1,37 @@
 {
   "date": "2026-03-10",
-  "run_id": "da_20260310_134938",
-  "draft_run_id": "cio_draft_20260310_134321",
+  "run_id": "da_20260310_135754",
+  "draft_run_id": "cio_draft_20260310_135146",
   "primary_focus": "UNASKED_QUESTION",
   "perspective_seed": "Makro-Trader",
   "challenges": [
     {
       "id": "da_20260310_003",
       "type": "PREMISE_ATTACK",
-      "target_section": "S4",
+      "target_section": "SYSTEM",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 7, 3x NOTED): Der CIO nimmt an dass Router COMMODITY_SUPER Proximity 0% → 100% in einem Tag \"anomal\" ist und auf \"binaeres Trigger-Design\" hindeutet — aber ist dir aufgefallen dass diese Interpretation die FALSCHE Frage stellt?\n\nCIO S4: \"Historisch (30d-Daten) war Proximity immer 0% oder 1.0% — kein Zwischenwert, keine Oszillation. Das deutet auf binäres Trigger-Design hin.\"\n\nAber Router-Mechanik (aus CIO S2) zeigt: Proximity = Durchschnitt aus 3 Bedingungen (DBC/SPY 6M relative, V16 regime allowed, DXY not rising). Jede Bedingung ist 0% oder 100% (binary), aber der DURCHSCHNITT kann Zwischenwerte haben.\n\nBeispiel: Wenn 2 von 3 Bedingungen erfuellt sind, ist Proximity 66.67%, nicht 0% oder 100%.\n\nAber Router History (30d) zeigt NUR 0% oder 100% — niemals 33%, 66%, oder andere Zwischenwerte.\n\nDas bedeutet: Entweder (a) alle 3 Bedingungen aendern sich SYNCHRON (alle gleichzeitig von FALSE zu TRUE), oder (b) Router-Proximity-Berechnung ist NICHT der Durchschnitt der 3 Bedingungen, sondern eine AND-Verknuepfung (alle 3 MUESSEN erfuellt sein, sonst 0%).\n\nWenn (a): Warum aendern sich DBC/SPY 6M relative (Momentum-Signal, graduell) UND V16 regime (Regime-Shift, diskret) UND DXY (Preis-Signal, kontinuierlich) GLEICHZEITIG?\n\nWenn (b): Router-Dokumentation ist falsch oder unvollstaendig — \"Proximity\" ist kein Proximity-Mass (Naehe zum Trigger), sondern ein BINARY-FLAG (Entry-Bedingung erfuellt: ja/nein).\n\nCIO interpretiert 0% → 100% als \"anomal\" und plant \"Pruefe DBC/SPY 6M Chart manuell\" (implizit in A8) — aber die EIGENTLICHE Anomalie ist dass Proximity NIEMALS Zwischenwerte zeigt.\n\nWenn Router-Proximity ein echter Proximity-Score waere (wie der Name impliziert), sollte er graduell steigen: 0% → 33% (eine Bedingung erfuellt) → 66% (zwei Bedingungen) → 100% (alle drei). Das wuerde Operator VORLAUF geben (\"Proximity steigt, Entry in X Tagen wahrscheinlich\").\n\nAber aktuelles Verhalten (0% oder 100%, keine Zwischenwerte) gibt KEINEN Vorlauf — Entry-Signal erscheint abrupt.\n\nDas ist problematisch fuer A8 (Router-Proximity Persistenz-Check), weil \"Proximity taeglich monitoren\" nutzlos ist wenn Proximity nur zwei Zustaende hat (OFF/ON). Monitoring erkennt den Shift erst NACHDEM er passiert ist, nicht BEVOR.\n\nWenn Router-Entry am 2026-04-01 stattfindet (naechste Evaluation), hat Operator 22 Tage \"Vorlauf\" — aber dieser Vorlauf ist KALENDER-basiert (Monatserster), nicht SIGNAL-basiert (Proximity-Aufbau).\n\nCIO S4 sagt: \"Wenn Proximity bis 2026-04-01 haelt → Router-Entry sehr wahrscheinlich.\" Aber \"haelt\" bedeutet \"bleibt bei 100%\" — es gibt keine Moeglichkeit dass Proximity auf 66% oder 33% FAELLT (gradueller Rueckgang). Proximity kann nur auf 0% springen (eine der 3 Bedingungen wird FALSE).\n\nDas macht \"Proximity-Monitoring\" zu einem BINARY-WATCH (ist Entry-Bedingung noch erfuellt?), nicht zu einem TREND-MONITOR (baut sich Entry-Signal auf?).\n\nDie Praemisse \"Proximity-Persistenz ist ungewoehnlich\" (CIO S4) ist falsch — Proximity-Persistenz ist die EINZIGE Moeglichkeit wie Router funktionieren kann, weil Proximity keine Zwischenwerte hat.\n\nDie RICHTIGE Frage: Warum hat Router ein \"Proximity\"-Konzept wenn es faktisch ein Binary-Flag ist? Entweder (1) Router-Design ist suboptimal (sollte echten Proximity-Score haben), oder (2) Router-Dokumentation ist irrefuehrend (sollte \"Entry Condition Met: TRUE/FALSE\" heissen, nicht \"Proximity\").\n\nPortfolio-Implikation: A8 (Router-Proximity Persistenz-Check) sollte umformuliert werden. Statt \"Proximity taeglich monitoren bis 2026-04-01\" sollte es heissen: \"Taeglich pruefen ob Entry-Bedingung noch erfuellt ist (TRUE/FALSE). Wenn FALSE → Alert (Entry-Signal verschwunden). Wenn TRUE bis 2026-03-20 → Pre-Entry-Review.\"\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "challenge_text": "FORCED DECISION (Tag 4, 5x NOTED): FORCED DECISION (Tag 3, 5x NOTED): FORCED DECISION (Tag 2, 3x NOTED): **FORCED DECISION (Tag 7, 7x NOTED):** Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items haben UNTERSCHIEDLICHE Dringlichkeits-Natur die durch \"Tage offen\" nicht erfasst wird.\n\nA1 (HYG-Konzentration, 18 Tage): EREIGNIS-GETRIEBEN — Dringlichkeit entsteht durch CPI HEUTE, nicht durch 18 Tage Wartezeit.\n\nA2 (NFP/ECB Monitoring, 18 Tage): KALENDER-GETRIEBEN — NFP bereits vorbei (erledigt), ECB +2d (fix terminiert). \"18 Tage offen\" ist irrelevant.\n\nA4 (Liquidity-Mechanik-Tracking, 18 Tage): DATEN-GETRIEBEN — Dringlichkeit entsteht wenn Howell neues Update postet, nicht durch Kalender.\n\nA6 (IC-Daten-Refresh, 11 Tage): QUALITAETS-GETRIEBEN — Dringlichkeit ist \"Data Quality DEGRADED\", nicht \"11 Tage alt\".\n\nA7 (Post-CPI System-Review, 9 Tage): SEQUENZ-GETRIEBEN — kann NICHT vor CPI resolved werden (CPI ist Input).\n\nDie Praemisse \"Tage offen = Dringlichkeit\" fuehrt zu falscher Priorisierung. A1 (18 Tage offen, HEUTE dringend) erscheint gleich dringlich wie A4 (18 Tage offen, THIS_WEEK dringend) — aber A1 hat 12h Deadline, A4 hat 5d Deadline.\n\nSystem hat keine Dringlichkeits-TAXONOMIE — nur \"Trade Class A/B\" (binary) und \"Tage offen\" (linear). Wenn CIO morgen 10 Items sieht die alle \"19 Tage offen\" sind, fehlt die Information WELCHES zuerst resolved werden muss.\n\n**CIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.**\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
       "evidence": [
-        "Router History 30d: Proximity nur 0% oder 100%, niemals Zwischenwerte",
-        "Router-Mechanik: 3 Bedingungen (DBC/SPY, V16 regime, DXY) — sollte Zwischenwerte ermoeglichen wenn Durchschnitt",
-        "CIO S4: \"Proximity immer 0% oder 1.0%\" — bestaetigt Binary-Verhalten",
-        "CIO S2: \"Proximity = Durchschnitt aus 3 Bedingungen\" — widerspricht beobachtetem Verhalten",
-        "A8 Action Item: \"Proximity taeglich monitoren\" — nutzlos bei Binary-Flag (kein Trend erkennbar)"
+        "A1/A2/A4/A6/A7 alle >9 Tage offen, aber unterschiedliche Trigger-Mechaniken",
+        "CPI heute 08:30 ET = harte Deadline fuer A1, aber irrelevant fuer A4",
+        "System zeigt nur \"Tag X\" ohne Dringlichkeits-Kontext"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 7,
+      "persistent_days": 4,
       "is_forced_decision": true,
       "validation_warnings": []
     },
     {
-      "id": "da_20260310_001",
-      "type": "UNASKED_QUESTION",
-      "target_section": "SYSTEM",
+      "id": "da_20260309_005",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S7",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 9, 12x NOTED): FORCED DECISION (Tag 8, 10x NOTED): FORCED DECISION (Tag 7, 9x NOTED): FORCED DECISION (Tag 6, 7x NOTED): FORCED DECISION (Tag 5, 7x NOTED): FORCED DECISION (Tag 4, 5x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen EBENE stellt? CIO fokussiert auf Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m) — aber die EIGENTLICHE Frage vor CPI MORGEN ist: Wie liquide ist das DOLLAR-FUNDING-SYSTEM das diese Maerkte traegt? Jeff Snider Claim jeff_snider_005 sagt explizit \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted.\" Das ist kein EM-Problem — das ist ein GLOBALES Dollar-Liquidity-Problem. Wenn EM-Importeure mehr Dollars brauchen (Energie-Schock) GLEICHZEITIG mit Private-Credit-Bust in US/UK/Europe (Claim jeff_snider_002), entsteht Dollar-Nachfrage-Spike. Market Analyst L4 (Cross-Border Flows) zeigt DXY Score 0 (50. Perzentil, STABLE) — aber das misst DXY-PREIS, nicht Dollar-VERFUEGBARKEIT. DXY kann stabil sein waehrend Dollar-Funding-Stress steigt (2019 Repo-Krise: DXY flat, aber Repo-Rates explodierten). Das System hat KEINEN direkten Dollar-Liquidity-Indikator — kein LIBOR-OIS, kein FRA-OIS, kein Cross-Currency-Basis-Spread, kein Repo-Rate-Monitoring. V16 liq_direction -1 aggregiert Net Liquidity/WALCL/TGA/RRP — das sind FED-Balance-Sheet-Metriken (US-zentrisch). Aber Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System, das Snider staendig betont). Wenn CPI morgen hot → Fed-Tightening-Expectations → Dollar-Funding-Kosten steigen → Eurodollar-Stress verschaerft sich → das trifft HYG (28.8%) NICHT durch Credit-Spreads (die misst Market Analyst L2 HY OAS Score 0), sondern durch FUNDING-Kosten der Emittenten. High-Yield-Unternehmen die auf Dollar-Funding angewiesen sind (viele sind international operierend) bekommen Refinanzierungs-Probleme wenn Eurodollar-Maerkte zufrieren — das zeigt sich NICHT in HY OAS (das misst Spread zu Treasuries), sondern in ISSUANCE-Volumina (neue Bonds koennen nicht platziert werden). System trackt HY OAS, aber nicht HY-Issuance. Die ungestellte Frage: Was ist der Zustand des OFFSHORE-Dollar-Funding-Systems, und wie schnell kann es sich verschlechtern post-CPI? Snider argumentiert dass Private-Credit-Bust (Claim jeff_snider_002) bereits Dollar-Nachfrage erhoehen sollte (Deleveraging = Dollar-Bedarf) — aber DXY Score 0 zeigt keine Reaktion. Das bedeutet entweder: (1) Snider liegt falsch (kein Bust), oder (2) Dollar-Nachfrage wird durch andere Flows kompensiert (z.B. EM-Kapitalflucht in Dollars, die Doomberg-Szenario impliziert), oder (3) Stress ist noch nicht in DXY-Preis sichtbar (Lag). Bei (3) ist CPI der Katalysator der latenten Stress SICHTBAR macht — aehnlich wie Lehman 2008 latenten Subprime-Stress sichtbar machte. Portfolio-Implikation: HYG 28.8% ist exponiert gegen Dollar-Funding-Stress den das System nicht misst. V16 FRAGILE_EXPANSION-Regime hat kein \"Eurodollar-Stress\"-Signal — V16 wuerde erst reagieren wenn HY OAS steigt (Score <-5), aber dann ist es zu spaet (Funding-Maerkte frieren VOR Spread-Ausweitung ein, nicht danach). A1 (HYG-Konzentration Review) adressiert Tail-Hedges (VIX Calls, TLT) — aber die RICHTIGE Hedge gegen Dollar-Funding-Stress waere CASH oder ULTRA-SHORT-DURATION (T-Bills), nicht TLT (20Y Duration, exponiert gegen Zinsen). System hat keine Cash-Position (V16 current_weights zeigt 0% Cash) — 100% invested. Das ist Standard fuer Momentum-Strategien, aber bei Funding-Stress ist Cash King.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
-      "evidence": [
-        "Jeff Snider Claim jeff_snider_005: \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted\"",
-        "Jeff Snider Claim jeff_snider_002: \"private credit bust already underway in US/UK/Europe before oil shock — now compounded by energy price shock\"",
-        "Market Analyst L4 DXY Score 0 (50. Perzentil, STABLE) — misst Preis, nicht Verfuegbarkeit",
-        "V16 liq_direction -1 basiert auf Fed-Balance-Sheet-Metriken (WALCL/TGA/RRP) — kein Offshore-Dollar-Tracking",
-        "HYG 28.8% Exposure ohne Dollar-Funding-Stress-Indikator im System",
-        "V16 current_weights: 0% Cash — 100% invested in illiquiden Event-Tag (CPI morgen)"
-      ],
+      "challenge_text": "FORCED DECISION (Tag 11, 9x NOTED): FORCED DECISION (Tag 10, 9x NOTED): FORCED DECISION (Tag 9, 8x NOTED): FORCED DECISION (Tag 8, 7x NOTED): FORCED DECISION (Tag 7, 6x NOTED): FORCED DECISION (Tag 6, 6x NOTED): FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle \"Tag 11\" oder \"Tag 9\") haben UNTERSCHIEDLICHE\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 9,
+      "persistent_days": 11,
       "is_forced_decision": true,
       "validation_warnings": []
     },
@@ -49,7 +40,7 @@
       "type": "PREMISE_ATTACK",
       "target_section": "S6",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 21, 12x NOTED): FORCED DECISION (Tag 20, 11x NOTED): FORCED DECISION (Tag 19, 10x NOTED): FORCED DECISION (Tag 18, 9x NOTED): FORCED DECISION (Tag 17, 9x NOTED): FORCED DECISION (Tag 16, 8x NOTED): FORCED DECISION (Tag 15, 7x NOTED): FORCED DECISION (Tag 14, 6x NOTED): FORCED DECISION (Tag 13, 5x NOTED): FORCED DECISION (Tag 12, 4x NOTED): FORCED DECISION (Tag 11, 3x NOTED): [PERSISTENT da_20260306_002, Tag 6] Was ist der Liquiditaets-Zustand der INSTRUMENTE im Portfolio, nicht der Maerkte? CIO fokussiert auf Macro-Liquidity (IC DEGRADED, keine Liquidity-Daten, Market Analyst L1 TRANSITION), aber HYG 28.8% + DBC 20.3% = 49.1% in Instrumenten mit strukturell schlechteren Liquiditaetsprofilen als SPY/TLT. HYG Average Daily Volume historisch $1.2bn, DBC ADV $180m. V16 AUM unbekannt, aber falls Portfolio >$50m, ist HYG 28.8% = $14.4m = 1.2% des Daily Volume. NFP heute 08:30 ET = Event-Tag mit typischer Liquidity-Kompression: HYG Bid-Ask-Spreads erweitern sich 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Das ist KEIN Credit-Risiko (KA2 adressiert Regime-Signale) und KEIN Commodities-Risiko (W4 adressiert Allocation) — das ist Execution-Risiko. CIO S7 A1 sagt \"Post-NFP: Wenn HYG -2% oder mehr, pruefe Regime-Signale\" und empfiehlt potentiell \"mechanische Gewichtsreduktion\" — aber bei Market-Order auf $14.4m HYG an einem Event-Tag mit 3x Spread-Erweiterung ist Slippage ~0.5% = $72k Loss BEVOR Trade executed ist. Risk Officer meldet Concentration (RO-20260306-003 CRITICAL), aber NICHT Instrument-Liquidity-Stress. System hat keinen Liquidity-Stress-Test fuer die Holdings selbst — nur fuer Maerkte (Market Analyst L1). NEUE DATEN HEUTE: NFP in 0d (Event-Tag), ECB in 0d, CPI in 5d = drei aufeinanderfolgende Event-Tage mit Liquidity-Kompression. Wenn A1 zu HYG-Reduktion fuehrt UND A3 (CPI-Vorbereitung) auch zu Trades fuehrt, koennte Portfolio in 5 Tagen ZWEI grosse HYG-Trades machen (heute Post-NFP + Montag Pre-CPI) = kumulativer Slippage $72k + $72k = $144k auf $50m AUM = 0.29% Performance-Drag nur durch Execution. Das ist MESSBAR und VERMEIDBAR durch Limit-Orders oder gestufte Execution, aber Signal Generator zeigt nur \"FAST_PATH, V16 weights unmodified\" — keine Execution-Logik sichtbar.\n[PERSISTENT: Tag 9, erneuert aus History]\n[PERSISTENT: Tag 10, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "challenge_text": "FORCED DECISION (Tag 22, 12x NOTED): FORCED DECISION (Tag 21, 12x NOTED): FORCED DECISION (Tag 20, 11x NOTED): FORCED DECISION (Tag 19, 10x NOTED): FORCED DECISION (Tag 18, 9x NOTED): FORCED DECISION (Tag 17, 9x NOTED): FORCED DECISION (Tag 16, 8x NOTED): FORCED DECISION (Tag 15, 7x NOTED): FORCED DECISION (Tag 14, 6x NOTED): FORCED DECISION (Tag 13, 5x NOTED): FORCED DECISION (Tag 12, 4x NOTED): FORCED DECISION (Tag 11, 3x NOTED): [PERSISTENT da_20260306_002, Tag 6] Was ist der Liquiditaets-Zustand der INSTRUMENTE im Portfolio, nicht der Maerkte? CIO fokussiert auf Macro-Liquidity (IC DEGRADED, keine Liquidity-Daten, Market Analyst L1 TRANSITION), aber HYG 28.8% + DBC 20.3% = 49.1% in Instrumenten mit strukturell schlechteren Liquiditaetsprofilen als SPY/TLT. HYG Average Daily Volume historisch $1.2bn, DBC ADV $180m. V16 AUM unbekannt, aber falls Portfolio >$50m, ist HYG 28.8% = $14.4m = 1.2% des Daily Volume. NFP heute 08:30 ET = Event-Tag mit typischer Liquidity-Kompression: HYG Bid-Ask-Spreads erweitern sich 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Das ist KEIN Credit-Risiko (KA2 adressiert Regime-Signale) und KEIN Commodities-Risiko (W4 adressiert Allocation) — das ist Execution-Risiko. CIO S7 A1 sagt \"Post-NFP: Wenn HYG -2% oder mehr, pruefe Regime-Signale\" und empfiehlt potentiell \"mechanische Gewichtsreduktion\" — aber bei Market-Order auf $14.4m HYG an einem Event-Tag mit 3x Spread-Erweiterung ist Slippage ~0.5% = $72k Loss BEVOR Trade executed ist. Risk Officer meldet Concentration (RO-20260306-003 CRITICAL), aber NICHT Instrument-Liquidity-Stress. System hat keinen Liquidity-Stress-Test fuer die Holdings selbst — nur fuer Maerkte (Market Analyst L1). NEUE DATEN HEUTE: NFP in 0d (Event-Tag), ECB in 0d, CPI in 5d = drei aufeinanderfolgende Event-Tage mit Liquidity-Kompression. Wenn A1 zu HYG-Reduktion fuehrt UND A3 (CPI-Vorbereitung) auch zu Trades fuehrt, koennte Portfolio in 5 Tagen ZWEI grosse HYG-Trades machen (heute Post-NFP + Montag Pre-CPI) = kumulativer Slippage $72k + $72k = $144k auf $50m AUM = 0.29% Performance-Drag nur durch Execution. Das ist MESSBAR und VERMEIDBAR durch Limit-Orders oder gestufte Execution, aber Signal Generator zeigt nur \"FAST_PATH, V16 weights unmodified\" — keine Execution-Logik sichtbar.\n[PERSISTENT: Tag 9, erneuert aus History]\n[PERSISTENT: Tag 10, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
       "evidence": [
         "HYG 28.8% = $14.4m bei $50m AUM (geschaetzt), DBC 20.3% = $10.15m",
         "HYG ADV $1.2bn (historisch), DBC ADV $180m → HYG Trade = 1.2% Daily Volume, DBC = 5.6%",
@@ -60,17 +51,24 @@
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 21,
+      "persistent_days": 22,
       "is_forced_decision": true,
       "validation_warnings": []
     },
     {
-      "id": "da_20260309_005",
-      "type": "PREMISE_ATTACK",
-      "target_section": "S7",
+      "id": "da_20260310_001",
+      "type": "UNASKED_QUESTION",
+      "target_section": "SYSTEM",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 10, 9x NOTED): FORCED DECISION (Tag 9, 8x NOTED): FORCED DECISION (Tag 8, 7x NOTED): FORCED DECISION (Tag 7, 6x NOTED): FORCED DECISION (Tag 6, 6x NOTED): FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle \"Tag 11\" oder \"Tag 9\") haben UNTERSCHIEDLICHE\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
-      "evidence": [],
+      "challenge_text": "FORCED DECISION (Tag 10, 12x NOTED): FORCED DECISION (Tag 9, 12x NOTED): FORCED DECISION (Tag 8, 10x NOTED): FORCED DECISION (Tag 7, 9x NOTED): FORCED DECISION (Tag 6, 7x NOTED): FORCED DECISION (Tag 5, 7x NOTED): FORCED DECISION (Tag 4, 5x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen EBENE stellt? CIO fokussiert auf Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m) — aber die EIGENTLICHE Frage vor CPI MORGEN ist: Wie liquide ist das DOLLAR-FUNDING-SYSTEM das diese Maerkte traegt? Jeff Snider Claim jeff_snider_005 sagt explizit \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted.\" Das ist kein EM-Problem — das ist ein GLOBALES Dollar-Liquidity-Problem. Wenn EM-Importeure mehr Dollars brauchen (Energie-Schock) GLEICHZEITIG mit Private-Credit-Bust in US/UK/Europe (Claim jeff_snider_002), entsteht Dollar-Nachfrage-Spike. Market Analyst L4 (Cross-Border Flows) zeigt DXY Score 0 (50. Perzentil, STABLE) — aber das misst DXY-PREIS, nicht Dollar-VERFUEGBARKEIT. DXY kann stabil sein waehrend Dollar-Funding-Stress steigt (2019 Repo-Krise: DXY flat, aber Repo-Rates explodierten). Das System hat KEINEN direkten Dollar-Liquidity-Indikator — kein LIBOR-OIS, kein FRA-OIS, kein Cross-Currency-Basis-Spread, kein Repo-Rate-Monitoring. V16 liq_direction -1 aggregiert Net Liquidity/WALCL/TGA/RRP — das sind FED-Balance-Sheet-Metriken (US-zentrisch). Aber Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System, das Snider staendig betont). Wenn CPI morgen hot → Fed-Tightening-Expectations → Dollar-Funding-Kosten steigen → Eurodollar-Stress verschaerft sich → das trifft HYG (28.8%) NICHT durch Credit-Spreads (die misst Market Analyst L2 HY OAS Score 0), sondern durch FUNDING-Kosten der Emittenten. High-Yield-Unternehmen die auf Dollar-Funding angewiesen sind (viele sind international operierend) bekommen Refinanzierungs-Probleme wenn Eurodollar-Maerkte zufrieren — das zeigt sich NICHT in HY OAS (das misst Spread zu Treasuries), sondern in ISSUANCE-Volumina (neue Bonds koennen nicht platziert werden). System trackt HY OAS, aber nicht HY-Issuance. Die ungestellte Frage: Was ist der Zustand des OFFSHORE-Dollar-Funding-Systems, und wie schnell kann es sich verschlechtern post-CPI? Snider argumentiert dass Private-Credit-Bust (Claim jeff_snider_002) bereits Dollar-Nachfrage erhoehen sollte (Deleveraging = Dollar-Bedarf) — aber DXY Score 0 zeigt keine Reaktion. Das bedeutet entweder: (1) Snider liegt falsch (kein Bust), oder (2) Dollar-Nachfrage wird durch andere Flows kompensiert (z.B. EM-Kapitalflucht in Dollars, die Doomberg-Szenario impliziert), oder (3) Stress ist noch nicht in DXY-Preis sichtbar (Lag). Bei (3) ist CPI der Katalysator der latenten Stress SICHTBAR macht — aehnlich wie Lehman 2008 latenten Subprime-Stress sichtbar machte. Portfolio-Implikation: HYG 28.8% ist exponiert gegen Dollar-Funding-Stress den das System nicht misst. V16 FRAGILE_EXPANSION-Regime hat kein \"Eurodollar-Stress\"-Signal — V16 wuerde erst reagieren wenn HY OAS steigt (Score <-5), aber dann ist es zu spaet (Funding-Maerkte frieren VOR Spread-Ausweitung ein, nicht danach). A1 (HYG-Konzentration Review) adressiert Tail-Hedges (VIX Calls, TLT) — aber die RICHTIGE Hedge gegen Dollar-Funding-Stress waere CASH oder ULTRA-SHORT-DURATION (T-Bills), nicht TLT (20Y Duration, exponiert gegen Zinsen). System hat keine Cash-Position (V16 current_weights zeigt 0% Cash) — 100% invested. Das ist Standard fuer Momentum-Strategien, aber bei Funding-Stress ist Cash King.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "Jeff Snider Claim jeff_snider_005: \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted\"",
+        "Jeff Snider Claim jeff_snider_002: \"private credit bust already underway in US/UK/Europe before oil shock — now compounded by energy price shock\"",
+        "Market Analyst L4 DXY Score 0 (50. Perzentil, STABLE) — misst Preis, nicht Verfuegbarkeit",
+        "V16 liq_direction -1 basiert auf Fed-Balance-Sheet-Metriken (WALCL/TGA/RRP) — kein Offshore-Dollar-Tracking",
+        "HYG 28.8% Exposure ohne Dollar-Funding-Stress-Indikator im System",
+        "V16 current_weights: 0% Cash — 100% invested in illiquiden Event-Tag (CPI morgen)"
+      ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
       "persistent_days": 10,
@@ -80,85 +78,71 @@
     {
       "id": "da_20260310_003",
       "type": "PREMISE_ATTACK",
+      "target_section": "S4",
+      "target_assumption": null,
+      "challenge_text": "FORCED DECISION (Tag 8, 5x NOTED): FORCED DECISION (Tag 7, 3x NOTED): Der CIO nimmt an dass Router COMMODITY_SUPER Proximity 0% → 100% in einem Tag \"anomal\" ist und auf \"binaeres Trigger-Design\" hindeutet — aber ist dir aufgefallen dass diese Interpretation die FALSCHE Frage stellt?\n\nCIO S4: \"Historisch (30d-Daten) war Proximity immer 0% oder 1.0% — kein Zwischenwert, keine Oszillation. Das deutet auf binäres Trigger-Design hin.\"\n\nAber Router-Mechanik (aus CIO S2) zeigt: Proximity = Durchschnitt aus 3 Bedingungen (DBC/SPY 6M relative, V16 regime allowed, DXY not rising). Jede Bedingung ist 0% oder 100% (binary), aber der DURCHSCHNITT kann Zwischenwerte haben.\n\nBeispiel: Wenn 2 von 3 Bedingungen erfuellt sind, ist Proximity 66.67%, nicht 0% oder 100%.\n\nAber Router History (30d) zeigt NUR 0% oder 100% — niemals 33%, 66%, oder andere Zwischenwerte.\n\nDas bedeutet: Entweder (a) alle 3 Bedingungen aendern sich SYNCHRON (alle gleichzeitig von FALSE zu TRUE), oder (b) Router-Proximity-Berechnung ist NICHT der Durchschnitt der 3 Bedingungen, sondern eine AND-Verknuepfung (alle 3 MUESSEN erfuellt sein, sonst 0%).\n\nWenn (a): Warum aendern sich DBC/SPY 6M relative (Momentum-Signal, graduell) UND V16 regime (Regime-Shift, diskret) UND DXY (Preis-Signal, kontinuierlich) GLEICHZEITIG?\n\nWenn (b): Router-Dokumentation ist falsch oder unvollstaendig — \"Proximity\" ist kein Proximity-Mass (Naehe zum Trigger), sondern ein BINARY-FLAG (Entry-Bedingung erfuellt: ja/nein).\n\nCIO interpretiert 0% → 100% als \"anomal\" und plant \"Pruefe DBC/SPY 6M Chart manuell\" (implizit in A8) — aber die EIGENTLICHE Anomalie ist dass Proximity NIEMALS Zwischenwerte zeigt.\n\nWenn Router-Proximity ein echter Proximity-Score waere (wie der Name impliziert), sollte er graduell steigen: 0% → 33% (eine Bedingung erfuellt) → 66% (zwei Bedingungen) → 100% (alle drei). Das wuerde Operator VORLAUF geben (\"Proximity steigt, Entry in X Tagen wahrscheinlich\").\n\nAber aktuelles Verhalten (0% oder 100%, keine Zwischenwerte) gibt KEINEN Vorlauf — Entry-Signal erscheint abrupt.\n\nDas ist problematisch fuer A8 (Router-Proximity Persistenz-Check), weil \"Proximity taeglich monitoren\" nutzlos ist wenn Proximity nur zwei Zustaende hat (OFF/ON). Monitoring erkennt den Shift erst NACHDEM er passiert ist, nicht BEVOR.\n\nWenn Router-Entry am 2026-04-01 stattfindet (naechste Evaluation), hat Operator 22 Tage \"Vorlauf\" — aber dieser Vorlauf ist KALENDER-basiert (Monatserster), nicht SIGNAL-basiert (Proximity-Aufbau).\n\nCIO S4 sagt: \"Wenn Proximity bis 2026-04-01 haelt → Router-Entry sehr wahrscheinlich.\" Aber \"haelt\" bedeutet \"bleibt bei 100%\" — es gibt keine Moeglichkeit dass Proximity auf 66% oder 33% FAELLT (gradueller Rueckgang). Proximity kann nur auf 0% springen (eine der 3 Bedingungen wird FALSE).\n\nDas macht \"Proximity-Monitoring\" zu einem BINARY-WATCH (ist Entry-Bedingung noch erfuellt?), nicht zu einem TREND-MONITOR (baut sich Entry-Signal auf?).\n\nDie Praemisse \"Proximity-Persistenz ist ungewoehnlich\" (CIO S4) ist falsch — Proximity-Persistenz ist die EINZIGE Moeglichkeit wie Router funktionieren kann, weil Proximity keine Zwischenwerte hat.\n\nDie RICHTIGE Frage: Warum hat Router ein \"Proximity\"-Konzept wenn es faktisch ein Binary-Flag ist? Entweder (1) Router-Design ist suboptimal (sollte echten Proximity-Score haben), oder (2) Router-Dokumentation ist irrefuehrend (sollte \"Entry Condition Met: TRUE/FALSE\" heissen, nicht \"Proximity\").\n\nPortfolio-Implikation: A8 (Router-Proximity Persistenz-Check) sollte umformuliert werden. Statt \"Proximity taeglich monitoren bis 2026-04-01\" sollte es heissen: \"Taeglich pruefen ob Entry-Bedingung noch erfuellt ist (TRUE/FALSE). Wenn FALSE → Alert (Entry-Signal verschwunden). Wenn TRUE bis 2026-03-20 → Pre-Entry-Review.\"\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "Router History 30d: Proximity nur 0% oder 100%, niemals Zwischenwerte",
+        "Router-Mechanik: 3 Bedingungen (DBC/SPY, V16 regime, DXY) — sollte Zwischenwerte ermoeglichen wenn Durchschnitt",
+        "CIO S4: \"Proximity immer 0% oder 1.0%\" — bestaetigt Binary-Verhalten",
+        "CIO S2: \"Proximity = Durchschnitt aus 3 Bedingungen\" — widerspricht beobachtetem Verhalten",
+        "A8 Action Item: \"Proximity taeglich monitoren\" — nutzlos bei Binary-Flag (kein Trend erkennbar)"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 8,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260310_001",
+      "type": "UNASKED_QUESTION",
       "target_section": "SYSTEM",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 3, 5x NOTED): FORCED DECISION (Tag 2, 3x NOTED): **FORCED DECISION (Tag 7, 7x NOTED):** Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items haben UNTERSCHIEDLICHE Dringlichkeits-Natur die durch \"Tage offen\" nicht erfasst wird.\n\nA1 (HYG-Konzentration, 18 Tage): EREIGNIS-GETRIEBEN — Dringlichkeit entsteht durch CPI HEUTE, nicht durch 18 Tage Wartezeit.\n\nA2 (NFP/ECB Monitoring, 18 Tage): KALENDER-GETRIEBEN — NFP bereits vorbei (erledigt), ECB +2d (fix terminiert). \"18 Tage offen\" ist irrelevant.\n\nA4 (Liquidity-Mechanik-Tracking, 18 Tage): DATEN-GETRIEBEN — Dringlichkeit entsteht wenn Howell neues Update postet, nicht durch Kalender.\n\nA6 (IC-Daten-Refresh, 11 Tage): QUALITAETS-GETRIEBEN — Dringlichkeit ist \"Data Quality DEGRADED\", nicht \"11 Tage alt\".\n\nA7 (Post-CPI System-Review, 9 Tage): SEQUENZ-GETRIEBEN — kann NICHT vor CPI resolved werden (CPI ist Input).\n\nDie Praemisse \"Tage offen = Dringlichkeit\" fuehrt zu falscher Priorisierung. A1 (18 Tage offen, HEUTE dringend) erscheint gleich dringlich wie A4 (18 Tage offen, THIS_WEEK dringend) — aber A1 hat 12h Deadline, A4 hat 5d Deadline.\n\nSystem hat keine Dringlichkeits-TAXONOMIE — nur \"Trade Class A/B\" (binary) und \"Tage offen\" (linear). Wenn CIO morgen 10 Items sieht die alle \"19 Tage offen\" sind, fehlt die Information WELCHES zuerst resolved werden muss.\n\n**CIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.**\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "challenge_text": "Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen ZEITSKALA stellt? CIO fokussiert auf Howell Dollar-Headwind (diese Woche), Market Analyst L1 Net Liquidity flat 50th pctl (aktuell), V16 liq_direction -1 (Regime-Input) — aber alle drei messen FLOW-Liquiditaet (wie schnell aendert sich Liquidity), nicht STOCK-Liquiditaet (wie viel Liquidity ist im System).\n\nPre-Processor meldet 5x IC_HIGH_NOVELTY_OMISSION von Howell (Novelty 7-8, HIGH significance) — alle nicht im Draft erwaehnt. Howell Claim howell_002 (Novelty 5): \"China's gold accumulation is structurally important driver.\" Howell Claim howell_003 (Novelty 7): \"China's gold linked to secretive Yuan monetization.\" Howell Claim howell_004 (Novelty 7): \"China's gold absorption explains stable US Treasury term premia.\" Howell Claim howell_005 (Novelty 8): \"China's gold explains lackluster crypto performance.\"\n\nDiese Claims beschreiben STOCK-Effekte (China akkumuliert Gold = Liquidity wird GEBUNDEN, nicht zirkuliert), nicht FLOW-Effekte (Fed injiziert Liquidity = Flow steigt).\n\nCIO S5 IC-Synthese zitiert Howell: \"Dollar-Staerke Headwind fuer Liquidity\" (FLOW-Aussage) und \"Gold strukturell China-getrieben\" (STOCK-Aussage) — aber behandelt beide als gleichwertig. Das sind UNTERSCHIEDLICHE Liquiditaets-Mechanismen mit unterschiedlichen Portfolio-Implikationen.\n\nFLOW-Liquiditaet (Fed Balance Sheet, TGA, RRP) wirkt auf ALLE Assets gleichzeitig — wenn Net Liquidity faellt, fallen Stocks/Bonds/Commodities korreliert (2022). STOCK-Liquiditaet (China bindet Dollars in Gold) wirkt SELEKTIV — Liquidity wird aus einem Asset (Treasuries, Crypto) in ein anderes (Gold) umgeleitet.\n\nHowell Claim howell_004: \"China's gold absorption explains stable Treasury term premia\" — das bedeutet China KAUFT Treasuries NICHT (haette Term Premia erhoehen sollen), sondern kauft Gold STATTDESSEN. Das ist Liquidity-UMLEITUNG, nicht Liquidity-REDUKTION.\n\nHowell Claim howell_005: \"China's gold explains lackluster crypto\" — dasselbe Muster. Liquidity fliesst in Gold statt Crypto.\n\nPortfolio-Implikation: GLD 16.9% profitiert von STOCK-Effekt (China-Akkumulation), unabhaengig von FLOW-Effekt (Fed Liquidity). Wenn Howell recht hat, ist GLD strukturell bullish AUCH WENN Net Liquidity faellt (V16 liq_direction -1).\n\nAber V16 behandelt GLD wie jedes andere Asset — Gewicht 16.9% ist Regime-Output (FRAGILE_EXPANSION), nicht China-STOCK-Effekt-Output. V16 hat keinen \"strukturelle Nachfrage\"-Input — nur Momentum/Regime/Stress.\n\nDas erklaert warum Router COMMODITY_SUPER (DBC-fokussiert) und V16 (GLD 16.9%) BEIDE Commodities uebergewichten, aber aus unterschiedlichen Gruenden: Router sieht FLOW (DBC/SPY Momentum), V16 sieht REGIME (FRAGILE_EXPANSION → Commodities), Howell sieht STOCK (China bindet Liquidity in Gold).\n\nWenn China-Gold-Akkumulation strukturell ist (Howell Novelty 7-8 Claims), dann ist GLD 16.9% UNTERGEWICHTET — weil V16 nur zyklische Faktoren sieht, nicht strukturelle Nachfrage.\n\nDie ungestellte Frage: Wie viel der aktuellen Commodities-Allokation (37.2% = DBC 20.3% + GLD 16.9%) ist FLOW-getrieben (reverst wenn Fed Liquidity steigt) vs. STOCK-getrieben (persistent weil strukturelle Nachfrage)?\n\nWenn DBC 20.3% FLOW-getrieben (Energie-Stress, Iran-Konflikt) und GLD 16.9% STOCK-getrieben (China-Akkumulation), dann haben sie unterschiedliche Persistenz-Profile. DBC reverst wenn Iran-Konflikt endet (Trump-Signal), GLD reverst NICHT (China-Akkumulation laeuft Jahre).\n\nCPI morgen (A1, A3, A9) fokussiert auf FLOW-Effekt (Hot CPI → Fed Tightening → Liquidity faellt → HYG-Druck). Aber wenn Howell recht hat, ist STOCK-Effekt (China bindet Liquidity) bereits aktiv und UNABHAENGIG von CPI.\n\nDas wuerde erklaeren warum Treasury term premia stable sind (Howell Claim howell_004) trotz Fed Tightening-Erwartungen — China-Gold-Kaeufe kompensieren fehlende Treasury-Nachfrage. Das ist BULLISH fuer Treasuries (stable term premia = stable Yields = TLT stable), aber V16 hat 0% TLT.\n\nSystem misst Net Liquidity (Market Analyst L1), aber nicht Liquidity-ALLOKATION (wohin fliesst Liquidity). Wenn China Liquidity in Gold umleitet, zeigt Net Liquidity FLAT (Howell: 50th pctl), aber Gold-Liquidity STEIGT und Treasury/Crypto-Liquidity FAELLT.\n\nDas ist ein ZERO-SUM-Spiel auf der STOCK-Ebene, aber ein FLOW-Spiel auf der Fed-Ebene. System trackt nur FLOW.",
       "evidence": [
-        "A1/A2/A4/A6/A7 alle >9 Tage offen, aber unterschiedliche Trigger-Mechaniken",
-        "CPI heute 08:30 ET = harte Deadline fuer A1, aber irrelevant fuer A4",
-        "System zeigt nur \"Tag X\" ohne Dringlichkeits-Kontext"
+        "Pre-Processor: 5x IC_HIGH_NOVELTY_OMISSION von Howell, Novelty 7-8, HIGH significance",
+        "Howell Claim howell_003: \"China's gold linked to secretive Yuan monetization\" (Novelty 7)",
+        "Howell Claim howell_004: \"China's gold absorption explains stable Treasury term premia\" (Novelty 7)",
+        "Howell Claim howell_005: \"China's gold explains lackluster crypto\" (Novelty 8)",
+        "CIO S5: \"Howell: Gold strukturell China-getrieben\" — im Draft erwaehnt, aber nicht mit Treasury/Crypto-Implikation verknuepft",
+        "V16: GLD 16.9%, TLT 0%, BTC 0% — System hat kein \"strukturelle Nachfrage\"-Konzept",
+        "Market Analyst L1: Net Liquidity flat 50th pctl — misst FLOW, nicht STOCK-Allokation"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
       "persistent_days": 3,
-      "is_forced_decision": true,
+      "is_forced_decision": false,
       "validation_warnings": []
     },
     {
       "id": "da_20260310_002",
       "type": "PREMISE_ATTACK",
-      "target_section": "SYSTEM",
+      "target_section": "S4",
       "target_assumption": null,
-      "challenge_text": "**FORCED DECISION (Tag 9, 9x NOTED):** Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items haben UNTERSCHIEDLICHE Dringlichkeits-Natur die durch \"Tage offen\" nicht erfasst wird.\n\nA1 (HYG-Konzentration, 19 Tage): EREIGNIS-GETRIEBEN — Dringlichkeit entsteht durch CPI HEUTE, nicht durch 19 Tage Wartezeit.\n\nA2 (NFP/ECB Monitoring, 19 Tage): KALENDER-GETRIEBEN — NFP bereits vorbei (erledigt), ECB +2d (fix terminiert). \"19 Tage offen\" ist irrelevant.\n\nA4 (Liquidity-Mechanik-Tracking, 19 Tage): DATEN-GETRIEBEN — Dringlichkeit entsteht wenn Howell neues Update postet, nicht durch Kalender.\n\nA6 (IC-Daten-Refresh, 12 Tage): QUALITÄTS-GETRIEBEN — Dringlichkeit ist \"Data Quality DEGRADED\", nicht \"12 Tage alt\".\n\nA7 (Post-CPI System-Review, 10 Tage): SEQUENZ-GETRIEBEN — kann NICHT vor CPI resolved werden (CPI ist Input).\n\nDie Prämisse \"Tage offen = Dringlichkeit\" führt zu falscher Priorisierung. A1 (19 Tage offen, HEUTE dringend) erscheint gleich dringlich wie A4 (19 Tage offen, THIS_WEEK dringend) — aber A1 hat 24h Deadline, A4 hat 5d Deadline.\n\nSystem hat keine Dringlichkeits-TAXONOMIE — nur \"Trade Class A/B\" (binary) und \"Tage offen\" (linear). Wenn CIO morgen 10 Items sieht die alle \"20 Tage offen\" sind, fehlt die Information WELCHES zuerst resolved werden muss.\n\n**CIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.**",
+      "challenge_text": "Der CIO nimmt an dass Router COMMODITY_SUPER Proximity 0% → 100% in einem Tag ein \"Spike ohne Vorwarnung\" ist (OBS-2) — aber ist dir aufgefallen dass \"ohne Vorwarnung\" die FALSCHE Beschreibung ist?\n\nCIO S4 OBS-2: \"Gestern 0%, heute 100%. Alle drei Bedingungen gleichzeitig erfuellt: DBC/SPY 6M relative 100%, V16 Regime allowed 100%, DXY not rising 100%.\"\n\nAber Router-History (aus A8, Tag 8) zeigt: Proximity war historisch (30d) immer 0% oder 100% — NIEMALS Zwischenwerte. Das bedeutet Router-Proximity ist KEIN gradueller Score (0% → 33% → 66% → 100%), sondern ein BINARY-FLAG (Entry-Bedingung erfuellt: TRUE/FALSE).\n\nWenn Proximity ein Binary-Flag ist, dann ist 0% → 100% KEIN \"Spike\" — es ist der EINZIGE moegliche Uebergang. Es gibt keinen \"graduellen Aufbau\" den das System haette sehen koennen.\n\nCIO sagt \"ohne Vorwarnung\" — aber Router-Mechanik (CIO S2) zeigt drei Bedingungen: (1) DBC/SPY 6M relative, (2) V16 Regime allowed, (3) DXY not rising. Bedingung (1) ist ein Momentum-Signal (6-Monats-Performance) — das ist NICHT abrupt, das baut sich ueber Wochen auf.\n\nSignal Generator Rohdaten zeigen: DBC/SPY 6M relative gestern 94.4%, heute 100%. Das ist ein Anstieg von 5.6pp — aber die SCHWELLE (wo Bedingung von FALSE zu TRUE wechselt) ist unbekannt. Wenn Schwelle bei 95% liegt, dann war gestern 94.4% (knapp unter Schwelle) und heute 100% (ueber Schwelle) — das ist KEIN Spike, das ist ein erwartbarer Schwellen-Uebertritt.\n\nCIO OBS-2 fragt: \"Ist COMMODITY_SUPER Entry 2026-04-01 zu spaet wenn Trump-Deeskalation Oil reverst?\" — aber diese Frage impliziert dass Entry JETZT stattfinden sollte (weil Signal stark ist). Das widerspricht der Praemisse \"ohne Vorwarnung\" — wenn Signal stark genug fuer sofortigen Entry ist, dann war es NICHT ohne Vorwarnung.\n\nDie EIGENTLICHE Anomalie ist nicht \"0% → 100% Spike\", sondern \"Proximity zeigt 100% aber Entry erst in 22 Tagen\" (2026-04-01). Wenn alle drei Bedingungen HEUTE erfuellt sind, warum wartet Router bis Monatserster?\n\nRouter-Dokumentation (aus CIO S2) sagt: \"Entry-Evaluation 2026-04-01\" — das ist ein KALENDER-Trigger (Monatserster), kein SIGNAL-Trigger (Proximity erreicht Schwelle). Das bedeutet Router hat zwei SEPARATE Logiken: (1) Proximity-Berechnung (taeglich), (2) Entry-Evaluation (monatlich).\n\nDas ist KEIN Bug — das ist Design. Router evaluiert Entry nur am Monatsersten, AUCH WENN Proximity bereits 100% ist. Das gibt Operator Vorlauf (22 Tage zwischen \"Signal stark\" und \"Entry moeglich\"), aber es bedeutet auch dass Signal VERFALLEN kann (Proximity faellt < 100% vor 2026-04-01 → kein Entry).\n\nCIO A8 (Router-Proximity Persistenz-Check) adressiert das: \"Pruefe ob Proximity persistent oder False Positive.\" Aber A8 ist Trade Class B (MEDIUM), nicht Trade Class A (HIGH) — obwohl Proximity-Verfall das Entry-Signal KOMPLETT eliminieren wuerde.\n\nDie Praemisse \"Spike ohne Vorwarnung\" fuehrt zu falscher Risiko-Einschaetzung. Wenn CIO glaubt Signal kam abrupt, dann ist Persistenz-Risiko HOCH (Spikes reversen schnell). Aber wenn Signal graduell aufgebaut wurde (DBC/SPY 6M relative stieg ueber Wochen), dann ist Persistenz-Risiko NIEDRIGER (Momentum-Signale sind traeger).\n\nSignal Generator Rohdaten zeigen DBC/SPY 6M relative 100% heute — aber KEINE historischen Werte (gestern 94.4%, davor unbekannt). Operator kann nicht pruefen ob 94.4% → 100% ein 1-Tages-Spike ist (anomal) oder das Ende eines mehrwoechigen Trends (normal).\n\nA8 sagt \"Pruefe DBC/SPY 6M Relative Performance — ist 100% stabil oder Spike?\" — aber das ist die FALSCHE Frage. Die RICHTIGE Frage: \"Wie lange war DBC/SPY 6M relative UNTER der Schwelle, und wie schnell stieg es UEBER die Schwelle?\"\n\nWenn DBC/SPY 6M relative 4 Wochen bei 90-94% war (knapp unter Schwelle) und dann in 1 Tag auf 100% sprang, dann ist das ein Spike (anomal, Reversal-Risiko hoch). Wenn es 4 Wochen von 80% auf 100% stieg (graduell), dann ist das ein Trend (normal, Reversal-Risiko niedrig).\n\nSystem liefert diese Information NICHT — Market Analyst hat keinen \"DBC/SPY 6M relative\"-Layer, V16 hat keinen \"Commodities Momentum\"-Output, Signal Generator zeigt nur aktuellen Wert (100%).\n\nCIO kann A8 nicht korrekt priorisieren (Trade Class B vs. A) ohne diese Information.",
       "evidence": [
-        "A1 eskaliert \"Tag 19\" aber Dringlichkeit ist CPI-getrieben (24h Deadline)",
-        "A2 eskaliert \"Tag 19\" aber NFP-Teil bereits obsolet (Event vorbei)",
-        "A4 eskaliert \"Tag 19\" aber Trigger ist Howell-Update (unbekanntes Timing)",
-        "Alle drei Items zeigen \"Tag 19\" aber haben unterschiedliche Urgency-Mechaniken"
+        "CIO S4 OBS-2: \"0% → 100% Spike ohne Vorwarnung\"",
+        "Router-History (A8, Tag 8): \"Proximity historisch immer 0% oder 100%, keine Zwischenwerte\"",
+        "Signal Generator: DBC/SPY 6M relative gestern 94.4%, heute 100% (+5.6pp)",
+        "Router-Mechanik: Entry-Evaluation nur am Monatsersten (2026-04-01), nicht bei Proximity-Trigger",
+        "A8 Trade Class B (MEDIUM) — aber Proximity-Verfall eliminiert Entry-Signal komplett",
+        "System liefert KEINE historischen DBC/SPY 6M relative Werte (kann Spike vs. Trend nicht unterscheiden)"
       ],
       "severity": "SUBSTANTIVE",
-      "is_persistent": true,
-      "persistent_days": 2,
+      "is_persistent": false,
+      "persistent_days": 0,
       "is_forced_decision": false,
       "validation_warnings": []
     },
     {
       "id": "da_20260310_003",
-      "type": "PREMISE_ATTACK",
-      "target_section": "S6",
-      "target_assumption": null,
-      "challenge_text": "**FORCED DECISION (Tag 20, 12x NOTED):** Was ist der Liquiditäts-Zustand der INSTRUMENTE im Portfolio, nicht der Märkte? CIO fokussiert auf Macro-Liquidity (IC DEGRADED, keine Liquidity-Daten, Market Analyst L1 TRANSITION), aber HYG 28.8% + DBC 20.3% = 49.1% in Instrumenten mit strukturell schlechteren Liquiditätsprofilen als SPY/TLT. \n\nHYG Average Daily Volume historisch $1.2bn, DBC ADV $180m. V16 AUM unbekannt, aber falls Portfolio >$50m, ist HYG 28.8% = $14.4m = 1.2% des Daily Volume. \n\nCPI HEUTE 08:30 ET = Event-Tag mit typischer Liquidity-Kompression: HYG Bid-Ask-Spreads erweitern sich 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Das ist KEIN Credit-Risiko (KA2 adressiert Regime-Signale) und KEIN Commodities-Risiko (W4 adressiert Allocation) — das ist Execution-Risiko. \n\nCIO S7 A1 sagt \"Post-CPI: Wenn HYG -2% oder mehr, prüfe Regime-Signale\" und impliziert potentiell \"mechanische Gewichtsreduktion\" — aber bei Market-Order auf $14.4m HYG an einem Event-Tag mit 3x Spread-Erweiterung ist Slippage ~0.5% = $72k Loss BEVOR Trade executed ist. \n\nRisk Officer meldet Concentration (RO-20260310-003 CRITICAL), aber NICHT Instrument-Liquidity-Stress. System hat keinen Liquidity-Stress-Test für die Holdings selbst — nur für Märkte (Market Analyst L1). \n\nNEUE DATEN HEUTE: CPI in 0d (Event-Tag), ECB in 2d = zwei aufeinanderfolgende Event-Tage mit Liquidity-Kompression. Wenn A1 zu HYG-Reduktion führt UND A9 (Post-CPI Rebalance) auch zu Trades führt, könnte Portfolio in 2 Tagen ZWEI große HYG-Trades machen (heute Post-CPI + Mittwoch Post-ECB) = kumulativer Slippage $72k + $72k = $144k auf $50m AUM = 0.29% Performance-Drag nur durch Execution. \n\nDas ist MESSBAR und VERMEIDBAR durch Limit-Orders oder gestufte Execution, aber Signal Generator zeigt nur \"V16 weights unmodified\" — keine Execution-Logik sichtbar.\n\n**CIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.**",
-      "evidence": [
-        "HYG ADV $1.2bn vs. Position $14.4m (bei $50m AUM) = 1.2% Daily Volume",
-        "DBC ADV $180m vs. Position $10.1m (bei $50m AUM) = 5.6% Daily Volume",
-        "Event-Tag Spread-Erweiterung: HYG 3x, DBC 5x (historische Muster)",
-        "A1 + A9 beide Post-CPI aktiv = potentiell simultane HYG-Trades",
-        "Signal Generator zeigt keine Execution-Parameter (Limit vs. Market, Staging)"
-      ],
-      "severity": "SUBSTANTIVE",
-      "is_persistent": false,
-      "persistent_days": 0,
-      "is_forced_decision": false,
-      "validation_warnings": []
-    },
-    {
-      "id": "da_20260310_004",
       "type": "UNASKED_QUESTION",
-      "target_section": "S5",
-      "target_assumption": "KA3",
-      "challenge_text": "**FORCED DECISION (Tag 8, 12x NOTED):** Ist dir aufgefallen dass das System die Liquiditäts-Frage auf der falschen EBENE stellt? CIO fokussiert auf Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m) — aber die EIGENTLICHE Frage vor CPI HEUTE ist: Wie liquide ist das DOLLAR-FUNDING-SYSTEM das diese Märkte trägt? \n\nJeff Snider Claim jeff_snider_005 sagt explizit \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted.\" Das ist kein EM-Problem — das ist ein GLOBALES Dollar-Liquidity-Problem. Wenn EM-Importeure mehr Dollars brauchen (Energie-Schock) GLEICHZEITIG mit Private-Credit-Bust in US/UK/Europe (Claim jeff_snider_002), entsteht Dollar-Nachfrage-Spike. \n\nMarket Analyst L4 (Cross-Border Flows) zeigt DXY Score 0 (50. Perzentil, STABLE) — aber das misst DXY-PREIS, nicht Dollar-VERFÜGBARKEIT. DXY kann stabil sein während Dollar-Funding-Stress steigt (2019 Repo-Krise: DXY flat, aber Repo-Rates explodierten). \n\nDas System hat KEINEN direkten Dollar-Liquidity-Indikator — kein LIBOR-OIS, kein FRA-OIS, kein Cross-Currency-Basis-Spread, kein Repo-Rate-Monitoring. V16 liq_direction -1 aggregiert Net Liquidity/WALCL/TGA/RRP — das sind FED-Balance-Sheet-Metriken (US-zentrisch). Aber Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System, das Snider ständig betont). \n\nWenn CPI heute hot → Fed-Tightening-Expectations → Dollar-Funding-Kosten steigen → Eurodollar-Stress verschärft sich → das trifft HYG (28.8%) NICHT durch Credit-Spreads (die misst Market Analyst L2 HY OAS Score 0), sondern durch FUNDING-Kosten der Emittenten. High-Yield-Unternehmen die auf Dollar-Funding angewiesen sind (viele sind international operierend) bekommen Refinanzierungs-Probleme wenn Eurodollar-Märkte zufrieren — das zeigt sich NICHT in HY OAS (das misst Spread zu Treasuries), sondern in ISSUANCE-Volumina (neue Bonds können nicht platziert werden). System trackt HY OAS, aber nicht HY-Issuance. \n\nDie ungestellte Frage: Was ist der Zustand des OFFSHORE-Dollar-Funding-Systems, und wie schnell kann es sich verschlechtern post-CPI? \n\nSnider argumentiert dass Private-Credit-Bust (Claim jeff_snider_002) bereits Dollar-Nachfrage erhöhen sollte (Deleveraging = Dollar-Bedarf) — aber DXY Score 0 zeigt keine Reaktion. Das bedeutet entweder: (1) Snider liegt falsch (kein Bust), oder (2) Dollar-Nachfrage wird durch andere Flows kompensiert (z.B. EM-Kapitalflucht in Dollars, die Doomberg-Szenario impliziert), oder (3) Stress ist noch nicht in DXY-Preis sichtbar (Lag). \n\nBei (3) ist CPI der Katalysator der latenten Stress SICHTBAR macht — ähnlich wie Lehman 2008 latenten Subprime-Stress sichtbar machte. \n\nPortfolio-Implikation: HYG 28.8% ist exponiert gegen Dollar-Funding-Stress den das System nicht misst. V16 FRAGILE_EXPANSION-Regime hat kein \"Eurodollar-Stress\"-Signal — V16 würde erst reagieren wenn HY OAS steigt (Score <-5), aber dann ist es zu spät (Funding-Märkte frieren VOR Spread-Ausweitung ein, nicht danach). \n\nA1 (HYG-Konzentration Review) adressiert Tail-Hedges (VIX Calls, TLT) — aber die RICHTIGE Hedge gegen Dollar-Funding-Stress wäre CASH oder ULTRA-SHORT-DURATION (T-Bills), nicht TLT (20Y Duration, exponiert gegen Zinsen). System hat keine Cash-Position (V16 current_weights zeigt 0% Cash) — 100% invested. Das ist Standard für Momentum-Strategien, aber bei Funding-Stress ist Cash King.\n\n**CIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.**",
-      "evidence": [
-        "Snider jeff_snider_005: \"EMs hit with simultaneous dollar crunch\" (Novelty 7)",
-        "Snider jeff_snider_002: \"Private credit bust in US/UK/Europe\" (Novelty 7)",
-        "Market Analyst L4 DXY Score 0 (misst Preis, nicht Funding-Verfügbarkeit)",
-        "V16 liq_direction -1 basiert auf Fed-Balance-Sheet (US-zentrisch, nicht Eurodollar)",
-        "System hat keine Offshore-Dollar-Liquidity-Metriken (LIBOR-OIS, FRA-OIS, Basis-Spreads)",
-        "HYG 28.8% exponiert gegen Funding-Kosten (Emittenten-Refinanzierung), nicht nur Spreads"
-      ],
-      "severity": "SUBSTANTIVE",
-      "is_persistent": false,
-      "persistent_days": 0,
-      "is_forced_decision": false,
-      "validation_warnings": []
-    },
-    {
-      "id": "da_20260310_005",
-      "type": "PREMISE_ATTACK",
-      "target_section": "S4",
-      "target_assumption": null,
-      "challenge_text": "**FORCED DECISION (Tag 6, 3x NOTED):** Der CIO nimmt an dass Router COMMODITY_SUPER Proximity 0% → 100% in einem Tag \"ungewöhnlich\" ist und auf \"strukturelle Verschiebung\" hindeutet — aber ist dir aufgefallen dass diese Interpretation die FALSCHE Frage stellt?\n\nCIO S4: \"Pattern: Commodity Proximity Surge ohne Liquidity Confirmation\" — impliziert Proximity-Sprung ist anomal.\n\nAber Router-Mechanik (aus CIO S2) zeigt: Proximity = Durchschnitt aus 3 Bedingungen (DBC/SPY 6M relative, V16 regime allowed, DXY not rising). Jede Bedingung ist 0% oder 100% (binary), aber der DURCHSCHNITT kann Zwischenwerte haben.\n\nBeispiel: Wenn 2 von 3 Bedingungen erfüllt sind, ist Proximity 66.67%, nicht 0% oder 100%.\n\nAber Router History zeigt NUR 0% oder 100% — niemals 33%, 66%, oder andere Zwischenwerte (implizit aus \"0% → 100% in einem Tag\" — wenn Proximity graduell steigen könnte, würde CIO Zwischenwerte sehen).\n\nDas bedeutet: Entweder (a) alle 3 Bedingungen ändern sich SYNCHRON (alle gleichzeitig von FALSE zu TRUE), oder (b) Router-Proximity-Berechnung ist NICHT der Durchschnitt der 3 Bedingungen, sondern eine AND-Verknüpfung (alle 3 MÜSSEN erfüllt sein, sonst 0%).\n\nWenn (a): Warum ändern sich DBC/SPY 6M relative (Momentum-Signal, graduell) UND V16 regime (Regime-Shift, diskret) UND DXY (Preis-Signal, kontinuierlich) GLEICHZEITIG?\n\nWenn (b): Router-Dokumentation ist falsch oder unvollständig — \"Proximity\" ist kein Proximity-Maß (Nähe zum Trigger), sondern ein BINARY-FLAG (Entry-Bedingung erfüllt: ja/nein).\n\nCIO interpretiert 0% → 100% als \"strukturelle Verschiebung\" und plant \"Proximity-Persistenz-Check\" (A8) — aber die EIGENTLICHE Anomalie ist dass Proximity NIEMALS Zwischenwerte zeigt.\n\nWenn Router-Proximity ein echter Proximity-Score wäre (wie der Name impliziert), sollte er graduell steigen: 0% → 33% (eine Bedingung erfüllt) → 66% (zwei Bedingungen) → 100% (alle drei). Das würde Operator VORLAUF geben (\"Proximity steigt, Entry in X Tagen wahrscheinlich\").\n\nAber aktuelles Verhalten (0% oder 100%, keine Zwischenwerte) gibt KEINEN Vorlauf — Entry-Signal erscheint abrupt.\n\nDas ist problematisch für A8 (Router-Proximity Persistenz-Check), weil \"Proximity tä",
+      "target_section": "S3",
+      "target_assumption": "KA1",
+      "challenge_text": "Ist dir aufgefallen dass der CIO die HYG-Frage als \"V16 korrekt vs. V16 Fehler\" (KA1) stellt, aber die Daten eine DRITTE Moeglichkeit zeigen die weder V16-Validierung noch V16-Override ist?\n\nCIO S3: \"HYG 28.8% (+1.5pp seit gestern) eskaliert durch Price Drift, nicht V16-Allokation. V16 zeigt kein Rebalance-Signal — Gewicht stabil seit 4 Tagen.\"\n\nCIO KA1: \"V16 Regime FRAGILE_EXPANSION ist korrekt und HYG 28.8% ist Signal, nicht Fehler. Wenn falsch: HYG CRITICAL Alert ist V16-Fehler → manueller Override noetig.\"\n\nAber V16 Rohdaten zeigen: HYG Target Weight 28.8% (heute) = HYG Actual Weight 28.8% (heute). Das bedeutet V16 hat KEIN Rebalance-Signal weil Actual = Target. Price Drift (HYG outperformance) hat Actual Weight erhoeht, und V16 Target Weight ist MITGESTIEGEN.\n\nDas ist NICHT \"V16 sieht Regime als HYG-freundlich\" (CIO-Interpretation) — das ist \"V16 Rebalance-Logik toleriert Drift bis zu einem Schwellenwert, dann rebalanced.\"\n\nV16 hat eine Drift-Toleranz (unbekannt, nicht dokumentiert im Draft) — wenn Actual Weight von Target Weight um X% abweicht, triggert Rebalance. Wenn Drift < X%, kein Rebalance.\n\nAber Risk Officer hat eine ANDERE Schwelle: Single Name > 25%",
       "evidence": [],
-      "severity": "SUBSTANTIVE",
+      "severity": "MODERATE",
       "is_persistent": false,
       "persistent_days": 0,
       "is_forced_decision": false,
@@ -235,11 +219,6 @@
     },
     {
       "flag_type": "IC_HIGH_NOVELTY_OMISSION",
-      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
-      "significance": "HIGH"
-    },
-    {
-      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
       "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
       "significance": "HIGH"
     },
@@ -266,6 +245,21 @@
     {
       "flag_type": "IC_HIGH_NOVELTY_OMISSION",
       "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
       "significance": "HIGH"
     },
     {
@@ -339,8 +333,33 @@
       "significance": "HIGH"
     },
     {
-      "flag_type": "DRIFT_COMPLACENCY",
-      "detail": "Daten veraendern sich (3 neue Alerts, Regime-Wechsel) aber CIO Ton bleibt bei ACTION/LOW.",
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
       "significance": "HIGH"
     },
     {
@@ -537,13 +556,33 @@
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
       "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
     }
   ],
   "persistent_challenges_renewed": [
     {
       "original_id": "da_20260310_003",
-      "original_challenge": "FORCED DECISION (Tag 7, 3x NOTED): Der CIO nimmt an dass Router COMMODITY_SUPER Proximity 0% → 100% ",
-      "days_open": 7,
+      "original_challenge": "FORCED DECISION (Tag 4, 5x NOTED): FORCED DECISION (Tag 3, 5x NOTED): FORCED DECISION (Tag 2, 3x NOT",
+      "days_open": 4,
       "cio_response_history": [
         "NOTED",
         "NOTED",
@@ -551,53 +590,53 @@
         "NOTED",
         "NOTED"
       ],
-      "escalation_note": "FORCED DECISION nach 7 Tagen"
-    },
-    {
-      "original_id": "da_20260310_001",
-      "original_challenge": "FORCED DECISION (Tag 9, 12x NOTED): FORCED DECISION (Tag 8, 10x NOTED): FORCED DECISION (Tag 7, 9x N",
-      "days_open": 9,
-      "cio_response_history": [
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED"
-      ],
-      "escalation_note": "FORCED DECISION nach 9 Tagen"
-    },
-    {
-      "original_id": "da_20260306_005",
-      "original_challenge": "FORCED DECISION (Tag 21, 12x NOTED): FORCED DECISION (Tag 20, 11x NOTED): FORCED DECISION (Tag 19, 1",
-      "days_open": 21,
-      "cio_response_history": [
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED",
-        "NOTED"
-      ],
-      "escalation_note": "FORCED DECISION nach 21 Tagen"
+      "escalation_note": "FORCED DECISION nach 4 Tagen"
     },
     {
       "original_id": "da_20260309_005",
-      "original_challenge": "FORCED DECISION (Tag 10, 9x NOTED): FORCED DECISION (Tag 9, 8x NOTED): FORCED DECISION (Tag 8, 7x NO",
+      "original_challenge": "FORCED DECISION (Tag 11, 9x NOTED): FORCED DECISION (Tag 10, 9x NOTED): FORCED DECISION (Tag 9, 8x N",
+      "days_open": 11,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 11 Tagen"
+    },
+    {
+      "original_id": "da_20260306_005",
+      "original_challenge": "FORCED DECISION (Tag 22, 12x NOTED): FORCED DECISION (Tag 21, 12x NOTED): FORCED DECISION (Tag 20, 1",
+      "days_open": 22,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 22 Tagen"
+    },
+    {
+      "original_id": "da_20260310_001",
+      "original_challenge": "FORCED DECISION (Tag 10, 12x NOTED): FORCED DECISION (Tag 9, 12x NOTED): FORCED DECISION (Tag 8, 10x",
       "days_open": 10,
       "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
         "NOTED",
         "NOTED",
         "NOTED",
@@ -612,8 +651,8 @@
     },
     {
       "original_id": "da_20260310_003",
-      "original_challenge": "FORCED DECISION (Tag 3, 5x NOTED): FORCED DECISION (Tag 2, 3x NOTED): **FORCED DECISION (Tag 7, 7x N",
-      "days_open": 3,
+      "original_challenge": "FORCED DECISION (Tag 8, 5x NOTED): FORCED DECISION (Tag 7, 3x NOTED): Der CIO nimmt an dass Router C",
+      "days_open": 8,
       "cio_response_history": [
         "NOTED",
         "NOTED",
@@ -621,16 +660,16 @@
         "NOTED",
         "NOTED"
       ],
-      "escalation_note": "FORCED DECISION nach 3 Tagen"
+      "escalation_note": "FORCED DECISION nach 8 Tagen"
     },
     {
       "original_id": "da_20260310_004",
-      "original_challenge": "**FORCED DECISION (Tag 9, 9x NOTED):** Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichke",
-      "days_open": 2,
+      "original_challenge": "Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen ZEITSKALA stellt? CIO fo",
+      "days_open": 3,
       "cio_response_history": [
         "NOTED"
       ],
-      "escalation_note": "Tag 2, erneuert"
+      "escalation_note": "Tag 3, erneuert"
     }
   ],
   "confidence_saturation": {
@@ -648,24 +687,24 @@
     "interpretation": "Confidence Saturation bei 20% — unter Schwelle (85%)."
   },
   "metadata": {
-    "total_challenges": 9,
+    "total_challenges": 8,
     "by_type": {
       "NARRATIVE": 0,
-      "UNASKED_QUESTION": 2,
-      "PREMISE_ATTACK": 7
+      "UNASKED_QUESTION": 3,
+      "PREMISE_ATTACK": 5
     },
     "by_severity": {
-      "SUBSTANTIVE": 9,
-      "MODERATE": 0,
+      "SUBSTANTIVE": 7,
+      "MODERATE": 1,
       "MINOR": 0
     },
     "persistent_renewed": 6,
     "forced_decisions": 5,
-    "preprocessor_flags_total": 79,
+    "preprocessor_flags_total": 90,
     "preprocessor_flags_used": 5,
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_temperature": 0.4,
     "llm_attempt": 1,
-    "generation_time_seconds": 99.4
+    "generation_time_seconds": 95.8
   }
 }
