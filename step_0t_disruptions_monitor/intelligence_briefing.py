@@ -21,6 +21,7 @@ Wird NACH Dependencies und Vulnerability Analysis aufgerufen, VOR Sheet Write.
 
 import os
 import json
+import re
 import requests
 
 ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
@@ -76,19 +77,28 @@ def generate_intelligence_briefing(trends, exposure_result, contrarian_alerts,
     if ANTHROPIC_API_KEY:
         try:
             call1_result = _llm_call_1_briefing(ctx)
-            print(f"    [LLM-1] Briefing + Decision Matrix OK")
+            if call1_result.get('briefing'):
+                print(f"    [LLM-1] Briefing + Decision Matrix OK")
+            else:
+                print(f"    [LLM-1] FALLBACK — Parse lieferte kein briefing")
         except Exception as e:
             print(f"    [ERROR] LLM Call 1 fehlgeschlagen: {e}")
 
         try:
             call2_result = _llm_call_2_payoffs(ctx)
-            print(f"    [LLM-2] Payoffs + Vulnerability OK")
+            if call2_result.get('asymmetric_payoffs'):
+                print(f"    [LLM-2] Payoffs + Vulnerability OK")
+            else:
+                print(f"    [LLM-2] FALLBACK — Parse lieferte keine payoffs")
         except Exception as e:
             print(f"    [ERROR] LLM Call 2 fehlgeschlagen: {e}")
 
         try:
             call3_result = _llm_call_3_effects(ctx)
-            print(f"    [LLM-3] Second Order + G7 OK")
+            if call3_result.get('second_order_effects'):
+                print(f"    [LLM-3] Second Order + G7 OK")
+            else:
+                print(f"    [LLM-3] FALLBACK — Parse lieferte keine effects")
         except Exception as e:
             print(f"    [ERROR] LLM Call 3 fehlgeschlagen: {e}")
     else:
@@ -241,10 +251,12 @@ Generiere dieses JSON (EXAKT diese Struktur):
   ]
 }}"""
 
-    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=3000)
+    text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=4500)
     parsed = _parse_json_response(text)
     if not parsed:
-        print(f"    [WARN] Call 1 Parse fehlgeschlagen. Erste 300 Zeichen: {text[:300]}")
+        print(f"    [WARN] Call 1 Parse fehlgeschlagen. Response-Laenge: {len(text)} chars")
+        print(f"    [WARN] Erste 500 Zeichen: {text[:500]}")
+        print(f"    [WARN] Letzte 200 Zeichen: {text[-200:]}")
         return {}
     return parsed
 
@@ -295,7 +307,9 @@ ratio = abs(bull_return_pct / bear_return_pct). Alle Texte Deutsch."""
     text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=2500)
     parsed = _parse_json_response(text)
     if not parsed:
-        print(f"    [WARN] Call 2 Parse fehlgeschlagen. Erste 300 Zeichen: {text[:300]}")
+        print(f"    [WARN] Call 2 Parse fehlgeschlagen. Response-Laenge: {len(text)} chars")
+        print(f"    [WARN] Erste 500 Zeichen: {text[:500]}")
+        print(f"    [WARN] Letzte 200 Zeichen: {text[-200:]}")
         return {}
     return parsed
 
@@ -349,7 +363,7 @@ Generiere dieses JSON:
   "g7_cross_references": [
     {{
       "disruption_trend_id": "<D-ID>",
-      "disruption_trend_name": "<Name>",
+      "disruption_trend_name": "<n>",
       "g7_event_id": "<evt_id>",
       "g7_event_title": "<Titel>",
       "g7_country": "<Kuerzel>",
@@ -365,7 +379,9 @@ second_order_effects: Mindestens 2 Effects pro Zone. Alle Texte Deutsch."""
     text = _call_anthropic(SYSTEM_PROMPT, user_prompt, max_tokens=2500)
     parsed = _parse_json_response(text)
     if not parsed:
-        print(f"    [WARN] Call 3 Parse fehlgeschlagen. Erste 300 Zeichen: {text[:300]}")
+        print(f"    [WARN] Call 3 Parse fehlgeschlagen. Response-Laenge: {len(text)} chars")
+        print(f"    [WARN] Erste 500 Zeichen: {text[:500]}")
+        print(f"    [WARN] Letzte 200 Zeichen: {text[-200:]}")
         return {}
     return parsed
 
@@ -703,6 +719,15 @@ def _parse_json_response(text):
 
     cleaned = text.strip()
 
+    # Aggressives Cleaning: BOM, Zero-Width Spaces, Unicode-Whitespace
+    cleaned = cleaned.lstrip('\ufeff')  # BOM
+    cleaned = cleaned.replace('\u200b', '')  # Zero-Width Space
+    cleaned = cleaned.replace('\u200c', '')  # Zero-Width Non-Joiner
+    cleaned = cleaned.replace('\u200d', '')  # Zero-Width Joiner
+    cleaned = cleaned.replace('\ufffe', '')  # BOM reversed
+    cleaned = cleaned.replace('\r\n', '\n')  # Windows line endings
+    cleaned = cleaned.replace('\r', '\n')
+
     # Markdown Fences entfernen
     if cleaned.startswith('```json'):
         cleaned = cleaned[7:]
@@ -715,8 +740,8 @@ def _parse_json_response(text):
     # Versuch 1: Direktes Parsing
     try:
         return json.loads(cleaned)
-    except json.JSONDecodeError:
-        pass
+    except json.JSONDecodeError as e:
+        print(f"    [PARSE] Versuch 1 (direkt) fehlgeschlagen: {e}")
 
     # Versuch 2: Erstes { bis letztes }
     start = cleaned.find('{')
@@ -724,14 +749,15 @@ def _parse_json_response(text):
     if start >= 0 and end > start:
         try:
             return json.loads(cleaned[start:end + 1])
-        except json.JSONDecodeError:
-            pass
+        except json.JSONDecodeError as e:
+            print(f"    [PARSE] Versuch 2 (bracket-extract) fehlgeschlagen: {e}")
 
     # Versuch 3: Reparatur abgeschnittener JSON
     fragment = cleaned[start:] if start >= 0 else cleaned
     open_braces = fragment.count('{') - fragment.count('}')
     open_brackets = fragment.count('[') - fragment.count(']')
     if open_braces > 0 or open_brackets > 0:
+        print(f"    [PARSE] Versuch 3: {open_braces} offene Braces, {open_brackets} offene Brackets — versuche Reparatur")
         repair = fragment.rstrip()
         if repair.endswith(','):
             repair = repair[:-1]
@@ -741,7 +767,7 @@ def _parse_json_response(text):
         repair += '}' * open_braces
         try:
             return json.loads(repair)
-        except json.JSONDecodeError:
-            pass
+        except json.JSONDecodeError as e:
+            print(f"    [PARSE] Versuch 3 (repair) fehlgeschlagen: {e}")
 
     return None
