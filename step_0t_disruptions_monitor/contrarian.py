@@ -22,7 +22,7 @@ import json
 EODHD_API_KEY = os.environ.get('EODHD_API_KEY', '')
 BRAVE_API_KEY = os.environ.get('BRAVE_API_KEY', '')
 ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
-LLM_MODEL = 'claude-sonnet-4-20250514'
+LLM_MODEL = 'claude-sonnet-4-6'
 EODHD_DELAY_S = 0.5
 BRAVE_DELAY_S = 1.0
 

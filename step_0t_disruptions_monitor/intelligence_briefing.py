@@ -24,7 +24,7 @@ import json
 import requests
 
 ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
-LLM_MODEL = 'claude-sonnet-4-20250514'
+LLM_MODEL = 'claude-sonnet-4-6'
 
 
 # =====================================================================

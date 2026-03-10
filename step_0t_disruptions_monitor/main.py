@@ -180,7 +180,7 @@ def main():
         "deep_dive_count": 0,
         "sources_total": 0,
         "avg_source_quality": 0,
-        "llm_model": "claude-sonnet-4-20250514",
+        "llm_model": "claude-sonnet-4-6",
         "run_duration_s": 0,
         "errors": []
     }

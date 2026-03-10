@@ -25,7 +25,7 @@ logger = logging.getLogger("event_calendar.updater")
 # =============================================================================
 
 LLM_CONFIG_CALENDAR = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "temperature": 0.1,
     "max_tokens": 12000,
     "tools": [

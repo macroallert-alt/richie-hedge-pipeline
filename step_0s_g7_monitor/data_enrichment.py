@@ -247,7 +247,7 @@ def call_llm_extraction(prompt, timeout=180):
             "https://api.anthropic.com/v1/messages",
             headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
                      "content-type": "application/json"},
-            json={"model": "claude-sonnet-4-20250514", "max_tokens": 8000,
+            json={"model": "claude-sonnet-4-6", "max_tokens": 8000,
                   "temperature": 0.2,
                   "messages": [{"role": "user", "content": prompt}]},
             timeout=timeout)

@@ -19,7 +19,7 @@ import requests
 BRAVE_API_KEY = os.environ.get('BRAVE_API_KEY', '')
 ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
 
-LLM_MODEL = 'claude-sonnet-4-20250514'
+LLM_MODEL = 'claude-sonnet-4-6'
 BRAVE_DELAY_S = 1.0
 
 

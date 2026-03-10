@@ -504,7 +504,7 @@ class LLMFetcher:
             client = anthropic.Anthropic(api_key=self.api_key)
 
             response = client.messages.create(
-                model="claude-haiku-4-5-20251001",
+                model="claude-sonnet-4-6",
                 max_tokens=200,
                 temperature=0,
                 tools=[{"type": "web_search_20250305", "name": "web_search"}],

@@ -9,7 +9,7 @@ Produces:
 
 Replaces the 82-line stub from Etappe 1.
 
-LLM: claude-sonnet-4-20250514, Temperature 0.3, max 4000 tokens
+LLM: claude-sonnet-4-6, Temperature 0.3, max 4000 tokens
 Referenz: G7_WORLD_ORDER_MONITOR_SPEC_TEIL5.md
 """
 
@@ -214,7 +214,7 @@ def _call_anthropic(prompt, max_tokens=4000, temperature=0.3):
     }
 
     body = {
-        "model": "claude-sonnet-4-20250514",
+        "model": "claude-sonnet-4-6",
         "max_tokens": max_tokens,
         "temperature": temperature,
         "messages": [
@@ -518,7 +518,7 @@ def phase8_narrative_generation(power_scores, gap_data, overlays, g7_status,
 
             narrative["attention_flag"] = g7_status.get("attention_flag", "NONE")
             narrative["word_count"] = validation.get("word_count", 0)
-            narrative["llm_model"] = "claude-sonnet-4-20250514"
+            narrative["llm_model"] = "claude-sonnet-4-6"
             narrative["generation_time_seconds"] = round(time.time() - start, 1)
 
             print(f"  Narrative generated: {narrative['word_count']} words, "

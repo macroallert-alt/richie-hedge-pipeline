@@ -161,7 +161,7 @@ def _validate_claim(claim: dict, source_id: str, seq: int, extraction_date: str)
 def extract_claims(
     content: dict,
     source_config: dict,
-    model: str = "claude-haiku-4-5-20251001",
+    model: str = "claude-sonnet-4-6",
 ) -> list[dict]:
     """
     Extract structured claims from content using Claude Haiku API.

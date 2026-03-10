@@ -136,7 +136,7 @@ def _generate_fallback_briefing(intel: dict) -> str:
 
 def generate_briefing(
     intel: dict,
-    model: str = "claude-sonnet-4-5-20250929",
+    model: str = "claude-sonnet-4-6",
 ) -> dict:
     """
     Generate Agent 0 briefing using Claude Sonnet.
