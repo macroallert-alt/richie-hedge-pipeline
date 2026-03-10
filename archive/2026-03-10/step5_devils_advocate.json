@@ -1,48 +1,20 @@
 {
   "date": "2026-03-10",
-  "run_id": "da_20260310_105716",
-  "draft_run_id": "cio_draft_20260310_105114",
+  "run_id": "da_20260310_123439",
+  "draft_run_id": "cio_draft_20260310_122857",
   "primary_focus": "UNASKED_QUESTION",
   "perspective_seed": "Makro-Trader",
   "challenges": [
     {
-      "id": "da_20260309_002",
-      "type": "UNASKED_QUESTION",
-      "target_section": "S4",
-      "target_assumption": "KA1",
-      "challenge_text": "FORCED DECISION (Tag 4, 3x NOTED): Ist dir aufgefallen dass Router-Proximity 100% ein TIMING-PARADOX erzeugt das KA1 nicht adressiert? CIO nimmt an \"COMMODITY_SUPER Proximity 100% haelt bis 2026-04-01\" (KA1) — aber die DREI Bedingungen die Proximity auf 100% gebracht haben sind unterschiedlich PERSISTENT: (1) DBC/SPY 6M Relative 100% ist ein MOMENTUM-Signal (DBC outperformt SPY ueber 6 Monate) — Momentum ist per Definition MEAN-REVERTING auf laengeren Zeitskalen. 6-Monats-Outperformance bedeutet NICHT 7-Monats-Outperformance (Momentum-Strategien haben typisch 3-9 Monate Persistenz, dann Reversal). (2) V16 Regime erlaubt 100% ist REGIME-ABHAENGIG — V16 in FRAGILE_EXPANSION erlaubt COMMODITY_SUPER, aber wenn V16 zu CONTRACTION shiftet (Risk Officer sagt \"V16 may transition soon\"), faellt diese Bedingung auf 0%. (3) DXY nicht steigend 100% ist ein FX-SIGNAL — DXY ist aktuell flat/fallend, aber CPI morgen DIREKT beeinflusst DXY (Hot CPI → Fed Tightening Expectations → DXY steigt, Cold CPI → Easing Expectations → DXY faellt weiter). Das bedeutet: Proximity 100% ist MAXIMAL FRAGIL vor CPI. Wenn CPI hot → DXY steigt (Bedingung 3 faellt), V16 shiftet zu Risk-Off (Bedingung 2 faellt), DBC/SPY Momentum reverst (Bedingung 1 faellt, verzoegert). Alle drei Bedingungen koennten in 24-48h kollabieren. Wenn CPI cold → DXY faellt (Bedingung 3 bleibt), V16 bleibt Risk-On oder shiftet zu STEADY_GROWTH (Bedingung 2 bleibt), DBC/SPY Momentum beschleunigt (Bedingung 1 bleibt, kurzfristig). Proximity koennte 100% bleiben. Das bedeutet: KA1 ist NICHT eine neutrale Annahme (\"Proximity haelt\"), sondern eine IMPLIZITE WETTE auf Cold CPI. Aber CIO listet KA3 separat (\"CPI neutral to cold\") — das bedeutet CIO behandelt KA1 und KA3 als UNABHAENGIG, obwohl sie KAUSAL VERKNUEPFT sind. Die ungestellte Frage: Was ist die BEDINGTE WAHRSCHEINLICHKEIT von KA1 GEGEBEN KA3? Wenn KA3 wahr (CPI cold) → KA1 Wahrscheinlichkeit ~70-80% (Proximity bleibt, aber Momentum-Reversal-Risiko bleibt). Wenn KA3 falsch (CPI hot) → KA1 Wahrscheinlichkeit ~10-20% (nur wenn DXY nicht reagiert UND V16 nicht shiftet, beides unwahrscheinlich). Das bedeutet: A8 (Router-Proximity Persistenz-Check) sollte NICHT taeglich Proximity loggen (das ist Symptom-Tracking) — A8 sollte die DREI BEDINGUNGEN separat tracken und ihre Persistenz-Wahrscheinlichkeiten schaetzen. Konkret: (1) DBC/SPY 6M Relative — wie nah ist es an der Schwelle? Wenn DBC/SPY nur knapp ueber SPY liegt, kann kleine Underperformance Bedingung kippen. (2) V16 Regime — Risk Officer sagt \"may transition soon\", das ist KEIN \"taeglich loggen\"-Item, das ist ein \"Shift-Wahrscheinlichkeit quantifizieren\"-Item. (3) DXY — CPI-Sensitivity von DXY ist MESSBAR (historisch: Hot CPI → DXY +0.5-1.0% in 24h, Cold CPI → DXY -0.3-0.7%). A8 hat Urgency THIS_WEEK aber keine Methodik. Entry-Evaluation 2026-04-01 ist in 22 Tagen — aber die KRITISCHE PERIODE ist die naechsten 48h (CPI + ECB). Wenn Proximity nach CPI/ECB noch 100% ist, steigt Persistenz-Wahrscheinlichkeit dramatisch (Event-Risiko ist durch). Wenn Proximity nach CPI/ECB <100% ist, ist Entry irrelevant und A8 kann geschlossen werden. CIO behandelt A8 als \"taeglich loggen bis April\" — aber das ist Ressourcen-Verschwendung. A8 sollte sein: \"Post-CPI/ECB (2026-03-12 Abend): Proximity-Check. Wenn 100% → Upgrade zu ACT (Entry-Vorbereitung). Wenn <100% → Close (Entry irrelevant).\"\n[PERSISTENT: Tag 3, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
-      "evidence": [
-        "Router COMMODITY_SUPER Proximity 0% → 100% in einem Tag (Signal Generator Rohdaten, \"sprung\")",
-        "Drei Bedingungen: DBC/SPY 6M Relative 100%, V16 Regime erlaubt 100%, DXY nicht steigend 100% (S1 DELTA)",
-        "V16 Regime FRAGILE_EXPANSION (instabil, Risk Officer sagt \"may transition soon\")",
-        "CPI morgen (Tier-1-Event, beeinflusst DXY direkt)",
-        "KA1 \"Proximity haelt bis 2026-04-01\" und KA3 \"CPI neutral to cold\" als separate Assumptions gelistet (KEY ASSUMPTIONS Section)",
-        "A8 Urgency THIS_WEEK, Methodik \"taeglich Proximity loggen\" (S7)",
-        "Entry-Evaluation 2026-04-01 (T+22, S2 CATALYSTS)"
-      ],
-      "severity": "SUBSTANTIVE",
-      "is_persistent": true,
-      "persistent_days": 4,
-      "is_forced_decision": true,
-      "validation_warnings": []
-    },
-    {
-      "id": "da_20260310_001",
-      "type": "UNASKED_QUESTION",
-      "target_section": "SYSTEM",
+      "id": "da_20260309_005",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S7",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 3, 3x NOTED): Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen EBENE stellt? CIO fokussiert auf Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m) — aber die EIGENTLICHE Frage vor CPI MORGEN ist: Wie liquide ist das DOLLAR-FUNDING-SYSTEM das diese Maerkte traegt? Jeff Snider Claim jeff_snider_005 sagt explizit \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted.\" Das ist kein EM-Problem — das ist ein GLOBALES Dollar-Liquidity-Problem. Wenn EM-Importeure mehr Dollars brauchen (Energie-Schock) GLEICHZEITIG mit Private-Credit-Bust in US/UK/Europe (Claim jeff_snider_002), entsteht Dollar-Nachfrage-Spike. Market Analyst L4 (Cross-Border Flows) zeigt DXY Score 0 (50. Perzentil, STABLE) — aber das misst DXY-PREIS, nicht Dollar-VERFUEGBARKEIT. DXY kann stabil sein waehrend Dollar-Funding-Stress steigt (2019 Repo-Krise: DXY flat, aber Repo-Rates explodierten). Das System hat KEINEN direkten Dollar-Liquidity-Indikator — kein LIBOR-OIS, kein FRA-OIS, kein Cross-Currency-Basis-Spread, kein Repo-Rate-Monitoring. V16 liq_direction -1 aggregiert Net Liquidity/WALCL/TGA/RRP — das sind FED-Balance-Sheet-Metriken (US-zentrisch). Aber Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System, das Snider staendig betont). Wenn CPI morgen hot → Fed-Tightening-Expectations → Dollar-Funding-Kosten steigen → Eurodollar-Stress verschaerft sich → das trifft HYG (28.8%) NICHT durch Credit-Spreads (die misst Market Analyst L2 HY OAS Score 0), sondern durch FUNDING-Kosten der Emittenten. High-Yield-Unternehmen die auf Dollar-Funding angewiesen sind (viele sind international operierend) bekommen Refinanzierungs-Probleme wenn Eurodollar-Maerkte zufrieren — das zeigt sich NICHT in HY OAS (das misst Spread zu Treasuries), sondern in ISSUANCE-Volumina (neue Bonds koennen nicht platziert werden). System trackt HY OAS, aber nicht HY-Issuance. Die ungestellte Frage: Was ist der Zustand des OFFSHORE-Dollar-Funding-Systems, und wie schnell kann es sich verschlechtern post-CPI? Snider argumentiert dass Private-Credit-Bust (Claim jeff_snider_002) bereits Dollar-Nachfrage erhoehen sollte (Deleveraging = Dollar-Bedarf) — aber DXY Score 0 zeigt keine Reaktion. Das bedeutet entweder: (1) Snider liegt falsch (kein Bust), oder (2) Dollar-Nachfrage wird durch andere Flows kompensiert (z.B. EM-Kapitalflucht in Dollars, die Doomberg-Szenario impliziert), oder (3) Stress ist noch nicht in DXY-Preis sichtbar (Lag). Bei (3) ist CPI der Katalysator der latenten Stress SICHTBAR macht — aehnlich wie Lehman 2008 latenten Subprime-Stress sichtbar machte. Portfolio-Implikation: HYG 28.8% ist exponiert gegen Dollar-Funding-Stress den das System nicht misst. V16 FRAGILE_EXPANSION-Regime hat kein \"Eurodollar-Stress\"-Signal — V16 wuerde erst reagieren wenn HY OAS steigt (Score <-5), aber dann ist es zu spaet (Funding-Maerkte frieren VOR Spread-Ausweitung ein, nicht danach). A1 (HYG-Konzentration Review) adressiert Tail-Hedges (VIX Calls, TLT) — aber die RICHTIGE Hedge gegen Dollar-Funding-Stress waere CASH oder ULTRA-SHORT-DURATION (T-Bills), nicht TLT (20Y Duration, exponiert gegen Zinsen). System hat keine Cash-Position (V16 current_weights zeigt 0% Cash) — 100% invested. Das ist Standard fuer Momentum-Strategien, aber bei Funding-Stress ist Cash King.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
-      "evidence": [
-        "Jeff Snider Claim jeff_snider_005: \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted\"",
-        "Jeff Snider Claim jeff_snider_002: \"private credit bust already underway in US/UK/Europe before oil shock — now compounded by energy price shock\"",
-        "Market Analyst L4 DXY Score 0 (50. Perzentil, STABLE) — misst Preis, nicht Verfuegbarkeit",
-        "V16 liq_direction -1 basiert auf Fed-Balance-Sheet-Metriken (WALCL/TGA/RRP) — kein Offshore-Dollar-Tracking",
-        "HYG 28.8% Exposure ohne Dollar-Funding-Stress-Indikator im System",
-        "V16 current_weights: 0% Cash — 100% invested in illiquiden Event-Tag (CPI morgen)"
-      ],
+      "challenge_text": "FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle \"Tag 11\" oder \"Tag 9\") haben UNTERSCHIEDLICHE\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 3,
+      "persistent_days": 5,
       "is_forced_decision": true,
       "validation_warnings": []
     },
@@ -51,7 +23,7 @@
       "type": "PREMISE_ATTACK",
       "target_section": "S6",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 15, 7x NOTED): FORCED DECISION (Tag 14, 6x NOTED): FORCED DECISION (Tag 13, 5x NOTED): FORCED DECISION (Tag 12, 4x NOTED): FORCED DECISION (Tag 11, 3x NOTED): [PERSISTENT da_20260306_002, Tag 6] Was ist der Liquiditaets-Zustand der INSTRUMENTE im Portfolio, nicht der Maerkte? CIO fokussiert auf Macro-Liquidity (IC DEGRADED, keine Liquidity-Daten, Market Analyst L1 TRANSITION), aber HYG 28.8% + DBC 20.3% = 49.1% in Instrumenten mit strukturell schlechteren Liquiditaetsprofilen als SPY/TLT. HYG Average Daily Volume historisch $1.2bn, DBC ADV $180m. V16 AUM unbekannt, aber falls Portfolio >$50m, ist HYG 28.8% = $14.4m = 1.2% des Daily Volume. NFP heute 08:30 ET = Event-Tag mit typischer Liquidity-Kompression: HYG Bid-Ask-Spreads erweitern sich 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Das ist KEIN Credit-Risiko (KA2 adressiert Regime-Signale) und KEIN Commodities-Risiko (W4 adressiert Allocation) — das ist Execution-Risiko. CIO S7 A1 sagt \"Post-NFP: Wenn HYG -2% oder mehr, pruefe Regime-Signale\" und empfiehlt potentiell \"mechanische Gewichtsreduktion\" — aber bei Market-Order auf $14.4m HYG an einem Event-Tag mit 3x Spread-Erweiterung ist Slippage ~0.5% = $72k Loss BEVOR Trade executed ist. Risk Officer meldet Concentration (RO-20260306-003 CRITICAL), aber NICHT Instrument-Liquidity-Stress. System hat keinen Liquidity-Stress-Test fuer die Holdings selbst — nur fuer Maerkte (Market Analyst L1). NEUE DATEN HEUTE: NFP in 0d (Event-Tag), ECB in 0d, CPI in 5d = drei aufeinanderfolgende Event-Tage mit Liquidity-Kompression. Wenn A1 zu HYG-Reduktion fuehrt UND A3 (CPI-Vorbereitung) auch zu Trades fuehrt, koennte Portfolio in 5 Tagen ZWEI grosse HYG-Trades machen (heute Post-NFP + Montag Pre-CPI) = kumulativer Slippage $72k + $72k = $144k auf $50m AUM = 0.29% Performance-Drag nur durch Execution. Das ist MESSBAR und VERMEIDBAR durch Limit-Orders oder gestufte Execution, aber Signal Generator zeigt nur \"FAST_PATH, V16 weights unmodified\" — keine Execution-Logik sichtbar.\n[PERSISTENT: Tag 9, erneuert aus History]\n[PERSISTENT: Tag 10, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "challenge_text": "FORCED DECISION (Tag 16, 8x NOTED): FORCED DECISION (Tag 15, 7x NOTED): FORCED DECISION (Tag 14, 6x NOTED): FORCED DECISION (Tag 13, 5x NOTED): FORCED DECISION (Tag 12, 4x NOTED): FORCED DECISION (Tag 11, 3x NOTED): [PERSISTENT da_20260306_002, Tag 6] Was ist der Liquiditaets-Zustand der INSTRUMENTE im Portfolio, nicht der Maerkte? CIO fokussiert auf Macro-Liquidity (IC DEGRADED, keine Liquidity-Daten, Market Analyst L1 TRANSITION), aber HYG 28.8% + DBC 20.3% = 49.1% in Instrumenten mit strukturell schlechteren Liquiditaetsprofilen als SPY/TLT. HYG Average Daily Volume historisch $1.2bn, DBC ADV $180m. V16 AUM unbekannt, aber falls Portfolio >$50m, ist HYG 28.8% = $14.4m = 1.2% des Daily Volume. NFP heute 08:30 ET = Event-Tag mit typischer Liquidity-Kompression: HYG Bid-Ask-Spreads erweitern sich 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Das ist KEIN Credit-Risiko (KA2 adressiert Regime-Signale) und KEIN Commodities-Risiko (W4 adressiert Allocation) — das ist Execution-Risiko. CIO S7 A1 sagt \"Post-NFP: Wenn HYG -2% oder mehr, pruefe Regime-Signale\" und empfiehlt potentiell \"mechanische Gewichtsreduktion\" — aber bei Market-Order auf $14.4m HYG an einem Event-Tag mit 3x Spread-Erweiterung ist Slippage ~0.5% = $72k Loss BEVOR Trade executed ist. Risk Officer meldet Concentration (RO-20260306-003 CRITICAL), aber NICHT Instrument-Liquidity-Stress. System hat keinen Liquidity-Stress-Test fuer die Holdings selbst — nur fuer Maerkte (Market Analyst L1). NEUE DATEN HEUTE: NFP in 0d (Event-Tag), ECB in 0d, CPI in 5d = drei aufeinanderfolgende Event-Tage mit Liquidity-Kompression. Wenn A1 zu HYG-Reduktion fuehrt UND A3 (CPI-Vorbereitung) auch zu Trades fuehrt, koennte Portfolio in 5 Tagen ZWEI grosse HYG-Trades machen (heute Post-NFP + Montag Pre-CPI) = kumulativer Slippage $72k + $72k = $144k auf $50m AUM = 0.29% Performance-Drag nur durch Execution. Das ist MESSBAR und VERMEIDBAR durch Limit-Orders oder gestufte Execution, aber Signal Generator zeigt nur \"FAST_PATH, V16 weights unmodified\" — keine Execution-Logik sichtbar.\n[PERSISTENT: Tag 9, erneuert aus History]\n[PERSISTENT: Tag 10, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
       "evidence": [
         "HYG 28.8% = $14.4m bei $50m AUM (geschaetzt), DBC 20.3% = $10.15m",
         "HYG ADV $1.2bn (historisch), DBC ADV $180m → HYG Trade = 1.2% Daily Volume, DBC = 5.6%",
@@ -62,17 +34,24 @@
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 15,
+      "persistent_days": 16,
       "is_forced_decision": true,
       "validation_warnings": []
     },
     {
-      "id": "da_20260309_005",
-      "type": "PREMISE_ATTACK",
-      "target_section": "S7",
+      "id": "da_20260310_001",
+      "type": "UNASKED_QUESTION",
+      "target_section": "SYSTEM",
       "target_assumption": null,
-      "challenge_text": "FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle \"Tag 11\" oder \"Tag 9\") haben UNTERSCHIEDLICHE\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
-      "evidence": [],
+      "challenge_text": "FORCED DECISION (Tag 4, 5x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Ist dir aufgefallen dass das System die Liquiditaets-Frage auf der falschen EBENE stellt? CIO fokussiert auf Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m) — aber die EIGENTLICHE Frage vor CPI MORGEN ist: Wie liquide ist das DOLLAR-FUNDING-SYSTEM das diese Maerkte traegt? Jeff Snider Claim jeff_snider_005 sagt explizit \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted.\" Das ist kein EM-Problem — das ist ein GLOBALES Dollar-Liquidity-Problem. Wenn EM-Importeure mehr Dollars brauchen (Energie-Schock) GLEICHZEITIG mit Private-Credit-Bust in US/UK/Europe (Claim jeff_snider_002), entsteht Dollar-Nachfrage-Spike. Market Analyst L4 (Cross-Border Flows) zeigt DXY Score 0 (50. Perzentil, STABLE) — aber das misst DXY-PREIS, nicht Dollar-VERFUEGBARKEIT. DXY kann stabil sein waehrend Dollar-Funding-Stress steigt (2019 Repo-Krise: DXY flat, aber Repo-Rates explodierten). Das System hat KEINEN direkten Dollar-Liquidity-Indikator — kein LIBOR-OIS, kein FRA-OIS, kein Cross-Currency-Basis-Spread, kein Repo-Rate-Monitoring. V16 liq_direction -1 aggregiert Net Liquidity/WALCL/TGA/RRP — das sind FED-Balance-Sheet-Metriken (US-zentrisch). Aber Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System, das Snider staendig betont). Wenn CPI morgen hot → Fed-Tightening-Expectations → Dollar-Funding-Kosten steigen → Eurodollar-Stress verschaerft sich → das trifft HYG (28.8%) NICHT durch Credit-Spreads (die misst Market Analyst L2 HY OAS Score 0), sondern durch FUNDING-Kosten der Emittenten. High-Yield-Unternehmen die auf Dollar-Funding angewiesen sind (viele sind international operierend) bekommen Refinanzierungs-Probleme wenn Eurodollar-Maerkte zufrieren — das zeigt sich NICHT in HY OAS (das misst Spread zu Treasuries), sondern in ISSUANCE-Volumina (neue Bonds koennen nicht platziert werden). System trackt HY OAS, aber nicht HY-Issuance. Die ungestellte Frage: Was ist der Zustand des OFFSHORE-Dollar-Funding-Systems, und wie schnell kann es sich verschlechtern post-CPI? Snider argumentiert dass Private-Credit-Bust (Claim jeff_snider_002) bereits Dollar-Nachfrage erhoehen sollte (Deleveraging = Dollar-Bedarf) — aber DXY Score 0 zeigt keine Reaktion. Das bedeutet entweder: (1) Snider liegt falsch (kein Bust), oder (2) Dollar-Nachfrage wird durch andere Flows kompensiert (z.B. EM-Kapitalflucht in Dollars, die Doomberg-Szenario impliziert), oder (3) Stress ist noch nicht in DXY-Preis sichtbar (Lag). Bei (3) ist CPI der Katalysator der latenten Stress SICHTBAR macht — aehnlich wie Lehman 2008 latenten Subprime-Stress sichtbar machte. Portfolio-Implikation: HYG 28.8% ist exponiert gegen Dollar-Funding-Stress den das System nicht misst. V16 FRAGILE_EXPANSION-Regime hat kein \"Eurodollar-Stress\"-Signal — V16 wuerde erst reagieren wenn HY OAS steigt (Score <-5), aber dann ist es zu spaet (Funding-Maerkte frieren VOR Spread-Ausweitung ein, nicht danach). A1 (HYG-Konzentration Review) adressiert Tail-Hedges (VIX Calls, TLT) — aber die RICHTIGE Hedge gegen Dollar-Funding-Stress waere CASH oder ULTRA-SHORT-DURATION (T-Bills), nicht TLT (20Y Duration, exponiert gegen Zinsen). System hat keine Cash-Position (V16 current_weights zeigt 0% Cash) — 100% invested. Das ist Standard fuer Momentum-Strategien, aber bei Funding-Stress ist Cash King.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "Jeff Snider Claim jeff_snider_005: \"EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted\"",
+        "Jeff Snider Claim jeff_snider_002: \"private credit bust already underway in US/UK/Europe before oil shock — now compounded by energy price shock\"",
+        "Market Analyst L4 DXY Score 0 (50. Perzentil, STABLE) — misst Preis, nicht Verfuegbarkeit",
+        "V16 liq_direction -1 basiert auf Fed-Balance-Sheet-Metriken (WALCL/TGA/RRP) — kein Offshore-Dollar-Tracking",
+        "HYG 28.8% Exposure ohne Dollar-Funding-Stress-Indikator im System",
+        "V16 current_weights: 0% Cash — 100% invested in illiquiden Event-Tag (CPI morgen)"
+      ],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
       "persistent_days": 4,
@@ -84,16 +63,16 @@
       "type": "UNASKED_QUESTION",
       "target_section": "SYSTEM",
       "target_assumption": null,
-      "challenge_text": "Ist dir aufgefallen dass das System die LIQUIDITAETS-FRAGE auf der falschen ZEITSKALA stellt? CIO fokussiert auf Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und argumentiert \"Liquidity-Shift koennte V16-Regime aendern\" — aber V16 liq_direction -1 basiert auf WOECHENTLICHEN Fed-Balance-Sheet-Daten (WALCL/TGA/RRP), waehrend CPI HEUTE (T+0h) ein INTRADAY-Liquiditaets-Event ist. CPI-Release 08:30 ET → Treasury-Market-Reaktion innerhalb MINUTEN → HYG-Spreads reagieren innerhalb STUNDEN (nicht Tage). Market Analyst L1 Sub-Scores zeigen: Net Liquidity 0, WALCL 0, TGA 0, RRP 0, MMF Assets 0 — alle auf Wochenbasis aktualisiert (naechstes Update: Fed H.4.1 Release Donnerstag). Das bedeutet: Wenn CPI hot → Treasury-Sell-Off → Dealer-Inventories steigen → Repo-Funding-Stress → das zeigt sich in OVERNIGHT-REPO-RATES (nicht in WALCL), und in TREASURY-FAILS (nicht in TGA), und in DEALER-LEVERAGE-CONSTRAINTS (nicht in RRP). KEINER dieser Intraday-Liquidity-Indikatoren ist in Market Analyst L1 enthalten. V16 liq_direction -1 reflektiert STRUKTURELLE Liquidity (Fed-Balance-Sheet schrumpft seit Monate) — aber CPI triggert ZYKLISCHE Liquidity-Schocks (Event-getrieben, mean-reverting innerhalb Tage). HYG 28.8% (CRITICAL) ist exponiert gegen ZYKLISCHE Liquidity (Dealer-Bid-Ask-Spreads erweitern sich 3x bei Volatilitaets-Spikes, siehe da_20260306_005 Persistent Challenge Tag 14) — aber System misst nur STRUKTURELLE Liquidity. Die ungestellte Frage: Was ist der Zustand der DEALER-LIQUIDITY im Treasury- und Credit-Market JETZT (Pre-CPI), und wie schnell kann sie kollabieren Post-CPI? Treasury-Market-Liquidity wird gemessen durch: (1) Bid-Ask-Spreads (10Y UST typisch 0.5-1.0 ticks normal, 2-3 ticks bei Stress), (2) Market Depth (Orderbook-Tiefe an Top-of-Book), (3) Dealer-Inventories (Primary Dealer Statistics, wöchentlich von NY Fed), (4) Treasury-Fails (Settlement-Failures, täglich verfügbar aber mit 2-Tage-Lag). KEINER dieser Metriken ist in Market Analyst sichtbar. L1 zeigt \"Liquidity Score 0 TRANSITION\" aber keine Granularitaet. Credit-Market-Liquidity (HYG-relevant) wird gemessen durch: (1) HYG Bid-Ask-Spreads (aktuell nicht getrackt), (2) HYG Average Trade Size (sinkt bei Liquidity-Stress — Investoren handeln kleinere Clips), (3) HY-Issuance-Volumina (neue Bonds können nicht platziert werden bei Funding-Stress), (4) Loan-Covenant-Breaches (Distressed-Signale, führend für Spread-Widening). KEINER dieser Metriken ist in Market Analyst L2 (Macro) oder irgendwo sonst sichtbar. L2 zeigt \"HY OAS Score 0\" aber das ist PREIS (Spread-Level), nicht LIQUIDITY (Handelbarkeit). Das Problem: A1 (HYG-Konzentration Review, CRITICAL, Tag 15) soll \"Drawdown-Risiko bei Hot CPI quantifizieren\" — aber ohne Dealer-Liquidity-Daten ist Drawdown-Schaetzung BLIND. Historische HYG-Drawdowns bei CPI-Shocks (z.B. 2022-06 CPI +9.1% surprise → HYG -8% in 5 Tage) waren NICHT nur Spread-Widening (fundamental), sondern auch Liquidity-Evaporation (technisch) — Dealer weigerten sich Inventory zu halten, Bid-Ask-Spreads explodierten, Forced-Selling beschleunigte Drawdown. Wenn CPI heute hot UND Dealer-Liquidity bereits angespannt (unbekannt, weil nicht gemessen) → HYG-Drawdown koennte GROESSER sein als fundamentale Spread-Widening allein impliziert. A7 (Post-CPI System-Review, HIGH, Tag 6) plant \"Monitor HYG-Spreads, DBC-Bewegung, V16-Regime-Stability\" — aber wenn HYG -5% faellt Post-CPI, ist das (1) Spread-Widening (fundamental, V16-relevant), oder (2) Liquidity-Evaporation (technisch, V16-irrelevant aber Execution-relevant), oder (3) beides? Ohne Liquidity-Metriken ist diese Frage NICHT beantwortbar. Konkrete Implikation fuer HEUTE: Wenn CPI 08:30 ET hot → Treasury-Sell-Off → Check (1) 10Y UST Bid-Ask-Spread (Bloomberg: USGG10YR BID/ASK), (2) HYG Bid-Ask-Spread (Bloomberg: HYG US EQUITY BID/ASK), (3) HYG Average Trade Size (Bloomberg: HYG US EQUITY VWAP vs. Ticket Size), (4) VIX-Term-Structure-Shift (Backwardation = Liquidity-Stress-Signal). Diese Daten sind PUBLIC und REAL-TIME verfügbar — aber System checkt sie nicht. A1 sollte NICHT \"Review V16-Logik\" (V16 ist sakrosankt) — A1 sollte \"Quantifiziere Execution-Risiko bei HYG-Reduktion unter Liquidity-Stress-Bedingungen\" sein. Das ist KEIN V16-Problem (V16 entscheidet WAS zu halten), das ist ein EXECUTION-Problem (Market Analyst sollte WANN zu handeln informieren).",
+      "challenge_text": "Ist dir aufgefallen dass das System die FALSCHE Liquiditaets-Frage stellt? CIO fokussiert auf Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m) — aber die KRITISCHE Frage vor CPI MORGEN ist: Wie liquide ist das COLLATERAL das diese Positionen finanziert? HYG 28.8% = $14.4m bei $50m AUM. High-Yield-ETFs werden typisch auf Margin gehalten oder als Collateral fuer Leverage genutzt (Repo-Maerkte, Prime Brokerage). Wenn CPI hot → Fed hawkish → Treasury-Yields steigen → HYG-Preis faellt → Collateral-Value sinkt → Margin Calls oder Haircut-Erhoehungen. Das System misst HYG-PREIS-Risiko (Market Analyst L2 HY OAS Score 0) und HYG-KONZENTRATIONS-Risiko (Risk Officer CRITICAL), aber NICHT HYG-COLLATERAL-Risiko. Jeff Snider Claim jeff_snider_005 sagt \"EMs hit with simultaneous dollar crunch and energy cost shock\" — das ist ein COLLATERAL-Shock (EM-Assets verlieren Wert → weniger Dollar-Collateral verfuegbar → Deleveraging). Forward Guidance Claim forward_guidance_002 sagt \"Credit spreads widening alongside FX volatility rising — could trigger carry trade unwind\" — Carry Trade Unwind ist ein COLLATERAL-Event (Funding-Waehrung steigt → Collateral-Value in Funding-Waehrung sinkt → Forced Liquidation). Doomberg Claim doomberg_006 sagt \"Oil price spikes historically lead to sharp economic contractions\" — Kontraktion = Collateral-Value-Erosion across all asset classes. Das System hat KEINEN Collateral-Quality-Monitor — kein Repo-Haircut-Tracking, kein Margin-Requirement-Tracking, kein Rehypothecation-Risk-Assessment. V16 operiert als ob Positionen CASH-finanziert sind (100% invested, 0% Cash). Aber wenn Portfolio gehebelt ist (unbekannt — AUM-Struktur nicht disclosed), ist jede Position COLLATERAL fuer die naechste. HYG 28.8% ist nicht nur Credit-Exposure — es ist COLLATERAL-Exposure. Wenn HYG morgen -5% macht (plausibel bei hot CPI + Fed hawkish), verliert Portfolio $720k nominal. Aber wenn HYG als Collateral genutzt wird mit 80% Loan-to-Value, ist der EFFEKTIVE Loss $720k / 0.2 = $3.6m Deleveraging-Bedarf (5x Multiplikator). Das trifft ALLE Positionen, nicht nur HYG. System-Design nimmt an dass Positionen UNABHAENGIG sind (Concentration Risk = Summe der Einzelrisiken). Aber in Collateral-Ketten sind Positionen INTERDEPENDENT (ein Asset faellt → Margin Call → andere Assets muessen verkauft werden → Cascade). Market Analyst L8 (Tail Risk) Score +2, Regime CALM — aber das misst VIX (17.8, neutral) und Credit Spreads (HY OAS Score 0). Es misst NICHT Collateral-Chain-Fragility. 2008 Lehman: Subprime-Assets fielen → Collateral-Chains brachen → System-Freeze. 2020 March: COVID-Schock → Treasury-Collateral-Ketten brachen → Fed musste intervenieren. Beide Male war das Problem NICHT Asset-Preise (die fielen graduell), sondern COLLATERAL-Chains (die brachen abrupt). CPI morgen ist ein KNOWN Event (08:30 ET) mit BINARY Outcome (hot/cold). Wenn hot, passiert Collateral-Reprice innerhalb MINUTEN (Algo-Trading, Systematic Funds deleveragen sofort). HYG Bid-Ask-Spread erweitert sich 3x (CIO S7 A1 erwaehnt das), aber das ist SYMPTOM, nicht URSACHE. Ursache ist: Market Maker ziehen Liquidity weil ihr eigenes Collateral unter Druck ist. Sie koennen nicht mehr $14.4m HYG absorbieren ohne eigene Margin-Probleme. Das System plant \"mechanische Gewichtsreduktion\" (A1) NACH CPI — aber wenn Collateral-Chains brechen, gibt es kein NACH. Execution passiert WAEHREND des Events oder gar nicht. V16 rebalanced taeglich um 16:00 ET (angenommen). CPI Release 08:30 ET. 7.5 Stunden Gap. In diesem Gap koennte HYG -5% machen, Collateral-Calls ausloesen, und V16 wuerde erst um 16:00 reagieren — zu spaet. Signal Generator zeigt \"FAST_PATH, V16 weights unmodified\" — keine Intraday-Logik sichtbar. Die ungestellte Frage: Hat das Portfolio COLLATERAL-Puffer fuer einen CPI-Shock, oder operiert es an der Margin-Grenze? Wenn Letzteres, ist HYG 28.8% CRITICAL nicht wegen Concentration (Risk Officer Diagnose), sondern wegen COLLATERAL-Leverage. A1 adressiert \"Tail-Hedges (VIX Calls, TLT)\" — aber VIX Calls schuetzen gegen VOLATILITY, nicht gegen COLLATERAL-Calls. TLT schuetzt gegen ZINSEN, nicht gegen MARGIN-Calls. Die richtige Hedge waere CASH (sofort verfuegbar, kein Collateral-Risiko) oder REPO-Access (Liquidity-Backstop). System hat 0% Cash, keine Repo-Facility sichtbar.",
       "evidence": [
-        "Market Analyst L1 Sub-Scores: Net Liquidity 0, WALCL 0, TGA 0, RRP 0, MMF Assets 0 — alle woechentliche Fed-Daten, kein Intraday-Liquidity-Tracking",
-        "V16 liq_direction -1 basiert auf struktureller Liquidity (Fed-Balance-Sheet), nicht zyklischer Event-Liquidity",
-        "HYG 28.8% CRITICAL seit 11 Tagen, aber kein HYG Bid-Ask-Spread-Tracking in Market Analyst",
-        "A1 (HYG Review Tag 15) soll \"Drawdown-Risiko quantifizieren\" aber ohne Dealer-Liquidity-Daten",
-        "CPI heute 08:30 ET = Intraday-Event, aber naechstes L1-Update erst Donnerstag (Fed H.4.1 Release)",
-        "Historisch: 2022-06 CPI surprise → HYG -8% in 5 Tage, getrieben durch Spread-Widening UND Liquidity-Evaporation",
-        "Treasury-Market-Liquidity-Indikatoren (Bid-Ask, Market Depth, Dealer Inventories, Fails) nicht in System",
-        "Credit-Market-Liquidity-Indikatoren (HYG Spreads, Trade Size, Issuance, Covenant-Breaches) nicht in System"
+        "V16 current_weights: 100% invested, 0% Cash",
+        "Risk Officer RO-20260310-003: HYG 28.8% CRITICAL, aber nur wegen Concentration, nicht wegen Collateral",
+        "Jeff Snider claim jeff_snider_005: \"EMs hit with dollar crunch\" = Collateral-Shock-Mechanik",
+        "Forward Guidance claim forward_guidance_002: \"Carry trade unwind\" = Collateral-Event",
+        "Market Analyst L8 Score +2 (CALM) misst VIX/Spreads, nicht Collateral-Chains",
+        "Signal Generator: \"FAST_PATH\" = keine Intraday-Reaktion auf CPI 08:30 ET",
+        "CIO S7 A1: \"mechanische Gewichtsreduktion\" geplant NACH CPI, nicht WAEHREND",
+        "System-Design: Keine Repo-Haircut-Daten, keine Margin-Requirement-Daten, keine Rehypothecation-Metrics"
       ],
       "severity": "SUBSTANTIVE",
       "is_persistent": false,
@@ -104,52 +83,285 @@
     {
       "id": "da_20260310_002",
       "type": "PREMISE_ATTACK",
-      "target_section": "S4",
-      "target_assumption": "KA3",
-      "challenge_text": "Ist dir aufgefallen dass KA3 (ic_geopolitics_lag) die FALSCHE Null-Hypothese verwendet? CIO nimmt an \"IC-Narrative haben ZERO quantitative Bestaetigung weil Maerkte Geopolitik noch nicht einpreisen (Lag)\" und sagt \"In den naechsten Tagen werden Market Analyst Layers Geopolitik-Impact reflektieren\" — aber die Praemisse \"Maerkte hinken IC-Narrativen hinterher\" ist NICHT die Default-Annahme. Die Default-Annahme (Efficient Markets) ist: \"Maerkte preisen verfuegbare Information SOFORT ein — wenn Maerkte NICHT reagieren, ist Information entweder (1) bereits eingepreist, oder (2) irrelevant, oder (3) falsch.\" KA3 waehlt implizit Erklaerung (1) \"bereits eingepreist\" OHNE zu pruefen ob (2) oder (3) wahrscheinlicher sind. EVIDENCE GEGEN KA3: IC Catalyst Timeline zeigt Iran-Krieg 2026-03-03 (7 Tage her), China Export-Stopp 2026-03-05 (5 Tage her), Hormuz-Schliessung 2026-03-09 (1 Tag her). Das sind NICHT \"breaking news heute\" — das sind Events die 1-7 Tage ZURUECK liegen. Wenn Maerkte 7 Tage Zeit hatten Iran-Krieg einzupreisen und VIX immer noch 50.0th pctl (L8 Tail Risk +2 CALM), dann ist die WAHRSCHEINLICHERE Erklaerung: Maerkte haben Event bewertet und als LOW-IMPACT eingestuft (Erklaerung 2: irrelevant), NICHT \"Maerkte haben Event noch nicht bemerkt\" (KA3-Annahme). Market Analyst L6 WTI Curve Score -10 (bearish) BESTAETIGT dass Oil-Maerkte auf Hormuz reagiert haben — WTI Curve ist in Backwardation (Snider Claim jeff_snider_007 \"backwardation indicates market pricing near-term supply tightness\"). Das bedeutet: Oil-Maerkte HABEN Geopolitik eingepreist (Backwardation = Supply-Shock-Pricing). Aber L8 Tail Risk +2 (CALM) und VIX 50.0th pctl zeigen: Equity-Maerkte haben Geopolitik NICHT als systemisches Risiko eingepreift. Das ist KEINE \"Lag\" (KA3) — das ist SEGMENTIERUNG: Oil-Maerkte preisen Oil-Supply-Shock, Equity-Maerkte preisen KEIN Contagion-Risiko. Die Frage ist nicht \"Wann werden Equity-Maerkte Geopolitik einpreisen?\" (KA3), sondern \"WARUM preisen Equity-Maerkte Geopolitik nicht ein?\" Moegliche Antworten: (1) Equity-Investoren glauben Hormuz-Schliessung ist TEMPORAER (Tage, nicht Wochen) → Oil-Spike mean-reverts schnell → kein Earnings-Impact. (2) Equity-Investoren glauben Fed wird Oil-Shock DURCH-SCHAUEN (look through) bei Policy-Entscheidungen → kein Tightening-Risiko. (3) Equity-Investoren glauben US-Maerkte sind ISOLIERT von Mideast-Geopolitik (US Energy-Unabhaengigkeit, siehe Doomberg Claim doomberg_005 \"US largest oil producer and net exporter\"). Alle drei Erklaerungen sind KONSISTENT mit VIX 50.0th pctl UND WTI Curve -10 — keine \"Lag\" noetig. KA3 \"In den naechsten Tagen werden L4/L8 Geopolitik-Impact reflektieren\" ist TESTBAR: Wenn KA3 wahr, dann sollten (1) DXY steigen (EM-Stress, Snider Claim jeff_snider_005 \"EM dollar crunch\"), (2) VIX steigen (Tail-Risk-Pricing), (3) HYG-Spreads weiten (Credit-Stress). Aber CIO gibt KEINE Wahrscheinlichkeit fuer KA3 und KEINEN Falsifikations-Test. Wenn DXY/VIX/HYG nach CPI+ECB (naechste 48h) NICHT steigen, ist KA3 falsifiziert — aber CIO hat keinen Plan was dann passiert. Alternative Hypothese (ANTI-KA3): \"IC-Narrative ueberschaetzen Geopolitik-Impact weil Doomberg/Snider BIAS haben (Doomberg Bias +1 bearish, Snider Bias -2 dovish) und weil Newsletter-Format incentiviert DRAMATISCHE Narrative (Hormuz-Schliessung, Iran-Krieg) ueber BORING Baseline (Oil-Maerkte funktionieren, Hormuz oeffnet in Tagen).\" ANTI-KA3 ist AUCH konsistent mit Daten: IC High-Novelty-Claims (12 von 18) sind alle DESKRIPTIV (\"war caused prices to rise\", \"China suspended exports\") nicht PREDIKTIV (\"prices will stay high for X weeks\"). Doomberg Claim doomberg_003 sagt \"IF Strait remains closed for EXTENDED period\" (Conditional, keine Duration-Schaetzung) — das ist KEIN Forecast, das ist ein Szenario. Snider Claim jeff_snider_010 sagt \"ONCE Hormuz reopens, prices crash back to low-$70s\" — das ist ein MEAN-REVERSION-Call, nicht ein \"Geopolitik eskaliert\"-Call. Wenn ANTI-KA3 wahr → W3 (Geopolitik-Eskalation Watchlist Tag 15) sollte CLOSED werden als \"IC-Narrative overestimated, Markets correct\" — aber CIO haelt W3 OPEN weil KA3 annimmt \"Maerkte werden spaeter reagieren\". Das ist Confirmation Bias: CIO interpretiert \"keine Market-Reaktion\" als \"Reaktion kommt noch\" statt \"keine Reaktion weil kein Grund zu reagieren\".",
+      "target_section": "S2",
+      "target_assumption": "KA2",
+      "challenge_text": "KA2 nimmt an \"CPI morgen triggert V16 Regime-Shift (entweder SLOWDOWN bei hot CPI oder STEADY_GROWTH bei cold CPI)\" — aber V16 Regime-Mechanik reagiert auf LIQUIDITY + GROWTH + STRESS, nicht auf CPI direkt. CPI ist ein DATA-POINT der in diese Signale einfliessen KOENNTE, aber nicht MUSS. V16 aktuell: Growth +1, Liq -1, Stress 0 = FRAGILE_EXPANSION (Macro State 3). Fuer Shift zu SLOWDOWN (State 2) muss ENTWEDER Growth +1 → 0 ODER Liq -1 → -2. Fuer Shift zu STEADY_GROWTH (State 4) muss Liq -1 → 0. Aber CPI allein bewegt diese Signale nicht mechanisch. Growth-Signal basiert auf ISM, Payrolls, GDP-Nowcasts (V16-Dokumentation nicht verfuegbar, aber typische Macro-Regime-Inputs). Liq-Signal basiert auf Fed-Balance-Sheet (WALCL), TGA, RRP, Net Liquidity (Market Analyst L1 zeigt diese Komponenten). Stress-Signal basiert auf NFCI, Credit Spreads, VIX. CPI beeinflusst diese Signale INDIREKT: Hot CPI → Fed hawkish Rhetoric → Treasury-Yields steigen → Credit Spreads weiten sich (Stress +1) → RRP sinkt (Liq verschlechtert sich). Aber dieser Transmissions-Mechanismus braucht ZEIT (Tage, nicht Stunden) und ist nicht DETERMINISTISCH. Beispiel: CPI Jan 2024 hot (+3.4% YoY), aber Fed blieb dovish (\"transitory\"), Spreads blieben eng, V16-equivalent Regime (falls existiert) haette nicht geshiftet. Beispiel: CPI Oct 2023 cold (+3.2% YoY), aber Fed blieb hawkish (\"higher for longer\"), Yields stiegen weiter, Regime blieb restrictive. KA2 impliziert BINARY Outcome (hot = SLOWDOWN, cold = STEADY_GROWTH), aber V16 operiert auf CONTINUOUS Signalen die CPI-Daten FILTERN durch multiple Indikatoren. Market Analyst L2 (Macro Regime) Score -1, Regime SLOWDOWN, regime_duration 1 Tag — das bedeutet L2 hat BEREITS auf etwas reagiert (gestern Regime-Shift). Wenn L2 bereits SLOWDOWN sieht, warum ist V16 noch FRAGILE_EXPANSION? Weil V16 ANDERE Inputs gewichtet (Liquidity Cycle vs. Macro Regime). CPI morgen koennte L2 Score weiter senken (-1 → -3), aber das triggert V16-Shift nur wenn V16's EIGENE Growth/Liq/Stress-Signale sich aendern. V16 Growth +1 basiert vermutlich auf ISM >50 oder Payrolls >200k (beide zuletzt positiv — keine Daten im Briefing, aber impliziert durch Growth +1). CPI hot allein aendert ISM oder Payrolls nicht. V16 Liq -1 basiert auf Net Liquidity negativ (Market Analyst L1 Score 0 zeigt TRANSITION, nicht klar negativ). CPI hot koennte Fed zu QT-Beschleunigung bewegen (Liq -1 → -2), aber das braucht Fed-Announcement (naechstes FOMC 2026-03-18, 7 Tage nach CPI). CPI allein triggert keinen sofortigen Liquidity-Shift. Die Annahme dass \"CPI triggert Regime-Shift\" verwechselt CATALYST (CPI) mit MECHANISM (V16-Signale). CPI ist Catalyst fuer MARKET-Reaktion (Yields, Spreads, VIX), aber V16-Signale reagieren auf die MARKET-Reaktion, nicht auf CPI direkt. Wenn Market-Reaktion auf CPI MILD ist (z.B. CPI hot aber \"as expected\", keine Surprise), V16-Signale bleiben stabil, kein Regime-Shift. Wenn Market-Reaktion EXTREM ist (CPI hot + Fed Emergency Statement), V16-Signale shiften, aber das ist MARKET-driven, nicht CPI-driven. KA2 ist zu deterministisch. Korrekter waere: \"CPI morgen KOENNTE V16 Regime-Shift triggern WENN Market-Reaktion stark genug ist um Growth/Liq/Stress-Signale zu bewegen UND diese Bewegung innerhalb V16's Rebalance-Fenster (16:00 ET, angenommen) sichtbar wird.\" Das ist CONDITIONAL, nicht BINARY. Implikation fuer A1 (HYG-Konzentration): Wenn KA2 falsch (kein Regime-Shift post-CPI), bleibt HYG 28.8% CRITICAL ohne automatische Loesung. CIO sagt \"Manual Override Discussion wird zwingend\" — aber das widerspricht \"V16-Gewichte sakrosankt\". Entweder V16 ist sakrosankt (dann kein Override moeglich, HYG bleibt 28.8%), oder V16 ist override-bar bei >30% (dann Sakrosankt-Regel hat Exception). Diese Exception ist nicht dokumentiert in System-Regeln (nur im CIO-Text erwaehnt). Das ist eine AD-HOC-Regel, keine System-Regel.",
       "evidence": [
-        "IC Catalyst Timeline: Iran-Krieg 2026-03-03 (7d her), China Export-Stopp 2026-03-05 (5d her), Hormuz 2026-03-09 (1d her) — NICHT breaking news",
-        "Market Analyst L8 Tail Risk +2 CALM, VIX 50.0th pctl, term structure contango — 7 Tage nach Iran-Krieg immer noch keine Panik",
-        "Market Analyst L6 WTI Curve -10 bearish — Oil-Maerkte HABEN auf Hormuz reagiert (Backwardation = Supply-Shock-Pricing)",
-        "Market Analyst L4 DXY Score 0, USDCNH 0, China 10Y 0 — KEINE EM-Stress-Signale trotz Snider Claim \"EM dollar crunch\"",
-        "Doomberg Bias +1 bearish, Snider Bias -2 dovish — beide incentiviert fuer dramatische Narrative",
-        "IC High-Novelty-Claims 12 von 18 sind DESKRIPTIV (Past Tense), nicht PREDIKTIV (Forward-Looking)",
-        "Doomberg Claim doomberg_003 \"IF Strait remains closed\" — Conditional ohne Duration-Schaetzung",
-        "Snider"
+        "V16 Regime FRAGILE_EXPANSION basiert auf Growth +1, Liq -1, Stress 0 — nicht direkt auf CPI",
+        "Market Analyst L2 Score -1 (SLOWDOWN) seit 1 Tag — V16 hat NICHT parallel geshiftet",
+        "Market Analyst L1 Score 0 (TRANSITION) — Liquidity-Signal nicht klar negativ, trotz V16 Liq -1",
+        "CIO KA2: \"CPI triggert Regime-Shift\" — impliziert deterministischen Mechanismus",
+        "CIO S7 A1: \"Wenn HYG >30%, eskaliere zu Manual Override\" — widerspricht \"V16 sakrosankt\"",
+        "Historische Beispiele: CPI Jan 2024 hot, kein Regime-Shift; CPI Oct 2023 cold, kein Regime-Shift",
+        "V16 rebalanced vermutlich 16:00 ET (Standard), CPI Release 08:30 ET — 7.5h Lag"
       ],
-      "severity": "MODERATE",
+      "severity": "SUBSTANTIVE",
       "is_persistent": false,
       "persistent_days": 0,
       "is_forced_decision": false,
       "validation_warnings": []
     },
     {
-      "id": "da_20260310_004",
+      "id": "da_20260310_003",
       "type": "UNASKED_QUESTION",
       "target_section": "S4",
       "target_assumption": null,
-      "challenge_text": "Ist dir aufgefallen dass OBS-2 (IC-Intelligence Epistemische Schwaeche) die FALSCHE Diagnose stellt? CIO sagt \"IC-Basis zu duenn fuer robuste Regime-Bestaetigung\" und eskaliert A6 (IC-Daten-Refresh) zu HIGH — aber das Problem ist nicht QUANTITAET (2 Quellen), sondern TIMING. Alle 18 Claims haben content_date \"2026-03-10\" (heute) — aber die beschriebenen Events (Iran-Krieg Start 2026-03-03, China Export-Stopp 2026-03-05, Hormuz Closure 2026-03-09) liegen 1-7 Tage ZURUECK. Das bedeutet: Doomberg und Snider schreiben heute RUECKBLICKEND ueber Events die bereits eingepreist sind. Claim doomberg_001 \"war caused hydrocarbon complex to be bid higher\" — Past Tense. Claim doomberg_002 \"China suspended exports six days into conflict\" — das war 2026-03-04, vor 6 Tagen. Market Analyst L6 WTI Curve Score -10 (bearish) zeigt dass Maerkte BEREITS auf Supply-Shock reagiert haben. V16 Regime FRAGILE_EXPANSION (growth +1, liq -1) zeigt dass V16 BEREITS Makro-Implikationen verarbeitet hat. Die Frage ist nicht \"was sagen mehr ICs\" (A6-Loesung), sondern \"was sagen ICs ueber die NAECHSTEN 7 Tage\"? Alle High-Novelty-Claims (12 von 18) sind DESKRIPTIV (was passiert ist), nicht PREDIKTIV (was passieren wird). Einzige Forward-Looking-Claims: jeff_snider_007 \"if backwardation spreads to late-2026 contracts → market prices longer-duration shock\" (Conditional, keine Wahrscheinlichkeit), jeff_snider_010 \"once Hormuz reopens, prices crash back to low-$70s\" (Timing unbekannt). Doomberg-Claims sind alle \"if Strait remains closed\" (doomberg_003) — aber KEINE Einschaetzung wie lange es geschlossen bleibt. Das ist das KRITISCHE Gap: System weiss was passiert IST (Hormuz zu, Preise hoch), aber nicht was passieren WIRD (Hormuz-Duration, Preis-Trajektorie). CPI morgen ist ein FORWARD-LOOKING-Event — Maerkte preisen Inflation-Erwartungen, nicht Inflation-Historie. Aber IC-Intelligence liefert nur Historie. Die ungestellte Frage: Wo sind die FORWARD-LOOKING-SIGNALE in der IC-Basis? Snider argumentiert \"oil shock creates short-run price pressures that squeeze growth\" (Claim jeff_snider_004) — das ist eine THESE ueber Kausalitaet, keine Prognose. Doomberg argumentiert \"national protectionism creates regional price disparities\" (Claim doomberg_003) — das ist eine BESCHREIBUNG von Mechanik, keine Prognose. Kein IC sagt \"CPI wird X sein\" oder \"Fed wird Y tun\" oder \"HYG-Spreads werden Z\". A6 (IC-Daten-Refresh) plant \"mindestens 5 Quellen fuer naechstes Briefing\" — aber wenn alle 5 Quellen RUECKBLICKEND schreiben (typisch fuer Newsletter die Wochenend-Recap machen), hilft das nicht. Das System braucht REAL-TIME-SIGNALE — Futures-Curves (WTI Backwardation-Spread, den Snider erwaehnt aber System nicht trackt), Credit-Issuance-Daten (HY-Emissionen diese Woche), Repo-Rates (Dollar-Funding-Stress), FX-Volatility (USDJPY Implied Vol, nicht nur Spot). Diese Daten existieren NICHT in IC-Intelligence (Newsletter-basiert, Lag 12-48h) — sie existieren in MARKET-DATA-FEEDS die Market Analyst theoretisch zugreifen koennte, aber nicht tut. Market Analyst L6 zeigt \"WTI Curve Score -10\" aber keine Curve-Details (Backwardation-Magnitude, Spread M1-M6, Spread M6-M12). L4 zeigt \"DXY Score 0\" aber keine FX-Vol-Daten. L1 zeigt \"Net Liquidity Score 0\" aber keine Repo-Rate-Daten. Das Problem ist nicht IC-ABDECKUNG (A6), sondern MARKET-DATA-GRANULARITAET. A6 ist Ressourcen-Verschwendung wenn die Loesung \"mehr Newsletter lesen\" ist. Die Loesung ist \"Market Analyst Sub-Scores erweitern um Forward-Looking-Metriken\" — aber das ist ein SYSTEM-DESIGN-Gap, kein Daten-Refresh-Problem.\n[PERSISTENT: Tag 3, erneuert aus History]",
-      "evidence": [
-        "Alle 18 IC-Claims content_date \"2026-03-10\" beschreiben Events von 2026-03-03 bis 2026-03-09 (1-7 Tage Lag)",
-        "High-Novelty-Claims (12 von 18) sind deskriptiv (Past Tense: \"war caused\", \"China suspended\"), nicht prediktiv",
-        "Einzige Forward-Looking-Claims sind Conditionals ohne Wahrscheinlichkeiten (jeff_snider_007 \"if backwardation spreads\", doomberg_003 \"if Strait remains closed\")",
-        "Market Analyst L6 WTI Curve Score -10 ohne Curve-Details (Backwardation-Magnitude, Tenor-Spreads)",
-        "Market Analyst L4 DXY Score 0 ohne FX-Vol-Daten (USDJPY Implied Vol)",
-        "Market Analyst L1 Net Liquidity Score 0 ohne Repo-Rate-Daten",
-        "A6 plant \"5 Quellen\" aber keine Methodik fuer Forward-Looking-Signal-Extraktion"
-      ],
+      "challenge_text": "Ist dir aufgefallen dass \"Router Discontinuity Pattern\" (0% → 100% innerhalb 24h) die FALSCHE Frage stellt? CIO fragt \"Daten-Artefakt oder echter Regime-Break?\" und plant \"Pruefe DBC/SPY 6M Chart manuell\" (A8) — aber die KRITISCHE Frage ist: Warum hat Router KEINE MEMORY? Router-Mechanik (beschrieben in S2): 3 Bedingungen (DBC/SPY 6M relative >Schwelle, V16 regime allowed, DXY not rising). Alle 3 erfuellt = 100% proximity. Aber Router History 30d zeigt 7 Tage bei 0%, dann abrupter Sprung auf 100%. Das bedeutet: Bedingung 1 (DBC/SPY 6M relative) ueberschritt Schwelle GESTERN. Aber DBC/SPY 6M relative ist ein MOMENTUM-Signal — es baut sich graduell auf (Commodities outperformen Equities ueber 6 Monate). Ein 6-Monats-Signal sollte NICHT innerhalb 24h von \"nicht erfuellt\" zu \"erfuellt\" springen, es sei denn: (a) Schwelle ist extrem nah am aktuellen Wert (z.B. relative bei 0.99x Schwelle, dann 1.01x Schwelle), oder (b) Recalculation-Artefakt (Daten-Update aendert historische 6M-Werte). CIO vermutet (b) und plant manuelle Chart-Pruefung. Aber die EIGENTLICHE Frage: Warum hat Router keine HYSTER",
+      "evidence": [],
       "severity": "SUBSTANTIVE",
       "is_persistent": true,
-      "persistent_days": 1,
+      "persistent_days": 2,
       "is_forced_decision": false,
-      "validation_warnings": []
+      "validation_warnings": [
+        "MISSING_EVIDENCE"
+      ]
     }
   ],
   "preprocessor_flags_unused": [
     {
-      "flag_type": "DRIFT_COMPLACENCY",
-      "detail": "Daten veraendern sich (0 neue Alerts, Regime-Wechsel) aber CIO Ton bleibt bei ACTION/LOW.",
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 7) nicht im Draft erwaehnt",
       "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 9) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 9) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
@@ -163,22 +375,142 @@
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
       "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
       "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
       "detail": "IC Claim von jeff_snider (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
-      "significance": "LOW"
-    },
-    {
-      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
-      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
       "significance": "LOW"
     },
     {
@@ -189,32 +521,24 @@
   ],
   "persistent_challenges_renewed": [
     {
-      "original_id": "da_20260309_002",
-      "original_challenge": "FORCED DECISION (Tag 4, 3x NOTED): Ist dir aufgefallen dass Router-Proximity 100% ein TIMING-PARADOX",
-      "days_open": 4,
+      "original_id": "da_20260309_005",
+      "original_challenge": "FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOT",
+      "days_open": 5,
       "cio_response_history": [
+        "NOTED",
+        "NOTED",
         "NOTED",
         "NOTED",
         "NOTED"
       ],
-      "escalation_note": "FORCED DECISION nach 4 Tagen"
-    },
-    {
-      "original_id": "da_20260310_001",
-      "original_challenge": "FORCED DECISION (Tag 3, 3x NOTED): Ist dir aufgefallen dass das System die Liquiditaets-Frage auf de",
-      "days_open": 3,
-      "cio_response_history": [
-        "NOTED",
-        "NOTED",
-        "NOTED"
-      ],
-      "escalation_note": "FORCED DECISION nach 3 Tagen"
+      "escalation_note": "FORCED DECISION nach 5 Tagen"
     },
     {
       "original_id": "da_20260306_005",
-      "original_challenge": "FORCED DECISION (Tag 15, 7x NOTED): FORCED DECISION (Tag 14, 6x NOTED): FORCED DECISION (Tag 13, 5x ",
-      "days_open": 15,
+      "original_challenge": "FORCED DECISION (Tag 16, 8x NOTED): FORCED DECISION (Tag 15, 7x NOTED): FORCED DECISION (Tag 14, 6x ",
+      "days_open": 16,
       "cio_response_history": [
+        "NOTED",
         "NOTED",
         "NOTED",
         "NOTED",
@@ -223,13 +547,14 @@
         "NOTED",
         "NOTED"
       ],
-      "escalation_note": "FORCED DECISION nach 15 Tagen"
+      "escalation_note": "FORCED DECISION nach 16 Tagen"
     },
     {
-      "original_id": "da_20260309_005",
-      "original_challenge": "FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Der CIO nimmt an dass \"Item of",
+      "original_id": "da_20260310_001",
+      "original_challenge": "FORCED DECISION (Tag 4, 5x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Ist dir aufgefallen dass das S",
       "days_open": 4,
       "cio_response_history": [
+        "NOTED",
         "NOTED",
         "NOTED",
         "NOTED",
@@ -239,12 +564,12 @@
     },
     {
       "original_id": "da_20260310_003",
-      "original_challenge": "Ist dir aufgefallen dass OBS-2 (IC-Intelligence Epistemische Schwaeche) die FALSCHE Diagnose stellt?",
-      "days_open": 1,
+      "original_challenge": "Ist dir aufgefallen dass \"Router Discontinuity Pattern\" (0% → 100% innerhalb 24h) die FALSCHE Frage ",
+      "days_open": 2,
       "cio_response_history": [
         "NOTED"
       ],
-      "escalation_note": "Tag 1, erneuert"
+      "escalation_note": "Tag 2, erneuert"
     }
   ],
   "confidence_saturation": {
@@ -262,24 +587,24 @@
     "interpretation": "Confidence Saturation bei 20% — unter Schwelle (85%)."
   },
   "metadata": {
-    "total_challenges": 7,
+    "total_challenges": 6,
     "by_type": {
       "NARRATIVE": 0,
-      "UNASKED_QUESTION": 4,
+      "UNASKED_QUESTION": 3,
       "PREMISE_ATTACK": 3
     },
     "by_severity": {
       "SUBSTANTIVE": 6,
-      "MODERATE": 1,
+      "MODERATE": 0,
       "MINOR": 0
     },
-    "persistent_renewed": 5,
-    "forced_decisions": 4,
-    "preprocessor_flags_total": 13,
+    "persistent_renewed": 4,
+    "forced_decisions": 3,
+    "preprocessor_flags_total": 85,
     "preprocessor_flags_used": 5,
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_temperature": 0.4,
     "llm_attempt": 1,
-    "generation_time_seconds": 100.4
+    "generation_time_seconds": 99.6
   }
 }
