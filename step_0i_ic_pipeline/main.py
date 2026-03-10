@@ -1,5 +1,5 @@
 """
-IC Intelligence Pipeline ???????? Main Entry Point
+IC Intelligence Pipeline — Main Entry Point
 Usage: python -m step_0i_ic_pipeline.main --stage all
 Stages: extraction, intelligence, briefing, all
 
@@ -9,6 +9,11 @@ IC V2 Phase 1: 7-Day Claims Carry-Forward + Source Cards
 - Old claims get Freshness tags: FRESH/AGING/FADING/ARCHIVED/EXPIRED
 - Intelligence Engine receives ALL active claims, not just today's
 - source_cards[] in latest.json intelligence block
+
+IC V2 Phase 2: Cadence Anomaly Detection + 90-Day Archive
+- cadence_anomalies[] in latest.json intelligence block
+- ARCHIVED window extended to 90 days (was 14)
+- EXPIRED threshold moved from 15 to 91 days
 """
 
 import argparse
@@ -56,7 +61,7 @@ def _save_json(data: dict, path: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Claims Archive ???????? 7-Day Carry-Forward (IC V2 Phase 1)
+# Claims Archive — 7-Day Active Window + 90-Day Archive (IC V2 Phase 2)
 # ---------------------------------------------------------------------------
 def _compute_freshness(content_date_str: str, today: date) -> dict:
     """Compute freshness category and decay weight for a claim.
@@ -65,8 +70,8 @@ def _compute_freshness(content_date_str: str, today: date) -> dict:
       FRESH:    0-2 days,  decay 1.0
       AGING:    3-5 days,  decay 0.7
       FADING:   6-7 days,  decay 0.4
-      ARCHIVED: 8-14 days, decay 0.15
-      EXPIRED:  15+ days,  decay 0.0 (removed from active archive)
+      ARCHIVED: 8-90 days, decay 0.15  (extended from 14 in Phase 2)
+      EXPIRED:  91+ days,  decay 0.0   (removed from archive)
     """
     try:
         content_date = datetime.strptime(content_date_str, "%Y-%m-%d").date()
@@ -81,7 +86,7 @@ def _compute_freshness(content_date_str: str, today: date) -> dict:
         return {"freshness": "AGING", "decay_weight": 0.7, "age_days": age_days}
     elif age_days <= 7:
         return {"freshness": "FADING", "decay_weight": 0.4, "age_days": age_days}
-    elif age_days <= 14:
+    elif age_days <= 90:
         return {"freshness": "ARCHIVED", "decay_weight": 0.15, "age_days": age_days}
     else:
         return {"freshness": "EXPIRED", "decay_weight": 0.0, "age_days": age_days}
@@ -122,12 +127,12 @@ def merge_claims_into_archive(
       1. Build key set from existing archive claims for dedup
       2. Add new claims that aren't duplicates
       3. Update freshness tags on ALL claims
-      4. Remove EXPIRED claims (>14 days)
+      4. Remove EXPIRED claims (>90 days)
       5. Return (active_claims for Intelligence Engine, updated archive)
 
     Active claims = FRESH + AGING + FADING (0-7 days, used for scoring).
-    ARCHIVED claims (8-14 days) stay in archive but are NOT passed to
-    Intelligence Engine ???????? they're only visible in thread detail (Phase 2+).
+    ARCHIVED claims (8-90 days) stay in archive but are NOT passed to
+    Intelligence Engine — they're only visible in thread detail (Phase 2+).
     """
     today = date.today()
 
@@ -143,7 +148,7 @@ def merge_claims_into_archive(
     for claim in new_claims:
         key = _make_claim_key(claim)
         if key in existing_keys:
-            # Duplicate ???????? update freshness on existing claim (reset to FRESH)
+            # Duplicate — update freshness on existing claim (reset to FRESH)
             idx = existing_keys[key]
             freshness = _compute_freshness(claim.get("content_date", ""), today)
             archive["claims"][idx]["freshness"] = freshness["freshness"]
@@ -151,7 +156,7 @@ def merge_claims_into_archive(
             archive["claims"][idx]["age_days"] = freshness["age_days"]
             duplicate_count += 1
         else:
-            # New claim ???????? add with freshness
+            # New claim — add with freshness
             freshness = _compute_freshness(claim.get("content_date", ""), today)
             claim["freshness"] = freshness["freshness"]
             claim["decay_weight"] = freshness["decay_weight"]
@@ -198,6 +203,150 @@ def merge_claims_into_archive(
     )
 
     return active_claims, archive
+
+
+# ---------------------------------------------------------------------------
+# Cadence Anomaly Detection (IC V2 Phase 2)
+# ---------------------------------------------------------------------------
+# Mapping from sources.json cadence field to expected posts per week
+CADENCE_BASELINE = {
+    "weekly": 1.0,
+    "2x_weekly": 2.0,
+    "3x_weekly": 3.0,
+    "5x_weekly": 5.0,
+    "daily": 5.0,
+    "monthly": 0.25,
+}
+# cadence values that skip anomaly detection (too irregular to measure)
+CADENCE_SKIP = {"irregular", "irregular_free"}
+
+
+def _detect_cadence_anomalies(
+    claims_archive: dict,
+    sources_config: list[dict],
+) -> list[dict]:
+    """Detect cadence anomalies per IC V2 Spec Kapitel 15.
+
+    For each active source with a measurable cadence baseline:
+      cadence_ratio = actual_posts_this_week / baseline_posts_per_week
+
+      ratio > 1.5 -> ELEVATED
+      ratio > 2.0 -> HIGH
+      ratio > 3.0 -> EXTREME
+
+    Special case: monthly sources that post again within 20 days -> HIGH
+
+    Returns list of anomaly dicts for sources that exceed threshold.
+    """
+    today = date.today()
+    week_ago = today - timedelta(days=7)
+
+    # Count distinct posts per source in last 7 days
+    # Use (source_id, content_date, title_prefix) as post proxy
+    # since one post can produce multiple claims
+    source_posts = {}
+    for claim in claims_archive.get("claims", []):
+        sid = claim.get("source_id", "")
+        content_date_str = claim.get("content_date", "")
+        try:
+            content_date = datetime.strptime(content_date_str, "%Y-%m-%d").date()
+        except (ValueError, TypeError):
+            continue
+
+        if content_date < week_ago:
+            continue
+
+        # Use source_id + content_date as post key
+        # (multiple claims from same post share same content_date)
+        post_key = f"{sid}|{content_date_str}"
+        if sid not in source_posts:
+            source_posts[sid] = set()
+        source_posts[sid].add(post_key)
+
+    # Build source lookup
+    source_lookup = {s["source_id"]: s for s in sources_config}
+
+    anomalies = []
+    for src in sources_config:
+        sid = src["source_id"]
+        if not src.get("active", True):
+            continue
+
+        cadence = src.get("cadence", "")
+        if cadence in CADENCE_SKIP:
+            continue
+
+        baseline = CADENCE_BASELINE.get(cadence)
+        if baseline is None:
+            continue
+
+        actual_posts = len(source_posts.get(sid, set()))
+
+        # Skip if no posts (silence is not a cadence anomaly —
+        # that's handled by Silence Map in Phase 3)
+        if actual_posts == 0:
+            continue
+
+        cadence_ratio = actual_posts / baseline if baseline > 0 else 0
+
+        # Determine anomaly level
+        anomaly_level = None
+        if cadence_ratio > 3.0:
+            anomaly_level = "EXTREME"
+        elif cadence_ratio > 2.0:
+            anomaly_level = "HIGH"
+        elif cadence_ratio > 1.5:
+            anomaly_level = "ELEVATED"
+
+        # Special case: monthly sources posting again within 20 days
+        if cadence == "monthly" and actual_posts >= 2:
+            anomaly_level = "HIGH"
+
+        if anomaly_level is None:
+            continue
+
+        # Collect topics from this source's recent claims
+        recent_topics = set()
+        for claim in claims_archive.get("claims", []):
+            if claim.get("source_id") != sid:
+                continue
+            try:
+                cd = datetime.strptime(
+                    claim.get("content_date", ""), "%Y-%m-%d"
+                ).date()
+            except (ValueError, TypeError):
+                continue
+            if cd >= week_ago:
+                for t in claim.get("topics", []):
+                    recent_topics.add(t)
+
+        anomalies.append({
+            "source_id": sid,
+            "source_name": src.get("source_name", sid),
+            "anomaly_level": anomaly_level,
+            "cadence_ratio": round(cadence_ratio, 2),
+            "actual_posts_7d": actual_posts,
+            "baseline_posts_week": baseline,
+            "cadence": cadence,
+            "topics": sorted(recent_topics),
+            "detected_at": today.isoformat(),
+        })
+
+    # Sort by severity: EXTREME > HIGH > ELEVATED
+    severity_order = {"EXTREME": 0, "HIGH": 1, "ELEVATED": 2}
+    anomalies.sort(key=lambda a: severity_order.get(a["anomaly_level"], 9))
+
+    if anomalies:
+        for a in anomalies:
+            logger.info(
+                f"CADENCE ANOMALY: {a['source_name']} — {a['anomaly_level']} "
+                f"({a['actual_posts_7d']} posts in 7d, baseline {a['baseline_posts_week']}/week, "
+                f"ratio {a['cadence_ratio']}x) — Topics: {', '.join(a['topics'])}"
+            )
+    else:
+        logger.info("Cadence Anomaly Detection: no anomalies detected")
+
+    return anomalies
 
 
 # ---------------------------------------------------------------------------
@@ -280,7 +429,7 @@ def write_drive_outputs(
     try:
         service = _get_drive_service()
         if service is None:
-            logger.warning("No Drive credentials ???????? skipping Drive writes")
+            logger.warning("No Drive credentials — skipping Drive writes")
             return
 
         today_str = date.today().isoformat()
@@ -304,7 +453,7 @@ def write_drive_outputs(
         logger.info(f"Local archive: archive/{today_str}/ (3 files)")
 
     except ImportError:
-        logger.warning("Google API libraries not installed ???????? Drive writes skipped")
+        logger.warning("Google API libraries not installed — Drive writes skipped")
     except Exception as e:
         logger.error(f"Drive write failed: {e}")
 
@@ -405,7 +554,7 @@ def write_intelligence_tab(claims: list[dict], sources_config: list[dict]) -> No
             logger.info(f"Sheet INTELLIGENCE: {len(rows)} rows written")
 
     except ImportError:
-        logger.warning("Google API libs missing ???????? Sheet write skipped")
+        logger.warning("Google API libs missing — Sheet write skipped")
     except Exception as e:
         logger.error(f"INTELLIGENCE tab write failed: {e}")
 
@@ -715,6 +864,7 @@ def build_intelligence_block(
     briefing: dict,
     claims_archive: dict,
     sources_config: list[dict],
+    cadence_anomalies: list[dict] | None = None,
 ) -> dict:
     """
     Map IC Pipeline output to dashboard.json intelligence block.
@@ -723,7 +873,8 @@ def build_intelligence_block(
       divergences[] = {theme, divergence_type, magnitude, ic_signal, dc_signal, ...}
       high_novelty_claims[] = {source, claim, novelty, signal, theme}
       catalyst_timeline[] = {event, date, days_until, impact, themes}
-      source_cards[] = {source_id, source_name, tier, active_claims, ...}  (NEW)
+      source_cards[] = {source_id, source_name, tier, active_claims, ...}
+      cadence_anomalies[] = {source_id, anomaly_level, cadence_ratio, ...}  (NEW Phase 2)
     """
     today = date.today()
 
@@ -849,6 +1000,7 @@ def build_intelligence_block(
         "high_novelty_claims": claims_out,
         "catalyst_timeline": catalysts_out,
         "source_cards": source_cards,
+        "cadence_anomalies": cadence_anomalies or [],
     }
 
 
@@ -858,6 +1010,7 @@ def update_dashboard_json(
     active_claims_count: int,
     claims_archive: dict,
     sources_config: list[dict],
+    cadence_anomalies: list[dict] | None = None,
 ) -> None:
     """
     Read data/dashboard/latest.json, replace intelligence block,
@@ -870,7 +1023,7 @@ def update_dashboard_json(
     if not os.path.exists(DASHBOARD_JSON_PATH):
         logger.warning(
             f"Dashboard JSON not found at {DASHBOARD_JSON_PATH} "
-            f"???????? skipping update"
+            f"— skipping update"
         )
         return
 
@@ -878,7 +1031,7 @@ def update_dashboard_json(
     # (either new or carried forward from last 7 days)
     if active_claims_count == 0:
         logger.info(
-            "No active claims (new or carry-forward) ???????? keeping existing "
+            "No active claims (new or carry-forward) — keeping existing "
             "intelligence block in dashboard."
         )
         try:
@@ -889,7 +1042,7 @@ def update_dashboard_json(
             steps["step_0b_ic"] = {
                 "status": "OK",
                 "completed_at": now_utc,
-                "summary": "0 active claims ???????? previous data retained",
+                "summary": "0 active claims — previous data retained",
             }
             dashboard.setdefault("pipeline_health", {})["steps"] = steps
             with open(DASHBOARD_JSON_PATH, "w") as f:
@@ -905,14 +1058,15 @@ def update_dashboard_json(
         with open(DASHBOARD_JSON_PATH, "r") as f:
             dashboard = json.load(f)
 
-        # Replace intelligence block (with source_cards)
+        # Replace intelligence block (with source_cards + cadence_anomalies)
         dashboard["intelligence"] = build_intelligence_block(
-            intel, briefing, claims_archive, sources_config
+            intel, briefing, claims_archive, sources_config, cadence_anomalies
         )
 
         # Update pipeline health
         now_utc = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
         new_claims = intel.get("extraction_summary", {}).get("total_claims", 0)
+        anomaly_count = len(cadence_anomalies) if cadence_anomalies else 0
         steps = dashboard.get("pipeline_health", {}).get("steps", {})
         steps["step_0b_ic"] = {
             "status": "OK",
@@ -922,6 +1076,7 @@ def update_dashboard_json(
                 f"({new_claims} new + carry-forward), "
                 f"{len(intel.get('divergences', []))} divergences, "
                 f"{intel.get('extraction_summary', {}).get('high_novelty_claims', 0)} high-novelty"
+                f"{f', {anomaly_count} cadence anomalies' if anomaly_count else ''}"
             ),
         }
 
@@ -958,7 +1113,7 @@ def main():
     )
     args = parser.parse_args()
 
-    logger.info(f"IC Pipeline starting ???????? stage={args.stage}")
+    logger.info(f"IC Pipeline starting — stage={args.stage}")
     start_time = datetime.utcnow()
 
     # Load config
@@ -972,6 +1127,7 @@ def main():
     intel = {}
     briefing = {}
     active_claims_count = 0
+    cadence_anomalies = []
 
     # Load claims archive for carry-forward
     claims_archive = _load_claims_archive()
@@ -993,6 +1149,9 @@ def main():
 
         # Save updated archive
         _save_claims_archive(claims_archive)
+
+        # Cadence Anomaly Detection (IC V2 Phase 2)
+        cadence_anomalies = _detect_cadence_anomalies(claims_archive, sources)
 
         # Stufe 2: Intelligence (uses ALL active claims, not just new)
         if args.stage in ("intelligence", "all"):
@@ -1036,7 +1195,7 @@ def main():
             write_agent_summary_tab(briefing)
             update_dashboard_json(
                 intel, briefing, active_claims_count,
-                claims_archive, sources
+                claims_archive, sources, cadence_anomalies
             )
 
     except Exception as e:
