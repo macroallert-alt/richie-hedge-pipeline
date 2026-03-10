@@ -644,12 +644,12 @@ def run_engine(prices, macro, k16, rv, cm):
         cw = sum(today_weights.get(a, 0) for a in ca)
         cluster_weights[cn] = round(cw, 4)
 
-    # State name mapping (12 offizielle Macro States aus Excel CALC_Macro_State)
+    # State name mapping (aus PARAMS_STATE_ALIGN, rekalibriert 2026-02-21)
     STATE_NAMES = {
-        1: "FULL_EXPANSION", 2: "STEADY_GROWTH", 3: "FRAGILE_EXPANSION",
-        4: "LATE_EXPANSION", 5: "REFLATION", 6: "NEUTRAL",
-        7: "SOFT_LANDING", 8: "EARLY_RECOVERY", 9: "CONTRACTION",
-        10: "DEEP_CONTRACTION", 11: "STRESS_ELEVATED", 12: "FINANCIAL_CRISIS"
+        1: "STEADY_GROWTH", 2: "FRAGILE_EXPANSION", 3: "LATE_EXPANSION",
+        4: "FULL_EXPANSION", 5: "REFLATION", 6: "NEUTRAL",
+        7: "SOFT_LANDING", 8: "STRESS_ELEVATED", 9: "CONTRACTION",
+        10: "DEEP_CONTRACTION", 11: "FINANCIAL_CRISIS", 12: "EARLY_RECOVERY"
     }
 
     # Regime = offizieller State Name (1:1 aus Excel, kein Bucketing)
