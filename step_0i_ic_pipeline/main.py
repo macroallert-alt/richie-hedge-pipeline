@@ -595,13 +595,23 @@ def write_agent_summary_tab(briefing: dict) -> None:
 # ---------------------------------------------------------------------------
 # Stage Runners
 # ---------------------------------------------------------------------------
-def run_extraction(sources: list[dict]) -> tuple[list[dict], dict]:
-    """Run Stufe 1: Fetch + Extract."""
+def run_extraction(
+    sources: list[dict],
+    v16_context: dict | None = None,
+    claims_archive: dict | None = None,
+) -> tuple[list[dict], dict]:
+    """Run Stufe 1: Fetch + Extract (Extraction V2).
+
+    Args:
+        sources: list of source configs from sources.json
+        v16_context: V16 data from latest.json (regime, current_weights)
+        claims_archive: claims archive for source history in Call B
+    """
     from step_0i_ic_pipeline.src.extraction.fetcher import fetch_all_sources
     from step_0i_ic_pipeline.src.extraction.extractor import extract_claims
 
     logger.info("=" * 60)
-    logger.info("STUFE 1: EXTRACTION")
+    logger.info("STUFE 1: EXTRACTION (V2)")
     logger.info("=" * 60)
 
     all_content, fetch_state, failed_sources = fetch_all_sources(sources)
@@ -614,7 +624,11 @@ def run_extraction(sources: list[dict]) -> tuple[list[dict], dict]:
         sid = content["source_id"]
         src_config = source_lookup.get(sid, {})
         try:
-            claims = extract_claims(content, src_config)
+            claims = extract_claims(
+                content, src_config,
+                v16_context=v16_context,
+                claims_archive=claims_archive,
+            )
             all_claims.extend(claims)
         except Exception as e:
             logger.error(f"[{sid}] Extraction failed: {e}")
@@ -1136,10 +1150,41 @@ def main():
         f"existing claims"
     )
 
+    # Load V16 context from latest.json for Extraction V2 Portfolio Transmission
+    v16_context = None
+    if os.path.exists(DASHBOARD_JSON_PATH):
+        try:
+            dashboard_data = _load_json(DASHBOARD_JSON_PATH)
+            v16_raw = dashboard_data.get("v16", {})
+            if v16_raw.get("current_weights"):
+                v16_context = {
+                    "regime": v16_raw.get("regime", "UNKNOWN"),
+                    "current_weights": v16_raw.get("current_weights", {}),
+                }
+                active_pos = sum(
+                    1 for w in v16_context["current_weights"].values()
+                    if w > 0.005
+                )
+                logger.info(
+                    f"V16 context loaded: regime={v16_context['regime']}, "
+                    f"{active_pos} active positions"
+                )
+            else:
+                logger.warning("V16 data in latest.json has no current_weights")
+        except Exception as e:
+            logger.warning(f"Failed to load V16 context from latest.json: {e}")
+    else:
+        logger.warning(
+            f"latest.json not found at {DASHBOARD_JSON_PATH} — "
+            f"Extraction V2 runs without V16 context"
+        )
+
     try:
-        # Stufe 1: Extraction
+        # Stufe 1: Extraction (V2 — with V16 context + claims archive)
         if args.stage in ("extraction", "all"):
-            new_claims, claims_output = run_extraction(sources)
+            new_claims, claims_output = run_extraction(
+                sources, v16_context=v16_context, claims_archive=claims_archive
+            )
 
         # Merge new claims into archive + get all active claims
         active_claims, claims_archive = merge_claims_into_archive(

@@ -1,0 +1,30 @@
+Analyze these pre-extracted theses against the source's history.
+
+SOURCE: {source_id} ({source_name})
+SOURCE BIAS: {known_bias} ({bias_label})
+
+THESES FROM CURRENT POST (from Call A):
+{theses_json}
+
+SOURCE HISTORY (previous posts, most recent first):
+{source_history_json}
+
+For each thesis, return the action filter analysis. Return ONLY a JSON array with one entry per thesis, matched by index:
+[
+  {{
+    "thesis_index": 0,
+    "is_repeat": false,
+    "repeat_detail": null,
+    "is_position_shift": false,
+    "position_shift_detail": null,
+    "action_recommendation": "MONITOR|ACT|IGNORE",
+    "action_detail": "Brief explanation of recommendation",
+    "linguistic_temperature": 5,
+    "linguistic_detail": "Brief note on language tone",
+    "second_derivative": {{
+      "conviction_trend": "RISING|STABLE|FALLING",
+      "shift_detected": false,
+      "shift_detail": null
+    }}
+  }}
+]

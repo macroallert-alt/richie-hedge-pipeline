@@ -1,0 +1,63 @@
+Extract theses with portfolio transmission from the following content.
+
+SOURCE: {source_id} ({source_name})
+CONTENT TYPE: {content_type}
+CONTENT DATE: {content_date}
+TITLE: {title}
+
+SOURCE BIAS: {known_bias} ({bias_label})
+{bias_description}
+Calibrate novelty accordingly — their baseline position is NOT novel.
+
+{extraction_context}
+
+CURRENT V16 PORTFOLIO (Regime: {v16_regime}):
+{v16_positions_text}
+
+---BEGIN CONTENT---
+{content_text}
+---END CONTENT---
+
+Extract up to 5 theses. Return ONLY a JSON array:
+[
+  {{
+    "claim_text": "One-sentence thesis summary",
+    "reasoning_chain": [
+      "Step 1: ...",
+      "Step 2: ...",
+      "Step 3: ..."
+    ],
+    "claim_type": "OPINION|PREDICTION|FACT|ANALYSIS",
+    "sentiment": {{"direction": "BULLISH|BEARISH|NEUTRAL|MIXED", "intensity": 5}},
+    "speaker_confidence": 6,
+    "speaker_confidence_signals": "Brief note on language cues",
+    "topics": ["TOPIC1", "TOPIC2"],
+    "primary_topic": "TOPIC1",
+    "timeframe": "IMMEDIATE|SHORT|MEDIUM|LONG",
+    "time_horizon": "TACTICAL|CYCLICAL|STRUCTURAL",
+    "time_horizon_detail": "e.g. 3-6 months",
+    "novelty_score": 5,
+    "novelty_note": "Why this score",
+    "catalyst": "Specific upcoming event that could confirm/deny this thesis, or null",
+    "catalyst_date": "YYYY-MM-DD or YYYY-MM or null",
+    "affected_assets": [
+      {{
+        "asset": "GLD",
+        "direction": "BULLISH|BEARISH|NEUTRAL",
+        "mechanism": "Brief explanation of transmission",
+        "confidence": "HIGH|MEDIUM|LOW"
+      }}
+    ],
+    "v16_position_impact": [
+      {{
+        "position": "GLD",
+        "v16_weight_pct": 16.9,
+        "alignment": "CONFIRMING|THREATENING|MIXED|NEUTRAL",
+        "detail": "Brief explanation"
+      }}
+    ],
+    "surprise_flag": false,
+    "surprise_detail": null,
+    "extraction_confidence": 0.9
+  }}
+]
