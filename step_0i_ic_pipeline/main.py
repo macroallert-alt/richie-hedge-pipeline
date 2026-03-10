@@ -1,5 +1,5 @@
 """
-IC Intelligence Pipeline — Main Entry Point
+IC Intelligence Pipeline ???????? Main Entry Point
 Usage: python -m step_0i_ic_pipeline.main --stage all
 Stages: extraction, intelligence, briefing, all
 
@@ -56,7 +56,7 @@ def _save_json(data: dict, path: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Claims Archive — 7-Day Carry-Forward (IC V2 Phase 1)
+# Claims Archive ???????? 7-Day Carry-Forward (IC V2 Phase 1)
 # ---------------------------------------------------------------------------
 def _compute_freshness(content_date_str: str, today: date) -> dict:
     """Compute freshness category and decay weight for a claim.
@@ -127,7 +127,7 @@ def merge_claims_into_archive(
 
     Active claims = FRESH + AGING + FADING (0-7 days, used for scoring).
     ARCHIVED claims (8-14 days) stay in archive but are NOT passed to
-    Intelligence Engine — they're only visible in thread detail (Phase 2+).
+    Intelligence Engine ???????? they're only visible in thread detail (Phase 2+).
     """
     today = date.today()
 
@@ -143,7 +143,7 @@ def merge_claims_into_archive(
     for claim in new_claims:
         key = _make_claim_key(claim)
         if key in existing_keys:
-            # Duplicate — update freshness on existing claim (reset to FRESH)
+            # Duplicate ???????? update freshness on existing claim (reset to FRESH)
             idx = existing_keys[key]
             freshness = _compute_freshness(claim.get("content_date", ""), today)
             archive["claims"][idx]["freshness"] = freshness["freshness"]
@@ -151,7 +151,7 @@ def merge_claims_into_archive(
             archive["claims"][idx]["age_days"] = freshness["age_days"]
             duplicate_count += 1
         else:
-            # New claim — add with freshness
+            # New claim ???????? add with freshness
             freshness = _compute_freshness(claim.get("content_date", ""), today)
             claim["freshness"] = freshness["freshness"]
             claim["decay_weight"] = freshness["decay_weight"]
@@ -280,7 +280,7 @@ def write_drive_outputs(
     try:
         service = _get_drive_service()
         if service is None:
-            logger.warning("No Drive credentials — skipping Drive writes")
+            logger.warning("No Drive credentials ???????? skipping Drive writes")
             return
 
         today_str = date.today().isoformat()
@@ -304,7 +304,7 @@ def write_drive_outputs(
         logger.info(f"Local archive: archive/{today_str}/ (3 files)")
 
     except ImportError:
-        logger.warning("Google API libraries not installed — Drive writes skipped")
+        logger.warning("Google API libraries not installed ???????? Drive writes skipped")
     except Exception as e:
         logger.error(f"Drive write failed: {e}")
 
@@ -405,7 +405,7 @@ def write_intelligence_tab(claims: list[dict], sources_config: list[dict]) -> No
             logger.info(f"Sheet INTELLIGENCE: {len(rows)} rows written")
 
     except ImportError:
-        logger.warning("Google API libs missing — Sheet write skipped")
+        logger.warning("Google API libs missing ???????? Sheet write skipped")
     except Exception as e:
         logger.error(f"INTELLIGENCE tab write failed: {e}")
 
@@ -649,6 +649,24 @@ def _build_source_cards(
                 )
                 bias_adj = signed - known_bias
 
+        # Build claims list for frontend (sorted by novelty desc, then date desc)
+        claims_for_card = []
+        for c in sorted(
+            claims_list,
+            key=lambda x: (x.get("novelty_score", 0), x.get("content_date", "")),
+            reverse=True,
+        ):
+            sentiment = c.get("sentiment", {})
+            claims_for_card.append({
+                "claim_text": c.get("claim_text", "")[:300],
+                "freshness": c.get("freshness", "FRESH"),
+                "content_date": c.get("content_date", ""),
+                "topics": c.get("topics", []),
+                "novelty_score": c.get("novelty_score", 0),
+                "direction": sentiment.get("direction", ""),
+                "intensity": sentiment.get("intensity", 0),
+            })
+
         cards.append({
             "source_id": sid,
             "source_name": src.get("source_name", sid),
@@ -663,9 +681,9 @@ def _build_source_cards(
             "bias_adjusted_signal": bias_adj,
             "known_bias": known_bias,
             "top_claim": top_claim_text,
+            "claims": claims_for_card,
             "topics": sorted(all_topics),
         })
-
     # Sort: CORE first, then by active_claims descending
     tier_order = {"CORE": 0, "SECONDARY": 1, "NOISE_FILTER": 2}
     cards.sort(key=lambda c: (
@@ -852,7 +870,7 @@ def update_dashboard_json(
     if not os.path.exists(DASHBOARD_JSON_PATH):
         logger.warning(
             f"Dashboard JSON not found at {DASHBOARD_JSON_PATH} "
-            f"— skipping update"
+            f"???????? skipping update"
         )
         return
 
@@ -860,7 +878,7 @@ def update_dashboard_json(
     # (either new or carried forward from last 7 days)
     if active_claims_count == 0:
         logger.info(
-            "No active claims (new or carry-forward) — keeping existing "
+            "No active claims (new or carry-forward) ???????? keeping existing "
             "intelligence block in dashboard."
         )
         try:
@@ -871,7 +889,7 @@ def update_dashboard_json(
             steps["step_0b_ic"] = {
                 "status": "OK",
                 "completed_at": now_utc,
-                "summary": "0 active claims — previous data retained",
+                "summary": "0 active claims ???????? previous data retained",
             }
             dashboard.setdefault("pipeline_health", {})["steps"] = steps
             with open(DASHBOARD_JSON_PATH, "w") as f:
@@ -940,7 +958,7 @@ def main():
     )
     args = parser.parse_args()
 
-    logger.info(f"IC Pipeline starting — stage={args.stage}")
+    logger.info(f"IC Pipeline starting ???????? stage={args.stage}")
     start_time = datetime.utcnow()
 
     # Load config
