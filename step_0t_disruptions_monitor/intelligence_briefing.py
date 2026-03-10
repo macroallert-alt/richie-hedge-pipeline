@@ -700,7 +700,7 @@ def _call_anthropic(system_prompt, user_prompt, max_tokens=3000):
     url = 'https://api.anthropic.com/v1/messages'
     headers = {
         'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
+        'anthropic-version': '2025-01-01',
         'content-type': 'application/json',
     }
 
