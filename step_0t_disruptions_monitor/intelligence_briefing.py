@@ -697,50 +697,37 @@ def _fallback_decision_matrix(trends, regime_context):
 # =====================================================================
 
 def _call_anthropic(system_prompt, user_prompt, max_tokens=3000):
-    url = 'https://api.anthropic.com/v1/messages'
-    headers = {
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2025-01-01',
-        'content-type': 'application/json',
-    }
+    import anthropic
 
-    # Clean unicode from prompts that can cause 400 errors
+    # Clean unicode from prompts
     system_prompt = _clean_unicode(system_prompt)
     user_prompt = _clean_unicode(user_prompt)
 
-    payload = {
-        'model': LLM_MODEL,
-        'max_tokens': max_tokens,
-        'system': system_prompt,
-        'messages': [{'role': 'user', 'content': user_prompt}],
-    }
-
-    resp = requests.post(url, headers=headers, json=payload, timeout=180)
-
-    if resp.status_code != 200:
-        # Log the actual error before raising
-        try:
-            error_body = resp.json()
-            error_msg = error_body.get('error', {}).get('message', resp.text[:500])
-        except Exception:
-            error_msg = resp.text[:500]
-        print(f"    [API] {resp.status_code} Error: {error_msg}")
+    try:
+        client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+        response = client.messages.create(
+            model=LLM_MODEL,
+            max_tokens=max_tokens,
+            system=system_prompt,
+            messages=[{'role': 'user', 'content': user_prompt}],
+        )
+        return '\n'.join(b.text for b in response.content if b.type == 'text')
+    except anthropic.BadRequestError as e:
+        print(f"    [API] 400 Error: {e}")
         print(f"    [API] Prompt length: system={len(system_prompt)}, user={len(user_prompt)}")
 
-        # If 400 and prompt is very long, retry with truncated prompt
-        if resp.status_code == 400 and len(user_prompt) > 8000:
+        # If prompt is very long, retry with truncated prompt
+        if len(user_prompt) > 8000:
             print(f"    [API] Retrying with truncated prompt...")
             user_prompt = user_prompt[:8000] + "\n\n[TRUNCATED — bitte mit verfuegbaren Daten antworten]"
-            payload['messages'] = [{'role': 'user', 'content': user_prompt}]
-            resp = requests.post(url, headers=headers, json=payload, timeout=180)
-            if resp.status_code != 200:
-                resp.raise_for_status()
-        else:
-            resp.raise_for_status()
-
-    data = resp.json()
-    content = data.get('content', [])
-    return '\n'.join(c.get('text', '') for c in content if c.get('type') == 'text')
+            response = client.messages.create(
+                model=LLM_MODEL,
+                max_tokens=max_tokens,
+                system=system_prompt,
+                messages=[{'role': 'user', 'content': user_prompt}],
+            )
+            return '\n'.join(b.text for b in response.content if b.type == 'text')
+        raise
 
 
 def _clean_unicode(text):

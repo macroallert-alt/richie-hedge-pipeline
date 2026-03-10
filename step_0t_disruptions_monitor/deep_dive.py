@@ -336,30 +336,17 @@ Antworte mit folgendem JSON-Schema:
 
 
 def _call_anthropic(system_prompt, user_prompt):
-    """Anthropic API Call via REST."""
-    url = 'https://api.anthropic.com/v1/messages'
-    headers = {
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2025-01-01',
-        'content-type': 'application/json'
-    }
-    payload = {
-        'model': LLM_MODEL,
-        'max_tokens': 2000,
-        'system': system_prompt,
-        'messages': [
-            {'role': 'user', 'content': user_prompt}
-        ]
-    }
+    """Anthropic API Call via SDK."""
+    import anthropic
 
-    resp = requests.post(url, headers=headers, json=payload, timeout=120)
-    resp.raise_for_status()
-    data = resp.json()
-
-    # Extrahiere Text aus Response
-    content = data.get('content', [])
-    text_parts = [c.get('text', '') for c in content if c.get('type') == 'text']
-    return '\n'.join(text_parts)
+    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+    response = client.messages.create(
+        model=LLM_MODEL,
+        max_tokens=2000,
+        system=system_prompt,
+        messages=[{'role': 'user', 'content': user_prompt}],
+    )
+    return '\n'.join(b.text for b in response.content if b.type == 'text')
 
 
 def _parse_json_response(text):
