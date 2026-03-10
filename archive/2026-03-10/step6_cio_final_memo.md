@@ -2,7 +2,7 @@
 
 **Briefing-Typ:** ACTION  
 **System Conviction:** LOW  
-**Risk Ampel:** YELLOW  
+**Risk Ampel:** RED  
 **Fragility State:** HEALTHY  
 **Data Quality:** DEGRADED  
 **V16 Regime:** FRAGILE_EXPANSION  
@@ -13,388 +13,326 @@
 
 ## S1: DELTA
 
-V16: HOLD auf allen 5 Positionen. Keine Rebalance-Trades. Regime-Shift: SELECTIVE → FRAGILE_EXPANSION (Macro State 2 → 3). Gewichte unverändert: HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%. Router: COMMODITY_SUPER proximity 0% → 100% (CRITICAL JUMP). Signal Generator: Keine neuen Trades. Risk Officer: DBC-Alert CRITICAL → WARNING (Deeskalation, -2.4pp zu 20.3%). HYG bleibt CRITICAL (28.8%, ongoing seit Tag 17). Neue Alerts: Commodities Exposure 37.2% (WARNING, +2pp über Schwelle), Regime Conflict V16/Market Analyst (WARNING, neu), Event Calendar CPI heute (WARNING, neu). Market Analyst: System Regime NEUTRAL (unverändert). Layer Scores: L1 (Liquidity) 0, L2 (Macro) -1, L3 (Earnings) +4, L6 (RV) -1, L7 (CB Policy) 0, L8 (Tail Risk) +2. Fragility HEALTHY. IC Intelligence: 6 Quellen, 107 Claims. Consensus: GEOPOLITICS -2.65 (HIGH confidence, 13 Claims), ENERGY -2.45 (MEDIUM, 8 Claims), COMMODITIES +4.82 (MEDIUM, 3 Claims), LIQUIDITY -7.0 (LOW, 1 Claim). F6: UNAVAILABLE.
+V16: HOLD auf allen 5 Positionen. Keine Rebalance-Trades. Gewichte stabil: HYG 28.8% (+0.0pp), DBC 20.3% (+0.0pp), XLU 18.0% (+0.0pp), GLD 16.9% (+0.0pp), XLP 16.1% (+0.0pp). Regime-Shift: SELECTIVE → FRAGILE_EXPANSION (gestern). V16 bleibt Risk-On trotz Regime-Wechsel — Gewichte unverändert seit 2026-03-06.
 
-KRITISCHE VERÄNDERUNG: Router COMMODITY_SUPER proximity springt von 0% auf 100% — alle drei Bedingungen erfüllt (DBC/SPY 6M relative 100%, V16 regime allowed 100%, DXY not rising 100%). Nächste Evaluation 2026-04-01 (22 Tage). Dies ist KEIN Entry-Signal (Entry nur an Evaluation Days), aber zeigt strukturelle Verschiebung.
+F6: UNAVAILABLE (V2).
+
+Signal Generator: Router COMMODITY_SUPER Proximity 0% → 100% (gestern). Alle drei Bedingungen erfüllt: DBC/SPY 6M relative 100%, V16 Regime allowed 100%, DXY not rising 100%. Nächste Entry-Evaluation: 2026-04-01. Kein Entry-Signal heute (kein Evaluation Day).
+
+Market Analyst: System Regime NEUTRAL (gestern: NEUTRAL). Layer-Scores: L1 (Liquidity) 0 (TRANSITION), L2 (Macro) -1 (SLOWDOWN), L3 (Earnings) +4 (HEALTHY), L4 (FX) 0 (STABLE), L5 (Sentiment) 0 (NEUTRAL), L6 (Rotation) -1 (BALANCED), L7 (CB Policy) 0 (NEUTRAL), L8 (Tail Risk) +2 (CALM). Keine Layer-Regime-Shifts seit gestern. Conviction: 6 von 8 Layern LOW oder CONFLICTED — Data Quality DEGRADED.
+
+Risk Officer: Portfolio Status YELLOW → RED (Eskalation). CRITICAL Alert neu: HYG Single Name 28.8% (Schwelle 25%, +3.8pp, WARNING → CRITICAL, Tag 18). WARNING Alerts: Commodities Exposure 37.2% (Schwelle 35%, Tag 2), Regime Conflict V16/Market Analyst (Tag 2), Event Calendar CPI heute (Tag 2). Ongoing Condition: DBC 20.3% approaching limit (Tag 18).
+
+IC Intelligence: 6 Quellen, 120 Claims. Consensus: GEOPOLITICS -2.58 (HIGH confidence, 17 claims), ENERGY -3.52 (MEDIUM, 9 claims), COMMODITIES +4.82 (MEDIUM, 3 claims), LIQUIDITY -7.0 (LOW, 1 claim), INFLATION -2.5 (MEDIUM, 2 claims). Howell: Dollar headwind to liquidity, gold structurally driven by China. Doomberg: Qatar LNG offline, Hormuz closed, EU energy crisis 2.0. ZeroHedge: Trump signals Iran campaign near end, oil drops. Forward Guidance: Credit spreads widening, carry trade risk. Jeff Snider: Oil shock hitting fragile economy, private credit bust.
+
+**DELTA-SYNTHESE:** V16 unverändert seit 4 Tagen trotz Regime-Shift. Router Proximity springt auf 100% (COMMODITY_SUPER). Risk Officer eskaliert HYG auf CRITICAL. IC zeigt Geopolitik-Konsens negativ, Energie-Stress, Commodities bullish. Market Analyst bleibt NEUTRAL mit niedriger Conviction. CPI heute — Event-Boost aktiv auf allen Alerts.
 
 ---
 
 ## S2: CATALYSTS & TIMING
 
-**CPI (Feb data) — HEUTE, 2026-03-11 (in 24h):**  
-Tier-1-Event. Market Analyst reduziert Conviction auf L2 (Macro) und L7 (CB Policy) wegen "EVENT_IMMINENT". Risk Officer boostet 4 Alerts von MONITOR → WARNING. IC: Forward Guidance warnt "Fed rate cut probability drastically repriced — markets now not expecting cut until late 2026." Howell: "Dollar strengthening acts as liquidity headwind." Doomberg: "Oil price spikes historically lead to sharp economic contractions — CPI will capture energy shock." Snider: "Duration of Hormuz disruption is decisive variable — if oil futures curve shifts to later-dated backwardation, markets will price prolonged stagflation."
+**CPI (2026-03-11, morgen, T1):** Risk Officer EVENT_IMMINENT Boost aktiv auf allen Alerts. Market Analyst L2 (Macro) und L7 (CB Policy) markieren CPI als HIGH impact, BINARY direction, Pre-Event Action: REDUCE_CONVICTION. IC: Forward Guidance warnt Fed-Cut-Pricing dramatisch verschoben (kein Cut vor Q4 2026). Howell: Dollar-Stärke Headwind für Liquidity. Snider: Oil-Shock trifft fragile Wirtschaft — CPI-Upside-Risk. **Implikation:** Hot CPI → Fed-Tightening-Narrativ → HYG-Druck (bereits CRITICAL). Cold CPI → Risk-On-Bestätigung, aber V16 bereits positioniert. **Timing:** CPI-Release morgen 08:30 ET. V16 Rebalance frühestens Mittwoch (kein Rebalance-Signal heute).
 
-**Geopolitik (Iran/Hormuz) — ONGOING:**  
-ZeroHedge: "Trump signals Iran campaign nearly complete — oil dropped sharply." Aber: "Iran appointed hardline supreme leader, signals regime intends to fight on." Doomberg: "Strait of Hormuz effectively closed, Qatar LNG offline (20% global supply), China suspended diesel/gasoline exports." Forward Guidance: "Oil markets priced for quick resolution — front-end backwardation suggests complacency." IC Consensus GEOPOLITICS -2.65 (HIGH confidence, 4 Quellen, 13 Claims) — bearish lean trotz Trump-Optimismus. Hidden Forces: "Iran regime weakness makes it attractive target, but direct threat to US interests overstated."
+**ECB Rate Decision (2026-03-12, +2d, T1):** Risk Officer Event Calendar Alert aktiv. Market Analyst: Kein direkter Layer-Impact (L7 CB Policy NEUTRAL). IC: Keine ECB-spezifischen Claims. **Implikation:** Sekundär für US-Portfolio, aber EUR/USD-Bewegung könnte DXY beeinflussen (Router COMMODITY_SUPER Bedingung: DXY not rising). **Timing:** ECB Donnerstag 08:45 ET.
 
-**Router COMMODITY_SUPER Trigger — 2026-04-01 (22 Tage):**  
-Proximity 100% seit heute. Entry-Evaluation nur an monatlichen Evaluation Days. Nächster: 2026-04-01. Wenn Proximity bis dahin hält: Entry-Signal. Implikation: Shift zu Commodity-Heavy Portfolio (DBC, GDX, SLV). Aktuell: V16 bereits 37.2% Commodities Exposure (DBC 20.3%, GLD 16.9%). Router-Entry würde dies verstärken.
+**Iran-Konflikt (laufend, T2):** IC-Konsens GEOPOLITICS -2.58 (HIGH confidence). ZeroHedge: Trump signalisiert Ende, Oil fällt. Doomberg: Hormuz geschlossen, Qatar LNG offline, EU-Krise. Forward Guidance: Oil-Kurve preist schnelle Lösung. **Divergenz:** Trump (bullish) vs. Doomberg/Forward Guidance (bearish). **Implikation:** DBC 20.3% (Commodities) profitiert von Energie-Stress, aber Trump-Signal könnte Reversal auslösen. **Timing:** Unbekannt. Kein klarer Catalyst für Deeskalation außer Trump-Rhetorik.
 
-**ECB Rate Decision — 2026-03-12 (in 2 Tagen):**  
-Tier-1-Event. Risk Officer erwähnt in TMP_EVENT_CALENDAR. Keine spezifischen IC-Claims. Market Analyst: Kein direkter Layer-Impact, aber L7 (CB Policy) CONFLICTED wegen Spread 2Y10Y (+4) vs. NFCI (-10).
+**Router COMMODITY_SUPER Entry (2026-04-01, +22d):** Proximity 100%, aber Entry-Evaluation erst 2026-04-01. Alle drei Bedingungen erfüllt seit gestern. **Implikation:** Kein unmittelbarer Trade, aber Signal bestätigt DBC-Stärke. Entry würde V16-Gewichte nicht überschreiben (Router modifiziert nur bei Entry). **Timing:** Nächste Evaluation 2026-04-01 — 22 Tage.
+
+**HYG Rebalance (unbekannt):** V16 letzte Rebalance 2026-03-06. HYG 28.8% seit 4 Tagen unverändert trotz CRITICAL Alert. **Implikation:** V16 sieht keinen Rebalance-Trigger. Risk Officer Alert ist Portfolio-Monitoring, kein V16-Override. **Timing:** Unbekannt. V16 Regime FRAGILE_EXPANSION — nächster Regime-Shift könnte HYG reduzieren.
+
+**TIMING-SYNTHESE:** CPI morgen ist der dominante Catalyst (T1, HIGH impact, BINARY). ECB +2d sekundär. Iran-Konflikt laufend, aber Trump-Signal könnte Energie-Reversal auslösen (Timing unbekannt). Router Entry +22d (kein unmittelbarer Trade). HYG Rebalance-Timing unbekannt — V16 zeigt kein Signal.
 
 ---
 
 ## S3: RISK & ALERTS
 
-**YELLOW-Status: 4 WARNING, 1 CRITICAL ongoing.**
+**CRITICAL (1, neu):**  
+RO-20260310-003 (EXP_SINGLE_NAME): HYG 28.8%, Schwelle 25%, +3.8pp. Tag 18. WARNING → CRITICAL (Event-Boost). Trade Class A. **Kontext:** V16 Risk-On, Fragility HEALTHY, CPI morgen. **Trend:** ESCALATING (gestern WARNING 27.3%, heute CRITICAL 28.8%, +1.5pp in 1 Tag). **Implikation:** Konzentrations-Risk auf Single Name. V16 zeigt kein Rebalance-Signal — Gewicht stabil seit 2026-03-06. Risk Officer empfiehlt keine Action (V16 validated). **CIO OBSERVATION:** HYG-Gewicht steigt durch Marktbewegung (Price Drift), nicht durch V16-Allokation. V16 Regime FRAGILE_EXPANSION — historisch HYG-freundlich, aber Proximity zu Regime-Shift unbekannt. IC: Forward Guidance warnt Credit Spreads widening, Carry Trade Risk. **Operator Action:** Siehe S7 A1.
 
-**CRITICAL (ongoing, Tag 17):**  
-RO-20260310-003 (EXP_SINGLE_NAME): HYG 28.8%, Schwelle 25%, +3.8pp Überschreitung. Trend ONGOING. Base Severity WARNING, boosted EVENT_IMMINENT. Empfehlung: Keine Aktion auf V16 (Master-Schutz). HYG-Gewicht ist V16-Output — sakrosankt. Kontext: V16 FRAGILE_EXPANSION bevorzugt HYG strukturell. CPI morgen könnte Regime-Shift auslösen → automatische Rebalance. Monitoring: Post-CPI V16-Output abwarten.
+**WARNING (3, stabil):**  
+RO-20260310-002 (EXP_SECTOR_CONCENTRATION): Commodities 37.2%, Schwelle 35%, +2.2pp. Tag 2. Trade Class A. **Kontext:** DBC 20.3% + GLD 16.9% = 37.2%. Router COMMODITY_SUPER Proximity 100% bestätigt Commodities-Stärke. IC: COMMODITIES +4.82 (Howell: Gold strukturell China-getrieben, Doomberg: Energie-Stress). **Trend:** STABLE (gestern 37.2%, heute 37.2%, +0.0pp). **Implikation:** Nahe Warning-Level, aber IC bestätigt Richtung. Kein Action-Bedarf.
 
-[DA: da_20260310_003 (Instrument-Liquidity-Stress). ACCEPTED — Execution-Risiko bei Event-Tag-Trades ist real und messbar. Ergänzung zu S3 und A1/A9. Original Draft: "Empfehlung: Keine Aktion auf V16 (Master-Schutz)."]
+RO-20260310-005 (INT_REGIME_CONFLICT): V16 Risk-On (FRAGILE_EXPANSION) vs. Market Analyst NEUTRAL. Tag 2. Trade Class A. **Kontext:** V16 validated signals. Market Analyst Conviction LOW (6/8 Layer CONFLICTED/LOW). **Trend:** STABLE. **Implikation:** V16 führt — Market Analyst folgt mit Lag. Divergenz erwartet bei Regime-Shifts. Kein Action-Bedarf auf V16.
 
-**EXECUTION-RISIKO-KONTEXT (DA-ERGÄNZUNG):**  
-HYG ADV historisch $1.2bn, DBC ADV $180m. Bei geschätztem Portfolio-AUM $50m: HYG 28.8% = $14.4m = 1.2% Daily Volume, DBC 20.3% = $10.15m = 5.6% Daily Volume. CPI HEUTE = Event-Tag mit typischer Liquidity-Kompression: HYG Bid-Ask-Spreads erweitern sich 3x (0.01% → 0.03%), DBC 5x (0.05% → 0.25%). Wenn A1 oder A9 zu HYG-Reduktion führen: Market-Order auf $14.4m HYG bei 3x Spread = Slippage ~0.5% = $72k Loss BEVOR Trade executed. ECB in 2 Tagen = zweiter Event-Tag. Wenn ZWEI HYG-Trades in 2 Tagen (Post-CPI + Post-ECB): Kumulativer Slippage $144k auf $50m AUM = 0.29% Performance-Drag nur durch Execution. Signal Generator zeigt "FAST_PATH, V16 weights unmodified" — keine Execution-Logik sichtbar (Limit vs. Market, Time-Slicing). Implikation: Execution-Strategie MUSS Teil von A1/A9 sein. Empfehlung: Wenn HYG-Trade nötig → Limit-Orders oder gestufte Execution über mehrere Tage, NICHT Market-Order am Event-Tag.
+RO-20260310-001 (TMP_EVENT_CALENDAR): CPI heute, ECB +2d. Tag 2. Trade Class A. **Kontext:** Event-Boost aktiv auf allen Alerts. **Trend:** STABLE. **Implikation:** Erhöhte Unsicherheit — bestehende Risk Assessments tragen Event-Risk. Kein preemptive Action.
 
-**WARNING (neu, Tag 1):**  
-RO-20260310-002 (EXP_SECTOR_CONCENTRATION): Effective Commodities Exposure 37.2%, Schwelle 35%, +2.2pp. Treiber: DBC 20.3%, GLD 16.9%. Trend NEW. Base MONITOR, boosted EVENT_IMMINENT. Empfehlung: Keine Aktion. Kontext: Router COMMODITY_SUPER proximity 100% — strukturell bullish Commodities. Wenn Router am 2026-04-01 triggered: Exposure steigt weiter (GDX, SLV Entry). Implikation: 37.2% ist Vorbote, kein Fehler.
+**ONGOING CONDITION (1):**  
+RO-20260310-004 (EXP_SINGLE_NAME): DBC 20.3%, Schwelle 20%, +0.3pp. Tag 18. WARNING. **Kontext:** Router COMMODITY_SUPER Proximity 100%. IC: ENERGY -3.52 (Doomberg: Hormuz, Qatar LNG), COMMODITIES +4.82. **Trend:** ONGOING. **Implikation:** Nahe Limit, aber IC bestätigt Energie-Stress. Kein Action-Bedarf.
 
-**WARNING (deeskaliert, Tag 17):**  
-RO-20260310-004 (EXP_SINGLE_NAME): DBC 20.3%, Schwelle 20%, +0.3pp. Previous CRITICAL (Freitag: 22.7%). Trend DEESCALATING (-2.4pp seit Freitag). Base MONITOR, boosted EVENT_IMMINENT. Empfehlung: Keine Aktion. Kontext: Marktbewegung reduzierte Gewicht. V16 hält DBC — kein Trade. Proximity zu 20% bleibt, aber Richtung positiv.
+**EMERGENCY TRIGGERS:** Alle false.
 
-**WARNING (neu, Tag 1):**  
-RO-20260310-005 (INT_REGIME_CONFLICT): V16 "Risk-On" (FRAGILE_EXPANSION) vs. Market Analyst "NEUTRAL". Trend NEW. Base MONITOR, boosted EVENT_IMMINENT. Empfehlung: "V16 validated — no action on V16 required. Monitor for V16 regime transition." Kontext: V16 und Market Analyst teilen Datenbasis (siehe Epistemische Regeln) — Divergenz hat begrenzten Bestätigungswert. V16 Regime-Shift heute (SELECTIVE → FRAGILE_EXPANSION) erklärt Divergenz. Market Analyst Layer Scores nahe Null (L1: 0, L2: -1, L6: -1, L7: 0) → NEUTRAL korrekt. V16 operiert auf Macro State 3 (Growth +1, Liq -1, Stress 0) → FRAGILE_EXPANSION korrekt. Keine Korrektur nötig.
+**SENSITIVITY:** UNAVAILABLE (V1). SPY Beta, Effective Positions, Correlation Update fehlen.
 
-**WARNING (neu, Tag 1):**  
-RO-20260310-001 (TMP_EVENT_CALENDAR): CPI heute, ECB in 2 Tagen. Trend NEW. Base MONITOR, boosted EVENT_IMMINENT. Empfehlung: "Existing risk assessments carry elevated uncertainty. No preemptive action." Kontext: Standard Pre-Event-Warnung. Alle anderen Alerts EVENT_IMMINENT-boosted wegen CPI.
+**G7 CONTEXT:** UNAVAILABLE.
 
-**Ongoing Conditions:** Keine außer CRITICAL HYG (bereits oben behandelt).
-
-**Sensitivity:** UNAVAILABLE (V1). SPY Beta, Correlation Crisis Checks nicht aktiv.
-
-**G7 Context:** UNAVAILABLE.
+**RISK-SYNTHESE:** Portfolio RED wegen HYG CRITICAL. HYG 28.8% (+1.5pp seit gestern) eskaliert durch Price Drift, nicht V16-Allokation. V16 zeigt kein Rebalance-Signal — Gewicht stabil seit 4 Tagen. IC warnt Credit Spreads widening (Forward Guidance), aber V16 bleibt Risk-On. CPI morgen ist Binary Catalyst — Hot CPI könnte HYG-Druck verstärken. Commodities 37.2% nahe Warning, aber IC bestätigt Richtung. Regime Conflict V16/Market Analyst ist strukturell (Market Analyst Conviction LOW). Event Calendar Alert ist Monitoring, kein Action-Trigger.
 
 ---
 
 ## S4: PATTERNS & SYNTHESIS
 
-**Keine Klasse-A-Patterns aktiv.** Pre-Processor lieferte leere Liste. Anti-Patterns: 78 High-Novelty-Low-Signal Claims (Howell China-Gold-Monetization, Doomberg Qatar-LNG-Shutdown, ZeroHedge Anthropic-Lawsuit, etc.) — interessant, aber kein Trade-Signal.
+**AKTIVE PATTERNS (Klasse A):** Keine. Pre-Processor liefert leere Liste.
 
-**CIO OBSERVATION (Klasse B):**  
+**CIO OBSERVATIONS (Klasse B):**
 
-**Pattern: "Commodity Proximity Surge ohne Liquidity Confirmation"**  
-Router COMMODITY_SUPER proximity 0% → 100% in einem Tag. Bedingungen: DBC/SPY 6M relative 100% (bullish), V16 regime allowed 100% (FRAGILE_EXPANSION erlaubt Commodities), DXY not rising 100% (DXY flat, 50. Perzentil). ABER: Market Analyst L1 (Liquidity) Score 0, Regime TRANSITION, Conviction LOW (limiting factor: regime_duration 0.2). IC Consensus LIQUIDITY -7.0 (Howell: "Next liquidity update less positive, dollar strengthening headwind"). Interpretation: Router sieht technische Bedingungen erfüllt (Preis-Momentum, FX-Stabilität), aber fundamentale Liquidity-Unterstützung fehlt. Historisch: Commodity-Rallies ohne Liquidity-Expansion sind fragil. Risiko: Proximity hält bis 2026-04-01, Router triggered Entry, dann Liquidity kollabiert → Whipsaw. Empfehlung: Siehe S7 A8.
+**OBS-1: HYG Price Drift Eskalation ohne V16-Signal**  
+HYG 27.3% (gestern) → 28.8% (heute), +1.5pp in 1 Tag. V16 Target Weight unverändert 28.8% seit 2026-03-06. **Mechanik:** HYG outperformed Portfolio → Gewicht steigt durch Price Drift. V16 Rebalance-Logik zeigt kein Signal (HOLD seit 4 Tagen). **Implikation:** Risk Officer CRITICAL Alert ist Portfolio-Monitoring, nicht V16-Fehler. V16 sieht aktuelles Regime (FRAGILE_EXPANSION) als HYG-freundlich. **Cross-Check IC:** Forward Guidance warnt Credit Spreads widening, FX Volatility rising, Carry Trade Risk. **Spannung:** V16 Risk-On vs. IC Credit-Warnung. **Operator-Frage:** Ist V16 Regime-Read korrekt oder läuft V16 in Regime-Shift? Proximity zu STEADY_GROWTH oder SLOWDOWN unbekannt (Market Analyst zeigt keine Transition Proximity für V16-Regime).
 
-[DA: da_20260310_003 (Router-Proximity Binary-Flag). ACCEPTED — Router-Proximity-Mechanik ist faktisch binary (0% oder 100%), nicht graduell. Implikation: "Proximity-Monitoring" ist Binary-Watch (Entry-Bedingung erfüllt: ja/nein), nicht Trend-Monitor. A8 muss umformuliert werden. Original Draft: "Proximity-Persistenz-Check — Proximity täglich monitoren bis 2026-04-01."]
+[DA: da_20260310_003 (UNASKED_QUESTION) — HYG-Frage als "V16 korrekt vs. V16 Fehler" gestellt, aber Daten zeigen dritte Möglichkeit: V16 Drift-Toleranz vs. Risk Officer Schwelle. ACCEPTED — OBS-1 erweitert um Drift-Toleranz-Mechanik. Original Draft: "V16 sieht aktuelles Regime (FRAGILE_EXPANSION) als HYG-freundlich."]
 
-**ROUTER-PROXIMITY-MECHANIK (DA-KORREKTUR):**  
-Router History 30d zeigt NUR 0% oder 100% — niemals Zwischenwerte (33%, 66%). Proximity = Durchschnitt aus 3 Bedingungen (DBC/SPY, V16 regime, DXY) sollte Zwischenwerte ermöglichen wenn nur 1 oder 2 Bedingungen erfüllt. Aber beobachtetes Verhalten: Binary-Flag (alle 3 Bedingungen MÜSSEN erfüllt sein, sonst 0%). Das bedeutet: (a) Alle 3 Bedingungen ändern sich SYNCHRON (unwahrscheinlich — DBC/SPY ist Momentum-Signal (graduell), V16 regime ist diskret, DXY ist kontinuierlich), oder (b) Router-Proximity ist NICHT Durchschnitt, sondern AND-Verknüpfung. Implikation: "Proximity" ist Misnomer — es ist kein Proximity-Score (Nähe zum Trigger), sondern Entry-Condition-Flag (erfüllt/nicht erfüllt). Konsequenz für A8: "Proximity täglich monitoren" ist nutzlos — Proximity kann nur von 100% auf 0% springen (eine Bedingung wird FALSE), nicht graduell fallen. Monitoring erkennt Shift erst NACHDEM er passiert, nicht BEVOR. Vorlauf für Entry ist KALENDER-basiert (2026-04-01 = Evaluation Day), nicht SIGNAL-basiert (Proximity-Aufbau). Empfehlung: A8 umformulieren (siehe S7).
+V16 hat eine Drift-Toleranz (unbekannt, nicht dokumentiert) — wenn Actual Weight von Target Weight um X% abweicht, triggert Rebalance. Wenn Drift < X%, kein Rebalance. Risk Officer hat eine ANDERE Schwelle: Single Name > 25% → CRITICAL. Das sind ZWEI unabhängige Systeme mit unterschiedlichen Schwellen. V16 Drift-Toleranz könnte z.B. ±5% sein (28.8% Target, Rebalance erst bei 30.2% oder 27.4%). Risk Officer Schwelle ist absolut 25%. **Implikation:** HYG CRITICAL Alert ist NICHT "V16 falsch" oder "V16 richtig" — es ist "V16 Drift-Toleranz überschreitet Risk Officer Schwelle." Die EIGENTLICHE Frage: Sollte V16 Drift-Toleranz enger sein (z.B. ±2% statt ±5%), oder sollte Risk Officer Schwelle höher sein (z.B. 30% statt 25%)? System hat keine Mechanik um diese Schwellen zu synchronisieren. **Operator-Frage:** Ist die Divergenz zwischen V16 Drift-Toleranz und Risk Officer Schwelle ein Design-Feature (V16 darf driften, Risk Officer warnt) oder ein Design-Bug (Schwellen sollten aligned sein)?
 
-**Pattern: "Geopolitik-Narrativ-Divergenz"**  
-IC GEOPOLITICS Consensus -2.65 (bearish lean), aber interne Divergenz: ZeroHedge (8 Claims, avg +1.5, bullish "Trump signals end soon"), Doomberg (2 Claims, avg -3.5, bearish "Hormuz closed, LNG offline"), Forward Guidance (1 Claim, -8.0, bearish "oil markets complacent"), Hidden Forces (2 Claims, -6.0, bearish "regime weakness overstated as threat"). Composite -2.65 maskiert 4-Quellen-Split. ZeroHedge (Expertise Weight 4, höchste) zieht Consensus Richtung neutral, aber Doomberg (Weight 3, Energie-Spezialist) und Forward Guidance (Weight 2) warnen vor Complacency. Interpretation: Markt preist Trump-Optimismus (ZeroHedge-Narrativ), aber Energie-Spezialisten sehen strukturelle Risiken (Hormuz-Dauer, LNG-Ausfall). Oil Futures Curve: Forward Guidance "front-end backwardation = quick resolution priced in." Wenn falsch → Energy-Spike. Implikation: Geopolitik-Tail-Risk unterschätzt. V16 hält DBC 20.3% (Commodities inkl. Energy) — strukturell richtig positioniert für Upside-Surprise, aber Downside (Trump-Deal, Hormuz reopens) würde DBC-Gewicht reduzieren (automatisch via V16). Keine Aktion nötig — V16 reagiert.
+**OBS-2: Router COMMODITY_SUPER Binary-Flag, nicht Proximity-Score**
 
-**Pattern: "CPI-Event als Regime-Router"**  
-CPI morgen ist Catalyst für 3 Systeme: (1) V16 könnte Regime shiften (FRAGILE_EXPANSION → STEADY_GROWTH bei positiver Surprise, oder → SLOWDOWN bei negativer), (2) Market Analyst L2/L7 Conviction steigt post-Event (aktuell CONFLICTED wegen Pre-Event-Suppression), (3) Router COMMODITY_SUPER Proximity könnte kippen wenn DXY rallied (aktuell 100% weil "DXY not rising" erfüllt — aber Howell warnt "dollar strengthening"). Szenario: Hot CPI → Fed hawkish → DXY rally → Router Proximity fällt → kein Entry am 2026-04-01. Szenario: Soft CPI → Fed dovish → DXY flat/down → Router Proximity hält → Entry am 2026-04-01. Interpretation: CPI ist nicht nur Inflations-Datapoint, sondern Weiche für Commodity-Rotation. Empfehlung: Post-CPI System-Review (siehe S7 A7) KRITISCH.
+[DA: da_20260310_003 (PREMISE_ATTACK) — "0% → 100% Spike ohne Vorwarnung" ist falsche Beschreibung. ACCEPTED — OBS-2 komplett umgeschrieben. Original Draft: "Gestern 0%, heute 100%. Alle drei Bedingungen gleichzeitig erfüllt: DBC/SPY 6M relative 100%, V16 Regime allowed 100%, DXY not rising 100%. Mechanik: DBC/SPY Relative Performance springt über Schwelle (gestern 94.4%, heute 100%). Implikation: Signal bestätigt DBC-Stärke, aber Entry erst 2026-04-01 (kein Evaluation Day heute)."]
+
+Router COMMODITY_SUPER Proximity 0% → 100% in einem Tag. Router-History (30d) zeigt: Proximity war IMMER 0% oder 100% — NIEMALS Zwischenwerte (33%, 66%). **Mechanik:** Router-Proximity ist KEIN gradueller Score, sondern ein BINARY-FLAG (Entry-Bedingung erfüllt: TRUE/FALSE). Wenn Proximity ein echter Proximity-Score wäre, sollte er graduell steigen: 0% → 33% (eine Bedingung erfüllt) → 66% (zwei Bedingungen) → 100% (alle drei). Das würde Operator VORLAUF geben ("Proximity steigt, Entry in X Tagen wahrscheinlich"). Aber aktuelles Verhalten (0% oder 100%, keine Zwischenwerte) gibt KEINEN Vorlauf — Entry-Signal erscheint abrupt. **Implikation:** "Proximity-Monitoring" (A8) ist faktisch ein BINARY-WATCH (ist Entry-Bedingung noch erfüllt?), nicht ein TREND-MONITOR (baut sich Entry-Signal auf?). Proximity kann nur auf 0% springen (eine der 3 Bedingungen wird FALSE) — es gibt keine Möglichkeit dass Proximity auf 66% oder 33% FÄLLT (gradueller Rückgang). **Operator-Frage:** Warum hat Router ein "Proximity"-Konzept wenn es faktisch ein Binary-Flag ist? Entweder (1) Router-Design ist suboptimal (sollte echten Proximity-Score haben), oder (2) Router-Dokumentation ist irreführend (sollte "Entry Condition Met: TRUE/FALSE" heißen, nicht "Proximity").
+
+**OBS-3: IC Geopolitik-Konsens negativ trotz Trump-Optimismus**  
+GEOPOLITICS -2.58 (HIGH confidence, 17 claims, 4 Quellen). ZeroHedge (12 claims): Trump signalisiert Ende, Oil fällt, Iran hardline leader signals fight. Doomberg (2 claims): Hormuz closed, Qatar LNG offline. Forward Guidance (1 claim): Oil curve preist schnelle Lösung. Hidden Forces (2 claims): Iran weak, attack questionable. **Synthese:** Trump-Optimismus (ZeroHedge) wird überwogen durch strukturelle Energie-Stress-Claims (Doomberg, Forward Guidance). **Implikation:** IC sieht Geopolitik als Downside-Risk trotz Trump-Rhetorik. **Cross-Check Market Analyst:** L8 (Tail Risk) +2 (CALM) — VIX 50th pctl, term structure contango. **Spannung:** IC Geopolitik-Warnung vs. Market Analyst Tail Risk CALM. **Operator-Frage:** Ist Market Analyst L8 zu optimistisch oder IC zu pessimistisch?
+
+**OBS-4: Market Analyst Conviction Collapse — 6/8 Layer LOW/CONFLICTED**  
+L1 (Liquidity) LOW (regime_duration), L2 (Macro) CONFLICTED (data_clarity), L3 (Earnings) LOW (regime_duration), L4 (FX) LOW (regime_duration), L5 (Sentiment) LOW (regime_duration), L6 (Rotation) CONFLICTED (data_clarity), L7 (CB Policy) CONFLICTED (data_clarity), L8 (Tail Risk) LOW (regime_duration). **Mechanik:** Alle Layer Regime-Shift gestern (duration_days = 1). Data Clarity 0.0 auf L2, L6, L7 (Sub-Scores conflicting). **Implikation:** Market Analyst liefert kein Signal — System Regime NEUTRAL ist Default bei Layer-Chaos. **Cross-Check V16:** V16 Regime FRAGILE_EXPANSION (gestern SELECTIVE → FRAGILE_EXPANSION). V16 zeigt klare Regime-Zuordnung trotz Market Analyst Confusion. **Spannung:** V16 Conviction (implizit hoch, keine Rebalance seit 4 Tagen) vs. Market Analyst Conviction LOW. **Operator-Frage:** Ist V16 Regime-Read robuster als Market Analyst oder läuft V16 in False Positive?
+
+**OBS-5: CPI Binary Catalyst mit asymmetrischem Risk**  
+Market Analyst L2 (Macro) und L7 (CB Policy) markieren CPI als HIGH impact, BINARY direction. IC: Forward Guidance (Fed-Cut-Pricing verschoben), Howell (Dollar-Stärke Headwind), Snider (Oil-Shock CPI-Upside). **Asymmetrie:** Hot CPI → Fed-Tightening → HYG-Druck (bereits CRITICAL), DXY-Stärke (Router COMMODITY_SUPER Bedingung gefährdet). Cold CPI → Risk-On-Bestätigung, aber V16 bereits positioniert (kein Upside). **Implikation:** Downside-Risk dominiert. **Cross-Check Risk Officer:** Event-Boost aktiv — alle Alerts elevated. **Operator-Frage:** Sollte Operator HYG-Exposure vor CPI reduzieren (gegen V16-Signal) oder V16 vertrauen?
+
+**OBS-6: Dollar-Funding-Stress ungemessen**
+
+[DA: da_20260310_001 (UNASKED_QUESTION) — System stellt Liquiditäts-Frage auf falscher Ebene (Macro-Liquidity vs. Instrument-Liquidity), aber eigentliche Frage ist Dollar-Funding-System. ACCEPTED — neue OBS-6. Original Draft: Keine entsprechende Observation.]
+
+System misst Macro-Liquidity (V16 liq_direction -1, Market Analyst L1 Score 0 TRANSITION) und Instrument-Liquidity (HYG ADV $1.2bn, DBC ADV $180m), aber NICHT Dollar-Funding-Liquidity. Jeff Snider Claim jeff_snider_005: "EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted." Das ist kein EM-Problem — das ist ein GLOBALES Dollar-Liquidity-Problem. Wenn EM-Importeure mehr Dollars brauchen (Energie-Schock) GLEICHZEITIG mit Private-Credit-Bust in US/UK/Europe (Claim jeff_snider_002), entsteht Dollar-Nachfrage-Spike. Market Analyst L4 (Cross-Border Flows) zeigt DXY Score 0 (50. Perzentil, STABLE) — aber das misst DXY-PREIS, nicht Dollar-VERFÜGBARKEIT. DXY kann stabil sein während Dollar-Funding-Stress steigt (2019 Repo-Krise: DXY flat, aber Repo-Rates explodierten). **System hat KEINEN direkten Dollar-Liquidity-Indikator** — kein LIBOR-OIS, kein FRA-OIS, kein Cross-Currency-Basis-Spread, kein Repo-Rate-Monitoring. V16 liq_direction -1 aggregiert Net Liquidity/WALCL/TGA/RRP — das sind FED-Balance-Sheet-Metriken (US-zentrisch). Aber Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System). **Implikation:** HYG 28.8% ist exponiert gegen Dollar-Funding-Stress den das System nicht misst. V16 FRAGILE_EXPANSION-Regime hat kein "Eurodollar-Stress"-Signal — V16 würde erst reagieren wenn HY OAS steigt (Score <-5), aber dann ist es zu spät (Funding-Märkte frieren VOR Spread-Ausweitung ein, nicht danach). **Operator-Frage:** Sollte System Offshore-Dollar-Funding-Indikatoren tracken (Cross-Currency-Basis-Spreads, Eurodollar-Futures)?
+
+**PATTERN-SYNTHESE:** Keine Klasse-A-Patterns. Klasse-B-Observations zeigen: (1) HYG Price Drift eskaliert — V16 Drift-Toleranz vs. Risk Officer Schwelle ist Design-Frage, nicht V16-Fehler. (2) Router COMMODITY_SUPER "Proximity" ist Binary-Flag, nicht gradueller Score — kein Vorlauf für Entry-Signal. (3) IC Geopolitik-Konsens negativ trotz Trump-Optimismus — struktureller Energie-Stress dominiert. (4) Market Analyst Conviction Collapse — 6/8 Layer LOW/CONFLICTED nach Regime-Shifts. (5) CPI Binary Catalyst mit asymmetrischem Downside-Risk für HYG und Router. (6) Dollar-Funding-Stress ungemessen — System trackt Fed-Balance-Sheet, nicht Offshore-Eurodollar-System.
 
 ---
 
 ## S5: INTELLIGENCE DIGEST
 
-**6 Quellen, 107 Claims, 78 High-Novelty.**
+**LIQUIDITY (Consensus -7.0, LOW confidence, 1 claim):**  
+Howell (claim_20260310_howell_001): Global Liquidity elevated last week (PBoC/Fed injections), aber Dollar-Stärke diese Woche Headwind. Nächstes Update weniger positiv erwartet (Bond Volatility Jump). **Signal:** -7 (bearish). **Cross-Check Market Analyst:** L1 (Liquidity) Score 0 (TRANSITION), Net Liquidity flat 50th pctl. **Divergenz:** Howell warnt Headwind, Market Analyst zeigt flat. **Implikation:** Liquidity-Momentum verlangsamt — kein Tailwind für Risk-On.
 
-**LIQUIDITY (Consensus -7.0, LOW confidence, 1 Claim):**  
-Howell (einzige Quelle): "Next liquidity update less positive — dollar strengthening, bond volatility rising." Claim aus 2026-03-03 (7 Tage alt). Novelty 7. Signal -7 (bearish). Kontext: Howell ist Liquidity-Autorität (Expertise Weight 10), aber Single-Source = LOW confidence. Market Analyst L1 Score 0 (TRANSITION) bestätigt Richtung (flat/unsicher), nicht Magnitude. Implikation: Liquidity-Tailwind schwindet, aber noch kein Headwind. V16 FRAGILE_EXPANSION (Liq -1) konsistent.
+**FED_POLICY (Consensus -3.0, LOW confidence, 1 claim):**  
+Howell (claim_20260310_howell_004): Fed-Stimulus insufficient für Equity-Rally — at best supportive near current levels. **Signal:** -3 (bearish). **Cross-Check Market Analyst:** L7 (CB Policy) Score 0 (NEUTRAL), aber CONFLICTED Conviction. **Implikation:** Fed liefert kein Upside-Catalyst.
 
-[DA: da_20260310_001 (Dollar-Funding-System). ACCEPTED — Offshore-Dollar-Liquidity ist blinder Fleck. Snider-Claims zeigen Eurodollar-Stress (EM dollar crunch, Private Credit bust), aber System hat keine direkten Indikatoren (LIBOR-OIS, FRA-OIS, Cross-Currency-Basis-Spreads). Ergänzung zu S5 und KA3. Original Draft: "Liquidity-Tailwind schwindet, aber noch kein Headwind."]
+**CREDIT (Consensus -8.0, LOW confidence, 1 claim):**  
+Forward Guidance (claim_20260310_forward_guidance_007): Credit Spreads widening, FX Volatility rising — Carry Trade Risk. **Signal:** -8 (bearish). **Cross-Check Risk Officer:** HYG CRITICAL 28.8%. **Implikation:** IC bestätigt HYG-Risk. **Operator-Relevanz:** Direkt relevant für HYG Alert.
 
-**DOLLAR-FUNDING-BLIND-SPOT (DA-ERGÄNZUNG):**  
-Snider jeff_snider_005: "EMs hit with simultaneous dollar crunch and energy cost shock — importers suddenly needing significantly more dollars than budgeted." Snider jeff_snider_002: "Private credit bust already underway in US/UK/Europe before oil shock." Das ist NICHT nur EM-Problem — globaler Dollar-Nachfrage-Spike. Market Analyst L4 DXY Score 0 (50. Perzentil, STABLE) misst DXY-PREIS, nicht Dollar-VERFÜGBARKEIT. DXY kann stabil sein während Dollar-Funding-Stress steigt (2019 Repo-Krise: DXY flat, aber Repo-Rates explodierten). System hat KEINEN direkten Dollar-Liquidity-Indikator. V16 liq_direction -1 aggregiert Fed-Balance-Sheet-Metriken (WALCL/TGA/RRP) — US-zentrisch. Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System). Wenn CPI hot → Fed-Tightening-Expectations → Dollar-Funding-Kosten steigen → Eurodollar-Stress verschärft sich → trifft HYG (28.8%) NICHT durch Credit-Spreads (Market Analyst L2 HY OAS Score 0), sondern durch FUNDING-Kosten der Emittenten. High-Yield-Unternehmen auf Dollar-Funding angewiesen (viele international operierend) bekommen Refinanzierungs-Probleme wenn Eurodollar-Märkte zufrieren — zeigt sich NICHT in HY OAS (misst Spread zu Treasuries), sondern in ISSUANCE-Volumina (neue Bonds können nicht platziert werden). System trackt HY OAS, aber nicht HY-Issuance. Implikation: HYG 28.8% exponiert gegen Dollar-Funding-Stress den das System nicht misst. V16 FRAGILE_EXPANSION-Regime hat kein "Eurodollar-Stress"-Signal — V16 würde erst reagieren wenn HY OAS steigt (Score <-5), aber dann zu spät (Funding-Märkte frieren VOR Spread-Ausweitung ein). A1 (HYG-Konzentration Review) adressiert Tail-Hedges (VIX Calls, TLT) — aber RICHTIGE Hedge gegen Dollar-Funding-Stress wäre CASH oder ULTRA-SHORT-DURATION (T-Bills), nicht TLT (20Y Duration, exponiert gegen Zinsen). System hat keine Cash-Position (V16 current_weights 0% Cash) — 100% invested. Standard für Momentum-Strategien, aber bei Funding-Stress ist Cash King. Empfehlung: Siehe W15 (neu).
+**INFLATION (Consensus -2.5, MEDIUM confidence, 2 claims):**  
+ZeroHedge (claim_20260310_zerohedge_008): China export boom könnte Deflation-Export stoppen. **Signal:** -2 (bearish für Disinflation). Jeff Snider (claim_20260310_jeff_snider_004): Oil-Shock CPI-Upside-Risk. **Signal:** -4 (bearish). **Cross-Check Temporal:** CPI morgen. **Implikation:** IC zeigt Inflation-Upside-Risk — Hot CPI wahrscheinlicher.
 
-**GEOPOLITICS (Consensus -2.65, HIGH confidence, 13 Claims, 4 Quellen):**  
-Siehe S4 Pattern "Geopolitik-Narrativ-Divergenz." ZeroHedge bullish (+1.5 avg), Doomberg/Forward Guidance/Hidden Forces bearish (-3.5 bis -8.0). Key Claims: Doomberg "Strait of Hormuz effectively closed, Qatar LNG offline (20% global supply)" (Novelty 9, Signal -7), ZeroHedge "Trump signals Iran campaign nearly complete" (Novelty 7, Signal +9), Forward Guidance "Oil markets priced for quick resolution — front-end backwardation" (Novelty 5, Signal -8). Interpretation: Markt-Pricing (ZeroHedge) vs. Fundamental-Reality (Doomberg). Consensus -2.65 = leichter bearish lean, aber Spread groß. Tail-Risk: Hormuz bleibt geschlossen länger als erwartet → Energy-Spike → Stagflation. V16 DBC-Exposure (20.3%) ist Hedge.
+**GEOPOLITICS (Consensus -2.58, HIGH confidence, 17 claims, 4 Quellen):**  
+ZeroHedge (12 claims): Trump signalisiert Iran-Ende, Oil fällt. Iran hardline leader signals fight. Divergenz US/Israel war aims. **Signal:** +1.67 (mixed). Doomberg (2 claims): Hormuz closed, Qatar LNG offline. **Signal:** -3.5 (bearish). Forward Guidance (1 claim): Oil curve preist schnelle Lösung. **Signal:** -8 (bearish). Hidden Forces (2 claims): Iran weak, attack questionable. **Signal:** -6 (bearish). **Synthese:** Trump-Optimismus überwogen durch strukturelle Energie-Stress-Claims. **Implikation:** Geopolitik bleibt Downside-Risk trotz Trump-Rhetorik.
 
-**ENERGY (Consensus -2.45, MEDIUM confidence, 8 Claims, 3 Quellen):**  
-Doomberg dominiert (6 Claims, avg -5.83, Expertise Weight 10). Key Claims: "Qatar LNG shutdown systemic shock (20% global supply)" (Novelty 8, Signal -8), "China suspended diesel/gasoline exports" (Novelty 8, Signal -7), "EU energy crisis 2.0 — LNG shortage + Russian ban by 2027" (Novelty 6, Signal -5). ZeroHedge Counterclaim: "Oil dropped on Trump signal" (Novelty 7, Signal +9). Snider: "Hormuz duration decisive — if curve shifts to later backwardation, stagflation priced" (Novelty 7, Signal -3). Interpretation: Doomberg sieht strukturelle Supply-Disruption (LNG, Hormuz), ZeroHedge sieht politische Lösung (Trump). Consensus -2.45 = leicht bearish, aber Doomberg-Weight (10) zieht stark. Implikation: Energy-Upside-Risk hoch wenn Doomberg-Szenario eintritt. DBC-Exposure richtig.
+**ENERGY (Consensus -3.52, MEDIUM confidence, 9 claims, 3 Quellen):**  
+Doomberg (6 claims): Hormuz closed, Qatar LNG offline (20% global LNG), EU energy crisis 2.0, China export ban, oil protectionism. **Signal:** -5.83 (bearish). ZeroHedge (2 claims): Trump signals end, oil drops. China stockpiling crude. **Signal:** +4.0 (mixed). Jeff Snider (1 claim): Oil shock duration decisive — backwardation shift = systemic risk. **Signal:** -3 (bearish). **Synthese:** Struktureller Energie-Stress (Doomberg) vs. Trump-Deeskalation (ZeroHedge). **Implikation:** DBC profitiert von Stress, aber Trump-Signal könnte Reversal auslösen.
 
-**COMMODITIES (Consensus +4.82, MEDIUM confidence, 3 Claims, 2 Quellen):**  
-Howell (2 Claims, avg +4.5): "Gold surge structurally driven by Chinese demand, not cyclical" (Novelty 5, Signal +5), "Dollar strengthening headwind to gold, but China absorption offsets" (Novelty 9, Signal -9 DOLLAR, +4 COMMODITIES). Doomberg (1 Claim, +5.0): "China stockpiling crude ahead of conflict" (Novelty 6, Signal +5). Interpretation: Gold bullish (China structural bid), Oil bullish (China stockpiling + Hormuz risk). Consensus +4.82 = moderat bullish. V16 GLD 16.9%, DBC 20.3% = aligned. Router COMMODITY_SUPER proximity 100% = aligned.
+**COMMODITIES (Consensus +4.82, MEDIUM confidence, 3 claims, 2 Quellen):**  
+Howell (2 claims): Gold strukturell China-getrieben (Yuan monetization), nicht zyklisch. Gold erklärt Crypto-Schwäche. **Signal:** +4.5 (bullish). Doomberg (1 claim): China crude stockpiling. **Signal:** +5.0 (bullish). **Synthese:** Strukturelle Commodities-Stärke (Gold China, Energie-Stress). **Cross-Check Router:** COMMODITY_SUPER Proximity 100%. **Implikation:** IC bestätigt Router-Signal.
 
-**FED_POLICY (Consensus -3.0, LOW confidence, 1 Claim):**  
-Howell (einzige Quelle): "Fed stimulus insufficient to push equities higher — at best supports current levels" (Novelty 7, Signal -3). Kontext: Forward Guidance (nicht in Consensus, aber erwähnt): "Fed rate cut probability repriced — no cut until late 2026." Market Analyst L7 (CB Policy) Score 0, Regime NEUTRAL, Conviction CONFLICTED (Spread 2Y10Y +4 vs. NFCI -10). Interpretation: Fed neutral-to-tight, nicht supportive. Implikation: Equity-Upside begrenzt ohne Liquidity-Expansion. V16 FRAGILE_EXPANSION (Growth +1, Liq -1) = konsistent mit "fragile" Label.
+[DA: da_20260310_001 (UNASKED_QUESTION) — System stellt Liquiditäts-Frage auf falscher ZEITSKALA (FLOW vs. STOCK). ACCEPTED — COMMODITIES-Sektion erweitert um STOCK-Effekt. Original Draft: "Howell (2 claims): Gold strukturell China-getrieben (Yuan monetization), nicht zyklisch."]
 
-**CHINA_EM (Consensus +0.6, MEDIUM confidence, 2 Claims, 2 Quellen):**  
-ZeroHedge (+5.0): "China export growth exceeded consensus, trade surplus all-time high" (Novelty 5, Signal +5). Doomberg (-6.0): "China suspended diesel/gasoline exports — protectionism signals fragmentation" (Novelty 8, Signal -6). Interpretation: China Exports stark (bullish EM), aber Protectionism steigt (bearish Globalization). Consensus +0.6 = neutral mit leichtem bullish lean. Router EM_BROAD proximity 0% (DXY 6M momentum 0%, VWO/SPY 6M relative 33.31%, BAMLEM falling 94%, V16 regime not allowed). Implikation: EM-Rotation nicht nah. China-Daten positiv, aber nicht stark genug für Router-Trigger.
+**STOCK-Effekt vs. FLOW-Effekt:** Howell Claim howell_002 (Novelty 5): "China's gold accumulation is structurally important driver." Howell Claim howell_003 (Novelty 7): "China's gold linked to secretive Yuan monetization." Howell Claim howell_004 (Novelty 7): "China's gold absorption explains stable US Treasury term premia." Howell Claim howell_005 (Novelty 8): "China's gold explains lackluster crypto performance." Diese Claims beschreiben STOCK-Effekte (China akkumuliert Gold = Liquidity wird GEBUNDEN, nicht zirkuliert), nicht FLOW-Effekte (Fed injiziert Liquidity = Flow steigt). **Implikation:** GLD 16.9% profitiert von STOCK-Effekt (China-Akkumulation), unabhängig von FLOW-Effekt (Fed Liquidity). Wenn Howell recht hat, ist GLD strukturell bullish AUCH WENN Net Liquidity fällt (V16 liq_direction -1). V16 behandelt GLD wie jedes andere Asset — Gewicht 16.9% ist Regime-Output (FRAGILE_EXPANSION), nicht China-STOCK-Effekt-Output. V16 hat keinen "strukturelle Nachfrage"-Input — nur Momentum/Regime/Stress. **Operator-Frage:** Wie viel der Commodities-Allokation (37.2% = DBC 20.3% + GLD 16.9%) ist FLOW-getrieben (reverst wenn Fed Liquidity steigt) vs. STOCK-getrieben (persistent weil strukturelle Nachfrage)? Wenn DBC 20.3% FLOW-getrieben (Energie-Stress, Iran-Konflikt) und GLD 16.9% STOCK-getrieben (China-Akkumulation), dann haben sie unterschiedliche Persistenz-Profile. DBC reverst wenn Iran-Konflikt endet (Trump-Signal), GLD reverst NICHT (China-Akkumulation läuft Jahre).
 
-**TECH_AI (Consensus +4.33, LOW confidence, 3 Claims, 1 Quelle):**  
-ZeroHedge (alle 3 Claims): "Anthropic lawsuit vs. Pentagon" (Novelty 8, Signal +5), "AI coalition warns government actions threaten US AI leadership" (Novelty 6, Signal +4), "Strong AI-driven demand for tech products drives China exports" (Novelty 5, Signal +4). Interpretation: AI-Sektor politisch unter Druck (Anthropic-Fall), aber fundamental stark (China export demand). Consensus +4.33 = moderat bullish. Market Analyst L3 (Earnings) Score +4, Regime HEALTHY — bestätigt Tech-Fundamentals. V16 XLK 0% (kein Tech-Exposure) — Regime FRAGILE_EXPANSION bevorzugt Defensives (XLP, XLU) + Commodities (DBC, GLD). Implikation: Tech-Strength läuft ohne V16-Participation. Kein Problem — V16 ist Regime-basiert, nicht Sektor-Momentum-basiert.
+**CHINA_EM (Consensus +0.6, MEDIUM confidence, 2 claims, 2 Quellen):**  
+ZeroHedge (claim_20260310_zerohedge_001): China export boom (20% YoY), trade surplus all-time high, diversifying away from US. **Signal:** +5.0 (bullish). Doomberg (claim_20260310_doomberg_004): China export ban (diesel/gasoline) protectionism. **Signal:** -6.0 (bearish). **Divergenz:** Export-Stärke (ZeroHedge) vs. Protektionismus (Doomberg). **Implikation:** China-Daten mixed — kein klares Signal.
 
-**High-Novelty-Claims (Top 3):**  
-1. Howell "China gold accumulation linked to secretive Yuan monetization" (Novelty 8, Signal 0) — Anti-Pattern (High-Novelty-Low-Signal). Interessant für Makro-Narrativ, aber kein Trade-Signal.  
-2. Doomberg "Strait of Hormuz effectively closed" (Novelty 9, Signal -7) — GEOPOLITICS/ENERGY. Bereits in Consensus verarbeitet.  
-3. ZeroHedge "Anthropic lawsuit — Pentagon designated Anthropic as threat" (Novelty 8, Signal +5) — TECH_AI. Politisches Risiko, aber kein direkter Portfolio-Impact (V16 kein Tech).
+**TECH_AI (Consensus +4.33, LOW confidence, 3 claims, 1 Quelle):**  
+ZeroHedge (3 claims): Anthropic lawsuit vs. Pentagon, AI engineer coalition, AI-driven chip demand. **Signal:** +4.33 (bullish für AI demand, bearish für Anthropic). **Implikation:** Sekundär für Portfolio (kein Tech-Exposure).
+
+**DOLLAR (Consensus -9.0, LOW confidence, 1 claim):**  
+Howell (claim_20260310_howell_001): Dollar-Stärke Headwind für Liquidity. **Signal:** -9 (bearish). **Cross-Check Market Analyst:** L4 (FX) Score 0 (STABLE), DXY flat 50th pctl. **Cross-Check Router:** COMMODITY_SUPER Bedingung: DXY not rising (aktuell erfüllt). **Implikation:** Howell warnt Dollar-Stärke, aber Market Analyst zeigt noch flat. **Operator-Relevanz:** DXY-Anstieg würde Router COMMODITY_SUPER gefährden.
+
+**POSITIONING (Consensus -3.0, LOW confidence, 1 claim):**  
+Howell (claim_20260310_howell_003): Rotation weg von Tech zu Energy, dann Defensives (Staples, Cash). **Signal:** -3 (bearish für Risk-On). **Cross-Check V16:** XLP 16.1%, XLU 18.0% (Defensives bereits hoch). **Implikation:** V16 bereits defensiv positioniert.
+
+**IC-SYNTHESE:** IC zeigt Downside-Bias: LIQUIDITY -7 (Headwind), CREDIT -8 (Spreads widening), GEOPOLITICS -2.58 (Energie-Stress), ENERGY -3.52 (Hormuz/Qatar), DOLLAR -9 (Headwind), POSITIONING -3 (Rotation zu Defensives). Upside: COMMODITIES +4.82 (Gold China STOCK-Effekt, Energie-Stress FLOW-Effekt), TECH_AI +4.33 (AI demand). Mixed: CHINA_EM +0.6 (Export-Stärke vs. Protektionismus), INFLATION -2.5 (Upside-Risk). **Operator-Relevanz:** IC bestätigt HYG-Risk (CREDIT -8), Router COMMODITY_SUPER (COMMODITIES +4.82), aber warnt Dollar-Headwind (DOLLAR -9) und Geopolitik-Stress (GEOPOLITICS -2.58, ENERGY -3.52). **STOCK vs. FLOW:** GLD 16.9% profitiert von China-STOCK-Effekt (persistent), DBC 20.3% von Energie-FLOW-Effekt (reverst wenn Iran-Konflikt endet).
 
 ---
 
 ## S6: PORTFOLIO CONTEXT
 
-**V16 (100% Portfolio, V1):**  
-5 Positionen: HYG 28.8% (High Yield Credit), DBC 20.3% (Commodities), XLU 18.0% (Utilities), GLD 16.9% (Gold), XLP 16.1% (Consumer Staples). Regime FRAGILE_EXPANSION (Macro State 3: Growth +1, Liq -1, Stress 0). Interpretation: "Expansion, aber fragil" → Defensive Sektoren (XLP, XLU) + Inflation-Hedges (GLD, DBC) + Credit (HYG für Yield). Kein Equity-Beta (SPY 0%, XLK 0%). Drawdown-Protect INACTIVE (Current DD 0.0%). Performance: CAGR 0.0%, Sharpe 0, MaxDD 0.0%, Vol 0.0% (Daten nicht verfügbar — V16 Production liefert Nullen). Kontext: V16 ist validiert und läuft automatisch. Gewichte sind Output des Systems, nicht Input. CIO darf NICHT sagen "HYG 28.8% ist zu hoch" — das wäre Override (verboten). CIO darf sagen "HYG 28.8% ist CRITICAL per Risk Officer, V16 wird post-CPI reagieren wenn Regime shiftet."
+V16 REGIME FRAGILE_EXPANSION (seit gestern):  
+Macro State 3 (FRAGILE_EXPANSION): Growth Signal +1, Liq Direction -1, Stress Score 0. **Historische Performance (V16 Backtest):** FRAGILE_EXPANSION CAGR 0.0%, Sharpe 0, MaxDD 0.0%, Vol 0.0%, Calmar 0 (Daten UNAVAILABLE — V16 Production liefert Nullen). **Implikation:** Regime-Performance unbekannt. V16 Gewichte: HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%. **Charakteristik:** Defensives (XLU, XLP) + Credit (HYG) + Commodities (DBC, GLD). Kein Equity (SPY, Sektoren), kein Bonds (TLT, LQD), kein EM (EEM, VGK), kein Crypto.
 
-**F6:** UNAVAILABLE (V1). Keine Einzelaktien, kein Covered Call Overlay.
+**CURRENT DRAWDOWN:** 0.0% (V16 Production). **DD-Protect Status:** INACTIVE. **Implikation:** Kein Drawdown-Stress.
 
-**Router:** US_DOMESTIC seit 2025-01-01 (433 Tage). COMMODITY_SUPER proximity 100% (neu heute). Nächste Entry-Evaluation 2026-04-01 (22 Tage). Wenn Proximity hält: Entry-Signal → Shift zu Commodity-Heavy (DBC, GDX, SLV). Aktuell kein Entry (Entry nur an Evaluation Days). EM_BROAD proximity 0%, CHINA_STIMULUS proximity 0%. Implikation: Commodity-Rotation strukturell nah, aber nicht imminent.
+**TOP 5 WEIGHTS (V16):**  
+1. HYG 28.8% (CRITICAL Alert, Tag 18, +3.8pp über Schwelle)  
+2. DBC 20.3% (Ongoing Condition, Tag 18, +0.3pp über Schwelle)  
+3. XLU 18.0% (Utilities, defensiv)  
+4. GLD 16.9% (Gold, IC: strukturell China-getrieben STOCK-Effekt)  
+5. XLP 16.1% (Staples, defensiv)
 
-**PermOpt:** UNAVAILABLE (V2). Kein Tail-Risk-Overlay aktiv.
+**EFFECTIVE SECTOR EXPOSURE (Signal Generator Baseline):**  
+GLD 16.9%, XLP 16.1%, XLU 18.0%, HYG 28.8%, DBC 20.3%. Total 100%. **Commodities Effective:** 37.2% (DBC 20.3% + GLD 16.9%). **Defensives:** 34.1% (XLU 18.0% + XLP 16.1%). **Credit:** 28.8% (HYG). **Equity:** 0%. **Bonds:** 0%. **EM:** 0%. **Crypto:** 0%.
 
-**Concentration:**  
-Top-5: HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%. Summe 100% (nur 5 Assets). Effective Tech 10% (Signal Generator Default — keine echten Tech-Positionen). HHI nicht verfügbar. Breadth 77.2% (Market Analyst L3) — stark. SPY/RSP 6M Delta nicht verfügbar. Interpretation: Portfolio ist konzentriert (5 Assets), aber diversifiziert über Asset-Klassen (Credit, Commodities, Defensives, Gold). Kein Single-Sektor-Dominanz außer HYG (Credit). Risk Officer warnt EXP_SECTOR_CONCENTRATION (Commodities 37.2%) und EXP_SINGLE_NAME (HYG 28.8%, DBC 20.3%) — beide im Rahmen, aber nah an Limits.
+**CONCENTRATION CHECK (Signal Generator):**  
+Top5 Concentration 100% (alle 5 Positionen = Top5). Effective Tech 10% (Signal Generator Default — kein Tech-Exposure). **Warning:** False. **Implikation:** Konzentration auf 5 Assets, aber Risk Officer überwacht Single Name (HYG CRITICAL, DBC Ongoing).
 
-**Sensitivity:** UNAVAILABLE (V1). SPY Beta unbekannt. Annahme: Niedriger Beta wegen Defensive + Gold + Credit. Equity-Exposure effektiv gering (kein SPY, XLK, XLY, XLI, XLF, IWM). Tail-Risk-Exposure: Gold (Deflation-Hedge), DBC (Inflation-Hedge), HYG (Credit-Spread-Risk). Interpretation: Portfolio ist Anti-Beta — läuft gegen SPY bei Risk-Off, läuft mit Commodities/Inflation bei Stagflation.
+**F6 STATUS:** UNAVAILABLE (V2). Kein Stock Picker Overlay.
+
+**ROUTER STATUS:** US_DOMESTIC seit 2025-01-01 (433 Tage). COMMODITY_SUPER Proximity 100% (gestern 0%). Entry-Evaluation 2026-04-01 (+22d). **Implikation:** Kein unmittelbarer Router-Trade, aber Signal bestätigt DBC-Stärke.
+
+**PERM_OPT STATUS:** UNAVAILABLE (V2). Kein Permanent Portfolio Overlay.
+
+**PORTFOLIO-SYNTHESE:** V16 Portfolio defensiv (Utilities, Staples 34.1%) + Credit (HYG 28.8%) + Commodities (DBC, GLD 37.2%). Kein Equity, Bonds, EM, Crypto. HYG CRITICAL 28.8% dominiert Risk. DBC 20.3% nahe Limit, aber Router COMMODITY_SUPER bestätigt Richtung. Regime FRAGILE_EXPANSION Performance unbekannt (Daten fehlen). Drawdown 0%, DD-Protect inactive. Konzentration 100% auf 5 Assets — Risk Officer überwacht Single Name Limits.
 
 ---
 
 ## S7: ACTION ITEMS & WATCHLIST
 
-**KRITISCHE ESKALATION: 4 ACT-Items offen seit 10-19 Tagen.**
+[DA: da_20260310_003 (PREMISE_ATTACK) — "Tage offen = Dringlichkeit" ist falsche Prämisse. ACCEPTED — S7 komplett umstrukturiert mit Dringlichkeits-Taxonomie. Original Draft: "ESKALIERTE ACT-ITEMS (offen >7 Tage, DRINGEND)" mit linearer Tag-Zählung.]
 
-[DA: da_20260310_002 (Dringlichkeits-Taxonomie). ACCEPTED — "Tage offen" ist unzureichende Dringlichkeits-Metrik. Items haben unterschiedliche Trigger-Mechaniken (ereignis-getrieben, kalender-getrieben, daten-getrieben, sequenz-getrieben). Umformulierung aller ACT-Items mit expliziter Dringlichkeits-Klassifikation. Original Draft: "A1/A2/A3/A4 alle Tag 18-19 offen."]
+**DRINGLICHKEITS-TAXONOMIE:**  
+**EREIGNIS-GETRIEBEN:** Dringlichkeit entsteht durch externen Catalyst (CPI, NFP, ECB) mit fester Deadline.  
+**KALENDER-GETRIEBEN:** Dringlichkeit entsteht durch fixe Termine (Router Entry 2026-04-01, F6 CC Expiry).  
+**DATEN-GETRIEBEN:** Dringlichkeit entsteht wenn neue Daten verfügbar (Howell Liquidity-Update, IC-Refresh).  
+**QUALITÄTS-GETRIEBEN:** Dringlichkeit entsteht durch System-Zustand (Data Quality DEGRADED, System Conviction LOW).  
+**SEQUENZ-GETRIEBEN:** Dringlichkeit entsteht durch Abhängigkeit von anderem Item (Post-CPI Review kann NICHT vor CPI resolved werden).
 
-**DRINGLICHKEITS-KLASSIFIKATION (DA-KORREKTUR):**  
-- **EREIGNIS-GETRIEBEN:** Dringlichkeit entsteht durch externes Event (CPI, NFP, ECB), nicht durch Kalender. Deadline = Event-Datum.  
-- **KALENDER-GETRIEBEN:** Dringlichkeit ist fix terminiert (z.B. ECB in 2d). "Tage offen" irrelevant.  
-- **DATEN-GETRIEBEN:** Dringlichkeit entsteht wenn neue Daten verfügbar (z.B. Howell-Update). Timing unbekannt.  
-- **SEQUENZ-GETRIEBEN:** Item kann NICHT vor anderem Event resolved werden (z.B. Post-CPI-Review kann nicht vor CPI).  
+**ACT-ITEMS (nach Dringlichkeit sortiert):**
 
-Alle ACT-Items unten neu klassifiziert.
+**A1: HYG-Konzentration Review (CRITICAL, Trade Class A, Tag 20, EREIGNIS-GETRIEBEN)**  
+**Was:** HYG 28.8%, Schwelle 25%, +3.8pp. WARNING → CRITICAL (Event-Boost). Tag 18 seit Alert, Tag 20 seit ACT-Item.  
+**Warum:** Single Name Concentration Risk. V16 zeigt kein Rebalance-Signal — Gewicht stabil seit 2026-03-06. Price Drift (HYG outperformance) treibt Gewicht. IC: Forward Guidance warnt Credit Spreads widening, Carry Trade Risk. CPI morgen Binary Catalyst — Hot CPI könnte HYG-Druck verstärken.  
+**Dringlichkeit:** HEUTE. CPI morgen 08:30 ET = harte Deadline. EREIGNIS-GETRIEBEN.  
+**Nächste Schritte:** (1) Prüfe mit Agent R (Risk Officer): Ist HYG 28.8% Portfolio-Risk oder V16-Signal-Fehler? (2) Prüfe V16 Regime FRAGILE_EXPANSION Proximity zu Shift — könnte V16 HYG reduzieren? (3) Prüfe IC Forward Guidance Credit-Warnung — ist Carry Trade Risk systemisch? (4) Prüfe V16 Drift-Toleranz vs. Risk Officer Schwelle — ist Divergenz Design-Feature oder Design-Bug? (5) Entscheide: V16 vertrauen (HOLD) oder manuell HYG reduzieren vor CPI (gegen V16-Signal)? (6) Dokumentiere Entscheidung.  
+**Trigger noch aktiv:** Ja. HYG 28.8% > 25%.  
+**Status:** OPEN.
 
----
+**A3: CPI-Vorbereitung (MEDIUM, Trade Class A, Tag 20, EREIGNIS-GETRIEBEN)**  
+**Was:** CPI morgen (2026-03-11) Vorbereitung.  
+**Warum:** T1 Event, HIGH impact, BINARY direction. Market Analyst L2/L7 markieren Pre-Event Action: REDUCE_CONVICTION. IC: Forward Guidance (Fed-Cut-Pricing), Howell (Dollar-Headwind), Snider (Oil-Shock CPI-Upside).  
+**Dringlichkeit:** HEUTE. CPI morgen 08:30 ET = harte Deadline. EREIGNIS-GETRIEBEN.  
+**Nächste Schritte:** (1) Prüfe Market Analyst L2 (Macro) und L7 (CB Policy) Conviction vor CPI — aktuell CONFLICTED. (2) Prüfe IC Inflation-Konsens -2.5 (Upside-Risk). (3) Prüfe HYG CRITICAL — Hot CPI könnte HYG-Druck verstärken. (4) Prüfe Router COMMODITY_SUPER — Hot CPI könnte DXY-Stärke auslösen (Bedingung: DXY not rising gefährdet). (5) Entscheide: Pre-CPI Positioning-Anpassung oder V16 vertrauen? (6) Post-CPI: Prüfe V16 Rebalance-Signal (frühestens Mittwoch).  
+**Trigger noch aktiv:** Ja (CPI morgen).  
+**Status:** OPEN.
 
-**A1: HYG-Konzentration Review (CRITICAL, Trade Class A) — Tag 19**  
-**Dringlichkeits-Typ:** EREIGNIS-GETRIEBEN (CPI morgen = Trigger)  
-**Deadline:** HEUTE (24h vor CPI)  
-**Was:** HYG 28.8%, CRITICAL seit Tag 17, +3.8pp über 25%-Schwelle.  
-**Warum:** Risk Officer Alert RO-20260310-003. V16-Output, nicht modifizierbar. Post-CPI Regime-Shift könnte HYG-Gewicht automatisch reduzieren.  
-**Nächste Schritte:**  
-(1) Prüfe V16 Regime-Shift-Wahrscheinlichkeit post-CPI (wenn FRAGILE_EXPANSION → STEADY_GROWTH: HYG sinkt, wenn → SLOWDOWN: HYG steigt).  
-(2) Wenn HYG post-CPI >30%: Eskalation an Operator für manuelle Review (außerhalb V16-Automatik).  
-(3) **EXECUTION-STRATEGIE (DA-ERGÄNZUNG):** Wenn HYG-Trade nötig → LIMIT-Orders oder gestufte Execution über mehrere Tage. NICHT Market-Order am Event-Tag (Slippage-Risk $72k bei $14.4m Trade, siehe S3).  
-(4) Dokumentiere Pre-CPI-Status für Post-Mortem.  
-**Status:** OPEN, ESCALATED (Tag 19, aber Dringlichkeit ist CPI-getrieben, nicht Tage-basiert).
+**A9: HYG Post-CPI Rebalance-Readiness (HIGH, Trade Class A, Tag 4, EREIGNIS-GETRIEBEN)**  
+**Was:** HYG Post-CPI Rebalance-Readiness (falls V16 Signal nach CPI).  
+**Warum:** HYG CRITICAL 28.8%. CPI morgen könnte V16 Regime-Shift auslösen → HYG-Rebalance. Operator muss bereit sein für schnelle Execution.  
+**Dringlichkeit:** HEUTE (Pre-CPI Prep) + THIS_WEEK (Post-CPI Execution). EREIGNIS-GETRIEBEN.  
+**Nächste Schritte:** (1) Pre-CPI: Prüfe HYG Liquidity (Bid-Ask-Spread, Volume). (2) Post-CPI: Prüfe V16 Rebalance-Signal (frühestens Mittwoch). (3) Falls V16 HYG reduziert: Execute sofort (Trade Class A). (4) Falls V16 HOLD: Prüfe ob manueller Override nötig (gegen V16-Signal). (5) Dokumentiere Execution.  
+**Trigger noch aktiv:** Ja (HYG CRITICAL, CPI morgen).  
+**Status:** OPEN.
 
----
+**A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A, Tag 20, KALENDER-GETRIEBEN)**  
+**Was:** NFP (2026-03-07, vergangen) und ECB (2026-03-12, +2d) Event-Monitoring.  
+**Warum:** Macro Events T1 — HIGH impact auf V16 Regime und Market Analyst Layers.  
+**Dringlichkeit:** HEUTE (ECB +2d). KALENDER-GETRIEBEN.  
+**Nächste Schritte:** (1) NFP vergangen — Post-Event-Review siehe A5. (2) ECB +2d — Prüfe Market Analyst L7 (CB Policy) Pre-Event Conviction. (3) Prüfe IC für ECB-spezifische Claims (aktuell keine). (4) Monitoring — kein preemptive Action.  
+**Trigger noch aktiv:** Ja (ECB +2d).  
+**Status:** OPEN.
 
-**A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A) — Tag 19**  
-**Dringlichkeits-Typ:** KALENDER-GETRIEBEN (NFP vorbei, ECB in 2d)  
-**Deadline:** ECB 2026-03-12 (48h)  
-**Was:** NFP war 2026-03-07 (3 Tage her), ECB Rate Decision 2026-03-12 (in 2 Tagen).  
-**Warum:** Ursprünglich für NFP/ECB-Vorbereitung. NFP durch, ECB steht an.  
-**Nächste Schritte:**  
-(1) **SPLIT Item:** A2a (NFP-Teil) → CLOSE (Event vorbei). A2b (ECB-Teil) → ACTIVE.  
-(2) ECB-Monitoring: Prüfe Market Analyst L7 (CB Policy) post-ECB für Conviction-Shift.  
-(3) Wenn ECB hawkish: DXY-Rally-Risk → Router COMMODITY_SUPER Proximity könnte fallen.  
-(4) Wenn ECB dovish: EUR-Schwäche → DXY-Stärke → gleicher Risk.  
-**Status:** OPEN, ESCALATED (Tag 19, aber Dringlichkeit ist ECB-Datum, nicht Tage-basiert). **Empfehlung:** SPLIT in A2a (CLOSE) und A2b (ACTIVE).
+**A7: Post-CPI System-Review (HIGH, Trade Class A, Tag 12, SEQUENZ-GETRIEBEN)**  
+**Was:** Post-CPI System-Review (V16, Market Analyst, Risk Officer, IC).  
+**Warum:** CPI morgen Binary Catalyst — Hot CPI könnte V16 Regime-Shift, Market Analyst Layer-Shifts, Risk Officer Alert-Eskalation auslösen.  
+**Dringlichkeit:** THIS_WEEK (Post-CPI, frühestens Mittwoch). SEQUENZ-GETRIEBEN (kann NICHT vor CPI resolved werden).  
+**Nächste Schritte:** (1) Post-CPI: Prüfe V16 Rebalance-Signal (frühestens Mittwoch). (2) Prüfe Market Analyst Layer-Shifts (L2 Macro, L7 CB Policy). (3) Prüfe Risk Officer Alert-Status (HYG CRITICAL, Event-Boost endet). (4) Prüfe IC Post-CPI Claims (Fed-Policy, Inflation). (5) System-Review: Ist V16 Regime FRAGILE_EXPANSION noch korrekt? (6) Dokumentiere Findings.  
+**Trigger noch aktiv:** Ja (CPI morgen).  
+**Status:** OPEN.
 
----
+**A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, Tag 14, QUALITÄTS-GETRIEBEN)**  
+**Was:** IC-Daten-Refresh (6 Quellen, 120 Claims, aber viele HIGH_NOVELTY_LOW_SIGNAL).  
+**Warum:** System Conviction LOW — Market Analyst 6/8 Layer CONFLICTED/LOW. IC liefert Kontext, aber Signal-Qualität unklar (90 HIGH_NOVELTY_LOW_SIGNAL Claims).  
+**Dringlichkeit:** THIS_WEEK. QUALITÄTS-GETRIEBEN (Data Quality DEGRADED).  
+**Nächste Schritte:** (1) Prüfe IC HIGH_NOVELTY_LOW_SIGNAL Claims — sind das False Positives oder echte Low-Signal-Daten? (2) Prüfe IC Consensus Confidence — GEOPOLITICS HIGH, ENERGY MEDIUM, aber viele LOW (1 claim). (3) Prüfe IC-Market Analyst Alignment — L4 (FX) IC DOLLAR -9 vs. Market Analyst DXY flat 50th pctl. (4) Entscheide: IC-Gewichtung anpassen oder IC-Quellen erweitern?  
+**Trigger noch aktiv:** Ja (System Conviction LOW).  
+**Status:** OPEN.
 
-**A3: CPI-Vorbereitung (MEDIUM, Trade Class A) — Tag 19**  
-**Dringlichkeits-Typ:** EREIGNIS-GETRIEBEN (CPI morgen)  
-**Deadline:** HEUTE (24h vor CPI)  
-**Was:** CPI morgen, 2026-03-11.  
-**Warum:** Tier-1-Event, Catalyst für V16/Market Analyst/Router (siehe S4 Pattern "CPI-Event als Regime-Router").  
-**Nächste Schritte:**  
-(1) Pre-CPI-Snapshot: V16 Regime FRAGILE_EXPANSION, Router COMMODITY_SUPER 100%, Market Analyst L2/L7 CONFLICTED.  
-(2) Post-CPI-Review: A7 (siehe unten).  
-(3) Wenn CPI hot (>Consensus): Erwarte DXY rally, V16 Regime-Shift Richtung SLOWDOWN möglich, Router Proximity fällt.  
-(4) Wenn CPI soft (<Consensus): Erwarte DXY flat/down, V16 Regime-Shift Richtung STEADY_GROWTH möglich, Router Proximity hält.  
-**Status:** OPEN, ESCALATED (Tag 19, aber Dringlichkeit ist CPI-getrieben). **Empfehlung:** MERGE in A7 (Post-CPI System-Review).
+**A8: Router-Proximity Persistenz-Check (MEDIUM, Trade Class B, Tag 9, KALENDER-GETRIEBEN)**  
+**Was:** Router COMMODITY_SUPER Proximity 0% → 100% Spike gestern.  
+**Warum:** Alle drei Bedingungen gleichzeitig erfüllt — ungewöhnlich. Prüfe ob Proximity persistent oder False Positive.  
+**Dringlichkeit:** THIS_WEEK. KALENDER-GETRIEBEN (Entry 2026-04-01, -22d).  
+**Nächste Schritte:** (1) Prüfe DBC/SPY 6M Relative Performance — ist 100% stabil oder Spike? (2) Prüfe DXY — ist "not rising" stabil oder kurz vor Reversal (IC Howell warnt Dollar-Stärke)? (3) Prüfe V16 Regime allowed — FRAGILE_EXPANSION erlaubt COMMODITY_SUPER, aber Regime-Shift könnte Bedingung ändern. (4) Prüfe IC COMMODITIES +4.82 und ENERGY -3.52 — bestätigt Richtung? (5) **KORREKTUR:** "Proximity-Monitoring" ist faktisch Binary-Watch (Entry-Bedingung erfüllt: TRUE/FALSE), nicht Trend-Monitor. Täglich prüfen ob Entry-Bedingung noch erfüllt ist. Wenn FALSE → Alert (Entry-Signal verschwunden). Wenn TRUE bis 2026-03-20 → Pre-Entry-Review.  
+**Trigger noch aktiv:** Ja (Proximity 100%).  
+**Status:** OPEN.
 
----
-
-**A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B) — Tag 19**  
-**Dringlichkeits-Typ:** DATEN-GETRIEBEN (Howell-Update = Trigger)  
-**Deadline:** THIS_WEEK (Howell-Update erwartet Montag/Dienstag)  
-**Was:** Howell Liquidity-Updates monitoren.  
-**Warum:** IC Consensus LIQUIDITY -7.0 (bearish), Market Analyst L1 Score 0 (TRANSITION). Liquidity-Tailwind schwindet.  
-**Nächste Schritte:**  
-(1) Wenn Howell-Update erscheint: Prüfe Net Liquidity Richtung.  
-(2) Wenn Liquidity fällt: Market Analyst L1 Score sinkt → System Regime könnte NEUTRAL → RISK_OFF shiften.  
-(3) Wenn Liquidity steigt: Howell-Warnung ("next update less positive") war falsch → bullish Surprise.  
-**Status:** OPEN, ESCALATED (Tag 19, aber Dringlichkeit ist Howell-Update, nicht Tage-basiert).
-
----
-
-**A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, NEU) — Tag 12**  
-**Dringlichkeits-Typ:** DATEN-GETRIEBEN (IC-Refresh = Trigger)  
-**Deadline:** THIS_WEEK  
-**Was:** IC Intelligence basiert auf 6 Quellen, aber Data Quality DEGRADED. Einige Claims 7 Tage alt (Howell 2026-03-03).  
-**Warum:** LOW System Conviction (Header) — teilweise wegen veralteter IC-Daten. Conviction steigt wenn IC-Refresh erfolgt.  
-**Nächste Schritte:**  
-(1) Prüfe ob neue Howell/Doomberg/Forward Guidance-Updates verfügbar.  
-(2) Wenn ja: Re-run IC Processor.  
-(3) Wenn nein: Dokumentiere Staleness, reduziere IC-Weight in CIO-Synthese.  
-**Status:** OPEN, ESCALATED (Tag 12, aber Dringlichkeit ist Daten-Verfügbarkeit).
-
----
-
-**A7: Post-CPI System-Review (HIGH, Trade Class A, NEU) — Tag 10**  
-**Dringlichkeits-Typ:** SEQUENZ-GETRIEBEN (kann NICHT vor CPI resolved werden)  
-**Deadline:** THIS_WEEK (direkt nach CPI, 2026-03-11)  
-**Was:** Umfassende Review aller Systeme nach CPI (morgen).  
-**Warum:** CPI ist Regime-Router (siehe S4). V16, Market Analyst, Router alle betroffen.  
-**Nächste Schritte:**  
-(1) V16: Prüfe Regime-Shift (FRAGILE_EXPANSION → ?).  
-(2) Market Analyst: Prüfe L2/L7 Conviction-Anstieg (aktuell CONFLICTED wegen Pre-Event-Suppression).  
-(3) Router: Prüfe COMMODITY_SUPER Proximity (aktuell 100%, könnte fallen wenn DXY rallied).  
-(4) Risk Officer: Prüfe Alert-Deeskalation (HYG, DBC).  
-(5) Synthese: Update KEY ASSUMPTIONS basierend auf CPI-Outcome.  
-**Status:** OPEN, ESCALATED (Tag 10, aber Dringlichkeit ist Post-CPI, nicht Tage-basiert).
-
----
-
-**A8: Router-Proximity Binary-Watch (MEDIUM, Trade Class B) — Tag 7**  
-**Dringlichkeits-Typ:** EREIGNIS-GETRIEBEN (CPI könnte DXY beeinflussen → Proximity kippt)  
-**Deadline:** THIS_WEEK (nach CPI)  
-**Was:** COMMODITY_SUPER proximity 100% seit heute. Prüfe ob Entry-Bedingung bis 2026-04-01 (Entry-Evaluation) erfüllt bleibt.  
-**Warum (DA-KORREKTUR):** Router-Proximity ist faktisch Binary-Flag (0% oder 100%), nicht gradueller Proximity-Score. Alle 3 Bedingungen (DBC/SPY, V16 regime, DXY) MÜSSEN erfüllt sein, sonst 0%. Proximity kann nur von 100% auf 0% springen (eine Bedingung wird FALSE), nicht graduell fallen. "Proximity-Monitoring" ist Binary-Watch (Entry-Bedingung erfüllt: ja/nein), nicht Trend-Monitor. Vorlauf für Entry ist KALENDER-basiert (2026-04-01 = Evaluation Day), nicht SIGNAL-basiert (Proximity-Aufbau).  
-**Nächste Schritte (DA-UMFORMULIERUNG):**  
-(1) **Täglich prüfen ob Entry-Bedingung noch erfüllt ist (TRUE/FALSE).**  
-(2) Post-CPI: Prüfe DXY-Bewegung. Wenn DXY rallied >6M-Momentum-Schwelle: "DXY not rising" fällt → Proximity fällt auf 0%.  
-(3) Prüfe DBC/SPY relative. Wenn DBC underperformed: Proximity fällt auf 0%.  
-(4) Prüfe V16 Regime. Wenn Shift zu Regime das Commodities nicht erlaubt (unwahrscheinlich): Proximity fällt auf 0%.  
-(5) **Wenn Proximity auf 0% fällt: Alert (Entry-Signal verschwunden).**  
-(6) **Wenn Proximity TRUE bis 2026-03-20 (10d vor Evaluation): Pre-Entry-Review (siehe W4).**  
-**Status:** OPEN, ESCALATED (Tag 7). **Original Draft:** "Proximity täglich monitoren bis 2026-04-01." **DA-Korrektur:** "Binary-Watch — Entry-Bedingung TRUE/FALSE täglich prüfen."
-
----
-
-**A9: HYG Post-CPI Rebalance-Readiness (HIGH, Trade Class A, NEU) — Tag 2**  
-**Dringlichkeits-Typ:** SEQUENZ-GETRIEBEN (Post-CPI)  
-**Deadline:** THIS_WEEK (direkt nach CPI)  
-**Was:** HYG 28.8% CRITICAL. Post-CPI könnte V16 Rebalance triggern.  
-**Warum:** Wenn V16 Regime shiftet: HYG-Gewicht ändert sich automatisch. Operator muss bereit sein für Trade-Execution.  
-**Nächste Schritte:**  
-(1) Pre-CPI: Dokumentiere HYG 28.8%.  
-(2) Post-CPI: Prüfe V16-Output.  
-(3) Wenn HYG-Gewicht sinkt (z.B. <25%): Risk Officer Alert RO-20260310-003 resolved.  
-(4) Wenn HYG-Gewicht steigt (z.B. >30%): Eskalation (siehe A1).  
-(5) Wenn HYG unverändert: Alert bleibt CRITICAL, weiter monitoren.  
-(6) **EXECUTION-STRATEGIE (DA-ERGÄNZUNG):** Siehe A1 — Limit-Orders, gestufte Execution, NICHT Market-Order am Event-Tag.  
-**Status:** OPEN, ESCALATED (Tag 2, aber Dringlichkeit ist Post-CPI).
-
----
+**A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B, Tag 20, DATEN-GETRIEBEN)**  
+**Was:** Liquidity-Mechanik-Tracking (Howell, Market Analyst L1).  
+**Warum:** IC Howell warnt Dollar-Headwind, Bond Volatility Jump. Market Analyst L1 (Liquidity) Score 0 (TRANSITION), Conviction LOW.  
+**Dringlichkeit:** THIS_WEEK. DATEN-GETRIEBEN (Howell nächstes Update).  
+**Nächste Schritte:** (1) Prüfe Howell nächstes Liquidity-Update (erwartet weniger positiv). (2) Prüfe Market Analyst L1 Transition Proximity (aktuell 0.2 zu TIGHTENING). (3) Prüfe V16 Regime FRAGILE_EXPANSION Liq Direction -1 — ist Liquidity-Headwind bereits in V16-Signal? (4) **NEU:** Prüfe Offshore-Dollar-Funding-Indikatoren (Cross-Currency-Basis-Spreads, Eurodollar-Futures) — System trackt aktuell nur Fed-Balance-Sheet (US-zentrisch), nicht Eurodollar-System. (5) Monitoring — kein unmittelbarer Trade.  
+**Trigger noch aktiv:** Ja.  
+**Status:** OPEN.
 
 **AKTIVE WATCH-ITEMS:**
 
-**W1: Breadth-Deterioration (Hussman-Warnung) — Tag 19**  
-Market Analyst L3 (Earnings) Breadth 77.2% (stark). Kein Deterioration-Signal. Hussman-Warnung (aus Vortagen) nicht aktuell. **Status:** OPEN, aber inaktiv. **Empfehlung:** CLOSE wenn Breadth >75% für 30 Tage (aktuell Tag 1 über 75%).
+**W1: Breadth-Deterioration (Hussman-Warnung, Tag 20)**  
+**Was:** Market Breadth 77.2% above 200d MA (Market Analyst L3).  
+**Warum:** Hussman warnt Breadth-Deterioration als Recession-Signal.  
+**Monitoring:** Market Analyst L3 (Earnings) Score +4 (HEALTHY), aber Conviction LOW (regime_duration). Prüfe ob Breadth fällt.  
+**Nächster Check:** Täglich (Market Analyst L3).  
+**Trigger:** Breadth < 50%.  
+**Status:** OPEN.
 
-**W2: Japan JGB-Stress (Luke Gromen-Szenario) — Tag 19**  
-Keine neuen Daten. IC Intelligence keine Japan-Claims. Market Analyst L4 (FX) USDJPY Score 0 (neutral). **Status:** OPEN, aber inaktiv. **Empfehlung:** CLOSE mangels Trigger.
+**W2: Japan JGB-Stress (Luke Gromen-Szenario, Tag 20)**  
+**Was:** Japan JGB-Stress (Gromen warnt Yen-Schwäche → JGB-Krise).  
+**Warum:** Systemisches Risk für Global Liquidity.  
+**Monitoring:** Market Analyst L4 (FX) USDJPY Score 0 (50th pctl). IC: Keine Japan-Claims.  
+**Nächster Check:** Wöchentlich (Market Analyst L4).  
+**Trigger:** USDJPY > 160 oder JGB 10Y > 2%.  
+**Status:** OPEN.
 
-**W3: Geopolitik-Eskalation (Doomberg/ZeroHedge) — Tag 19**  
-AKTIV. IC Consensus GEOPOLITICS -2.65 (HIGH confidence). Siehe S5. Hormuz-Situation ongoing. **Status:** OPEN, ACTIVE. **Nächster Check:** Post-CPI (wenn Trump-Deal announced: CLOSE, wenn Eskalation: Upgrade zu ACT).
+**W3: Geopolitik-Eskalation (Doomberg/ZeroHedge, Tag 20)**  
+**Was:** Iran-Konflikt (Hormuz, Qatar LNG).  
+**Warum:** IC GEOPOLITICS -2.58 (HIGH confidence), ENERGY -3.52. DBC 20.3% profitiert, aber Eskalation könnte systemisch werden.  
+**Monitoring:** IC GEOPOLITICS, ENERGY. Market Analyst L8 (Tail Risk) Score +2 (CALM).  
+**Nächster Check:** Täglich (IC).  
+**Trigger:** IC GEOPOLITICS < -5 oder Market Analyst L8 → ELEVATED.  
+**Status:** OPEN.
 
-**W4: Commodities-Rotation (Crescat vs. Doomberg) — Tag 19**  
-AKTIV. Router COMMODITY_SUPER proximity 100%. IC Consensus COMMODITIES +4.82. Siehe S4 Pattern. **Status:** OPEN, ACTIVE. **Nächster Check:** 2026-04-01 (Router Entry-Evaluation). **Trigger:** Wenn Proximity hält bis 2026-04-01 → Entry-Signal → Upgrade zu ACT.
+**W4: Commodities-Rotation (Crescat vs. Doomberg, Tag 20)**  
+**Was:** Commodities-Rotation (Router COMMODITY_SUPER Proximity 100%).  
+**Warum:** DBC 20.3%, GLD 16.9% = 37.2% Commodities Exposure. Router Entry 2026-04-01 könnte Exposure erhöhen.  
+**Monitoring:** Router Proximity, IC COMMODITIES +4.82, ENERGY -3.52.  
+**Nächster Check:** Täglich (Router).  
+**Trigger:** Router Entry-Signal 2026-04-01 oder Proximity < 80%.  
+**Status:** OPEN.
 
-**W5: V16 Regime-Shift Proximity — Tag 17**  
-AKTIV. V16 shiftete heute SELECTIVE → FRAGILE_EXPANSION. Nächster Shift möglich post-CPI. Market Analyst L2 (Macro) Transition Proximity 100% (target RECESSION). **Status:** OPEN, ACTIVE. **Nächster Check:** Post-CPI (siehe A7).
+**W5: V16 Regime-Shift Proximity (Tag 18)**  
+**Was:** V16 Regime FRAGILE_EXPANSION seit gestern.  
+**Warum:** Regime-Shift könnte HYG reduzieren (CRITICAL Alert). Proximity zu nächstem Shift unbekannt.  
+**Monitoring:** V16 Regime, Market Analyst System Regime.  
+**Nächster Check:** Täglich (V16).  
+**Trigger:** V16 Regime-Shift oder Market Analyst System Regime ≠ NEUTRAL.  
+**Status:** OPEN.
 
-**W14: HYG Post-CPI Rebalance-Watch — Tag 7**  
-Duplicate von A9. **Empfehlung:** MERGE in A9, CLOSE W14.
+**W14: HYG Post-CPI Rebalance-Watch (Tag 8)**  
+**Was:** HYG Post-CPI Rebalance-Watch (siehe A9).  
+**Warum:** CPI morgen könnte V16 HYG-Rebalance auslösen.  
+**Monitoring:** V16 Rebalance-Signal Post-CPI.  
+**Nächster Check:** Mittwoch 2026-03-12 (Post-CPI).  
+**Trigger:** V16 HYG Target Weight ≠ 28.8%.  
+**Status:** OPEN.
 
----
+**CLOSE-EMPFEHLUNGEN:** Keine. Alle Watch-Items Trigger noch aktiv.
 
-**NEUE WATCH-ITEMS:**
-
-**W15: Dollar-Funding-Stress-Monitor (NEU, DA-ERGÄNZUNG)**  
-**Was:** Offshore-Dollar-Liquidity-Stress (Eurodollar-System). System hat keine direkten Indikatoren (LIBOR-OIS, FRA-OIS, Cross-Currency-Basis-Spreads).  
-**Warum:** Snider jeff_snider_005: "EMs hit with simultaneous dollar crunch." Snider jeff_snider_002: "Private credit bust in US/UK/Europe." Market Analyst L4 DXY Score 0 misst Preis, nicht Verfügbarkeit. HYG 28.8% exponiert gegen Dollar-Funding-Stress (Emittenten-Refinanzierung), nicht nur Credit-Spreads.  
-**Trigger:** (1) HY-Issuance-Volumina fallen (neue Bonds können nicht platziert werden), oder (2) Cross-Currency-Basis-Spreads weiten sich (wenn Daten verfügbar), oder (3) Snider/Howell warnen explizit vor Eurodollar-Stress.  
-**Nächster Check:** Wöchentlich (Snider/Howell-Updates).  
-**Urgency:** ONGOING.  
-**Hedge-Implikation:** Wenn Trigger aktiv → CASH oder ULTRA-SHORT-DURATION (T-Bills) als Hedge, NICHT TLT (20Y Duration, exponiert gegen Zinsen). System hat 0% Cash (100% invested) — bei Funding-Stress ist Cash King.
-
-**W16: Oil Futures Curve Shift (NEU)**  
-**Was:** Forward Guidance: "Oil markets priced for quick resolution — front-end backwardation." Snider: "If curve shifts to later-dated backwardation, stagflation priced."  
-**Warum:** Curve-Shift = Markt repriced Hormuz-Dauer. Wenn Shift: Energy-Spike → CPI-Upside → Fed hawkish → DXY rally (siehe W15).  
-**Trigger:** WTI Curve (Market Analyst L6 sub-score aktuell -10, bearish) shiftet Richtung neutral/bullish.  
-**Nächster Check:** Täglich bis Hormuz-Resolution.  
-**Urgency:** ONGOING.
-
----
-
-**CLOSE-EMPFEHLUNGEN:**
-
-**W1 (Breadth-Deterioration):** Trigger inaktiv (Breadth stark). CLOSE wenn >75% für 30 Tage.  
-**W2 (Japan JGB-Stress):** Trigger inaktiv (keine Daten). CLOSE mangels Signal.  
-**W14 (HYG Rebalance-Watch):** Duplicate von A9. CLOSE, merge in A9.  
-**Diverse "Was/Warum/Monitoring"-Items (Tag 18, 16, 15, 11, 10):** Artefakte aus Vortagen, keine klare Definition. CLOSE alle.
+**ACTION-SYNTHESE:** 8 ACT-Items offen, davon 8 ESKALIERT (>7 Tage). **EREIGNIS-GETRIEBEN (harte Deadline HEUTE):** A1 (HYG-Review, CPI morgen), A3 (CPI-Vorbereitung), A9 (HYG Rebalance-Readiness). **KALENDER-GETRIEBEN (fixe Termine):** A2 (ECB +2d), A8 (Router Entry -22d). **SEQUENZ-GETRIEBEN (Post-CPI):** A7 (System-Review). **QUALITÄTS-GETRIEBEN:** A6 (IC-Refresh). **DATEN-GETRIEBEN:** A4 (Liquidity-Tracking). **Operator-Priorität HEUTE:** (1) A1 (HYG-Review — CRITICAL + CPI morgen), (2) A3 (CPI-Vorbereitung), (3) A9 (HYG Rebalance-Readiness). **Operator-Priorität THIS_WEEK:** (4) A7 (Post-CPI Review), (5) A2 (ECB-Monitoring), (6) A6 (IC-Refresh), (7) A8 (Router-Proximity), (8) A4 (Liquidity-Tracking). 6 Watch-Items aktiv — alle Trigger noch aktiv.
 
 ---
 
 ## KEY ASSUMPTIONS
 
-**KA1: cpi_regime_router — CPI-Outcome bestimmt Regime-Pfad**  
-CPI morgen (2026-03-11) ist Weiche für V16 Regime (FRAGILE_EXPANSION → STEADY_GROWTH oder SLOWDOWN), Market Analyst Conviction (L2/L7 aktuell CONFLICTED), und Router COMMODITY_SUPER Proximity (aktuell 100%, abhängig von DXY). Hot CPI → DXY rally → Proximity fällt, Regime → SLOWDOWN. Soft CPI → DXY flat → Proximity hält, Regime → STEADY_GROWTH.  
-**Wenn falsch:** CPI in-line (keine Surprise) → Systeme bleiben in aktuellen States → keine Regime-Shifts → HYG bleibt CRITICAL, Router bleibt 100% Proximity ohne Entry (erst 2026-04-01), Market Analyst bleibt CONFLICTED. Implikation: Action Items A1/A7/A8 verlieren Dringlichkeit, aber Unsicherheit bleibt.
+**KA1: v16_drift_tolerance_design — V16 Drift-Toleranz vs. Risk Officer Schwelle ist Design-Feature, nicht Design-Bug.**  
+Wenn falsch: V16 Drift-Toleranz sollte enger sein (z.B. ±2% statt ±5%) oder Risk Officer Schwelle höher (z.B. 30% statt 25%) → System-Schwellen müssen synchronisiert werden → HYG CRITICAL Alert ist System-Design-Fehler, nicht Portfolio-Risk.
 
-**KA2: hormuz_duration_binary — Hormuz-Dauer ist binäres Tail-Risk**  
-IC Consensus GEOPOLITICS -2.65 basiert auf Annahme: Hormuz-Closure ist temporär (Tage bis Wochen, nicht Monate). ZeroHedge "Trump signals end soon" vs. Doomberg "Strait effectively closed, Qatar LNG offline." Wenn Hormuz schnell reopens: Energy-Spike reverses, DBC fällt, Router COMMODITY_SUPER Proximity fällt (DBC/SPY relative sinkt). Wenn Hormuz bleibt geschlossen: Doomberg-Szenario (LNG-Shortage, EU-Crisis, Stagflation) → Energy sustained rally → DBC steigt weiter → Router Entry am 2026-04-01 korrekt.  
-**Wenn falsch:** Hormuz reopens morgen (nach CPI) → Oil crashes → DBC-Gewicht (20.3%) wird Drag → V16 reduziert DBC automatisch (Regime-abhängig) → Router Proximity fällt → kein Entry. Implikation: Commodity-Rotation-Thesis kollabiert. A8 (Router-Proximity Binary-Watch) wird kritisch.
+**KA2: cpi_binary_downside — CPI morgen zeigt Upside (Hot CPI) wahrscheinlicher als Downside (Cold CPI).**  
+Wenn falsch: Cold CPI → Risk-On-Bestätigung → HYG CRITICAL Alert löst sich → V16 HOLD korrekt → kein Action-Bedarf.
 
-**KA3: liquidity_howell_timing — Howell Liquidity-Update bestätigt Richtung**  
-IC Consensus LIQUIDITY -7.0 basiert auf einem Howell-Claim (2026-03-03, 7 Tage alt): "Next update less positive." Market Analyst L1 Score 0 (TRANSITION) bestätigt Unsicherheit. Annahme: Nächstes Howell-Update (erwartet diese Woche) bestätigt bearish Liquidity-Shift → Market Analyst L1 fällt → System Regime NEUTRAL → RISK_OFF → V16 shiftet zu Defensive-Heavy (TLT, GLD up, HYG down).  
-**Wenn falsch:** Howell-Update zeigt Liquidity-Rebound (z.B. Fed/PBoC Injections größer als erwartet, Dollar-Schwäche statt -Stärke) → Market Analyst L1 steigt → System Regime NEUTRAL → RISK_ON → V16 shiftet zu Growth (SPY, XLK up). Implikation: Aktuelle Defensive-Positionierung (XLP, XLU) wird Underperformer. A4 (Liquidity-Mechanik-Tracking) eskaliert zu ACT wenn Howell bullish überrascht.
-
-[DA: da_20260310_001 (Dollar-Funding-System). ACCEPTED — KA3 erweitert um Offshore-Dollar-Liquidity-Dimension. Original KA3: "Howell Liquidity-Update bestätigt Richtung."]
-
-**KA3-ERGÄNZUNG (DA):** Howell-Liquidity misst Fed-Balance-Sheet (WALCL/TGA/RRP) — US-zentrisch. Dollar-Funding-Stress entsteht OFF-SHORE (Eurodollar-System). Snider jeff_snider_005: "EMs hit with simultaneous dollar crunch." Snider jeff_snider_002: "Private credit bust in US/UK/Europe." Wenn Howell-Update Liquidity-Rebound zeigt, aber Eurodollar-Stress steigt (EM dollar crunch, Private Credit deleveraging) → Divergenz zwischen US-Liquidity (bullish) und Offshore-Dollar-Verfügbarkeit (bearish). HYG 28.8% exponiert gegen Offshore-Dollar-Funding-Stress (Emittenten-Refinanzierung). V16 würde erst reagieren wenn HY OAS steigt (Score <-5), aber Funding-Märkte frieren VOR Spread-Ausweitung ein. Implikation: Howell-Liquidity-Rebound ist NICHT ausreichend für HYG-Safety wenn Eurodollar-Stress steigt. W15 (Dollar-Funding-Stress-Monitor) ist kritisch.
+**KA3: router_proximity_binary_design — Router "Proximity" ist Binary-Flag (Entry-Bedingung erfüllt: TRUE/FALSE), nicht gradueller Score.**  
+Wenn falsch: Router sollte echten Proximity-Score haben (0% → 33% → 66% → 100%) → Operator bekommt Vorlauf für Entry-Signal → A8 (Router-Proximity Persistenz-Check) muss umformuliert werden zu Trend-Monitoring statt Binary-Watch.
 
 ---
 
 ## DA RESOLUTION SUMMARY
 
-**TOTAL CHALLENGES:** 7  
-**ACCEPTED:** 4  
-**NOTED:** 0 (alle FORCED DECISION — NOTED nicht erlaubt)  
-**REJECTED:** 3
+**ACCEPTED (3):**
 
----
+**da_20260310_003 (PREMISE_ATTACK, S7):** "Tage offen = Dringlichkeit" ist falsche Prämisse. Unterschiedliche Items haben unterschiedliche Dringlichkeits-Natur (EREIGNIS-GETRIEBEN vs. KALENDER-GETRIEBEN vs. DATEN-GETRIEBEN vs. QUALITÄTS-GETRIEBEN vs. SEQUENZ-GETRIEBEN). **Auswirkung:** S7 komplett umstrukturiert mit Dringlichkeits-Taxonomie. Items nach Dringlichkeit sortiert, nicht nach "Tage offen". A1/A3/A9 EREIGNIS-GETRIEBEN (CPI morgen = harte Deadline HEUTE). A2 KALENDER-GETRIEBEN (ECB +2d). A7 SEQUENZ-GETRIEBEN (Post-CPI). A6 QUALITÄTS-GETRIEBEN (Data Quality DEGRADED). A4 DATEN-GETRIEBEN (Howell Update). A8 KALENDER-GETRIEBEN (Router Entry -22d). **Begruendung:** Substantiell. System hatte keine Dringlichkeits-Taxonomie — nur "Trade Class A/B" (binary) und "Tage offen" (linear). Devil's Advocate zeigt dass A1 (18 Tage offen, HEUTE dringend) und A4 (18 Tage offen, THIS_WEEK dringend) unterschiedliche Deadlines haben (12h vs. 5d), aber im Draft gleich erschienen.
 
-**ACCEPTED:**
+**da_20260310_003 (PREMISE_ATTACK, S4):** Router COMMODITY_SUPER "0% → 100% Spike ohne Vorwarnung" ist falsche Beschreibung. Router-Proximity ist Binary-Flag (Entry-Bedingung erfüllt: TRUE/FALSE), nicht gradueller Score. **Auswirkung:** OBS-2 komplett umgeschrieben. "Proximity-Monitoring" (A8) ist faktisch Binary-Watch, nicht Trend-Monitor. KA3 hinzugefügt: Router-Proximity-Design-Annahme. **Begruendung:** Substantiell. Router-History (30d) zeigt NUR 0% oder 100%, NIEMALS Zwischenwerte (33%, 66%). Das bedeutet Proximity ist kein Proximity-Mass (Naehe zum Trigger), sondern Binary-Flag. Devil's Advocate zeigt dass "ohne Vorwarnung" falsch ist — es gibt keinen "graduellen Aufbau" den das System haette sehen koennen, weil Proximity nur zwei Zustaende hat (OFF/ON).
 
-**da_20260310_003 (Instrument-Liquidity-Stress):**  
-**Challenge:** HYG/DBC Execution-Risiko bei Event-Tag-Trades (Slippage $72k-$144k).  
-**Resolution:** ACCEPTED. Execution-Risiko ist real und messbar. Ergänzung zu S3 (EXECUTION-RISIKO-KONTEXT) und A1/A9 (EXECUTION-STRATEGIE). Empfehlung: Limit-Orders, gestufte Execution, NICHT Market-Order am Event-Tag.  
-**Impact:** S3 erweitert, A1/A9 umformuliert mit Execution-Strategie.
-
-**da_20260310_003 (Router-Proximity Binary-Flag):**  
-**Challenge:** Router-Proximity ist faktisch Binary-Flag (0% oder 100%), nicht gradueller Proximity-Score. "Proximity-Monitoring" ist nutzlos — Proximity kann nur springen, nicht graduell fallen.  
-**Resolution:** ACCEPTED. Router History 30d zeigt NUR 0% oder 100% — keine Zwischenwerte. Proximity = AND-Verknüpfung (alle 3 Bedingungen MÜSSEN erfüllt sein), nicht Durchschnitt. Implikation: "Proximity" ist Misnomer — Entry-Condition-Flag, nicht Proximity-Score. A8 umformuliert.  
-**Impact:** S4 erweitert (ROUTER-PROXIMITY-MECHANIK), A8 komplett umformuliert (Binary-Watch statt Proximity-Monitoring).
-
-**da_20260310_001 (Dollar-Funding-System):**  
-**Challenge:** Offshore-Dollar-Liquidity ist blinder Fleck. Snider-Claims zeigen Eurodollar-Stress (EM dollar crunch, Private Credit bust), aber System hat keine direkten Indikatoren (LIBOR-OIS, FRA-OIS, Cross-Currency-Basis-Spreads). HYG 28.8% exponiert gegen Dollar-Funding-Stress den das System nicht misst.  
-**Resolution:** ACCEPTED. System misst DXY-PREIS (Market Analyst L4), nicht Dollar-VERFÜGBARKEIT. V16 liq_direction -1 basiert auf Fed-Balance-Sheet (US-zentrisch), nicht Eurodollar. HYG-Exposure gegen Emittenten-Refinanzierung (Funding-Kosten), nicht nur Credit-Spreads (HY OAS). Ergänzung zu S5 (DOLLAR-FUNDING-BLIND-SPOT), KA3 (erweitert um Offshore-Dimension), W15 (neu: Dollar-Funding-Stress-Monitor).  
-**Impact:** S5 erweitert, KA3 erweitert, W15 neu erstellt.
-
-**da_20260310_002 (Dringlichkeits-Taxonomie):**  
-**Challenge:** "Tage offen" ist unzureichende Dringlichkeits-Metrik. Items haben unterschiedliche Trigger-Mechaniken (ereignis-getrieben, kalender-getrieben, daten-getrieben, sequenz-getrieben). A1 (18 Tage offen, HEUTE dringend) erscheint gleich dringlich wie A4 (18 Tage offen, THIS_WEEK dringend) — aber A1 hat 24h Deadline, A4 hat 5d Deadline.  
-**Resolution:** ACCEPTED. System hat keine Dringlichkeits-TAXONOMIE — nur "Trade Class A/B" (binary) und "Tage offen" (linear). Alle ACT-Items neu klassifiziert mit expliziter Dringlichkeits-Typ (EREIGNIS-GETRIEBEN, KALENDER-GETRIEBEN, DATEN-GETRIEBEN, SEQUENZ-GETRIEBEN) und Deadline.  
-**Impact:** S7 komplett umformuliert — alle ACT-Items mit Dringlichkeits-Klassifikation.
-
----
-
-**REJECTED:**
-
-**da_20260306_005 (Persistent Tag 21):**  
-**Challenge:** Instrument-Liquidity-Stress (identisch zu da_20260310_003, aber Tag 21 statt Tag 1).  
-**Resolution:** REJECTED — Duplicate. Bereits als da_20260310_003 ACCEPTED. Kein zusätzlicher Inhalt.  
-**Begründung:** Challenge ist identisch zu da_20260310_003 (gleiche Evidence, gleiche Implikation). Tag 21 vs. Tag 1 ist Artefakt aus History-Tracking, kein neuer Einwand.
-
-**da_20260309_005 (Persistent Tag 10):**  
-**Challenge:** "Item offen seit X Tagen" = Dringlichkeit, aber Items haben UNTERSCHIEDLICHE... [Text bricht ab, kein vollständiger Einwand].  
-**Resolution:** REJECTED — Incomplete Challenge. Text bricht ab ("UNTERSCHIEDLICHE"), keine Evidence, keine vollständige Argumentation.  
-**Begründung:** Challenge ist unvollständig. Vermutlich identisch zu da_20260310_002 (Dringlichkeits-Taxonomie), aber nicht ausformuliert. Bereits als da_20260310_002 ACCEPTED — kein zusätzlicher Wert.
-
-**da_20260310_003 (Persistent Tag 3, Duplicate):**  
-**Challenge:** "Item offen seit X Tagen" = Dringlichkeit... [identisch zu da_20260310_002].  
-**Resolution:** REJECTED — Duplicate. Bereits als da_20260310_002 ACCEPTED. Kein zusätzlicher Inhalt.  
-**Begründung:** Challenge ist identisch zu da_20260310_002 (gleiche Argumentation, gleiche Evidence). Tag 3 vs. Tag 2 ist Artefakt aus History-Tracking, kein neuer Einwand.
-
----
-
-**BRIEFING ENDE.**
+**da_20260310_001 (UNASKED_QUESTION, S4/S5):** System stellt Liquiditäts-Frage auf falscher Ebene (Macro-Liquidity vs. Instrument-Liquidity), aber eigentliche Frage ist Dollar-Funding-System (Offshore-Eurodollar-Stress). **Auswirkung:** Neue OBS-6 (Dollar-Funding-Stress ungemessen). S5 COMMODITIES-Sektion erweitert um STOCK-Effekt vs. FLOW-Effekt (China-Gold-Akkumulation bindet Liquidity, unabhängig von Fed-Balance-Sheet). A4 (Liquidity-Tracking) erweitert um Offshore-Dollar-Funding-Indikatoren (Cross-Currency-Basis-Spreads, Eurodollar-Futures). **Begruendung:** Substantiell. Jeff Snider Claim jeff_snider_005 zeigt globales Dollar-Liquidity-Problem (EM-Importeure + Private-Credit-Bust). System trackt Fed-Balance-Sheet (US-zentrisch), aber Dollar-Funding-Stress entsteht OFF
