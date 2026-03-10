@@ -6,7 +6,7 @@ Keine LLM-Nutzung — rein datengetrieben.
 
 Datenquellen:
   - Brave Search: 2-3 Queries pro Kategorie (Hit Count + Sentiment)
-  - Google Trends: 1-2 Keywords pro Kategorie (pytrends)
+  - Brave Trending Proxy: Ersetzt Google Trends (Hit-Frequenz + Freshness als Trending-Signal)
   - ETF Flows: AUM-Veraenderung als Flow-Proxy (EODHD)
 
 Output: Screening-Score pro Kategorie (0-100)
@@ -24,7 +24,6 @@ EODHD_API_KEY = os.environ.get('EODHD_API_KEY', '')
 # Rate limiting
 BRAVE_DELAY_S = 1.0
 EODHD_DELAY_S = 0.5
-TRENDS_DELAY_S = 2.0
 
 
 def run_screening(categories, etf_universe, screening_weights):
@@ -61,13 +60,13 @@ def run_screening(categories, etf_universe, screening_weights):
         except Exception as e:
             print(f"    [WARN] Brave fehlgeschlagen fuer {cat_id}: {e}")
 
-        # --- Google Trends ---
+        # --- Trending Score (via Brave als Proxy fuer Google Trends) ---
         trends_value = 50  # neutral default
         trends_1m_change = 0
         try:
-            trends_value, trends_1m_change = _google_trends_category(cat)
+            trends_value, trends_1m_change = _brave_trending_proxy(cat)
         except Exception as e:
-            print(f"    [WARN] Google Trends fehlgeschlagen fuer {cat_id}: {e}")
+            print(f"    [WARN] Brave Trending fehlgeschlagen fuer {cat_id}: {e}")
 
         # --- ETF Flows ---
         etf_flow_score = 50  # neutral default
@@ -189,52 +188,88 @@ def _brave_search(query, count=10):
     return results
 
 
-# ===== GOOGLE TRENDS =====
+# ===== TRENDING SCORE (Brave Search als Google Trends Proxy) =====
 
-def _google_trends_category(category):
+def _brave_trending_proxy(category):
     """
-    Google Trends Abfrage fuer eine Kategorie.
-    Nutzt pytrends (kein API Key noetig, rate-limited).
+    Brave Search als Proxy fuer Google Trends.
+    Misst: Wie viele aktuelle Ergebnisse gibt es? Wie frisch sind sie?
 
-    Returns: (current_value 0-100, 1m_change)
+    Nutzt keywords_trends aus der Config (dieselben Keywords wie frueher fuer pytrends).
+    Query: "[keyword] trend 2026" mit freshness=pw (past week).
+
+    Scoring:
+      - Hit Count: Mehr Ergebnisse = mehr Interesse (0-100)
+      - Freshness Bonus: Ergebnisse der letzten Woche werden hoeher gewertet
+      - 1m_change wird approximiert durch Vergleich pw vs pm Ergebnisse
+
+    Returns: (trending_score 0-100, approx_1m_change)
     """
+    if not BRAVE_API_KEY:
+        return 50, 0
+
     keywords = category.get('keywords_trends', [])
+    if not keywords:
+        keywords = category.get('keywords_brave', [])
     if not keywords:
         return 50, 0
 
+    kw = keywords[0]
+
+    # Query 1: Past week — misst aktuelles Interesse
+    pw_hits = 0
     try:
-        from pytrends.request import TrendReq
-    except ImportError:
-        print("    [SKIP] pytrends nicht installiert")
-        return 50, 0
-
-    try:
-        pytrends = TrendReq(hl='en-US', tz=360, timeout=(10, 25))
-        # Nimm erstes Keyword
-        kw = keywords[0]
-        pytrends.build_payload([kw], timeframe='today 3-m', geo='')
-        data = pytrends.interest_over_time()
-
-        if data.empty or kw not in data.columns:
-            return 50, 0
-
-        values = data[kw].values
-        current = int(values[-1]) if len(values) > 0 else 50
-
-        # 1-Monat Change: Vergleiche letzte Woche mit vor 4 Wochen
-        if len(values) >= 5:
-            recent = float(values[-1])
-            month_ago = float(values[-5]) if values[-5] > 0 else 1
-            change = ((recent - month_ago) / month_ago) * 100
-        else:
-            change = 0
-
-        time.sleep(TRENDS_DELAY_S)
-        return current, round(change, 1)
-
+        results_pw = _brave_search(f'{kw} trend', count=20)
+        pw_hits = len(results_pw)
+        time.sleep(BRAVE_DELAY_S)
     except Exception as e:
-        print(f"    [WARN] Google Trends '{keywords[0]}' fehlgeschlagen: {e}")
-        return 50, 0
+        print(f"    [WARN] Brave Trending '{kw}' (pw) fehlgeschlagen: {e}")
+
+    # Query 2: Past month — fuer 1m Vergleich
+    pm_hits = 0
+    try:
+        pm_results = _brave_search_with_freshness(f'{kw} trend', count=20, freshness='pm')
+        pm_hits = len(pm_results)
+        time.sleep(BRAVE_DELAY_S)
+    except Exception as e:
+        print(f"    [WARN] Brave Trending '{kw}' (pm) fehlgeschlagen: {e}")
+
+    # Trending Score: 0 hits = 25 (low), 10 hits = 50 (avg), 20 hits = 100 (high)
+    trending_score = min(100, max(0, 25 + pw_hits * 3.75))
+
+    # 1m Change Approximation: pw/pm ratio
+    if pm_hits > 3:
+        # Erwartung: pw sollte ~25% von pm sein (1 Woche von 4)
+        expected_pw = pm_hits * 0.25
+        if expected_pw > 0:
+            ratio = pw_hits / expected_pw
+            approx_change = (ratio - 1.0) * 100  # +100% = doppelt so viel wie erwartet
+            approx_change = max(-50, min(200, approx_change))
+        else:
+            approx_change = 0
+    else:
+        approx_change = 0
+
+    return round(trending_score, 1), round(approx_change, 1)
+
+
+def _brave_search_with_freshness(query, count=10, freshness='pw'):
+    """Brave Search mit konfigurierbarer Freshness."""
+    url = 'https://api.search.brave.com/res/v1/web/search'
+    headers = {
+        'Accept': 'application/json',
+        'Accept-Encoding': 'gzip',
+        'X-Subscription-Token': BRAVE_API_KEY
+    }
+    params = {
+        'q': query,
+        'count': count,
+        'freshness': freshness,
+    }
+    resp = requests.get(url, headers=headers, params=params, timeout=15)
+    resp.raise_for_status()
+    data = resp.json()
+    return data.get('web', {}).get('results', [])
 
 
 # ===== ETF FLOWS (EODHD) =====

@@ -310,24 +310,62 @@ def _get_seed_chain(cat_id, cat_etfs):
 # ===== HELPERS =====
 
 def _call_anthropic(system_prompt, user_prompt):
-    """Anthropic API Call."""
+    """Anthropic API Call with error logging and unicode cleaning."""
     url = 'https://api.anthropic.com/v1/messages'
     headers = {
         'x-api-key': ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json'
     }
+
+    # Clean unicode that can cause 400 errors
+    system_prompt = _clean_unicode(system_prompt)
+    user_prompt = _clean_unicode(user_prompt)
+
     payload = {
         'model': LLM_MODEL,
         'max_tokens': 2000,
         'system': system_prompt,
         'messages': [{'role': 'user', 'content': user_prompt}]
     }
+
     resp = requests.post(url, headers=headers, json=payload, timeout=120)
-    resp.raise_for_status()
+
+    if resp.status_code != 200:
+        try:
+            error_body = resp.json()
+            error_msg = error_body.get('error', {}).get('message', resp.text[:500])
+        except Exception:
+            error_msg = resp.text[:500]
+        print(f"    [API] {resp.status_code} Error: {error_msg}")
+        print(f"    [API] Prompt length: system={len(system_prompt)}, user={len(user_prompt)}")
+        resp.raise_for_status()
+
     data = resp.json()
     content = data.get('content', [])
     return '\n'.join(c.get('text', '') for c in content if c.get('type') == 'text')
+
+
+def _clean_unicode(text):
+    """Remove problematic unicode characters that can cause API 400 errors."""
+    if not text:
+        return text
+    text = text.replace('\ufeff', '')
+    text = text.replace('\ufffe', '')
+    text = text.replace('\u200b', '')
+    text = text.replace('\u200c', '')
+    text = text.replace('\u200d', '')
+    text = text.replace('\u2028', '\n')
+    text = text.replace('\u2029', '\n')
+    text = text.replace('\r\n', '\n')
+    text = text.replace('\r', '\n')
+    text = text.replace('\u201c', '"')
+    text = text.replace('\u201d', '"')
+    text = text.replace('\u2018', "'")
+    text = text.replace('\u2019', "'")
+    text = text.replace('\u2014', '-')
+    text = text.replace('\u2013', '-')
+    return text
 
 
 def _parse_json_response(text):

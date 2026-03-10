@@ -146,13 +146,14 @@ def _build_shared_context(trends, exposure_result, contrarian_alerts,
 
     trends_text = ""
     for t in active_watch:
+        headline = (t.get('headline', '') or '')[:100]  # Limit headline length
         trends_text += (
             f"\n- {t['id']} {t['name']}: Status={t.get('watchlist_status')}, "
             f"Phase={t.get('phase')}, Maturity={t.get('maturity', 0)}, "
             f"Momentum={t.get('momentum', 0)}, Acceleration={t.get('acceleration', 0)}, "
             f"Inflection={t.get('inflection_score', 0)}, Crowding={t.get('crowding', 0)}, "
-            f"TopETF={t.get('top_etf', '')}, "
-            f"Headline={t.get('headline', '')}"
+            f"TopETF={t.get('top_etf', '')}"
+            f"{f', Headline={headline}' if headline else ''}"
         )
 
     blind_spots = exposure_result.get('blind_spots', [])
@@ -322,6 +323,9 @@ def _llm_call_3_effects(ctx):
     """Call 3: Second Order Effects + G7 Cross-References."""
 
     g7_text = json.dumps(ctx['g7_crossref'], indent=2)
+    # Limit g7 cross-ref text to prevent prompt overflow
+    if len(g7_text) > 2000:
+        g7_text = g7_text[:2000] + '\n  ... [TRUNCATED]'
 
     convergence_detail = ""
     for z in ctx['convergence_zones']:
@@ -699,17 +703,68 @@ def _call_anthropic(system_prompt, user_prompt, max_tokens=3000):
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json',
     }
+
+    # Clean unicode from prompts that can cause 400 errors
+    system_prompt = _clean_unicode(system_prompt)
+    user_prompt = _clean_unicode(user_prompt)
+
     payload = {
         'model': LLM_MODEL,
         'max_tokens': max_tokens,
         'system': system_prompt,
         'messages': [{'role': 'user', 'content': user_prompt}],
     }
+
     resp = requests.post(url, headers=headers, json=payload, timeout=180)
-    resp.raise_for_status()
+
+    if resp.status_code != 200:
+        # Log the actual error before raising
+        try:
+            error_body = resp.json()
+            error_msg = error_body.get('error', {}).get('message', resp.text[:500])
+        except Exception:
+            error_msg = resp.text[:500]
+        print(f"    [API] {resp.status_code} Error: {error_msg}")
+        print(f"    [API] Prompt length: system={len(system_prompt)}, user={len(user_prompt)}")
+
+        # If 400 and prompt is very long, retry with truncated prompt
+        if resp.status_code == 400 and len(user_prompt) > 8000:
+            print(f"    [API] Retrying with truncated prompt...")
+            user_prompt = user_prompt[:8000] + "\n\n[TRUNCATED — bitte mit verfuegbaren Daten antworten]"
+            payload['messages'] = [{'role': 'user', 'content': user_prompt}]
+            resp = requests.post(url, headers=headers, json=payload, timeout=180)
+            if resp.status_code != 200:
+                resp.raise_for_status()
+        else:
+            resp.raise_for_status()
+
     data = resp.json()
     content = data.get('content', [])
     return '\n'.join(c.get('text', '') for c in content if c.get('type') == 'text')
+
+
+def _clean_unicode(text):
+    """Remove problematic unicode characters that can cause API 400 errors."""
+    if not text:
+        return text
+    # Remove BOM, zero-width chars, and other problematic unicode
+    text = text.replace('\ufeff', '')   # BOM
+    text = text.replace('\ufffe', '')   # BOM reversed
+    text = text.replace('\u200b', '')   # Zero-Width Space
+    text = text.replace('\u200c', '')   # Zero-Width Non-Joiner
+    text = text.replace('\u200d', '')   # Zero-Width Joiner
+    text = text.replace('\u2028', '\n') # Line Separator
+    text = text.replace('\u2029', '\n') # Paragraph Separator
+    text = text.replace('\r\n', '\n')
+    text = text.replace('\r', '\n')
+    # Replace curly quotes that can break JSON templates in prompts
+    text = text.replace('\u201c', '"')  # Left double quote
+    text = text.replace('\u201d', '"')  # Right double quote
+    text = text.replace('\u2018', "'")  # Left single quote
+    text = text.replace('\u2019', "'")  # Right single quote
+    text = text.replace('\u2014', '-')  # Em dash
+    text = text.replace('\u2013', '-')  # En dash
+    return text
 
 
 def _parse_json_response(text):

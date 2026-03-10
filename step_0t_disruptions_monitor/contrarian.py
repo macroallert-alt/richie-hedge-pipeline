@@ -20,10 +20,11 @@ import requests
 import json
 
 EODHD_API_KEY = os.environ.get('EODHD_API_KEY', '')
+FMP_API_KEY = os.environ.get('FMP_API_KEY', '')
 BRAVE_API_KEY = os.environ.get('BRAVE_API_KEY', '')
 ANTHROPIC_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
 LLM_MODEL = 'claude-sonnet-4-6'
-EODHD_DELAY_S = 0.5
+FMP_DELAY_S = 0.3
 BRAVE_DELAY_S = 1.0
 
 
@@ -215,10 +216,19 @@ def _check_hated_signals(etf_ticker, outflow_threshold, short_threshold, pe_thre
         'pe_vs_5y_avg': {'triggered': False, 'value': None},
     }
 
-    # --- ETF Performance als Outflow-Proxy ---
-    if EODHD_API_KEY:
+    # --- ETF Performance als Outflow-Proxy (FMP) ---
+    if FMP_API_KEY:
         try:
-            change_3m = _get_price_change_pct(etf_ticker, days=90)
+            change_3m = _get_price_change_pct_fmp(etf_ticker, days=90)
+            if change_3m is not None:
+                signals['etf_outflow_3m']['value'] = change_3m
+                if change_3m < outflow_threshold:
+                    signals['etf_outflow_3m']['triggered'] = True
+        except Exception as e:
+            print(f"      [WARN] FMP {etf_ticker} 3M: {e}")
+    elif EODHD_API_KEY:
+        try:
+            change_3m = _get_price_change_pct_eodhd(etf_ticker, days=90)
             if change_3m is not None:
                 signals['etf_outflow_3m']['value'] = change_3m
                 if change_3m < outflow_threshold:
@@ -236,16 +246,25 @@ def _check_hated_signals(etf_ticker, outflow_threshold, short_threshold, pe_thre
         except Exception as e:
             print(f"      [WARN] Brave Sentiment {etf_ticker}: {e}")
 
-    # --- Short Interest (vereinfacht: aus EODHD Fundamentals) ---
-    if EODHD_API_KEY:
+    # --- Short Interest (FMP primary, EODHD fallback) ---
+    if FMP_API_KEY:
         try:
-            short_pct = _get_short_interest(etf_ticker)
+            short_pct = _get_short_interest_fmp(etf_ticker)
             if short_pct is not None:
                 signals['short_interest']['value'] = short_pct
                 if short_pct > short_threshold:
                     signals['short_interest']['triggered'] = True
-        except Exception as e:
+        except Exception:
             pass  # Short Interest oft nicht verfuegbar fuer ETFs
+    elif EODHD_API_KEY:
+        try:
+            short_pct = _get_short_interest_eodhd(etf_ticker)
+            if short_pct is not None:
+                signals['short_interest']['value'] = short_pct
+                if short_pct > short_threshold:
+                    signals['short_interest']['triggered'] = True
+        except Exception:
+            pass
 
     # --- P/E vs 5Y Average (vereinfacht) ---
     # Fuer ETFs schwer zu berechnen — ueberspringe in V1, nutze Performance als Proxy
@@ -254,33 +273,36 @@ def _check_hated_signals(etf_ticker, outflow_threshold, short_threshold, pe_thre
     return signals
 
 
-def _get_price_change_pct(ticker, days=90):
-    """Hole Kursaenderung ueber N Tage via EODHD."""
+def _get_price_change_pct_fmp(ticker, days=90):
+    """Hole Kursaenderung ueber N Tage via FMP."""
     from datetime import datetime, timedelta
 
-    url = f'https://eodhd.com/api/eod/{ticker}.US'
     from_date = (datetime.now() - timedelta(days=days + 7)).strftime('%Y-%m-%d')
+    to_date = datetime.now().strftime('%Y-%m-%d')
+
+    url = f'https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}'
     params = {
-        'api_token': EODHD_API_KEY,
-        'fmt': 'json',
-        'period': 'd',
-        'order': 'd',
+        'apikey': FMP_API_KEY,
         'from': from_date,
+        'to': to_date,
     }
 
     resp = requests.get(url, params=params, timeout=15)
     resp.raise_for_status()
     data = resp.json()
 
-    if not data or len(data) < 2:
+    historical = data.get('historical', [])
+    if not historical or len(historical) < 2:
         return None
 
-    latest = float(data[0].get('adjusted_close', data[0].get('close', 0)))
-    oldest = float(data[-1].get('adjusted_close', data[-1].get('close', 0)))
+    # FMP returns newest first
+    latest = float(historical[0].get('adjClose', historical[0].get('close', 0)))
+    oldest = float(historical[-1].get('adjClose', historical[-1].get('close', 0)))
 
     if oldest == 0:
         return None
 
+    time.sleep(FMP_DELAY_S)
     return round(((latest - oldest) / oldest) * 100, 2)
 
 
@@ -321,8 +343,63 @@ def _check_media_sentiment(etf_ticker):
     return round(max(0, min(100, sentiment)), 1)
 
 
-def _get_short_interest(ticker):
-    """Hole Short Interest via EODHD Fundamentals."""
+def _get_price_change_pct_eodhd(ticker, days=90):
+    """Hole Kursaenderung ueber N Tage via EODHD (Fallback)."""
+    from datetime import datetime, timedelta
+
+    url = f'https://eodhd.com/api/eod/{ticker}.US'
+    from_date = (datetime.now() - timedelta(days=days + 7)).strftime('%Y-%m-%d')
+    params = {
+        'api_token': EODHD_API_KEY,
+        'fmt': 'json',
+        'period': 'd',
+        'order': 'd',
+        'from': from_date,
+    }
+
+    resp = requests.get(url, params=params, timeout=15)
+    resp.raise_for_status()
+    data = resp.json()
+
+    if not data or len(data) < 2:
+        return None
+
+    latest = float(data[0].get('adjusted_close', data[0].get('close', 0)))
+    oldest = float(data[-1].get('adjusted_close', data[-1].get('close', 0)))
+
+    if oldest == 0:
+        return None
+
+    return round(((latest - oldest) / oldest) * 100, 2)
+
+
+def _get_short_interest_fmp(ticker):
+    """Hole Short Interest via FMP."""
+    url = f'https://financialmodelingprep.com/api/v4/institutional-holder/{ticker}'
+    params = {'apikey': FMP_API_KEY}
+
+    # Try key-metrics first for short percent
+    url2 = f'https://financialmodelingprep.com/api/v3/key-metrics/{ticker}'
+    params2 = {'apikey': FMP_API_KEY, 'limit': 1}
+
+    try:
+        resp = requests.get(url2, params=params2, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        if data and isinstance(data, list) and len(data) > 0:
+            short_pct = data[0].get('shortPercentFloat', None)
+            if short_pct is not None:
+                time.sleep(FMP_DELAY_S)
+                return float(short_pct) * 100  # FMP returns as decimal
+    except Exception:
+        pass
+
+    time.sleep(FMP_DELAY_S)
+    return None
+
+
+def _get_short_interest_eodhd(ticker):
+    """Hole Short Interest via EODHD Fundamentals (Fallback)."""
     url = f'https://eodhd.com/api/fundamentals/{ticker}.US'
     params = {
         'api_token': EODHD_API_KEY,
