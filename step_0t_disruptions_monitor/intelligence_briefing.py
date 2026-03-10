@@ -375,25 +375,37 @@ second_order_effects: Mindestens 2 Effects pro Zone. Alle Texte Deutsch."""
 # =====================================================================
 
 REGIME_RULES = {
-    'EXPANSION':        {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
-    'RISK_ON':          {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
-    'BROAD_RISK_ON':    {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
-    'SELECTIVE':        {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
-    'TRANSITION':       {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
-    'NEUTRAL':          {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
-    'CONFLICTED':       {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
-    'CONTRACTION':      {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
-    'RISK_OFF':         {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
-    'BROAD_RISK_OFF':   {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
-    'CRISIS':           {'sizing_multiplier': 0.0,  'min_conviction': 999, 'min_asymmetry': 999, 'trigger_strictness': 'BLOCKED'},
-    'RISK_OFF_FORCED':  {'sizing_multiplier': 0.0,  'min_conviction': 999, 'min_asymmetry': 999, 'trigger_strictness': 'BLOCKED'},
+    # --- Expansive (Sizing 1.0) ---
+    'FULL_EXPANSION':     {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
+    'STEADY_GROWTH':      {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
+    'REFLATION':          {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
+    'EARLY_RECOVERY':     {'sizing_multiplier': 1.0,  'min_conviction': 40, 'min_asymmetry': 1.5, 'trigger_strictness': 'NORMAL'},
+    # --- Selektiv (Sizing 0.75) ---
+    'FRAGILE_EXPANSION':  {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
+    'LATE_EXPANSION':     {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
+    'NEUTRAL':            {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
+    'SOFT_LANDING':       {'sizing_multiplier': 0.75, 'min_conviction': 50, 'min_asymmetry': 2.0, 'trigger_strictness': 'MODERATE'},
+    # --- Defensiv (Sizing 0.5) ---
+    'STRESS_ELEVATED':    {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
+    'CONTRACTION':        {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
+    'DEEP_CONTRACTION':   {'sizing_multiplier': 0.5,  'min_conviction': 70, 'min_asymmetry': 3.0, 'trigger_strictness': 'STRICT'},
+    # --- Krise (Sizing 0.0) ---
+    'FINANCIAL_CRISIS':   {'sizing_multiplier': 0.0,  'min_conviction': 999, 'min_asymmetry': 999, 'trigger_strictness': 'BLOCKED'},
 }
 
 REGIME_COLORS = {
-    'EXPANSION': '#22C55E', 'RISK_ON': '#22C55E', 'BROAD_RISK_ON': '#22C55E', 'SELECTIVE': '#22C55E',
-    'TRANSITION': '#EAB308', 'NEUTRAL': '#EAB308', 'CONFLICTED': '#EAB308',
-    'CONTRACTION': '#F97316', 'RISK_OFF': '#F97316', 'BROAD_RISK_OFF': '#F97316',
-    'CRISIS': '#EF4444', 'RISK_OFF_FORCED': '#EF4444',
+    'FULL_EXPANSION':    '#22C55E',
+    'STEADY_GROWTH':     '#22C55E',
+    'REFLATION':         '#22C55E',
+    'EARLY_RECOVERY':    '#22C55E',
+    'FRAGILE_EXPANSION': '#EAB308',
+    'LATE_EXPANSION':    '#EAB308',
+    'NEUTRAL':           '#EAB308',
+    'SOFT_LANDING':      '#EAB308',
+    'STRESS_ELEVATED':   '#F97316',
+    'CONTRACTION':       '#F97316',
+    'DEEP_CONTRACTION':  '#F97316',
+    'FINANCIAL_CRISIS':  '#EF4444',
 }
 
 
@@ -511,39 +523,80 @@ def _detect_crowding_alerts(trends):
     return alerts
 
 
+# Heatmap-Spalten in Zyklusreihenfolge:
+# EARLY_RECOVERY → REFLATION → FULL_EXPANSION → STEADY_GROWTH → FRAGILE_EXPANSION →
+# LATE_EXPANSION → STRESS_ELEVATED → CONTRACTION → DEEP_CONTRACTION → FINANCIAL_CRISIS →
+# SOFT_LANDING → NEUTRAL
+REGIME_HEATMAP_ORDER = [
+    'EARLY_RECOVERY', 'REFLATION', 'FULL_EXPANSION', 'STEADY_GROWTH',
+    'FRAGILE_EXPANSION', 'LATE_EXPANSION', 'STRESS_ELEVATED', 'CONTRACTION',
+    'DEEP_CONTRACTION', 'FINANCIAL_CRISIS', 'SOFT_LANDING', 'NEUTRAL',
+]
+
 REGIME_HEATMAP_SCORES = {
-    'D1':  {'name': 'AI',           'EXPANSION': 90, 'TRANSITION': 70, 'CONTRACTION': 40, 'CRISIS': 20},
-    'D2':  {'name': 'Robotics',     'EXPANSION': 80, 'TRANSITION': 55, 'CONTRACTION': 35, 'CRISIS': 15},
-    'D3':  {'name': 'Energy',       'EXPANSION': 65, 'TRANSITION': 60, 'CONTRACTION': 50, 'CRISIS': 70},
-    'D4':  {'name': 'Biotech',      'EXPANSION': 60, 'TRANSITION': 55, 'CONTRACTION': 50, 'CRISIS': 40},
-    'D5':  {'name': 'Space',        'EXPANSION': 70, 'TRANSITION': 65, 'CONTRACTION': 55, 'CRISIS': 60},
-    'D6':  {'name': 'Quantum',      'EXPANSION': 75, 'TRANSITION': 50, 'CONTRACTION': 30, 'CRISIS': 15},
-    'D7':  {'name': 'Fintech',      'EXPANSION': 85, 'TRANSITION': 60, 'CONTRACTION': 45, 'CRISIS': 20},
-    'D8':  {'name': 'Supply Chain', 'EXPANSION': 70, 'TRANSITION': 75, 'CONTRACTION': 60, 'CRISIS': 45},
-    'D9':  {'name': 'Climate',      'EXPANSION': 75, 'TRANSITION': 70, 'CONTRACTION': 40, 'CRISIS': 25},
-    'D10': {'name': 'Cyber',        'EXPANSION': 65, 'TRANSITION': 70, 'CONTRACTION': 75, 'CRISIS': 85},
-    'D11': {'name': 'Demographics', 'EXPANSION': 50, 'TRANSITION': 55, 'CONTRACTION': 55, 'CRISIS': 50},
-    'D12': {'name': 'Regulatory',   'EXPANSION': 40, 'TRANSITION': 55, 'CONTRACTION': 65, 'CRISIS': 80},
+    #                       ER   REFL  FULL  STDY  FRAG  LATE  STRS  CONT  DEEP  FNCR  SOFT  NEUT
+    'D1':  {'name': 'AI',
+            'EARLY_RECOVERY': 80, 'REFLATION': 85, 'FULL_EXPANSION': 90, 'STEADY_GROWTH': 85,
+            'FRAGILE_EXPANSION': 75, 'LATE_EXPANSION': 65, 'STRESS_ELEVATED': 50, 'CONTRACTION': 40,
+            'DEEP_CONTRACTION': 25, 'FINANCIAL_CRISIS': 20, 'SOFT_LANDING': 70, 'NEUTRAL': 65},
+    'D2':  {'name': 'Robotics',
+            'EARLY_RECOVERY': 70, 'REFLATION': 75, 'FULL_EXPANSION': 80, 'STEADY_GROWTH': 70,
+            'FRAGILE_EXPANSION': 55, 'LATE_EXPANSION': 50, 'STRESS_ELEVATED': 40, 'CONTRACTION': 35,
+            'DEEP_CONTRACTION': 20, 'FINANCIAL_CRISIS': 15, 'SOFT_LANDING': 55, 'NEUTRAL': 55},
+    'D3':  {'name': 'Energy',
+            'EARLY_RECOVERY': 60, 'REFLATION': 70, 'FULL_EXPANSION': 65, 'STEADY_GROWTH': 60,
+            'FRAGILE_EXPANSION': 55, 'LATE_EXPANSION': 60, 'STRESS_ELEVATED': 55, 'CONTRACTION': 50,
+            'DEEP_CONTRACTION': 55, 'FINANCIAL_CRISIS': 70, 'SOFT_LANDING': 55, 'NEUTRAL': 60},
+    'D4':  {'name': 'Biotech',
+            'EARLY_RECOVERY': 65, 'REFLATION': 60, 'FULL_EXPANSION': 60, 'STEADY_GROWTH': 55,
+            'FRAGILE_EXPANSION': 50, 'LATE_EXPANSION': 50, 'STRESS_ELEVATED': 45, 'CONTRACTION': 50,
+            'DEEP_CONTRACTION': 45, 'FINANCIAL_CRISIS': 40, 'SOFT_LANDING': 55, 'NEUTRAL': 55},
+    'D5':  {'name': 'Space',
+            'EARLY_RECOVERY': 65, 'REFLATION': 70, 'FULL_EXPANSION': 70, 'STEADY_GROWTH': 65,
+            'FRAGILE_EXPANSION': 60, 'LATE_EXPANSION': 60, 'STRESS_ELEVATED': 55, 'CONTRACTION': 55,
+            'DEEP_CONTRACTION': 50, 'FINANCIAL_CRISIS': 60, 'SOFT_LANDING': 60, 'NEUTRAL': 65},
+    'D6':  {'name': 'Quantum',
+            'EARLY_RECOVERY': 65, 'REFLATION': 70, 'FULL_EXPANSION': 75, 'STEADY_GROWTH': 65,
+            'FRAGILE_EXPANSION': 50, 'LATE_EXPANSION': 45, 'STRESS_ELEVATED': 35, 'CONTRACTION': 30,
+            'DEEP_CONTRACTION': 20, 'FINANCIAL_CRISIS': 15, 'SOFT_LANDING': 50, 'NEUTRAL': 50},
+    'D7':  {'name': 'Fintech',
+            'EARLY_RECOVERY': 75, 'REFLATION': 80, 'FULL_EXPANSION': 85, 'STEADY_GROWTH': 75,
+            'FRAGILE_EXPANSION': 60, 'LATE_EXPANSION': 55, 'STRESS_ELEVATED': 45, 'CONTRACTION': 45,
+            'DEEP_CONTRACTION': 25, 'FINANCIAL_CRISIS': 20, 'SOFT_LANDING': 60, 'NEUTRAL': 60},
+    'D8':  {'name': 'Supply Chain',
+            'EARLY_RECOVERY': 70, 'REFLATION': 75, 'FULL_EXPANSION': 70, 'STEADY_GROWTH': 75,
+            'FRAGILE_EXPANSION': 70, 'LATE_EXPANSION': 70, 'STRESS_ELEVATED': 60, 'CONTRACTION': 60,
+            'DEEP_CONTRACTION': 50, 'FINANCIAL_CRISIS': 45, 'SOFT_LANDING': 70, 'NEUTRAL': 75},
+    'D9':  {'name': 'Climate',
+            'EARLY_RECOVERY': 70, 'REFLATION': 75, 'FULL_EXPANSION': 75, 'STEADY_GROWTH': 70,
+            'FRAGILE_EXPANSION': 65, 'LATE_EXPANSION': 60, 'STRESS_ELEVATED': 40, 'CONTRACTION': 40,
+            'DEEP_CONTRACTION': 30, 'FINANCIAL_CRISIS': 25, 'SOFT_LANDING': 65, 'NEUTRAL': 70},
+    'D10': {'name': 'Cyber',
+            'EARLY_RECOVERY': 65, 'REFLATION': 65, 'FULL_EXPANSION': 65, 'STEADY_GROWTH': 70,
+            'FRAGILE_EXPANSION': 70, 'LATE_EXPANSION': 70, 'STRESS_ELEVATED': 75, 'CONTRACTION': 75,
+            'DEEP_CONTRACTION': 80, 'FINANCIAL_CRISIS': 85, 'SOFT_LANDING': 70, 'NEUTRAL': 70},
+    'D11': {'name': 'Demographics',
+            'EARLY_RECOVERY': 50, 'REFLATION': 50, 'FULL_EXPANSION': 50, 'STEADY_GROWTH': 55,
+            'FRAGILE_EXPANSION': 55, 'LATE_EXPANSION': 55, 'STRESS_ELEVATED': 50, 'CONTRACTION': 55,
+            'DEEP_CONTRACTION': 50, 'FINANCIAL_CRISIS': 50, 'SOFT_LANDING': 55, 'NEUTRAL': 55},
+    'D12': {'name': 'Regulatory',
+            'EARLY_RECOVERY': 45, 'REFLATION': 40, 'FULL_EXPANSION': 40, 'STEADY_GROWTH': 50,
+            'FRAGILE_EXPANSION': 55, 'LATE_EXPANSION': 60, 'STRESS_ELEVATED': 65, 'CONTRACTION': 65,
+            'DEEP_CONTRACTION': 70, 'FINANCIAL_CRISIS': 80, 'SOFT_LANDING': 55, 'NEUTRAL': 55},
 }
 
 
 def _build_regime_heatmap(trends, v16_regime):
-    regime_bucket_map = {
-        'EXPANSION': 'EXPANSION', 'RISK_ON': 'EXPANSION', 'BROAD_RISK_ON': 'EXPANSION', 'SELECTIVE': 'EXPANSION',
-        'TRANSITION': 'TRANSITION', 'NEUTRAL': 'TRANSITION', 'CONFLICTED': 'TRANSITION',
-        'CONTRACTION': 'CONTRACTION', 'RISK_OFF': 'CONTRACTION', 'BROAD_RISK_OFF': 'CONTRACTION',
-        'CRISIS': 'CRISIS', 'RISK_OFF_FORCED': 'CRISIS',
-    }
-    current_bucket = regime_bucket_map.get(v16_regime, 'TRANSITION')
+    current_regime = v16_regime if v16_regime in REGIME_HEATMAP_ORDER else 'NEUTRAL'
     matrix = {}
     for tid, data in REGIME_HEATMAP_SCORES.items():
         matrix[tid] = {
             'name': data['name'],
-            'scores': {r: data[r] for r in ['EXPANSION', 'TRANSITION', 'CONTRACTION', 'CRISIS']},
+            'scores': {r: data[r] for r in REGIME_HEATMAP_ORDER},
         }
     return {
-        'regimes': ['EXPANSION', 'TRANSITION', 'CONTRACTION', 'CRISIS'],
-        'current_regime': current_bucket,
+        'regimes': REGIME_HEATMAP_ORDER,
+        'current_regime': current_regime,
         'matrix': matrix,
     }
 
