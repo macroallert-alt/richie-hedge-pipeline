@@ -157,23 +157,46 @@ def parse_raw_market_indicators(raw_market_rows, raw_macro_rows):
     # We try multiple possible names for each indicator.
 
     mapping = {
-        "HY_OAS":       ["HY_OAS", "BAMLH0A0HYM2", "ICE_HY_OAS", "HY_SPREAD"],
-        "2Y10Y":        ["T10Y2Y", "2Y10Y", "YIELD_CURVE_2Y10Y"],
-        "3M10Y":        ["T10Y3M", "3M10Y", "YIELD_CURVE_3M10Y"],
-        "REAL_YIELD":   ["DFII10", "REAL_YIELD", "TIPS_10Y"],
-        "WALCL":        ["WALCL", "FED_BALANCE_SHEET"],
-        "RRP":          ["RRPONTSYD", "RRP", "REVERSE_REPO"],
-        "TGA":          ["WTREGEN", "TGA", "TREASURY_GENERAL"],
-        "VIX":          ["VIX", "CBOE_VIX"],
-        "VIX3M":        ["VIX3M", "CBOE_VIX3M"],
-        "MOVE":         ["MOVE", "MOVE_INDEX"],
-        "DXY":          ["DXY", "DOLLAR_INDEX", "DX-Y"],
-        "BREADTH":      ["BREADTH", "NYSE_AD", "AD_RATIO", "ADVANCE_DECLINE"],
-        "PUT_CALL":     ["PUT_CALL", "CBOE_PUT_CALL", "PC_RATIO"],
-        "CU_AU":        ["CU_AU", "COPPER_GOLD", "COPPER_GOLD_RATIO"],
-        "TED_SPREAD":   ["TEDRATE", "TED_SPREAD"],
-        "SPY_PRICE":    ["SPY", "SPY_CLOSE"],
-        "HYG_PRICE":    ["HYG", "HYG_CLOSE"],
+        # --- RAW_MARKET (L2/L4/L5/L7) ---
+        "HY_OAS":       ["HY_OAS_SPREAD"],
+        "VIX":          ["VIX_LEVEL"],
+        "VIX_TERM":     ["VIX_TERM_STRUCTURE"],   # L2 version (direct ratio)
+        "VIX_TERM_L5":  ["VIX_TERM_STRUCTURE"],   # L5 also has one — dedup via lookup
+        "MOVE":         ["MOVE_INDEX"],
+        "PUT_CALL":     ["PUT_CALL_RATIO"],
+        "BREADTH":      ["INSIDER_BUY_SELL"],      # Proxy — no direct A/D in sheet
+        "CNN_FG":       ["CNN_FEAR_GREED"],
+        "AAII_BULL":    ["AAII_BULL_PCTL"],
+        "AAII_BEAR":    ["AAII_BEAR_PCTL"],
+        "MARGIN_DEBT":  ["MARGIN_DEBT_YOY_CHG"],
+        # L4
+        "COT_SP500":    ["COT_SP500_COMM_NET"],
+        "COT_GOLD":     ["COT_GOLD_COMM_NET"],
+        "COT_TREASURY": ["COT_TREASURY_COMM_NET"],
+        "FUND_FLOWS":   ["FUND_FLOWS_EQUITY"],
+        "CRYPTO_FUND":  ["CRYPTO_FUNDING_RATE"],
+        "OPTIONS_GEX":  ["OPTIONS_GEX"],
+        # L5
+        "RESERVE_DRAIN":["RESERVE_DRAIN_RATE"],
+        "SOFR_FFR":     ["SOFR_FFR_SPREAD"],
+        "FIN_STRESS":   ["FIN_STRESS_INDEX"],
+        "RRP":          ["ON_RRP_USAGE"],
+        "SPY_CONC":     ["SPY_CONCENTRATION"],
+        "LIQUIDITY_AMI":["LIQUIDITY_AMIHUD"],
+        "PAIRWISE_CORR":["AVG_PAIRWISE_CORR"],
+        # L7
+        "BOND_EQ_CORR": ["BOND_EQUITY_CORR_60D"],
+        "GOLD_RET_20D": ["GOLD_RETURN_20D"],
+        "DXY_RET_20D":  ["DXY_RETURN_20D"],
+        "2Y10Y":        ["YIELD_CURVE_10Y2Y"],
+        "REAL_YIELD_TREND": ["REAL_YIELD_10Y_TREND"],
+        # --- RAW_MACRO (L6/L8) ---
+        "GPR":          ["GPR_INDEX"],
+        "OIL_VOL":      ["OIL_VOLATILITY_20D"],
+        "BALTIC_DRY":   ["BALTIC_DRY_INDEX"],
+        "EM_FX_STRESS": ["EM_FX_STRESS_BASKET"],
+        "HOWELL_CYCLE": ["HOWELL_CYCLE_POS"],
+        "OPEX_PROX":    ["OPEX_PROXIMITY"],
     }
 
     for our_key, possible_names in mapping.items():
@@ -183,35 +206,35 @@ def parse_raw_market_indicators(raw_market_rows, raw_macro_rows):
                 val = _safe_float(row.get("VALUE") or row.get("value"))
                 if val is not None:
                     indicators[our_key] = val
-                    # Also grab zscore if available (for warning triggers)
-                    zscore = _safe_float(row.get("ZSCORE_2Y") or row.get("zscore_2y"))
-                    if zscore is not None:
-                        indicators[f"{our_key}_ZSCORE_2Y"] = zscore
-                    # Grab delta_5d for velocity
-                    d5 = _safe_float(row.get("DELTA_5D") or row.get("delta_5d"))
-                    if d5 is not None:
-                        indicators[f"{our_key}_DELTA_5D"] = d5
+                    # Also grab prev_7d if available
+                    p7 = _safe_float(row.get("PREV_7D") or row.get("prev_7d"))
+                    if p7 is not None:
+                        indicators[f"{our_key}_PREV_7D"] = p7
                     break
 
     # --- Derived indicators ---
 
-    # VIX Term Structure ratio
-    vix = indicators.get("VIX")
-    vix3m = indicators.get("VIX3M")
-    if vix is not None and vix3m is not None and vix3m > 0:
-        indicators["VIX_TERM"] = round(vix / vix3m, 4)
+    # VIX Term Structure: already a direct ratio in the sheet (VIX_TERM_STRUCTURE)
+    # No need to compute VIX / VIX3M — it's already there as VIX_TERM
 
-    # Net Liquidity = WALCL - RRP - TGA
-    walcl = indicators.get("WALCL")
-    rrp = indicators.get("RRP")
-    tga = indicators.get("TGA")
-    if walcl is not None and rrp is not None and tga is not None:
-        indicators["NET_LIQ"] = walcl - rrp - tga
+    # Net Liquidity: RESERVE_DRAIN_RATE is a proxy ($B 4-week),
+    # ON_RRP_USAGE is the RRP level. Full Net Liq needs WALCL+TGA from FRED
+    # which aren't in the DW Sheet. Use RESERVE_DRAIN as proxy.
+    reserve_drain = indicators.get("RESERVE_DRAIN")
+    if reserve_drain is not None:
+        # RESERVE_DRAIN_RATE is in $B, positive = drain. Convert to rough NET_LIQ proxy.
+        # Higher drain = lower liquidity = worse
+        indicators["NET_LIQ"] = reserve_drain * 1e9  # Scale for normalization
 
-    # HY OAS z-score for 90d (use 2Y zscore as proxy if available)
-    hy_zscore = indicators.get("HY_OAS_ZSCORE_2Y")
-    if hy_zscore is not None:
-        indicators["HY_OAS_ZSCORE_90D"] = hy_zscore
+    # 2Y10Y: YIELD_CURVE_10Y2Y is in bps in the sheet, convert to pct for normalization
+    y2y10 = indicators.get("2Y10Y")
+    if y2y10 is not None:
+        indicators["2Y10Y"] = y2y10 / 100.0  # bps → pct
+
+    # CU_AU ratio: not directly in sheet. Could derive from GOLD_RETURN_20D
+    # and COPPER_SMA50_TREND but that's text. Skip for now — will be MISSING.
+
+    # HY OAS z-score: not in sheet, skip — warning trigger won't fire without it
 
     logger.info(f"Parsed {len(indicators)} indicator values from DW Sheet")
     return indicators
