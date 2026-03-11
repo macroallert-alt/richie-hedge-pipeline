@@ -1,6 +1,6 @@
 {
   "date": "2026-03-11",
-  "run_timestamp": "2026-03-11T05:58:37.193900Z",
+  "run_timestamp": "2026-03-11T06:29:27.339941Z",
   "execution_path": "FULL_PATH",
   "v16_trades": {
     "source": "V16_PRODUCTION",
@@ -149,8 +149,8 @@
         "source_system": "V16_PRODUCTION"
       }
     ],
-    "v16_regime": "FRAGILE_EXPANSION",
-    "v16_state": "FRAGILE_EXPANSION"
+    "v16_regime": "LATE_EXPANSION",
+    "v16_state": "LATE_EXPANSION"
   },
   "f6_trades": {
     "source": "F6_PRODUCTION",
@@ -178,11 +178,11 @@
         "individual": {
           "dxy_6m_momentum": 0.0,
           "vwo_spy_6m_relative": 0.3331,
-          "v16_regime_allowed": 0.0,
+          "v16_regime_allowed": 1.0,
           "bamlem_falling": 0.94
         },
         "all_conditions_met": false,
-        "closest_to_trigger": "bamlem_falling",
+        "closest_to_trigger": "v16_regime_allowed",
         "furthest_from_trigger": "dxy_6m_momentum",
         "dual_signal": {
           "fast_met": false,
@@ -631,6 +631,15 @@
           "china_stimulus": 0.0,
           "commodity_super": 1.0
         }
+      },
+      {
+        "date": "2026-03-11",
+        "state": "US_DOMESTIC",
+        "proximity": {
+          "em_broad": 0.0,
+          "china_stimulus": 0.0,
+          "commodity_super": 1.0
+        }
       }
     ]
   },
@@ -696,12 +705,12 @@
         "limiting_factor": "data_clarity"
       },
       "Tail Risk & Black Swan (L8)": {
-        "score": 2,
-        "regime": "CALM",
+        "score": 1,
+        "regime": "ELEVATED",
         "direction": "STABLE",
         "velocity": "STEADY",
-        "conviction": "LOW",
-        "limiting_factor": "regime_duration"
+        "conviction": "CONFLICTED",
+        "limiting_factor": "data_clarity"
       }
     },
     "g7_dominant_thesis": "UNAVAILABLE",
