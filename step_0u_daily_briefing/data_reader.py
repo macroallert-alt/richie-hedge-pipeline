@@ -150,6 +150,14 @@ def parse_raw_market_indicators(raw_market_rows, raw_macro_rows):
         if name:
             lookup[name] = row
 
+    # Debug: log what we found
+    if raw_market_rows:
+        logger.info(f"RAW_MARKET first row keys: {list(raw_market_rows[0].keys())}")
+        logger.info(f"RAW_MARKET first row: {raw_market_rows[0]}")
+    if raw_macro_rows:
+        logger.info(f"RAW_MACRO first row keys: {list(raw_macro_rows[0].keys())}")
+    logger.info(f"Lookup keys ({len(lookup)}): {list(lookup.keys())[:15]}...")
+
     indicators = {}
 
     # --- Map DW Sheet indicator names to our keys ---
