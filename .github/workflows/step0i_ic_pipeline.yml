@@ -1,4 +1,4 @@
-name: IC Pipeline ??? Intelligence Collector
+name: IC Pipeline — Intelligence Collector
 
 on:
   workflow_dispatch:
@@ -50,9 +50,12 @@ jobs:
         run: |
           git config user.name "IC Pipeline"
           git config user.email "ic@pipeline.local"
-          git add step_0i_ic_pipeline/data/history/beliefs.json
+          git add step_0i_ic_pipeline/data/history/belief_state.json
           git add step_0i_ic_pipeline/data/history/fetch_state.json
           git add step_0i_ic_pipeline/data/history/claims_archive.json
+          git add step_0i_ic_pipeline/data/history/threads.json
+          git add step_0i_ic_pipeline/data/history/pre_mortems.json
+          git add step_0i_ic_pipeline/data/history/source_history.json
           git add data/dashboard/latest.json
           git add archive/
           git diff --staged --quiet || git commit -m "IC: Update state + dashboard + archive $(date +%Y-%m-%d)"
