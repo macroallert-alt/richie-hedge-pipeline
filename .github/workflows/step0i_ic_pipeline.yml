@@ -50,6 +50,9 @@ jobs:
         run: |
           git config user.name "IC Pipeline"
           git config user.email "ic@pipeline.local"
+          git stash --include-untracked
+          git pull --rebase origin main
+          git stash pop || true
           git add step_0i_ic_pipeline/data/history/belief_state.json
           git add step_0i_ic_pipeline/data/history/fetch_state.json
           git add step_0i_ic_pipeline/data/history/claims_archive.json
@@ -59,7 +62,6 @@ jobs:
           git add data/dashboard/latest.json
           git add archive/
           git diff --staged --quiet || git commit -m "IC: Update state + dashboard + archive $(date +%Y-%m-%d)"
-          git pull --rebase
           git push
 
       - name: Trigger Step 1
