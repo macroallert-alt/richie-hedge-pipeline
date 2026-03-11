@@ -994,7 +994,7 @@ def main():
         # Spezielle Felder die V16 in anderen Bloecken updaten muss:
         # - layers.system_regime
         if 'layers' in existing and existing['layers']:
-            existing['layers']['system_regime'] = regime
+            existing['layers']['system_regime'] = v16_data["regime"]
         # - regime_context bleibt (wird von Steps gesetzt), V16 setzt nur Fallback
         if 'regime_context' not in existing or not existing.get('regime_context'):
             existing['regime_context'] = dashboard.get('regime_context', {})
