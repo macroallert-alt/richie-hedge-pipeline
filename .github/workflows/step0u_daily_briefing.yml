@@ -1,0 +1,55 @@
+name: "Step 0u — Daily Briefing"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  daily-briefing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic google-auth google-api-python-client requests
+
+      - name: Write GCP credentials
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > /tmp/gcp_sa.json
+
+      - name: Run Daily Briefing
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -m step_0u_daily_briefing.main \
+            --latest data/dashboard/latest.json \
+            --creds /tmp/gcp_sa.json
+
+      - name: Commit state files + newsletter + updated latest.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          DATUM=$(date +%Y-%m-%d)
+          git add step_0u_daily_briefing/data/history/
+          git add data/dashboard/latest.json
+          git diff --cached --quiet || git commit -m "Step 0u Daily Briefing: ${DATUM}"
+          git pull --rebase origin main
+          git push
+
+      - name: Cleanup credentials
+        if: always()
+        run: rm -f /tmp/gcp_sa.json
