@@ -71,13 +71,52 @@ def mark_run_complete():
 
 
 # ---------------------------------------------------------------------------
-# Telegram delivery (Spec §8)
+# Telegram delivery — Full Newsletter (Multi-Message)
 # ---------------------------------------------------------------------------
+
+def _send_single_telegram(token, chat_id, text):
+    """Send a single Telegram message. Returns True on success."""
+    try:
+        import requests as http_requests
+    except ImportError:
+        return False
+
+    # Telegram limit is 4096 chars — split if needed
+    chunks = []
+    while len(text) > 4096:
+        # Find last newline before 4096
+        split_at = text.rfind("\n", 0, 4096)
+        if split_at == -1:
+            split_at = 4096
+        chunks.append(text[:split_at])
+        text = text[split_at:].lstrip("\n")
+    chunks.append(text)
+
+    success = True
+    for chunk in chunks:
+        if not chunk.strip():
+            continue
+        try:
+            resp = http_requests.post(
+                f"https://api.telegram.org/bot{token}/sendMessage",
+                json={
+                    "chat_id": chat_id,
+                    "text": chunk,
+                    "disable_web_page_preview": True,
+                },
+                timeout=15,
+            )
+            resp.raise_for_status()
+        except Exception as e:
+            logger.error(f"Telegram chunk send failed: {e}")
+            success = False
+    return success
+
 
 def send_telegram_message(newsletter):
     """
-    Send compressed newsletter summary to Telegram.
-    Requires TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID env vars.
+    Send full newsletter to Telegram as multi-message sequence.
+    All actionable information included — no truncation.
     """
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     chat_id = os.environ.get("TELEGRAM_CHAT_ID")
@@ -85,85 +124,314 @@ def send_telegram_message(newsletter):
         logger.warning("TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not set — skipping Telegram")
         return False
 
-    try:
-        import requests as http_requests
-    except ImportError:
-        logger.error("requests not available — cannot send Telegram")
-        return False
+    d = newsletter.get("date", "")
+    fmt = newsletter.get("format", "DAILY")
 
-    # Build message (Spec §8.2)
+    def zone_emoji(zone):
+        return {"CALM": "🟢", "ELEVATED": "🟡", "STRESS": "🟠", "PANIC": "🔴"}.get(zone, "⚪")
+
+    def sev_emoji(sev):
+        return {"CRITICAL": "🔴", "WARNING": "🟠", "INFO": "🔵"}.get(sev, "⚪")
+
+    # ===================================================================
+    # MESSAGE 1: Header + One Thing + Composite + Regime + Warnings
+    # ===================================================================
     tact = newsletter.get("composite_scores", {}).get("tactical", {})
     pos = newsletter.get("composite_scores", {}).get("positional", {})
     struct = newsletter.get("composite_scores", {}).get("structural", {})
 
-    # Zone emoji
-    def zone_emoji(zone):
-        return {"CALM": "🟢", "ELEVATED": "🟡", "STRESS": "🟠", "PANIC": "🔴"}.get(zone, "⚪")
+    regime_ctx = newsletter.get("regime_context", {})
+    regime = regime_ctx.get("v16_regime", "?")
+    regime_days = regime_ctx.get("regime_duration_days", "?")
+    fragility = regime_ctx.get("fragility_state", "?")
 
-    one_thing = newsletter.get("one_thing", "")
-    regime = newsletter.get("regime_context", {}).get("v16_regime", "?")
-    fmt = newsletter.get("format", "DAILY")
-    d = newsletter.get("date", "")
+    coherence = newsletter.get("pipeline_coherence", {})
+    coherence_score = coherence.get("score", "?")
+    data_int = newsletter.get("data_integrity", {})
+    data_int_score = data_int.get("score", "?")
 
-    # Warnings
+    msg1 = f"""📊 BALDUR CREEK CAPITAL — {d} ({fmt})
+
+💡 {newsletter.get('one_thing', '')}
+
+━━━ COMPOSITE SCORES ━━━
+{zone_emoji(tact.get('zone'))} TACTICAL:    {tact.get('score', '?')} {tact.get('zone', '?')}
+   Velocity: {tact.get('velocity', 0):+.1f}/d | Acceleration: {tact.get('acceleration', 0):+.1f}
+{zone_emoji(pos.get('zone'))} POSITIONAL:  {pos.get('score', '?')} {pos.get('zone', '?')}
+   Velocity: {pos.get('velocity', 0):+.1f}/d | Acceleration: {pos.get('acceleration', 0):+.1f}
+{zone_emoji(struct.get('zone'))} STRUCTURAL:  {struct.get('score', '?')} {struct.get('zone', '?')}
+   Velocity: {struct.get('velocity', 0):+.1f}/d | Acceleration: {struct.get('acceleration', 0):+.1f}
+
+━━━ REGIME & SYSTEM ━━━
+Regime: {regime} (seit {regime_days}d)
+Fragility: {fragility}
+Pipeline Coherence: {coherence_score}%
+Data Integrity: {data_int_score}%
+Anchor Type: {newsletter.get('anchor_type', '?')}"""
+
+    # Regime Interpretation (LLM)
+    regime_interp = newsletter.get("regime_interpretation", "")
+    if regime_interp:
+        msg1 += f"\n\n📝 {regime_interp}"
+
+    # Warning triggers
     warnings = newsletter.get("warning_triggers", [])
-    warn_str = ""
     if warnings:
-        warn_str = "\n⚠ WARNINGS:\n" + "\n".join(
-            f"  {w['description']}" for w in warnings[:3]
-        )
+        msg1 += "\n\n⚠️ WARNING TRIGGERS:"
+        for w in warnings:
+            msg1 += f"\n  {w.get('id', '?')}: {w.get('description', '')} ({w.get('penalty', 0):+d})"
+    else:
+        msg1 += "\n\n✅ Keine Warning Triggers aktiv"
 
-    # Risk
-    risk_critical = len([a for a in newsletter.get("breaking_news", []) if a.get("impact") == "HIGH"])
+    # Pipeline divergences
+    divs = coherence.get("divergences", [])
+    if divs:
+        msg1 += "\n\n⚡ DIVERGENZEN:"
+        for dv in divs:
+            msg1 += f"\n  {dv.get('type', '')}: {dv.get('detail', '')}"
 
-    msg = f"""📊 BALDUR CREEK CAPITAL — {d}
+    _send_single_telegram(token, chat_id, msg1)
 
-💡 {one_thing}
+    # ===================================================================
+    # MESSAGE 2: Against You + If Wrong + Risk Alerts
+    # ===================================================================
+    msg2 = "━━━ WAS GEGEN DICH LÄUFT ━━━"
 
-COMPOSITE:
-  {zone_emoji(tact.get('zone'))} TACTICAL:   {tact.get('score', '?')} {tact.get('zone', '?')} (vel {tact.get('velocity', 0):+.0f})
-  {zone_emoji(pos.get('zone'))} POSITIONAL: {pos.get('score', '?')} {pos.get('zone', '?')} (vel {pos.get('velocity', 0):+.0f})
-  {zone_emoji(struct.get('zone'))} STRUCTURAL: {struct.get('score', '?')} {struct.get('zone', '?')} (vel {struct.get('velocity', 0):+.0f})
+    against = newsletter.get("against_you", {})
+    positions = against.get("positions", [])
+    if positions:
+        for p in positions:
+            asset = p.get("asset", "?")
+            risk = p.get("top_risk", "")
+            prob = p.get("probability_pct", "?")
+            mech = p.get("mechanism", "")
+            msg2 += f"\n\n🎯 {asset}:"
+            msg2 += f"\n  Risiko: {risk}"
+            msg2 += f"\n  Mechanismus: {mech}"
+            msg2 += f"\n  Wahrscheinlichkeit: {prob}%"
+    else:
+        msg2 += "\n  Keine spezifischen Risiken identifiziert"
 
-REGIME: {regime} ({newsletter.get('regime_context', {}).get('regime_duration_days', '?')}d)
-PIPELINE COHERENCE: {newsletter.get('pipeline_coherence', {}).get('score', '?')}%
-{warn_str}"""
+    if_wrong = against.get("if_wrong_summary", "")
+    if if_wrong:
+        msg2 += f"\n\n💀 IF WRONG: {if_wrong}"
 
-    # Breaking news
-    breaking = newsletter.get("breaking_news", [])
-    if breaking:
-        msg += "\n\n📰 BREAKING:\n"
-        for b in breaking[:3]:
-            msg += f"  [{b.get('impact', '')}] {b.get('title', '')[:60]}\n"
+    # Risk alerts from pipeline
+    risk_heatmap = newsletter.get("risk_heatmap", {})
+    hm_positions = risk_heatmap.get("positions", [])
+    hm_factors = risk_heatmap.get("risk_factors", [])
+    hm_matrix = risk_heatmap.get("matrix", [])
+    if hm_positions and hm_factors and hm_matrix:
+        msg2 += "\n\n━━━ RISK HEATMAP ━━━"
+        for i, pos_name in enumerate(hm_positions):
+            if i < len(hm_matrix):
+                row_str = " | ".join(
+                    f"{hm_factors[j]}: {hm_matrix[i][j]}"
+                    for j in range(min(len(hm_factors), len(hm_matrix[i])))
+                )
+                msg2 += f"\n{pos_name}: {row_str}"
 
-    # Scenarios
+    _send_single_telegram(token, chat_id, msg2)
+
+    # ===================================================================
+    # MESSAGE 3: Szenarien (komplett)
+    # ===================================================================
     scenarios = newsletter.get("scenarios", [])
     if scenarios:
-        msg += "\n📊 SZENARIEN:\n"
-        for s in scenarios[:3]:
-            msg += f"  {s.get('id', '?')} ({s.get('probability_pct', '?')}%): {s.get('description', '')[:50]}\n"
+        msg3 = "━━━ SZENARIEN ━━━"
+        for s in scenarios:
+            sid = s.get("id", "?")
+            prob = s.get("probability_pct", "?")
+            desc = s.get("description", "")
+            impact = s.get("portfolio_impact", "")
+            comp_impact = s.get("composite_impact", "")
+            action = s.get("action", "")
+            msg3 += f"\n\n📊 Szenario {sid} ({prob}%):"
+            msg3 += f"\n  {desc}"
+            if impact:
+                msg3 += f"\n  Portfolio: {impact}"
+            if comp_impact:
+                msg3 += f"\n  Composite: {comp_impact}"
+            if action:
+                msg3 += f"\n  Action: {action}"
+        _send_single_telegram(token, chat_id, msg3)
 
-    # Trim to Telegram limit
-    if len(msg) > 4096:
-        msg = msg[:4090] + "\n..."
+    # ===================================================================
+    # MESSAGE 4: Breaking News (alle HIGH + MEDIUM)
+    # ===================================================================
+    breaking = newsletter.get("breaking_news", [])
+    if breaking:
+        msg4 = "━━━ BREAKING NEWS ━━━"
+        for b in breaking:
+            impact = b.get("impact", "?")
+            title = b.get("title", "")
+            cat = b.get("category", "")
+            source = b.get("source", "")
+            transmission = b.get("portfolio_transmission", {})
 
-    try:
-        resp = http_requests.post(
-            f"https://api.telegram.org/bot{token}/sendMessage",
-            json={
-                "chat_id": chat_id,
-                "text": msg,
-                "parse_mode": "HTML",
-                "disable_web_page_preview": True,
-            },
-            timeout=15,
-        )
-        resp.raise_for_status()
-        logger.info("Telegram message sent successfully")
-        return True
-    except Exception as e:
-        logger.error(f"Telegram send failed: {e}")
-        return False
+            emoji = "🔴" if impact == "HIGH" else "🟠" if impact == "MEDIUM" else "🔵"
+            msg4 += f"\n\n{emoji} [{impact}] {title}"
+            msg4 += f"\n  Kategorie: {cat}"
+            if source:
+                msg4 += f" | Quelle: {source}"
+
+            # Portfolio transmission
+            if transmission:
+                assets = transmission.get("affected_assets", [])
+                if isinstance(assets, list):
+                    for a in assets[:3]:
+                        if isinstance(a, dict):
+                            msg4 += f"\n  → {a.get('asset', '?')}: {a.get('direction', '?')} ({a.get('mechanism', '')})"
+                elif isinstance(transmission, dict):
+                    for key in ["direction", "mechanism", "exposure_pct"]:
+                        val = transmission.get(key)
+                        if val:
+                            msg4 += f"\n  {key}: {val}"
+
+        news_summary = newsletter.get("breaking_news_summary", "")
+        if news_summary:
+            msg4 += f"\n\n📋 Zusammenfassung: {news_summary}"
+
+        _send_single_telegram(token, chat_id, msg4)
+
+    # ===================================================================
+    # MESSAGE 5: Indikatoren (Core + Regime-Sensitiv)
+    # ===================================================================
+    indicators = newsletter.get("indicators", {})
+    core = indicators.get("core", [])
+    regime_sens = indicators.get("regime_sensitive", [])
+
+    if core or regime_sens:
+        msg5 = "━━━ INDIKATOREN ━━━"
+
+        if core:
+            msg5 += "\n\nCORE:"
+            for ind in core:
+                name = ind.get("name", "?")
+                val = ind.get("value")
+                norm = ind.get("normalized")
+                weight = ind.get("weight", 0)
+                status = ind.get("status", "?")
+                alert_flag = "⚠️" if ind.get("alert") else "✅"
+                val_str = f"{val}" if val is not None else "N/A"
+                norm_str = f"{norm:.0f}/100" if norm is not None else "N/A"
+                msg5 += f"\n  {alert_flag} {name}: {val_str} (Score: {norm_str}, Gewicht: {weight:.0%}, {status})"
+
+        if regime_sens:
+            msg5 += "\n\nREGIME-SENSITIV ({regime}):"
+            for ind in regime_sens:
+                name = ind.get("name", "?")
+                val = ind.get("value")
+                norm = ind.get("normalized")
+                weight = ind.get("weight", 0)
+                status = ind.get("status", "?")
+                alert_flag = "⚠️" if ind.get("alert") else "✅"
+                val_str = f"{val}" if val is not None else "N/A"
+                norm_str = f"{norm:.0f}/100" if norm is not None else "N/A"
+                msg5 += f"\n  {alert_flag} {name}: {val_str} (Score: {norm_str}, Gewicht: {weight:.0%}, {status})"
+
+        watchlist = indicators.get("watchlist_triggered", [])
+        if watchlist:
+            msg5 += "\n\n🚨 WATCHLIST TRIGGERED:"
+            for w in watchlist:
+                msg5 += f"\n  {w}"
+
+        _send_single_telegram(token, chat_id, msg5)
+
+    # ===================================================================
+    # MESSAGE 6: Intelligence Digest + Catalysts + Epistemic
+    # ===================================================================
+    intel = newsletter.get("intelligence_digest", {})
+    msg6 = "━━━ INTELLIGENCE DIGEST ━━━"
+    msg6 += f"\nIC Konsens: {intel.get('ic_net_direction', '?')} (Score: {intel.get('ic_net_score', 0)})"
+    msg6 += f"\nAktive Threads: {intel.get('active_threads', 0)} | Bedrohlich: {intel.get('threatening_threads', 0)}"
+    msg6 += f"\nPre-Mortems HIGH: {intel.get('pre_mortem_high_count', 0)}"
+    msg6 += f"\nCadence-Anomalien: {intel.get('cadence_anomalies', 0)}"
+    msg6 += f"\nExperten-Dissens: {intel.get('expert_disagreements', 0)}"
+
+    # Catalysts
+    catalysts = newsletter.get("catalysts_48h", [])
+    if catalysts:
+        msg6 += "\n\n━━━ CATALYSTS 48h ━━━"
+        for c in catalysts:
+            c_date = c.get("date", "")
+            event = c.get("event", "")
+            impact = c.get("impact", "")
+            hours = c.get("hours_until", "")
+            msg6 += f"\n  [{impact}] {c_date} — {event}"
+            if hours:
+                msg6 += f" (in {hours}h)"
+    else:
+        msg6 += "\n\nKeine HIGH-Impact Catalysts in den nächsten 48h"
+
+    # Epistemic
+    epist = newsletter.get("epistemic_status", {})
+    msg6 += f"\n\n━━━ EPISTEMIC STATUS ━━━"
+    msg6 += f"\nData Quality: {epist.get('data_quality', '?')}"
+    msg6 += f"\nSystem Conviction: {epist.get('system_conviction', '?')}"
+
+    blind_spots = epist.get("blind_spots", [])
+    if blind_spots:
+        msg6 += "\nBlind Spots:"
+        for bs in blind_spots:
+            msg6 += f"\n  • {bs}"
+
+    stale = epist.get("stale_sources", [])
+    if stale:
+        msg6 += "\nStale Sources:"
+        for s in stale:
+            msg6 += f"\n  • {s.get('name', '?')} ({s.get('type', '')})"
+
+    _send_single_telegram(token, chat_id, msg6)
+
+    # ===================================================================
+    # MESSAGE 7: Portfolio + Behavioral Safeguards
+    # ===================================================================
+    portfolio = newsletter.get("portfolio_attribution", {})
+    msg7 = "━━━ PORTFOLIO ━━━"
+
+    total_pnl = portfolio.get("total_pnl_pct")
+    if total_pnl is not None:
+        msg7 += f"\nTages-P&L: {total_pnl:+.2f}%"
+
+    positions = portfolio.get("positions", [])
+    if positions:
+        for p in positions:
+            asset = p.get("asset", "?")
+            weight = p.get("weight_pct", 0)
+            pnl = p.get("pnl_pct")
+            held = p.get("held_days")
+            pnl_str = f" | P&L: {pnl:+.2f}%" if pnl is not None else ""
+            held_str = f" | {held}d" if held is not None else ""
+            msg7 += f"\n  {asset}: {weight}%{pnl_str}{held_str}"
+
+    # Behavioral
+    behavioral = newsletter.get("behavioral", {})
+    anchoring = behavioral.get("anchoring_alerts", [])
+    inaction = behavioral.get("inaction_tracker", {})
+    sys_action = behavioral.get("system_action", "?")
+
+    msg7 += f"\n\n━━━ BEHAVIORAL SAFEGUARDS ━━━"
+    msg7 += f"\nSystem Action: {sys_action}"
+    msg7 += f"\nInaction Status: {inaction.get('status', '?')}"
+
+    if anchoring:
+        msg7 += "\n\n🧠 ANCHORING CHECK:"
+        for a in anchoring:
+            msg7 += f"\n  {a.get('asset', '?')} ({a.get('weight_pct', 0)}%): {a.get('question', '')}"
+
+    # Contrarian (Fridays)
+    contrarian = newsletter.get("contrarian_check")
+    if contrarian:
+        msg7 += f"\n\n🔄 CONTRARIAN CHECK:\n  {contrarian}"
+
+    msg7 += f"\n\n━━━━━━━━━━━━━━━━━━━━━"
+    msg7 += f"\n🏁 Baldur Creek Capital — {newsletter.get('anchor_type', '?')} — {d}"
+
+    _send_single_telegram(token, chat_id, msg7)
+
+    logger.info("Telegram full newsletter sent (7 messages)")
+    return True
 
 
 def send_telegram_error():
