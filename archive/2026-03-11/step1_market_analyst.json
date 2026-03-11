@@ -1,6 +1,6 @@
 {
   "date": "2026-03-11",
-  "run_timestamp": "2026-03-11T05:58:11.480209",
+  "run_timestamp": "2026-03-11T06:29:07.873824",
   "v16_state": {
     "v16_state": "Risk-On",
     "v16_confluence": 0.0
@@ -18,7 +18,7 @@
     "triggers_active": [],
     "indicators": {
       "hhi": null,
-      "breadth_pct": 77.2,
+      "breadth_pct": 72.9,
       "spy_rsp_6m_delta": null,
       "ai_capex_revenue_gap": null
     }
@@ -85,7 +85,7 @@
         "anomaly_fields": [],
         "data_clarity": 0.5
       },
-      "key_driver": "Net Liquidity flat near 50.0th pctl \u2014 no clear direction",
+      "key_driver": "Net Liquidity flat near 50.0th pctl \u2014 no clear direction \u2014 driven by RRP drain (RRP at 50.0th pctl, -0.054B in 5d)",
       "tension": null,
       "catalyst_exposure": [],
       "ic_status": {
@@ -153,7 +153,7 @@
         "anomaly_fields": [],
         "data_clarity": 0.0
       },
-      "key_driver": "Yield curve steepening: 2Y10Y at 0.56bps (FLAT 0.0bps/5d)",
+      "key_driver": "Yield curve steepening: 2Y10Y at 0.58bps (UP 0.02bps/5d)",
       "tension": "Spread 2Y10Y (bullish, score 4) BUT Nfci (bearish, score -10)",
       "catalyst_exposure": [
         {
@@ -235,7 +235,7 @@
         "anomaly_fields": [],
         "data_clarity": 1.0
       },
-      "key_driver": "Market breadth strong: 77.2% above 200d MA",
+      "key_driver": "Market breadth strong: 72.9% above 200d MA",
       "tension": null,
       "catalyst_exposure": [],
       "ic_status": {
@@ -245,7 +245,7 @@
         "weight_used": "CONTEXTUAL"
       },
       "sub_scores": {
-        "pct_above_200dma": 9,
+        "pct_above_200dma": 8,
         "nh_nl": 0,
         "spy_tlt_corr": 5,
         "ic_EQUITY_VALUATION": 0,
@@ -262,8 +262,8 @@
       "velocity": "STEADY",
       "acceleration": "FLAT",
       "conviction": {
-        "data_clarity": 0.5,
-        "narrative_alignment": 0.9,
+        "data_clarity": 1.0,
+        "narrative_alignment": 0.5,
         "catalyst_fragility": 1.0,
         "regime_duration": 0.2,
         "composite": "LOW",
@@ -301,13 +301,13 @@
         "suppression_checks": [],
         "stale_fields": [],
         "anomaly_fields": [],
-        "data_clarity": 0.5
+        "data_clarity": 1.0
       },
       "key_driver": "DXY flat at 50.0th pctl \u2014 no clear FX pressure",
       "tension": null,
       "catalyst_exposure": [],
       "ic_status": {
-        "confirmation": "CONFIRMING",
+        "confirmation": "NO_DATA",
         "dissent": false,
         "thesis_shift": null,
         "weight_used": "CONTEXTUAL"
@@ -316,12 +316,12 @@
         "dxy": 0,
         "usdjpy": 0,
         "usdcnh": 0,
-        "china_10y": 0,
+        "china_10y": -3,
         "ic_CHINA_EM": 0,
         "ic_DOLLAR": 0,
         "ic_GEOPOLITICS": 0
       },
-      "data_clarity": 0.5
+      "data_clarity": 1.0
     },
     "Risk Appetite & Sentiment (L5)": {
       "layer_id": "L5",
@@ -543,21 +543,21 @@
     "Tail Risk & Black Swan (L8)": {
       "layer_id": "L8",
       "layer_name": "Tail Risk & Black Swan (L8)",
-      "score": 2,
-      "regime": "CALM",
+      "score": 1,
+      "regime": "ELEVATED",
       "direction": "STABLE",
       "velocity": "STEADY",
       "acceleration": "FLAT",
       "conviction": {
-        "data_clarity": 1.0,
-        "narrative_alignment": 0.5,
+        "data_clarity": 0.0,
+        "narrative_alignment": 0.4,
         "catalyst_fragility": 1.0,
         "regime_duration": 0.2,
-        "composite": "LOW",
+        "composite": "CONFLICTED",
         "limiting_factor": {
-          "factor": "regime_duration",
-          "value": 0.2,
-          "label": "Regime too young or unstable"
+          "factor": "data_clarity",
+          "value": 0.0,
+          "label": "Sub-scores conflicting \u2014 data sends mixed signals"
         }
       },
       "surprise": {
@@ -565,11 +565,11 @@
         "category": "NORMAL"
       },
       "transition_proximity": {
-        "proximity": 1.0,
-        "target_regime": "ELEVATED",
-        "target_direction": "DOWN",
+        "proximity": 0.6,
+        "target_regime": "CALM",
+        "target_direction": "UP",
         "estimated_days": null,
-        "distance_to_boundary": 0
+        "distance_to_boundary": 1
       },
       "regime_history": {
         "current_regime": "CALM",
@@ -581,27 +581,27 @@
           "CALM"
         ]
       },
-      "signal_phase": "NO_SIGNAL",
+      "signal_phase": "EARLY_SIGNAL",
       "signal_quality": {
         "status": "CONFIRMED",
         "reason": null,
         "suppression_checks": [],
         "stale_fields": [],
         "anomaly_fields": [],
-        "data_clarity": 1.0
+        "data_clarity": 0.0
       },
-      "key_driver": "VIX at 50.0th pctl, term structure in contango (1.0063) \u2014 tail risk low",
+      "key_driver": "VIX at 50.0th pctl, term structure in contango (0.9773) \u2014 tail risk low",
       "tension": null,
       "catalyst_exposure": [],
       "ic_status": {
         "confirmation": "NO_DATA",
         "dissent": false,
         "thesis_shift": null,
-        "weight_used": "CONTEXTUAL"
+        "weight_used": "PRIMARY"
       },
       "sub_scores": {
         "vix": 0,
-        "vix_term_struct": 0,
+        "vix_term_struct": -1,
         "iv_rv_spread": 10,
         "pc_ratio_equity": 0,
         "hy_oas": 0,
@@ -609,7 +609,7 @@
         "usdjpy": 0,
         "ic_GEOPOLITICS": 0
       },
-      "data_clarity": 1.0
+      "data_clarity": 0.0
     }
   },
   "layer_summary": {
@@ -670,12 +670,12 @@
       "limiting_factor": "data_clarity"
     },
     "Tail Risk & Black Swan (L8)": {
-      "score": 2,
-      "regime": "CALM",
+      "score": 1,
+      "regime": "ELEVATED",
       "direction": "STABLE",
       "velocity": "STEADY",
-      "conviction": "LOW",
-      "limiting_factor": "regime_duration"
+      "conviction": "CONFLICTED",
+      "limiting_factor": "data_clarity"
     }
   }
 }
