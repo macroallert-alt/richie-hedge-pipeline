@@ -430,10 +430,11 @@ def upload_to_drive(newsletter_path):
 
 
 # ---------------------------------------------------------------------------
-# Update latest.json
+# Update latest.json — FULL newsletter data for Dashboard Briefing Circle
 # ---------------------------------------------------------------------------
 
 def update_latest_json(newsletter, latest_json_path):
+    """Write the full newsletter dict into latest.json for the Briefing Circle."""
     if not os.path.exists(latest_json_path):
         logger.warning(f"latest.json not found — skipping update")
         return
@@ -441,31 +442,15 @@ def update_latest_json(newsletter, latest_json_path):
         with open(latest_json_path, "r", encoding="utf-8") as f:
             latest = json.load(f)
 
-        tact = newsletter.get("composite_scores", {}).get("tactical", {})
-        pos = newsletter.get("composite_scores", {}).get("positional", {})
-        struct = newsletter.get("composite_scores", {}).get("structural", {})
-
-        latest["newsletter"] = {
-            "date": newsletter.get("date"),
-            "format": newsletter.get("format"),
-            "generated_at": newsletter.get("generated_at"),
-            "one_thing": newsletter.get("one_thing", ""),
-            "composite_scores": {
-                "tactical": {"score": tact.get("score"), "zone": tact.get("zone"), "velocity": tact.get("velocity")},
-                "positional": {"score": pos.get("score"), "zone": pos.get("zone"), "velocity": pos.get("velocity")},
-                "structural": {"score": struct.get("score"), "zone": struct.get("zone"), "velocity": struct.get("velocity")},
-            },
-            "data_integrity": newsletter.get("data_integrity", {}).get("score"),
-            "pipeline_coherence": newsletter.get("pipeline_coherence", {}).get("score"),
-            "anchor_type": newsletter.get("anchor_type"),
-            "warning_count": len(newsletter.get("warning_triggers", [])),
-            "breaking_news_count": len(newsletter.get("breaking_news", [])),
-            "scenarios_count": len(newsletter.get("scenarios", [])),
-        }
+        # Write the full newsletter — BriefingDetail.jsx reads all these fields.
+        # Only strip the hash (not needed in dashboard) to keep it clean.
+        nl = dict(newsletter)
+        nl.pop("hash", None)
+        latest["newsletter"] = nl
 
         with open(latest_json_path, "w", encoding="utf-8") as f:
             json.dump(latest, f, indent=2, ensure_ascii=False, default=str)
-        logger.info("latest.json updated with newsletter block")
+        logger.info("latest.json updated with FULL newsletter block")
     except Exception as e:
         logger.error(f"Failed to update latest.json: {e}")
 
