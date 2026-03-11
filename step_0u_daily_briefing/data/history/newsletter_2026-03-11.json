@@ -1,10 +1,10 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "date": "2026-03-11",
   "weekday": "Wednesday",
   "format": "DAILY",
-  "generated_at": "2026-03-11T12:05:57.207751+00:00",
-  "one_thing": "US-Militaerschlaege auf Iran eskalieren in ein Oekonomieschock-Szenario — dein Buch traegt 28,8% HYG und 20,3% DBC bei gleichzeitig degradierten Daten und LATE_EXPANSION-Regime, das seit einem Tag existiert.",
+  "generated_at": "2026-03-11T12:26:59.282254+00:00",
+  "one_thing": "US-Iran-Eskalation trifft ein Portfolio, das 28,8% in HYG und 20,3% in DBC hält — Ölpreisschock und Credit-Spread-Ausweitung sind heute die dominanten Risiken für dein Buch.",
   "composite_scores": {
     "tactical": {
       "score": 65.2,
@@ -50,7 +50,7 @@
       "available": false
     }
   },
-  "regime_interpretation": "LATE_EXPANSION seit einem einzigen Tag: Das Regime ist nicht validiert und der Wechsel koennte ein Fehlsignal sein — INT_REGIME_CONFLICT-Warnung bestaetigt diese Unsicherheit. Die drei Composite Scores liegen alle im ELEVATED-Bereich ohne Velocity oder Acceleration, was Stabilitaet suggeriert, aber bei degradierten Daten keinen Informationswert hat. Ein geopolitischer Schock dieser Groessenordnung — US-Strikes auf Iran, Tanker im Strait of Hormuz getroffen — passt strukturell nicht in ein ruhiges LATE_EXPANSION-Bild.",
+  "regime_interpretation": "Das System klassifiziert das aktuelle Umfeld als 'Late Expansion' — also spätzyklisch, mit noch intaktem Wachstum aber zunehmenden Risiken. Dieser Regimewechsel ist erst 1 Tag alt, was bedeutet: die Einschätzung ist noch nicht bestätigt und kann sich schnell revidieren. Für das Portfolio bedeutet das: defensive Positionen (XLU, XLP, GLD) sind strukturell richtig positioniert, aber HYG ist im Spätzyklus typischerweise anfällig für plötzliche Spread-Ausweitungen.",
   "portfolio_attribution": {
     "total_pnl_pct": null,
     "positions": [
@@ -120,75 +120,134 @@
         "MINIMAL",
         "INDIREKT"
       ]
-    ]
+    ],
+    "assessments": {
+      "HYG__Credit Spreads": "DIREKT und heute hochrelevant: HY_OAS bereits bei 319 bps, Iran-Eskalation ist ein klassischer Risk-off-Trigger für Spread-Ausweitung. Jede weitere Ausweitung um 50 bps kostet HYG ca. 1,5-2% — bei 28,8% Portfoliogewicht ist das der größte einzelne Risikohebel heute.",
+      "HYG__Oil/Iran": "INDIREKT aber heute direkt aktiviert: Iran-Schlagzeilen sind Breaking News. Ölpreisschock erhöht Produktionskosten für energieintensive HY-Emittenten und reduziert deren Coverage Ratios. Sekundäreffekt: breite Risk-off-Stimmung trifft HY härter als Investment Grade.",
+      "HYG__Fed Policy": "DIREKT relevant wegen CPI heute: Heißes CPI reduziert Fed-Pivot-Erwartungen, was HY doppelt belastet — höhere Diskontierung der Cashflows und längere Refinanzierungsstress-Periode für schwache HY-Emittenten. NET_LIQ auf 0/100 verstärkt diesen Kanal.",
+      "DBC__Credit Spreads": "INDIREKT heute: Credit Spread Ausweitung signalisiert Rezessionsrisiko, was Industriemetall-Nachfrage drückt. Öl-Komponente von DBC profitiert kurzfristig vom Iran-Schock, aber ein breites Credit-Event würde Demand Destruction preisen und DBC netto belasten.",
+      "DBC__Oil/Iran": "DIREKT und heute der primäre Treiber: Crude Oil +4% laut Breaking News, DBC hat ~30-40% Energiegewichtung. IEA-Reservenfreigabe ist der Gegenwind — das macht DBC zu einem Instrument mit asymmetrischem Risikoprofil: Upside durch Iran gedeckelt, Downside durch Risk-off unbegrenzt.",
+      "DBC__Fed Policy": "INDIREKT heute: Höhere Zinsen stärken typischerweise den Dollar, was Rohstoffe (in USD gepreist) belastet. Bei heißem CPI heute würde Fed-Hawkishness den Dollar stärken und DBC dämpfen — wirkt gegen den Iran-Ölpreis-Effekt.",
+      "XLU__Credit Spreads": "INDIREKT heute: Versorger sind kapitalintensiv und refinanzieren regelmäßig. Wenn Credit Spreads generell ausweiten, steigen auch Refinanzierungskosten für Versorger-Bonds. Kurzfristig schwacher Effekt, aber relevant für mittelfristige Earnings-Guidance.",
+      "XLU__Oil/Iran": "MINIMAL heute: Versorger produzieren Energie, profitieren teils von höheren Energiepreisen. Gleichzeitig erhöhen hohe Gaspreise Inputkosten für gasbetriebene Versorger. Netto-Effekt nahezu neutral, kein Handlungsbedarf aus diesem Faktor.",
+      "XLU__Fed Policy": "INDIREKT aber heute aktiviert durch CPI: Versorger sind die zinssensitivste Aktiengruppe nach REITs. Heißes CPI heute → Fed bleibt hawkish → 10J-Renditen steigen → XLU verliert relative Attraktivität als Bond-Proxy. Bei 18% Portfoliogewicht ist das der drittwichtigste Risikohebel heute nach HYG-Spreads und DBC-Öl."
+    }
   },
   "indicators": {
     "core": [
       {
-        "name": "HY_OAS",
+        "key": "HY_OAS",
+        "name": "High Yield Credit Spreads (OAS)",
         "value": 319.0,
+        "unit_label": "bps",
         "normalized": 84.7,
         "weight": 0.2,
         "status": "OK",
-        "alert": false
+        "alert": false,
+        "what": "Der Risikoaufschlag, den Unternehmen mit schwacher Bonitaet gegenueber Staatsanleihen zahlen muessen. Misst den Grad an Credit-Stress im Markt — je hoeher der Spread, desto mehr Angst vor Zahlungsausfaellen.",
+        "thresholds": "Unter 300 bps = entspannt (Maerkte sorglos). 300-450 bps = normal. 450-600 bps = erhoehte Vorsicht. Ueber 600 bps = akuter Stress (2008: 2000+ bps).",
+        "why_it_matters": "HYG ist die direkteste Verbindung — jede Spread-Ausweitung um 50 bps kostet ca. 2-3% im HYG-Preis. Auch DBC und Rohstoffe leiden indirekt, weil hohe Spreads Rezessionsangst signalisieren.",
+        "current_assessment": "HY_OAS bei 319 bps mit Score 84,7/100 bedeutet: Credit Spreads sind bereits deutlich erhöht — der Markt preist bereits erhöhtes Ausfallrisiko ein, aber noch kein akutes Stressniveau (das wäre >400-500 bps). Für HYG als größte Position (28,8%) ist das ein Warnsignal: weiteres Spread-Ausweiten durch Iran-Schock oder heißes CPI würde direkt auf den Kurs durchschlagen. Handlungsbedarf: Position monitoren, kein Aufbau."
       },
       {
-        "name": "BREADTH",
+        "key": "BREADTH",
+        "name": "Marktbreite (Advance/Decline Proxy)",
         "value": 2.5,
+        "unit_label": "Ratio",
         "normalized": 100.0,
         "weight": 0.15,
         "status": "OK",
-        "alert": false
+        "alert": false,
+        "what": "Misst wie breit eine Rallye oder ein Sell-Off getragen wird. Hohe Breadth = viele Aktien steigen (gesunde Rallye). Niedrige Breadth = nur wenige Mega-Caps tragen den Index (fragil).",
+        "thresholds": "Ueber 1.5 = sehr gesund. 1.0-1.5 = normal. 0.5-1.0 = schwaecher. Unter 0.5 fuer 3+ Tage = Breadth Collapse (-10 Punkte Composite Penalty).",
+        "why_it_matters": "Fallende Breadth in LATE_EXPANSION ist ein klassisches Zyklusende-Signal. Wenn nur 5-10 Mega-Caps den Markt tragen, steigt das Risiko eines breiten Sell-Offs der alle Positionen trifft.",
+        "current_assessment": "Marktbreite bei 2,5 mit perfektem Score 100/100 — mehr Aktien steigen als fallen, was auf breite Marktstärke hindeutet. Das steht im Widerspruch zu den erhöhten Credit Spreads und dem bearishen IC-Konsens. Mögliche Erklärung: Defensive Rotationen treiben Breite (viele Sektoren steigen, aber aus Flucht nicht aus Wachstumsoptimismus). Für das Portfolio bedeutet das: der Breadth-Score allein rechtfertigt keine risikooffensivere Positionierung."
       },
       {
-        "name": "CU_AU",
+        "key": "CU_AU",
+        "name": "Copper/Gold Ratio",
         "value": null,
+        "unit_label": "Ratio",
         "normalized": null,
         "weight": 0.15,
         "status": "MISSING",
-        "alert": false
+        "alert": false,
+        "what": "Kupferpreis geteilt durch Goldpreis. Kupfer = Industrie (steigt bei Wachstum), Gold = Sicherheit (steigt bei Angst). Das Ratio misst 'Wachstum vs. Sicherheit' im Markt.",
+        "thresholds": "Ueber 0.25 = starke Wirtschaft. 0.18-0.25 = normal. 0.12-0.18 = Schwaeche. Unter 0.12 = extreme Risikoaversion. Trend wichtiger als Niveau.",
+        "why_it_matters": "Direkt relevant fuer DBC: fallendes Ratio = nachlassende Industrienachfrage = DBC unter Druck. GLD profitiert gleichzeitig. In LATE_EXPANSION hat CU/AU 15% Gewicht — dritthoechstes im Composite.",
+        "current_assessment": ""
       },
       {
-        "name": "VIX_TERM",
+        "key": "VIX_TERM",
+        "name": "VIX Term Structure (VIX/VIX3M Ratio)",
         "value": 0.9773,
+        "unit_label": "Ratio",
         "normalized": 49.3,
         "weight": 0.12,
         "status": "OK",
-        "alert": false
+        "alert": false,
+        "what": "Verhaeltnis zwischen kurzfristiger (30d) und mittelfristiger (90d) erwarteter Aktienvolatilitaet. Normalerweise ist kurzfristige Vol niedriger (Ratio unter 1.0). Wenn das Ratio ueber 1.0 steigt (Inversion), erwarten Haendler JETZT mehr Turbulenzen als in 3 Monaten — ein Panik-Signal.",
+        "thresholds": "Unter 0.85 = sehr ruhig. 0.85-0.95 = normal. 0.95-1.0 = erhoehte Wachsamkeit. Ueber 1.0 = INVERTIERT — automatisch -15 Punkte Composite Penalty.",
+        "why_it_matters": "Inversion trifft alle Risk-On-Positionen (HYG, DBC). GLD profitiert typischerweise als Safe Haven. Einer der zuverlaessigsten Stress-Indikatoren ueberhaupt.",
+        "current_assessment": "VIX/VIX3M Ratio bei 0,977 mit Score 49,3/100 — nahezu neutral. Eine Ratio unter 1,0 bedeutet kurzfristige implizite Volatilität ist leicht niedriger als mittelfristige, was leicht erhöhte Nervosität anzeigt aber noch kein Panik-Signal. Angesichts der Iran-Schlagzeilen heute ist dieser Wert bemerkenswert ruhig — entweder hat der Markt die Eskalation noch nicht vollständig eingepreist, oder es gibt Vertrauen in schnelle Deeskalation. Beobachten ob VIX-Spot anzieht."
       },
       {
-        "name": "NET_LIQ",
+        "key": "NET_LIQ",
+        "name": "Netto-Liquiditaet (Fed Reserve Drain Proxy)",
         "value": 90360000000.0,
+        "unit_label": "$",
         "normalized": 0.0,
         "weight": 0.1,
         "status": "OK",
-        "alert": true
+        "alert": true,
+        "what": "Verfuegbare Liquiditaet im Finanzsystem: Fed-Bilanz minus Treasury General Account minus Reverse Repo. Steigende Liquiditaet hebt alle Risiko-Assets. Fallende Liquiditaet drueckt alles.",
+        "thresholds": "Ueber $6.5T = reichlich. $5.5-6.5T = normal. Unter $5.5T = restriktiv. Unter $5.0T = Stress. Die Richtung (steigend/fallend) ist wichtiger als das Niveau.",
+        "why_it_matters": "Liquiditaet ist der wichtigste Makro-Treiber fuer ALLE Assets im Portfolio. Steigende Liq hebt DBC, GLD und HYG gleichzeitig. Fallende Liq drueckt alles — kein Versteck ausser Cash und kurze Treasuries.",
+        "current_assessment": "Netto-Liquidität bei 90,36 Mrd USD mit Score 0/100 — das ist der schlechteste mögliche Wert im System. Die Fed zieht aktiv Liquidität aus dem System ab (via QT oder Reverse Repo). Für das Portfolio bedeutet das: der Rückenwind der Liquiditätsflut fehlt. In einem Stress-Szenario (Iran-Eskalation) gibt es keinen Liquiditäts-Puffer der automatisch stabilisiert. Das ist der am meisten unterschätzte Risikofaktor heute."
       }
     ],
     "regime_sensitive": [
       {
-        "name": "2Y10Y",
+        "key": "2Y10Y",
+        "name": "Yield Curve 10Y-2Y (Zinsstrukturkurve)",
         "value": 0.58,
+        "unit_label": "%",
         "normalized": 60.0,
         "weight": 0.08,
         "status": "OK",
-        "alert": false
+        "alert": false,
+        "what": "Differenz zwischen 10-Jahres- und 2-Jahres-US-Staatsanleihenrendite. Negativ = invertiert — historisch der zuverlaessigste Rezessions-Indikator. Jede US-Rezession seit 1970 wurde vorhergesagt (Vorlauf 6-18 Monate).",
+        "thresholds": "Ueber +1.0% = steil (Erholung). 0 bis +1.0% = normal. -0.5 bis 0% = flach/leicht invertiert (Warnsignal). Unter -0.5% = tief invertiert (Rezession wahrscheinlich). ACHTUNG: Re-Steepening (zurueck zu positiv) ist oft die gefaehrlichste Phase — signalisiert unmittelbar bevorstehende Rezession.",
+        "why_it_matters": "Direkte Implikation fuer V16-Regime: Reinversion oder schnelles Steepening kann Regime-Wechsel ausloesen. HYG besonders verwundbar bei Shift zu CONTRACTION.",
+        "current_assessment": "Yield Curve 10Y-2Y bei 0,58% mit Score 60/100 — leicht positiv, also normale Kurve ohne Inversionssignal. Das unterstützt das Late Expansion Regime-Bild. Für XLU wichtig: bei steigender Inflation und CPI-Überraschung könnte der 2-Jahres-Zins stärker steigen als der 10-Jahres, was die Kurve wieder abflacht und Versorger belastet. Kein unmittelbarer Handlungsbedarf, aber als Kontext für das CPI-Ergebnis heute beobachten."
       },
       {
-        "name": "MOVE",
+        "key": "MOVE",
+        "name": "MOVE Index (Bond-Volatilitaet)",
         "value": 76.33,
+        "unit_label": "Index",
         "normalized": 100.0,
         "weight": 0.1,
         "status": "OK",
-        "alert": false
+        "alert": false,
+        "what": "Der 'VIX fuer Anleihen' — erwartete Volatilitaet am US-Treasury-Markt. Hohe Werte = Unsicherheit ueber Zinsentwicklung und Fed-Politik. Seit 2022 besonders bedeutend, weil die Fed der dominante Markt-Treiber ist.",
+        "thresholds": "Unter 80 = ruhig (selten seit 2022). 80-120 = erhoehte Basisvol (neue Normalitaet). 120-150 = Stress. Ueber 150 = akute Anleihen-Krise. 180+ = Panik (Maerz 2023, Sept 2022).",
+        "why_it_matters": "Hohe Bond-Vol strahlt auf alle Assets: HYG leidet direkt (Spreads), DBC indirekt (Dollar-Vol), GLD kann profitieren (Safe Haven) oder leiden (steigende Real Yields). MOVE ueber 150 = systemisches Warnsignal.",
+        "current_assessment": "MOVE Index bei 76,33 mit Score 100/100 — Bond-Volatilität ist auf dem niedrigsten Wert des Messbereichs, also Anleihen sind bemerkenswert ruhig. Das steht in starkem Kontrast zu den geopolitischen Schlagzeilen und dem HIGH-Impact CPI heute. Entweder antizipiert der Anleihenmarkt kein Inflation-Überraschung, oder die Ruhe ist trügerisch vor einem Volatilitätsanstieg. Für alle zinssensitiven Positionen (XLU, HYG) ist ein plötzlicher MOVE-Anstieg das Risiko das dieser Score nicht anzeigt."
       },
       {
-        "name": "HYG_FLOWS",
+        "key": "HYG_FLOWS",
+        "name": "HYG Fund Flows (Wochenzufluesse)",
         "value": null,
+        "unit_label": "$",
         "normalized": null,
         "weight": 0.1,
         "status": "MISSING",
-        "alert": false
+        "alert": false,
+        "what": "Netto-Kapitalzufluesse in High-Yield-Bond-Fonds. Positive Flows = Anleger kaufen Kreditrisiko. Negative = Anleger verkaufen. Direktes Mass fuer Nachfrage nach genau der Asset-Klasse unserer groessten Position.",
+        "thresholds": "Ueber +$500M/Wo = starke Zufluesse. 0 bis +$500M = neutral. -$500M bis 0 = leichte Abfluesse. -$500M bis -$1B = erhoehte Abfluesse. Unter -$1B = Kapitalflucht (akutes Warnsignal).",
+        "why_it_matters": "Direkt relevant fuer HYG — anhaltende Abfluesse druecken den Kurs auch ohne fundamentale Spread-Veraenderung, weil ETF-Market-Maker Anleihen liquidieren muessen.",
+        "current_assessment": ""
       }
     ],
     "watchlist_triggered": []
@@ -208,27 +267,27 @@
   "scenarios": [
     {
       "id": "A",
-      "probability_pct": 40,
-      "description": "Geopolitische Eskalation haelt an, Oelpreis steigt 10-20%, Risikoaversion steigt moderat. CPI-Daten morgen fallen heiss aus wegen Energiepreisen. Fed bleibt hawarisch. Kreditmaerkte geraten unter Druck.",
-      "portfolio_impact": "HYG -2,5 bis -4%: Credit Spreads weiten sich bei Risikoaversion + Zinsangst. DBC +5 bis +12%: Oelpreisspiegel direkt. GLD +2 bis +4%: Safe-Haven-Fluss. XLU flach bis leicht negativ: Zinssensitivitaet dominiert. XLP leicht negativ.",
-      "composite_impact": "Netto-Portfolio: ca. +1 bis +2% durch DBC/GLD-Gewinne, die HYG-Verluste teilweise kompensieren. ABER: Korrelationsbruch moeglich — wenn Risk-Off brutal wird, fallen alle Risk-Assets synchron.",
+      "probability_pct": 45,
+      "description": "Iran-Konflikt bleibt auf aktuellem Niveau — intensive Schlagabtausche ohne direkte Eskalation zu einem breiteren Regionalkrieg. Öl steigt moderat (5-8%), Credit Spreads weiten sich leicht aus. CPI heute überrascht leicht nach oben, was Fed-Zinssenkungserwartungen dämpft.",
+      "portfolio_impact": "HYG verliert 0,5-1,0% durch Spread-Ausweitung (OAS bereits bei 319 bps, Richtung 340-350 bps). DBC profitiert vom Ölpreisanstieg, +2-3%. XLU und XLP stabil als defensive Werte. GLD +0,5-1,0% als Sicherheitsanker.",
+      "composite_impact": "-1 bis -2 Punkte Composite",
       "action": "MONITOR"
     },
     {
       "id": "B",
       "probability_pct": 35,
-      "description": "Deeskalation oder diplomatischer Kanal oeffnet sich innerhalb 48h, Oelpreis gibt nach, Risk-On-Erholung. CPI in-line oder schwaecher, Fed-Erwartungen bleiben stabil. Kreditmaerkte erholen sich.",
-      "portfolio_impact": "HYG +1 bis +2%: Spread-Kompression. DBC -3 bis -6%: Oelpremium wird abgebaut. GLD -1 bis -2%: Safe-Haven-Abfluss. XLU und XLP leicht positiv durch Stabilitaet.",
-      "composite_impact": "Netto-Portfolio: ca. -0,5 bis +0,5% — DBC-Verluste fressen HYG-Gewinne auf. Kein klares positives Szenario fuer das aktuelle Buch.",
-      "action": "NONE"
+      "description": "Eskalation: Iran schließt Straße von Hormuz oder greift Saudi-Infrastruktur an. Ölpreis springt 10-15%, globale Risk-off-Bewegung setzt ein. Credit Spreads weiten sich deutlich aus, Aktien sell off. IEA-Reservenfreigabe dämpft Ölpreis-Peak, schützt aber nicht vor dem initialen Schock.",
+      "portfolio_impact": "HYG verliert 2-4% (OAS Richtung 380-420 bps). DBC initial +5-8%, aber bei breitem Risk-off auch Rückgang industrieller Metalle. GLD +2-3% als Safe Haven. XLU stabil bis leicht positiv. Netto-Portfolio-Effekt: negativ, HYG-Gewichtung dominiert.",
+      "composite_impact": "-4 bis -6 Punkte Composite",
+      "action": "TRADE"
     },
     {
       "id": "C",
-      "probability_pct": 25,
-      "description": "Vollstaendige Strassenblockade Strait of Hormuz, Iran schliesst den Seeweg. Oel springt 25-40%, globale Lieferkettenpaniken, Aktienmaerkte -5 bis -10%, Fed unter Stagflationsdruck. LATE_EXPANSION bricht zusammen.",
-      "portfolio_impact": "HYG -6 bis -10%: Massive Spread-Ausweitung, Liquiditaetsproblem in HY-Markt. DBC +15 bis +30%: Oilpreisschock dominant. GLD +4 bis +8%: Extremer Safe-Haven-Zustrom. XLU -3 bis -5%: Stagflationsangst. XLP -2 bis -4%.",
-      "composite_impact": "Netto-Portfolio: Wahrscheinlich +3 bis +6% durch DBC/GLD, aber mit extremer Streuung und Liquiditaetsrisiko in HYG. Reales Tail-Risk: HYG-Position koennte bei illiquiden Maerkten nicht zu fairen Preisen geschlossen werden.",
-      "action": "TRADE"
+      "probability_pct": 20,
+      "description": "De-Eskalation oder Waffenstillstand-Signal überrascht den Markt. Ölpreis fällt zurück, Risk-on-Stimmung kehrt zurück. CPI kommt im Rahmen der Erwartungen, Fed-Narrativ bleibt stabil. Marktbreite von 2,5 (aktuell perfect score) bestätigt Erholung.",
+      "portfolio_impact": "DBC verliert 2-4% durch Ölpreisrückgang. HYG stabilisiert oder gewinnt leicht. GLD gibt Safe-Haven-Prämie ab, -1-2%. XLU und XLP leicht schwächer. Portfolio-Netto: leicht negativ durch DBC-Gewichtung.",
+      "composite_impact": "-1 bis +1 Punkte Composite",
+      "action": "MONITOR"
     }
   ],
   "behavioral": {
@@ -253,34 +312,41 @@
     "positions": [
       {
         "asset": "HYG",
-        "top_risk": "Credit Spreads weiten sich durch Kombination aus geopolitischem Risk-Off und hawkischen CPI-Daten morgen — groesste Einzelposition im Buch bei 28,8%.",
+        "top_risk": "Credit Spread Ausweitung durch geopolitischen Risk-off-Schock",
         "probability_pct": 40,
-        "mechanism": "US-Strikes auf Iran erhoehen Risikoaversion systemisch. Gleichzeitig treibt ein Oelpreisanstieg die CPI-Daten nach oben, was Fed-Lockerungserwartungen abbaut. Doppelter Druck auf HY-Credit: hoehere Ausfallangst plus steigende Diskontrate. EXP_SINGLE_NAME-Warnung signalisiert bereits Konzentrationsrisiko."
+        "mechanism": "HY_OAS liegt bereits bei 319 bps — das ist erhöht, aber nicht im Stress-Bereich. Bei Risk-off durch Iran-Eskalation verkaufen Investoren zuerst High Yield (geringstes Sicherheitsnetz, höchste Korrelation mit Risikoassets). Jede 50-bps-Ausweitung kostet HYG ca. 1,5-2% Kurs. Mit 28,8% Portfoliogewicht bedeutet das 0,4-0,6% Portfolioverlust pro 50 bps."
+      },
+      {
+        "asset": "HYG",
+        "top_risk": "Fed hält Zinsen hoch länger als erwartet nach heißem CPI",
+        "probability_pct": 35,
+        "mechanism": "Heutiger CPI-Report (HIGH Impact Event) ist der unmittelbare Trigger. Überraschend hohes CPI reduziert Wahrscheinlichkeit von Fed-Zinssenkungen. High-Yield-Anleihen leiden doppelt: höhere risikofreie Zinsen und tendenziell schwächere Wirtschaft mit Verzögerung. NET_LIQ Score ist 0/100 — Liquidität wird aktiv abgezogen, was Credit-Märkte zusätzlich unter Druck setzt."
       },
       {
         "asset": "DBC",
-        "top_risk": "IEA-Reserve-Release koennte Oelpreisanstieg begrenzen oder umkehren — DBC-Gewinne sind nicht garantiert trotz Eskalation.",
+        "top_risk": "IEA-Reservenfreigabe deckt Ölpreis-Upside ab",
         "probability_pct": 30,
-        "mechanism": "IEA schlaegt Rekord-Release von Notreserven vor. Wenn koordinierter G7-Release kommt, koennte Oelpreismove stark gedaempft werden. DBC profitiert dann weniger als erwartet — und der einzige klare Hedge im Buch faellt weg."
+        "mechanism": "IEA schlägt Rekord-Notfallreservenfreigabe vor — das ist explizit designt, um Ölpreisanstiege zu deckeln. DBC enthält ca. 30-40% Energiekomponenten. Wenn IEA-Freigabe Öl bei 80-85 USD deckelt obwohl geopolitische Prämie eigentlich 90+ rechtfertigen würde, bleibt DBC-Upside begrenzt während Downside-Risiken bleiben."
       },
       {
         "asset": "XLU",
-        "top_risk": "Zinssensitivitaet macht XLU zur Verliererposition wenn CPI heiss kommt und Fed-Cuts repriced werden.",
-        "probability_pct": 35,
-        "mechanism": "Utilities sind de-facto Anleihesurrogat. Heisses CPI morgen plus geopolitische Energiepreisinflation = Fed muss hawkish bleiben oder werden. 10-Jahres-Rendite steigt, XLU gibt nach. Defensive Qualitaet schuetzt hier nicht."
+        "top_risk": "Steigende Langfristzinsen durch Inflationsschock",
+        "probability_pct": 25,
+        "mechanism": "Versorger (XLU) sind zinssensitiv — sie werden oft wie Anleihen gehandelt. Wenn CPI heute heiß kommt und 10J-Treasury-Renditen steigen, verliert XLU an Attraktivität gegenüber risikofreien Alternativen. Yield Curve bei 58 bps — flacht sie sich wieder ab durch steigende Kurzfristzinsen, schadet das XLU direkt."
       }
     ],
-    "if_wrong_summary": "Wenn Eskalation schneller als erwartet auf die Kreditspreads durchschlaegt und gleichzeitig IEA-Reserve-Release den DBC-Hedge neutralisiert, hat das Buch keinen funktionierenden Schutz mehr — HYG-Verluste ohne DBC-Kompensation."
+    "if_wrong_summary": "Wenn Scenario B eintritt und das Portfolio nicht angepasst wird, droht ein Verlust von ca. 2-3% auf Portfolioebene innerhalb von 48 Stunden — hauptsächlich getrieben durch HYG (28,8% × -3% = -0,86%) und DBC-Volatilität. Das ist der wahrscheinlichste Einzelschadens-Pfad heute."
   },
   "epistemic_status": {
     "data_quality": "PARTIAL",
     "system_conviction": "LOW",
     "stale_sources": [],
     "blind_spots": [
-      "Degradierte Datenlage bedeutet: alle Composite Scores koennen falsch sein — das System arbeitet blind in einem Moment, wo praezise Signale am wichtigsten waeren.",
-      "LATE_EXPANSION seit einem Tag ist statistisch nicht signifikant — das Regime koennte ein Artefakt des Datenfehlers sein, nicht ein echter Zustandswechsel.",
-      "Korrelationsbruch-Risiko: In extremen Geopolitik-Schocks fallen DBC, GLD, HYG, XLU und XLP gleichzeitig wenn institutionelle Akteure Margin-Calls bedienen muessen — Diversifikation hilft dann nicht.",
-      "Iran-Konflikt koennte Israel, Saudi-Arabien oder weitere Akteure einbeziehen — Eskalationspfade sind nicht linear und koennen ueber Nacht springen, bevor Maerkte reagieren koennen."
+      "NET_LIQ Score ist 0/100 — aktiver Fed-Liquiditätsentzug ist im aktuellen Composite möglicherweise untergewichtet und wird durch gute Breadth-Zahlen maskiert",
+      "REGIME_CONFLICT Warning aktiv: Late Expansion nach nur 1 Tag ist statistisch instabil — das System könnte das Regime bereits morgen revidieren, was alle Szenarien-Wahrscheinlichkeiten verschiebt",
+      "IC Konsens ist net bearish (-2), aber Portfolio ist noch nicht defensiv genug repositioniert — es gibt eine Lücke zwischen Signal und Positionierung",
+      "Geopolitik-Timing: US-Militärschläge auf Iran sind in keinem historischen Modell-Datensatz als Regime-Input vorhanden — alle Scores basieren auf Mustern ohne diesen Präzedenzfall",
+      "PCE am 13. März und FOMC am 18. März schaffen ein enges Fenster mit mehreren hochkarätigen Datenpunkten — kumulative Überraschungsrisiken werden unterschätzt wenn man Ereignisse einzeln bewertet"
     ],
     "signal_freshness": {
       "regime_age_days": 1
@@ -395,9 +461,9 @@
     },
     {
       "category": "GEOPOLITIK",
-      "title": "Three cargo ships struck off Iran's coast, UK says, including one in Strait of Hormuz",
+      "title": "IEA Proposes Record Release of Emergency Oil Reserves",
       "impact": "HIGH",
-      "source": "www.cnbc.com",
+      "source": "www.bloomberg.com",
       "portfolio_transmission": {
         "DBC": {
           "direction": "BULLISH",
@@ -418,9 +484,9 @@
     },
     {
       "category": "GEOPOLITIK",
-      "title": "IEA Proposes Record Release of Emergency Oil Reserves",
+      "title": "Crude Oil Jumps 4% as Traders Price In Supply Disruption | OilPrice.com",
       "impact": "HIGH",
-      "source": "www.bloomberg.com",
+      "source": "oilprice.com",
       "portfolio_transmission": {
         "DBC": {
           "direction": "BULLISH",
@@ -446,17 +512,17 @@
   "prediction_log": {
     "todays_predictions": [
       {
-        "prediction": "Geopolitische Eskalation haelt an, Oelpreis steigt 10-20%, Risikoaversion steigt moderat. CPI-Daten morgen fallen heiss aus wegen Energiepreisen. Fed bleibt hawarisch. Kreditmaerkte geraten unter Druck.",
-        "probability_pct": 40,
+        "prediction": "Iran-Konflikt bleibt auf aktuellem Niveau — intensive Schlagabtausche ohne direkte Eskalation zu einem breiteren Regionalkrieg. Öl steigt moderat (5-8%), Credit Spreads weiten sich leicht aus. CPI heute überrascht leicht nach oben, was Fed-Zinssenkungserwartungen dämpft.",
+        "probability_pct": 45,
         "basis": "Scenario A"
       },
       {
-        "prediction": "Deeskalation oder diplomatischer Kanal oeffnet sich innerhalb 48h, Oelpreis gibt nach, Risk-On-Erholung. CPI in-line oder schwaecher, Fed-Erwartungen bleiben stabil. Kreditmaerkte erholen sich.",
+        "prediction": "Eskalation: Iran schließt Straße von Hormuz oder greift Saudi-Infrastruktur an. Ölpreis springt 10-15%, globale Risk-off-Bewegung setzt ein. Credit Spreads weiten sich deutlich aus, Aktien sell off. IEA-Reservenfreigabe dämpft Ölpreis-Peak, schützt aber nicht vor dem initialen Schock.",
         "probability_pct": 35,
         "basis": "Scenario B"
       }
     ]
   },
   "anchor_type": "CRITICAL",
-  "hash": "sha256:1229b3e654a8eafeb43744c365e46dc715001392f04b9964aa6302d52c174b0f"
+  "hash": "sha256:5c002779a96d4895e130a6e42f097fe4bbc5db68578bb17516e4471272a36318"
 }
