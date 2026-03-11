@@ -7,6 +7,8 @@ All indicator definitions, Composite Score weights, regime-conditional
 profiles, warning triggers, and system constants.
 """
 
+import os
+
 # ---------------------------------------------------------------------------
 # Sheet IDs & Drive
 # ---------------------------------------------------------------------------
@@ -222,55 +224,20 @@ def get_regime_weights(regime):
     return REGIME_WEIGHTS.get(regime, DEFAULT_WEIGHTS)
 
 # ---------------------------------------------------------------------------
-# Warning Triggers — Composite Score Penalties (Spec §3.2.5)
+# Warning Triggers (Spec §3.2.5)
 # ---------------------------------------------------------------------------
-WARNING_TRIGGERS = [
-    {
-        "id": "VIX_INVERSION",
-        "description": "VIX Term Structure Inversion",
-        "penalty": -15,
-        "condition": "vix_term_ratio > 1.0",
-    },
-    {
-        "id": "HY_SPIKE",
-        "description": "HY Spread Spike (>2σ above 90d mean)",
-        "penalty": -10,
-        "condition": "hy_oas_zscore_90d > 2.0",
-    },
-    {
-        "id": "BREADTH_COLLAPSE",
-        "description": "Breadth Collapse (A/D < 0.5 for 3+ days)",
-        "penalty": -10,
-        "condition": "breadth_ad < 0.5 and breadth_below_days >= 3",
-    },
-    {
-        "id": "NET_LIQ_DRAIN",
-        "description": "Net Liquidity Drain (>$50B in 7 days)",
-        "penalty": -8,
-        "condition": "net_liq_7d_change < -50_000_000_000",
-    },
-    {
-        "id": "CROSS_SOURCE_TEMP",
-        "description": "Cross-Source Temperature Spike",
-        "penalty": -5,
-        "condition": "ic_temp_elevated_count >= 3",
-    },
-    {
-        "id": "RO_EMERGENCY",
-        "description": "Risk Officer Emergency Trigger",
-        "penalty": -20,
-        "condition": "risk_emergency_active == True",
-    },
-    {
-        "id": "REGIME_CONFLICT",
-        "description": "V16 vs Market Analyst Regime Conflict",
-        "penalty": -5,
-        "condition": "regime_conflict == True",
-    },
-]
+WARNING_TRIGGERS = {
+    "VIX_INVERSION":     {"penalty": -15, "description": "VIX Term Structure Inversion"},
+    "HY_SPIKE":          {"penalty": -10, "description": "HY OAS Spike (z-score > 2.0)"},
+    "BREADTH_COLLAPSE":  {"penalty": -10, "description": "Breadth Collapse (< 0.5 for 3+ days)"},
+    "NET_LIQ_DRAIN":     {"penalty": -8,  "description": "Net Liquidity Drain > $50B / 7d"},
+    "CROSS_SOURCE_TEMP": {"penalty": -5,  "description": "Cross-Source Temperature Spike (3+ sources)"},
+    "RO_EMERGENCY":      {"penalty": -20, "description": "Risk Officer EMERGENCY active"},
+    "REGIME_CONFLICT":   {"penalty": -5,  "description": "V16 vs Market Analyst Regime Conflict"},
+}
 
 # ---------------------------------------------------------------------------
-# Velocity / Acceleration Alerts (Spec §3.2.3)
+# Velocity & Acceleration (Spec §3.2.3)
 # ---------------------------------------------------------------------------
 VELOCITY_RAPID_DETERIORATION = -5   # vel < this → "RAPID DETERIORATION"
 VELOCITY_RAPID_IMPROVEMENT = 5      # vel > this → "RAPID IMPROVEMENT"
@@ -476,12 +443,17 @@ RISK_HEATMAP_MAPPING = {
 }
 
 # ---------------------------------------------------------------------------
-# File Paths (relative to step_0u_daily_briefing/)
+# File Paths
+#
+# CRITICAL: Use absolute paths based on this file's location so that
+# saves work correctly regardless of the process working directory
+# (fixes GitHub Actions runner path mismatch).
 # ---------------------------------------------------------------------------
-HISTORY_DIR = "data/history"
-COMPOSITE_HISTORY_FILE = f"{HISTORY_DIR}/composite_history.json"
-PREDICTION_LOG_FILE = f"{HISTORY_DIR}/prediction_log.json"
-INDICATOR_HISTORY_FILE = f"{HISTORY_DIR}/indicator_history.json"
+_MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
+HISTORY_DIR = os.path.join(_MODULE_DIR, "data", "history")
+COMPOSITE_HISTORY_FILE = os.path.join(HISTORY_DIR, "composite_history.json")
+PREDICTION_LOG_FILE = os.path.join(HISTORY_DIR, "prediction_log.json")
+INDICATOR_HISTORY_FILE = os.path.join(HISTORY_DIR, "indicator_history.json")
 
 # Drive archive path
 DRIVE_NEWSLETTER_FOLDER = "HISTORY/newsletter"
@@ -489,4 +461,4 @@ DRIVE_NEWSLETTER_FOLDER = "HISTORY/newsletter"
 # ---------------------------------------------------------------------------
 # Idempotency (Spec §2.3)
 # ---------------------------------------------------------------------------
-IDEMPOTENCY_FLAG_FILE = f"{HISTORY_DIR}/last_run_date.txt"
+IDEMPOTENCY_FLAG_FILE = os.path.join(HISTORY_DIR, "last_run_date.txt")
