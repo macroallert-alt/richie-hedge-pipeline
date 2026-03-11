@@ -99,13 +99,16 @@ def read_dw_sheet_tab(tab_name, creds_json=None):
         ).execute()
 
         rows = result.get("values", [])
-        if len(rows) < 2:
+        if len(rows) < 3:
             logger.warning(f"DW Sheet {tab_name}: no data rows")
             return []
 
-        headers = rows[0]
+        # Row 0 is a title row (e.g. "█ RAW MARKET DATA — ..."),
+        # Row 1 is the actual header (DATE, INDICATOR, LAYER, VALUE, ...),
+        # Row 2+ is data.
+        headers = rows[1]
         data = []
-        for row in rows[1:]:
+        for row in rows[2:]:
             entry = {}
             for i, h in enumerate(headers):
                 entry[h] = row[i] if i < len(row) else None
