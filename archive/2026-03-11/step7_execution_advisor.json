@@ -1,6 +1,6 @@
 {
   "date": "2026-03-11",
-  "run_timestamp": "2026-03-11T06:13:43.499144Z",
+  "run_timestamp": "2026-03-11T06:45:49.822938Z",
   "execution_assessment": {
     "total_score": 6,
     "raw_score": 6,
@@ -115,7 +115,7 @@
         "detail": {
           "signals": {
             "amihud": {
-              "value": 38.56,
+              "value": 34.32,
               "assessment": "LIQUID",
               "score": 0
             },
@@ -130,12 +130,12 @@
               "score": 0
             },
             "vix_term": {
-              "value": 1.0063,
+              "value": 0.9773,
               "assessment": "CONTANGO",
               "score": 0
             },
             "avg_corr": {
-              "value": 0.2993,
+              "value": 0.2857,
               "assessment": "NORMAL",
               "score": 0
             }
@@ -150,8 +150,13 @@
           "divergences": [
             {
               "type": "GOLD_DXY_DIVERGENCE",
-              "detail": "Gold +3.7% UND DXY +1.6% — beide steigen, unsustainable",
+              "detail": "Gold +2.3% UND DXY +2.1% — beide steigen, unsustainable",
               "severity": "HIGH"
+            },
+            {
+              "type": "GOLD_POSITION_VS_DXY",
+              "detail": "V16 hat 17% Gold/Silber aber DXY steigt +2.1%",
+              "severity": "ELEVATED"
             }
           ],
           "confirmations": [
@@ -169,15 +174,15 @@
             }
           ],
           "high_count": 1,
-          "elevated_count": 0
+          "elevated_count": 1
         }
       },
       "gex_regime": {
         "score": 1,
         "max": 3,
-        "label": "GEX $-0.19B — SLIGHTLY_NEGATIVE",
+        "label": "GEX $-0.39B — SLIGHTLY_NEGATIVE",
         "detail": {
-          "gex": -0.1862,
+          "gex": -0.3859,
           "assessment": "SLIGHTLY_NEGATIVE",
           "has_imminent_event": true,
           "note": "Positive GEX = Dealer dampen moves. Negative = Dealer amplify moves."
@@ -190,22 +195,22 @@
         "detail": {
           "signals": {
             "cnn_fg": {
-              "value": 27.92,
+              "value": 27.91,
               "assessment": "NEUTRAL",
               "warning": false
             },
             "vix": {
-              "value": 29.49,
+              "value": 25.5,
               "assessment": "NORMAL",
               "warning": false
             },
             "pcr": {
-              "value": 0.796,
+              "value": 0.812,
               "assessment": "NORMAL",
               "warning": false
             },
             "hy_oas": {
-              "value": 313.0,
+              "value": 319.0,
               "assessment": "NORMAL",
               "warning": false
             },
@@ -215,7 +220,7 @@
               "warning": false
             },
             "move": {
-              "value": 79.74,
+              "value": 76.33,
               "assessment": "NORMAL",
               "warning": false
             }
@@ -255,7 +260,7 @@
       {
         "signal": "amihud: LIQUID",
         "source": "DW_L5",
-        "detail": "Wert: 38.56"
+        "detail": "Wert: 34.32"
       },
       {
         "signal": "sofr_ffr: NORMAL",
@@ -270,12 +275,12 @@
       {
         "signal": "vix_term: CONTANGO",
         "source": "DW_L5",
-        "detail": "Wert: 1.0063"
+        "detail": "Wert: 0.9773"
       },
       {
         "signal": "avg_corr: NORMAL",
         "source": "DW_L5",
-        "detail": "Wert: 0.2993"
+        "detail": "Wert: 0.2857"
       },
       {
         "signal": "COMMODITY_COPPER_CONFIRMED",
@@ -295,22 +300,22 @@
       {
         "signal": "cnn_fg: NEUTRAL",
         "source": "DW_L2",
-        "detail": "Wert: 27.92"
+        "detail": "Wert: 27.91"
       },
       {
         "signal": "vix: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 29.49"
+        "detail": "Wert: 25.5"
       },
       {
         "signal": "pcr: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 0.796"
+        "detail": "Wert: 0.812"
       },
       {
         "signal": "hy_oas: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 313.0"
+        "detail": "Wert: 319.0"
       },
       {
         "signal": "insider: NORMAL",
@@ -320,7 +325,7 @@
       {
         "signal": "move: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 79.74"
+        "detail": "Wert: 76.33"
       },
       {
         "signal": "V16: Kein materielles Rebalancing",
@@ -347,10 +352,15 @@
       {
         "signal": "GOLD_DXY_DIVERGENCE",
         "source": "DW_L7",
-        "detail": "Gold +3.7% UND DXY +1.6% — beide steigen, unsustainable"
+        "detail": "Gold +2.3% UND DXY +2.1% — beide steigen, unsustainable"
       },
       {
-        "signal": "GEX negativ ($-0.19B) — SLIGHTLY_NEGATIVE",
+        "signal": "GOLD_POSITION_VS_DXY",
+        "source": "DW_L7",
+        "detail": "V16 hat 17% Gold/Silber aber DXY steigt +2.1%"
+      },
+      {
+        "signal": "GEX negativ ($-0.39B) — SLIGHTLY_NEGATIVE",
         "source": "DW_L4_GEX",
         "detail": "Dealer-Hedging verstärkt Moves — erhöhte Volatilität"
       },
@@ -361,7 +371,7 @@
       }
     ],
     "confirming_count": 20,
-    "conflicting_count": 6,
+    "conflicting_count": 7,
     "net_assessment": "STRONGLY_CONFIRMING"
   },
   "recommendation": {
@@ -370,12 +380,12 @@
     "specific_actions": [],
     "would_change_my_mind": {
       "execute_if": [
-        "VIX fällt unter 22 UND GEX steigt über +$0.5B (Volatilität normalisiert, Dealer-Hedging positiv)",
-        "Gold Return 20d fällt unter 0% ODER DXY Return 20d fällt unter -1% (Divergenz aufgelöst)"
+        "VIX fällt unter 20 UND GEX steigt über $+0.5B (Volatilität normalisiert, Dealer-Hedging-Risiko weg)",
+        "Gold-DXY-Divergenz löst sich auf (entweder Gold fällt >3% ODER DXY fällt >2% in 5d) — Richtung klar"
       ],
       "hold_if": [
-        "US CPI (February) >0.4% MoM (Konsens vermutlich ~0.2-0.3%) — HY OAS würde über 350bps springen",
-        "VIX steigt über 35 ODER HY OAS steigt über 400bps (Stress-Regime, Router könnte zu RISK_OFF triggern)"
+        "VIX steigt über 30 ODER HY OAS steigt über 400bps (Stress-Regime, keine Execution bis Beruhigung)",
+        "CPI-Überraschung >0.3% vs Konsens UND GEX bleibt negativ (Volatilität + negative Dealer-Dynamik = toxische Kombination)"
       ]
     }
   },
@@ -676,9 +686,9 @@
       }
     ]
   },
-  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Kein materielles Rebalancing: V16 hält alle Positionen (Delta < 1%) — kein Execution-Risiko heute\n• COT-Positionierung sauber: S&P500 Commercial Net +3.5%, Gold Commercial Net +8.8% — keine Extrempositionen gegen Portfolio\n• Liquidität intakt: Amihud 38.56 (LIQUID), SOFR-FFR 1.0bp (NORMAL), OFR Financial Stress -0.44 (RELAXED)\n• Cross-Asset-Bestätigungen: Copper Rising bestätigt DBC (20.3%), SPY Rising bestätigt Equity-Exposure (34%), Real Yields Falling unterstützt GLD (16.9%)\n• VIX-Struktur konstruktiv: VIX Term Structure 1.0063 (CONTANGO) — keine akute Panik\n• Sentiment neutral: CNN Fear & Greed 27.92, Put/Call 0.796, HY OAS 313bps — alle im Normalbereich\n• VIX 29.49: Erhöht aber nicht extrem — kein Veto-Level\n\nCONFLICTING:\n• US CPI (February) HEUTE (0h): HIGH-Impact Event kann HYG (28.8%) und DBC (20.3%) volatil machen\n• US PCE Price Index (January) in 48h: Zweiter HIGH-Impact Inflations-Print — Convergence Week aktiv\n• GOLD_DXY_DIVERGENCE: Gold +3.7% UND DXY +1.6% gleichzeitig — historisch unsustainable, einer muss nachgeben\n• GEX negativ ($-0.19B): SLIGHTLY_NEGATIVE — Dealer-Hedging verstärkt Intraday-Moves, erhöhte Slippage-Gefahr\n• Router Proximity 100%: COMMODITY_SUPER-Trigger nah — möglicher Regime-Wechsel nach CPI\n• VIX 29.49: Deutlich über Normalbereich (15-20) — erhöhte Unsicherheit eingepreist\n\nNETTO: 20 Confirming vs 6 Conflicting. Portfolio stabil, aber CPI-Event HEUTE und Gold/DXY-Divergenz erfordern Vorsicht.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Falls V16 morgen Regime wechselt (z.B. nach CPI-Überraschung): Warte bis 16:00 ET (Post-CPI-Digest). HYG und DBC sind bei negativem CPI-Print (>Erwartung) anfällig — setze Limit-Orders 0.3-0.5% unter aktuellem Kurs. GLD: Beobachte Gold/DXY-Divergenz — wenn DXY nach CPI weiter steigt, könnte Gold korrigieren. XLU/XLP: Defensives Exposure profitiert von Volatilität, keine Eile. GEX negativ bedeutet: Vermeide Market-Orders zwischen 09:30-10:30 ET (höchste Volatilität).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 22 UND GEX steigt über +$0.5B (Volatilität normalisiert, Dealer-Hedging positiv)\n• Execute sofort wenn: Gold Return 20d fällt unter 0% ODER DXY Return 20d fällt unter -1% (Divergenz aufgelöst)\n• Eskaliere zu Wait/Hold wenn: US CPI (February) >0.4% MoM (Konsens vermutlich ~0.2-0.3%) — HY OAS würde über 350bps springen\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 35 ODER HY OAS steigt über 400bps (Stress-Regime, Router könnte zu RISK_OFF triggern)",
+  "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING:\n• Keine materiellen Trades: V16 hält alle Positionen (HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%) — kein Execution-Risiko heute\n• COT-Positionierung sauber: S&P500 Commercial Net +3.5%, Gold Commercial Net +8.8% — keine Extrempositionen gegen Portfolio\n• Liquidität intakt: Amihud 34.32 (LIQUID), SOFR-FFR 1.0bp (NORMAL), OFR Stress -0.44 (RELAXED) — Marktstruktur funktioniert\n• Cross-Asset-Bestätigungen: Copper Rising bestätigt 37% Commodity-Exposure, SPY Rising bestätigt 34% Equity-Exposure, Real Yields Falling unterstützt 17% Gold\n• VIX-Struktur gesund: VIX Term Structure 0.98 (CONTANGO) — keine akute Panik, Forward-Volatilität eingepreist\n• Sentiment neutral: CNN Fear & Greed 27.91, Put/Call 0.81, HY OAS 319bps — keine Extremstimmung\n• Korrelationen normal: Avg Correlation 0.29 — Diversifikation funktioniert\n\nCONFLICTING:\n• US CPI (February) HEUTE (0h): HIGH-Impact Event kann HYG (28.8%) und DBC (20.3%) direkt bewegen — Inflation-Überraschung = Volatilität\n• Convergence Week aktiv: US PCE (January) in 48h (HIGH), US GDP Q4 in 48h (MEDIUM) — drei Makro-Events in 72h\n• Gold-Dollar-Divergenz: Gold +2.3% UND DXY +2.1% in 20d — beide steigen gleichzeitig, historisch nicht nachhaltig, bedroht 16.9% GLD-Position\n• GEX negativ: $-0.39B (SLIGHTLY_NEGATIVE) — Dealer-Hedging verstärkt Intraday-Moves, erhöhte Slippage-Gefahr\n• Router Proximity 100%: COMMODITY_SUPER-Trigger nah — möglicher Regime-Wechsel in Sicht\n• VIX erhöht: 25.5 (NORMAL aber oberes Ende) — Optionsmarkt preist Unsicherheit ein\n• DXY-Risiko für Commodities: DXY +2.1% in 20d während V16 37% Commodities hält — Gegenwind wenn Dollar weiter steigt\n\nNETTO: 7 Confirming vs 7 Conflicting. Keine materiellen Trades heute, aber CPI-Event in Stunden macht jede Execution riskant.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Falls V16 morgen Regime wechselt: Warte CPI-Ergebnis ab (heute 8:30 ET). Bei materiallem Rebalancing nach CPI: HYG und DBC mit Limit-Orders arbeiten (GEX negativ = höhere Slippage), GLD-Anpassungen erst nach Gold-DXY-Divergenz-Auflösung (beobachte ob Gold oder Dollar nachgibt). XLU und XLP sind defensiv, können bei Bedarf sofort ausgeführt werden. Router-Proximity 100% bedeutet: Nächster Regime-Wechsel könnte größere Trades bringen — halte Pulver trocken für Post-Event-Execution.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 20 UND GEX steigt über $+0.5B (Volatilität normalisiert, Dealer-Hedging-Risiko weg)\n• Execute sofort wenn: Gold-DXY-Divergenz löst sich auf (entweder Gold fällt >3% ODER DXY fällt >2% in 5d) — Richtung klar\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 30 ODER HY OAS steigt über 400bps (Stress-Regime, keine Execution bis Beruhigung)\n• Eskaliere zu Wait/Hold wenn: CPI-Überraschung >0.3% vs Konsens UND GEX bleibt negativ (Volatilität + negative Dealer-Dynamik = toxische Kombination)",
   "v16_context": {
-    "regime": "FRAGILE_EXPANSION",
+    "regime": "LATE_EXPANSION",
     "top5": [
       {
         "asset": "HYG",
@@ -945,7 +955,7 @@
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_used": true,
     "llm_fallback": false,
-    "engine_time_seconds": 24.66,
-    "total_time_seconds": 24.7
+    "engine_time_seconds": 27.74,
+    "total_time_seconds": 27.7
   }
 }
