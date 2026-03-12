@@ -19,7 +19,10 @@ Writes to Data Warehouse:
 
 import os
 import sys
+import json
+import time
 import logging
+import tempfile
 import traceback
 from datetime import date, timedelta
 
@@ -27,8 +30,8 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 from fredapi import Fred
-import gspread
 from google.oauth2.service_account import Credentials
+from googleapiclient.discovery import build
 
 # ─────────────────────────────────────────────
 # LOGGING
@@ -90,18 +93,70 @@ SCORES_ROW = 8
 # DASHBOARD row for L7
 DASHBOARD_ROW = 23
 
+
 # ─────────────────────────────────────────────
-# GOOGLE SHEETS + FRED CONNECTION
+# GOOGLE SHEETS (googleapiclient + retry)
 # ─────────────────────────────────────────────
 
-def get_gspread_client():
-    creds_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "/tmp/gcp_sa.json")
-    creds = Credentials.from_service_account_file(creds_path, scopes=SCOPES)
-    return gspread.authorize(creds)
+def get_sheets_service():
+    """Build Google Sheets service via googleapiclient (not gspread)."""
+    sa_key = os.environ.get("GCP_SA_KEY") or os.environ.get("GOOGLE_CREDENTIALS")
+    creds_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "")
+
+    if sa_key:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            f.write(sa_key)
+            tmp_path = f.name
+        creds = Credentials.from_service_account_file(tmp_path, scopes=SCOPES)
+        os.unlink(tmp_path)
+    elif creds_path and os.path.exists(creds_path):
+        creds = Credentials.from_service_account_file(creds_path, scopes=SCOPES)
+    else:
+        raise ValueError("No GCP credentials found (GCP_SA_KEY, GOOGLE_CREDENTIALS, or GOOGLE_APPLICATION_CREDENTIALS)")
+
+    return build("sheets", "v4", credentials=creds, cache_discovery=False)
 
 
-def open_warehouse(client):
-    return client.open_by_key(WAREHOUSE_SHEET_ID)
+def sheets_update_with_retry(service, range_name, values, max_retries=3):
+    """Write to Google Sheets with retry on 429 rate limit."""
+    for attempt in range(max_retries):
+        try:
+            service.spreadsheets().values().update(
+                spreadsheetId=WAREHOUSE_SHEET_ID,
+                range=range_name,
+                valueInputOption="RAW",
+                body={"values": values},
+            ).execute()
+            return True
+        except Exception as e:
+            if "429" in str(e) or "Quota exceeded" in str(e):
+                wait = 30 * (attempt + 1)
+                log.warning(f"Rate limit hit on {range_name}, waiting {wait}s (attempt {attempt+1}/{max_retries})")
+                time.sleep(wait)
+            else:
+                raise
+    log.error(f"Failed to write {range_name} after {max_retries} retries")
+    return False
+
+
+def sheets_read_with_retry(service, range_name, max_retries=3):
+    """Read from Google Sheets with retry on 429 rate limit."""
+    for attempt in range(max_retries):
+        try:
+            result = service.spreadsheets().values().get(
+                spreadsheetId=WAREHOUSE_SHEET_ID,
+                range=range_name,
+            ).execute()
+            return result.get("values", [])
+        except Exception as e:
+            if "429" in str(e) or "Quota exceeded" in str(e):
+                wait = 30 * (attempt + 1)
+                log.warning(f"Rate limit hit reading {range_name}, waiting {wait}s (attempt {attempt+1}/{max_retries})")
+                time.sleep(wait)
+            else:
+                raise
+    log.error(f"Failed to read {range_name} after {max_retries} retries")
+    return []
 
 
 def get_fred_client():
@@ -719,13 +774,12 @@ def calc_composite(signal_results: dict) -> dict:
 
 
 # ─────────────────────────────────────────────
-# GOOGLE SHEETS WRITE
+# GOOGLE SHEETS WRITE (googleapiclient + retry)
 # ─────────────────────────────────────────────
 
-def write_raw_market(ws_raw_market, today: date, raw_rows: dict):
+def write_raw_market(service, today: date, raw_rows: dict):
     """
     Writes 7 L7 indicator rows to RAW_MARKET tab (Rows 28-34).
-    raw_rows: dict keyed by sheet_key (matching RAW_MARKET_ROWS).
     """
     today_str = today.strftime("%Y-%m-%d")
 
@@ -745,11 +799,12 @@ def write_raw_market(ws_raw_market, today: date, raw_rows: dict):
             tier_str = r["tier"]
             unit_str = r["unit"]
 
-        try:
-            existing_row = ws_raw_market.row_values(row_num)
-            prev_7d  = existing_row[4] if len(existing_row) > 4 else "—"
-            prev_30d = existing_row[5] if len(existing_row) > 5 else "—"
-        except Exception:
+        # Read existing row for prev_7d / prev_30d
+        existing = sheets_read_with_retry(service, f"RAW_MARKET!A{row_num}:J{row_num}")
+        if existing and len(existing) > 0 and len(existing[0]) > 4:
+            prev_7d  = existing[0][4] if len(existing[0]) > 4 else "—"
+            prev_30d = existing[0][5] if len(existing[0]) > 5 else "—"
+        else:
             prev_7d  = "—"
             prev_30d = "—"
 
@@ -766,14 +821,12 @@ def write_raw_market(ws_raw_market, today: date, raw_rows: dict):
             unit_str,
         ]
 
-        ws_raw_market.update(
-            range_name=f"A{row_num}:J{row_num}",
-            values=[row_data],
-        )
+        sheets_update_with_retry(service, f"RAW_MARKET!A{row_num}:J{row_num}", [row_data])
         log.info(f"RAW_MARKET Row {row_num} written: {sheet_key} = {val_str}")
+        time.sleep(1)  # 1s between writes to avoid rate limit
 
 
-def write_scores(ws_scores, today: date, composite: dict):
+def write_scores(service, today: date, composite: dict):
     today_str = today.strftime("%Y-%m-%d")
 
     row_data = [
@@ -792,17 +845,14 @@ def write_scores(ws_scores, today: date, composite: dict):
         "—",
     ]
 
-    ws_scores.update(
-        range_name=f"A{SCORES_ROW}:M{SCORES_ROW}",
-        values=[row_data],
-    )
+    sheets_update_with_retry(service, f"SCORES!A{SCORES_ROW}:M{SCORES_ROW}", [row_data])
     log.info(
         f"SCORES Row {SCORES_ROW} written: "
         f"L7={composite['score_raw']:.4f} | {composite['phase']} | {composite['signal']}"
     )
 
 
-def write_dashboard(ws_dashboard, today: date, composite: dict):
+def write_dashboard(service, today: date, composite: dict):
     today_str = today.strftime("%Y-%m-%d")
 
     row_data = [
@@ -816,10 +866,7 @@ def write_dashboard(ws_dashboard, today: date, composite: dict):
         f"{composite['valid_count']}/{len(WEIGHTS)}",
     ]
 
-    ws_dashboard.update(
-        range_name=f"A{DASHBOARD_ROW}:H{DASHBOARD_ROW}",
-        values=[row_data],
-    )
+    sheets_update_with_retry(service, f"DASHBOARD!A{DASHBOARD_ROW}:H{DASHBOARD_ROW}", [row_data])
     log.info(
         f"DASHBOARD Row {DASHBOARD_ROW} written: "
         f"L7={composite['score_raw']:.4f} | {composite['signal']}"
@@ -901,19 +948,20 @@ def main():
         f"Freshness {composite['freshness']:.1f}/10"
     )
 
-    # ── Google Sheets ──
+    # ── Google Sheets (with rate-limit retry) ──
     log.info("--- Writing to Google Sheets ---")
     try:
-        client    = get_gspread_client()
-        warehouse = open_warehouse(client)
+        # Initial sleep to let other parallel collectors finish their writes
+        log.info("Waiting 15s before Sheets writes (rate limit protection)...")
+        time.sleep(15)
 
-        ws_raw_market = warehouse.worksheet("RAW_MARKET")
-        ws_scores     = warehouse.worksheet("SCORES")
-        ws_dashboard  = warehouse.worksheet("DASHBOARD")
+        service = get_sheets_service()
 
-        write_raw_market(ws_raw_market, today, raw_rows)
-        write_scores(ws_scores, today, composite)
-        write_dashboard(ws_dashboard, today, composite)
+        write_raw_market(service, today, raw_rows)
+        time.sleep(2)
+        write_scores(service, today, composite)
+        time.sleep(2)
+        write_dashboard(service, today, composite)
 
         log.info("All sheets written successfully.")
 
