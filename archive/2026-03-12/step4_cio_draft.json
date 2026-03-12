@@ -1,0 +1,2783 @@
+{
+  "date": "2026-03-12",
+  "run_id": "cio_draft_20260312_100219",
+  "generation_model": "claude-sonnet-4-5-20250929",
+  "temperature": 0.3,
+  "briefing_type": "ACTION",
+  "system_conviction": "LOW",
+  "risk_ampel": "RED",
+  "fragility_state": "HEALTHY",
+  "data_quality": "DEGRADED",
+  "v16_regime": "LATE_EXPANSION",
+  "briefing_text": "# CIO BRIEFING — 2026-03-12\n\n**Briefing-Typ:** ACTION  \n**System Conviction:** LOW  \n**Risk Ampel:** RED  \n**Fragility State:** HEALTHY  \n**Data Quality:** DEGRADED  \n**V16 Regime:** LATE_EXPANSION  \n**Referenzdatum (Delta):** 2026-03-11  \n**Ist Montag:** False\n\n---\n\n## S1: DELTA\n\nV16 HOLD auf allen 5 Positionen. Keine Rebalance-Trades. Gewichte unverändert: HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%. Regime LATE_EXPANSION stabil seit gestern. Risk Officer eskaliert HYG-Konzentration von WARNING zu CRITICAL (28.8% > 25% Schwelle, Tag 26). ECB-Entscheidung heute (T+0h) triggert EVENT_IMMINENT-Boost auf 3 Alerts. Router COMMODITY_SUPER proximity weiter bei 100% (Tag 3, nächste Evaluation 2026-04-01). Market Analyst System Regime NEUTRAL (gestern NEUTRAL), 5/8 Layer bei score ±1, keine Regime-Transition. F6 UNAVAILABLE. Data Quality DEGRADED (IC-Daten 72h alt, Market Analyst Layer-Daten teilweise stale).\n\n**Materieller Change:** HYG-Alert Severity-Eskalation CRITICAL↑ (gestern WARNING). Sonst keine Portfolio-Änderungen.\n\n---\n\n## S2: CATALYSTS & TIMING\n\n**ECB Rate Decision (heute, T+0h):** Tier-1-Event. Risk Officer boostet 3 Alerts auf WARNING wegen EVENT_IMMINENT. Market Analyst reduziert Conviction in L2 (Macro Regime) und L7 (CB Policy Divergence) auf CONFLICTED. Forward Guidance (IC) warnt: \"Fed rate cuts now priced for September — major reversal driven by commodity/energy shock feeding inflation concerns.\" ECB-Überraschung könnte EUR/USD-Volatilität triggern → Carry-Trade-Unwind-Risiko (siehe S3). Keine Pre-Event-Action empfohlen (Risk Officer: \"No preemptive action recommended\"), aber erhöhte Unsicherheit anerkannt.\n\n**BOJ Decision (2026-03-14, T+48h):** Tier-2-Event. Market Analyst markiert als Catalyst in L4 (Cross-Border Flows) und L8 (Tail Risk): \"BOJ surprise = carry trade unwind risk. Aug 2024 precedent.\" Forward Guidance (IC): \"Credit spreads widening alongside FX volatility rising is concerning because it could trigger a carry trade unwind.\" USDJPY bei 50.0th pctl (neutral), aber VIX term structure in contango (0.97) — tail risk niedrig. Kein unmittelbarer Handlungsbedarf, aber Watchlist-relevant (siehe S7).\n\n**FOMC Decision + SEP + Dot Plot (2026-03-18, T+6d):** Tier-1-Event. Fed-Erwartungen massiv repriced (IC: \"markets now not expecting a cut until September\"). Market Analyst L2 (Macro Regime) zeigt SLOWDOWN (score -1), aber NFCI bei -10 (bearish) vs. 2Y10Y spread bei +4 (bullish) → CONFLICTED. CPI-Daten heute (T+0h) werden FOMC-Narrativ beeinflussen. Keine unmittelbare Action, aber FOMC-Proximity erhöht Conviction-Unsicherheit systemweit.\n\n**Router COMMODITY_SUPER Evaluation (2026-04-01, T+20d):** Proximity 100% seit 3 Tagen. Nächste Entry-Evaluation in 20 Tagen. Signal Generator: \"COMMODITY_SUPER proximity at 100%. Approaching trigger.\" Kein unmittelbarer Trade, aber Persistenz-Check erforderlich (siehe S7, A11).\n\n**Iran-Konflikt Timeline:** ZeroHedge (IC): \"Trump believes the US military campaign against Iran is largely complete and could end very soon\" (2026-03-10). Oil prices dropped sharply auf Trump-Signal. ABER: \"Iran's appointment of a more hardline supreme leader signals the regime intends to fight on rather than capitulate\" (2026-03-10). Doomberg (IC): \"The Strait of Hormuz is effectively closed to shipping\" (2026-03-10), \"Qatar's Ras Laffan LNG export facility shutdown is one of the most consequential developments\" (novelty 9/10). Forward Guidance (IC): \"The Iran-Israel conflict feels like the culmination of 40 years of geopolitical decisions coming to a head, making it unlike typical geopolitical events that can be faded quickly.\" Timeline unklar — Markt preist schnelle Resolution (Forward Guidance: \"Oil markets still priced for quick resolution\"), aber strukturelle Risiken (LNG-Ausfall, Hormuz-Closure) persistieren. Kein unmittelbarer Portfolio-Impact (V16 DBC 20.3% profitiert von Commodity-Strength), aber Tail-Risk-Monitoring erforderlich (siehe S7, W3).\n\n---\n\n## S3: RISK & ALERTS\n\n**CRITICAL↑ (1 Alert, Trade Class A):**\n\n**RO-20260312-003 | EXP_SINGLE_NAME | HYG 28.8% > 25% Schwelle (Tag 26, ESCALATING):**  \nHYG-Konzentration eskaliert von WARNING (gestern) zu CRITICAL (heute) wegen EVENT_IMMINENT-Boost (ECB heute). Base Severity WARNING, aber ECB-Proximity triggert Upgrade. Trend ESCALATING (gestern 28.8%, heute 28.8%, aber Severity-Stufe steigt). Risk Officer: \"Single position HYG (V16) at 28.8% exceeds 25%.\" Empfehlung: Keine (Risk Officer gibt keine Trade-Empfehlungen). **CIO ASSESSMENT:** HYG-Gewicht ist V16-Output und SAKROSANKT. Severity-Eskalation ist EVENT_IMMINENT-Artefakt, keine fundamentale Verschlechterung. ABER: 26 Tage über Schwelle, ECB-Event heute erhöht Unsicherheit. **ACTION REQUIRED:** A10 (HYG Post-CPI Immediate Review) ist seit 4 Tagen offen — HEUTE ABSCHLIESSEN (siehe S7). Post-ECB: Prüfe ob HYG-Spread-Widening oder Volatility-Spike V16-Regime-Shift triggern könnte (V16 LATE_EXPANSION proximity zu STEADY_GROWTH unklar, keine Transition-Daten verfügbar).\n\n**WARNING→ (3 Alerts, Trade Class A):**\n\n**RO-20260312-002 | EXP_SECTOR_CONCENTRATION | Effective Commodities Exposure 37.2% (Tag 2, STABLE):**  \nCommodities-Exposure (DBC 20.3% + GLD 16.9% = 37.2%) nähert sich 35%-Warnschwelle. Base Severity MONITOR, EVENT_IMMINENT-Boost → WARNING. Risk Officer: \"No action required. Monitor for further increases.\" **CIO ASSESSMENT:** Router COMMODITY_SUPER bei 100% proximity (Tag 3) — Commodities-Tilt ist systemisch gewollt. 37.2% ist 2.2pp über Schwelle, aber V16-validiert. Kein unmittelbarer Handlungsbedarf. **WATCH:** Falls Router COMMODITY_SUPER Entry (2026-04-01) erfolgt, würde Commodities-Exposure weiter steigen → Konzentrations-Review vor Entry erforderlich (siehe S7, A11).\n\n**RO-20260312-005 | INT_REGIME_CONFLICT | V16 Risk-On vs. Market Analyst NEUTRAL (Tag 2, STABLE):**  \nV16 state \"Risk-On\" (regime LATE_EXPANSION) divergiert von Market Analyst \"NEUTRAL\" (lean UNKNOWN). Risk Officer: \"V16 operates on validated signals — this divergence may indicate V16 will transition soon. No action required on V16.\" **CIO ASSESSMENT:** V16 und Market Analyst teilen viele Datenquellen (siehe Epistemische Regeln) — Divergenz hat BEGRENZTEN Bestätigungswert. Market Analyst System Regime NEUTRAL weil \"Most layers near zero — no strong directional signal\" (5/8 Layer bei score ±1). V16 LATE_EXPANSION ist validiert, aber Regime-Proximity-Daten fehlen (Data Quality DEGRADED). **INTERPRETATION:** Divergenz ist Artefakt von Market Analyst Low Conviction (5/8 Layer \"regime_duration\" limiting factor), nicht V16-Fehler. ABER: Fehlende Transition-Proximity-Daten erhöhen Unsicherheit. **ACTION REQUIRED:** A8 (Router-Proximity Persistenz-Check) seit 15 Tagen offen — ESKALIEREN (siehe S7).\n\n**RO-20260312-001 | TMP_EVENT_CALENDAR | ECB Rate Decision heute (Tag 2, STABLE):**  \nECB-Event triggert EVENT_IMMINENT-Boost auf alle Alerts. Risk Officer: \"Increased uncertainty may affect existing risk assessments. No preemptive action recommended.\" **CIO ASSESSMENT:** Standard Event-Alert. Keine Action erforderlich, aber Kontext für andere Alerts (HYG CRITICAL, Regime Conflict WARNING).\n\n**ONGOING CONDITIONS (1, Trade Class A):**\n\n**RO-20260312-004 | EXP_SINGLE_NAME | DBC 20.3% approaching 20% limit (Tag 26, ONGOING):**  \nDBC bei 20.3%, 0.3pp über 20%-Schwelle. Base Severity MONITOR, EVENT_IMMINENT-Boost → WARNING (in Ongoing Conditions, nicht Alerts). **CIO ASSESSMENT:** DBC-Gewicht ist V16-Output und SAKROSANKT. Router COMMODITY_SUPER bei 100% proximity — DBC-Tilt ist systemisch gewollt. 20.3% ist marginal über Schwelle. Kein Handlungsbedarf.\n\n**RISK SUMMARY INTERPRETATION:**  \nRisk Ampel RED wegen 1 CRITICAL Alert (HYG). ABER: CRITICAL-Severity ist EVENT_IMMINENT-Artefakt (ECB heute), keine fundamentale Verschlechterung. HYG-Konzentration ist seit 26 Tagen bekannt, V16-validiert, und SAKROSANKT. **CORE ISSUE:** Data Quality DEGRADED (IC 72h alt, Market Analyst Layer-Daten stale) → System Conviction LOW → erhöhte Unsicherheit bei gleichzeitig stabilen Portfolio-Gewichten. **OPERATOR GUIDANCE:** RED-Ampel ernst nehmen (ECB-Event heute erhöht Volatility-Risiko), aber keine preemptive Action. Post-ECB: A10 (HYG Review) HEUTE abschließen.\n\n---\n\n## S4: PATTERNS & SYNTHESIS\n\n**AKTIVE PATTERNS (Klasse A):** Keine. Pre-Processor liefert leere Liste.\n\n**CIO OBSERVATIONS (Klasse B):**\n\n**OBS-1: COMMODITY_SUPER Persistence ohne IC-Bestätigung:**  \nRouter COMMODITY_SUPER proximity 100% seit 3 Tagen (seit 2026-03-10). Trigger-Bedingungen: DBC/SPY 6m relative 1.0 (erfüllt), V16 regime allowed 1.0 (erfüllt), DXY not rising 1.0 (erfüllt). Dual Signal: fast_met TRUE, slow_met TRUE. **ABER:** IC Consensus COMMODITIES nur +4.5 (LOW confidence, 1 source, 2 claims). Howell (IC): \"Howell views the surge in gold prices as structurally driven by Chinese demand, not cyclical or sentiment-based factors\" (novelty 5/10, signal 0/10 — Anti-Pattern). IC ENERGY -4.54 (MEDIUM confidence, 3 sources, 9 claims) — Doomberg warnt vor LNG-Ausfall und EU-Energiekrise, aber ZeroHedge (IC) meldet \"Trump believes Iran campaign largely complete\" → Oil prices dropped. **SYNTHESIS:** Router-Signal ist quantitativ validiert (DBC/SPY 6m relative stark), aber IC-Narrativ ist GESPALTEN (Howell bullish Gold, Doomberg bearish Energy wegen Geopolitik, ZeroHedge bullish Energy wegen Trump-Signal). **IMPLICATION:** COMMODITY_SUPER Entry (2026-04-01) hat quantitative Basis, aber qualitative Unsicherheit. **ACTION REQUIRED:** A11 (Router COMMODITY_SUPER Persistence Validation) seit 4 Tagen offen — HEUTE PRIORISIEREN (siehe S7).\n\n**OBS-2: Market Analyst Low Conviction als Systemzustand:**  \n5/8 Market Analyst Layer haben \"regime_duration\" als limiting factor (Conviction LOW) — alle Layer bei duration_days 1 (gestern Regime-Change). 3/8 Layer haben \"data_clarity\" als limiting factor (Conviction CONFLICTED) — L2 (Macro Regime), L6 (Relative Value), L7 (CB Policy Divergence). **INTERPRETATION:** Market Analyst ist in \"Regime-Transition-Modus\" — alle Layer haben gestern Regime gewechselt, Conviction ist systemisch niedrig weil Regimes zu jung sind. **IMPLICATION:** System Conviction LOW ist STRUKTURELL (Market Analyst-Design), nicht Event-getrieben. V16 LATE_EXPANSION ist stabil (keine Regime-Change-Daten), aber Market Analyst NEUTRAL ist Artefakt von Layer-Resets. **OPERATOR GUIDANCE:** Verlasse dich auf V16 (validiert), nicht auf Market Analyst (Low Conviction wegen Regime-Youth). Market Analyst wird in 5-7 Tagen wieder informativ sein (wenn Layer-Regimes > 5 Tage alt).\n\n**OBS-3: IC Geopolitics Divergenz — Trump-Signal vs. Strukturelle Risiken:**  \nIC GEOPOLITICS -3.65 (HIGH confidence, 5 sources, 20 claims). ZeroHedge (IC): \"Trump believes the US military campaign against Iran is largely complete and could end very soon\" (2026-03-10) → Oil prices dropped sharply. **ABER:** Doomberg (IC): \"The Strait of Hormuz is effectively closed to shipping\" (novelty 9/10, 2026-03-10), \"Qatar's Ras Laffan LNG export facility shutdown is one of the most consequential developments\" (novelty 9/10, 2026-03-10). Forward Guidance (IC): \"The Iran-Israel conflict feels like the culmination of 40 years of geopolitical decisions coming to a head, making it unlike typical geopolitical events that can be faded quickly.\" **SYNTHESIS:** Markt preist Trump-Signal (schnelle Resolution) → Oil prices down. ABER: Strukturelle Risiken (Hormuz-Closure, LNG-Ausfall) sind UNABHÄNGIG von Trump-Narrativ und haben längere Halbwertszeit. **IMPLICATION:** Oil-Preise könnten kurzfristig fallen (Trump-Signal), aber mittelfristig steigen (strukturelle Supply-Disruption). V16 DBC 20.3% ist Commodities-Broad-Basket (nicht nur Oil) — profitiert von struktureller Commodity-Strength (Gold, Metals), weniger von Oil-Volatility. **OPERATOR GUIDANCE:** Ignoriere Trump-Noise. Fokussiere auf strukturelle Risiken (Doomberg, Forward Guidance). W3 (Geopolitik-Eskalation) bleibt aktiv (siehe S7).\n\n**OBS-4: HYG-Konzentration vs. Credit-Spread-Stabilität:**  \nHYG 28.8% (CRITICAL Alert). Market Analyst L2 (Macro Regime) zeigt HY OAS 0 (neutral, 50.0th pctl), IG OAS 0 (neutral, 50.0th pctl). IC CREDIT -8.0 (LOW confidence, 1 source, 1 claim) — Forward Guidance (IC): \"Credit spreads widening alongside FX volatility rising is concerning because it could trigger a carry trade unwind\" (2026-03-06, 6 Tage alt). **SYNTHESIS:** HYG-Konzentration ist hoch (28.8%), aber Credit-Spreads sind STABIL (OAS neutral). IC warnt vor Spread-Widening-Risiko (Carry-Trade-Unwind), aber aktuell kein Signal. **IMPLICATION:** HYG-Konzentration ist Risk-Officer-Alert (quantitativ), aber fundamentales Credit-Risk ist niedrig (Spreads stabil). CRITICAL-Severity ist EVENT_IMMINENT-Artefakt (ECB heute), nicht Credit-Deterioration. **OPERATOR GUIDANCE:** HYG-Review (A10) HEUTE abschließen, aber keine Panik. Post-ECB: Prüfe ob Spread-Widening erfolgt → dann V16-Regime-Shift-Risiko.\n\n---\n\n## S5: INTELLIGENCE DIGEST\n\n**IC CONSENSUS OVERVIEW (8 sources, 153 claims, 72h alt):**\n\n**HIGH CONFIDENCE (≥3 sources):**  \n- **GEOPOLITICS -3.65** (5 sources, 20 claims): Trump-Signal (ZeroHedge: \"Iran campaign largely complete\") vs. strukturelle Risiken (Doomberg: \"Hormuz closed\", \"Qatar LNG offline\"). Forward Guidance: \"Iran-Israel conflict feels like culmination of 40 years of geopolitical decisions.\" Divergenz zwischen kurzfristigem Trump-Narrativ und mittelfristigen Supply-Disruptions.  \n- **ENERGY -4.54** (3 sources, 9 claims): Doomberg warnt vor EU-Energiekrise (LNG-Ausfall, Hormuz-Closure). ZeroHedge meldet Oil-Price-Drop auf Trump-Signal. Jeff Snider (IC): \"The duration of the Hormuz disruption is the decisive variable — even a temporary oil shock is already feeding into inflation expectations\" (novelty 7/10, 2026-03-10).\n\n**MEDIUM CONFIDENCE (2-3 sources):**  \n- **FED_POLICY +1.94** (3 sources, 4 claims): Forward Guidance (IC): \"Fed rate cuts now priced for September — major reversal driven by commodity/energy shock feeding inflation concerns\" (2026-03-06, 6 Tage alt). Howell (IC): Fed-Stimulus \"at best sufficient to keep equity markets supported near current levels, but lacks the impetus to drive them materially higher\" (2026-03-08, 4 Tage alt). Jeff Snider (IC): \"The US labor market was already deteriorating — showing multiple simultaneous negatives in the latest data\" (novelty 5/10, 2026-03-10).  \n- **CHINA_EM +3.38** (3 sources, 3 claims): Forward Guidance (IC): \"Latin America is the primary geographic winner of the current geopolitical 'spherification' trend\" (novelty 7/10, 2026-03-11, 1 Tag alt). ZeroHedge (IC): \"China's trade boom — with exports surging over 20% YoY and imports nearly 20% — signals China may be exporting inflation rather than deflation\" (novelty 7/10, 2026-03-10). Doomberg (IC): \"Major LNG-importing economies including China, Japan, South Korea, India, and Taiwan will be negatively impacted by the Qatar LNG shutdown\" (novelty 7/10, 2026-03-10).  \n- **TECH_AI +2.25** (2 sources, 4 claims): ZeroHedge (IC): \"The U.S. government's retaliatory blacklisting of Anthropic over its refusal to support autonomous weapons represents a major escalation in the conflict between AI ethics and national security imperatives\" (novelty 7/10, 2026-03-10). Luke Gromen (IC): \"AI-driven unemployment could reach 10%+ within a couple of years, creating a deflationary demand shock that would force the Fed to ease aggressively\" (novelty 6/10, 2026-03-11, 1 Tag alt).  \n- **EQUITY_VALUATION -7.6** (2 sources, 2 claims): Forward Guidance (IC): \"Markets are mispricing the oil supply shock's geographic dispersion — Europe faces a sharply negative terms-of-trade shock, while the US is largely insulated\" (novelty 5/10, 2026-03-11, 1 Tag alt). Luke Gromen (IC): \"Europe, as a major holder of US Treasuries and equities, will be forced to sell those dollar assets to finance energy imports, creating a structural bid for the dollar and a structural headwind for US equities\" (novelty 5/10, 2026-03-11, 1 Tag alt).  \n- **INFLATION -2.5** (2 sources, 3 claims): ZeroHedge (IC): \"China's trade boom signals China may be exporting inflation rather than deflation\" (2026-03-10). Jeff Snider (IC): \"The global economy is in a far more fragile state than generally recognized, with the oil shock compounding pre-existing deflationary pressures\" (novelty 6/10, 2026-03-10).\n\n**LOW CONFIDENCE (1 source):**  \n- **CREDIT -8.0** (1 source, 1 claim): Forward Guidance (IC): \"Credit spreads widening alongside FX volatility rising is concerning because it could trigger a carry trade unwind\" (2026-03-06, 6 Tage alt). Aktuell keine Spread-Widening-Signale (Market Analyst HY OAS 0, IG OAS 0).  \n- **COMMODITIES +4.5** (1 source, 2 claims): Howell (IC): \"Howell views the surge in gold prices as structurally driven by Chinese demand, not cyclical or sentiment-based factors\" (novelty 5/10, signal 0/10 — Anti-Pattern, 2026-03-08, 4 Tage alt).  \n- **POSITIONING -3.0** (1 source, 1 claim): Howell (IC): \"Slowing liquidity momentum and potential equity topping process\" (2026-03-08, 4 Tage alt).\n\n**NO DATA:**  \nLIQUIDITY, RECESSION, CRYPTO, DOLLAR, VOLATILITY.\n\n**DIVERGENCES:** Keine formalen Divergences (Pre-Processor liefert leere Liste).\n\n**HIGH NOVELTY CLAIMS (Top 5, alle Anti-Patterns — signal 0/10):**  \n1. Howell: \"China's gold accumulation linked to 'secretive' Yuan monetization\" (novelty 7/10, 2026-03-08).  \n2. Howell: \"China's gold absorption explains stable US Treasury term premia\" (novelty 7/10, 2026-03-08).  \n3. Howell: \"China's gold accumulation explains lackluster crypto performance\" (novelty 8/10, 2026-03-08).  \n4. Forward Guidance: \"Qatar LNG complex offline since early March — restarting will take multiple weeks\" (novelty 8/10, 2026-03-06).  \n5. Doomberg: \"Strait of Hormuz effectively closed to shipping\" (novelty 9/10, 2026-03-10).\n\n**CIO SYNTHESIS:**  \nIC-Daten sind 72h alt (Data Quality DEGRADED), aber HIGH-confidence-Themen (GEOPOLITICS, ENERGY) bleiben relevant. **KERN-NARRATIV:** Trump signalisiert schnelle Iran-Resolution → Markt preist Oil-Price-Drop. ABER: Strukturelle Risiken (Hormuz-Closure, Qatar LNG-Ausfall) persistieren und haben längere Halbwertszeit als Trump-Noise. Forward Guidance und Doomberg (unabhängige Quellen) warnen vor mittelfristigen Supply-Disruptions. **IMPLICATION FÜR PORTFOLIO:** V16 DBC 20.3% profitiert von struktureller Commodity-Strength (Gold, Metals), weniger von Oil-Volatility. Router COMMODITY_SUPER bei 100% proximity ist quantitativ validiert, aber IC-Narrativ ist gespalten (Howell bullish Gold, Doomberg bearish Energy). **ACTION REQUIRED:** A12 (IC Geopolitics Narrative Resolution Tracking) seit 4 Tagen offen — HEUTE PRIORISIEREN (siehe S7).\n\n---\n\n## S6: PORTFOLIO CONTEXT\n\n**V16 (100% Portfolio, 5 Positionen):**  \nRegime LATE_EXPANSION (stabil seit gestern, keine Transition-Proximity-Daten verfügbar wegen Data Quality DEGRADED). Gewichte: HYG 28.8% (CRITICAL Alert, Tag 26), DBC 20.3% (ONGOING Condition, Tag 26), XLU 18.0%, GLD 16.9%, XLP 16.1%. Effective Commodities Exposure 37.2% (DBC + GLD, WARNING Alert). Keine Rebalance-Trades heute. DD-Protect INACTIVE (current drawdown 0.0%). **PERFORMANCE:** CAGR 0.0%, Sharpe 0, MaxDD 0.0%, Vol 0.0%, Calmar 0 (alle Metriken 0 — vermutlich Daten-Artefakt oder Portfolio zu jung für Performance-Berechnung).\n\n**F6 (0% Portfolio):** UNAVAILABLE. Keine aktiven Positionen, keine Signale heute.\n\n**ROUTER (US_DOMESTIC, Tag 435):**  \nCOMMODITY_SUPER proximity 100% (Tag 3, seit 2026-03-10). Nächste Entry-Evaluation 2026-04-01 (T+20d). EM_BROAD proximity 0.0% (DXY 6m momentum 0.0, VWO/SPY 6m relative 35.03%, V16 regime allowed 100%, BAMLEM falling 94%). CHINA_STIMULUS proximity 0.0% (China credit impulse 0.0, FXI/SPY 3m relative 94%, CNY stable 0.0, V16 regime allowed 100%). **INTERPRETATION:** COMMODITY_SUPER ist einziger Trigger nahe Entry (100% proximity, dual signal erfüllt). EM_BROAD und CHINA_STIMULUS sind weit entfernt (0% proximity). **IMPLICATION:** Falls COMMODITY_SUPER Entry erfolgt (2026-04-01), würde Portfolio-Tilt weiter in Richtung Commodities gehen → Konzentrations-Review vor Entry erforderlich (siehe S7, A11).\n\n**PERM_OPT:** UNAVAILABLE (V2).\n\n**CONCENTRATION CHECK (Baseline):**  \nEffective Tech 10% (unter 15%-Schwelle, kein Warning). Top-5-Konzentration 100% (5 Positionen = 100% Portfolio, technisch korrekt aber nicht aussagekräftig). Top-5-Assets: HYG, DBC, XLU, GLD, XLP. **INTERPRETATION:** Portfolio ist 5-Asset-Konzentrat (V16-only, V1). HYG 28.8% ist größte Einzelposition (CRITICAL Alert). Commodities-Exposure 37.2% ist größte Sektor-Konzentration (WARNING Alert). Keine Tech-Konzentration (XLK 0%).\n\n**SENSITIVITY:**  \nSPY Beta: null (nicht verfügbar, V1). Effective Positions: null (nicht verfügbar, V1). Last Correlation Update: null. **INTERPRETATION:** Keine Sensitivity-Daten verfügbar. Portfolio-Sensitivität zu SPY unklar. Risk Officer: \"Sensitivity: not available (V1).\"\n\n**G7 CONTEXT:**  \nStatus: UNAVAILABLE. Last Update: null. Severity Impact: NONE. **INTERPRETATION:** G7 Monitor nicht live (V2). Keine Thesis-Guidance verfügbar.\n\n**CIO ASSESSMENT:**  \nPortfolio ist V16-Monokultur (100% V16, 5 Positionen). HYG-Konzentration (28.8%) ist seit 26 Tagen bekannt, V16-validiert, und SAKROSANKT. Commodities-Tilt (37.2%) ist Router-COMMODITY_SUPER-proximity-getrieben (100% seit 3 Tagen). **CORE ISSUE:** Data Quality DEGRADED (IC 72h alt, Market Analyst Layer-Daten stale, keine V16 Transition-Proximity-Daten) → System Conviction LOW → erhöhte Unsicherheit bei gleichzeitig stabilen Portfolio-Gewichten. **OPERATOR GUIDANCE:** Vertraue V16 (validiert), aber erkenne Data-Quality-Limitationen an. Post-ECB (heute): Prüfe ob Event V16-Regime-Shift triggert (A10, siehe S7).\n\n---\n\n## S7: ACTION ITEMS & WATCHLIST\n\n**KRITISCHE ESKALATIONEN (ACT-Items offen ≥20 Tage):**\n\n**A1: HYG-Konzentration Review (CRITICAL, Trade Class A, Tag 27, DRINGEND):**  \n**Was:** HYG 28.8% seit 27 Tagen über 25%-Schwelle. Heute CRITICAL-Eskalation (EVENT_IMMINENT-Boost wegen ECB).  \n**Warum:** Risk Officer eskaliert Severity. ECB-Event heute erhöht Volatility-Risiko. HYG-Gewicht ist V16-Output (SAKROSANKT), aber 27 Tage Persistenz erfordert Review.  \n**Wie dringend:** HEUTE. ECB-Entscheidung in wenigen Stunden. Post-ECB: Prüfe ob Spread-Widening oder Volatility-Spike erfolgt.  \n**Nächste Schritte:** (1) Post-ECB (heute Abend): Prüfe HYG-Spread (HY OAS) und VIX. (2) Falls Spread-Widening > 10bp oder VIX > 20: Prüfe mit Agent R ob V16-Regime-Shift-Risiko besteht. (3) Falls keine Verschlechterung: Dokumentiere \"HYG-Konzentration stabil trotz ECB-Event\" und CLOSE A1.  \n**Trigger noch aktiv:** Ja (HYG 28.8% > 25%).  \n**Status:** OPEN, ESKALIERT (Tag 27).\n\n**A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A, Tag 27, DRINGEND):**  \n**Was:** NFP (2026-03-07, T-5d) und ECB (heute, T+0h) Event-Monitoring.  \n**Warum:** Tier-1-Events mit HIGH impact. Risk Officer boostet Alerts auf WARNING wegen EVENT_IMMINENT.  \n**Wie dringend:** HEUTE (ECB-Event). NFP ist bereits vorbei (T-5d), aber Post-NFP-Review fehlt.  \n**Nächste Schritte:** (1) Post-ECB (heute Abend): Prüfe ob ECB-Überraschung erfolgt (Hawkish/Dovish). (2) Falls Überraschung: Prüfe EUR/USD-Volatility und Carry-Trade-Unwind-Risiko (siehe S3, BOJ-Catalyst). (3) Post-NFP-Review nachholen: Prüfe ob NFP-Daten (T-5d) V16-Regime beeinflusst haben. (4) Falls keine Material-Changes: CLOSE A2.  \n**Trigger noch aktiv:** Ja (ECB heute).  \n**Status:** OPEN, ESKALIERT (Tag 27).\n\n**A3: CPI-Vorbereitung (MEDIUM, Trade Class A, Tag 27, DRINGEND):**  \n**Was:** CPI-Event-Vorbereitung (Datum unklar, vermutlich T+0h oder T+1d basierend auf Market Analyst Catalyst-Liste).  \n**Warum:** Tier-1-Event. Market Analyst L2 (Macro Regime) markiert CPI als Catalyst: \"Drives Fed expectations. Hot CPI -> tightening narrative.\"  \n**Wie dringend:** HEUTE (falls CPI heute) oder MORGEN (falls CPI morgen).  \n**Nächste Schritte:** (1) Kläre CPI-Datum (Temporal Context zeigt kein CPI-Event in events_48h oder events_7d — Daten-Inkonsistenz). (2) Falls CPI heute: Post-CPI-Review HEUTE ABEND (analog zu A10). (3) Falls CPI morgen: Pre-CPI-Check HEUTE (Prüfe ob V16-Regime-Shift-Proximity steigt). (4) Falls CPI bereits vorbei: CLOSE A3.  \n**Trigger noch aktiv:** Unklar (CPI-Datum fehlt in Temporal Context).  \n**Status:** OPEN, ESKALIERT (Tag 27).\n\n**A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, Tag 20, DRINGEND):**  \n**Was:** IC-Daten sind 72h alt (Data Quality DEGRADED). Letzter IC-Run vermutlich 2026-03-10.  \n**Warum:** System Conviction LOW wegen veralteter IC-Daten. HIGH-confidence-Themen (GEOPOLITICS, ENERGY) sind noch relevant, aber Freshness fehlt.  \n**Wie dringend:** HEUTE. IC-Refresh würde Data Quality auf FULL upgraden und System Conviction erhöhen.  \n**Nächste Schritte:** (1) Prüfe ob IC-Pipeline manuell getriggert werden kann. (2) Falls ja: Trigger IC-Refresh HEUTE. (3) Falls nein: Dokumentiere \"IC-Daten 72h alt, nächster Auto-Refresh T+Xh\" und warte auf Auto-Refresh. (4) Post-Refresh: Re-evaluate System Conviction und A12 (IC Geopolitics Narrative Resolution).  \n**Trigger noch aktiv:** Ja (IC-Daten 72h alt).  \n**Status:** OPEN, ESKALIERT (Tag 20).\n\n**A7: Post-CPI System-Review (HIGH, Trade Class A, Tag 18, DRINGEND):**  \n**Was:** System-Review nach CPI-Event (Datum unklar, siehe A3).  \n**Warum:** CPI ist Tier-1-Event mit HIGH impact auf Fed-Erwartungen und V16-Regime.  \n**Wie dringend:** HEUTE (falls CPI heute) oder MORGEN (falls CPI morgen).  \n**Nächste Schritte:** (1) Kläre CPI-Datum (siehe A3). (2) Post-CPI: Prüfe ob CPI-Überraschung (Hot/Cold) erfolgt. (3) Falls Hot CPI: Prüfe ob Fed-Tightening-Narrativ V16-Regime-Shift triggert (LATE_EXPANSION → STEADY_GROWTH?). (4) Falls Cold CPI: Prüfe ob Fed-Easing-Narrativ V16-Regime stabilisiert. (5) Dokumentiere Findings und CLOSE A7.  \n**Trigger noch aktiv:** Unklar (CPI-Datum fehlt).  \n**Status:** OPEN, ESKALIERT (Tag 18).\n\n**NEUE ACT-ITEMS (offen <20 Tage, aber HEUTE PRIORISIEREN):**\n\n**A10: HYG Post-CPI Immediate Review (CRITICAL, Trade Class A, Tag 4, NEU):**  \n**Was:** HYG-Review nach CPI-Event (Datum unklar, siehe A3).  \n**Warum:** HYG 28.8% (CRITICAL Alert). CPI-Event könnte Spread-Widening triggern.  \n**Wie dringend:** HEUTE (falls CPI heute) oder MORGEN (falls CPI morgen). **ABER:** ECB-Event ist HEUTE — Post-ECB-Review hat Priorität (siehe A1).  \n**Nächste Schritte:** (1) Post-ECB (heute Abend): Prüfe HYG-Spread und VIX (siehe A1). (2) Post-CPI (heute oder morgen): Wiederhole HYG-Spread-Check. (3) Falls Spread-Widening in beiden Events: Eskaliere zu Agent R (V16-Regime-Shift-Risiko). (4) Falls keine Verschlechterung: MERGE A10 mit A1 und CLOSE.  \n**Trigger noch aktiv:** Ja (HYG 28.8% > 25%, CPI-Event pending).  \n**Status:** OPEN (Tag 4), HEUTE PRIORISIEREN.\n\n**A11: Router COMMODITY_SUPER Persistence Validation (HIGH, Trade Class B, Tag 4, NEU):**  \n**Was:** COMMODITY_SUPER proximity 100% seit 3 Tagen. Nächste Entry-Evaluation 2026-04-01 (T+20d).  \n**Warum:** Proximity ist quantitativ validiert (DBC/SPY 6m relative 1.0, dual signal erfüllt), aber IC-Narrativ ist gespalten (Howell bullish Gold, Doomberg bearish Energy, ZeroHedge bullish Energy wegen Trump-Signal). Persistenz-Check erforderlich vor Entry.  \n**Wie dringend:** DIESE WOCHE. Entry-Evaluation ist in 20 Tagen — genug Zeit für Persistenz-Check, aber nicht aufschieben.  \n**Nächste Schritte:** (1) Prüfe DBC/SPY 6m relative Trend (steigend/fallend/stabil). (2) Prüfe IC COMMODITIES und IC ENERGY Consensus (nach IC-Refresh, siehe A6). (3) Falls Proximity fällt < 80% in nächsten 7 Tagen: Entry-Risiko sinkt, kein unmittelbarer Handlungsbedarf. (4) Falls Proximity stabil bei 100%: Prüfe Konzentrations-Impact (Commodities-Exposure würde von 37.2% weiter steigen). (5) Dokumentiere Findings und bereite Entry-Decision vor (2026-04-01).  \n**Trigger noch aktiv:** Ja (Proximity 100%).  \n**Status:** OPEN (Tag 4), DIESE WOCHE PRIORISIEREN.\n\n**A12: IC Geopolitics Narrative Resolution Tracking (MEDIUM, Trade Class B, Tag 4, NEU):**  \n**Was:** IC GEOPOLITICS -3.65 (HIGH confidence, 5 sources, 20 claims). Trump-Signal (schnelle Iran-Resolution) vs. strukturelle Risiken (Hormuz-Closure, Qatar LNG-Ausfall).  \n**Warum:** Markt preist Trump-Narrativ (Oil prices down), aber strukturelle Risiken persistieren (Doomberg, Forward Guidance). Divergenz zwischen kurzfristigem Narrativ und mittelfristigen Risiken.  \n**Wie dringend:** DIESE WOCHE. IC-Daten sind 72h alt (siehe A6) — nach IC-Refresh wird Narrativ klarer.  \n**Nächste Schritte:** (1) Post-IC-Refresh (siehe A6): Prüfe ob neue Claims Trump-Narrativ bestätigen oder widerlegen. (2) Prüfe ob Hormuz-Closure und Qatar LNG-Ausfall resolved sind (ZeroHedge, Doomberg). (3) Falls Trump-Narrativ dominiert (schnelle Resolution): Oil-Price-Drop ist nachhaltig, DBC-Exposure könnte leiden. (4) Falls strukturelle Risiken dominieren (Hormuz/LNG persistent): Oil-Price-Drop ist temporär, DBC-Exposure profitiert mittelfristig. (5) Dokumentiere Findings und update W3 (Geopolitik-Eskalation).  \n**Trigger noch aktiv:** Ja (IC GEOPOLITICS -3.65, Divergenz persistent).  \n**Status:** OPEN (Tag 4), DIESE WOCHE PRIORISIEREN.\n\n**AKTIVE WATCH-ITEMS (Monitoring, kein unmittelbarer Handlungsbedarf):**\n\n**W3: Geopolitik-Eskalation (Doomberg/ZeroHedge, Tag 27):**  \n**Was:** Iran-Konflikt Timeline. Trump-Signal (schnelle Resolution) vs. strukturelle Risiken (Hormuz-Closure, Qatar LNG-Ausfall).  \n**Monitoring:** Prüfe täglich ZeroHedge und Doomberg für neue Claims. Trigger: Falls Hormuz-Closure > 7 Tage oder Qatar LNG-Restart-Timeline > 4 Wochen → Eskaliere zu ACT-Item.  \n**Nächster Check:** Täglich (bis IC-Refresh, siehe A6).  \n**Status:** OPEN (Tag 27).\n\n**W15: Market Analyst Conviction Recovery (NEU, Tag 6):**  \n**Was:** Market Analyst System Regime NEUTRAL, 5/8 Layer bei \"regime_duration\" limiting factor (Conviction LOW).  \n**Monitoring:** Prüfe täglich Market Analyst Layer-Regimes. Trigger: Falls Layer-Regimes > 5 Tage alt → Conviction steigt auf MEDIUM/HIGH → System Conviction steigt von LOW.  \n**Nächster Check:** 2026-03-17 (T+5d, wenn Layer-Regimes > 5 Tage alt).  \n**Status:** OPEN (Tag 6).\n\n**W16: IC Geopolitics Divergenz Resolution (NEU, Tag 6):**  \n**Was:** IC GEOPOLITICS -3.65, Trump-Signal vs. strukturelle Risiken (siehe A12).  \n**Monitoring:** Siehe A12. Falls A12 abgeschlossen: MERGE W16 mit A12 und CLOSE W16.  \n**Nächster Check:** Nach IC-Refresh (siehe A6).  \n**Status:** OPEN (Tag 6), REDUNDANT mit A12.\n\n**W17: Howell Liquidity Update (NEU, Tag 6):**  \n**Was:** Howell (IC): \"Slowing liquidity momentum and potential equity topping process\" (2026-03-08, 4 Tage alt). IC LIQUIDITY hat NO_DATA (0 sources).  \n**Monitoring:** Prüfe nach IC-Refresh (siehe A6) ob neue Howell-Claims zu LIQUIDITY erscheinen. Trigger: Falls Howell \"liquidity momentum slowing\" bestätigt → Prüfe ob V16-Regime-Shift-Risiko (LATE_EXPANSION → STEADY_GROWTH).  \n**Nächster Check:** Nach IC-Refresh (siehe A6).  \n**Status:** OPEN (Tag 6).\n\n**W18: Credit Spread Diskrepanz (NEU, Tag 3):**  \n**Was:** IC CREDIT -8.0 (Forward Guidance warnt vor Spread-Widening), aber Market Analyst HY OAS 0, IG OAS 0 (Spreads stabil).  \n**Monitoring:** Prüfe täglich Market Analyst L2 (Macro Regime) HY OAS und IG OAS. Trigger: Falls OAS > 60th pctl (Spread-Widening) → Eskaliere zu ACT-Item (V16-Regime-Shift-Risiko).  \n**Nächster Check:** Täglich (Post-ECB heute besonders relevant).  \n**Status:** OPEN (Tag 3).\n\n**CLOSE-EMPFEHLUNGEN:** Keine. Alle offenen Items haben aktive Triggers.\n\n**PRIORISIERUNG FÜR HEUTE:**  \n1. **A1 (HYG-Konzentration Review):** CRITICAL, ECB-Event heute, Post-ECB-Check HEUTE ABEND.  \n2. **A2 (NFP/ECB Event-Monitoring):** HIGH, ECB-Event heute, Post-ECB-Check HEUTE ABEND.  \n3. **A10 (HYG Post-CPI Immediate Review):** CRITICAL, MERGE mit A1, Post-ECB-Check HEUTE ABEND.  \n4. **A11 (Router COMMODITY_SUPER Persistence Validation):** HIGH, DIESE WOCHE, aber HEUTE starten (DBC/SPY Trend-Check).  \n5. **A12 (IC Geopolitics Narrative Resolution Tracking):** MEDIUM, DIESE WOCHE, aber nach IC-Refresh (siehe A6).  \n6. **A6 (IC-Daten-Refresh-Eskalation):** HIGH, HEUTE, würde A12 und W16/W17 informieren.  \n7. **A3 (CPI-Vorbereitung):** MEDIUM, Datum unklar, kläre CPI-Timing HEUTE.  \n8. **A7 (Post-CPI System-Review):** HIGH, nach CPI-Event (Datum unklar).\n\n---\n\n## KEY ASSUMPTIONS\n\n**KA1: ecb_no_surprise — ECB-Entscheidung heute (T+0h) liefert keine Material-Überraschung (Hawkish/Dovish)**  \nWenn falsch: EUR/USD-Volatility steigt → Carry-Trade-Unwind-Risiko (Forward Guidance IC-Warnung) → Credit-Spread-Widening möglich → HYG-Konzentration (28.8%) wird zu fundamentalem Risk (nicht nur quantitativem Alert) → V16-Regime-Shift-Risiko steigt (LATE_EXPANSION → STEADY_GROWTH?) → A1 und A10 eskalieren zu IMMEDIATE ACTION.\n\n**KA2: commodity_super_persistence — Router COMMODITY_SUPER proximity bleibt bei 100% bis Entry-Evaluation (2026-04-01)**  \nWenn falsch: DBC/SPY 6m relative fällt < 80% → COMMODITY_SUPER-Trigger wird nicht erfüllt → Entry (2026-04-01) erfolgt nicht → Commodities-Tilt (37.2%) bleibt stabil statt weiter zu steigen → Konzentrations-Risiko sinkt → A11 wird irrelevant.\n\n**KA3: iran_structural_risks_dominate — Strukturelle Risiken (Hormuz-Closure, Qatar LNG-Ausfall) dominieren mittelfristig über Trump-Narrativ (schnelle Resolution)**  \nWenn falsch: Trump-Narrativ ist korrekt → Iran-Konflikt endet schnell → Hormuz öffnet, Qatar LNG startet → Oil-Price-Drop ist nachhaltig → DBC-Exposure (20.3%) leidet → Commodities-Tilt (37.2%) wird zu Drag statt Boost → Router COMMODITY_SUPER proximity könnte fallen → A11 und A12 müssen neu bewertet werden → W3 (Geopolitik-Eskalation) kann CLOSED werden.",
+  "section_texts": {
+    "S1_delta": "DELTA\n\nV16 HOLD auf allen 5 Positionen. Keine Rebalance-Trades. Gewichte unverändert: HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%. Regime LATE_EXPANSION stabil seit gestern. Risk Officer eskaliert HYG-Konzentration von WARNING zu CRITICAL (28.8% > 25% Schwelle, Tag 26). ECB-Entscheidung heute (T+0h) triggert EVENT_IMMINENT-Boost auf 3 Alerts. Router COMMODITY_SUPER proximity weiter bei 100% (Tag 3, nächste Evaluation 2026-04-01). Market Analyst System Regime NEUTRAL (gestern NEUTRAL), 5/8 Layer bei score ±1, keine Regime-Transition. F6 UNAVAILABLE. Data Quality DEGRADED (IC-Daten 72h alt, Market Analyst Layer-Daten teilweise stale).\n\n**Materieller Change:** HYG-Alert Severity-Eskalation CRITICAL↑ (gestern WARNING). Sonst keine Portfolio-Änderungen.",
+    "S2_catalysts": "CATALYSTS & TIMING\n\n**ECB Rate Decision (heute, T+0h):** Tier-1-Event. Risk Officer boostet 3 Alerts auf WARNING wegen EVENT_IMMINENT. Market Analyst reduziert Conviction in L2 (Macro Regime) und L7 (CB Policy Divergence) auf CONFLICTED. Forward Guidance (IC) warnt: \"Fed rate cuts now priced for September — major reversal driven by commodity/energy shock feeding inflation concerns.\" ECB-Überraschung könnte EUR/USD-Volatilität triggern → Carry-Trade-Unwind-Risiko (siehe S3). Keine Pre-Event-Action empfohlen (Risk Officer: \"No preemptive action recommended\"), aber erhöhte Unsicherheit anerkannt.\n\n**BOJ Decision (2026-03-14, T+48h):** Tier-2-Event. Market Analyst markiert als Catalyst in L4 (Cross-Border Flows) und L8 (Tail Risk): \"BOJ surprise = carry trade unwind risk. Aug 2024 precedent.\" Forward Guidance (IC): \"Credit spreads widening alongside FX volatility rising is concerning because it could trigger a carry trade unwind.\" USDJPY bei 50.0th pctl (neutral), aber VIX term structure in contango (0.97) — tail risk niedrig. Kein unmittelbarer Handlungsbedarf, aber Watchlist-relevant (siehe S7).\n\n**FOMC Decision + SEP + Dot Plot (2026-03-18, T+6d):** Tier-1-Event. Fed-Erwartungen massiv repriced (IC: \"markets now not expecting a cut until September\"). Market Analyst L2 (Macro Regime) zeigt SLOWDOWN (score -1), aber NFCI bei -10 (bearish) vs. 2Y10Y spread bei +4 (bullish) → CONFLICTED. CPI-Daten heute (T+0h) werden FOMC-Narrativ beeinflussen. Keine unmittelbare Action, aber FOMC-Proximity erhöht Conviction-Unsicherheit systemweit.\n\n**Router COMMODITY_SUPER Evaluation (2026-04-01, T+20d):** Proximity 100% seit 3 Tagen. Nächste Entry-Evaluation in 20 Tagen. Signal Generator: \"COMMODITY_SUPER proximity at 100%. Approaching trigger.\" Kein unmittelbarer Trade, aber Persistenz-Check erforderlich (siehe S7, A11).\n\n**Iran-Konflikt Timeline:** ZeroHedge (IC): \"Trump believes the US military campaign against Iran is largely complete and could end very soon\" (2026-03-10). Oil prices dropped sharply auf Trump-Signal. ABER: \"Iran's appointment of a more hardline supreme leader signals the regime intends to fight on rather than capitulate\" (2026-03-10). Doomberg (IC): \"The Strait of Hormuz is effectively closed to shipping\" (2026-03-10), \"Qatar's Ras Laffan LNG export facility shutdown is one of the most consequential developments\" (novelty 9/10). Forward Guidance (IC): \"The Iran-Israel conflict feels like the culmination of 40 years of geopolitical decisions coming to a head, making it unlike typical geopolitical events that can be faded quickly.\" Timeline unklar — Markt preist schnelle Resolution (Forward Guidance: \"Oil markets still priced for quick resolution\"), aber strukturelle Risiken (LNG-Ausfall, Hormuz-Closure) persistieren. Kein unmittelbarer Portfolio-Impact (V16 DBC 20.3% profitiert von Commodity-Strength), aber Tail-Risk-Monitoring erforderlich (siehe S7, W3).",
+    "S3_risk": "RISK & ALERTS\n\n**CRITICAL↑ (1 Alert, Trade Class A):**\n\n**RO-20260312-003 | EXP_SINGLE_NAME | HYG 28.8% > 25% Schwelle (Tag 26, ESCALATING):**  \nHYG-Konzentration eskaliert von WARNING (gestern) zu CRITICAL (heute) wegen EVENT_IMMINENT-Boost (ECB heute). Base Severity WARNING, aber ECB-Proximity triggert Upgrade. Trend ESCALATING (gestern 28.8%, heute 28.8%, aber Severity-Stufe steigt). Risk Officer: \"Single position HYG (V16) at 28.8% exceeds 25%.\" Empfehlung: Keine (Risk Officer gibt keine Trade-Empfehlungen). **CIO ASSESSMENT:** HYG-Gewicht ist V16-Output und SAKROSANKT. Severity-Eskalation ist EVENT_IMMINENT-Artefakt, keine fundamentale Verschlechterung. ABER: 26 Tage über Schwelle, ECB-Event heute erhöht Unsicherheit. **ACTION REQUIRED:** A10 (HYG Post-CPI Immediate Review) ist seit 4 Tagen offen — HEUTE ABSCHLIESSEN (siehe S7). Post-ECB: Prüfe ob HYG-Spread-Widening oder Volatility-Spike V16-Regime-Shift triggern könnte (V16 LATE_EXPANSION proximity zu STEADY_GROWTH unklar, keine Transition-Daten verfügbar).\n\n**WARNING→ (3 Alerts, Trade Class A):**\n\n**RO-20260312-002 | EXP_SECTOR_CONCENTRATION | Effective Commodities Exposure 37.2% (Tag 2, STABLE):**  \nCommodities-Exposure (DBC 20.3% + GLD 16.9% = 37.2%) nähert sich 35%-Warnschwelle. Base Severity MONITOR, EVENT_IMMINENT-Boost → WARNING. Risk Officer: \"No action required. Monitor for further increases.\" **CIO ASSESSMENT:** Router COMMODITY_SUPER bei 100% proximity (Tag 3) — Commodities-Tilt ist systemisch gewollt. 37.2% ist 2.2pp über Schwelle, aber V16-validiert. Kein unmittelbarer Handlungsbedarf. **WATCH:** Falls Router COMMODITY_SUPER Entry (2026-04-01) erfolgt, würde Commodities-Exposure weiter steigen → Konzentrations-Review vor Entry erforderlich (siehe S7, A11).\n\n**RO-20260312-005 | INT_REGIME_CONFLICT | V16 Risk-On vs. Market Analyst NEUTRAL (Tag 2, STABLE):**  \nV16 state \"Risk-On\" (regime LATE_EXPANSION) divergiert von Market Analyst \"NEUTRAL\" (lean UNKNOWN). Risk Officer: \"V16 operates on validated signals — this divergence may indicate V16 will transition soon. No action required on V16.\" **CIO ASSESSMENT:** V16 und Market Analyst teilen viele Datenquellen (siehe Epistemische Regeln) — Divergenz hat BEGRENZTEN Bestätigungswert. Market Analyst System Regime NEUTRAL weil \"Most layers near zero — no strong directional signal\" (5/8 Layer bei score ±1). V16 LATE_EXPANSION ist validiert, aber Regime-Proximity-Daten fehlen (Data Quality DEGRADED). **INTERPRETATION:** Divergenz ist Artefakt von Market Analyst Low Conviction (5/8 Layer \"regime_duration\" limiting factor), nicht V16-Fehler. ABER: Fehlende Transition-Proximity-Daten erhöhen Unsicherheit. **ACTION REQUIRED:** A8 (Router-Proximity Persistenz-Check) seit 15 Tagen offen — ESKALIEREN (siehe S7).\n\n**RO-20260312-001 | TMP_EVENT_CALENDAR | ECB Rate Decision heute (Tag 2, STABLE):**  \nECB-Event triggert EVENT_IMMINENT-Boost auf alle Alerts. Risk Officer: \"Increased uncertainty may affect existing risk assessments. No preemptive action recommended.\" **CIO ASSESSMENT:** Standard Event-Alert. Keine Action erforderlich, aber Kontext für andere Alerts (HYG CRITICAL, Regime Conflict WARNING).\n\n**ONGOING CONDITIONS (1, Trade Class A):**\n\n**RO-20260312-004 | EXP_SINGLE_NAME | DBC 20.3% approaching 20% limit (Tag 26, ONGOING):**  \nDBC bei 20.3%, 0.3pp über 20%-Schwelle. Base Severity MONITOR, EVENT_IMMINENT-Boost → WARNING (in Ongoing Conditions, nicht Alerts). **CIO ASSESSMENT:** DBC-Gewicht ist V16-Output und SAKROSANKT. Router COMMODITY_SUPER bei 100% proximity — DBC-Tilt ist systemisch gewollt. 20.3% ist marginal über Schwelle. Kein Handlungsbedarf.\n\n**RISK SUMMARY INTERPRETATION:**  \nRisk Ampel RED wegen 1 CRITICAL Alert (HYG). ABER: CRITICAL-Severity ist EVENT_IMMINENT-Artefakt (ECB heute), keine fundamentale Verschlechterung. HYG-Konzentration ist seit 26 Tagen bekannt, V16-validiert, und SAKROSANKT. **CORE ISSUE:** Data Quality DEGRADED (IC 72h alt, Market Analyst Layer-Daten stale) → System Conviction LOW → erhöhte Unsicherheit bei gleichzeitig stabilen Portfolio-Gewichten. **OPERATOR GUIDANCE:** RED-Ampel ernst nehmen (ECB-Event heute erhöht Volatility-Risiko), aber keine preemptive Action. Post-ECB: A10 (HYG Review) HEUTE abschließen.",
+    "S4_patterns": "PATTERNS & SYNTHESIS\n\n**AKTIVE PATTERNS (Klasse A):** Keine. Pre-Processor liefert leere Liste.\n\n**CIO OBSERVATIONS (Klasse B):**\n\n**OBS-1: COMMODITY_SUPER Persistence ohne IC-Bestätigung:**  \nRouter COMMODITY_SUPER proximity 100% seit 3 Tagen (seit 2026-03-10). Trigger-Bedingungen: DBC/SPY 6m relative 1.0 (erfüllt), V16 regime allowed 1.0 (erfüllt), DXY not rising 1.0 (erfüllt). Dual Signal: fast_met TRUE, slow_met TRUE. **ABER:** IC Consensus COMMODITIES nur +4.5 (LOW confidence, 1 source, 2 claims). Howell (IC): \"Howell views the surge in gold prices as structurally driven by Chinese demand, not cyclical or sentiment-based factors\" (novelty 5/10, signal 0/10 — Anti-Pattern). IC ENERGY -4.54 (MEDIUM confidence, 3 sources, 9 claims) — Doomberg warnt vor LNG-Ausfall und EU-Energiekrise, aber ZeroHedge (IC) meldet \"Trump believes Iran campaign largely complete\" → Oil prices dropped. **SYNTHESIS:** Router-Signal ist quantitativ validiert (DBC/SPY 6m relative stark), aber IC-Narrativ ist GESPALTEN (Howell bullish Gold, Doomberg bearish Energy wegen Geopolitik, ZeroHedge bullish Energy wegen Trump-Signal). **IMPLICATION:** COMMODITY_SUPER Entry (2026-04-01) hat quantitative Basis, aber qualitative Unsicherheit. **ACTION REQUIRED:** A11 (Router COMMODITY_SUPER Persistence Validation) seit 4 Tagen offen — HEUTE PRIORISIEREN (siehe S7).\n\n**OBS-2: Market Analyst Low Conviction als Systemzustand:**  \n5/8 Market Analyst Layer haben \"regime_duration\" als limiting factor (Conviction LOW) — alle Layer bei duration_days 1 (gestern Regime-Change). 3/8 Layer haben \"data_clarity\" als limiting factor (Conviction CONFLICTED) — L2 (Macro Regime), L6 (Relative Value), L7 (CB Policy Divergence). **INTERPRETATION:** Market Analyst ist in \"Regime-Transition-Modus\" — alle Layer haben gestern Regime gewechselt, Conviction ist systemisch niedrig weil Regimes zu jung sind. **IMPLICATION:** System Conviction LOW ist STRUKTURELL (Market Analyst-Design), nicht Event-getrieben. V16 LATE_EXPANSION ist stabil (keine Regime-Change-Daten), aber Market Analyst NEUTRAL ist Artefakt von Layer-Resets. **OPERATOR GUIDANCE:** Verlasse dich auf V16 (validiert), nicht auf Market Analyst (Low Conviction wegen Regime-Youth). Market Analyst wird in 5-7 Tagen wieder informativ sein (wenn Layer-Regimes > 5 Tage alt).\n\n**OBS-3: IC Geopolitics Divergenz — Trump-Signal vs. Strukturelle Risiken:**  \nIC GEOPOLITICS -3.65 (HIGH confidence, 5 sources, 20 claims). ZeroHedge (IC): \"Trump believes the US military campaign against Iran is largely complete and could end very soon\" (2026-03-10) → Oil prices dropped sharply. **ABER:** Doomberg (IC): \"The Strait of Hormuz is effectively closed to shipping\" (novelty 9/10, 2026-03-10), \"Qatar's Ras Laffan LNG export facility shutdown is one of the most consequential developments\" (novelty 9/10, 2026-03-10). Forward Guidance (IC): \"The Iran-Israel conflict feels like the culmination of 40 years of geopolitical decisions coming to a head, making it unlike typical geopolitical events that can be faded quickly.\" **SYNTHESIS:** Markt preist Trump-Signal (schnelle Resolution) → Oil prices down. ABER: Strukturelle Risiken (Hormuz-Closure, LNG-Ausfall) sind UNABHÄNGIG von Trump-Narrativ und haben längere Halbwertszeit. **IMPLICATION:** Oil-Preise könnten kurzfristig fallen (Trump-Signal), aber mittelfristig steigen (strukturelle Supply-Disruption). V16 DBC 20.3% ist Commodities-Broad-Basket (nicht nur Oil) — profitiert von struktureller Commodity-Strength (Gold, Metals), weniger von Oil-Volatility. **OPERATOR GUIDANCE:** Ignoriere Trump-Noise. Fokussiere auf strukturelle Risiken (Doomberg, Forward Guidance). W3 (Geopolitik-Eskalation) bleibt aktiv (siehe S7).\n\n**OBS-4: HYG-Konzentration vs. Credit-Spread-Stabilität:**  \nHYG 28.8% (CRITICAL Alert). Market Analyst L2 (Macro Regime) zeigt HY OAS 0 (neutral, 50.0th pctl), IG OAS 0 (neutral, 50.0th pctl). IC CREDIT -8.0 (LOW confidence, 1 source, 1 claim) — Forward Guidance (IC): \"Credit spreads widening alongside FX volatility rising is concerning because it could trigger a carry trade unwind\" (2026-03-06, 6 Tage alt). **SYNTHESIS:** HYG-Konzentration ist hoch (28.8%), aber Credit-Spreads sind STABIL (OAS neutral). IC warnt vor Spread-Widening-Risiko (Carry-Trade-Unwind), aber aktuell kein Signal. **IMPLICATION:** HYG-Konzentration ist Risk-Officer-Alert (quantitativ), aber fundamentales Credit-Risk ist niedrig (Spreads stabil). CRITICAL-Severity ist EVENT_IMMINENT-Artefakt (ECB heute), nicht Credit-Deterioration. **OPERATOR GUIDANCE:** HYG-Review (A10) HEUTE abschließen, aber keine Panik. Post-ECB: Prüfe ob Spread-Widening erfolgt → dann V16-Regime-Shift-Risiko.",
+    "S5_intelligence": "INTELLIGENCE DIGEST\n\n**IC CONSENSUS OVERVIEW (8 sources, 153 claims, 72h alt):**\n\n**HIGH CONFIDENCE (≥3 sources):**  \n- **GEOPOLITICS -3.65** (5 sources, 20 claims): Trump-Signal (ZeroHedge: \"Iran campaign largely complete\") vs. strukturelle Risiken (Doomberg: \"Hormuz closed\", \"Qatar LNG offline\"). Forward Guidance: \"Iran-Israel conflict feels like culmination of 40 years of geopolitical decisions.\" Divergenz zwischen kurzfristigem Trump-Narrativ und mittelfristigen Supply-Disruptions.  \n- **ENERGY -4.54** (3 sources, 9 claims): Doomberg warnt vor EU-Energiekrise (LNG-Ausfall, Hormuz-Closure). ZeroHedge meldet Oil-Price-Drop auf Trump-Signal. Jeff Snider (IC): \"The duration of the Hormuz disruption is the decisive variable — even a temporary oil shock is already feeding into inflation expectations\" (novelty 7/10, 2026-03-10).\n\n**MEDIUM CONFIDENCE (2-3 sources):**  \n- **FED_POLICY +1.94** (3 sources, 4 claims): Forward Guidance (IC): \"Fed rate cuts now priced for September — major reversal driven by commodity/energy shock feeding inflation concerns\" (2026-03-06, 6 Tage alt). Howell (IC): Fed-Stimulus \"at best sufficient to keep equity markets supported near current levels, but lacks the impetus to drive them materially higher\" (2026-03-08, 4 Tage alt). Jeff Snider (IC): \"The US labor market was already deteriorating — showing multiple simultaneous negatives in the latest data\" (novelty 5/10, 2026-03-10).  \n- **CHINA_EM +3.38** (3 sources, 3 claims): Forward Guidance (IC): \"Latin America is the primary geographic winner of the current geopolitical 'spherification' trend\" (novelty 7/10, 2026-03-11, 1 Tag alt). ZeroHedge (IC): \"China's trade boom — with exports surging over 20% YoY and imports nearly 20% — signals China may be exporting inflation rather than deflation\" (novelty 7/10, 2026-03-10). Doomberg (IC): \"Major LNG-importing economies including China, Japan, South Korea, India, and Taiwan will be negatively impacted by the Qatar LNG shutdown\" (novelty 7/10, 2026-03-10).  \n- **TECH_AI +2.25** (2 sources, 4 claims): ZeroHedge (IC): \"The U.S. government's retaliatory blacklisting of Anthropic over its refusal to support autonomous weapons represents a major escalation in the conflict between AI ethics and national security imperatives\" (novelty 7/10, 2026-03-10). Luke Gromen (IC): \"AI-driven unemployment could reach 10%+ within a couple of years, creating a deflationary demand shock that would force the Fed to ease aggressively\" (novelty 6/10, 2026-03-11, 1 Tag alt).  \n- **EQUITY_VALUATION -7.6** (2 sources, 2 claims): Forward Guidance (IC): \"Markets are mispricing the oil supply shock's geographic dispersion — Europe faces a sharply negative terms-of-trade shock, while the US is largely insulated\" (novelty 5/10, 2026-03-11, 1 Tag alt). Luke Gromen (IC): \"Europe, as a major holder of US Treasuries and equities, will be forced to sell those dollar assets to finance energy imports, creating a structural bid for the dollar and a structural headwind for US equities\" (novelty 5/10, 2026-03-11, 1 Tag alt).  \n- **INFLATION -2.5** (2 sources, 3 claims): ZeroHedge (IC): \"China's trade boom signals China may be exporting inflation rather than deflation\" (2026-03-10). Jeff Snider (IC): \"The global economy is in a far more fragile state than generally recognized, with the oil shock compounding pre-existing deflationary pressures\" (novelty 6/10, 2026-03-10).\n\n**LOW CONFIDENCE (1 source):**  \n- **CREDIT -8.0** (1 source, 1 claim): Forward Guidance (IC): \"Credit spreads widening alongside FX volatility rising is concerning because it could trigger a carry trade unwind\" (2026-03-06, 6 Tage alt). Aktuell keine Spread-Widening-Signale (Market Analyst HY OAS 0, IG OAS 0).  \n- **COMMODITIES +4.5** (1 source, 2 claims): Howell (IC): \"Howell views the surge in gold prices as structurally driven by Chinese demand, not cyclical or sentiment-based factors\" (novelty 5/10, signal 0/10 — Anti-Pattern, 2026-03-08, 4 Tage alt).  \n- **POSITIONING -3.0** (1 source, 1 claim): Howell (IC): \"Slowing liquidity momentum and potential equity topping process\" (2026-03-08, 4 Tage alt).\n\n**NO DATA:**  \nLIQUIDITY, RECESSION, CRYPTO, DOLLAR, VOLATILITY.\n\n**DIVERGENCES:** Keine formalen Divergences (Pre-Processor liefert leere Liste).\n\n**HIGH NOVELTY CLAIMS (Top 5, alle Anti-Patterns — signal 0/10):**  \n1. Howell: \"China's gold accumulation linked to 'secretive' Yuan monetization\" (novelty 7/10, 2026-03-08).  \n2. Howell: \"China's gold absorption explains stable US Treasury term premia\" (novelty 7/10, 2026-03-08).  \n3. Howell: \"China's gold accumulation explains lackluster crypto performance\" (novelty 8/10, 2026-03-08).  \n4. Forward Guidance: \"Qatar LNG complex offline since early March — restarting will take multiple weeks\" (novelty 8/10, 2026-03-06).  \n5. Doomberg: \"Strait of Hormuz effectively closed to shipping\" (novelty 9/10, 2026-03-10).\n\n**CIO SYNTHESIS:**  \nIC-Daten sind 72h alt (Data Quality DEGRADED), aber HIGH-confidence-Themen (GEOPOLITICS, ENERGY) bleiben relevant. **KERN-NARRATIV:** Trump signalisiert schnelle Iran-Resolution → Markt preist Oil-Price-Drop. ABER: Strukturelle Risiken (Hormuz-Closure, Qatar LNG-Ausfall) persistieren und haben längere Halbwertszeit als Trump-Noise. Forward Guidance und Doomberg (unabhängige Quellen) warnen vor mittelfristigen Supply-Disruptions. **IMPLICATION FÜR PORTFOLIO:** V16 DBC 20.3% profitiert von struktureller Commodity-Strength (Gold, Metals), weniger von Oil-Volatility. Router COMMODITY_SUPER bei 100% proximity ist quantitativ validiert, aber IC-Narrativ ist gespalten (Howell bullish Gold, Doomberg bearish Energy). **ACTION REQUIRED:** A12 (IC Geopolitics Narrative Resolution Tracking) seit 4 Tagen offen — HEUTE PRIORISIEREN (siehe S7).",
+    "S6_portfolio": "PORTFOLIO CONTEXT\n\n**V16 (100% Portfolio, 5 Positionen):**  \nRegime LATE_EXPANSION (stabil seit gestern, keine Transition-Proximity-Daten verfügbar wegen Data Quality DEGRADED). Gewichte: HYG 28.8% (CRITICAL Alert, Tag 26), DBC 20.3% (ONGOING Condition, Tag 26), XLU 18.0%, GLD 16.9%, XLP 16.1%. Effective Commodities Exposure 37.2% (DBC + GLD, WARNING Alert). Keine Rebalance-Trades heute. DD-Protect INACTIVE (current drawdown 0.0%). **PERFORMANCE:** CAGR 0.0%, Sharpe 0, MaxDD 0.0%, Vol 0.0%, Calmar 0 (alle Metriken 0 — vermutlich Daten-Artefakt oder Portfolio zu jung für Performance-Berechnung).\n\n**F6 (0% Portfolio):** UNAVAILABLE. Keine aktiven Positionen, keine Signale heute.\n\n**ROUTER (US_DOMESTIC, Tag 435):**  \nCOMMODITY_SUPER proximity 100% (Tag 3, seit 2026-03-10). Nächste Entry-Evaluation 2026-04-01 (T+20d). EM_BROAD proximity 0.0% (DXY 6m momentum 0.0, VWO/SPY 6m relative 35.03%, V16 regime allowed 100%, BAMLEM falling 94%). CHINA_STIMULUS proximity 0.0% (China credit impulse 0.0, FXI/SPY 3m relative 94%, CNY stable 0.0, V16 regime allowed 100%). **INTERPRETATION:** COMMODITY_SUPER ist einziger Trigger nahe Entry (100% proximity, dual signal erfüllt). EM_BROAD und CHINA_STIMULUS sind weit entfernt (0% proximity). **IMPLICATION:** Falls COMMODITY_SUPER Entry erfolgt (2026-04-01), würde Portfolio-Tilt weiter in Richtung Commodities gehen → Konzentrations-Review vor Entry erforderlich (siehe S7, A11).\n\n**PERM_OPT:** UNAVAILABLE (V2).\n\n**CONCENTRATION CHECK (Baseline):**  \nEffective Tech 10% (unter 15%-Schwelle, kein Warning). Top-5-Konzentration 100% (5 Positionen = 100% Portfolio, technisch korrekt aber nicht aussagekräftig). Top-5-Assets: HYG, DBC, XLU, GLD, XLP. **INTERPRETATION:** Portfolio ist 5-Asset-Konzentrat (V16-only, V1). HYG 28.8% ist größte Einzelposition (CRITICAL Alert). Commodities-Exposure 37.2% ist größte Sektor-Konzentration (WARNING Alert). Keine Tech-Konzentration (XLK 0%).\n\n**SENSITIVITY:**  \nSPY Beta: null (nicht verfügbar, V1). Effective Positions: null (nicht verfügbar, V1). Last Correlation Update: null. **INTERPRETATION:** Keine Sensitivity-Daten verfügbar. Portfolio-Sensitivität zu SPY unklar. Risk Officer: \"Sensitivity: not available (V1).\"\n\n**G7 CONTEXT:**  \nStatus: UNAVAILABLE. Last Update: null. Severity Impact: NONE. **INTERPRETATION:** G7 Monitor nicht live (V2). Keine Thesis-Guidance verfügbar.\n\n**CIO ASSESSMENT:**  \nPortfolio ist V16-Monokultur (100% V16, 5 Positionen). HYG-Konzentration (28.8%) ist seit 26 Tagen bekannt, V16-validiert, und SAKROSANKT. Commodities-Tilt (37.2%) ist Router-COMMODITY_SUPER-proximity-getrieben (100% seit 3 Tagen). **CORE ISSUE:** Data Quality DEGRADED (IC 72h alt, Market Analyst Layer-Daten stale, keine V16 Transition-Proximity-Daten) → System Conviction LOW → erhöhte Unsicherheit bei gleichzeitig stabilen Portfolio-Gewichten. **OPERATOR GUIDANCE:** Vertraue V16 (validiert), aber erkenne Data-Quality-Limitationen an. Post-ECB (heute): Prüfe ob Event V16-Regime-Shift triggert (A10, siehe S7).",
+    "S7_actions": "ACTION ITEMS & WATCHLIST\n\n**KRITISCHE ESKALATIONEN (ACT-Items offen ≥20 Tage):**\n\n**A1: HYG-Konzentration Review (CRITICAL, Trade Class A, Tag 27, DRINGEND):**  \n**Was:** HYG 28.8% seit 27 Tagen über 25%-Schwelle. Heute CRITICAL-Eskalation (EVENT_IMMINENT-Boost wegen ECB).  \n**Warum:** Risk Officer eskaliert Severity. ECB-Event heute erhöht Volatility-Risiko. HYG-Gewicht ist V16-Output (SAKROSANKT), aber 27 Tage Persistenz erfordert Review.  \n**Wie dringend:** HEUTE. ECB-Entscheidung in wenigen Stunden. Post-ECB: Prüfe ob Spread-Widening oder Volatility-Spike erfolgt.  \n**Nächste Schritte:** (1) Post-ECB (heute Abend): Prüfe HYG-Spread (HY OAS) und VIX. (2) Falls Spread-Widening > 10bp oder VIX > 20: Prüfe mit Agent R ob V16-Regime-Shift-Risiko besteht. (3) Falls keine Verschlechterung: Dokumentiere \"HYG-Konzentration stabil trotz ECB-Event\" und CLOSE A1.  \n**Trigger noch aktiv:** Ja (HYG 28.8% > 25%).  \n**Status:** OPEN, ESKALIERT (Tag 27).\n\n**A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A, Tag 27, DRINGEND):**  \n**Was:** NFP (2026-03-07, T-5d) und ECB (heute, T+0h) Event-Monitoring.  \n**Warum:** Tier-1-Events mit HIGH impact. Risk Officer boostet Alerts auf WARNING wegen EVENT_IMMINENT.  \n**Wie dringend:** HEUTE (ECB-Event). NFP ist bereits vorbei (T-5d), aber Post-NFP-Review fehlt.  \n**Nächste Schritte:** (1) Post-ECB (heute Abend): Prüfe ob ECB-Überraschung erfolgt (Hawkish/Dovish). (2) Falls Überraschung: Prüfe EUR/USD-Volatility und Carry-Trade-Unwind-Risiko (siehe S3, BOJ-Catalyst). (3) Post-NFP-Review nachholen: Prüfe ob NFP-Daten (T-5d) V16-Regime beeinflusst haben. (4) Falls keine Material-Changes: CLOSE A2.  \n**Trigger noch aktiv:** Ja (ECB heute).  \n**Status:** OPEN, ESKALIERT (Tag 27).\n\n**A3: CPI-Vorbereitung (MEDIUM, Trade Class A, Tag 27, DRINGEND):**  \n**Was:** CPI-Event-Vorbereitung (Datum unklar, vermutlich T+0h oder T+1d basierend auf Market Analyst Catalyst-Liste).  \n**Warum:** Tier-1-Event. Market Analyst L2 (Macro Regime) markiert CPI als Catalyst: \"Drives Fed expectations. Hot CPI -> tightening narrative.\"  \n**Wie dringend:** HEUTE (falls CPI heute) oder MORGEN (falls CPI morgen).  \n**Nächste Schritte:** (1) Kläre CPI-Datum (Temporal Context zeigt kein CPI-Event in events_48h oder events_7d — Daten-Inkonsistenz). (2) Falls CPI heute: Post-CPI-Review HEUTE ABEND (analog zu A10). (3) Falls CPI morgen: Pre-CPI-Check HEUTE (Prüfe ob V16-Regime-Shift-Proximity steigt). (4) Falls CPI bereits vorbei: CLOSE A3.  \n**Trigger noch aktiv:** Unklar (CPI-Datum fehlt in Temporal Context).  \n**Status:** OPEN, ESKALIERT (Tag 27).\n\n**A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, Tag 20, DRINGEND):**  \n**Was:** IC-Daten sind 72h alt (Data Quality DEGRADED). Letzter IC-Run vermutlich 2026-03-10.  \n**Warum:** System Conviction LOW wegen veralteter IC-Daten. HIGH-confidence-Themen (GEOPOLITICS, ENERGY) sind noch relevant, aber Freshness fehlt.  \n**Wie dringend:** HEUTE. IC-Refresh würde Data Quality auf FULL upgraden und System Conviction erhöhen.  \n**Nächste Schritte:** (1) Prüfe ob IC-Pipeline manuell getriggert werden kann. (2) Falls ja: Trigger IC-Refresh HEUTE. (3) Falls nein: Dokumentiere \"IC-Daten 72h alt, nächster Auto-Refresh T+Xh\" und warte auf Auto-Refresh. (4) Post-Refresh: Re-evaluate System Conviction und A12 (IC Geopolitics Narrative Resolution).  \n**Trigger noch aktiv:** Ja (IC-Daten 72h alt).  \n**Status:** OPEN, ESKALIERT (Tag 20).\n\n**A7: Post-CPI System-Review (HIGH, Trade Class A, Tag 18, DRINGEND):**  \n**Was:** System-Review nach CPI-Event (Datum unklar, siehe A3).  \n**Warum:** CPI ist Tier-1-Event mit HIGH impact auf Fed-Erwartungen und V16-Regime.  \n**Wie dringend:** HEUTE (falls CPI heute) oder MORGEN (falls CPI morgen).  \n**Nächste Schritte:** (1) Kläre CPI-Datum (siehe A3). (2) Post-CPI: Prüfe ob CPI-Überraschung (Hot/Cold) erfolgt. (3) Falls Hot CPI: Prüfe ob Fed-Tightening-Narrativ V16-Regime-Shift triggert (LATE_EXPANSION → STEADY_GROWTH?). (4) Falls Cold CPI: Prüfe ob Fed-Easing-Narrativ V16-Regime stabilisiert. (5) Dokumentiere Findings und CLOSE A7.  \n**Trigger noch aktiv:** Unklar (CPI-Datum fehlt).  \n**Status:** OPEN, ESKALIERT (Tag 18).\n\n**NEUE ACT-ITEMS (offen <20 Tage, aber HEUTE PRIORISIEREN):**\n\n**A10: HYG Post-CPI Immediate Review (CRITICAL, Trade Class A, Tag 4, NEU):**  \n**Was:** HYG-Review nach CPI-Event (Datum unklar, siehe A3).  \n**Warum:** HYG 28.8% (CRITICAL Alert). CPI-Event könnte Spread-Widening triggern.  \n**Wie dringend:** HEUTE (falls CPI heute) oder MORGEN (falls CPI morgen). **ABER:** ECB-Event ist HEUTE — Post-ECB-Review hat Priorität (siehe A1).  \n**Nächste Schritte:** (1) Post-ECB (heute Abend): Prüfe HYG-Spread und VIX (siehe A1). (2) Post-CPI (heute oder morgen): Wiederhole HYG-Spread-Check. (3) Falls Spread-Widening in beiden Events: Eskaliere zu Agent R (V16-Regime-Shift-Risiko). (4) Falls keine Verschlechterung: MERGE A10 mit A1 und CLOSE.  \n**Trigger noch aktiv:** Ja (HYG 28.8% > 25%, CPI-Event pending).  \n**Status:** OPEN (Tag 4), HEUTE PRIORISIEREN.\n\n**A11: Router COMMODITY_SUPER Persistence Validation (HIGH, Trade Class B, Tag 4, NEU):**  \n**Was:** COMMODITY_SUPER proximity 100% seit 3 Tagen. Nächste Entry-Evaluation 2026-04-01 (T+20d).  \n**Warum:** Proximity ist quantitativ validiert (DBC/SPY 6m relative 1.0, dual signal erfüllt), aber IC-Narrativ ist gespalten (Howell bullish Gold, Doomberg bearish Energy, ZeroHedge bullish Energy wegen Trump-Signal). Persistenz-Check erforderlich vor Entry.  \n**Wie dringend:** DIESE WOCHE. Entry-Evaluation ist in 20 Tagen — genug Zeit für Persistenz-Check, aber nicht aufschieben.  \n**Nächste Schritte:** (1) Prüfe DBC/SPY 6m relative Trend (steigend/fallend/stabil). (2) Prüfe IC COMMODITIES und IC ENERGY Consensus (nach IC-Refresh, siehe A6). (3) Falls Proximity fällt < 80% in nächsten 7 Tagen: Entry-Risiko sinkt, kein unmittelbarer Handlungsbedarf. (4) Falls Proximity stabil bei 100%: Prüfe Konzentrations-Impact (Commodities-Exposure würde von 37.2% weiter steigen). (5) Dokumentiere Findings und bereite Entry-Decision vor (2026-04-01).  \n**Trigger noch aktiv:** Ja (Proximity 100%).  \n**Status:** OPEN (Tag 4), DIESE WOCHE PRIORISIEREN.\n\n**A12: IC Geopolitics Narrative Resolution Tracking (MEDIUM, Trade Class B, Tag 4, NEU):**  \n**Was:** IC GEOPOLITICS -3.65 (HIGH confidence, 5 sources, 20 claims). Trump-Signal (schnelle Iran-Resolution) vs. strukturelle Risiken (Hormuz-Closure, Qatar LNG-Ausfall).  \n**Warum:** Markt preist Trump-Narrativ (Oil prices down), aber strukturelle Risiken persistieren (Doomberg, Forward Guidance). Divergenz zwischen kurzfristigem Narrativ und mittelfristigen Risiken.  \n**Wie dringend:** DIESE WOCHE. IC-Daten sind 72h alt (siehe A6) — nach IC-Refresh wird Narrativ klarer.  \n**Nächste Schritte:** (1) Post-IC-Refresh (siehe A6): Prüfe ob neue Claims Trump-Narrativ bestätigen oder widerlegen. (2) Prüfe ob Hormuz-Closure und Qatar LNG-Ausfall resolved sind (ZeroHedge, Doomberg). (3) Falls Trump-Narrativ dominiert (schnelle Resolution): Oil-Price-Drop ist nachhaltig, DBC-Exposure könnte leiden. (4) Falls strukturelle Risiken dominieren (Hormuz/LNG persistent): Oil-Price-Drop ist temporär, DBC-Exposure profitiert mittelfristig. (5) Dokumentiere Findings und update W3 (Geopolitik-Eskalation).  \n**Trigger noch aktiv:** Ja (IC GEOPOLITICS -3.65, Divergenz persistent).  \n**Status:** OPEN (Tag 4), DIESE WOCHE PRIORISIEREN.\n\n**AKTIVE WATCH-ITEMS (Monitoring, kein unmittelbarer Handlungsbedarf):**\n\n**W3: Geopolitik-Eskalation (Doomberg/ZeroHedge, Tag 27):**  \n**Was:** Iran-Konflikt Timeline. Trump-Signal (schnelle Resolution) vs. strukturelle Risiken (Hormuz-Closure, Qatar LNG-Ausfall).  \n**Monitoring:** Prüfe täglich ZeroHedge und Doomberg für neue Claims. Trigger: Falls Hormuz-Closure > 7 Tage oder Qatar LNG-Restart-Timeline > 4 Wochen → Eskaliere zu ACT-Item.  \n**Nächster Check:** Täglich (bis IC-Refresh, siehe A6).  \n**Status:** OPEN (Tag 27).\n\n**W15: Market Analyst Conviction Recovery (NEU, Tag 6):**  \n**Was:** Market Analyst System Regime NEUTRAL, 5/8 Layer bei \"regime_duration\" limiting factor (Conviction LOW).  \n**Monitoring:** Prüfe täglich Market Analyst Layer-Regimes. Trigger: Falls Layer-Regimes > 5 Tage alt → Conviction steigt auf MEDIUM/HIGH → System Conviction steigt von LOW.  \n**Nächster Check:** 2026-03-17 (T+5d, wenn Layer-Regimes > 5 Tage alt).  \n**Status:** OPEN (Tag 6).\n\n**W16: IC Geopolitics Divergenz Resolution (NEU, Tag 6):**  \n**Was:** IC GEOPOLITICS -3.65, Trump-Signal vs. strukturelle Risiken (siehe A12).  \n**Monitoring:** Siehe A12. Falls A12 abgeschlossen: MERGE W16 mit A12 und CLOSE W16.  \n**Nächster Check:** Nach IC-Refresh (siehe A6).  \n**Status:** OPEN (Tag 6), REDUNDANT mit A12.\n\n**W17: Howell Liquidity Update (NEU, Tag 6):**  \n**Was:** Howell (IC): \"Slowing liquidity momentum and potential equity topping process\" (2026-03-08, 4 Tage alt). IC LIQUIDITY hat NO_DATA (0 sources).  \n**Monitoring:** Prüfe nach IC-Refresh (siehe A6) ob neue Howell-Claims zu LIQUIDITY erscheinen. Trigger: Falls Howell \"liquidity momentum slowing\" bestätigt → Prüfe ob V16-Regime-Shift-Risiko (LATE_EXPANSION → STEADY_GROWTH).  \n**Nächster Check:** Nach IC-Refresh (siehe A6).  \n**Status:** OPEN (Tag 6).\n\n**W18: Credit Spread Diskrepanz (NEU, Tag 3):**  \n**Was:** IC CREDIT -8.0 (Forward Guidance warnt vor Spread-Widening), aber Market Analyst HY OAS 0, IG OAS 0 (Spreads stabil).  \n**Monitoring:** Prüfe täglich Market Analyst L2 (Macro Regime) HY OAS und IG OAS. Trigger: Falls OAS > 60th pctl (Spread-Widening) → Eskaliere zu ACT-Item (V16-Regime-Shift-Risiko).  \n**Nächster Check:** Täglich (Post-ECB heute besonders relevant).  \n**Status:** OPEN (Tag 3).\n\n**CLOSE-EMPFEHLUNGEN:** Keine. Alle offenen Items haben aktive Triggers.\n\n**PRIORISIERUNG FÜR HEUTE:**  \n1. **A1 (HYG-Konzentration Review):** CRITICAL, ECB-Event heute, Post-ECB-Check HEUTE ABEND.  \n2. **A2 (NFP/ECB Event-Monitoring):** HIGH, ECB-Event heute, Post-ECB-Check HEUTE ABEND.  \n3. **A10 (HYG Post-CPI Immediate Review):** CRITICAL, MERGE mit A1, Post-ECB-Check HEUTE ABEND.  \n4. **A11 (Router COMMODITY_SUPER Persistence Validation):** HIGH, DIESE WOCHE, aber HEUTE starten (DBC/SPY Trend-Check).  \n5. **A12 (IC Geopolitics Narrative Resolution Tracking):** MEDIUM, DIESE WOCHE, aber nach IC-Refresh (siehe A6).  \n6. **A6 (IC-Daten-Refresh-Eskalation):** HIGH, HEUTE, würde A12 und W16/W17 informieren.  \n7. **A3 (CPI-Vorbereitung):** MEDIUM, Datum unklar, kläre CPI-Timing HEUTE.  \n8. **A7 (Post-CPI System-Review):** HIGH, nach CPI-Event (Datum unklar)."
+  },
+  "section_word_counts": {
+    "S1_delta": 96,
+    "S2_catalysts": 379,
+    "S3_risk": 513,
+    "S4_patterns": 584,
+    "S5_intelligence": 771,
+    "S6_portfolio": 357,
+    "S7_actions": 1305
+  },
+  "action_items": [
+    {
+      "type": "ACT",
+      "description": "A1: HYG-Konzentration Review (CRITICAL, Trade Class A)",
+      "urgency": "TODAY",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_001",
+      "days_open": 28,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+    },
+    {
+      "type": "ACT",
+      "description": "A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A)",
+      "urgency": "TODAY",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_002",
+      "days_open": 28,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+    },
+    {
+      "type": "ACT",
+      "description": "A3: CPI-Vorbereitung (MEDIUM, Trade Class A)",
+      "urgency": "TODAY",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_003",
+      "days_open": 28,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+    },
+    {
+      "type": "ACT",
+      "description": "A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B)",
+      "urgency": "TODAY",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_004",
+      "days_open": 28,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+    },
+    {
+      "type": "WATCH",
+      "description": "W1: Breadth-Deterioration (Hussman-Warnung)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_005",
+      "days_open": 28,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "W2: Japan JGB-Stress (Luke Gromen-Szenario)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_006",
+      "days_open": 28,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "W3: Geopolitik-Eskalation (Doomberg/ZeroHedge)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_007",
+      "days_open": 28,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "W4: Commodities-Rotation (Crescat vs. Doomberg)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_008",
+      "days_open": 28,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "Was",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_006",
+      "days_open": 27,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "Warum",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_007",
+      "days_open": 27,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "Monitoring",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_008",
+      "days_open": 27,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "Trigger noch aktiv",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_009",
+      "days_open": 27,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "Status",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_010",
+      "days_open": 27,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "REVIEW",
+      "description": "A5: Post-NFP/ECB System-Review (HIGH, Trade Class A) — HEUTE ABEND",
+      "urgency": "THIS_WEEK",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_005",
+      "days_open": 26,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "REVIEW offen seit 26 Tagen — Eskalation"
+    },
+    {
+      "type": "WATCH",
+      "description": "W5: V16 Regime-Shift Proximity — NEU",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_030",
+      "days_open": 26,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "Nächster Check",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_010",
+      "days_open": 25,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "Trigger",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_008",
+      "days_open": 24,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "ACT",
+      "description": "A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, NEU)",
+      "urgency": "THIS_WEEK",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": true,
+      "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+      "id": "action_2026-03-06_006",
+      "days_open": 21,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 21 Tagen — DRINGEND"
+    },
+    {
+      "type": "WATCH",
+      "description": "Wie dringend",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-06_012",
+      "days_open": 20,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "ACT",
+      "description": "A7: Post-CPI System-Review (HIGH, Trade Class A, NEU)",
+      "urgency": "THIS_WEEK",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": true,
+      "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+      "id": "action_2026-03-09_006",
+      "days_open": 19,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 19 Tagen — DRINGEND"
+    },
+    {
+      "type": "WATCH",
+      "description": "Urgency",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-09_013",
+      "days_open": 19,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "HEUTE (2026-03-09)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-09_014",
+      "days_open": 19,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "THIS_WEEK",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-09_015",
+      "days_open": 19,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "2026-03-11 (Post-CPI)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-09_016",
+      "days_open": 19,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "CLOSE-Empfehlungen",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-09_017",
+      "days_open": 19,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "AKTIVE WATCH",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-09_018",
+      "days_open": 19,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "ACT",
+      "description": "A8: Router-Proximity Persistenz-Check (MEDIUM, Trade Class B) — NEU",
+      "urgency": "THIS_WEEK",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": true,
+      "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+      "id": "action_2026-03-10_011",
+      "days_open": 16,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 16 Tagen — DRINGEND"
+    },
+    {
+      "type": "WATCH",
+      "description": "W14: HYG Post-CPI Rebalance-Watch — NEU",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-10_012",
+      "days_open": 16,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "ACT",
+      "description": "A9: HYG Post-CPI Rebalance-Readiness (HIGH, Trade Class A, NEU)",
+      "urgency": "THIS_WEEK",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": true,
+      "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+      "id": "action_2026-03-10_008",
+      "days_open": 11,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 11 Tagen — DRINGEND"
+    },
+    {
+      "type": "WATCH",
+      "description": "W15: Market Analyst Conviction Recovery (NEU)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-10_014",
+      "days_open": 7,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "W16: IC Geopolitics Divergenz Resolution (NEU)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-10_015",
+      "days_open": 7,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "WATCH",
+      "description": "W17: Howell Liquidity Update (NEU)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-10_016",
+      "days_open": 7,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    },
+    {
+      "type": "ACT",
+      "description": "A10: HYG Post-CPI Immediate Review (CRITICAL, Trade Class A, NEU)",
+      "urgency": "THIS_WEEK",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": true,
+      "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+      "id": "action_2026-03-10_001",
+      "days_open": 5,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+    },
+    {
+      "type": "ACT",
+      "description": "A11: Router COMMODITY_SUPER Persistence Validation (HIGH, Trade Class B, NEU)",
+      "urgency": "THIS_WEEK",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": true,
+      "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+      "id": "action_2026-03-10_002",
+      "days_open": 5,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+    },
+    {
+      "type": "ACT",
+      "description": "A12: IC Geopolitics Narrative Resolution Tracking (MEDIUM, Trade Class B, NEU)",
+      "urgency": "THIS_WEEK",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": true,
+      "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+      "id": "action_2026-03-10_003",
+      "days_open": 5,
+      "trigger_still_active": true,
+      "status": "OPEN",
+      "escalated": true,
+      "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+    },
+    {
+      "type": "WATCH",
+      "description": "W18: Credit Spread Diskrepanz (NEU)",
+      "urgency": "ONGOING",
+      "source_alerts": [],
+      "source_patterns": [],
+      "conviction_upgrade": false,
+      "id": "action_2026-03-11_020",
+      "days_open": 4,
+      "trigger_still_active": true,
+      "status": "OPEN"
+    }
+  ],
+  "confidence_markers": [
+    {
+      "section": "S3_RISK",
+      "claim": "Overall risk assessment",
+      "confidence": "HIGH",
+      "basis": "No blind spots, few divergences"
+    },
+    {
+      "section": "S5_INTELLIGENCE",
+      "claim": "IC consensus reliability",
+      "confidence": "HIGH",
+      "basis": "8 sources processed"
+    }
+  ],
+  "fact_check_flags": [],
+  "fact_check_corrections_count": 0,
+  "is_fallback": false,
+  "metadata": {
+    "sections_present": [
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6",
+      "S7"
+    ],
+    "word_count": 4216,
+    "active_patterns_class_a": [],
+    "active_patterns_class_b": [],
+    "absences_flagged": [],
+    "llm_attempts": 1
+  },
+  "preprocessor_output": {
+    "preprocessor_version": "1.0",
+    "date": "2026-03-12",
+    "reference_date": "2026-03-11",
+    "is_monday": false,
+    "header": {
+      "briefing_type": "ACTION",
+      "system_conviction": "LOW",
+      "risk_ampel": "RED",
+      "fragility_state": "HEALTHY",
+      "data_quality": "DEGRADED",
+      "v16_regime": "LATE_EXPANSION"
+    },
+    "data_quality_manifest": {
+      "v16_production": {
+        "status": "COMPLETE",
+        "date": "2026-03-12",
+        "notes": null
+      },
+      "risk_alerts": {
+        "status": "COMPLETE",
+        "date": "2026-03-12",
+        "notes": null
+      },
+      "signals": {
+        "status": "COMPLETE",
+        "date": "2026-03-12",
+        "notes": null
+      },
+      "layer_analysis": {
+        "status": "COMPLETE",
+        "date": "2026-03-12",
+        "notes": null
+      },
+      "ic_intelligence": {
+        "status": "COMPLETE",
+        "date": "2026-03-12",
+        "notes": null
+      },
+      "f6_production": {
+        "status": "COMPLETE",
+        "date": "2026-03-12",
+        "notes": null
+      },
+      "beliefs": {
+        "status": "MISSING",
+        "date": null,
+        "notes": "Not provided"
+      },
+      "cio_history": {
+        "status": "COMPLETE",
+        "date": "2026-03-12",
+        "notes": null
+      },
+      "yesterday_briefing": {
+        "status": "STALE",
+        "date": "2026-03-11",
+        "notes": "Data from 2026-03-11, not today (2026-03-12)"
+      }
+    },
+    "temporal_context": {
+      "events_48h": [],
+      "events_7d": [
+        {
+          "date": "2026-03-18",
+          "event": "FOMC Decision + SEP + Dot Plot",
+          "type": "FOMC",
+          "impact": "HIGH",
+          "themes": [
+            "FED_POLICY",
+            "LIQUIDITY"
+          ],
+          "notes": "Mar 17-18. Summary of Economic Projections.",
+          "days_until": 6
+        }
+      ],
+      "f6_cc_expiry": [],
+      "v16_rebalance": {
+        "next_expected": null,
+        "days_until": null,
+        "near_miss_yesterday": false,
+        "proximity_to_trigger": 0.0
+      },
+      "router_proximity": {},
+      "is_monday": false
+    },
+    "absence_flags": [],
+    "patterns": {
+      "class_a_active": [],
+      "anti_patterns": [
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "howell",
+          "claim": "The conventional narrative linking geopolitical tensions in the Gulf to gold price spikes misses the",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "howell",
+          "claim": "Howell believes China's gold accumulation is linked to a 'secretive' monetization of the Chinese Yua",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "howell",
+          "claim": "Howell argues that China's gold absorption helps explain why US Treasury bond term premia have remai",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "howell",
+          "claim": "Howell believes China's gold accumulation and associated Yuan monetization helps explain the lacklus",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "howell",
+          "claim": "Howell views the surge in gold prices as structurally driven by Chinese demand, not cyclical or sent",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "Oil markets are still priced for a quick resolution to the Iran conflict, meaning the front end of t",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "The Qatar LNG complex has been offline since early March due to drone or missile strikes, and restar",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "US Treasury bonds are failing to act as a safe haven during the Iran conflict, with the long end sel",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "Probability of Fed rate cuts has been dramatically repriced, with markets now not expecting a cut un",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "Credit spreads widening alongside FX volatility rising is concerning because it could trigger a carr",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "The dollar is now rallying and emerging market currencies are selling off — a dynamic consistent wit",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "Average stock realized volatility relative to index volatility is at peak levels last seen in 2009, ",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "The outbreak of war involving Iran caused the entire hydrocarbon complex, including coal and especia",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "China's decision to suspend diesel and gasoline exports to domestic refiners only six days into the ",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "If the Strait of Hormuz remains closed for an extended period, national protectionism will likely cr",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "The convergence of Brent and WTI crude prices toward parity is seen as driven in part by the US's po",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "President Trump had not, as of this writing, limited US oil exports or implemented price controls to",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "Oil price spikes of this magnitude historically lead to sharp short-term economic contractions and s",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "China's early pivot to energy protectionism signals the likely sequence of how energy market fragmen",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "Qatar's Ras Laffan LNG export facility shutdown is one of the most consequential developments of the",
+          "novelty": 9,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "The Strait of Hormuz is effectively closed to shipping as a result of the US-Israel war on Iran, dis",
+          "novelty": 9,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "Qatar supplies roughly 20% of global LNG, meaning its export shutdown represents a systemic shock to",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "Major LNG-importing economies including China, Japan, South Korea, India, and Taiwan will be negativ",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "Both Putin and Trump are signaling potential moves that would further worsen the EU's emerging energ",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "The EU's planned full ban on Russian LNG and pipeline gas imports by 2027 will be made more economic",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "The prior EU energy crisis that began in 2021 catalyzed significant deindustrialization of major Eur",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "doomberg",
+          "claim": "Doomberg believes it had predicted the Ras Laffan shutdown consequence prior to the event occurring,",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Goldman's desk head is questioning whether China has stopped exporting deflation to the rest of the ",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "China's export growth dramatically exceeded Wall Street consensus expectations for January-February,",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "China's trade surplus reached an all-time high for the January-February period, suggesting its expor",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "China is successfully diversifying its export markets away from the US, with shipments to Africa, AS",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Strong AI-driven global demand for tech products is a key driver of China's export and import surge,",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "China has been aggressively stockpiling crude oil ahead of anticipated Middle East conflict risks, b",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Middle East conflict labeled 'Operation Epic Fury' poses severe downside risk to China's export mome",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "An extended Middle East conflict would fuel global inflation, reduce central bank room for monetary ",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "China's growth target for 2026 was deliberately set lower to accommodate the possibility of unpredic",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "A potential large Boeing-China aircraft deal ahead of the Xi-Trump summit signals possible positive ",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Anthropic filed a lawsuit against the Pentagon following the federal government's designation of the",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Anthropic refused to modify its user policy to permit government use of Claude for mass surveillance",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The Trump administration directed all federal agencies, contractors, suppliers, and partners doing b",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Anthropic argues the government's designation and campaign against it constitutes unconstitutional p",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "A coalition of over 30 AI engineers and scientists from OpenAI and Google, including Google's chief ",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Anthropic expressed doubt that its AI model Claude would function safely or reliably if deployed for",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The AI industry coalition warned that the U.S. government's actions against Anthropic, if not halted",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Childhood obesity in the US has reached its highest recorded level, with more than 1 in 5 children a",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Federal and state governments are increasing policy focus on nutrition, with 18 states approved to r",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Prescriptions for FDA-approved obesity medications for adolescents rose sharply following regulatory",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The UK government under Keir Starmer is actively exploring ways to penalize or shut down X over Grok",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The source believes the UK government's stated justification for targeting X is a pretext, and the r",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Under the Online Safety Act, UK regulators have the authority to impose fines of up to 10% of a comp",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "X is described as urgently investigating the offensive chatbot responses generated by Grok, suggesti",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Trump believes the US military campaign against Iran is largely complete and could end very soon, fr",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Oil prices dropped sharply on Trump's signal that the Iran campaign is nearly over, suggesting marke",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Iran's appointment of a more hardline supreme leader signals the regime intends to fight on rather t",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Trump's administration appears to be framing short-term oil price spikes as an acceptable cost, bett",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Iran is conducting retaliatory drone and missile strikes across Gulf states including Saudi Arabia a",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The G7 is actively monitoring energy markets and is prepared to release strategic oil stockpiles, su",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "There is a meaningful divergence in war aims between the US and Israel, with Israel conducting strik",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Trump is considering deploying special forces to seize Iran's near-bomb-grade uranium, raising the p",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Analysts assess that the Iran regime's core structures have not been dismantled despite massive bomb",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The White House appears to be constructing an artificial narrative of distance from Israel to allow ",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "hidden_forces",
+          "claim": "The guest argues that Iran's regime weakness makes it a more attractive target for military attack, ",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "hidden_forces",
+          "claim": "While acknowledging Iran's support for Hezbollah and the Houthis as irritants to U.S. interests, the",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "The global economy is in a far more fragile state than generally recognized, with the oil shock comp",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "The private credit sector is experiencing a bust that was already threatening systemic spillover bef",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "The duration of the Hormuz disruption is the decisive variable — even a temporary oil shock is alrea",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "If the oil futures curve's backwardation begins shifting further out — with later-dated contracts li",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "Asian economies face not just higher oil costs but potential physical shortages, forcing governments",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "The US labor market was already deteriorating — showing multiple simultaneous negatives in the lates",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The US government's retaliatory blacklisting of Anthropic over its refusal to support autonomous wea",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Government retaliation against AI companies that refuse to comply with military use mandates represe",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Record childhood obesity levels and the MAHA policy agenda are creating regulatory and market tailwi",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "China's trade boom — with exports surging over 20% YoY and imports nearly 20% — signals China may be",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "China is successfully diversifying its export markets away from the US toward Africa, ASEAN, and the",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "China's aggressive pre-emptive crude oil stockpiling ahead of Middle East conflict has created a lar",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "AI-driven semiconductor demand is a structural engine of China's import growth, with chip imports ac",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The U.S. government's blacklisting of Anthropic and threat of broad contractor exclusions signals es",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The US-Iran military conflict is approaching a near-term conclusion, with Trump signaling military o",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Iran's appointment of a hardline new Supreme Leader signals the regime intends to fight on rather th",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Iranian drone and missile strikes on Gulf oil infrastructure — including Bahrain's BAPCO refinery an",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The divergence between US and Israeli war aims — with Israel striking Iranian oil infrastructure bey",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Trump is signaling a willingness to seize Iranian oil assets post-conflict, and the broader pattern ",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Active U.S. military operations against Iran (Operation Epic Fury) are causing significant material ",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The U.S. military-industrial complex is scaling up production capacity in direct response to Operati",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The US-Iran conflict is entering an escalation trap where neither full regime change nor preserving ",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The Trump administration has effectively abandoned formal regime change as an objective of Operation",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Israel is independently pushing for elimination of the new Iranian Supreme Leader and potentially an",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The Trump administration is making a credible commitment to fusion energy via regulatory progress an",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "Mortgage delinquencies are rising sharply in geographically concentrated areas (Texas, Florida) and ",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "Credit card lending standards are tightening while consumers simultaneously increase leverage to cop",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "Latin America is the primary geographic winner of the current geopolitical 'spherification' trend, o",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "Markets are mispricing the oil supply shock's geographic dispersion — Europe faces a sharply negativ",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "Fed balance sheet reform under incoming chair Warsh — prioritizing bank deregulation, easing capital",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "15% tariffs on most of the rest of the world are now a structural fixture of US trade policy that wi",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "forward_guidance",
+          "claim": "AI-driven productivity growth, if it reaches a middle path between 'total dud' and 'AGI solves every",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "luke_gromen",
+          "claim": "Europe, as a major holder of US Treasuries and equities, will be forced to sell those dollar assets ",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "luke_gromen",
+          "claim": "AI-driven unemployment could reach 10%+ within a couple of years, creating a deflationary demand sho",
+          "novelty": 6,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "lyn_alden",
+          "claim": "Understanding fractional reserve banking is essential for investors because it determines whether th",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The Iran conflict is driving a structural energy price shock in Europe, particularly Germany, due to",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The United States is largely insulated from the Iran-driven oil price shock due to energy autarky an",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The Iran conflict is likely to be short in duration, as neither the US nor Israel seeks regime chang",
+          "novelty": 9,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Middle East conflict has taken roughly 20% of global LNG supply offline, with Qatar's Ras Laffan and",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The widely anticipated 2025-2026 LNG glut has been effectively eliminated, with analysts now forecas",
+          "novelty": 8,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "LNG trade flows are being structurally redirected from Europe to Asia, threatening European energy s",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "New US LNG capacity additions are too slow to compensate for the current supply shock, leaving no ne",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "The EU ETS is structurally designed to generate autonomous Brussels revenue and build a captive gree",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "European energy costs will continue rising as the EU ETS expands to cover transport and heating, imp",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Active conflict near the Strait of Hormuz has caused tanker freight rates to surge to roughly four t",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "zerohedge",
+          "claim": "Global onshore oil storage is approaching capacity during the conflict period, forcing producers to ",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "hidden_forces",
+          "claim": "Regime change in Iran is likely to produce civil war rather than stable democracy, following the sam",
+          "novelty": 5,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "JP Morgan's decision to mark down private credit collateral values represents a systemic escalation ",
+          "novelty": 7,
+          "signal": 0
+        },
+        {
+          "type": "HIGH_NOVELTY_LOW_SIGNAL",
+          "source": "jeff_snider",
+          "claim": "Private credit fund collateral quality is fundamentally impaired due to years of sloppy underwriting",
+          "novelty": 5,
+          "signal": 0
+        }
+      ]
+    },
+    "alert_treatment": {
+      "full_treatment": [
+        {
+          "id": "RO-20260312-002",
+          "severity": "WARNING",
+          "check_id": "EXP_SECTOR_CONCENTRATION",
+          "message": "Effective Commodities Exposure 37.2% approaching warning level (35%).",
+          "affected_positions": [],
+          "affected_systems": [],
+          "trade_class": "A",
+          "current_value": 0.3717,
+          "threshold": 0.35,
+          "recommendation": "No action required. Monitor for further increases.",
+          "context": {
+            "fragility_state": "HEALTHY",
+            "event_in_48h": true,
+            "next_event": "ECB_Rate_Decision",
+            "next_event_days": 0,
+            "g7_status": "UNAVAILABLE",
+            "v16_state": "Risk-On",
+            "dd_protect_active": false
+          },
+          "previous_severity": "WARNING",
+          "trend": "STABLE",
+          "days_active": 2,
+          "base_severity": "MONITOR",
+          "boost_applied": "EVENT_IMMINENT"
+        },
+        {
+          "id": "RO-20260312-003",
+          "severity": "CRITICAL",
+          "check_id": "EXP_SINGLE_NAME",
+          "message": "Single position HYG (V16) at 28.8% exceeds 25%.",
+          "affected_positions": [
+            "HYG"
+          ],
+          "affected_systems": [
+            "V16"
+          ],
+          "trade_class": "A",
+          "current_value": 0.2883,
+          "threshold": 0.25,
+          "recommendation": "",
+          "context": {
+            "fragility_state": "HEALTHY",
+            "event_in_48h": true,
+            "next_event": "ECB_Rate_Decision",
+            "next_event_days": 0,
+            "g7_status": "UNAVAILABLE",
+            "v16_state": "Risk-On",
+            "dd_protect_active": false
+          },
+          "previous_severity": "WARNING",
+          "trend": "ESCALATING",
+          "days_active": 26,
+          "base_severity": "WARNING",
+          "boost_applied": "EVENT_IMMINENT"
+        },
+        {
+          "id": "RO-20260312-005",
+          "severity": "WARNING",
+          "check_id": "INT_REGIME_CONFLICT",
+          "message": "V16 state 'Risk-On' (regime: STEADY_GROWTH) diverges from Market Analyst assessment 'NEUTRAL' (lean: UNKNOWN). V16 operates on validated signals — this divergence may indicate V16 will transition soon. No action required on V16.",
+          "affected_positions": [],
+          "affected_systems": [
+            "V16",
+            "MARKET_ANALYST"
+          ],
+          "trade_class": "A",
+          "current_value": null,
+          "threshold": null,
+          "recommendation": "V16 and Market Analyst slightly divergent. V16 validated — no action on V16 required. Monitor for V16 regime transition.",
+          "context": {
+            "fragility_state": "HEALTHY",
+            "event_in_48h": true,
+            "next_event": "ECB_Rate_Decision",
+            "next_event_days": 0,
+            "g7_status": "UNAVAILABLE",
+            "v16_state": "Risk-On",
+            "dd_protect_active": false
+          },
+          "previous_severity": "WARNING",
+          "trend": "STABLE",
+          "days_active": 2,
+          "base_severity": "MONITOR",
+          "boost_applied": "EVENT_IMMINENT"
+        },
+        {
+          "id": "RO-20260312-001",
+          "severity": "WARNING",
+          "check_id": "TMP_EVENT_CALENDAR",
+          "message": "Upcoming macro event(s): ECB_Rate_Decision in 0d (2026-03-12). Increased uncertainty may affect existing risk assessments.",
+          "affected_positions": [],
+          "affected_systems": [],
+          "trade_class": "A",
+          "current_value": null,
+          "threshold": null,
+          "recommendation": "Macro event approaching. Existing risk assessments carry elevated uncertainty. No preemptive action recommended.",
+          "context": {
+            "fragility_state": "HEALTHY",
+            "event_in_48h": true,
+            "next_event": "ECB_Rate_Decision",
+            "next_event_days": 0,
+            "g7_status": "UNAVAILABLE",
+            "v16_state": "Risk-On",
+            "dd_protect_active": false
+          },
+          "previous_severity": "WARNING",
+          "trend": "STABLE",
+          "days_active": 2,
+          "base_severity": "MONITOR",
+          "boost_applied": "EVENT_IMMINENT"
+        }
+      ],
+      "compressed_ongoing": []
+    },
+    "confidence_markers": [
+      {
+        "section": "S3_RISK",
+        "claim": "Overall risk assessment",
+        "confidence": "HIGH",
+        "basis": "No blind spots, few divergences"
+      },
+      {
+        "section": "S5_INTELLIGENCE",
+        "claim": "IC consensus reliability",
+        "confidence": "HIGH",
+        "basis": "8 sources processed"
+      }
+    ],
+    "history": {
+      "active_threads": [
+        {
+          "thread_id": "risk_exp_single_name",
+          "source": "RISK_OFFICER.EXP_SINGLE_NAME",
+          "trend": "NEW",
+          "summary": "EXP_SINGLE_NAME CRITICAL",
+          "started": "2026-03-06",
+          "days_active": 28,
+          "last_checked": "2026-03-12"
+        },
+        {
+          "thread_id": "risk_exp_single_name",
+          "source": "RISK_OFFICER.EXP_SINGLE_NAME",
+          "trend": "NEW",
+          "summary": "EXP_SINGLE_NAME WARNING",
+          "started": "2026-03-06",
+          "days_active": 28,
+          "last_checked": "2026-03-12"
+        },
+        {
+          "thread_id": "risk_exp_sector_concentration",
+          "source": "RISK_OFFICER.EXP_SECTOR_CONCENTRATION",
+          "trend": "NEW",
+          "summary": "EXP_SECTOR_CONCENTRATION WARNING",
+          "started": "2026-03-11",
+          "days_active": 2,
+          "last_checked": "2026-03-12"
+        },
+        {
+          "thread_id": "risk_int_regime_conflict",
+          "source": "RISK_OFFICER.INT_REGIME_CONFLICT",
+          "trend": "NEW",
+          "summary": "INT_REGIME_CONFLICT WARNING",
+          "started": "2026-03-11",
+          "days_active": 2,
+          "last_checked": "2026-03-12"
+        },
+        {
+          "thread_id": "risk_tmp_event_calendar",
+          "source": "RISK_OFFICER.TMP_EVENT_CALENDAR",
+          "trend": "NEW",
+          "summary": "TMP_EVENT_CALENDAR WARNING",
+          "started": "2026-03-11",
+          "days_active": 2,
+          "last_checked": "2026-03-12"
+        }
+      ],
+      "resolved_threads_7d": [
+        {
+          "thread_id": "risk_exp_sector_concentration",
+          "started": "2026-03-06",
+          "resolved": "2026-03-06",
+          "duration": 8,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_int_regime_conflict",
+          "started": "2026-03-06",
+          "resolved": "2026-03-06",
+          "duration": 8,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_tmp_event_calendar",
+          "started": "2026-03-06",
+          "resolved": "2026-03-06",
+          "duration": 8,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_exp_sector_concentration",
+          "started": "2026-03-09",
+          "resolved": "2026-03-10",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_int_regime_conflict",
+          "started": "2026-03-09",
+          "resolved": "2026-03-10",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_tmp_event_calendar",
+          "started": "2026-03-09",
+          "resolved": "2026-03-10",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_exp_sector_concentration",
+          "started": "2026-03-10",
+          "resolved": "2026-03-10",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_int_regime_conflict",
+          "started": "2026-03-10",
+          "resolved": "2026-03-10",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_tmp_event_calendar",
+          "started": "2026-03-10",
+          "resolved": "2026-03-10",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_exp_sector_concentration",
+          "started": "2026-03-10",
+          "resolved": "2026-03-10",
+          "duration": 2,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_int_regime_conflict",
+          "started": "2026-03-10",
+          "resolved": "2026-03-10",
+          "duration": 2,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_tmp_event_calendar",
+          "started": "2026-03-10",
+          "resolved": "2026-03-10",
+          "duration": 2,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_exp_sector_concentration",
+          "started": "2026-03-10",
+          "resolved": "2026-03-11",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_int_regime_conflict",
+          "started": "2026-03-10",
+          "resolved": "2026-03-11",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        },
+        {
+          "thread_id": "risk_tmp_event_calendar",
+          "started": "2026-03-10",
+          "resolved": "2026-03-11",
+          "duration": 3,
+          "resolution": "Thread no longer active"
+        }
+      ],
+      "open_action_items": [
+        {
+          "type": "ACT",
+          "description": "A1: HYG-Konzentration Review (CRITICAL, Trade Class A)",
+          "urgency": "TODAY",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_001",
+          "days_open": 28,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+        },
+        {
+          "type": "ACT",
+          "description": "A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A)",
+          "urgency": "TODAY",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_002",
+          "days_open": 28,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+        },
+        {
+          "type": "ACT",
+          "description": "A3: CPI-Vorbereitung (MEDIUM, Trade Class A)",
+          "urgency": "TODAY",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_003",
+          "days_open": 28,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+        },
+        {
+          "type": "ACT",
+          "description": "A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B)",
+          "urgency": "TODAY",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_004",
+          "days_open": 28,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+        },
+        {
+          "type": "WATCH",
+          "description": "W1: Breadth-Deterioration (Hussman-Warnung)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_005",
+          "days_open": 28,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "W2: Japan JGB-Stress (Luke Gromen-Szenario)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_006",
+          "days_open": 28,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "W3: Geopolitik-Eskalation (Doomberg/ZeroHedge)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_007",
+          "days_open": 28,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "W4: Commodities-Rotation (Crescat vs. Doomberg)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_008",
+          "days_open": 28,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "Was",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_006",
+          "days_open": 27,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "Warum",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_007",
+          "days_open": 27,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "Monitoring",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_008",
+          "days_open": 27,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "Trigger noch aktiv",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_009",
+          "days_open": 27,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "Status",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_010",
+          "days_open": 27,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "REVIEW",
+          "description": "A5: Post-NFP/ECB System-Review (HIGH, Trade Class A) — HEUTE ABEND",
+          "urgency": "THIS_WEEK",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_005",
+          "days_open": 26,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "REVIEW offen seit 26 Tagen — Eskalation"
+        },
+        {
+          "type": "WATCH",
+          "description": "W5: V16 Regime-Shift Proximity — NEU",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_030",
+          "days_open": 26,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "Nächster Check",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_010",
+          "days_open": 25,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "Trigger",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_008",
+          "days_open": 24,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "ACT",
+          "description": "A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, NEU)",
+          "urgency": "THIS_WEEK",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": true,
+          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+          "id": "action_2026-03-06_006",
+          "days_open": 21,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 21 Tagen — DRINGEND"
+        },
+        {
+          "type": "WATCH",
+          "description": "Wie dringend",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-06_012",
+          "days_open": 20,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "ACT",
+          "description": "A7: Post-CPI System-Review (HIGH, Trade Class A, NEU)",
+          "urgency": "THIS_WEEK",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": true,
+          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+          "id": "action_2026-03-09_006",
+          "days_open": 19,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 19 Tagen — DRINGEND"
+        },
+        {
+          "type": "WATCH",
+          "description": "Urgency",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-09_013",
+          "days_open": 19,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "HEUTE (2026-03-09)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-09_014",
+          "days_open": 19,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "THIS_WEEK",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-09_015",
+          "days_open": 19,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "2026-03-11 (Post-CPI)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-09_016",
+          "days_open": 19,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "CLOSE-Empfehlungen",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-09_017",
+          "days_open": 19,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "AKTIVE WATCH",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-09_018",
+          "days_open": 19,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "ACT",
+          "description": "A8: Router-Proximity Persistenz-Check (MEDIUM, Trade Class B) — NEU",
+          "urgency": "THIS_WEEK",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": true,
+          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+          "id": "action_2026-03-10_011",
+          "days_open": 16,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 16 Tagen — DRINGEND"
+        },
+        {
+          "type": "WATCH",
+          "description": "W14: HYG Post-CPI Rebalance-Watch — NEU",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-10_012",
+          "days_open": 16,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "ACT",
+          "description": "A9: HYG Post-CPI Rebalance-Readiness (HIGH, Trade Class A, NEU)",
+          "urgency": "THIS_WEEK",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": true,
+          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+          "id": "action_2026-03-10_008",
+          "days_open": 11,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 11 Tagen — DRINGEND"
+        },
+        {
+          "type": "WATCH",
+          "description": "W15: Market Analyst Conviction Recovery (NEU)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-10_014",
+          "days_open": 7,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "W16: IC Geopolitics Divergenz Resolution (NEU)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-10_015",
+          "days_open": 7,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "WATCH",
+          "description": "W17: Howell Liquidity Update (NEU)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-10_016",
+          "days_open": 7,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        },
+        {
+          "type": "ACT",
+          "description": "A10: HYG Post-CPI Immediate Review (CRITICAL, Trade Class A, NEU)",
+          "urgency": "THIS_WEEK",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": true,
+          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+          "id": "action_2026-03-10_001",
+          "days_open": 5,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+        },
+        {
+          "type": "ACT",
+          "description": "A11: Router COMMODITY_SUPER Persistence Validation (HIGH, Trade Class B, NEU)",
+          "urgency": "THIS_WEEK",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": true,
+          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+          "id": "action_2026-03-10_002",
+          "days_open": 5,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+        },
+        {
+          "type": "ACT",
+          "description": "A12: IC Geopolitics Narrative Resolution Tracking (MEDIUM, Trade Class B, NEU)",
+          "urgency": "THIS_WEEK",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": true,
+          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+          "id": "action_2026-03-10_003",
+          "days_open": 5,
+          "trigger_still_active": true,
+          "status": "OPEN",
+          "escalated": true,
+          "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+        },
+        {
+          "type": "WATCH",
+          "description": "W18: Credit Spread Diskrepanz (NEU)",
+          "urgency": "ONGOING",
+          "source_alerts": [],
+          "source_patterns": [],
+          "conviction_upgrade": false,
+          "id": "action_2026-03-11_020",
+          "days_open": 4,
+          "trigger_still_active": true,
+          "status": "OPEN"
+        }
+      ],
+      "consecutive_routine_days": 0,
+      "patterns_last_7d": {}
+    }
+  },
+  "cio_history_digest": {
+    "last_updated": "2026-03-12",
+    "consecutive_routine_days": 0,
+    "active_threads": [
+      {
+        "thread_id": "risk_exp_single_name",
+        "source": "RISK_OFFICER.EXP_SINGLE_NAME",
+        "trend": "NEW",
+        "summary": "EXP_SINGLE_NAME CRITICAL",
+        "started": "2026-03-06",
+        "days_active": 28,
+        "last_checked": "2026-03-12"
+      },
+      {
+        "thread_id": "risk_exp_single_name",
+        "source": "RISK_OFFICER.EXP_SINGLE_NAME",
+        "trend": "NEW",
+        "summary": "EXP_SINGLE_NAME WARNING",
+        "started": "2026-03-06",
+        "days_active": 28,
+        "last_checked": "2026-03-12"
+      },
+      {
+        "thread_id": "risk_exp_sector_concentration",
+        "source": "RISK_OFFICER.EXP_SECTOR_CONCENTRATION",
+        "trend": "NEW",
+        "summary": "EXP_SECTOR_CONCENTRATION WARNING",
+        "started": "2026-03-11",
+        "days_active": 2,
+        "last_checked": "2026-03-12"
+      },
+      {
+        "thread_id": "risk_int_regime_conflict",
+        "source": "RISK_OFFICER.INT_REGIME_CONFLICT",
+        "trend": "NEW",
+        "summary": "INT_REGIME_CONFLICT WARNING",
+        "started": "2026-03-11",
+        "days_active": 2,
+        "last_checked": "2026-03-12"
+      },
+      {
+        "thread_id": "risk_tmp_event_calendar",
+        "source": "RISK_OFFICER.TMP_EVENT_CALENDAR",
+        "trend": "NEW",
+        "summary": "TMP_EVENT_CALENDAR WARNING",
+        "started": "2026-03-11",
+        "days_active": 2,
+        "last_checked": "2026-03-12"
+      }
+    ],
+    "resolved_threads_last_7d": [
+      {
+        "thread_id": "risk_exp_sector_concentration",
+        "started": "2026-03-06",
+        "resolved": "2026-03-06",
+        "duration": 8,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_int_regime_conflict",
+        "started": "2026-03-06",
+        "resolved": "2026-03-06",
+        "duration": 8,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_tmp_event_calendar",
+        "started": "2026-03-06",
+        "resolved": "2026-03-06",
+        "duration": 8,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_exp_sector_concentration",
+        "started": "2026-03-09",
+        "resolved": "2026-03-10",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_int_regime_conflict",
+        "started": "2026-03-09",
+        "resolved": "2026-03-10",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_tmp_event_calendar",
+        "started": "2026-03-09",
+        "resolved": "2026-03-10",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_exp_sector_concentration",
+        "started": "2026-03-10",
+        "resolved": "2026-03-10",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_int_regime_conflict",
+        "started": "2026-03-10",
+        "resolved": "2026-03-10",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_tmp_event_calendar",
+        "started": "2026-03-10",
+        "resolved": "2026-03-10",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_exp_sector_concentration",
+        "started": "2026-03-10",
+        "resolved": "2026-03-10",
+        "duration": 2,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_int_regime_conflict",
+        "started": "2026-03-10",
+        "resolved": "2026-03-10",
+        "duration": 2,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_tmp_event_calendar",
+        "started": "2026-03-10",
+        "resolved": "2026-03-10",
+        "duration": 2,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_exp_sector_concentration",
+        "started": "2026-03-10",
+        "resolved": "2026-03-11",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_int_regime_conflict",
+        "started": "2026-03-10",
+        "resolved": "2026-03-11",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      },
+      {
+        "thread_id": "risk_tmp_event_calendar",
+        "started": "2026-03-10",
+        "resolved": "2026-03-11",
+        "duration": 3,
+        "resolution": "Thread no longer active"
+      }
+    ],
+    "patterns_last_7d": {},
+    "open_action_items": [
+      {
+        "type": "ACT",
+        "description": "A1: HYG-Konzentration Review (CRITICAL, Trade Class A)",
+        "urgency": "TODAY",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_001",
+        "days_open": 28,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+      },
+      {
+        "type": "ACT",
+        "description": "A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A)",
+        "urgency": "TODAY",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_002",
+        "days_open": 28,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+      },
+      {
+        "type": "ACT",
+        "description": "A3: CPI-Vorbereitung (MEDIUM, Trade Class A)",
+        "urgency": "TODAY",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_003",
+        "days_open": 28,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+      },
+      {
+        "type": "ACT",
+        "description": "A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B)",
+        "urgency": "TODAY",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_004",
+        "days_open": 28,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 28 Tagen — DRINGEND"
+      },
+      {
+        "type": "WATCH",
+        "description": "W1: Breadth-Deterioration (Hussman-Warnung)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_005",
+        "days_open": 28,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "W2: Japan JGB-Stress (Luke Gromen-Szenario)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_006",
+        "days_open": 28,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "W3: Geopolitik-Eskalation (Doomberg/ZeroHedge)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_007",
+        "days_open": 28,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "W4: Commodities-Rotation (Crescat vs. Doomberg)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_008",
+        "days_open": 28,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "Was",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_006",
+        "days_open": 27,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "Warum",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_007",
+        "days_open": 27,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "Monitoring",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_008",
+        "days_open": 27,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "Trigger noch aktiv",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_009",
+        "days_open": 27,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "Status",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_010",
+        "days_open": 27,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "REVIEW",
+        "description": "A5: Post-NFP/ECB System-Review (HIGH, Trade Class A) — HEUTE ABEND",
+        "urgency": "THIS_WEEK",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_005",
+        "days_open": 26,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "REVIEW offen seit 26 Tagen — Eskalation"
+      },
+      {
+        "type": "WATCH",
+        "description": "W5: V16 Regime-Shift Proximity — NEU",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_030",
+        "days_open": 26,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "Nächster Check",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_010",
+        "days_open": 25,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "Trigger",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_008",
+        "days_open": 24,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "ACT",
+        "description": "A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, NEU)",
+        "urgency": "THIS_WEEK",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": true,
+        "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+        "id": "action_2026-03-06_006",
+        "days_open": 21,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 21 Tagen — DRINGEND"
+      },
+      {
+        "type": "WATCH",
+        "description": "Wie dringend",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-06_012",
+        "days_open": 20,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "ACT",
+        "description": "A7: Post-CPI System-Review (HIGH, Trade Class A, NEU)",
+        "urgency": "THIS_WEEK",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": true,
+        "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+        "id": "action_2026-03-09_006",
+        "days_open": 19,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 19 Tagen — DRINGEND"
+      },
+      {
+        "type": "WATCH",
+        "description": "Urgency",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-09_013",
+        "days_open": 19,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "HEUTE (2026-03-09)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-09_014",
+        "days_open": 19,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "THIS_WEEK",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-09_015",
+        "days_open": 19,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "2026-03-11 (Post-CPI)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-09_016",
+        "days_open": 19,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "CLOSE-Empfehlungen",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-09_017",
+        "days_open": 19,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "AKTIVE WATCH",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-09_018",
+        "days_open": 19,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "ACT",
+        "description": "A8: Router-Proximity Persistenz-Check (MEDIUM, Trade Class B) — NEU",
+        "urgency": "THIS_WEEK",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": true,
+        "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+        "id": "action_2026-03-10_011",
+        "days_open": 16,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 16 Tagen — DRINGEND"
+      },
+      {
+        "type": "WATCH",
+        "description": "W14: HYG Post-CPI Rebalance-Watch — NEU",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-10_012",
+        "days_open": 16,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "ACT",
+        "description": "A9: HYG Post-CPI Rebalance-Readiness (HIGH, Trade Class A, NEU)",
+        "urgency": "THIS_WEEK",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": true,
+        "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+        "id": "action_2026-03-10_008",
+        "days_open": 11,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 11 Tagen — DRINGEND"
+      },
+      {
+        "type": "WATCH",
+        "description": "W15: Market Analyst Conviction Recovery (NEU)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-10_014",
+        "days_open": 7,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "W16: IC Geopolitics Divergenz Resolution (NEU)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-10_015",
+        "days_open": 7,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "WATCH",
+        "description": "W17: Howell Liquidity Update (NEU)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-10_016",
+        "days_open": 7,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      },
+      {
+        "type": "ACT",
+        "description": "A10: HYG Post-CPI Immediate Review (CRITICAL, Trade Class A, NEU)",
+        "urgency": "THIS_WEEK",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": true,
+        "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+        "id": "action_2026-03-10_001",
+        "days_open": 5,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+      },
+      {
+        "type": "ACT",
+        "description": "A11: Router COMMODITY_SUPER Persistence Validation (HIGH, Trade Class B, NEU)",
+        "urgency": "THIS_WEEK",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": true,
+        "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+        "id": "action_2026-03-10_002",
+        "days_open": 5,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+      },
+      {
+        "type": "ACT",
+        "description": "A12: IC Geopolitics Narrative Resolution Tracking (MEDIUM, Trade Class B, NEU)",
+        "urgency": "THIS_WEEK",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": true,
+        "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
+        "id": "action_2026-03-10_003",
+        "days_open": 5,
+        "trigger_still_active": true,
+        "status": "OPEN",
+        "escalated": true,
+        "escalation_note": "ACT-Item offen seit 5 Tagen — DRINGEND"
+      },
+      {
+        "type": "WATCH",
+        "description": "W18: Credit Spread Diskrepanz (NEU)",
+        "urgency": "ONGOING",
+        "source_alerts": [],
+        "source_patterns": [],
+        "conviction_upgrade": false,
+        "id": "action_2026-03-11_020",
+        "days_open": 4,
+        "trigger_still_active": true,
+        "status": "OPEN"
+      }
+    ]
+  }
+}
