@@ -1,0 +1,53 @@
+name: Step 0v — Cycles Data Collector + Phase Engine
+
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # Every Sunday 02:00 UTC
+  workflow_dispatch:
+    inputs:
+      force_backfill:
+        description: 'Force full 20y history backfill'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+jobs:
+  cycles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests google-api-python-client google-auth
+
+      - name: Run Cycles Engine
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: |
+          if [ "${{ github.event.inputs.force_backfill }}" = "true" ]; then
+            python -m step_0v_cycles.main --force-backfill --skip-git
+          else
+            python -m step_0v_cycles.main --skip-git
+          fi
+
+      - name: Commit + Push data files
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add step_0v_cycles/data/ data/dashboard/latest.json || true
+          git diff --cached --quiet || (git commit -m "Cycles Phase Detection — $(date -I)" && git push)
