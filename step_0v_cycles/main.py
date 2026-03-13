@@ -1,12 +1,13 @@
 """
 Cycles Circle — Main Orchestrator
-Baldur Creek Capital | Step 0v (V3.4 FINAL)
+Baldur Creek Capital | Step 0v (V4.0 — Chart Data)
 
 1. Collect all data (incremental persistence)
 2. Run phase detection for all 10 cycles
 3. Save results locally (cycle_data.json)
+3b. Generate chart data (cycles_chart_data.json) — NEW
 4. Write to Cycles Sheet (DASHBOARD, PHASES, HISTORY)
-5. Write cycles block to latest.json (for CyclesCard)
+5. Write cycles block to latest.json (for CyclesCard) — EXTENDED with indicator values
 6. Git commit + push data files
 
 Usage:
@@ -215,7 +216,7 @@ def write_history(service, result):
 
 
 # ---------------------------------------------------------------------------
-# Update latest.json
+# Update latest.json — EXTENDED with indicator values per cycle
 # ---------------------------------------------------------------------------
 
 def update_latest_json(result):
@@ -262,6 +263,11 @@ def update_latest_json(result):
                     "tier": c.get("tier"),
                     "v16_alignment": c.get("v16_alignment"),
                     "in_danger_zone": c.get("in_danger_zone"),
+                    "indicator_value": _fmt(c.get("indicator_value"), 4),
+                    "indicator_12m_ma": _fmt(c.get("indicator_12m_ma"), 4),
+                    "velocity": _fmt(c.get("velocity"), 6),
+                    "percentile": c.get("percentile"),
+                    "danger_zone": c.get("danger_zone"),
                 }
                 for cid, c in result.get("cycles", {}).items()
             },
@@ -269,7 +275,7 @@ def update_latest_json(result):
 
         with open(latest_path, "w", encoding="utf-8") as f:
             json.dump(latest, f, indent=2, ensure_ascii=False, default=str)
-        logger.info(f"latest.json updated with cycles block")
+        logger.info(f"latest.json updated with cycles block (extended)")
 
     except Exception as e:
         logger.error(f"Failed to update latest.json: {e}")
@@ -288,6 +294,275 @@ def save_phase_result(result):
         logger.info(f"Phase result saved → {path}")
     except Exception as e:
         logger.error(f"Save failed: {e}")
+
+
+# ---------------------------------------------------------------------------
+# Generate Chart Data (NEW — V4.0)
+# ---------------------------------------------------------------------------
+
+# Mapping: cycle_id → how to extract the indicator time series from raw data
+# Returns list of {"date": "YYYY-MM-DD", "value": float}
+CHART_INDICATOR_EXTRACTORS = {
+    "LIQUIDITY":    {"type": "liquidity", "column": "Fed_Net_Liq"},
+    "CREDIT":       {"type": "fred", "key": "HY_OAS_FRED", "multiply": 100},
+    "COMMODITY":    {"type": "computed_crb_real"},
+    "CHINA_CREDIT": {"type": "computed_copper_gold"},
+    "DOLLAR":       {"type": "fred", "key": "DXY"},
+    "BUSINESS":     {"type": "fred_yoy", "key": "INDPRO"},
+    "FED_RATES":    {"type": "computed_real_ffr"},
+    "EARNINGS":     {"type": "fred_qyoy", "key": "CORP_PROFITS"},
+    "TRADE":        {"type": "fred_yoy", "key": "CASS"},
+    "POLITICAL":    {"type": "none"},
+}
+
+# Primary asset overlay per cycle (from config.py CYCLE_DEFINITIONS)
+CHART_ASSET_OVERLAY = {
+    "LIQUIDITY": "DBC", "CREDIT": "HYG", "COMMODITY": "DBC",
+    "CHINA_CREDIT": "DBC", "DOLLAR": "GLD", "BUSINESS": "SPY",
+    "FED_RATES": "GLD", "EARNINGS": "SPY", "TRADE": "DBC",
+    "POLITICAL": "SPY",
+}
+
+
+def _resample_monthly(series):
+    """Resample a daily/weekly/mixed series to monthly (last value per month).
+    Input: list of {"date": "YYYY-MM-DD", "value": float}, sorted ascending.
+    Output: list of {"date": "YYYY-MM", "value": float}, sorted ascending.
+    """
+    if not series:
+        return []
+    monthly = {}
+    for pt in series:
+        d = pt.get("date", "")
+        v = pt.get("value")
+        if not d or v is None:
+            continue
+        ym = d[:7]  # "YYYY-MM"
+        monthly[ym] = v  # last value wins (series is sorted ascending)
+    result = [{"date": ym, "value": round(v, 6)} for ym, v in sorted(monthly.items())]
+    return result
+
+
+def _compute_ma(monthly_series, window=12):
+    """Compute moving average over monthly series.
+    Returns list of {"date": "YYYY-MM", "value": float} with same length,
+    None for first (window-1) entries.
+    """
+    result = []
+    vals = [pt["value"] for pt in monthly_series]
+    for i in range(len(monthly_series)):
+        if i < window - 1:
+            result.append({"date": monthly_series[i]["date"], "value": None})
+        else:
+            window_vals = vals[i - window + 1: i + 1]
+            avg = sum(window_vals) / len(window_vals)
+            result.append({"date": monthly_series[i]["date"], "value": round(avg, 6)})
+    return result
+
+
+def _extract_indicator_series(cycle_id, data):
+    """Extract the primary indicator time series for a cycle from raw data.
+    Returns list of {"date": "YYYY-MM-DD", "value": float} sorted ascending.
+    """
+    cfg = CHART_INDICATOR_EXTRACTORS.get(cycle_id)
+    if not cfg or cfg["type"] == "none":
+        return []
+
+    if cfg["type"] == "liquidity":
+        col = cfg["column"]
+        raw = data.get("liquidity", [])
+        series = [{"date": r["date"], "value": r.get(col)}
+                  for r in raw if r.get(col) is not None and r.get("date")]
+        series.sort(key=lambda x: x["date"])
+        return series
+
+    if cfg["type"] == "fred":
+        key = cfg["key"]
+        mult = cfg.get("multiply", 1)
+        raw = data.get("fred", {}).get(key, [])
+        series = [{"date": r["date"], "value": r["value"] * mult}
+                  for r in raw if r.get("value") is not None and r.get("date")]
+        series.sort(key=lambda x: x["date"])
+        return series
+
+    if cfg["type"] == "fred_yoy":
+        key = cfg["key"]
+        raw = data.get("fred", {}).get(key, [])
+        raw = [r for r in raw if r.get("value") is not None and r.get("date")]
+        raw.sort(key=lambda x: x["date"])
+        if len(raw) < 13:
+            return []
+        result = []
+        for i in range(12, len(raw)):
+            c = raw[i]["value"]
+            a = raw[i - 12]["value"]
+            if a and a != 0:
+                result.append({"date": raw[i]["date"],
+                               "value": round((c - a) / abs(a) * 100, 2)})
+        return result
+
+    if cfg["type"] == "fred_qyoy":
+        key = cfg["key"]
+        raw = data.get("fred", {}).get(key, [])
+        raw = [r for r in raw if r.get("value") is not None and r.get("date")]
+        raw.sort(key=lambda x: x["date"])
+        if len(raw) < 5:
+            return []
+        result = []
+        for i in range(4, len(raw)):
+            c = raw[i]["value"]
+            a = raw[i - 4]["value"]
+            if a and a != 0:
+                result.append({"date": raw[i]["date"],
+                               "value": round((c - a) / abs(a) * 100, 2)})
+        return result
+
+    if cfg["type"] == "computed_crb_real":
+        dbc = data.get("prices", {}).get("DBC", [])
+        cpi_raw = data.get("fred", {}).get("CPI", [])
+        if not dbc or not cpi_raw:
+            return []
+        dbc_sorted = sorted([p for p in dbc if p.get("price") and p.get("date")],
+                            key=lambda x: x["date"])
+        cpi_map = {}
+        for c in cpi_raw:
+            if c.get("value") and c.get("date"):
+                cpi_map[c["date"][:7]] = c["value"]
+        result = []
+        for p in dbc_sorted:
+            ym = p["date"][:7]
+            cv = cpi_map.get(ym)
+            if cv is None:
+                for k in sorted(cpi_map.keys(), reverse=True):
+                    if k <= ym:
+                        cv = cpi_map[k]
+                        break
+            if cv and cv > 0:
+                result.append({"date": p["date"], "value": round(p["price"] / cv * 100, 4)})
+        return result
+
+    if cfg["type"] == "computed_copper_gold":
+        copper = data.get("prices", {}).get("COPPER", [])
+        gold = data.get("prices", {}).get("GLD", [])
+        if not copper or not gold:
+            return []
+        copper_sorted = sorted([p for p in copper if p.get("price") and p.get("date")],
+                               key=lambda x: x["date"])
+        gold_map = {g["date"]: g["price"] for g in gold if g.get("price") and g.get("date")}
+        result = []
+        for p in copper_sorted:
+            gp = gold_map.get(p["date"])
+            if gp and gp > 0:
+                result.append({"date": p["date"], "value": round(p["price"] / gp, 6)})
+        return result
+
+    if cfg["type"] == "computed_real_ffr":
+        ff_raw = data.get("fred", {}).get("FEDFUNDS", [])
+        cpi_raw = data.get("fred", {}).get("CPI", [])
+        if not ff_raw or not cpi_raw:
+            return []
+        ff_sorted = sorted([r for r in ff_raw if r.get("value") is not None and r.get("date")],
+                           key=lambda x: x["date"])
+        cpi_sorted = sorted([r for r in cpi_raw if r.get("value") is not None and r.get("date")],
+                            key=lambda x: x["date"])
+        if len(cpi_sorted) < 13:
+            return []
+        # Build CPI YoY map (monthly)
+        cpi_yoy_map = {}
+        for i in range(12, len(cpi_sorted)):
+            c = cpi_sorted[i]["value"]
+            a = cpi_sorted[i - 12]["value"]
+            if a and a != 0:
+                cpi_yoy_map[cpi_sorted[i]["date"][:7]] = round((c - a) / a * 100, 2)
+        result = []
+        for ff in ff_sorted:
+            ym = ff["date"][:7]
+            cy = cpi_yoy_map.get(ym)
+            if cy is None:
+                for k in sorted(cpi_yoy_map.keys(), reverse=True):
+                    if k <= ym:
+                        cy = cpi_yoy_map[k]
+                        break
+            if cy is not None:
+                result.append({"date": ff["date"], "value": round(ff["value"] - cy, 2)})
+        return result
+
+    return []
+
+
+def _extract_asset_series(ticker, data):
+    """Extract an asset price series from raw data.
+    Returns list of {"date": "YYYY-MM-DD", "value": float} sorted ascending.
+    """
+    raw = data.get("prices", {}).get(ticker, [])
+    series = [{"date": p["date"], "value": p["price"]}
+              for p in raw if p.get("price") and p.get("date")]
+    series.sort(key=lambda x: x["date"])
+    return series
+
+
+def generate_chart_data(data, result):
+    """Generate cycles_chart_data.json with monthly time series for frontend charts.
+
+    Per cycle:
+      - indicator: monthly resampled primary indicator
+      - ma_12m: 12-month moving average
+      - asset_overlay: monthly resampled primary asset
+      - current_phase: current phase info from result
+      - meta: name, tier, unit, asset ticker
+    """
+    logger.info("Generating chart data...")
+    chart_data = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "date": date.today().isoformat(),
+        "cycles": {},
+    }
+
+    for cid in CYCLE_ORDER:
+        cdef = CYCLE_DEFINITIONS.get(cid, {})
+        asset_ticker = CHART_ASSET_OVERLAY.get(cid)
+        phase_result = result.get("cycles", {}).get(cid, {})
+
+        # Extract indicator series
+        indicator_raw = _extract_indicator_series(cid, data)
+        indicator_monthly = _resample_monthly(indicator_raw)
+
+        # Compute 12M MA
+        ma_12m = _compute_ma(indicator_monthly, 12) if indicator_monthly else []
+
+        # Extract asset overlay
+        asset_raw = _extract_asset_series(asset_ticker, data) if asset_ticker else []
+        asset_monthly = _resample_monthly(asset_raw)
+
+        n_indicator = len(indicator_monthly)
+        n_asset = len(asset_monthly)
+
+        chart_data["cycles"][cid] = {
+            "name": CYCLE_NAMES.get(cid, cid),
+            "tier": TIER_MAP.get(cid, 0),
+            "asset_ticker": asset_ticker,
+            "indicator_count": n_indicator,
+            "asset_count": n_asset,
+            "current_phase": phase_result.get("phase"),
+            "current_value": _fmt(phase_result.get("indicator_value"), 4),
+            "indicator": indicator_monthly,
+            "ma_12m": ma_12m,
+            "asset_overlay": asset_monthly,
+        }
+
+        logger.info(f"  {cid}: {n_indicator} indicator pts, {n_asset} asset pts")
+
+    # Save
+    path = os.path.join(DATA_DIR, "cycles_chart_data.json")
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(chart_data, f, indent=1, ensure_ascii=False, default=str)
+        size_kb = os.path.getsize(path) / 1024
+        logger.info(f"Chart data saved → {path} ({size_kb:.0f} KB)")
+    except Exception as e:
+        logger.error(f"Chart data save failed: {e}")
+
+    return chart_data
 
 
 # ---------------------------------------------------------------------------
@@ -366,6 +641,10 @@ def main():
     # Step 3: Save locally
     logger.info("STEP 3: Save Locally")
     save_phase_result(result)
+
+    # Step 3b: Generate chart data
+    logger.info("STEP 3b: Generate Chart Data")
+    generate_chart_data(data, result)
 
     # Step 4: Write to Sheet
     if not args.skip_sheet:
