@@ -1,11 +1,11 @@
 """
 Cycles Circle — Main Orchestrator
-Baldur Creek Capital | Step 0v (V4.0 — Chart Data)
+Baldur Creek Capital | Step 0v (V4.1 — Smoothed Curve + Phase Zones + Cycle Clock)
 
 1. Collect all data (incremental persistence)
 2. Run phase detection for all 10 cycles
 3. Save results locally (cycle_data.json)
-3b. Generate chart data (cycles_chart_data.json) — NEW
+3b. Generate chart data (cycles_chart_data.json) — with smoothed curve, phase zones, cycle position
 4. Write to Cycles Sheet (DASHBOARD, PHASES, HISTORY)
 5. Write cycles block to latest.json (for CyclesCard) — EXTENDED with indicator values
 6. Git commit + push data files
@@ -297,11 +297,10 @@ def save_phase_result(result):
 
 
 # ---------------------------------------------------------------------------
-# Generate Chart Data (NEW — V4.0)
+# Generate Chart Data (V4.1 — Smoothed + Phase Zones + Cycle Position)
 # ---------------------------------------------------------------------------
 
 # Mapping: cycle_id → how to extract the indicator time series from raw data
-# Returns list of {"date": "YYYY-MM-DD", "value": float}
 CHART_INDICATOR_EXTRACTORS = {
     "LIQUIDITY":    {"type": "liquidity", "column": "Fed_Net_Liq"},
     "CREDIT":       {"type": "fred", "key": "HY_OAS_FRED", "multiply": 100},
@@ -323,12 +322,96 @@ CHART_ASSET_OVERLAY = {
     "POLITICAL": "SPY",
 }
 
+# ---------------------------------------------------------------------------
+# Phase classification for monthly data points (simplified from phase_engine.py)
+# ---------------------------------------------------------------------------
+
+MONTHLY_PHASE_CLASSIFIERS = {
+    "CREDIT": lambda v, ma, vel: (
+        "DISTRESS" if v > 700 else
+        "DETERIORATION" if v > 500 and vel and vel > 0 else
+        "DETERIORATION" if v > 400 and vel and vel > 0 else
+        "EXPANSION" if v < 350 and vel is not None and vel <= 0 else
+        "LATE_EXPANSION" if v < 350 and vel and vel > 0 else
+        "RECOVERY" if v < 500 and vel and vel < 0 else
+        "REPAIR" if v > 500 and vel and vel < 0 else
+        "EXPANSION"
+    ),
+    "LIQUIDITY": lambda v, ma, vel: (
+        "CONTRACTION" if ma and v < ma and vel and vel < 0 else
+        "EARLY_RECOVERY" if vel and vel > 0 and ma and v < ma else
+        "LATE_EXPANSION" if ma and v > ma and vel and vel < 0 else
+        "EXPANSION" if ma and v > ma and vel and vel > 0 else
+        "EXPANSION"
+    ),
+    "COMMODITY": lambda v, ma, vel: (
+        "BEAR" if ma and v < ma and vel and vel < 0 else
+        "EARLY_BULL" if ma and v < ma and vel and vel > 0 else
+        "EUPHORIA" if ma and v > ma and vel and vel > 0.05 else
+        "MID_BULL" if ma and v > ma and vel and vel > 0 else
+        "MID_BULL"
+    ),
+    "CHINA_CREDIT": lambda v, ma, vel: (
+        "CONTRACTION" if ma and v < ma and vel and vel < 0 else
+        "EARLY_STIMULUS" if vel and vel > 0 and ma and v < ma else
+        "PEAK" if ma and v > ma and vel and vel < 0 else
+        "EXPANSION" if ma and v > ma and vel and vel > 0 else
+        "EXPANSION"
+    ),
+    "DOLLAR": lambda v, ma, vel: (
+        "STRENGTHENING" if vel and vel > 0 else
+        "WEAKENING" if vel and vel < 0 else
+        "PLATEAU"
+    ),
+    "BUSINESS": lambda v, ma, vel: (
+        "RECESSION" if v < -2 else
+        "TROUGH" if v < 0 and vel and vel > 0 else
+        "EARLY_RECOVERY" if v >= 0 and v < 2 and vel and vel > 0 else
+        "EXPANSION" if v >= 2 else
+        "LATE_EXPANSION" if v > 0 and vel and vel < 0 else
+        "EXPANSION"
+    ),
+    "FED_RATES": lambda v, ma, vel: (
+        "EASING" if v < 0 else
+        "NEUTRAL" if abs(v) <= 2 else
+        "RESTRICTIVE" if v > 2 else
+        "NEUTRAL"
+    ),
+    "EARNINGS": lambda v, ma, vel: (
+        "CONTRACTION" if v < 0 and vel and vel < 0 else
+        "TROUGH" if v < 0 and vel and vel > 0 else
+        "RECOVERY" if v >= 0 and v < 5 and vel and vel > 0 else
+        "EXPANSION" if v >= 5 else
+        "LATE_EXPANSION" if v > 0 and vel and vel < 0 else
+        "EXPANSION"
+    ),
+    "TRADE": lambda v, ma, vel: (
+        "COLLAPSE" if v < -10 else
+        "CONTRACTION" if v < -5 else
+        "TROUGH" if v < 0 and vel and vel > 0 else
+        "RECOVERY" if v >= 0 and v < 3 else
+        "EXPANSION" if v >= 3 else
+        "RECOVERY"
+    ),
+}
+
+# Phase → color category for frontend
+PHASE_COLOR_CATEGORY = {
+    "EXPANSION": "green", "EARLY_RECOVERY": "green", "RECOVERY": "green",
+    "MID_BULL": "green", "EARLY_BULL": "green", "EARLY_STIMULUS": "green",
+    "EASING": "green", "NEUTRAL": "green",
+    "LATE_EXPANSION": "yellow", "PEAK": "yellow", "PLATEAU": "yellow",
+    "LATE": "yellow", "TIGHTENING": "yellow", "RESTRICTIVE": "yellow",
+    "WITHDRAWAL": "yellow", "REPAIR": "yellow",
+    "CONTRACTION": "orange", "DETERIORATION": "orange",
+    "STRENGTHENING": "orange", "WEAKENING": "orange", "BEAR": "orange",
+    "TROUGH": "red", "DISTRESS": "red", "RECESSION": "red",
+    "COLLAPSE": "red", "EUPHORIA": "red",
+}
+
 
 def _resample_monthly(series):
-    """Resample a daily/weekly/mixed series to monthly (last value per month).
-    Input: list of {"date": "YYYY-MM-DD", "value": float}, sorted ascending.
-    Output: list of {"date": "YYYY-MM", "value": float}, sorted ascending.
-    """
+    """Resample a daily/weekly/mixed series to monthly (last value per month)."""
     if not series:
         return []
     monthly = {}
@@ -337,17 +420,13 @@ def _resample_monthly(series):
         v = pt.get("value")
         if not d or v is None:
             continue
-        ym = d[:7]  # "YYYY-MM"
-        monthly[ym] = v  # last value wins (series is sorted ascending)
-    result = [{"date": ym, "value": round(v, 6)} for ym, v in sorted(monthly.items())]
-    return result
+        ym = d[:7]
+        monthly[ym] = v
+    return [{"date": ym, "value": round(v, 6)} for ym, v in sorted(monthly.items())]
 
 
 def _compute_ma(monthly_series, window=12):
-    """Compute moving average over monthly series.
-    Returns list of {"date": "YYYY-MM", "value": float} with same length,
-    None for first (window-1) entries.
-    """
+    """Compute moving average over monthly series."""
     result = []
     vals = [pt["value"] for pt in monthly_series]
     for i in range(len(monthly_series)):
@@ -360,10 +439,139 @@ def _compute_ma(monthly_series, window=12):
     return result
 
 
-def _extract_indicator_series(cycle_id, data):
-    """Extract the primary indicator time series for a cycle from raw data.
-    Returns list of {"date": "YYYY-MM-DD", "value": float} sorted ascending.
+def _compute_smoothed(monthly_series, window=12):
+    """Compute 2x smoothed curve: MA of MA (the 'sine wave').
+    First pass: 12M MA. Second pass: 12M MA of that.
+    This removes noise and shows the pure cycle rhythm.
     """
+    if len(monthly_series) < window * 2:
+        return []
+    ma1 = _compute_ma(monthly_series, window)
+    ma1_clean = [pt for pt in ma1 if pt["value"] is not None]
+    if len(ma1_clean) < window:
+        return ma1
+    ma2 = _compute_ma(ma1_clean, window)
+    return ma2
+
+
+def _compute_monthly_velocity(monthly_series, lookback=3):
+    """Compute velocity (rate of change) for monthly series."""
+    vels = {}
+    vals = [(pt["date"], pt["value"]) for pt in monthly_series]
+    for i in range(lookback, len(vals)):
+        cur = vals[i][1]
+        prev = vals[i - lookback][1]
+        if prev and prev != 0 and cur is not None:
+            vels[vals[i][0]] = (cur - prev) / abs(prev)
+    return vels
+
+
+def _compute_phase_zones(cycle_id, monthly_series, ma_12m):
+    """Compute historical phase zones for a cycle.
+    Returns list of {"start": "YYYY-MM", "end": "YYYY-MM", "phase": "...", "color": "..."}.
+    """
+    classifier = MONTHLY_PHASE_CLASSIFIERS.get(cycle_id)
+    if not classifier or len(monthly_series) < 24:
+        return []
+
+    ma_map = {pt["date"]: pt["value"] for pt in ma_12m} if ma_12m else {}
+    vel_map = _compute_monthly_velocity(monthly_series, lookback=3)
+
+    phases_by_month = []
+    for pt in monthly_series:
+        d = pt["date"]
+        v = pt["value"]
+        ma = ma_map.get(d)
+        vel = vel_map.get(d)
+        if v is None:
+            continue
+        try:
+            phase = classifier(v, ma, vel)
+        except Exception:
+            phase = "UNKNOWN"
+        phases_by_month.append({"date": d, "phase": phase})
+
+    if not phases_by_month:
+        return []
+
+    zones = []
+    current_phase = phases_by_month[0]["phase"]
+    current_start = phases_by_month[0]["date"]
+
+    for i in range(1, len(phases_by_month)):
+        if phases_by_month[i]["phase"] != current_phase:
+            zones.append({
+                "start": current_start,
+                "end": phases_by_month[i - 1]["date"],
+                "phase": current_phase,
+                "color": PHASE_COLOR_CATEGORY.get(current_phase, "gray"),
+            })
+            current_phase = phases_by_month[i]["phase"]
+            current_start = phases_by_month[i]["date"]
+
+    zones.append({
+        "start": current_start,
+        "end": phases_by_month[-1]["date"],
+        "phase": current_phase,
+        "color": PHASE_COLOR_CATEGORY.get(current_phase, "gray"),
+    })
+
+    return zones
+
+
+def _compute_cycle_position(cycle_id, current_phase, phase_zones):
+    """Compute where we are in the current cycle."""
+    typical = CYCLE_DEFINITIONS.get(cycle_id, {}).get("typical_duration_months", 0)
+
+    phase_start = None
+    months_in_phase = 0
+    if phase_zones:
+        for zone in reversed(phase_zones):
+            if zone["phase"] == current_phase:
+                phase_start = zone["start"]
+                try:
+                    sy, sm = int(zone["start"][:4]), int(zone["start"][5:7])
+                    ey, em = int(zone["end"][:4]), int(zone["end"][5:7])
+                    months_in_phase = (ey - sy) * 12 + (em - sm) + 1
+                except (ValueError, IndexError):
+                    months_in_phase = 0
+                break
+
+    cycle_start = None
+    if phase_zones and len(phase_zones) >= 2:
+        for i in range(len(phase_zones) - 1, 0, -1):
+            prev_color = phase_zones[i - 1].get("color", "")
+            curr_color = phase_zones[i].get("color", "")
+            if prev_color in ("red", "orange") and curr_color == "green":
+                cycle_start = phase_zones[i]["start"]
+                break
+
+    months_since_cycle_start = 0
+    if cycle_start:
+        try:
+            sy, sm = int(cycle_start[:4]), int(cycle_start[5:7])
+            ny, nm = date.today().year, date.today().month
+            months_since_cycle_start = (ny - sy) * 12 + (nm - sm)
+        except (ValueError, IndexError):
+            pass
+
+    pct = round(months_since_cycle_start / typical * 100, 1) if typical > 0 else 0
+    est_remaining = max(0, typical - months_since_cycle_start) if typical > 0 else 0
+
+    return {
+        "current_phase": current_phase,
+        "phase_start": phase_start,
+        "months_in_phase": months_in_phase,
+        "cycle_start": cycle_start,
+        "months_since_cycle_start": months_since_cycle_start,
+        "typical_duration_months": typical,
+        "pct_complete": min(pct, 150),
+        "estimated_months_remaining": est_remaining,
+    }
+
+
+def _extract_indicator_series(cycle_id, data):
+    """Extract the primary indicator time series for a cycle from raw data."""
     cfg = CHART_INDICATOR_EXTRACTORS.get(cycle_id)
     if not cfg or cfg["type"] == "none":
         return []
@@ -467,7 +675,6 @@ def _extract_indicator_series(cycle_id, data):
                             key=lambda x: x["date"])
         if len(cpi_sorted) < 13:
             return []
-        # Build CPI YoY map (monthly)
         cpi_yoy_map = {}
         for i in range(12, len(cpi_sorted)):
             c = cpi_sorted[i]["value"]
@@ -491,9 +698,7 @@ def _extract_indicator_series(cycle_id, data):
 
 
 def _extract_asset_series(ticker, data):
-    """Extract an asset price series from raw data.
-    Returns list of {"date": "YYYY-MM-DD", "value": float} sorted ascending.
-    """
+    """Extract an asset price series from raw data."""
     raw = data.get("prices", {}).get(ticker, [])
     series = [{"date": p["date"], "value": p["price"]}
               for p in raw if p.get("price") and p.get("date")]
@@ -504,14 +709,15 @@ def _extract_asset_series(ticker, data):
 def generate_chart_data(data, result):
     """Generate cycles_chart_data.json with monthly time series for frontend charts.
 
-    Per cycle:
+    Per cycle (V4.1):
       - indicator: monthly resampled primary indicator
       - ma_12m: 12-month moving average
+      - smoothed: 2x12M MA (the 'sine wave' — pure cycle rhythm)
       - asset_overlay: monthly resampled primary asset
-      - current_phase: current phase info from result
-      - meta: name, tier, unit, asset ticker
+      - phase_zones: historical phase classification as colored zones
+      - cycle_position: where we are in the current cycle (for Cycle Clock)
     """
-    logger.info("Generating chart data...")
+    logger.info("Generating chart data (V4.1 — smoothed + phases + clock)...")
     chart_data = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "date": date.today().isoformat(),
@@ -522,6 +728,7 @@ def generate_chart_data(data, result):
         cdef = CYCLE_DEFINITIONS.get(cid, {})
         asset_ticker = CHART_ASSET_OVERLAY.get(cid)
         phase_result = result.get("cycles", {}).get(cid, {})
+        current_phase = phase_result.get("phase", "UNKNOWN")
 
         # Extract indicator series
         indicator_raw = _extract_indicator_series(cid, data)
@@ -530,12 +737,23 @@ def generate_chart_data(data, result):
         # Compute 12M MA
         ma_12m = _compute_ma(indicator_monthly, 12) if indicator_monthly else []
 
+        # Compute smoothed (2x12M MA — the sine wave)
+        smoothed = _compute_smoothed(indicator_monthly, 12) if indicator_monthly else []
+
         # Extract asset overlay
         asset_raw = _extract_asset_series(asset_ticker, data) if asset_ticker else []
         asset_monthly = _resample_monthly(asset_raw)
 
+        # Compute phase zones (historical phase classification)
+        phase_zones = _compute_phase_zones(cid, indicator_monthly, ma_12m)
+
+        # Compute cycle position (where we are in the cycle)
+        cycle_position = _compute_cycle_position(cid, current_phase, phase_zones)
+
         n_indicator = len(indicator_monthly)
         n_asset = len(asset_monthly)
+        n_smoothed = len([s for s in smoothed if s.get("value") is not None])
+        n_zones = len(phase_zones)
 
         chart_data["cycles"][cid] = {
             "name": CYCLE_NAMES.get(cid, cid),
@@ -543,14 +761,20 @@ def generate_chart_data(data, result):
             "asset_ticker": asset_ticker,
             "indicator_count": n_indicator,
             "asset_count": n_asset,
-            "current_phase": phase_result.get("phase"),
+            "smoothed_count": n_smoothed,
+            "phase_zones_count": n_zones,
+            "current_phase": current_phase,
             "current_value": _fmt(phase_result.get("indicator_value"), 4),
             "indicator": indicator_monthly,
             "ma_12m": ma_12m,
+            "smoothed": smoothed,
             "asset_overlay": asset_monthly,
+            "phase_zones": phase_zones,
+            "cycle_position": cycle_position,
         }
 
-        logger.info(f"  {cid}: {n_indicator} indicator pts, {n_asset} asset pts")
+        logger.info(f"  {cid}: {n_indicator} ind, {n_smoothed} smooth, "
+                     f"{n_zones} zones, pos={cycle_position.get('pct_complete', 0):.0f}%")
 
     # Save
     path = os.path.join(DATA_DIR, "cycles_chart_data.json")
@@ -643,7 +867,7 @@ def main():
     save_phase_result(result)
 
     # Step 3b: Generate chart data
-    logger.info("STEP 3b: Generate Chart Data")
+    logger.info("STEP 3b: Generate Chart Data (V4.1)")
     generate_chart_data(data, result)
 
     # Step 4: Write to Sheet
