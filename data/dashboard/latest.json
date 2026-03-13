@@ -486,7 +486,8 @@
       "EQ_DEFN": 0.34,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2883,
+      "BOND": 0.0,
+      "CREDIT": 0.2883,
       "COMMOD": 0.2027,
       "CRYPTO": 0.0
     },
@@ -5440,9 +5441,9 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-03-12",
+    "date": "2026-03-13",
     "execution_level": "WAIT",
-    "total_score": 7,
+    "total_score": 9,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
@@ -5462,23 +5463,23 @@
         "label": "All clear"
       },
       "cross_asset_confirmation": {
-        "score": 3,
+        "score": 2,
         "max": 3,
-        "label": "GOLD_DXY_DIVERGENCE"
+        "label": "EQUITY_TREND_DIVERGENCE"
       },
       "gex_regime": {
-        "score": 1,
+        "score": 3,
         "max": 3,
-        "label": "GEX $-0.33B — SLIGHTLY_NEGATIVE"
+        "label": "GEX $-1.08B — STRONGLY_NEGATIVE_PLUS_EVENT"
       },
       "sentiment_extreme": {
-        "score": 0,
+        "score": 1,
         "max": 3,
-        "label": "Neutral"
+        "label": "cnn_fg: EXTREME_FEAR"
       }
     },
-    "confirming_count": 19,
-    "conflicting_count": 7,
+    "confirming_count": 18,
+    "conflicting_count": 6,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
       "COT HYG bestätigt — COT_SP500_COMM_NET = 3.5% — kein Conflict",
@@ -5488,16 +5489,16 @@
     "top_conflicting": [
       "US PCE Price Index (January) in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
       "Convergence Week aktiv — Mehrere HIGH Events: US PCE Price Index (January), FOMC Meeting (March), FOMC Meeting (March)",
-      "GOLD_DXY_DIVERGENCE — Gold +3.0% UND DXY +2.5% — beide steigen, unsustainable"
+      "EQUITY_TREND_DIVERGENCE — V16 hat 34% Equity aber SPY SMA50 Falling"
     ],
     "recommendation_action": "WAIT_FOR_CLARITY",
-    "recommendation_short": "Kein materielles Rebalancing heute nötig — alle Positionen HOLD.",
+    "recommendation_short": "Kein materielles Rebalancing nötig — V16 hält alle Positionen.",
     "specific_actions": [],
     "event_window": {
       "next_48h_count": 2,
       "next_48h_events": [
-        "US PCE Price Index (January) (24h)",
-        "US GDP Q4 2025 (Second Estimate) (24h)"
+        "US PCE Price Index (January) (0h)",
+        "US GDP Q4 2025 (Second Estimate) (0h)"
       ],
       "next_14d_count": 7,
       "convergence_week": true,
@@ -5508,31 +5509,31 @@
         "date": "2026-03-13",
         "event": "US PCE Price Index (January)",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-03-13",
         "event": "US GDP Q4 2025 (Second Estimate)",
         "impact": "MEDIUM",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-03-18",
         "event": "FOMC Meeting (March)",
         "impact": "HIGH",
-        "days_until": 6
+        "days_until": 5
       },
       {
         "date": "2026-03-19",
         "event": "ECB Monetary Policy Meeting",
         "impact": "MEDIUM",
-        "days_until": 7
+        "days_until": 6
       },
       {
         "date": "2026-03-19",
         "event": "Bank of Japan Monetary Policy Meeting",
         "impact": "MEDIUM",
-        "days_until": 7
+        "days_until": 6
       }
     ],
     "calendar_monthly": [
@@ -5597,26 +5598,25 @@
         "impact": "HIGH"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 7/18) ===\n\nCONFIRMING:\n• Liquidität optimal: Amihud 32.63 (LIQUID), SOFR-FFR 0.0 (NORMAL), OFR Stress -0.43 (RELAXED) — beste Bedingungen für Execution\n• COT-Positioning sauber: S&P500 Commercial +3.5%, Gold Commercial +8.8% — keine Extrempositionen, kein Crowding-Risiko\n• VIX-Term-Struktur Contango 0.97: Forward-Volatilität niedriger als Spot — Markt erwartet Beruhigung\n• Commodity-Exposure bestätigt: V16 37% Commodities + Copper Rising — strukturell korrekt positioniert\n• Gold/Real-Yield-Alignment: 17% Gold-Exposure + Falling Real Yields — historisch positive Konstellation\n• Sentiment neutral kalibriert: CNN Fear & Greed 23.83, Put/Call 0.82, HY OAS 306bps — keine Panik, keine Euphorie\n• Kein materielles Rebalancing nötig: Alle V16-Positionen HOLD, Delta <1% — kein Execution-Druck heute\n\nCONFLICTING:\n• US PCE Price Index morgen (HIGH-Impact): Kern-Inflationsdaten können Fed-Erwartungen und damit DXY, Yields, Gold drastisch verschieben\n• Convergence Week aktiv: PCE morgen + FOMC Meeting nächste Woche — zwei Mega-Events in 7 Tagen, erhöhtes Whipsaw-Risiko\n• Gold/DXY-Divergenz unhaltbar: Gold +3.0% UND DXY +2.5% gleichzeitig — historisch instabile Konstellation, eine Seite muss nachgeben\n• V16 Gold-Exposure vs DXY-Stärke: 17% Gold/Silber während DXY +2.5% steigt — wenn DXY weiter rallied, Gold unter Druck\n• Equity-Trend-Konflikt: V16 34% Equities (HYG 29%, XLU 18%, XLP 16%) aber SPY SMA50 Falling — struktureller Gegenwind\n• GEX leicht negativ $-0.33B: Dealer-Hedging verstärkt Moves — bei PCE-Überraschung höhere Volatilität als normal\n• Router Proximity 100%: COMMODITY_SUPER-Trigger nah — möglicher Regime-Shift in Sicht\n\nNETTO: 19 Confirming vs 7 Conflicting. Liquidität und Positioning sind perfekt, aber PCE morgen + Gold/DXY-Divergenz + Convergence Week schaffen zu viel Event-Risiko für heutiges Execution.\n\nEMPFEHLUNG:\nKein materielles Rebalancing heute nötig — alle Positionen HOLD. Falls V16 morgen nach PCE Regime wechselt oder materielle Trades signalisiert: Warte bis PCE-Ergebnis verdaut ist (morgen 8:30 ET + 2h Marktreaktion). HYG (29% Gewicht): Bei Execution Limit-Orders nutzen, HY OAS aktuell 306bps — bei PCE-Spike können Spreads sich schnell weiten. DBC (20%): Commodity-Liquidität gut, aber Gold/DXY-Divergenz beobachten — wenn DXY weiter steigt, Gold-Komponente unter Druck. XLU/XLP (34% kombiniert): Defensive Equities, aber SPY-Trend Falling — bei breitem Equity-Selloff kein Schutz. Nächster optimaler Execution-Slot: Freitag Nachmittag nach PCE-Verdauung, vor Wochenende.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 18.0 UND HY OAS fällt unter 280bps — Risiko-Prämien normalisieren sich deutlich\n• Execute sofort wenn: Gold fällt >4% vom aktuellen Level (GLD-basiert) UND DXY-Divergenz löst sich auf — Gold/DXY-Konflikt bereinigt\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 32.0 ODER HY OAS steigt über 380bps — Stress-Regime, Liquidität trocknet aus\n• Eskaliere zu Wait/Hold wenn: PCE morgen >0.4% MoM (Konsens 0.3%) UND GEX fällt unter $-2.0B — Fed-Hawkish-Shock + negative Gamma-Spirale",
+    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 9/18) ===\n\nCONFIRMING:\n• Kein materielles Rebalancing: V16 hält alle Positionen (HOLD), Delta < 1% — kein Execution-Risiko heute\n• Liquidität intakt: Amihud 49.58 (LIQUID), SOFR-FFR 0.0 (NORMAL), OFR Stress -0.4279 (RELAXED) — technisch ausführbar\n• COT-Positioning neutral: S&P500 Commercial 3.5%, Gold Commercial 8.8% — keine extremen Positionierungen gegen Portfolio\n• Commodity-Bestätigung: DBC 20.3% + Copper Rising — Regime-Exposure bestätigt\n• Gold-Setup positiv: GLD 16.9% + Real Yields Falling — historisch unterstützend\n• VIX-Term-Struktur: Contango 1.0126 — keine akute Panik-Dynamik\n• Credit-Spreads stabil: HY OAS 309bps (NORMAL), Put/Call 0.847 (NORMAL) — HYG 28.8% nicht unter Stress\n• MOVE Index 95.30: Erhöht aber nicht extrem — Anleihen-Volatilität kontrolliert\n\nCONFLICTING:\n• US PCE Price Index (January) in 0h: HIGH-Impact Event kann Inflation-Narrative und Fed-Erwartungen verschieben — Liquidität und Richtung unsicher\n• Convergence Week aktiv: 7 Events in 14d inkl. FOMC Meeting (March) — mehrere Katalysatoren für Regime-Shift\n• EQUITY_TREND_DIVERGENCE: V16 hält 34% Equity (HYG 28.8%, XLU 18.0%, XLP 16.1%) aber SPY SMA50 Falling — Positionierung gegen Trend\n• GEX stark negativ: $-1.08B + Event heute — Dealer-Hedging verstärkt Moves, erhöhte Intraday-Volatilität zu erwarten\n• CNN Fear & Greed 19.03: EXTREME_FEAR — Sentiment-Extrem erhöht Whipsaw-Risiko\n• Router Proximity 100%: COMMODITY_SUPER-Trigger nah — V16 könnte morgen materiell umschichten (DBC 20.3% → potenziell höher)\n\nNETTO: 8 Confirming vs 6 Conflicting. Portfolio technisch stabil, aber PCE-Event heute + negative GEX + Equity-Divergenz schaffen unsicheres Timing-Fenster.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — V16 hält alle Positionen. Die Empfehlung bezieht sich auf den Fall, dass V16 morgen nach PCE-Daten Regime wechselt oder Router COMMODITY_SUPER triggert. WARTE bis PCE-Veröffentlichung (heute) verdaut ist (ca. 2-3h post-Release für initiale Reaktion). Falls V16 morgen DBC erhöht: Nutze Limit-Orders (GEX negativ = erhöhte Spreads). Falls HYG reduziert wird: Market-Orders akzeptabel (Liquidität 49.58, HY OAS stabil). XLU/XLP: Defensive Positionen bei Equity-Divergenz — bei Reduktion schrittweise über 2 Tage verteilen um Slippage zu minimieren. GLD: Bei Aufstockung Limit-Orders (Real Yields fallen = potenziell steigende Nachfrage).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 20.0 UND CNN Fear & Greed steigt über 30 — Sentiment-Normalisierung reduziert Whipsaw-Risiko\n• Execute sofort wenn: GEX dreht positiv (>$0.5B) nach PCE — Dealer-Hedging-Dynamik entspannt sich\n• Eskaliere zu Wait/Hold wenn: HY OAS steigt über 350bps — Credit-Stress gefährdet HYG 28.8% Position\n• Eskaliere zu Hold wenn: VIX steigt über 30.0 ODER SPY fällt >3% intraday — Regime-Unsicherheit erfordert Neubewertung vor Execution",
     "would_change_my_mind": {
       "execute_if": [
-        "VIX fällt unter 18.0 UND HY OAS fällt unter 280bps — Risiko-Prämien normalisieren sich deutlich",
-        "Gold fällt >4% vom aktuellen Level (GLD-basiert) UND DXY-Divergenz löst sich auf — Gold/DXY-Konflikt bereinigt"
+        "VIX fällt unter 20.0 UND CNN Fear & Greed steigt über 30 — Sentiment-Normalisierung reduziert Whipsaw-Risiko",
+        "GEX dreht positiv (>$0.5B) nach PCE — Dealer-Hedging-Dynamik entspannt sich"
       ],
       "hold_if": [
-        "VIX steigt über 32.0 ODER HY OAS steigt über 380bps — Stress-Regime, Liquidität trocknet aus",
-        "PCE morgen >0.4% MoM (Konsens 0.3%) UND GEX fällt unter $-2.0B — Fed-Hawkish-Shock + negative Gamma-Spirale"
+        "HY OAS steigt über 350bps — Credit-Stress gefährdet HYG 28.8% Position"
       ]
     }
   },
   "rotation": {
-    "date": "2026-03-12",
+    "date": "2026-03-13",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
     "days_since_material_rotation": 999,
-    "days_since_state_change": 435,
+    "days_since_state_change": 436,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -5749,10 +5749,12 @@
           "2026-03-09",
           "2026-03-10",
           "2026-03-11",
-          "2026-03-12"
+          "2026-03-12",
+          "2026-03-13"
         ],
         "values": [
           0.2183,
+          0.2027,
           0.2027,
           0.2027,
           0.2027
@@ -5763,10 +5765,12 @@
           "2026-03-09",
           "2026-03-10",
           "2026-03-11",
-          "2026-03-12"
+          "2026-03-12",
+          "2026-03-13"
         ],
         "values": [
           0.2726,
+          0.2883,
           0.2883,
           0.2883,
           0.2883
@@ -5777,10 +5781,12 @@
           "2026-03-09",
           "2026-03-10",
           "2026-03-11",
-          "2026-03-12"
+          "2026-03-12",
+          "2026-03-13"
         ],
         "values": [
           0.3289,
+          0.34,
           0.34,
           0.34,
           0.34
@@ -5791,10 +5797,12 @@
           "2026-03-09",
           "2026-03-10",
           "2026-03-11",
-          "2026-03-12"
+          "2026-03-12",
+          "2026-03-13"
         ],
         "values": [
           0.1802,
+          0.1689,
           0.1689,
           0.1689,
           0.1689
@@ -5805,7 +5813,7 @@
     "state_history": [],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-03-11",
+        "date": "2026-03-12",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
