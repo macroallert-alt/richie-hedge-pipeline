@@ -1,0 +1,2640 @@
+{
+ "computed_at": "2026-03-14T07:26:02.939103+00:00",
+ "engine_version": "1.1",
+ "transition_matrices": {
+  "LIQUIDITY": {
+   "phases": {
+    "CONTRACTION": {
+     "n_occurrences": 17,
+     "duration_months": {
+      "median": 2,
+      "mean": 3.5,
+      "min": 1,
+      "max": 15,
+      "std": 3.6,
+      "all_durations": [
+       3,
+       2,
+       2,
+       2,
+       7,
+       1,
+       1,
+       15,
+       1,
+       1,
+       1,
+       8,
+       4,
+       1,
+       5,
+       1,
+       4
+      ]
+     },
+     "transitions_to": {
+      "EXPANSION": {
+       "count": 7,
+       "probability": 0.412
+      },
+      "LATE_EXPANSION": {
+       "count": 3,
+       "probability": 0.176
+      },
+      "EARLY_RECOVERY": {
+       "count": 7,
+       "probability": 0.412
+      }
+     }
+    },
+    "EARLY_RECOVERY": {
+     "n_occurrences": 12,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.2,
+      "min": 1,
+      "max": 2,
+      "std": 0.4,
+      "all_durations": [
+       1,
+       1,
+       1,
+       2,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       2
+      ]
+     },
+     "transitions_to": {
+      "CONTRACTION": {
+       "count": 6,
+       "probability": 0.5
+      },
+      "EXPANSION": {
+       "count": 5,
+       "probability": 0.417
+      },
+      "LATE_EXPANSION": {
+       "count": 1,
+       "probability": 0.083
+      }
+     }
+    },
+    "EXPANSION": {
+     "n_occurrences": 25,
+     "duration_months": {
+      "median": 2,
+      "mean": 4.8,
+      "min": 1,
+      "max": 23,
+      "std": 5.1,
+      "all_durations": [
+       11,
+       9,
+       2,
+       11,
+       11,
+       3,
+       1,
+       23,
+       2,
+       2,
+       2,
+       1,
+       4,
+       4,
+       1,
+       9,
+       8,
+       5,
+       2,
+       1,
+       3,
+       1,
+       1,
+       2,
+       1
+      ]
+     },
+     "transitions_to": {
+      "LATE_EXPANSION": {
+       "count": 15,
+       "probability": 0.625
+      },
+      "EARLY_RECOVERY": {
+       "count": 4,
+       "probability": 0.167
+      },
+      "CONTRACTION": {
+       "count": 5,
+       "probability": 0.208
+      }
+     }
+    },
+    "LATE_EXPANSION": {
+     "n_occurrences": 19,
+     "duration_months": {
+      "median": 2,
+      "mean": 1.8,
+      "min": 1,
+      "max": 4,
+      "std": 0.9,
+      "all_durations": [
+       2,
+       2,
+       3,
+       3,
+       2,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       2,
+       3,
+       2,
+       4,
+       1,
+       3,
+       1
+      ]
+     },
+     "transitions_to": {
+      "EXPANSION": {
+       "count": 12,
+       "probability": 0.632
+      },
+      "CONTRACTION": {
+       "count": 6,
+       "probability": 0.316
+      },
+      "EARLY_RECOVERY": {
+       "count": 1,
+       "probability": 0.053
+      }
+     }
+    }
+   },
+   "total_transitions": 72
+  },
+  "CREDIT": {
+   "phases": {
+    "DETERIORATION": {
+     "n_occurrences": 20,
+     "duration_months": {
+      "median": 2,
+      "mean": 2.5,
+      "min": 1,
+      "max": 8,
+      "std": 2.0,
+      "all_durations": [
+       1,
+       2,
+       7,
+       1,
+       1,
+       3,
+       3,
+       3,
+       1,
+       5,
+       8,
+       3,
+       2,
+       1,
+       1,
+       1,
+       1,
+       4,
+       2,
+       1
+      ]
+     },
+     "transitions_to": {
+      "RECOVERY": {
+       "count": 8,
+       "probability": 0.4
+      },
+      "EXPANSION": {
+       "count": 3,
+       "probability": 0.15
+      },
+      "DISTRESS": {
+       "count": 5,
+       "probability": 0.25
+      },
+      "REPAIR": {
+       "count": 4,
+       "probability": 0.2
+      }
+     }
+    },
+    "DISTRESS": {
+     "n_occurrences": 6,
+     "duration_months": {
+      "median": 3,
+      "mean": 5.2,
+      "min": 1,
+      "max": 18,
+      "std": 5.9,
+      "all_durations": [
+       2,
+       18,
+       1,
+       5,
+       3,
+       2
+      ]
+     },
+     "transitions_to": {
+      "REPAIR": {
+       "count": 4,
+       "probability": 0.667
+      },
+      "DETERIORATION": {
+       "count": 2,
+       "probability": 0.333
+      }
+     }
+    },
+    "EXPANSION": {
+     "n_occurrences": 23,
+     "duration_months": {
+      "median": 2,
+      "mean": 2.9,
+      "min": 1,
+      "max": 8,
+      "std": 2.1,
+      "all_durations": [
+       3,
+       5,
+       2,
+       8,
+       6,
+       1,
+       1,
+       1,
+       1,
+       4,
+       1,
+       4,
+       1,
+       4,
+       1,
+       5,
+       1,
+       1,
+       4,
+       6,
+       2,
+       4,
+       1
+      ]
+     },
+     "transitions_to": {
+      "RECOVERY": {
+       "count": 7,
+       "probability": 0.304
+      },
+      "DETERIORATION": {
+       "count": 4,
+       "probability": 0.174
+      },
+      "LATE_EXPANSION": {
+       "count": 12,
+       "probability": 0.522
+      }
+     }
+    },
+    "LATE_EXPANSION": {
+     "n_occurrences": 12,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.6,
+      "min": 1,
+      "max": 4,
+      "std": 1.0,
+      "all_durations": [
+       4,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       2,
+       1,
+       1,
+       3,
+       2
+      ]
+     },
+     "transitions_to": {
+      "EXPANSION": {
+       "count": 10,
+       "probability": 0.909
+      },
+      "DETERIORATION": {
+       "count": 1,
+       "probability": 0.091
+      }
+     }
+    },
+    "RECOVERY": {
+     "n_occurrences": 19,
+     "duration_months": {
+      "median": 3,
+      "mean": 3.5,
+      "min": 1,
+      "max": 10,
+      "std": 2.3,
+      "all_durations": [
+       3,
+       3,
+       2,
+       3,
+       5,
+       10,
+       3,
+       8,
+       2,
+       3,
+       1,
+       3,
+       2,
+       3,
+       4,
+       6,
+       4,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "DETERIORATION": {
+       "count": 10,
+       "probability": 0.526
+      },
+      "EXPANSION": {
+       "count": 9,
+       "probability": 0.474
+      }
+     }
+    },
+    "REPAIR": {
+     "n_occurrences": 8,
+     "duration_months": {
+      "median": 5,
+      "mean": 4.0,
+      "min": 1,
+      "max": 6,
+      "std": 1.6,
+      "all_durations": [
+       2,
+       5,
+       6,
+       4,
+       5,
+       5,
+       4,
+       1
+      ]
+     },
+     "transitions_to": {
+      "DISTRESS": {
+       "count": 1,
+       "probability": 0.125
+      },
+      "DETERIORATION": {
+       "count": 3,
+       "probability": 0.375
+      },
+      "RECOVERY": {
+       "count": 4,
+       "probability": 0.5
+      }
+     }
+    }
+   },
+   "total_transitions": 87
+  },
+  "COMMODITY": {
+   "phases": {
+    "BEAR": {
+     "n_occurrences": 24,
+     "duration_months": {
+      "median": 3,
+      "mean": 3.5,
+      "min": 1,
+      "max": 9,
+      "std": 2.4,
+      "all_durations": [
+       1,
+       3,
+       3,
+       1,
+       3,
+       1,
+       1,
+       6,
+       4,
+       1,
+       9,
+       1,
+       9,
+       1,
+       4,
+       4,
+       6,
+       5,
+       1,
+       3,
+       6,
+       4,
+       5,
+       2
+      ]
+     },
+     "transitions_to": {
+      "MID_BULL": {
+       "count": 8,
+       "probability": 0.333
+      },
+      "EARLY_BULL": {
+       "count": 14,
+       "probability": 0.583
+      },
+      "EUPHORIA": {
+       "count": 2,
+       "probability": 0.083
+      }
+     }
+    },
+    "EARLY_BULL": {
+     "n_occurrences": 17,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.5,
+      "min": 1,
+      "max": 4,
+      "std": 0.8,
+      "all_durations": [
+       1,
+       1,
+       1,
+       2,
+       2,
+       1,
+       1,
+       1,
+       2,
+       2,
+       3,
+       1,
+       4,
+       1,
+       1,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "BEAR": {
+       "count": 10,
+       "probability": 0.588
+      },
+      "EUPHORIA": {
+       "count": 4,
+       "probability": 0.235
+      },
+      "MID_BULL": {
+       "count": 3,
+       "probability": 0.176
+      }
+     }
+    },
+    "EUPHORIA": {
+     "n_occurrences": 18,
+     "duration_months": {
+      "median": 2,
+      "mean": 2.5,
+      "min": 1,
+      "max": 8,
+      "std": 2.2,
+      "all_durations": [
+       2,
+       1,
+       8,
+       1,
+       2,
+       1,
+       1,
+       1,
+       5,
+       1,
+       1,
+       8,
+       1,
+       4,
+       2,
+       1,
+       2,
+       3
+      ]
+     },
+     "transitions_to": {
+      "MID_BULL": {
+       "count": 10,
+       "probability": 0.588
+      },
+      "BEAR": {
+       "count": 5,
+       "probability": 0.294
+      },
+      "EARLY_BULL": {
+       "count": 2,
+       "probability": 0.118
+      }
+     }
+    },
+    "MID_BULL": {
+     "n_occurrences": 22,
+     "duration_months": {
+      "median": 3,
+      "mean": 2.6,
+      "min": 1,
+      "max": 11,
+      "std": 2.1,
+      "all_durations": [
+       11,
+       2,
+       3,
+       4,
+       1,
+       1,
+       1,
+       1,
+       3,
+       3,
+       3,
+       4,
+       1,
+       2,
+       3,
+       3,
+       1,
+       1,
+       1,
+       3,
+       1,
+       4
+      ]
+     },
+     "transitions_to": {
+      "EARLY_BULL": {
+       "count": 1,
+       "probability": 0.045
+      },
+      "EUPHORIA": {
+       "count": 12,
+       "probability": 0.545
+      },
+      "BEAR": {
+       "count": 9,
+       "probability": 0.409
+      }
+     }
+    }
+   },
+   "total_transitions": 80
+  },
+  "CHINA_CREDIT": {
+   "phases": {
+    "CONTRACTION": {
+     "n_occurrences": 25,
+     "duration_months": {
+      "median": 3,
+      "mean": 3.7,
+      "min": 1,
+      "max": 11,
+      "std": 2.4,
+      "all_durations": [
+       3,
+       1,
+       3,
+       4,
+       6,
+       1,
+       3,
+       1,
+       5,
+       11,
+       3,
+       1,
+       4,
+       3,
+       6,
+       5,
+       2,
+       1,
+       3,
+       4,
+       3,
+       2,
+       7,
+       8,
+       3
+      ]
+     },
+     "transitions_to": {
+      "EARLY_STIMULUS": {
+       "count": 17,
+       "probability": 0.708
+      },
+      "PEAK": {
+       "count": 2,
+       "probability": 0.083
+      },
+      "EXPANSION": {
+       "count": 5,
+       "probability": 0.208
+      }
+     }
+    },
+    "EARLY_STIMULUS": {
+     "n_occurrences": 20,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.8,
+      "min": 1,
+      "max": 5,
+      "std": 1.1,
+      "all_durations": [
+       2,
+       1,
+       1,
+       5,
+       1,
+       1,
+       1,
+       1,
+       1,
+       2,
+       1,
+       2,
+       3,
+       1,
+       4,
+       3,
+       1,
+       1,
+       2,
+       1
+      ]
+     },
+     "transitions_to": {
+      "CONTRACTION": {
+       "count": 13,
+       "probability": 0.65
+      },
+      "EXPANSION": {
+       "count": 7,
+       "probability": 0.35
+      }
+     }
+    },
+    "EXPANSION": {
+     "n_occurrences": 20,
+     "duration_months": {
+      "median": 2,
+      "mean": 3.4,
+      "min": 1,
+      "max": 15,
+      "std": 3.5,
+      "all_durations": [
+       15,
+       1,
+       3,
+       3,
+       3,
+       3,
+       5,
+       1,
+       1,
+       1,
+       1,
+       3,
+       7,
+       1,
+       2,
+       10,
+       2,
+       1,
+       2,
+       2
+      ]
+     },
+     "transitions_to": {
+      "PEAK": {
+       "count": 7,
+       "probability": 0.35
+      },
+      "CONTRACTION": {
+       "count": 10,
+       "probability": 0.5
+      },
+      "EARLY_STIMULUS": {
+       "count": 3,
+       "probability": 0.15
+      }
+     }
+    },
+    "PEAK": {
+     "n_occurrences": 9,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.9,
+      "min": 1,
+      "max": 4,
+      "std": 1.2,
+      "all_durations": [
+       1,
+       1,
+       1,
+       1,
+       1,
+       4,
+       2,
+       2,
+       4
+      ]
+     },
+     "transitions_to": {
+      "EXPANSION": {
+       "count": 7,
+       "probability": 0.778
+      },
+      "CONTRACTION": {
+       "count": 2,
+       "probability": 0.222
+      }
+     }
+    }
+   },
+   "total_transitions": 73
+  },
+  "DOLLAR": {
+   "phases": {
+    "PLATEAU": {
+     "n_occurrences": 1,
+     "duration_months": {
+      "median": 3,
+      "mean": 3.0,
+      "min": 3,
+      "max": 3,
+      "std": 0.0,
+      "all_durations": [
+       3
+      ]
+     },
+     "transitions_to": {
+      "WEAKENING": {
+       "count": 1,
+       "probability": 1.0
+      }
+     }
+    },
+    "STRENGTHENING": {
+     "n_occurrences": 30,
+     "duration_months": {
+      "median": 3,
+      "mean": 4.0,
+      "min": 1,
+      "max": 9,
+      "std": 2.7,
+      "all_durations": [
+       2,
+       1,
+       8,
+       2,
+       3,
+       7,
+       3,
+       1,
+       7,
+       4,
+       9,
+       1,
+       8,
+       2,
+       5,
+       2,
+       9,
+       2,
+       4,
+       4,
+       2,
+       7,
+       7,
+       1,
+       1,
+       3,
+       7,
+       5,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "WEAKENING": {
+       "count": 30,
+       "probability": 1.0
+      }
+     }
+    },
+    "WEAKENING": {
+     "n_occurrences": 31,
+     "duration_months": {
+      "median": 3,
+      "mean": 3.9,
+      "min": 1,
+      "max": 15,
+      "std": 3.5,
+      "all_durations": [
+       9,
+       15,
+       1,
+       9,
+       2,
+       11,
+       3,
+       4,
+       1,
+       3,
+       3,
+       1,
+       1,
+       3,
+       1,
+       8,
+       4,
+       3,
+       1,
+       3,
+       9,
+       2,
+       2,
+       5,
+       1,
+       2,
+       2,
+       1,
+       6,
+       1,
+       4
+      ]
+     },
+     "transitions_to": {
+      "STRENGTHENING": {
+       "count": 30,
+       "probability": 1.0
+      }
+     }
+    }
+   },
+   "total_transitions": 61
+  },
+  "BUSINESS": {
+   "phases": {
+    "EARLY_RECOVERY": {
+     "n_occurrences": 9,
+     "duration_months": {
+      "median": 1,
+      "mean": 2.0,
+      "min": 1,
+      "max": 4,
+      "std": 1.2,
+      "all_durations": [
+       2,
+       1,
+       4,
+       1,
+       1,
+       1,
+       1,
+       4,
+       3
+      ]
+     },
+     "transitions_to": {
+      "EXPANSION": {
+       "count": 3,
+       "probability": 0.333
+      },
+      "LATE_EXPANSION": {
+       "count": 5,
+       "probability": 0.556
+      },
+      "TROUGH": {
+       "count": 1,
+       "probability": 0.111
+      }
+     }
+    },
+    "EXPANSION": {
+     "n_occurrences": 29,
+     "duration_months": {
+      "median": 3,
+      "mean": 5.0,
+      "min": 1,
+      "max": 31,
+      "std": 6.2,
+      "all_durations": [
+       8,
+       4,
+       3,
+       4,
+       1,
+       12,
+       4,
+       31,
+       2,
+       1,
+       5,
+       12,
+       3,
+       2,
+       1,
+       15,
+       6,
+       9,
+       3,
+       1,
+       1,
+       1,
+       4,
+       1,
+       3,
+       4,
+       1,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "LATE_EXPANSION": {
+       "count": 15,
+       "probability": 0.536
+      },
+      "RECESSION": {
+       "count": 4,
+       "probability": 0.143
+      },
+      "EARLY_RECOVERY": {
+       "count": 3,
+       "probability": 0.107
+      },
+      "TROUGH": {
+       "count": 6,
+       "probability": 0.214
+      }
+     }
+    },
+    "LATE_EXPANSION": {
+     "n_occurrences": 20,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.6,
+      "min": 1,
+      "max": 4,
+      "std": 0.9,
+      "all_durations": [
+       1,
+       1,
+       1,
+       1,
+       1,
+       2,
+       1,
+       2,
+       3,
+       1,
+       1,
+       3,
+       3,
+       1,
+       4,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "EXPANSION": {
+       "count": 20,
+       "probability": 1.0
+      }
+     }
+    },
+    "RECESSION": {
+     "n_occurrences": 6,
+     "duration_months": {
+      "median": 9,
+      "mean": 7.5,
+      "min": 1,
+      "max": 17,
+      "std": 5.7,
+      "all_durations": [
+       17,
+       1,
+       9,
+       2,
+       4,
+       12
+      ]
+     },
+     "transitions_to": {
+      "EARLY_RECOVERY": {
+       "count": 2,
+       "probability": 0.333
+      },
+      "EXPANSION": {
+       "count": 2,
+       "probability": 0.333
+      },
+      "TROUGH": {
+       "count": 2,
+       "probability": 0.333
+      }
+     }
+    },
+    "TROUGH": {
+     "n_occurrences": 9,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.7,
+      "min": 1,
+      "max": 5,
+      "std": 1.2,
+      "all_durations": [
+       1,
+       5,
+       1,
+       1,
+       2,
+       1,
+       2,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "RECESSION": {
+       "count": 2,
+       "probability": 0.222
+      },
+      "EARLY_RECOVERY": {
+       "count": 4,
+       "probability": 0.444
+      },
+      "EXPANSION": {
+       "count": 3,
+       "probability": 0.333
+      }
+     }
+    }
+   },
+   "total_transitions": 72
+  },
+  "FED_RATES": {
+   "phases": {
+    "EASING": {
+     "n_occurrences": 7,
+     "duration_months": {
+      "median": 11,
+      "mean": 23.1,
+      "min": 3,
+      "max": 62,
+      "std": 22.0,
+      "all_durations": [
+       4,
+       3,
+       11,
+       62,
+       3,
+       37,
+       42
+      ]
+     },
+     "transitions_to": {
+      "NEUTRAL": {
+       "count": 7,
+       "probability": 1.0
+      }
+     }
+    },
+    "NEUTRAL": {
+     "n_occurrences": 12,
+     "duration_months": {
+      "median": 3,
+      "mean": 5.5,
+      "min": 1,
+      "max": 16,
+      "std": 4.6,
+      "all_durations": [
+       3,
+       10,
+       3,
+       7,
+       3,
+       5,
+       1,
+       12,
+       1,
+       3,
+       2,
+       16
+      ]
+     },
+     "transitions_to": {
+      "EASING": {
+       "count": 6,
+       "probability": 0.545
+      },
+      "RESTRICTIVE": {
+       "count": 5,
+       "probability": 0.455
+      }
+     }
+    },
+    "RESTRICTIVE": {
+     "n_occurrences": 5,
+     "duration_months": {
+      "median": 5,
+      "mean": 5.2,
+      "min": 1,
+      "max": 13,
+      "std": 4.4,
+      "all_durations": [
+       13,
+       1,
+       1,
+       5,
+       6
+      ]
+     },
+     "transitions_to": {
+      "NEUTRAL": {
+       "count": 5,
+       "probability": 1.0
+      }
+     }
+    }
+   },
+   "total_transitions": 23
+  },
+  "EARNINGS": {
+   "phases": {
+    "CONTRACTION": {
+     "n_occurrences": 10,
+     "duration_months": {
+      "median": 4,
+      "mean": 5.5,
+      "min": 1,
+      "max": 16,
+      "std": 4.5,
+      "all_durations": [
+       7,
+       16,
+       1,
+       1,
+       7,
+       10,
+       4,
+       4,
+       1,
+       4
+      ]
+     },
+     "transitions_to": {
+      "TROUGH": {
+       "count": 2,
+       "probability": 0.2
+      },
+      "EXPANSION": {
+       "count": 3,
+       "probability": 0.3
+      },
+      "LATE_EXPANSION": {
+       "count": 3,
+       "probability": 0.3
+      },
+      "RECOVERY": {
+       "count": 2,
+       "probability": 0.2
+      }
+     }
+    },
+    "EXPANSION": {
+     "n_occurrences": 11,
+     "duration_months": {
+      "median": 10,
+      "mean": 8.6,
+      "min": 1,
+      "max": 22,
+      "std": 7.4,
+      "all_durations": [
+       19,
+       16,
+       10,
+       4,
+       10,
+       1,
+       1,
+       22,
+       1,
+       10,
+       1
+      ]
+     },
+     "transitions_to": {
+      "LATE_EXPANSION": {
+       "count": 4,
+       "probability": 0.364
+      },
+      "CONTRACTION": {
+       "count": 5,
+       "probability": 0.455
+      },
+      "RECOVERY": {
+       "count": 2,
+       "probability": 0.182
+      }
+     }
+    },
+    "LATE_EXPANSION": {
+     "n_occurrences": 9,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.0,
+      "min": 1,
+      "max": 1,
+      "std": 0.0,
+      "all_durations": [
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "CONTRACTION": {
+       "count": 4,
+       "probability": 0.5
+      },
+      "TROUGH": {
+       "count": 1,
+       "probability": 0.125
+      },
+      "EXPANSION": {
+       "count": 3,
+       "probability": 0.375
+      }
+     }
+    },
+    "RECOVERY": {
+     "n_occurrences": 5,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.6,
+      "min": 1,
+      "max": 4,
+      "std": 1.2,
+      "all_durations": [
+       1,
+       4,
+       1,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "EXPANSION": {
+       "count": 3,
+       "probability": 0.6
+      },
+      "LATE_EXPANSION": {
+       "count": 1,
+       "probability": 0.2
+      },
+      "TROUGH": {
+       "count": 1,
+       "probability": 0.2
+      }
+     }
+    },
+    "TROUGH": {
+     "n_occurrences": 4,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.0,
+      "min": 1,
+      "max": 1,
+      "std": 0.0,
+      "all_durations": [
+       1,
+       1,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "CONTRACTION": {
+       "count": 1,
+       "probability": 0.25
+      },
+      "RECOVERY": {
+       "count": 1,
+       "probability": 0.25
+      },
+      "EXPANSION": {
+       "count": 1,
+       "probability": 0.25
+      },
+      "LATE_EXPANSION": {
+       "count": 1,
+       "probability": 0.25
+      }
+     }
+    }
+   },
+   "total_transitions": 38
+  },
+  "TRADE": {
+   "phases": {
+    "COLLAPSE": {
+     "n_occurrences": 3,
+     "duration_months": {
+      "median": 4,
+      "mean": 7.3,
+      "min": 1,
+      "max": 17,
+      "std": 6.9,
+      "all_durations": [
+       17,
+       4,
+       1
+      ]
+     },
+     "transitions_to": {
+      "CONTRACTION": {
+       "count": 3,
+       "probability": 1.0
+      }
+     }
+    },
+    "CONTRACTION": {
+     "n_occurrences": 20,
+     "duration_months": {
+      "median": 1,
+      "mean": 2.2,
+      "min": 1,
+      "max": 7,
+      "std": 1.7,
+      "all_durations": [
+       1,
+       2,
+       1,
+       4,
+       1,
+       1,
+       2,
+       1,
+       1,
+       3,
+       1,
+       4,
+       1,
+       1,
+       1,
+       5,
+       2,
+       1,
+       4,
+       7
+      ]
+     },
+     "transitions_to": {
+      "RECOVERY": {
+       "count": 9,
+       "probability": 0.474
+      },
+      "TROUGH": {
+       "count": 7,
+       "probability": 0.368
+      },
+      "COLLAPSE": {
+       "count": 3,
+       "probability": 0.158
+      }
+     }
+    },
+    "EXPANSION": {
+     "n_occurrences": 21,
+     "duration_months": {
+      "median": 2,
+      "mean": 3.8,
+      "min": 1,
+      "max": 19,
+      "std": 4.4,
+      "all_durations": [
+       4,
+       1,
+       1,
+       5,
+       1,
+       1,
+       19,
+       2,
+       2,
+       1,
+       5,
+       3,
+       2,
+       3,
+       2,
+       12,
+       9,
+       2,
+       1,
+       3,
+       1
+      ]
+     },
+     "transitions_to": {
+      "RECOVERY": {
+       "count": 17,
+       "probability": 0.81
+      },
+      "CONTRACTION": {
+       "count": 1,
+       "probability": 0.048
+      },
+      "TROUGH": {
+       "count": 3,
+       "probability": 0.143
+      }
+     }
+    },
+    "RECOVERY": {
+     "n_occurrences": 36,
+     "duration_months": {
+      "median": 2,
+      "mean": 2.1,
+      "min": 1,
+      "max": 7,
+      "std": 1.5,
+      "all_durations": [
+       2,
+       5,
+       1,
+       3,
+       1,
+       2,
+       1,
+       2,
+       1,
+       3,
+       7,
+       3,
+       5,
+       2,
+       2,
+       1,
+       2,
+       2,
+       1,
+       1,
+       1,
+       1,
+       2,
+       1,
+       1,
+       6,
+       1,
+       2,
+       2,
+       1,
+       1,
+       2,
+       3,
+       2,
+       1,
+       1
+      ]
+     },
+     "transitions_to": {
+      "EXPANSION": {
+       "count": 18,
+       "probability": 0.5
+      },
+      "CONTRACTION": {
+       "count": 9,
+       "probability": 0.25
+      },
+      "TROUGH": {
+       "count": 9,
+       "probability": 0.25
+      }
+     }
+    },
+    "TROUGH": {
+     "n_occurrences": 19,
+     "duration_months": {
+      "median": 1,
+      "mean": 1.7,
+      "min": 1,
+      "max": 3,
+      "std": 0.9,
+      "all_durations": [
+       3,
+       1,
+       1,
+       1,
+       1,
+       1,
+       2,
+       1,
+       3,
+       3,
+       1,
+       2,
+       1,
+       1,
+       1,
+       3,
+       2,
+       1,
+       3
+      ]
+     },
+     "transitions_to": {
+      "RECOVERY": {
+       "count": 10,
+       "probability": 0.526
+      },
+      "EXPANSION": {
+       "count": 2,
+       "probability": 0.105
+      },
+      "CONTRACTION": {
+       "count": 7,
+       "probability": 0.368
+      }
+     }
+    }
+   },
+   "total_transitions": 98
+  }
+ },
+ "phase_positions": {
+  "LIQUIDITY": {
+   "current_phase": "EXPANSION",
+   "current_duration_months": 0,
+   "median_duration": 2,
+   "phase_position_pct": 0,
+   "remaining_median": 2,
+   "remaining_p25": 1,
+   "remaining_p75": 8,
+   "status": "EARLY_PHASE",
+   "transitions_ahead": {
+    "LATE_EXPANSION": {
+     "count": 15,
+     "probability": 0.625
+    },
+    "EARLY_RECOVERY": {
+     "count": 4,
+     "probability": 0.167
+    },
+    "CONTRACTION": {
+     "count": 5,
+     "probability": 0.208
+    }
+   }
+  },
+  "CREDIT": {
+   "current_phase": "LATE_EXPANSION",
+   "current_duration_months": 1,
+   "median_duration": 1,
+   "phase_position_pct": 100,
+   "remaining_median": 2,
+   "remaining_p25": 1,
+   "remaining_p75": 3,
+   "status": "EXTENDED",
+   "transitions_ahead": {
+    "EXPANSION": {
+     "count": 10,
+     "probability": 0.909
+    },
+    "DETERIORATION": {
+     "count": 1,
+     "probability": 0.091
+    }
+   }
+  },
+  "COMMODITY": {
+   "current_phase": "EUPHORIA",
+   "current_duration_months": 2,
+   "median_duration": 2,
+   "phase_position_pct": 100,
+   "remaining_median": 3,
+   "remaining_p25": 2,
+   "remaining_p75": 6,
+   "status": "EXTENDED",
+   "transitions_ahead": {
+    "MID_BULL": {
+     "count": 10,
+     "probability": 0.588
+    },
+    "BEAR": {
+     "count": 5,
+     "probability": 0.294
+    },
+    "EARLY_BULL": {
+     "count": 2,
+     "probability": 0.118
+    }
+   }
+  },
+  "CHINA_CREDIT": {
+   "current_phase": "CONTRACTION",
+   "current_duration_months": 2,
+   "median_duration": 3,
+   "phase_position_pct": 67,
+   "remaining_median": 2,
+   "remaining_p25": 1,
+   "remaining_p75": 4,
+   "status": "MID_PHASE",
+   "transitions_ahead": {
+    "EARLY_STIMULUS": {
+     "count": 17,
+     "probability": 0.708
+    },
+    "PEAK": {
+     "count": 2,
+     "probability": 0.083
+    },
+    "EXPANSION": {
+     "count": 5,
+     "probability": 0.208
+    }
+   }
+  },
+  "DOLLAR": {
+   "current_phase": "WEAKENING",
+   "current_duration_months": 3,
+   "median_duration": 3,
+   "phase_position_pct": 100,
+   "remaining_median": 5,
+   "remaining_p25": 1,
+   "remaining_p75": 6,
+   "status": "EXTENDED",
+   "transitions_ahead": {
+    "STRENGTHENING": {
+     "count": 30,
+     "probability": 1.0
+    }
+   }
+  },
+  "BUSINESS": {
+   "current_phase": "EXPANSION",
+   "current_duration_months": 2,
+   "median_duration": 3,
+   "phase_position_pct": 67,
+   "remaining_median": 2,
+   "remaining_p25": 2,
+   "remaining_p75": 7,
+   "status": "MID_PHASE",
+   "transitions_ahead": {
+    "LATE_EXPANSION": {
+     "count": 15,
+     "probability": 0.536
+    },
+    "RECESSION": {
+     "count": 4,
+     "probability": 0.143
+    },
+    "EARLY_RECOVERY": {
+     "count": 3,
+     "probability": 0.107
+    },
+    "TROUGH": {
+     "count": 6,
+     "probability": 0.214
+    }
+   }
+  },
+  "FED_RATES": {
+   "current_phase": "NEUTRAL",
+   "current_duration_months": 16,
+   "median_duration": 3,
+   "phase_position_pct": 533,
+   "remaining_median": 0,
+   "remaining_p25": 0,
+   "remaining_p75": 0,
+   "status": "EXTENDED",
+   "transitions_ahead": {
+    "EASING": {
+     "count": 6,
+     "probability": 0.545
+    },
+    "RESTRICTIVE": {
+     "count": 5,
+     "probability": 0.455
+    }
+   }
+  },
+  "EARNINGS": {
+   "current_phase": "LATE_EXPANSION",
+   "current_duration_months": 8,
+   "median_duration": 1,
+   "phase_position_pct": 800,
+   "remaining_median": 0,
+   "remaining_p25": 0,
+   "remaining_p75": 0,
+   "status": "EXTENDED",
+   "transitions_ahead": {
+    "CONTRACTION": {
+     "count": 4,
+     "probability": 0.5
+    },
+    "TROUGH": {
+     "count": 1,
+     "probability": 0.125
+    },
+    "EXPANSION": {
+     "count": 3,
+     "probability": 0.375
+    }
+   }
+  },
+  "TRADE": {
+   "current_phase": "CONTRACTION",
+   "current_duration_months": 8,
+   "median_duration": 1,
+   "phase_position_pct": 800,
+   "remaining_median": 0,
+   "remaining_p25": 0,
+   "remaining_p75": 0,
+   "status": "EXTENDED",
+   "transitions_ahead": {
+    "RECOVERY": {
+     "count": 9,
+     "probability": 0.474
+    },
+    "TROUGH": {
+     "count": 7,
+     "probability": 0.368
+    },
+    "COLLAPSE": {
+     "count": 3,
+     "probability": 0.158
+    }
+   }
+  }
+ },
+ "conditional_remaining_durations": {
+  "LIQUIDITY_warns_CREDIT": {
+   "description": "Wenn LIQUIDITY BEARISH wird — wie lange bleibt CREDIT noch BULLISH?",
+   "events": [
+    {
+     "liquidity_turned_bearish": "2017-06",
+     "credit_was_bullish_until": "2018-04",
+     "credit_remaining_months": 10
+    },
+    {
+     "liquidity_turned_bearish": "2019-08",
+     "credit_was_bullish_until": "2019-10",
+     "credit_remaining_months": 2
+    },
+    {
+     "liquidity_turned_bearish": "2023-06",
+     "credit_was_bullish_until": "2023-10",
+     "credit_remaining_months": 4
+    },
+    {
+     "liquidity_turned_bearish": "2024-03",
+     "credit_was_bullish_until": "2024-06",
+     "credit_remaining_months": 3
+    },
+    {
+     "liquidity_turned_bearish": "2024-08",
+     "credit_was_bullish_until": "2025-02",
+     "credit_remaining_months": 6
+    },
+    {
+     "liquidity_turned_bearish": "2024-10",
+     "credit_was_bullish_until": "2025-02",
+     "credit_remaining_months": 4
+    },
+    {
+     "liquidity_turned_bearish": "2025-06",
+     "credit_was_bullish_until": "2025-10",
+     "credit_remaining_months": 4
+    },
+    {
+     "liquidity_turned_bearish": "2025-09",
+     "credit_was_bullish_until": "2025-10",
+     "credit_remaining_months": 1
+    }
+   ],
+   "remaining_months_stats": {
+    "median": 4,
+    "mean": 4.2,
+    "min": 1,
+    "max": 10,
+    "n_events": 8
+   }
+  },
+  "LIQUIDITY_warns_BUSINESS": {
+   "description": "Wenn LIQUIDITY BEARISH wird — wie lange bleibt BUSINESS noch BULLISH?",
+   "events": [
+    {
+     "liquidity_turned_bearish": "2012-09",
+     "business_was_bullish_until": "2012-10",
+     "business_remaining_months": 1
+    },
+    {
+     "liquidity_turned_bearish": "2015-05",
+     "business_was_bullish_until": "2015-06",
+     "business_remaining_months": 1
+    },
+    {
+     "liquidity_turned_bearish": "2017-06",
+     "business_was_bullish_until": "2017-07",
+     "business_remaining_months": 1
+    },
+    {
+     "liquidity_turned_bearish": "2018-04",
+     "business_was_bullish_until": "2019-01",
+     "business_remaining_months": 9
+    },
+    {
+     "liquidity_turned_bearish": "2019-08",
+     "business_was_bullish_until": "2019-10",
+     "business_remaining_months": 2
+    },
+    {
+     "liquidity_turned_bearish": "2023-06",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 23
+    },
+    {
+     "liquidity_turned_bearish": "2024-03",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 14
+    },
+    {
+     "liquidity_turned_bearish": "2024-08",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 9
+    },
+    {
+     "liquidity_turned_bearish": "2024-10",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 7
+    },
+    {
+     "liquidity_turned_bearish": "2025-06",
+     "business_was_bullish_until": "2025-10",
+     "business_remaining_months": 4
+    },
+    {
+     "liquidity_turned_bearish": "2025-09",
+     "business_was_bullish_until": "2025-10",
+     "business_remaining_months": 1
+    }
+   ],
+   "remaining_months_stats": {
+    "median": 4,
+    "mean": 6.5,
+    "min": 1,
+    "max": 23,
+    "n_events": 11
+   }
+  },
+  "CREDIT_warns_BUSINESS": {
+   "description": "Wenn CREDIT BEARISH wird — wie lange bleibt BUSINESS noch BULLISH?",
+   "events": [
+    {
+     "credit_turned_bearish": "2005-04",
+     "business_was_bullish_until": "2005-09",
+     "business_remaining_months": 5
+    },
+    {
+     "credit_turned_bearish": "2011-05",
+     "business_was_bullish_until": "2012-10",
+     "business_remaining_months": 17
+    },
+    {
+     "credit_turned_bearish": "2014-07",
+     "business_was_bullish_until": "2015-02",
+     "business_remaining_months": 7
+    },
+    {
+     "credit_turned_bearish": "2014-09",
+     "business_was_bullish_until": "2015-02",
+     "business_remaining_months": 5
+    },
+    {
+     "credit_turned_bearish": "2015-05",
+     "business_was_bullish_until": "2015-06",
+     "business_remaining_months": 1
+    },
+    {
+     "credit_turned_bearish": "2018-11",
+     "business_was_bullish_until": "2019-01",
+     "business_remaining_months": 2
+    },
+    {
+     "credit_turned_bearish": "2019-05",
+     "business_was_bullish_until": "2019-10",
+     "business_remaining_months": 5
+    },
+    {
+     "credit_turned_bearish": "2020-02",
+     "business_was_bullish_until": "2020-03",
+     "business_remaining_months": 1
+    },
+    {
+     "credit_turned_bearish": "2023-04",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 25
+    },
+    {
+     "credit_turned_bearish": "2023-10",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 19
+    }
+   ],
+   "remaining_months_stats": {
+    "median": 5,
+    "mean": 8.7,
+    "min": 1,
+    "max": 25,
+    "n_events": 10
+   }
+  },
+  "CHINA_CREDIT_warns_COMMODITY": {
+   "description": "Wenn CHINA_CREDIT BEARISH wird — wie lange bleibt COMMODITY noch BULLISH?",
+   "events": [
+    {
+     "china_credit_turned_bearish": "2011-08",
+     "commodity_was_bullish_until": "2011-09",
+     "commodity_remaining_months": 1
+    },
+    {
+     "china_credit_turned_bearish": "2014-02",
+     "commodity_was_bullish_until": "2014-04",
+     "commodity_remaining_months": 2
+    },
+    {
+     "china_credit_turned_bearish": "2015-06",
+     "commodity_was_bullish_until": "2015-07",
+     "commodity_remaining_months": 1
+    },
+    {
+     "china_credit_turned_bearish": "2018-07",
+     "commodity_was_bullish_until": "2018-10",
+     "commodity_remaining_months": 3
+    },
+    {
+     "china_credit_turned_bearish": "2022-01",
+     "commodity_was_bullish_until": "2022-02",
+     "commodity_remaining_months": 1
+    },
+    {
+     "china_credit_turned_bearish": "2022-06",
+     "commodity_was_bullish_until": "2022-09",
+     "commodity_remaining_months": 3
+    },
+    {
+     "china_credit_turned_bearish": "2023-10",
+     "commodity_was_bullish_until": "2023-11",
+     "commodity_remaining_months": 1
+    }
+   ],
+   "remaining_months_stats": {
+    "median": 1,
+    "mean": 1.7,
+    "min": 1,
+    "max": 3,
+    "n_events": 7
+   }
+  },
+  "CHINA_CREDIT_warns_BUSINESS": {
+   "description": "Wenn CHINA_CREDIT BEARISH wird — wie lange bleibt BUSINESS noch BULLISH?",
+   "events": [
+    {
+     "china_credit_turned_bearish": "2010-05",
+     "business_was_bullish_until": "2012-10",
+     "business_remaining_months": 29
+    },
+    {
+     "china_credit_turned_bearish": "2010-10",
+     "business_was_bullish_until": "2012-10",
+     "business_remaining_months": 24
+    },
+    {
+     "china_credit_turned_bearish": "2011-08",
+     "business_was_bullish_until": "2012-10",
+     "business_remaining_months": 14
+    },
+    {
+     "china_credit_turned_bearish": "2012-05",
+     "business_was_bullish_until": "2012-10",
+     "business_remaining_months": 5
+    },
+    {
+     "china_credit_turned_bearish": "2013-03",
+     "business_was_bullish_until": "2013-05",
+     "business_remaining_months": 2
+    },
+    {
+     "china_credit_turned_bearish": "2014-02",
+     "business_was_bullish_until": "2015-02",
+     "business_remaining_months": 12
+    },
+    {
+     "china_credit_turned_bearish": "2014-08",
+     "business_was_bullish_until": "2015-02",
+     "business_remaining_months": 6
+    },
+    {
+     "china_credit_turned_bearish": "2014-11",
+     "business_was_bullish_until": "2015-02",
+     "business_remaining_months": 3
+    },
+    {
+     "china_credit_turned_bearish": "2016-06",
+     "business_was_bullish_until": "2016-07",
+     "business_remaining_months": 1
+    },
+    {
+     "china_credit_turned_bearish": "2018-07",
+     "business_was_bullish_until": "2019-01",
+     "business_remaining_months": 6
+    },
+    {
+     "china_credit_turned_bearish": "2018-12",
+     "business_was_bullish_until": "2019-01",
+     "business_remaining_months": 1
+    },
+    {
+     "china_credit_turned_bearish": "2019-05",
+     "business_was_bullish_until": "2019-10",
+     "business_remaining_months": 5
+    },
+    {
+     "china_credit_turned_bearish": "2022-04",
+     "business_was_bullish_until": "2022-05",
+     "business_remaining_months": 1
+    },
+    {
+     "china_credit_turned_bearish": "2023-03",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 26
+    },
+    {
+     "china_credit_turned_bearish": "2023-10",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 19
+    },
+    {
+     "china_credit_turned_bearish": "2024-02",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 15
+    },
+    {
+     "china_credit_turned_bearish": "2024-07",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 10
+    },
+    {
+     "china_credit_turned_bearish": "2025-04",
+     "business_was_bullish_until": "2025-05",
+     "business_remaining_months": 1
+    }
+   ],
+   "remaining_months_stats": {
+    "median": 6,
+    "mean": 10.0,
+    "min": 1,
+    "max": 29,
+    "n_events": 18
+   }
+  },
+  "FED_RATES_warns_DOLLAR": {
+   "description": "Wenn FED_RATES BEARISH wird — wie lange bleibt DOLLAR noch BULLISH?",
+   "events": [],
+   "remaining_months_stats": {
+    "n_events": 0
+   }
+  },
+  "DOLLAR_warns_COMMODITY": {
+   "description": "Wenn DOLLAR BEARISH wird — wie lange bleibt COMMODITY noch BULLISH?",
+   "events": [],
+   "remaining_months_stats": {
+    "n_events": 0
+   }
+  },
+  "BUSINESS_warns_EARNINGS": {
+   "description": "Wenn BUSINESS BEARISH wird — wie lange bleibt EARNINGS noch BULLISH?",
+   "events": [
+    {
+     "business_turned_bearish": "2016-07",
+     "earnings_was_bullish_until": "2017-10",
+     "earnings_remaining_months": 15
+    },
+    {
+     "business_turned_bearish": "2019-10",
+     "earnings_was_bullish_until": "2020-01",
+     "earnings_remaining_months": 3
+    }
+   ],
+   "remaining_months_stats": {
+    "median": 15,
+    "mean": 9.0,
+    "min": 3,
+    "max": 15,
+    "n_events": 2
+   }
+  },
+  "EARNINGS_warns_FED_RATES": {
+   "description": "Wenn EARNINGS BEARISH wird — wie lange bleibt FED_RATES noch BULLISH?",
+   "events": [
+    {
+     "earnings_turned_bearish": "2008-01",
+     "fed_rates_was_bullish_until": "2009-07",
+     "fed_rates_remaining_months": 18
+    },
+    {
+     "earnings_turned_bearish": "2011-01",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 149
+    },
+    {
+     "earnings_turned_bearish": "2013-01",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 125
+    },
+    {
+     "earnings_turned_bearish": "2017-10",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 68
+    },
+    {
+     "earnings_turned_bearish": "2020-01",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 41
+    }
+   ],
+   "remaining_months_stats": {
+    "median": 68,
+    "mean": 80.2,
+    "min": 18,
+    "max": 149,
+    "n_events": 5
+   }
+  },
+  "COMMODITY_warns_FED_RATES": {
+   "description": "Wenn COMMODITY BEARISH wird — wie lange bleibt FED_RATES noch BULLISH?",
+   "events": [
+    {
+     "commodity_turned_bearish": "2009-08",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 166
+    },
+    {
+     "commodity_turned_bearish": "2011-09",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 141
+    },
+    {
+     "commodity_turned_bearish": "2012-01",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 137
+    },
+    {
+     "commodity_turned_bearish": "2012-05",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 133
+    },
+    {
+     "commodity_turned_bearish": "2012-12",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 126
+    },
+    {
+     "commodity_turned_bearish": "2013-02",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 124
+    },
+    {
+     "commodity_turned_bearish": "2013-10",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 116
+    },
+    {
+     "commodity_turned_bearish": "2014-07",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 107
+    },
+    {
+     "commodity_turned_bearish": "2015-05",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 97
+    },
+    {
+     "commodity_turned_bearish": "2015-07",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 95
+    },
+    {
+     "commodity_turned_bearish": "2017-03",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 75
+    },
+    {
+     "commodity_turned_bearish": "2018-10",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 56
+    },
+    {
+     "commodity_turned_bearish": "2019-05",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 49
+    },
+    {
+     "commodity_turned_bearish": "2020-10",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 32
+    },
+    {
+     "commodity_turned_bearish": "2022-09",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 9
+    },
+    {
+     "commodity_turned_bearish": "2023-01",
+     "fed_rates_was_bullish_until": "2023-06",
+     "fed_rates_remaining_months": 5
+    }
+   ],
+   "remaining_months_stats": {
+    "median": 107,
+    "mean": 91.8,
+    "min": 5,
+    "max": 166,
+    "n_events": 16
+   }
+  }
+ },
+ "cascade_speed": {
+  "current": {
+   "cascade_speed": 0.667,
+   "n_transitions": 4,
+   "lookback_months": 6,
+   "transitioned_cycles": [
+    {
+     "cycle": "CREDIT",
+     "month": "2025-10",
+     "from": "BULLISH",
+     "to": "NEUTRAL_MIXED"
+    },
+    {
+     "cycle": "COMMODITY",
+     "month": "2026-01",
+     "from": "BULLISH",
+     "to": "NEUTRAL_MIXED"
+    },
+    {
+     "cycle": "CHINA_CREDIT",
+     "month": "2026-01",
+     "from": "BULLISH",
+     "to": "BEARISH"
+    },
+    {
+     "cycle": "BUSINESS",
+     "month": "2025-10",
+     "from": "BULLISH",
+     "to": "NEUTRAL_MIXED"
+    }
+   ],
+   "not_yet_transitioned": [
+    "LIQUIDITY",
+    "DOLLAR",
+    "FED_RATES",
+    "EARNINGS",
+    "TRADE"
+   ],
+   "severity": "CASCADE"
+  },
+  "historical_cascade_speeds": [
+   {
+    "month": "2021-04",
+    "speed": 0.167
+   },
+   {
+    "month": "2021-05",
+    "speed": 0.167
+   },
+   {
+    "month": "2021-06",
+    "speed": 0.167
+   },
+   {
+    "month": "2021-07",
+    "speed": 0.5
+   },
+   {
+    "month": "2021-08",
+    "speed": 0.5
+   },
+   {
+    "month": "2021-09",
+    "speed": 0.5
+   },
+   {
+    "month": "2021-10",
+    "speed": 0.667
+   },
+   {
+    "month": "2021-11",
+    "speed": 0.667
+   },
+   {
+    "month": "2021-12",
+    "speed": 0.5
+   },
+   {
+    "month": "2022-01",
+    "speed": 0.833
+   },
+   {
+    "month": "2022-02",
+    "speed": 0.833
+   },
+   {
+    "month": "2022-03",
+    "speed": 0.833
+   },
+   {
+    "month": "2022-04",
+    "speed": 0.833
+   },
+   {
+    "month": "2022-05",
+    "speed": 0.833
+   },
+   {
+    "month": "2022-06",
+    "speed": 0.833
+   },
+   {
+    "month": "2022-07",
+    "speed": 1.0
+   },
+   {
+    "month": "2022-08",
+    "speed": 0.833
+   },
+   {
+    "month": "2022-09",
+    "speed": 1.0
+   },
+   {
+    "month": "2022-10",
+    "speed": 1.0
+   },
+   {
+    "month": "2022-11",
+    "speed": 0.833
+   },
+   {
+    "month": "2022-12",
+    "speed": 0.667
+   },
+   {
+    "month": "2023-01",
+    "speed": 0.667
+   },
+   {
+    "month": "2023-02",
+    "speed": 0.667
+   },
+   {
+    "month": "2023-03",
+    "speed": 0.833
+   },
+   {
+    "month": "2023-04",
+    "speed": 1.0
+   },
+   {
+    "month": "2023-05",
+    "speed": 1.167
+   },
+   {
+    "month": "2023-06",
+    "speed": 1.333
+   },
+   {
+    "month": "2023-07",
+    "speed": 1.0
+   },
+   {
+    "month": "2023-08",
+    "speed": 1.167
+   },
+   {
+    "month": "2023-09",
+    "speed": 1.0
+   },
+   {
+    "month": "2023-10",
+    "speed": 1.0
+   },
+   {
+    "month": "2023-11",
+    "speed": 1.0
+   },
+   {
+    "month": "2023-12",
+    "speed": 0.833
+   },
+   {
+    "month": "2024-01",
+    "speed": 0.667
+   },
+   {
+    "month": "2024-02",
+    "speed": 0.667
+   },
+   {
+    "month": "2024-03",
+    "speed": 0.833
+   },
+   {
+    "month": "2024-04",
+    "speed": 0.5
+   },
+   {
+    "month": "2024-05",
+    "speed": 0.833
+   },
+   {
+    "month": "2024-06",
+    "speed": 1.0
+   },
+   {
+    "month": "2024-07",
+    "speed": 1.167
+   },
+   {
+    "month": "2024-08",
+    "speed": 1.167
+   },
+   {
+    "month": "2024-09",
+    "speed": 1.167
+   },
+   {
+    "month": "2024-10",
+    "speed": 1.167
+   },
+   {
+    "month": "2024-11",
+    "speed": 1.0
+   },
+   {
+    "month": "2024-12",
+    "speed": 0.833
+   },
+   {
+    "month": "2025-01",
+    "speed": 0.5
+   },
+   {
+    "month": "2025-02",
+    "speed": 0.667
+   },
+   {
+    "month": "2025-03",
+    "speed": 0.667
+   },
+   {
+    "month": "2025-04",
+    "speed": 0.833
+   },
+   {
+    "month": "2025-05",
+    "speed": 1.0
+   },
+   {
+    "month": "2025-06",
+    "speed": 1.0
+   },
+   {
+    "month": "2025-07",
+    "speed": 1.0
+   },
+   {
+    "month": "2025-08",
+    "speed": 1.0
+   },
+   {
+    "month": "2025-09",
+    "speed": 1.0
+   },
+   {
+    "month": "2025-10",
+    "speed": 0.833
+   },
+   {
+    "month": "2025-11",
+    "speed": 0.833
+   },
+   {
+    "month": "2025-12",
+    "speed": 0.833
+   },
+   {
+    "month": "2026-01",
+    "speed": 0.833
+   },
+   {
+    "month": "2026-02",
+    "speed": 0.833
+   },
+   {
+    "month": "2026-03",
+    "speed": 0.667
+   }
+  ],
+  "calibration": {}
+ },
+ "confirmation_counter": {
+  "bullish_count": 3,
+  "bearish_count": 2,
+  "neutral_count": 4,
+  "bullish_cycles": [
+   "LIQUIDITY",
+   "BUSINESS",
+   "FED_RATES"
+  ],
+  "bearish_cycles": [
+   "CHINA_CREDIT",
+   "TRADE"
+  ],
+  "neutral_cycles": [
+   "CREDIT",
+   "COMMODITY",
+   "DOLLAR",
+   "EARNINGS"
+  ],
+  "confirmation_score": 1,
+  "interpretation": "Divergenz. Cluster-Dominance entscheidet (Credit > Real Economy)."
+ },
+ "overall_assessment": {
+  "n_significant_returns": 2702,
+  "n_total_returns": 7524,
+  "pct_significant": 35.9,
+  "cascade_severity": "CASCADE",
+  "confirmation_score": 1,
+  "extended_cycles": [
+   "CREDIT",
+   "COMMODITY",
+   "DOLLAR",
+   "FED_RATES",
+   "EARNINGS",
+   "TRADE"
+  ],
+  "late_cycles": [],
+  "verdict": "WARNING — Cascade Speed CASCADE. 4 cycles transitioning. Defensive positioning recommended. WATCH: CREDIT, COMMODITY, DOLLAR, FED_RATES, EARNINGS, TRADE extended beyond median duration."
+ }
+}
