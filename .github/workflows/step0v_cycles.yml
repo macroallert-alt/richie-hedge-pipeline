@@ -31,13 +31,14 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests google-api-python-client google-auth
+        run: pip install requests google-api-python-client google-auth anthropic
 
       - name: Run Cycles Engine
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           if [ "${{ github.event.inputs.force_backfill }}" = "true" ]; then
             python -m step_0v_cycles.main --force-backfill --skip-git
