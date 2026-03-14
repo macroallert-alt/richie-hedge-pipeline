@@ -57,17 +57,19 @@ PHASE_BUCKETS = {
         "EXPANSION", "EARLY_RECOVERY", "RECOVERY", "MID_BULL",
         "EARLY_BULL", "EARLY_STIMULUS", "EASING", "NEUTRAL",
         "PRE_ELECTION", "TROUGH",
+        "WEAKENING",       # Dollar WEAKENING = bullish for risk assets
     ],
     "BEARISH": [
         "CONTRACTION", "DETERIORATION", "DISTRESS", "RECESSION",
         "COLLAPSE", "BEAR", "WITHDRAWAL",
+        "STRENGTHENING",   # Dollar STRENGTHENING = bearish for risk assets
     ],
     "NEUTRAL_MIXED": [
         "LATE_EXPANSION", "PEAK", "PLATEAU", "LATE",
         "OVERINVESTMENT", "TIGHTENING", "RESTRICTIVE",
         "MIDTERM", "POST_INAUGURATION", "ELECTION",
-        "PRE_PIVOT", "PIVOT", "REPAIR", "STRENGTHENING",
-        "WEAKENING", "EUPHORIA",
+        "PRE_PIVOT", "PIVOT", "REPAIR",
+        "EUPHORIA",
     ],
 }
 
@@ -129,6 +131,30 @@ V16_STATE_GROUPS = {
     "STRESS": [7, 8, 9],
     "CRISIS": [10, 11, 12],
 }
+
+# V16 State Name → Number (macro_state_history.json stores names, not numbers)
+V16_STATE_NAME_TO_NUM = {
+    "STEADY_GROWTH": 1, "FRAGILE_EXPANSION": 2, "LATE_EXPANSION": 3,
+    "FULL_EXPANSION": 4, "REFLATION": 5, "NEUTRAL": 6,
+    "SOFT_LANDING": 7, "STRESS_ELEVATED": 8, "CONTRACTION": 9,
+    "DEEP_CONTRACTION": 10, "FINANCIAL_CRISIS": 11, "EARLY_RECOVERY": 12,
+}
+
+def _parse_v16_state(s):
+    """Convert V16 state (string name or int) to state number."""
+    if isinstance(s, int):
+        return s
+    if isinstance(s, str):
+        # Try name lookup first
+        num = V16_STATE_NAME_TO_NUM.get(s)
+        if num is not None:
+            return num
+        # Try direct int parse
+        try:
+            return int(s)
+        except (ValueError, TypeError):
+            pass
+    return None
 
 # Entry Rules (Spec TEIL3 §9.5.3 / TEIL5 §14.11)
 ENTRY_RULES = {
@@ -799,10 +825,9 @@ def compute_v16_transition_probability(chart_data, macro_state_history, cycle_mo
         s = entry.get("state")
         if d and s is not None:
             dm = d[:7]
-            try:
-                v16_monthly[dm] = int(s)
-            except (ValueError, TypeError):
-                pass
+            num = _parse_v16_state(s)
+            if num is not None:
+                v16_monthly[dm] = num
 
     if not v16_monthly:
         return {}
@@ -1365,6 +1390,81 @@ def _compute_bucket_zones(phase_zones):
     return bucket_zones
 
 
+def _compute_smoothed_bucket_zones(cdata):
+    """
+    Compute stable bucket zones from smoothed indicator vs MA.
+    Uses 2x12M smoothed curve (the 'sine wave') compared to 12M MA.
+    This eliminates noise from short-lived phase flips.
+    
+    Smoothed > MA * 1.01 → BULLISH
+    Smoothed < MA * 0.99 → BEARISH
+    Otherwise → NEUTRAL_MIXED
+    
+    Falls back to _compute_bucket_zones(phase_zones) if smoothed data unavailable.
+    """
+    smoothed_raw = cdata.get("smoothed", [])
+    ma_raw = cdata.get("ma_12m", [])
+    
+    if not smoothed_raw or not ma_raw:
+        # Fallback to phase-based
+        return _compute_bucket_zones(cdata.get("phase_zones", []))
+    
+    # Build month→value maps (handle both dict and array formats)
+    smooth_map = {}
+    ma_map = {}
+    
+    if isinstance(smoothed_raw[0], dict):
+        # Dict format: [{date, value}, ...]
+        for pt in smoothed_raw:
+            if pt.get("value") is not None and pt.get("date"):
+                smooth_map[pt["date"][:7]] = pt["value"]
+        for pt in ma_raw:
+            if pt.get("value") is not None and pt.get("date"):
+                ma_map[pt["date"][:7]] = pt["value"]
+    else:
+        # Array format: need dates from indicator
+        dates = []
+        indicator = cdata.get("indicator", [])
+        if isinstance(indicator, list) and indicator and isinstance(indicator[0], dict):
+            dates = [pt.get("date", "")[:7] for pt in indicator if pt.get("date")]
+        
+        if dates:
+            for i, d in enumerate(dates):
+                if i < len(smoothed_raw) and smoothed_raw[i] is not None:
+                    smooth_map[d] = smoothed_raw[i]
+                if i < len(ma_raw) and ma_raw[i] is not None:
+                    ma_map[d] = ma_raw[i]
+    
+    if not smooth_map or not ma_map:
+        return _compute_bucket_zones(cdata.get("phase_zones", []))
+    
+    # Smoothed vs MA → bucket per month
+    common = sorted(set(smooth_map.keys()) & set(ma_map.keys()))
+    if not common:
+        return _compute_bucket_zones(cdata.get("phase_zones", []))
+    
+    bucket_zones = []
+    for m in common:
+        sv = smooth_map[m]
+        mv = ma_map[m]
+        
+        if mv == 0:
+            bucket = "NEUTRAL_MIXED"
+        elif sv > mv * 1.01:
+            bucket = "BULLISH"
+        elif sv < mv * 0.99:
+            bucket = "BEARISH"
+        else:
+            bucket = "NEUTRAL_MIXED"
+        
+        if bucket_zones and bucket_zones[-1]["bucket"] == bucket:
+            bucket_zones[-1]["end"] = m
+        else:
+            bucket_zones.append({"start": m, "end": m, "bucket": bucket})
+    
+    return bucket_zones
+
+
 def _get_bucket_at_month(bucket_zones, month):
     """Find bucket state at a given month."""
     for bz in bucket_zones:
@@ -1397,8 +1497,8 @@ def compute_conditional_remaining_durations(chart_data):
         if not zones_a or not zones_b:
             continue
 
-        a_bucket_zones = _compute_bucket_zones(zones_a)
-        b_bucket_zones = _compute_bucket_zones(zones_b)
+        a_bucket_zones = _compute_smoothed_bucket_zones(chart_data.get("cycles", {}).get(ca, {}))
+        b_bucket_zones = _compute_smoothed_bucket_zones(chart_data.get("cycles", {}).get(cb, {}))
 
         # Find events: A transitions from BULLISH → BEARISH
         events = []
@@ -1452,13 +1552,14 @@ def _bucket_severity(bucket):
 
 
 def _compute_historical_cascade_speeds(chart_data, lookback_months):
-    """Compute cascade speed for every historical month."""
-    # Build bucket zones for all cycles
+    """Compute cascade speed for every historical month using smoothed bucket zones."""
+    # Build smoothed bucket zones for all cycles
     all_bucket_zones = {}
     for cycle_id in LEAD_LAG_CYCLES:
-        zones = chart_data.get("cycles", {}).get(cycle_id, {}).get("phase_zones", [])
-        if zones:
-            all_bucket_zones[cycle_id] = _compute_bucket_zones(zones)
+        cdata = chart_data.get("cycles", {}).get(cycle_id, {})
+        bz = _compute_smoothed_bucket_zones(cdata)
+        if bz:
+            all_bucket_zones[cycle_id] = bz
 
     if not all_bucket_zones:
         return []
@@ -1583,11 +1684,11 @@ def compute_cascade_speed(chart_data, monthly_returns=None, v16_monthly=None,
     not_transitioned = []
 
     for cycle_id in LEAD_LAG_CYCLES:
-        zones = chart_data.get("cycles", {}).get(cycle_id, {}).get("phase_zones", [])
-        if not zones:
+        cdata = chart_data.get("cycles", {}).get(cycle_id, {})
+        if not cdata:
             continue
 
-        bucket_zones = _compute_bucket_zones(zones)
+        bucket_zones = _compute_smoothed_bucket_zones(cdata)
 
         found = False
         for i in range(1, len(bucket_zones)):
@@ -1636,7 +1737,7 @@ def compute_cascade_speed(chart_data, monthly_returns=None, v16_monthly=None,
             "not_yet_transitioned": not_transitioned,
             "severity": severity,
         },
-        "historical_cascade_speeds": historical[-60:] if len(historical) > 60 else historical,
+        "historical_cascade_speeds": historical,
         "calibration": calibration,
     }
 
@@ -1646,18 +1747,23 @@ def compute_cascade_speed(chart_data, monthly_returns=None, v16_monthly=None,
 def compute_confirmation_counter(chart_data):
     """
     Count how many of the 9 non-political cycles are in each bucket.
+    Uses smoothed bucket zones for stable regime assessment.
     (Spec TEIL4 §11.6)
     """
     counts = {"BULLISH": [], "BEARISH": [], "NEUTRAL_MIXED": []}
 
     for cycle_id in LEAD_LAG_CYCLES:
-        zones = chart_data.get("cycles", {}).get(cycle_id, {}).get("phase_zones", [])
-        if not zones:
+        cdata = chart_data.get("cycles", {}).get(cycle_id, {})
+        if not cdata:
             continue
 
-        current_phase = zones[-1]["phase"]
-        bucket = _phase_to_bucket(current_phase)
-        counts[bucket].append(cycle_id)
+        bucket_zones = _compute_smoothed_bucket_zones(cdata)
+        if not bucket_zones:
+            continue
+
+        # Current bucket = last smoothed bucket zone
+        current_bucket = bucket_zones[-1]["bucket"]
+        counts[current_bucket].append(cycle_id)
 
     n_bull = len(counts["BULLISH"])
     n_bear = len(counts["BEARISH"])
@@ -1693,14 +1799,14 @@ def compute_confirmation_counter(chart_data):
 # ═══════════════════════════════════════════════════════════════════════════
 
 def _get_current_cluster_state(chart_data):
-    """Determine current cluster state from latest phase zones. (Spec TEIL5 §13.2)"""
+    """Determine current cluster state from smoothed bucket zones. (Spec TEIL5 §13.2)"""
     state = {}
     for cluster_name, cluster_def in CYCLE_CLUSTERS.items():
         dominant = cluster_def["dominant"]
-        zones = chart_data.get("cycles", {}).get(dominant, {}).get("phase_zones", [])
-        if zones:
-            current_phase = zones[-1]["phase"]
-            state[cluster_name] = _phase_to_bucket(current_phase)
+        cdata = chart_data.get("cycles", {}).get(dominant, {})
+        bucket_zones = _compute_smoothed_bucket_zones(cdata)
+        if bucket_zones:
+            state[cluster_name] = bucket_zones[-1]["bucket"]
         else:
             state[cluster_name] = "NEUTRAL_MIXED"
     return state
@@ -1825,10 +1931,9 @@ def run_lead_engine(data_dir=None):
             d = entry.get("date", "")
             s = entry.get("state")
             if d and s is not None:
-                try:
-                    v16_monthly[d[:7]] = int(s)
-                except (ValueError, TypeError):
-                    pass
+                num = _parse_v16_state(s)
+                if num is not None:
+                    v16_monthly[d[:7]] = num
 
     # ── MODUL B: CONDITIONAL FORWARD RETURNS ──
     logger.info("MODUL B: Conditional Forward Returns (27 assets)...")
