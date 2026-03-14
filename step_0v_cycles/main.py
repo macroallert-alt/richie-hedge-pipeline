@@ -1,11 +1,12 @@
 """
 Cycles Circle — Main Orchestrator
-Baldur Creek Capital | Step 0v (V4.1 — Smoothed Curve + Phase Zones + Cycle Clock)
+Baldur Creek Capital | Step 0v (V4.2 — Lead-Engine V1.1 Integration)
 
 1. Collect all data (incremental persistence)
 2. Run phase detection for all 10 cycles
 3. Save results locally (cycle_data.json)
 3b. Generate chart data (cycles_chart_data.json) — with smoothed curve, phase zones, cycle position
+3c. Lead-Engine V1.1 — calibration + early warning (conditional_returns, regime_interaction, transition_engine)
 4. Write to Cycles Sheet (DASHBOARD, PHASES, HISTORY)
 5. Write cycles block to latest.json (for CyclesCard) — EXTENDED with indicator values
 6. Git commit + push data files
@@ -869,6 +870,18 @@ def main():
     # Step 3b: Generate chart data
     logger.info("STEP 3b: Generate Chart Data (V4.1)")
     generate_chart_data(data, result)
+
+    # Step 3c: Lead-Engine V1.1 — Calibration + Early Warning
+    logger.info("STEP 3c: Cycles Kalibrierung + Fruehwarnung (Lead-Engine V1.1)")
+    try:
+        from .lead_engine import run_lead_engine
+        lead_results = run_lead_engine()  # reads own inputs, writes own outputs
+        if lead_results:
+            logger.info(f"  Lead-Engine verdict: {lead_results.get('assessment', {}).get('verdict', 'N/A')}")
+        else:
+            logger.warning("  Lead-Engine returned None — check input data")
+    except Exception as e:
+        logger.error(f"  Lead-Engine failed (non-fatal): {e}")
 
     # Step 4: Write to Sheet
     if not args.skip_sheet:

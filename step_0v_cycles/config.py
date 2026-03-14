@@ -1,9 +1,9 @@
 """
 Cycles Circle — Configuration & Cycle Definitions
-Baldur Creek Capital | Step 0v (V3.4 FINAL)
+Baldur Creek Capital | Step 0v (V3.5 — 27 Assets, Legacy Lead-Relationships)
 
 Data Sources:
-- V16 Sheet DATA_Prices:     Asset prices (SPY, DBC, GLD, HYG, etc.)
+- V16 Sheet DATA_Prices:     Asset prices (27 tickers — full V16 universe)
 - V16 Sheet DATA_Liquidity:  Net Liq, Global Liq Proxy, MAs, Trend
 - V16 Sheet CYCLES_Howell:   Howell phases, momentum, cycle position
 - V16 Sheet CALC_Macro_State: Current V16 regime + history
@@ -19,6 +19,10 @@ Verified working series (March 2026):
 - HY_OAS FRED: values in % → multiply x100 for bps
 - BDI: no API source → replaced with CASS Freight (FRED: FRGSHPUSM649NCIS)
 - Earnings: FMP returns 0 for ETFs → FRED Corporate Profits (CP)
+
+V3.5 Changes:
+- PRICE_TICKERS expanded from 15 → 27 (full V16 DATA_Prices universe)
+- lead_relationships → legacy_lead_relationships (V1.0 empirically disproven)
 """
 
 import os
@@ -114,12 +118,17 @@ FRED_BACKFILL_START = "2004-01-01"
 FRED_BACKFILL_LIMIT = 10000
 
 # ---------------------------------------------------------------------------
-# V16 DATA_Prices columns (DXY is NOT here — use FRED)
+# V16 DATA_Prices columns — FULL 27-ASSET UNIVERSE (V3.5)
+# Order matches V16 Sheet column headers (GLD first, ETH last)
+# 12 new vs V3.4: GDXJ, SIL, PLATINUM, IWM, VGK, XLY, XLF, XLE, XLV, VNQ, TIP, LQD
 # ---------------------------------------------------------------------------
 PRICE_TICKERS = [
-    "SPY", "DBC", "GLD", "HYG", "TLT",
-    "XLK", "XLI", "XLU", "XLP", "EEM",
-    "SLV", "GDX", "BTC", "ETH", "COPPER",
+    "GLD", "SLV", "GDX", "GDXJ", "SIL",
+    "SPY", "XLY", "XLI", "XLF", "XLE",
+    "IWM", "XLV", "XLP", "XLU", "VNQ",
+    "XLK", "EEM", "VGK", "TLT", "TIP",
+    "LQD", "HYG", "DBC", "PLATINUM", "COPPER",
+    "BTC", "ETH",
 ]
 
 PRICE_ROW_LIMIT = 520
@@ -153,7 +162,7 @@ CYCLE_DEFINITIONS = {
             {"type": "ABSOLUTE", "threshold": 5.0e12, "severity": "EXTREME",
              "description": "Net Liquidity unter $5.0T"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "SPY", "lead_months": 7.5, "direction": "positive", "r_squared": 0.44},
             {"asset": "DBC", "lead_months": 7.5, "direction": "positive", "r_squared": 0.46},
             {"asset": "GLD", "lead_months": 9.0, "direction": "positive", "r_squared": 0.42},
@@ -184,7 +193,7 @@ CYCLE_DEFINITIONS = {
             {"type": "ABSOLUTE", "threshold": 700, "severity": "DANGER",
              "description": "HY Spreads >700bps — Credit Crisis"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "HYG", "lead_months": 0.5, "direction": "negative", "r_squared": 0.85},
             {"asset": "SPY", "lead_months": 4.5, "direction": "negative", "r_squared": 0.48},
         ],
@@ -211,7 +220,7 @@ CYCLE_DEFINITIONS = {
             {"type": "VELOCITY", "threshold": 0.15, "severity": "EUPHORIA",
              "description": "CRB_REAL >15% in 3 Monaten"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "DBC", "lead_months": 1.5, "direction": "positive", "r_squared": 0.90},
             {"asset": "GLD", "lead_months": 3.0, "direction": "positive", "r_squared": 0.50},
         ],
@@ -238,7 +247,7 @@ CYCLE_DEFINITIONS = {
             {"type": "ABSOLUTE", "threshold": 0.008, "severity": "DEMAND_COLLAPSE",
              "description": "Cu/Au < 0.008 — Extreme Risikoaversion"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "DBC", "lead_months": 10.5, "direction": "positive", "r_squared": 0.55},
         ],
     },
@@ -263,7 +272,7 @@ CYCLE_DEFINITIONS = {
             {"type": "ABSOLUTE", "threshold": 130, "severity": "DANGER",
              "description": "DTWEXBGS > 130 — Dollar Squeeze"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "DBC", "lead_months": 4.5, "direction": "negative", "r_squared": 0.47},
             {"asset": "GLD", "lead_months": 4.5, "direction": "negative", "r_squared": 0.52},
             {"asset": "EEM", "lead_months": 4.5, "direction": "negative", "r_squared": 0.45},
@@ -294,7 +303,7 @@ CYCLE_DEFINITIONS = {
             {"type": "NEW_ORDERS", "threshold": -5.0, "severity": "SEVERE",
              "description": "New Orders YoY < -5%"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "SPY", "lead_months": 4.0, "direction": "positive", "r_squared": 0.48},
             {"asset": "DBC", "lead_months": 4.5, "direction": "positive", "r_squared": 0.40},
             {"asset": "HYG", "lead_months": 3.0, "direction": "positive", "r_squared": 0.42},
@@ -324,7 +333,7 @@ CYCLE_DEFINITIONS = {
             {"type": "SPREAD", "threshold": -1.0, "severity": "RECESSION_SIGNAL",
              "description": "2Y - FFR < -100bps"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "GLD", "lead_months": 4.5, "direction": "positive", "r_squared": 0.58},
             {"asset": "HYG", "lead_months": 2.0, "direction": "positive", "r_squared": 0.45},
             {"asset": "TLT", "lead_months": 2.0, "direction": "positive", "r_squared": 0.55},
@@ -352,7 +361,7 @@ CYCLE_DEFINITIONS = {
             {"type": "DURATION", "threshold": 2, "severity": "EARNINGS_RECESSION",
              "description": "Corp Profits YoY < 0% fuer 2+ Quartale"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "SPY", "lead_months": 3.0, "direction": "positive", "r_squared": 0.51},
             {"asset": "HYG", "lead_months": 4.5, "direction": "positive", "r_squared": 0.40},
         ],
@@ -379,7 +388,7 @@ CYCLE_DEFINITIONS = {
             {"type": "YOY_GROWTH", "threshold": -10.0, "severity": "TRADE_COLLAPSE",
              "description": "CASS YoY < -10% — severe trade contraction"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "DBC", "lead_months": 2.0, "direction": "positive", "r_squared": 0.44},
             {"asset": "EEM", "lead_months": 3.0, "direction": "positive", "r_squared": 0.38},
         ],
@@ -404,7 +413,7 @@ CYCLE_DEFINITIONS = {
             {"type": "SEASONAL", "threshold": None, "severity": "WEAK_PERIOD",
              "description": "Midterm H1 historisch schwach: +1.2% avg"},
         ],
-        "lead_relationships": [
+        "legacy_lead_relationships": [
             {"asset": "SPY", "lead_months": 0, "direction": "calendar", "r_squared": 0.30},
         ],
     },
