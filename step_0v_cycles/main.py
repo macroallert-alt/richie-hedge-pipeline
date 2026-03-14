@@ -1,12 +1,13 @@
 """
 Cycles Circle — Main Orchestrator
-Baldur Creek Capital | Step 0v (V4.2 — Lead-Engine V1.1 Integration)
+Baldur Creek Capital | Step 0v (V4.3 — LLM Cycle Narrative)
 
 1. Collect all data (incremental persistence)
 2. Run phase detection for all 10 cycles
 3. Save results locally (cycle_data.json)
 3b. Generate chart data (cycles_chart_data.json) — with smoothed curve, phase zones, cycle position
 3c. Lead-Engine V1.1 — calibration + early warning (conditional_returns, regime_interaction, transition_engine)
+3d. LLM Cycle Narrative — Claude Sonnet synthesizes all engine results into investor-ready German text
 4. Write to Cycles Sheet (DASHBOARD, PHASES, HISTORY)
 5. Write cycles block to latest.json (for CyclesCard) — EXTENDED with indicator values
 6. Git commit + push data files
@@ -791,6 +792,232 @@ def generate_chart_data(data, result):
 
 
 # ---------------------------------------------------------------------------
+# Step 3d: LLM Cycle Narrative (V4.3 — NEW)
+# ---------------------------------------------------------------------------
+
+CYCLE_NARRATIVE_SYSTEM_PROMPT = """Du bist der Chief Investment Officer von Baldur Creek Capital, einem systematischen Macro-Hedge-Fund. 
+Du schreibst eine wöchentliche Zyklen-Analyse auf Deutsch für erfahrene Investoren.
+
+REGELN:
+- Schreibe klar, direkt, ohne Füllwörter. Wie ein Bloomberg-Terminal-Kommentar.
+- Verwende konkrete Zahlen aus den Daten (Prozente, Monate, Wahrscheinlichkeiten).
+- Nenne Assets beim Ticker (SPY, GLD, TLT, etc.).
+- Strukturiere in genau 4 Abschnitte:
+  1. GESAMTLAGE (2-3 Sätze): Was sagen die Zyklen zusammen?
+  2. ZYKLEN-DETAIL (3-4 Sätze): Welche Zyklen sind kritisch, welche stabil?
+  3. RISIKO (2-3 Sätze): V16-Transition, Crash-Wahrscheinlichkeit, was müsste passieren für Eskalation?
+  4. POSITIONIERUNG (2-3 Sätze): Welche Assets bevorzugt, welche meiden? Konkrete Implikationen.
+- Keine Überschriften, keine Bullet Points. Fließtext in 4 Absätzen.
+- Maximal 350 Wörter gesamt.
+- Sei ehrlich über Unsicherheiten. Wenn die Daten gemischt sind, sag das."""
+
+
+def _build_narrative_prompt(lead_results):
+    """Build the user prompt with key data for the LLM narrative."""
+    assessment = lead_results.get("assessment", {})
+    phase_pos = lead_results.get("phase_positions", {})
+    cascade = lead_results.get("cascade", {})
+    confirmation = lead_results.get("confirmation", {})
+    v16_trans = lead_results.get("v16_transitions", {})
+    crash_corr = lead_results.get("crash_correction", {})
+    analogues = lead_results.get("analogues", {})
+
+    # Phase positions summary
+    phase_lines = []
+    for cid in ["LIQUIDITY", "CREDIT", "COMMODITY", "CHINA_CREDIT",
+                "DOLLAR", "BUSINESS", "FED_RATES", "EARNINGS", "TRADE"]:
+        pp = phase_pos.get(cid, {})
+        if pp:
+            phase_lines.append(
+                f"  {cid}: {pp.get('current_phase', '?')} | "
+                f"Position: {pp.get('phase_position_pct', '?')}% | "
+                f"Status: {pp.get('status', '?')} | "
+                f"Remaining: ~{pp.get('remaining_median', '?')} Mo"
+            )
+
+    # Cascade speed
+    cas_cur = cascade.get("current", {})
+    cascade_info = (
+        f"Cascade Speed: {cas_cur.get('cascade_speed', '?')} "
+        f"({cas_cur.get('severity', '?')}), "
+        f"{cas_cur.get('n_transitions', 0)} Transitions in 6 Mo"
+    )
+    transitioned = [t.get("cycle", "?") for t in cas_cur.get("transitioned_cycles", [])]
+    if transitioned:
+        cascade_info += f"\n  Gekippt: {', '.join(transitioned)}"
+
+    # Confirmation
+    conf_info = (
+        f"Confirmation Score: {confirmation.get('confirmation_score', '?')} "
+        f"({confirmation.get('bullish_count', 0)} bullish, "
+        f"{confirmation.get('bearish_count', 0)} bearish, "
+        f"{confirmation.get('neutral_count', 0)} neutral)"
+    )
+
+    # V16 Transition - find current dual cluster entry
+    v16_info = "V16 Transition: Keine Daten"
+    by_dual = v16_trans.get("by_dual_cluster", {})
+    if by_dual:
+        # Find the entry with the most data or the current state
+        for key, val in by_dual.items():
+            if isinstance(val, dict) and val.get("n_months", 0) > 0:
+                growth_6m = val.get("v16_stays_growth_6m", "?")
+                stress_6m = val.get("v16_to_stress_6m", "?")
+                crisis_6m = val.get("v16_to_crisis_6m", "?")
+                n = val.get("n_months", 0)
+                if isinstance(growth_6m, (int, float)):
+                    growth_pct = round(growth_6m * 100, 1)
+                    stress_pct = round(stress_6m * 100, 1) if isinstance(stress_6m, (int, float)) else "?"
+                    crisis_pct = round(crisis_6m * 100, 1) if isinstance(crisis_6m, (int, float)) else "?"
+                    v16_info = (
+                        f"V16 Transition (aktueller Dual-State {key}, n={n}): "
+                        f"Growth {growth_pct}%, Stress {stress_pct}%, Crisis {crisis_pct}%"
+                    )
+                    break
+
+    # Crash vs Correction
+    crash_info = "Crash vs Korrektur: Keine Daten"
+    dual_dd = crash_corr.get("dual_state_drawdowns", {})
+    if dual_dd:
+        for key, val in dual_dd.items():
+            if isinstance(val, dict):
+                crash_info = (
+                    f"Crash/Korrektur ({key}): "
+                    f"Avg Return {val.get('avg_return', '?')}, "
+                    f"Worst {val.get('worst', '?')}, "
+                    f"P10 {val.get('p10', '?')}, n={val.get('n', '?')}"
+                )
+                break
+
+    # Analogues
+    analogue_lines = []
+    for a in (analogues.get("analogues", []) or [])[:3]:
+        spy = a.get("what_happened_next", {}).get("spy_6m_return")
+        gld = a.get("what_happened_next", {}).get("gld_6m_return")
+        tlt = a.get("what_happened_next", {}).get("tlt_6m_return")
+        spy_s = f"{spy*100:+.1f}%" if isinstance(spy, (int, float)) else "?"
+        gld_s = f"{gld*100:+.1f}%" if isinstance(gld, (int, float)) else "?"
+        tlt_s = f"{tlt*100:+.1f}%" if isinstance(tlt, (int, float)) else "?"
+        analogue_lines.append(
+            f"  {a.get('period_start', '?')} (Sim={a.get('similarity_score', '?')}): "
+            f"SPY {spy_s}, GLD {gld_s}, TLT {tlt_s}"
+        )
+
+    # Extended cycles
+    extended = assessment.get("extended_cycles", [])
+    extended_info = f"Extended Cycles: {', '.join(extended)}" if extended else "Keine Extended Cycles"
+
+    prompt = f"""Hier sind die aktuellen Ergebnisse der Baldur Creek Capital Zyklen-Engine (Lead-Engine V1.1).
+Erstelle daraus die wöchentliche Zyklen-Analyse.
+
+OVERALL ASSESSMENT:
+  Verdict: {assessment.get('verdict', 'N/A')}
+  Signifikante Returns: {assessment.get('n_significant_returns', '?')} / {assessment.get('n_total_returns', '?')} ({assessment.get('pct_significant', '?')}%)
+  {extended_info}
+
+PHASE POSITIONS:
+{chr(10).join(phase_lines)}
+
+CASCADE & CONFIRMATION:
+  {cascade_info}
+  {conf_info}
+
+V16 TRANSITION:
+  {v16_info}
+
+CRASH VS KORREKTUR:
+  {crash_info}
+
+HISTORISCHE ANALOGIEN:
+{chr(10).join(analogue_lines) if analogue_lines else '  Keine Analogien verfügbar'}
+
+Datum: {date.today().isoformat()}
+V16 aktueller State: LATE_EXPANSION"""
+
+    return prompt
+
+
+def generate_cycle_narrative(lead_results):
+    """Step 3d: Generate LLM cycle narrative using Anthropic SDK.
+
+    Writes cycle_narrative field into transition_engine.json.
+    Non-fatal — if the LLM call fails, the engine continues without narrative.
+    """
+    logger.info("STEP 3d: LLM Cycle Narrative")
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        logger.warning("  No ANTHROPIC_API_KEY — skipping narrative generation")
+        return None
+
+    if not lead_results:
+        logger.warning("  No lead_results — skipping narrative generation")
+        return None
+
+    try:
+        from anthropic import Anthropic
+        client = Anthropic(api_key=api_key)
+    except ImportError:
+        logger.error("  anthropic SDK not installed — skipping narrative")
+        return None
+    except Exception as e:
+        logger.error(f"  Anthropic client init failed: {e}")
+        return None
+
+    user_prompt = _build_narrative_prompt(lead_results)
+
+    try:
+        response = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=1024,
+            system=CYCLE_NARRATIVE_SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+
+        narrative_text = ""
+        for block in response.content:
+            if hasattr(block, "text"):
+                narrative_text += block.text
+
+        narrative_text = narrative_text.strip()
+
+        if not narrative_text:
+            logger.warning("  LLM returned empty narrative")
+            return None
+
+        logger.info(f"  Narrative generated: {len(narrative_text)} chars, "
+                    f"{len(narrative_text.split())} words")
+
+        # Write narrative into transition_engine.json
+        te_path = os.path.join(DATA_DIR, "transition_engine.json")
+        if os.path.exists(te_path):
+            try:
+                with open(te_path, "r", encoding="utf-8") as f:
+                    te_data = json.load(f)
+
+                te_data["cycle_narrative"] = {
+                    "generated_at": datetime.now(timezone.utc).isoformat(),
+                    "model": "claude-sonnet-4-6",
+                    "text": narrative_text,
+                    "word_count": len(narrative_text.split()),
+                }
+
+                with open(te_path, "w", encoding="utf-8") as f:
+                    json.dump(te_data, f, indent=1, ensure_ascii=False, default=str)
+                logger.info(f"  Narrative written to transition_engine.json")
+            except Exception as e:
+                logger.error(f"  Failed to update transition_engine.json: {e}")
+        else:
+            logger.warning(f"  transition_engine.json not found at {te_path}")
+
+        return narrative_text
+
+    except Exception as e:
+        logger.error(f"  LLM narrative generation failed (non-fatal): {e}")
+        return None
+
+
+# ---------------------------------------------------------------------------
 # Git commit + push
 # ---------------------------------------------------------------------------
 
@@ -873,6 +1100,7 @@ def main():
 
     # Step 3c: Lead-Engine V1.1 — Calibration + Early Warning
     logger.info("STEP 3c: Cycles Kalibrierung + Fruehwarnung (Lead-Engine V1.1)")
+    lead_results = None
     try:
         from .lead_engine import run_lead_engine
         lead_results = run_lead_engine()  # reads own inputs, writes own outputs
@@ -882,6 +1110,12 @@ def main():
             logger.warning("  Lead-Engine returned None — check input data")
     except Exception as e:
         logger.error(f"  Lead-Engine failed (non-fatal): {e}")
+
+    # Step 3d: LLM Cycle Narrative (V4.3 — NEW)
+    try:
+        generate_cycle_narrative(lead_results)
+    except Exception as e:
+        logger.error(f"  Cycle Narrative failed (non-fatal): {e}")
 
     # Step 4: Write to Sheet
     if not args.skip_sheet:
