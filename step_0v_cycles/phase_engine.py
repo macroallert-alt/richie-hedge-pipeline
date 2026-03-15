@@ -1,6 +1,6 @@
 """
 Cycles Circle — Phase Detection Engine
-Baldur Creek Capital | Step 0v (V3.4 FINAL)
+Baldur Creek Capital | Step 0v (V3.5)
 
 Deterministic phase detection for all 10 cycles.
 All fixes verified in Colab V3.4:
@@ -10,6 +10,14 @@ All fixes verified in Colab V3.4:
 - Dollar: FRED DTWEXBGS (not in V16 Prices)
 - Credit: HY_OAS from FRED x100 for bps
 - Fed: NEUTRAL when 0 < Real FFR <= 2% and FFR stable
+
+V3.5 Fixes (March 2026):
+- Dollar: Window sizes corrected for monthly FRED data (MA 252→12, vel 21→3, pctl 2520→120)
+- Dollar: Missing case cur > MA AND v < 0 → WEAKENING
+- Business: Reorder PEAK before LATE_EXPANSION so PEAK actually triggers
+- Earnings: Reorder PEAK before LATE_EXPANSION so PEAK actually triggers
+- Commodity: Missing case cur > MA AND v3 < 0 → LATE_EXPANSION / PEAK
+- Liquidity: Missing case cur > MA AND v < 0 → explicit LATE_EXPANSION branch
 """
 
 import logging
@@ -133,6 +141,7 @@ def _build(cid, name, tier, phase, conf, value, ma12, v, a, vz, pc, series, extr
 # Per-cycle detectors
 # ---------------------------------------------------------------------------
 
+# ── FIX V3.5: LIQUIDITY — added explicit cur > m12 AND v < 0 branch ──
 def _detect_liquidity(data):
     s = _get_liq_series(data, "Fed_Net_Liq")
     if len(s) < 252: return _empty("LIQUIDITY", "Global Liquidity", 1)
@@ -151,6 +160,8 @@ def _detect_liquidity(data):
         elif p5 > 80 or (a and a < 0 and p5 and p5 > 60): ph, co = "LATE_EXPANSION", 65
         elif m12 and cur < m12 and v < 0: ph, co = "CONTRACTION", 75
         elif m12 and cur > m12 and v > 0: ph, co = "EXPANSION", 70
+        # V3.5 FIX: above MA but falling — was missing, fell to default EXPANSION
+        elif m12 and cur > m12 and v < 0: ph, co = "LATE_EXPANSION", 65
 
     return _build("LIQUIDITY", "Global Liquidity", 1, ph, co, cur, m12, v, a,
                   _vel_z(s), p5, s, {"howell_phase": hwp, "howell_pos": hwc})
@@ -197,12 +208,16 @@ def _detect_commodity(data):
     cur = crb[-1]["value"]; m10 = _ma(crb, min(252 * 10, len(crb)))
     v3 = _vel(crb, 63)
 
+    # ── FIX V3.5: COMMODITY — added cur > m10 AND v3 < 0 branches ──
     ph, co = "MID_BULL", 55
     if m10:
         if cur < m10 and v3 and v3 < 0: ph, co = "BEAR", 65
         elif cur > m10 and v3 and v3 > 0.15: ph, co = "EUPHORIA", 60
         elif cur > m10 and v3 and v3 > 0: ph, co = "MID_BULL", 65
         elif cur < m10 and v3 and v3 > 0: ph, co = "EARLY_BULL", 60
+        # V3.5 FIX: above long-term MA but falling — was missing, fell to default MID_BULL
+        elif cur > m10 and v3 and v3 < -0.05: ph, co = "PEAK", 65
+        elif cur > m10 and v3 and v3 < 0: ph, co = "LATE_EXPANSION", 60
 
     return _build("COMMODITY", "Commodity Supercycle", 1, ph, co, cur, m10, v3, None,
                   None, _pctl(crb, min(252 * 10, len(crb)), cur), crb)
@@ -234,12 +249,18 @@ def _detect_china_credit(data):
                   _vel_z(rt), _pctl(rt, min(252 * 5, len(rt)), cur), rt)
 
 
+# ── FIX V3.5: DOLLAR — corrected window sizes for monthly FRED data ──
+#    + added missing case: cur > MA AND v < 0 → WEAKENING
 def _detect_dollar(data):
     s = _get_fred_series(data, "DXY")
-    if len(s) < 252: return _empty("DOLLAR", "US Dollar Cycle", 2)
+    # Monthly FRED data: need at least 12 months
+    if len(s) < 12: return _empty("DOLLAR", "US Dollar Cycle", 2)
 
-    cur = s[-1]["value"]; m12 = _ma(s, 252); v = _vel(s)
-    p10 = _pctl(s, min(252 * 10, len(s)), cur)
+    cur = s[-1]["value"]
+    # V3.5 FIX: Window sizes for MONTHLY data (was 252/21/2520 = daily assumptions)
+    m12 = _ma(s, 12)           # 12 months = 1 year MA (was 252 = 21 years!)
+    v = _vel(s, 3)             # 3 month velocity (was 21 = 21 months!)
+    p10 = _pctl(s, min(120, len(s)), cur)  # 10 year percentile (was 2520 = 210 years!)
 
     ph, co = "STRENGTHENING", 55
     if p10 is not None and v is not None:
@@ -247,12 +268,15 @@ def _detect_dollar(data):
         elif p10 > 80 and abs(v) < 0.005: ph, co = "PLATEAU", 65
         elif p10 > 80 and v < 0: ph, co = "PEAK", 70
         elif m12 and cur < m12 and v < 0: ph, co = "WEAKENING", 70
+        # V3.5 FIX: above MA but falling — was missing, fell to default STRENGTHENING
+        elif m12 and cur > m12 and v < 0: ph, co = "WEAKENING", 65
         elif m12 and cur > m12 and v > 0: ph, co = "STRENGTHENING", 65
 
-    return _build("DOLLAR", "US Dollar Cycle", 2, ph, co, cur, m12, v, _acc(s),
-                  _vel_z(s), p10, s)
+    return _build("DOLLAR", "US Dollar Cycle", 2, ph, co, cur, m12, v,
+                  _acc(s, 3), _vel_z(s, 3, 120), p10, s)
 
 
+# ── FIX V3.5: BUSINESS — reordered PEAK before LATE_EXPANSION ──
 def _detect_business(data):
     indpro = _get_fred_series(data, "INDPRO")
     new_orders = _get_fred_series(data, "ACOGNO")
@@ -276,8 +300,9 @@ def _detect_business(data):
     elif cur < 0 and v and v > 0: ph, co = "TROUGH", 70
     elif 0 <= cur < 2 and v and v > 0: ph, co = "EARLY_RECOVERY", 65
     elif cur >= 2 and v and v > 0: ph, co = "EXPANSION", 75
-    elif cur > 0 and v and v < 0: ph, co = "LATE_EXPANSION", 65
+    # V3.5 FIX: PEAK must come BEFORE LATE_EXPANSION (cur>4 is subset of cur>0)
     elif cur > 4 and v and v < 0: ph, co = "PEAK", 70
+    elif cur > 0 and v and v < 0: ph, co = "LATE_EXPANSION", 65
 
     return _build("BUSINESS", "Business Cycle", 2, ph, co, cur, None, v, None,
                   None, None, gr, {"new_orders_yoy": no_cur, "neg_months": nc})
@@ -314,6 +339,7 @@ def _detect_fed(data):
                                    "dgs2": d2v, "spread_2y_ffr": sp})
 
 
+# ── FIX V3.5: EARNINGS — reordered PEAK before LATE_EXPANSION ──
 def _detect_earnings(data):
     cp = _get_fred_series(data, "CORP_PROFITS")
     if len(cp) < 8: return _empty("EARNINGS", "Earnings / Profit Cycle", 2)
@@ -333,8 +359,9 @@ def _detect_earnings(data):
     elif cur < 0 and v and v > 0: ph, co = "TROUGH", 65
     elif 0 < cur < 5 and v and v > 0: ph, co = "RECOVERY", 70
     elif cur >= 5: ph, co = "EXPANSION", 75
-    elif cur > 0 and v and v < 0: ph, co = "LATE_EXPANSION", 65
+    # V3.5 FIX: PEAK must come BEFORE LATE_EXPANSION (cur>10 is subset of cur>0)
     elif cur > 10 and v and v < 0: ph, co = "PEAK", 70
+    elif cur > 0 and v and v < 0: ph, co = "LATE_EXPANSION", 65
 
     return _build("EARNINGS", "Earnings / Profit Cycle", 2, ph, co, cur, None, v, None,
                   None, None, gr)
