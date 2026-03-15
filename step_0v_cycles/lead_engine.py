@@ -576,7 +576,7 @@ def _returns_for_months(phase_months, monthly_returns, baselines, transition_mon
     """
     Compute forward return stats for all assets across all horizons for given months.
     Also splits into transition vs steady-state for 6M horizon.
-    V1.1.1: SHORT_HISTORY gate — if short_history and n_independent < 5, force significant=False.
+    V1.1.1: SHORT_HISTORY gate — all short_history assets forced to significant=False.
     """
     offset_months = [_add_months(m, PHASE_DETECTION_LAG_MONTHS) for m in phase_months]
 
@@ -627,13 +627,12 @@ def _returns_for_months(phase_months, monthly_returns, baselines, transition_mon
 
         result[ticker] = ticker_result
 
-        # V1.1.1 SHORT_HISTORY gate: if short_history and n_independent < 5,
-        # force significant=False (Crypto with thin sample sizes, V132 §9.1)
+        # V1.1.1 SHORT_HISTORY gate: all short_history assets → never significant
+        # (Crypto with thin sample sizes, V132 §9.1)
         if history_info and history_info.get(ticker, {}).get("short_history"):
             for key, stats in ticker_result.items():
                 if isinstance(stats, dict) and stats.get("significant"):
-                    if stats.get("n_independent", 0) < 5:
-                        stats["significant"] = False
+                    stats["significant"] = False
 
     return result
 
@@ -771,8 +770,7 @@ def compute_cluster_conditional_returns(chart_data, monthly_returns, baselines,
             if history_info and history_info.get(ticker, {}).get("short_history"):
                 for key, stats in tr.items():
                     if isinstance(stats, dict) and stats.get("significant"):
-                        if stats.get("n_independent", 0) < 5:
-                            stats["significant"] = False
+                        stats["significant"] = False
 
         combo_results[combo_key] = {
             "months_sample": months[:5],
@@ -812,8 +810,7 @@ def compute_cluster_conditional_returns(chart_data, monthly_returns, baselines,
                 if history_info and history_info.get(ticker, {}).get("short_history"):
                     for key, stats in tr.items():
                         if isinstance(stats, dict) and stats.get("significant"):
-                            if stats.get("n_independent", 0) < 5:
-                                stats["significant"] = False
+                            stats["significant"] = False
             cluster_marginal[bucket] = {
                 "n_months": len(months),
                 "assets": assets_result,
