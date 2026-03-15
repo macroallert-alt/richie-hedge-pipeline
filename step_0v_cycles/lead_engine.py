@@ -571,10 +571,12 @@ def _compute_conditional_max_drawdown(daily_prices, phase_months, horizon_months
     }
 
 
-def _returns_for_months(phase_months, monthly_returns, baselines, transition_months):
+def _returns_for_months(phase_months, monthly_returns, baselines, transition_months,
+                        history_info=None):
     """
     Compute forward return stats for all assets across all horizons for given months.
     Also splits into transition vs steady-state for 6M horizon.
+    V1.1.1: SHORT_HISTORY gate — if short_history and n_independent < 5, force significant=False.
     """
     offset_months = [_add_months(m, PHASE_DETECTION_LAG_MONTHS) for m in phase_months]
 
@@ -625,6 +627,14 @@ def _returns_for_months(phase_months, monthly_returns, baselines, transition_mon
 
         result[ticker] = ticker_result
 
+        # V1.1.1 SHORT_HISTORY gate: if short_history and n_independent < 5,
+        # force significant=False (Crypto with thin sample sizes, V132 §9.1)
+        if history_info and history_info.get(ticker, {}).get("short_history"):
+            for key, stats in ticker_result.items():
+                if isinstance(stats, dict) and stats.get("significant"):
+                    if stats.get("n_independent", 0) < 5:
+                        stats["significant"] = False
+
     return result
 
 
@@ -654,7 +664,7 @@ def compute_conditional_returns(chart_data, monthly_returns, baselines,
             if not pm:
                 continue
             cycle_results[phase] = _returns_for_months(
-                pm, monthly_returns, baselines, transition_months)
+                pm, monthly_returns, baselines, transition_months, history_info)
 
         # Aggregated Buckets
         bucket_groups = {}
@@ -666,7 +676,7 @@ def compute_conditional_returns(chart_data, monthly_returns, baselines,
             if not bmonths:
                 continue
             bucket_result = _returns_for_months(
-                sorted(bmonths), monthly_returns, baselines, transition_months)
+                sorted(bmonths), monthly_returns, baselines, transition_months, history_info)
 
             # Max Drawdown only for Buckets, only 6M, only if daily_prices present
             if daily_prices:
@@ -693,11 +703,13 @@ def compute_conditional_returns(chart_data, monthly_returns, baselines,
 
 # --- C1: Cluster-Conditional-Returns (Spec TEIL3 §9.2) ---
 
-def compute_cluster_conditional_returns(chart_data, monthly_returns, baselines):
+def compute_cluster_conditional_returns(chart_data, monthly_returns, baselines,
+                                        history_info=None):
     """
     Compute forward returns conditioned on cluster-state combinations.
     Returns both full combinations (n>=6) and cluster marginals (robust).
     (Spec TEIL3 §9.2)
+    V1.1.1: SHORT_HISTORY gate applied to cluster returns too.
     """
     # Step 1: Build month→phase maps for all cycles
     cycle_month_maps = {}
@@ -755,6 +767,12 @@ def compute_cluster_conditional_returns(chart_data, monthly_returns, baselines):
                 ni = _compute_n_independent(offset_months, h)
                 tr[f"{h}m"] = _compute_return_stats(crs, baseline, ni) if crs else None
             assets_result[ticker] = tr
+            # V1.1.1 SHORT_HISTORY gate
+            if history_info and history_info.get(ticker, {}).get("short_history"):
+                for key, stats in tr.items():
+                    if isinstance(stats, dict) and stats.get("significant"):
+                        if stats.get("n_independent", 0) < 5:
+                            stats["significant"] = False
 
         combo_results[combo_key] = {
             "months_sample": months[:5],
@@ -790,6 +808,12 @@ def compute_cluster_conditional_returns(chart_data, monthly_returns, baselines):
                     ni = _compute_n_independent(offset, h)
                     tr[f"{h}m"] = _compute_return_stats(crs, baseline, ni) if crs else None
                 assets_result[ticker] = tr
+                # V1.1.1 SHORT_HISTORY gate
+                if history_info and history_info.get(ticker, {}).get("short_history"):
+                    for key, stats in tr.items():
+                        if isinstance(stats, dict) and stats.get("significant"):
+                            if stats.get("n_independent", 0) < 5:
+                                stats["significant"] = False
             cluster_marginal[bucket] = {
                 "n_months": len(months),
                 "assets": assets_result,
@@ -1947,7 +1971,7 @@ def run_lead_engine(data_dir=None):
 
     logger.info("  C1: Cluster-Conditional-Returns...")
     cluster_returns = compute_cluster_conditional_returns(
-        chart_data, monthly_returns, baselines)
+        chart_data, monthly_returns, baselines, history_info)
 
     logger.info("  C2: V16 State Transition Probability...")
     v16_transitions = compute_v16_transition_probability(
