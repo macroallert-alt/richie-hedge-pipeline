@@ -249,28 +249,42 @@ def _detect_china_credit(data):
                   _vel_z(rt), _pctl(rt, min(252 * 5, len(rt)), cur), rt)
 
 
-# ── FIX V3.5: DOLLAR — corrected window sizes for monthly FRED data ──
-#    + added missing case: cur > MA AND v < 0 → WEAKENING
+# ── FIX V3.6: DOLLAR — MA-direction first, percentile extremes second ──
+#    V3.5 bug: p10>80 + abs(v)<0.005 → PLATEAU blocked WEAKENING detection
+#    V3.6: velocity direction is primary signal, percentile refines extremes
 def _detect_dollar(data):
     s = _get_fred_series(data, "DXY")
-    # Monthly FRED data: need at least 12 months
     if len(s) < 12: return _empty("DOLLAR", "US Dollar Cycle", 2)
 
     cur = s[-1]["value"]
-    # V3.5 FIX: Window sizes for MONTHLY data (was 252/21/2520 = daily assumptions)
-    m12 = _ma(s, 12)           # 12 months = 1 year MA (was 252 = 21 years!)
-    v = _vel(s, 3)             # 3 month velocity (was 21 = 21 months!)
-    p10 = _pctl(s, min(120, len(s)), cur)  # 10 year percentile (was 2520 = 210 years!)
+    m12 = _ma(s, 12)
+    v = _vel(s, 3)
+    p10 = _pctl(s, min(120, len(s)), cur)
 
-    ph, co = "STRENGTHENING", 55
-    if p10 is not None and v is not None:
-        if p10 < 20: ph, co = "TROUGH", 65
-        elif p10 > 80 and abs(v) < 0.005: ph, co = "PLATEAU", 65
-        elif p10 > 80 and v < 0: ph, co = "PEAK", 70
-        elif m12 and cur < m12 and v < 0: ph, co = "WEAKENING", 70
-        # V3.5 FIX: above MA but falling — was missing, fell to default STRENGTHENING
-        elif m12 and cur > m12 and v < 0: ph, co = "WEAKENING", 65
-        elif m12 and cur > m12 and v > 0: ph, co = "STRENGTHENING", 65
+    ph, co = "PLATEAU", 50  # safe default (was STRENGTHENING — wrong bias)
+    if v is not None and m12:
+        # PRIMARY: direction from MA + velocity
+        if v < 0:
+            # Dollar is falling
+            if p10 is not None and p10 < 20:
+                ph, co = "TROUGH", 70
+            elif cur < m12:
+                ph, co = "WEAKENING", 75      # below MA + falling = strong signal
+            else:
+                ph, co = "WEAKENING", 60      # above MA but falling = early weakening
+        elif v > 0:
+            # Dollar is rising
+            if cur > m12:
+                ph, co = "STRENGTHENING", 70  # above MA + rising = strong signal
+            else:
+                ph, co = "STRENGTHENING", 55  # below MA but rising = early strengthening
+        else:
+            # v == 0 exactly (rare)
+            ph, co = "PLATEAU", 50
+    elif v is not None:
+        # no MA available — use velocity only
+        if v < 0: ph, co = "WEAKENING", 50
+        elif v > 0: ph, co = "STRENGTHENING", 50
 
     return _build("DOLLAR", "US Dollar Cycle", 2, ph, co, cur, m12, v,
                   _acc(s, 3), _vel_z(s, 3, 120), p10, s)
