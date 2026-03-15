@@ -249,40 +249,46 @@ def _detect_china_credit(data):
                   _vel_z(rt), _pctl(rt, min(252 * 5, len(rt)), cur), rt)
 
 
-# ── FIX V3.6: DOLLAR — MA-direction first, percentile extremes second ──
-#    V3.5 bug: p10>80 + abs(v)<0.005 → PLATEAU blocked WEAKENING detection
-#    V3.6: velocity direction is primary signal, percentile refines extremes
+# ── FIX V3.7: DOLLAR — resample daily FRED DXY to monthly first ──
+#    ROOT CAUSE: FRED DTWEXBGS is DAILY (5000+ obs), not monthly.
+#    _vel(s,3) was computing 3-DAY velocity, not 3-month.
+#    _ma(s,12) was computing 12-DAY MA, not 12-month.
+#    Fix: resample to monthly (last value per month) before all calculations.
 def _detect_dollar(data):
-    s = _get_fred_series(data, "DXY")
+    s_raw = _get_fred_series(data, "DXY")
+    if len(s_raw) < 12: return _empty("DOLLAR", "US Dollar Cycle", 2)
+
+    # Resample daily → monthly (last value per month)
+    monthly = {}
+    for pt in s_raw:
+        ym = pt["date"][:7]  # "2026-03-14" → "2026-03"
+        monthly[ym] = pt["value"]
+    s = [{"date": ym, "value": v} for ym, v in sorted(monthly.items())]
+
     if len(s) < 12: return _empty("DOLLAR", "US Dollar Cycle", 2)
 
     cur = s[-1]["value"]
-    m12 = _ma(s, 12)
-    v = _vel(s, 3)
-    p10 = _pctl(s, min(120, len(s)), cur)
+    m12 = _ma(s, 12)       # now truly 12-MONTH MA
+    v = _vel(s, 3)          # now truly 3-MONTH velocity
+    p10 = _pctl(s, min(120, len(s)), cur)  # 10-year percentile on monthly
 
-    ph, co = "PLATEAU", 50  # safe default (was STRENGTHENING — wrong bias)
+    ph, co = "PLATEAU", 50
     if v is not None and m12:
-        # PRIMARY: direction from MA + velocity
         if v < 0:
-            # Dollar is falling
             if p10 is not None and p10 < 20:
                 ph, co = "TROUGH", 70
             elif cur < m12:
-                ph, co = "WEAKENING", 75      # below MA + falling = strong signal
+                ph, co = "WEAKENING", 75
             else:
-                ph, co = "WEAKENING", 60      # above MA but falling = early weakening
+                ph, co = "WEAKENING", 60
         elif v > 0:
-            # Dollar is rising
             if cur > m12:
-                ph, co = "STRENGTHENING", 70  # above MA + rising = strong signal
+                ph, co = "STRENGTHENING", 70
             else:
-                ph, co = "STRENGTHENING", 55  # below MA but rising = early strengthening
+                ph, co = "STRENGTHENING", 55
         else:
-            # v == 0 exactly (rare)
             ph, co = "PLATEAU", 50
     elif v is not None:
-        # no MA available — use velocity only
         if v < 0: ph, co = "WEAKENING", 50
         elif v > 0: ph, co = "STRENGTHENING", 50
 
