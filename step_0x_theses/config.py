@@ -35,7 +35,7 @@ PREVIOUS_THESES_FILE = OUTPUT_FILE  # Wird gelesen bevor überschrieben
 # ═══════════════════════════════════════════════════════════════
 
 LLM_MODEL = "claude-sonnet-4-6"
-LLM_MAX_TOKENS = 8000
+LLM_MAX_TOKENS = 16000
 LLM_TEMPERATURE = 0.3  # Niedrig für Konsistenz, nicht 0 weil Kreativität nötig
 
 # Web Search Tool Definition

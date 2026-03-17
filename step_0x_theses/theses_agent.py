@@ -70,13 +70,46 @@ def load_json_safe(path, label=""):
 
 def parse_llm_response(resp):
     """Parse LLM response, robustly extracting JSON even if preceded by prose.
-    Bewährtes Pattern aus secular_trends.py V1.4+."""
-    txt = "".join(b.text for b in resp.content if b.type == "text").strip()
+    Handles: prose before JSON, ```json blocks, truncated JSON from max_tokens.
+    Bewährtes Pattern aus secular_trends.py V1.4+ mit Erweiterungen V1.0.1."""
+    # Sammle alle Text-Blöcke (Web Search Responses haben mehrere content blocks)
+    parts = []
+    for block in resp.content:
+        if block.type == "text":
+            parts.append(block.text)
+    txt = "\n".join(parts).strip()
+
     if not txt:
         logger.error("LLM returned no text content")
         return None
 
-    # Strategy 1: Find first { and last }
+    # Strategy 1: ```json ... ``` Block extrahieren (häufigstes Pattern mit Web Search)
+    match = re.search(r'```json\s*(.*?)```', txt, re.DOTALL)
+    if match:
+        candidate = match.group(1).strip()
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            repaired = _try_repair_json(candidate)
+            if repaired is not None:
+                logger.warning("JSON aus ```json Block repariert (abgeschnitten)")
+                return repaired
+
+    # Strategy 2: ```json ohne schließendes ``` (abgeschnitten bei max_tokens)
+    match2 = re.search(r'```json\s*(.*)', txt, re.DOTALL)
+    if match2:
+        candidate = match2.group(1).strip()
+        if candidate.endswith("```"):
+            candidate = candidate[:-3].strip()
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            repaired = _try_repair_json(candidate)
+            if repaired is not None:
+                logger.warning("JSON aus offenem ```json Block repariert")
+                return repaired
+
+    # Strategy 3: Finde erstes { und letztes } im gesamten Text
     first_brace = txt.find("{")
     last_brace = txt.rfind("}")
     if first_brace >= 0 and last_brace > first_brace:
@@ -84,27 +117,100 @@ def parse_llm_response(resp):
         try:
             return json.loads(candidate)
         except json.JSONDecodeError:
-            pass
+            repaired = _try_repair_json(candidate)
+            if repaired is not None:
+                logger.warning("JSON aus {}-Extraktion repariert")
+                return repaired
 
-    # Strategy 2: ```json ... ``` block
-    match = re.search(r'```json\s*(.*?)```', txt, re.DOTALL)
-    if match:
-        try:
-            return json.loads(match.group(1).strip())
-        except json.JSONDecodeError:
-            pass
+    # Strategy 4: Nur { gefunden, kein schließendes } (komplett abgeschnitten)
+    if first_brace >= 0:
+        candidate = txt[first_brace:]
+        if candidate.endswith("```"):
+            candidate = candidate[:-3].strip()
+        repaired = _try_repair_json(candidate)
+        if repaired is not None:
+            logger.warning("JSON aus abgeschnittenem Output repariert")
+            return repaired
 
-    # Strategy 3: Strip markdown fences
-    cleaned = txt
-    for prefix in ["```json", "```"]:
-        if cleaned.startswith(prefix):
-            cleaned = cleaned[len(prefix):]
-    if cleaned.endswith("```"):
-        cleaned = cleaned[:-3]
+    logger.error(f"LLM parse fail — first 500 chars: {txt[:500]}")
+    return None
+
+
+def _try_repair_json(text):
+    """Versuche abgeschnittenes JSON zu reparieren durch Schließen offener Klammern."""
+    open_braces = 0
+    open_brackets = 0
+    in_string = False
+    escape_next = False
+
+    for ch in text:
+        if escape_next:
+            escape_next = False
+            continue
+        if ch == '\\' and in_string:
+            escape_next = True
+            continue
+        if ch == '"' and not escape_next:
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if ch == '{':
+            open_braces += 1
+        elif ch == '}':
+            open_braces -= 1
+        elif ch == '[':
+            open_brackets += 1
+        elif ch == ']':
+            open_brackets -= 1
+
+    if open_braces == 0 and open_brackets == 0:
+        return None  # Schon balanced aber trotzdem nicht parsebar
+
+    repaired = text.rstrip()
+
+    # Entferne unvollständige letzte Zeile (oft mitten im Wort abgeschnitten)
+    last_newline = repaired.rfind('\n')
+    if last_newline > len(repaired) * 0.5:
+        last_line = repaired[last_newline + 1:]
+        if last_line.count('"') % 2 != 0:
+            repaired = repaired[:last_newline]
+
+    # Zähle nochmal nach dem Trimmen
+    open_braces = 0
+    open_brackets = 0
+    in_string = False
+    escape_next = False
+    for ch in repaired:
+        if escape_next:
+            escape_next = False
+            continue
+        if ch == '\\' and in_string:
+            escape_next = True
+            continue
+        if ch == '"' and not escape_next:
+            in_string = not in_string
+            continue
+        if in_string:
+            continue
+        if ch == '{':
+            open_braces += 1
+        elif ch == '}':
+            open_braces -= 1
+        elif ch == '[':
+            open_brackets += 1
+        elif ch == ']':
+            open_brackets -= 1
+
+    if in_string:
+        repaired += '"'
+
+    repaired += ']' * max(open_brackets, 0)
+    repaired += '}' * max(open_braces, 0)
+
     try:
-        return json.loads(cleaned.strip())
+        return json.loads(repaired)
     except json.JSONDecodeError:
-        logger.error(f"LLM parse fail — first 500 chars: {txt[:500]}")
         return None
 
 
