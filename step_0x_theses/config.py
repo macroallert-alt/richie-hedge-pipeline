@@ -1,7 +1,8 @@
 # ═══════════════════════════════════════════════════════════════
 # THESEN AGENT — CONFIG
-# Version: 1.0
+# Version: 1.0.3
 # Baldur Creek Capital | Circle 16
+# V1.0.3: Sheet-Read für ETF-Preise + Relative-Value-Kette
 # ═══════════════════════════════════════════════════════════════
 
 import os
@@ -29,6 +30,74 @@ SYSTEM_INPUTS = {
 
 # Vorwoche-Thesen (eigener Output)
 PREVIOUS_THESES_FILE = OUTPUT_FILE  # Wird gelesen bevor überschrieben
+
+# ═══════════════════════════════════════════════════════════════
+# GOOGLE SHEET — V16 DW Prices
+# ═══════════════════════════════════════════════════════════════
+
+DW_SHEET_ID = "1sZeZ4VVztAqjBjyfXcCfhpSWJ4pCGF8ip1ksu_TYMHY"
+DW_PRICES_TAB = "DATA_PRICES"
+
+# V16 ETF Ticker → Anzeigename Mapping
+V16_ETF_MAP = {
+    "SPY": "S&P 500",
+    "QQQ": "Nasdaq 100",
+    "IWM": "Russell 2000",
+    "EFA": "EAFE (Entwickelt ex-US)",
+    "EEM": "Emerging Markets",
+    "GLD": "Gold",
+    "SLV": "Silber",
+    "DBC": "Commodities Basket",
+    "TLT": "US Treasuries 20Y+",
+    "IEF": "US Treasuries 7-10Y",
+    "SHY": "US Treasuries 1-3Y",
+    "HYG": "High Yield Bonds",
+    "LQD": "Investment Grade Bonds",
+    "UUP": "US Dollar",
+    "FXE": "Euro",
+    "FXY": "Yen",
+    "FXB": "Britisches Pfund",
+    "FXA": "Australischer Dollar",
+    "FXC": "Kanadischer Dollar",
+    "XLE": "Energie",
+    "XLF": "Financials",
+    "XLK": "Technologie",
+    "XLV": "Healthcare",
+    "XLU": "Utilities",
+    "XLB": "Materials",
+}
+
+# Sinnvolle Ratio-Paare für Relative-Value-Analyse
+# Format: (Zähler-Ticker, Nenner-Ticker, Beschreibung)
+RATIO_PAIRS = [
+    # Equity vs. Safe Haven
+    ("GLD", "SPY", "Gold/Equity Ratio"),
+    ("SLV", "SPY", "Silber/Equity Ratio"),
+    ("TLT", "SPY", "Bonds/Equity Ratio"),
+    # Edelmetalle untereinander
+    ("GLD", "SLV", "Gold/Silber Ratio"),
+    # Rohstoffe
+    ("DBC", "SPY", "Commodities/Equity Ratio"),
+    ("DBC", "GLD", "Commodities/Gold Ratio"),
+    ("SLV", "DBC", "Silber/Commodities Ratio"),
+    # Equity-Segmente
+    ("IWM", "SPY", "Small Cap/Large Cap Ratio"),
+    ("EEM", "SPY", "EM/US Ratio"),
+    ("EFA", "SPY", "Entwickelt ex-US/US Ratio"),
+    ("QQQ", "SPY", "Nasdaq/S&P Ratio (Tech Premium)"),
+    # Sektoren vs. Markt
+    ("XLE", "SPY", "Energie/Markt Ratio"),
+    ("XLF", "SPY", "Financials/Markt Ratio"),
+    ("XLK", "SPY", "Tech/Markt Ratio"),
+    ("XLB", "SPY", "Materials/Markt Ratio"),
+    # Bonds
+    ("TLT", "IEF", "Long/Mid Duration Ratio"),
+    ("HYG", "LQD", "High Yield/Investment Grade Ratio"),
+    ("HYG", "TLT", "Credit/Treasuries Ratio"),
+    # Währungen
+    ("UUP", "FXE", "Dollar/Euro Ratio"),
+    ("GLD", "UUP", "Gold/Dollar Ratio"),
+]
 
 # ═══════════════════════════════════════════════════════════════
 # LLM
@@ -334,6 +403,16 @@ DREI PERSPEKTIVEN PRO THESE:
 3. HISTORISCHE ANALOGIE: Welcher Präzedenzfall reimt sich?
 Notiere wo alle drei übereinstimmen und wo sie sich widersprechen.
 
+RELATIVE-VALUE-KETTE — PRO THESE:
+Du bekommst eine Tabelle mit aktuellen ETF-Preisen und Ratio-Daten aus unserem V16-System.
+Baue für JEDE These eine Relative-Value-Kette:
+- Ordne die betroffenen Assets von ÜBERBEWERTET nach UNTERBEWERTET relativ zueinander.
+- Nutze die bereitgestellten Ratio-Daten um die Bewertung zu unterstützen.
+- Am Ende der Kette steht das Asset mit dem größten relativen Aufholpotenzial — der "billigste Hebel".
+- KRITISCH: Nutze NUR Preise und Ratios die dir als Daten bereitgestellt wurden oder die du per Web Search mit Quellenangabe verifizieren kannst. ERFINDE NIEMALS Preise oder Ratios.
+- Wenn für ein Asset keine Preis-Daten verfügbar sind: Lasse dieses Asset aus der Kette weg. Setze "relative_value_chain": null wenn für die These keine Daten vorliegen.
+- Jedes Glied braucht: asset, relation (ÜBERBEWERTET_ZU), next, ratio_name, ratio_value, ratio_context (z.B. "über/unter historischem Median"), source ("V16_DATA" oder "WEB_SEARCH" mit URL).
+
 LIFECYCLE: Bestehende Thesen updaten, neue starten als SEED.
 
 ZEITLICHE EINORDNUNG: TAKTISCH (1-3 Mo) / ZYKLISCH (3-18 Mo) / STRUKTURELL (2-10+ J)
@@ -402,6 +481,22 @@ STEP3_JSON_SCHEMA = """{
       },
       "perspective_alignment": "ALLE_DREI|ZWEI_VON_DREI|WIDERSPRUCH",
       "perspective_tension": "...",
+      "relative_value_chain": {
+        "chain": [
+          {
+            "asset": "SPY",
+            "relation": "ÜBERBEWERTET_ZU",
+            "next": "GLD",
+            "ratio_name": "Gold/Equity Ratio",
+            "ratio_value": "0.35x",
+            "ratio_context": "unter 20J-Median von 0.42x",
+            "source": "V16_DATA"
+          }
+        ],
+        "cheapest_asset": "...",
+        "cheapest_asset_display": "...",
+        "conviction_note": "..."
+      },
       "cross_system_confirmation": {
         "count": 3,
         "systems": ["V16", "Cycles", "Säkulare Trends"],

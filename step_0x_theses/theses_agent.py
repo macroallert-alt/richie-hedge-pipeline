@@ -1,13 +1,16 @@
 """
 Thesen Circle — Main Script
-Baldur Creek Capital | Step 0x (V1.0)
+Baldur Creek Capital | Step 0x (V1.0.8)
+
+V1.0.8: Sheet-Read für ETF-Preise, Relative-Value-Ketten, Convergence-Berechnung
 
 Pipeline:
   1. System-Synthese (7 interne JSONs → kompakte Zusammenfassung)
   2a. Offene Suche (Web Search, kategorie-offen, OHNE interne Daten)
   2b. Adversarial / Red Team (Web Search, was tötet unser Portfolio)
-  3. Synthese + Kausalketten (größter Call, DAG-Struktur)
-  4. Gegenthese (separater Call pro Tier-1-These, Web Search)
+  3a. Thesen-Kandidaten (10-15 kompakte Liste)
+  3b. Vollständige Kausalketten + Relative-Value-Ketten (größter Call)
+  4. Gegenthese (separater Call pro Top-5-These, Web Search)
   5. Bewertung + Priorisierung (Conviction, Asymmetrie, Tier, Retrospektive)
   → Assemblierung (deterministisch, kein LLM)
   → JSON schreiben + Archiv + Git Push
@@ -46,6 +49,7 @@ from .config import (
     STEP1_SYSTEM_PROMPT, STEP2A_SYSTEM_PROMPT, STEP2B_SYSTEM_PROMPT,
     STEP3A_SYSTEM_PROMPT, STEP3B_SYSTEM_PROMPT, STEP3_JSON_SCHEMA,
     STEP4_SYSTEM_PROMPT, STEP5_SYSTEM_PROMPT,
+    DW_SHEET_ID, DW_PRICES_TAB, V16_ETF_MAP, RATIO_PAIRS,
 )
 
 
@@ -255,6 +259,133 @@ def call_llm(system_prompt, user_message, use_web_search=False, max_tokens=None)
 
 
 # ═══════════════════════════════════════════════════════════════
+# GOOGLE SHEET — ETF PREISE LESEN
+# ═══════════════════════════════════════════════════════════════
+
+def read_prices_from_sheet():
+    """Liest aktuelle ETF-Preise aus dem V16 DW Sheet Prices Tab.
+    Returns dict: {ticker: price} oder None bei Fehler.
+    Graceful degradation: Wenn Sheet nicht erreichbar → None → Agent fährt ohne Relative-Value fort."""
+    try:
+        import gspread
+        from google.oauth2.service_account import Credentials
+
+        # GCP Service Account Key aus Environment (wie IC Pipeline, G7 Monitor)
+        sa_key_json = os.environ.get("GCP_SA_KEY") or os.environ.get("GOOGLE_CREDENTIALS")
+        if not sa_key_json:
+            logger.warning("PRICES: Kein GCP_SA_KEY/GOOGLE_CREDENTIALS — Sheet-Read übersprungen")
+            return None
+
+        sa_info = json.loads(sa_key_json)
+        scopes = [
+            "https://www.googleapis.com/auth/spreadsheets.readonly",
+            "https://www.googleapis.com/auth/drive.readonly",
+        ]
+        creds = Credentials.from_service_account_info(sa_info, scopes=scopes)
+        gc = gspread.authorize(creds)
+
+        sheet = gc.open_by_key(DW_SHEET_ID)
+        ws = sheet.worksheet(DW_PRICES_TAB)
+
+        # Alle Werte lesen
+        all_values = ws.get_all_values()
+        if len(all_values) < 2:
+            logger.warning("PRICES: Sheet hat weniger als 2 Zeilen")
+            return None
+
+        # Header = erste Zeile (Ticker), letzte Zeile = aktuellste Preise
+        headers = all_values[0]
+        last_row = all_values[-1]
+
+        prices = {}
+        for i, header in enumerate(headers):
+            ticker = header.strip().upper()
+            if ticker and ticker in V16_ETF_MAP and i < len(last_row):
+                val = last_row[i].strip()
+                if val:
+                    try:
+                        # Komma → Punkt falls nötig, dann float
+                        price = float(val.replace(",", "."))
+                        if price > 0:
+                            prices[ticker] = price
+                    except ValueError:
+                        pass
+
+        if prices:
+            logger.info(f"PRICES: {len(prices)} ETF-Preise aus Sheet gelesen "
+                        f"(z.B. SPY={prices.get('SPY', '?')}, GLD={prices.get('GLD', '?')})")
+        else:
+            logger.warning("PRICES: Keine gültigen Preise im Sheet gefunden")
+            return None
+
+        return prices
+
+    except ImportError:
+        logger.warning("PRICES: gspread/google-auth nicht installiert — Sheet-Read übersprungen")
+        return None
+    except Exception as e:
+        logger.warning(f"PRICES: Sheet-Read fehlgeschlagen: {e}")
+        return None
+
+
+def compute_relative_values(prices):
+    """Berechnet Ratio-Tabelle aus ETF-Preisen.
+    Returns Liste von Ratio-Dicts oder leere Liste bei Fehler.
+    Nur Ratios wo beide Ticker Preise haben."""
+    if not prices:
+        return []
+
+    ratios = []
+    for numerator, denominator, description in RATIO_PAIRS:
+        if numerator in prices and denominator in prices:
+            num_price = prices[numerator]
+            den_price = prices[denominator]
+            if den_price > 0:
+                ratio_value = round(num_price / den_price, 4)
+                ratios.append({
+                    "numerator": numerator,
+                    "denominator": denominator,
+                    "description": description,
+                    "ratio_value": ratio_value,
+                    "numerator_price": num_price,
+                    "denominator_price": den_price,
+                    "numerator_name": V16_ETF_MAP.get(numerator, numerator),
+                    "denominator_name": V16_ETF_MAP.get(denominator, denominator),
+                })
+
+    if ratios:
+        logger.info(f"RATIOS: {len(ratios)} Ratio-Paare berechnet")
+    return ratios
+
+
+def format_prices_for_llm(prices, ratios):
+    """Formatiert Preise und Ratios als Text-Block für den LLM-Prompt."""
+    if not prices:
+        return "Keine ETF-Preis-Daten verfügbar. Baue Relative-Value-Ketten NUR mit per Web Search verifizierten Preisen."
+
+    lines = []
+    lines.append("=== AKTUELLE ETF-PREISE (V16 System, Quelle: V16_DATA) ===")
+    for ticker in sorted(prices.keys()):
+        name = V16_ETF_MAP.get(ticker, ticker)
+        lines.append(f"  {ticker} ({name}): ${prices[ticker]:.2f}")
+
+    if ratios:
+        lines.append("")
+        lines.append("=== BERECHNETE RATIOS (V16 System, Quelle: V16_DATA) ===")
+        for r in ratios:
+            lines.append(f"  {r['description']}: {r['numerator']}/{r['denominator']} = {r['ratio_value']:.4f} "
+                         f"({r['numerator_name']} ${r['numerator_price']:.2f} / "
+                         f"{r['denominator_name']} ${r['denominator_price']:.2f})")
+
+    lines.append("")
+    lines.append("REGEL: Nutze diese Daten für Relative-Value-Ketten. Setze source='V16_DATA'. "
+                 "Für Assets die NICHT in dieser Liste sind: Nutze NUR per Web Search verifizierte Preise mit Quellenangabe. "
+                 "ERFINDE NIEMALS Preise.")
+
+    return "\n".join(lines)
+
+
+# ═══════════════════════════════════════════════════════════════
 # SYSTEM INPUTS LADEN
 # ═══════════════════════════════════════════════════════════════
 
@@ -339,8 +470,6 @@ def summarize_g7(data):
         return "Keine G7-Daten verfügbar."
 
     lines = []
-    # G7 Monitor hat verschiedene mögliche Strukturen
-    # Versuche die gängigsten Schlüssel
     if isinstance(data, dict):
         for key in ["scenarios", "active_scenarios", "heatmap", "dashboard"]:
             if key in data:
@@ -354,7 +483,6 @@ def summarize_g7(data):
                 elif isinstance(val, dict):
                     lines.append(f"  {key}: {json.dumps(val, ensure_ascii=False)[:200]}")
 
-        # Metadata
         meta = data.get("metadata", {})
         if meta:
             lines.append(f"Stand: {meta.get('generated_at', '?')}")
@@ -409,7 +537,6 @@ def load_system_inputs():
     # 2. Cycles Conditional Returns (nur Zusammenfassung — File ist 3.5MB)
     cr = load_json_safe(SYSTEM_INPUTS["cycles_conditional"], "Cycles Conditional")
     if cr:
-        # Nur die executive_summary oder metadata extrahieren
         es = cr.get("executive_summary", cr.get("metadata", {}))
         inputs["cycles_conditional_summary"] = json.dumps(es, ensure_ascii=False)[:500] if es else "Conditional Returns geladen, keine Summary."
     else:
@@ -679,10 +806,10 @@ MINDESTENS 10 Kandidaten. Decke alle drei Zeithorizonte ab."""
 # STEP 3b: VOLLSTÄNDIGE KAUSALKETTEN BAUEN
 # ═══════════════════════════════════════════════════════════════
 
-def step3b_build_theses(step3a_out, step1_out, prev_theses, today):
-    """Step 3b: Vollständige Kausalketten für alle Kandidaten. Kein Web Search."""
+def step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text):
+    """Step 3b: Vollständige Kausalketten + Relative-Value-Ketten. Kein Web Search."""
     logger.info("=" * 50)
-    logger.info("STEP 3b: KAUSALKETTEN BAUEN")
+    logger.info("STEP 3b: KAUSALKETTEN + RELATIVE VALUE BAUEN")
     logger.info("=" * 50)
 
     if not step3a_out or "candidates" not in step3a_out:
@@ -708,7 +835,11 @@ def step3b_build_theses(step3a_out, step1_out, prev_theses, today):
 === SYSTEM-KONTEXT (kompakt) ===
 {json.dumps(step1_out.get("system_summary", {}), ensure_ascii=False, indent=2) if step1_out else "Nicht verfügbar."}
 
+=== ETF-PREISE UND RATIOS FÜR RELATIVE-VALUE-KETTEN ===
+{prices_text}
+
 Baue für JEDEN Kandidaten die vollständige Kausalkette mit allen Details.
+Baue für JEDEN Kandidaten eine Relative-Value-Kette (wenn Preis-Daten verfügbar).
 
 Antworte in folgendem JSON-Schema:
 {STEP3_JSON_SCHEMA}"""
@@ -730,14 +861,11 @@ Antworte in folgendem JSON-Schema:
 
 
 # ═══════════════════════════════════════════════════════════════
-# STEP 4: GEGENTHESE (pro Tier-1 Kandidat)
+# STEP 4: GEGENTHESE (pro Top-5 Kandidat)
 # ═══════════════════════════════════════════════════════════════
 
 def estimate_tier(thesis):
-    """Schnelle Tier-Schätzung basierend auf Step 3 Output.
-    Step 3 liefert noch keine Conviction/Asymmetrie von Step 5,
-    aber der LLM kann schon einen Hinweis geben."""
-    # Versuche vorläufige Werte aus Step 3
+    """Schnelle Tier-Schätzung basierend auf Step 3 Output."""
     conv = thesis.get("conviction", 50)
     asym = thesis.get("asymmetry", 3)
     score = conv * asym
@@ -772,7 +900,7 @@ def summarize_thesis_for_counter(thesis):
 
 
 def step4_counter_theses(step3_out):
-    """Step 4: Gegenthese für jede voraussichtliche Tier-1-These. Web Search."""
+    """Step 4: Gegenthese für Top-5 Thesen nach Score. Web Search."""
     logger.info("=" * 50)
     logger.info("STEP 4: GEGENTHESEN (Web Search)")
     logger.info("=" * 50)
@@ -968,11 +1096,54 @@ def update_lifecycle(thesis):
 
 
 # ═══════════════════════════════════════════════════════════════
+# RELATIVE VALUE CONVERGENCE (deterministisch, kein LLM)
+# ═══════════════════════════════════════════════════════════════
+
+def compute_rv_convergence(theses):
+    """Berechnet welche Assets am häufigsten als 'cheapest_asset' in Relative-Value-Ketten auftauchen.
+    Returns: Liste von {asset, count, thesis_ids, thesis_titles}."""
+    cheapest_counts = {}
+
+    for t in theses:
+        rv = t.get("relative_value_chain")
+        if not rv or not isinstance(rv, dict):
+            continue
+        cheapest = rv.get("cheapest_asset")
+        if not cheapest:
+            continue
+
+        if cheapest not in cheapest_counts:
+            cheapest_counts[cheapest] = {
+                "asset": cheapest,
+                "display_name": rv.get("cheapest_asset_display", cheapest),
+                "count": 0,
+                "thesis_ids": [],
+                "thesis_titles": [],
+            }
+        cheapest_counts[cheapest]["count"] += 1
+        cheapest_counts[cheapest]["thesis_ids"].append(t.get("id", "?"))
+        cheapest_counts[cheapest]["thesis_titles"].append(t.get("title_short", t.get("title", "?")))
+
+    # Sortiere nach Häufigkeit absteigend
+    convergence = sorted(cheapest_counts.values(), key=lambda x: -x["count"])
+
+    # Nur Assets die in >1 These als billigstes auftauchen
+    convergence_filtered = [c for c in convergence if c["count"] >= 2]
+
+    if convergence_filtered:
+        logger.info(f"RV CONVERGENCE: {len(convergence_filtered)} Assets in ≥2 Thesen als billigster Hebel")
+        for c in convergence_filtered:
+            logger.info(f"  {c['asset']}: {c['count']}x ({', '.join(c['thesis_ids'])})")
+
+    return convergence
+
+
+# ═══════════════════════════════════════════════════════════════
 # ASSEMBLIERUNG (deterministisch, kein LLM)
 # ═══════════════════════════════════════════════════════════════
 
 def assemble_output(step1_out, step2a_out, step2b_out, step3_out, step4_out, step5_out,
-                    call_count, search_count):
+                    call_count, search_count, prices_available):
     """Alle Step-Outputs zu einem theses.json zusammensetzen."""
     logger.info("=" * 50)
     logger.info("ASSEMBLIERUNG")
@@ -1055,9 +1226,7 @@ def assemble_output(step1_out, step2a_out, step2b_out, step3_out, step4_out, ste
         if "created_at" not in thesis:
             thesis["created_at"] = now.strftime("%Y-%m-%d")
 
-    # Sortieren: Tier 1 zuerst, dann 2, dann 3. Innerhalb: Score absteigend.
-    theses.sort(key=lambda t: (-t.get("tier", 99) * -1, -t.get("score", 0)))
-    # Korrektur: Tier aufsteigend, Score absteigend
+    # Sortieren: Tier aufsteigend, Score absteigend
     theses.sort(key=lambda t: (t.get("tier", 3), -t.get("score", 0)))
 
     # Tier Summary
@@ -1089,10 +1258,13 @@ def assemble_output(step1_out, step2a_out, step2b_out, step3_out, step4_out, ste
     # Lifecycle Changes zählen
     lifecycle_changes = sum(1 for t in theses if t.get("lifecycle_change"))
 
+    # Relative Value Convergence
+    rv_convergence = compute_rv_convergence(theses)
+
     output = {
         "metadata": {
             "generated_at": now.isoformat(),
-            "pipeline_version": "1.0",
+            "pipeline_version": "1.0.8",
             "llm_model": LLM_MODEL,
             "total_llm_calls": call_count,
             "web_search_calls": search_count,
@@ -1103,6 +1275,7 @@ def assemble_output(step1_out, step2a_out, step2b_out, step3_out, step4_out, ste
             "new_theses_this_week": sum(1 for t in theses if t.get("weeks_active", 0) <= 1),
             "lifecycle_changes_this_week": lifecycle_changes,
             "epistemic_health": epistemic_health.get("overall", "LOW"),
+            "prices_available": prices_available,
         },
         "theses": theses,
         "tier_summary": {
@@ -1110,6 +1283,7 @@ def assemble_output(step1_out, step2a_out, step2b_out, step3_out, step4_out, ste
             "tier_2_ids": tier_2_ids,
             "tier_3_ids": tier_3_ids,
         },
+        "relative_value_convergence": rv_convergence,
         "retrospective": step5_out.get("retrospective", {
             "top_3_moves": [],
             "blind_spots": [],
@@ -1133,6 +1307,10 @@ def assemble_output(step1_out, step2a_out, step2b_out, step3_out, step4_out, ste
 
     logger.info(f"Assemblierung OK — {len(theses)} Thesen, "
                 f"Tier 1: {len(tier_1_ids)}, Tier 2: {len(tier_2_ids)}, Tier 3: {len(tier_3_ids)}")
+    if rv_convergence:
+        top_conv = rv_convergence[0] if rv_convergence else None
+        if top_conv:
+            logger.info(f"RV Convergence Top: {top_conv['asset']} ({top_conv['count']}x)")
 
     return output
 
@@ -1187,13 +1365,13 @@ def git_push():
 # ═══════════════════════════════════════════════════════════════
 
 def main():
-    parser = argparse.ArgumentParser(description="Thesen Agent V1.0 — Baldur Creek Capital")
+    parser = argparse.ArgumentParser(description="Thesen Agent V1.0.8 — Baldur Creek Capital")
     parser.add_argument("--skip-git", action="store_true", help="Git push überspringen")
     parser.add_argument("--skip-llm", action="store_true", help="LLM-Calls überspringen (Dry Run)")
     args = parser.parse_args()
 
     logger.info("=" * 60)
-    logger.info("THESEN AGENT PIPELINE — V1.0")
+    logger.info("THESEN AGENT PIPELINE — V1.0.8")
     logger.info("=" * 60)
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -1202,6 +1380,15 @@ def main():
     # ── System-Inputs laden ──
     system_data = load_system_inputs()
     prev_theses = load_previous_theses()
+
+    # ── ETF-Preise aus Sheet lesen ──
+    logger.info("=" * 50)
+    logger.info("ETF-PREISE LADEN (Google Sheet)")
+    logger.info("=" * 50)
+    prices = read_prices_from_sheet()
+    ratios = compute_relative_values(prices) if prices else []
+    prices_text = format_prices_for_llm(prices, ratios)
+    prices_available = prices is not None and len(prices) > 0
 
     if args.skip_llm:
         logger.info("--skip-llm: LLM-Calls übersprungen. Dry Run beendet.")
@@ -1229,8 +1416,8 @@ def main():
     step3a_out = step3a_candidates(step1_out, step2a_out, step2b_out, prev_theses, today)
     call_count += 1
 
-    # ── Step 3b: Vollständige Kausalketten ──
-    step3_out = step3b_build_theses(step3a_out, step1_out, prev_theses, today)
+    # ── Step 3b: Vollständige Kausalketten + Relative Value ──
+    step3_out = step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text)
     call_count += 1
 
     # ── Step 4: Gegenthesen ──
@@ -1249,7 +1436,7 @@ def main():
     output = assemble_output(
         step1_out, step2a_out, step2b_out,
         step3_out, step4_out, step5_out,
-        call_count, search_count
+        call_count, search_count, prices_available
     )
 
     # ── JSON schreiben + Archiv ──
