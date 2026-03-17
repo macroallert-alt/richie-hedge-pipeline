@@ -44,7 +44,7 @@ from .config import (
     WATCHLIST_SEED, V16_STATES,
     HALLUCINATION_GUARD, JSON_INSTRUCTION,
     STEP1_SYSTEM_PROMPT, STEP2A_SYSTEM_PROMPT, STEP2B_SYSTEM_PROMPT,
-    STEP3_SYSTEM_PROMPT, STEP3_JSON_SCHEMA,
+    STEP3A_SYSTEM_PROMPT, STEP3B_SYSTEM_PROMPT, STEP3_JSON_SCHEMA,
     STEP4_SYSTEM_PROMPT, STEP5_SYSTEM_PROMPT,
 )
 
@@ -623,13 +623,13 @@ Dein Job in 3 Schritten:
 
 
 # ═══════════════════════════════════════════════════════════════
-# STEP 3: SYNTHESE + KAUSALKETTEN
+# STEP 3a: THESEN-KANDIDATEN GENERIEREN
 # ═══════════════════════════════════════════════════════════════
 
-def step3_synthesize(step1_out, step2a_out, step2b_out, prev_theses, today):
-    """Step 3: Herzstück — Kausalketten bauen. Kein Web Search."""
+def step3a_candidates(step1_out, step2a_out, step2b_out, prev_theses, today):
+    """Step 3a: Kompakte Kandidaten-Liste (10-15 Thesen). Kein Web Search."""
     logger.info("=" * 50)
-    logger.info("STEP 3: SYNTHESE + KAUSALKETTEN")
+    logger.info("STEP 3a: THESEN-KANDIDATEN")
     logger.info("=" * 50)
 
     prev_summary = build_previous_theses_summary(prev_theses)
@@ -637,28 +637,80 @@ def step3_synthesize(step1_out, step2a_out, step2b_out, prev_theses, today):
     user_msg = f"""Datum: {today}
 
 === INTERNE SYSTEM-SYNTHESE (Step 1) ===
-{json.dumps(step1_out, ensure_ascii=False, indent=2) if step1_out else "Step 1 fehlgeschlagen — keine interne Synthese verfügbar."}
+{json.dumps(step1_out, ensure_ascii=False, indent=2) if step1_out else "Step 1 fehlgeschlagen."}
 
 === OFFENE RECHERCHE (Step 2a) ===
-{json.dumps(step2a_out, ensure_ascii=False, indent=2) if step2a_out else "Step 2a fehlgeschlagen — keine offene Recherche verfügbar."}
+{json.dumps(step2a_out, ensure_ascii=False, indent=2) if step2a_out else "Step 2a fehlgeschlagen."}
 
 === ADVERSARIAL / RED TEAM (Step 2b) ===
-{json.dumps(step2b_out, ensure_ascii=False, indent=2) if step2b_out else "Step 2b fehlgeschlagen — keine adversariale Analyse verfügbar."}
+{json.dumps(step2b_out, ensure_ascii=False, indent=2) if step2b_out else "Step 2b fehlgeschlagen."}
 
 === VORWOCHE-THESEN ===
 {prev_summary}
 
-Baue Investment-Thesen. Sowohl NEUE als auch UPDATES bestehender Thesen.
+Generiere 10-15 Thesen-Kandidaten. Bestehende Thesen updaten UND neue generieren.
+MINDESTENS 10 Kandidaten. Decke alle drei Zeithorizonte ab."""
+
+    result = call_llm(STEP3A_SYSTEM_PROMPT, user_msg, use_web_search=False)
+    if result:
+        candidates = result.get("candidates", [])
+        logger.info(f"Step 3a OK — {len(candidates)} Kandidaten")
+    else:
+        logger.error("Step 3a FEHLGESCHLAGEN")
+    return result
+
+
+# ═══════════════════════════════════════════════════════════════
+# STEP 3b: VOLLSTÄNDIGE KAUSALKETTEN BAUEN
+# ═══════════════════════════════════════════════════════════════
+
+def step3b_build_theses(step3a_out, step1_out, prev_theses, today):
+    """Step 3b: Vollständige Kausalketten für alle Kandidaten. Kein Web Search."""
+    logger.info("=" * 50)
+    logger.info("STEP 3b: KAUSALKETTEN BAUEN")
+    logger.info("=" * 50)
+
+    if not step3a_out or "candidates" not in step3a_out:
+        logger.error("Step 3b übersprungen — keine Kandidaten aus Step 3a")
+        return None
+
+    candidates = step3a_out["candidates"]
+    logger.info(f"Baue Kausalketten für {len(candidates)} Kandidaten")
+
+    # Kandidaten-Zusammenfassung für den Prompt
+    candidates_text = json.dumps(candidates, ensure_ascii=False, indent=2)
+
+    prev_summary = build_previous_theses_summary(prev_theses)
+
+    user_msg = f"""Datum: {today}
+
+=== THESEN-KANDIDATEN (aus Step 3a) ===
+{candidates_text}
+
+=== VORWOCHE-THESEN (für Lifecycle-Updates) ===
+{prev_summary}
+
+=== SYSTEM-KONTEXT (kompakt) ===
+{json.dumps(step1_out.get("system_summary", {}), ensure_ascii=False, indent=2) if step1_out else "Nicht verfügbar."}
+
+Baue für JEDEN Kandidaten die vollständige Kausalkette mit allen Details.
 
 Antworte in folgendem JSON-Schema:
 {STEP3_JSON_SCHEMA}"""
 
-    result = call_llm(STEP3_SYSTEM_PROMPT, user_msg, use_web_search=False)
+    result = call_llm(STEP3B_SYSTEM_PROMPT, user_msg, use_web_search=False)
     if result:
         theses = result.get("theses", [])
-        logger.info(f"Step 3 OK — {len(theses)} Thesen generiert")
+        logger.info(f"Step 3b OK — {len(theses)} Thesen mit Kausalketten")
+        # Open questions und watchlist aus Step 3a übernehmen falls Step 3b sie nicht hat
+        if "open_questions" not in result and "open_questions" in step3a_out:
+            result["open_questions"] = step3a_out["open_questions"]
+        if "silence_alerts_investigated" not in result and "silence_alerts_investigated" in step3a_out:
+            result["silence_alerts_investigated"] = step3a_out["silence_alerts_investigated"]
+        if "watchlist_updates" not in result and "watchlist_updates" in step3a_out:
+            result["watchlist_updates"] = step3a_out["watchlist_updates"]
     else:
-        logger.error("Step 3 FEHLGESCHLAGEN")
+        logger.error("Step 3b FEHLGESCHLAGEN")
     return result
 
 
@@ -1160,8 +1212,12 @@ def main():
     call_count += 1
     search_count += 1
 
-    # ── Step 3: Synthese ──
-    step3_out = step3_synthesize(step1_out, step2a_out, step2b_out, prev_theses, today)
+    # ── Step 3a: Thesen-Kandidaten ──
+    step3a_out = step3a_candidates(step1_out, step2a_out, step2b_out, prev_theses, today)
+    call_count += 1
+
+    # ── Step 3b: Vollständige Kausalketten ──
+    step3_out = step3b_build_theses(step3a_out, step1_out, prev_theses, today)
     call_count += 1
 
     # ── Step 4: Gegenthesen ──
