@@ -312,6 +312,11 @@ V16-KOMPATIBILITÄTSMATRIX:
 Pro These: In welchen der 12 V16 Macro States ist diese These JETZT tradeable?
 Verwende: GO, GO_REDUCED, WAIT, NO_TRADE, BEST_ENTRY.
 
+ANZAHL THESEN — KRITISCH:
+Generiere MINDESTENS 8 Thesen, idealerweise 10-15. Lieber zu viele als zu wenige — die Tier-Einteilung sortiert danach.
+Decke ALLE drei Zeithorizonte ab (mindestens 2 TAKTISCH, 2 ZYKLISCH, 2 STRUKTURELL).
+Suche die Thesen die NIEMAND auf dem Radar hat. Die offensichtlichen Schlagzeilen kennt jeder — dein Job ist es, die zweite und dritte Ableitung zu finden. Was passiert im Schatten? Was wird ignoriert? Wo baut sich Druck auf den noch niemand sieht?
+
 OFFENE FRAGEN:
 Welche Fragen hast du beim Denken aufgeworfen die du NICHT beantworten konntest — weder mit internen Daten noch mit den Recherche-Ergebnissen?
 

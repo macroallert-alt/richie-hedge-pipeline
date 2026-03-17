@@ -558,9 +558,14 @@ def step2a_open_search(today):
     logger.info("=" * 50)
 
     user_msg = f"""Datum: {today}
-Durchsuche das Web nach allen makroökonomisch relevanten Entwicklungen der letzten 7 Tage.
-Suche breit und kategorie-offen. Mindestens 8-12 verschiedene Suchbegriffe.
-Variiere die Kategorien: Geopolitik, Energie, Rohstoffe, Zentralbanken, Regulierung, Shadow Banking, Handelspolitik, Technologie, Demografie, Lieferketten, Militär, Staatsfinanzen."""
+Durchsuche das Web systematisch in 4 Runden nach makroökonomisch relevanten Entwicklungen der letzten 7 Tage:
+
+RUNDE 1: Was dominiert die Schlagzeilen? Die großen Stories die jeder kennt.
+RUNDE 2: Was passiert in Bereichen die NICHT in den Schlagzeilen sind? Suche gezielt abseits der Mainstream-Narrative.
+RUNDE 3: Welche institutionellen oder strukturellen Risiken bauen sich LEISE auf? Dinge die noch kein Headline sind aber es werden könnten.
+RUNDE 4: Was hat sich VERÄNDERT gegenüber dem Normalzustand? Welche Daten, Flows, oder Verhaltensweisen weichen vom historischen Muster ab?
+
+Mindestens 15-20 verschiedene Suchbegriffe über alle 4 Runden. Du entscheidest selbst welche Kategorien relevant sind. Gib KEINE Kategorie vor die du aus früheren Runs kennst — denke jede Woche frisch."""
 
     result = call_llm(STEP2A_SYSTEM_PROMPT, user_msg, use_web_search=True)
     if result:
@@ -603,7 +608,10 @@ V16 Gewichte: {system_data['v16_weights_summary']}
 UNSERE AKTIVEN THESEN:
 {active_titles}
 
-Finde was uns tötet. Suche im Web nach den Risiken die wir nicht sehen."""
+Dein Job in 3 Schritten:
+1. Finde was uns tötet. Suche im Web nach Risiken die GEGEN unsere Positionierung laufen.
+2. Finde unsere BLINDEN FLECKEN: Wo sind wir EXPOSED ohne es zu wissen? Welche Risiko-Kategorien decken unsere Thesen NICHT ab? Denke an: Bereiche die wir komplett ignorieren, Korrelationen die wir nicht sehen, Annahmen die wir unbewusst machen.
+3. Pre-Mortem: Wir verlieren 25% in 3 Monaten. Was ist passiert? Schreibe die Nachricht."""
 
     result = call_llm(STEP2B_SYSTEM_PROMPT, user_msg, use_web_search=True)
     if result:
