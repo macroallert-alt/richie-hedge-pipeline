@@ -1,6 +1,6 @@
 """
 Säkulare Trends Circle — Main Script
-Baldur Creek Capital | Step 0w (V1.3 — Korrigierte Datenquellen + Fixes)
+Baldur Creek Capital | Step 0w (V1.4 — EOD Full History + Series Fix + LLM Parser)
 
 Pipeline:
   1. FRED + EOD Daten fetchen (18 FRED + 4 EOD + 2 statisch = 24 Serien)
@@ -14,12 +14,11 @@ Pipeline:
   9. JSON schreiben
   10. Git commit + push
 
-Fixes V1.3:
-  - EOD fetch: from=1993-01-01 statt 1940, period=d + resample statt period=m
-  - Statische WAP-Daten für China/DE (FRED IDs gekillt)
-  - directional_score_method "none" handling
-  - pandas concat sort=True (Warnung gefixt)
-  - KeyError bei gold_vs_real_rates gefixt
+Fixes V1.4 (over V1.3):
+  - EOD fetch: chunked year-by-year fetch to get full history (EODHD limits daily to ~1yr)
+  - All 'if not s' / 'if s' on pandas Series replaced with 'is None' / 'is not None'
+  - LLM parser: strip prose before first '{', handle ```json blocks robustly
+  - Added debug logging for EOD raw response count
 
 Usage:
   python -m step_0w_secular.secular_trends [--skip-git] [--skip-llm]
@@ -29,6 +28,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -96,30 +96,48 @@ def fetch_fred(series_id, fred_api_key):
 
 
 def fetch_eod_monthly(ticker, eod_api_key):
-    """Fetch daily prices from EOD and resample to monthly."""
-    url = f"{EOD_BASE_URL}/eod/{ticker}"
-    params = {
-        "api_token": eod_api_key, "fmt": "json",
-        "period": "d", "from": "1993-01-01",
-    }
-    try:
-        resp = requests.get(url, params=params, timeout=30)
-        resp.raise_for_status()
-        data = resp.json()
-        if not data:
-            logger.warning(f"EOD {ticker}: no data")
-            return None
-        dates = [pd.Timestamp(d["date"]) for d in data]
-        closes = [float(d["adjusted_close"]) for d in data]
-        s = pd.Series(closes, index=pd.DatetimeIndex(dates), name=ticker)
-        s = s[~s.index.duplicated(keep="last")].sort_index()
-        # Resample to month-end
-        s = s.resample("ME").last().dropna()
-        logger.info(f"EOD {ticker}: {len(s)} monthly obs, {s.index[0].date()} → {s.index[-1].date()}")
-        return s
-    except Exception as e:
-        logger.error(f"EOD {ticker} failed: {e}")
+    """Fetch daily prices from EOD in year-chunks and resample to monthly.
+
+    EODHD API limits daily data to ~1 year per request on many plans.
+    We fetch year-by-year from 1993 to current year, concatenate, then resample.
+    """
+    all_rows = []
+    current_year = datetime.now().year
+    start_year = 1993
+
+    for year in range(start_year, current_year + 1):
+        from_date = f"{year}-01-01"
+        to_date = f"{year}-12-31" if year < current_year else datetime.now().strftime("%Y-%m-%d")
+        url = f"{EOD_BASE_URL}/eod/{ticker}"
+        params = {
+            "api_token": eod_api_key, "fmt": "json",
+            "period": "d", "from": from_date, "to": to_date,
+            "order": "a",
+        }
+        try:
+            resp = requests.get(url, params=params, timeout=30)
+            resp.raise_for_status()
+            data = resp.json()
+            if data:
+                all_rows.extend(data)
+        except Exception as e:
+            logger.warning(f"EOD {ticker} chunk {year} failed: {e}")
+            continue
+
+    if not all_rows:
+        logger.warning(f"EOD {ticker}: no data after chunked fetch")
         return None
+
+    logger.info(f"EOD {ticker}: {len(all_rows)} raw daily rows fetched")
+
+    dates = [pd.Timestamp(d["date"]) for d in all_rows]
+    closes = [float(d["adjusted_close"]) for d in all_rows]
+    s = pd.Series(closes, index=pd.DatetimeIndex(dates), name=ticker)
+    s = s[~s.index.duplicated(keep="last")].sort_index()
+    # Resample to month-end
+    s = s.resample("ME").last().dropna()
+    logger.info(f"EOD {ticker}: {len(s)} monthly obs, {s.index[0].date()} → {s.index[-1].date()}")
+    return s
 
 
 def load_static_wap():
@@ -234,10 +252,12 @@ def calc_directional_score(method, series, percentile, all_data):
         return round(min(abs(series.iloc[-1]) / abs(mx), 1.0), 3)
     elif method == "interest_defense_ratio":
         if series is None: return 0.5
-        return round(min(max(float(series), 0.0), 1.0), 3)
+        val = float(series) if not isinstance(series, pd.Series) else float(series.iloc[-1])
+        return round(min(max(val, 0.0), 1.0), 3)
     elif method == "real_rate":
         if series is None: return 0.5
-        return round(1.0 - max(0.0, min(1.0, (float(series) + 2.0) / 6.0)), 3)
+        val = float(series) if not isinstance(series, pd.Series) else float(series.iloc[-1])
+        return round(1.0 - max(0.0, min(1.0, (val + 2.0) / 6.0)), 3)
     else:
         logger.warning(f"Unknown method: {method}"); return 0.5
 
@@ -325,7 +345,8 @@ def compute_chart_data(chart_def, all_data):
             lo = {}
             for ld in chart_def["lines"]:
                 s = all_data.get(ld["key"])
-                if s: lo[ld["key"]] = to_monthly(s)
+                if s is not None:
+                    lo[ld["key"]] = to_monthly(s)
             if len(lo) == 2:
                 ks = list(lo.keys())
                 merged = pd.concat([lo[ks[0]], lo[ks[1]]], axis=1, sort=True).dropna()
@@ -337,13 +358,16 @@ def compute_chart_data(chart_def, all_data):
                 iv, dv = float(merged.iloc[-1][ks[0]]), float(merged.iloc[-1][ks[1]])
                 t = iv + dv
                 if t > 0:
-                    result["directional_score"] = calc_directional_score(method, iv / t, None, all_data)
+                    ratio_val = iv / t
+                    result["directional_score"] = calc_directional_score(method, ratio_val, None, all_data)
                 result["current"] = round(iv, 2)
 
         elif ctype == "computed_real_rate":
-            gs10, cpi = all_data.get("GS10"), all_data.get("CPIAUCSL")
-            if not gs10 or not cpi: return result
-            gs10_m, cpi_yoy = to_monthly(gs10), compute_yoy(to_monthly(cpi))
+            gs10 = all_data.get("GS10")
+            cpi = all_data.get("CPIAUCSL")
+            if gs10 is None or cpi is None: return result
+            gs10_m = to_monthly(gs10)
+            cpi_yoy = compute_yoy(to_monthly(cpi))
             if cpi_yoy is None: return result
             aligned = pd.concat([gs10_m, cpi_yoy], axis=1, sort=True).dropna()
             if aligned.empty: return result
@@ -360,8 +384,10 @@ def compute_chart_data(chart_def, all_data):
             result["data"] = _s2j(rr)
 
         elif ctype == "dual_axis_gold_realrate":
-            gold, gs10, cpi = all_data.get("GOLD"), all_data.get("GS10"), all_data.get("CPIAUCSL")
-            if not gold or not gs10 or not cpi: return result
+            gold = all_data.get("GOLD")
+            gs10 = all_data.get("GS10")
+            cpi = all_data.get("CPIAUCSL")
+            if gold is None or gs10 is None or cpi is None: return result
             gold_m, gs10_m = to_monthly(gold), to_monthly(gs10)
             cpi_yoy = compute_yoy(to_monthly(cpi))
             if cpi_yoy is None: return result
@@ -408,8 +434,9 @@ def compute_fragility(rk, fd, all_data):
     tr, th, di = fd["transform"], fd["threshold"], fd["threshold_direction"]
     try:
         if tr == "yoy_growth":
-            s = all_data.get(fd["series"])
-            if not s: return {"status": "INACTIVE", "current_value": None}
+            sk = fd["series"]
+            s = all_data.get(sk)
+            if s is None: return {"status": "INACTIVE", "current_value": None}
             yoy = compute_yoy(to_monthly(s))
             if yoy is None or len(yoy) < 4: return {"status": "INACTIVE", "current_value": None}
             cur = float(yoy.iloc[-1])
@@ -422,13 +449,16 @@ def compute_fragility(rk, fd, all_data):
             return {"status": "INACTIVE", "current_value": round(cur, 2)}
 
         elif tr == "gdp_minus_gs10":
-            gdp, gs10 = all_data.get("GDP"), all_data.get("GS10")
-            if not gdp or not gs10: return {"status": "INACTIVE", "current_value": None}
-            gy, gm = compute_yoy(to_monthly(gdp)), to_monthly(gs10)
+            gdp = all_data.get("GDP")
+            gs10 = all_data.get("GS10")
+            if gdp is None or gs10 is None: return {"status": "INACTIVE", "current_value": None}
+            gy = compute_yoy(to_monthly(gdp))
+            gm = to_monthly(gs10)
             if gy is None: return {"status": "INACTIVE", "current_value": None}
             al = pd.concat([gy, gm], axis=1, sort=True).dropna()
             if al.empty: return {"status": "INACTIVE", "current_value": None}
-            al.columns = ["gy", "g10"]; sp = al["gy"] - al["g10"]
+            al.columns = ["gy", "g10"]
+            sp = al["gy"] - al["g10"]
             cur = float(sp.iloc[-1])
             sq = fd.get("sustained_quarters", 4)
             rc = sp.iloc[-sq * 3:] if len(sp) >= sq * 3 else sp
@@ -439,13 +469,16 @@ def compute_fragility(rk, fd, all_data):
             return {"status": "INACTIVE", "current_value": round(cur, 2)}
 
         elif tr == "real_rate":
-            gs10, cpi = all_data.get("GS10"), all_data.get("CPIAUCSL")
-            if not gs10 or not cpi: return {"status": "INACTIVE", "current_value": None}
-            gm, cy = to_monthly(gs10), compute_yoy(to_monthly(cpi))
+            gs10 = all_data.get("GS10")
+            cpi = all_data.get("CPIAUCSL")
+            if gs10 is None or cpi is None: return {"status": "INACTIVE", "current_value": None}
+            gm = to_monthly(gs10)
+            cy = compute_yoy(to_monthly(cpi))
             if cy is None: return {"status": "INACTIVE", "current_value": None}
             al = pd.concat([gm, cy], axis=1, sort=True).dropna()
             if al.empty: return {"status": "INACTIVE", "current_value": None}
-            al.columns = ["g10", "cy"]; rr = al["g10"] - al["cy"]
+            al.columns = ["g10", "cy"]
+            rr = al["g10"] - al["cy"]
             cur = float(rr.iloc[-1])
             sm = fd.get("sustained_months", 6)
             ab = cur > th
@@ -453,14 +486,16 @@ def compute_fragility(rk, fd, all_data):
                 rc = rr.iloc[-sm:]
                 rising = float(rc.iloc[-1]) > float(rc.iloc[0])
                 aab = all(float(v) > th for v in rc.values)
-            else: rising, aab = False, False
+            else:
+                rising, aab = False, False
             if ab and aab and rising: return {"status": "ACTIVE", "current_value": round(cur, 2)}
             if ab: return {"status": "WATCH", "current_value": round(cur, 2)}
             return {"status": "INACTIVE", "current_value": round(cur, 2)}
 
         elif tr == "ratio_momentum_12m":
-            gold, spy = all_data.get("GOLD"), all_data.get("SPY")
-            if not gold or not spy: return {"status": "INACTIVE", "current_value": None}
+            gold = all_data.get("GOLD")
+            spy = all_data.get("SPY")
+            if gold is None or spy is None: return {"status": "INACTIVE", "current_value": None}
             ratio = compute_ratio(gold, spy)
             if ratio is None or len(ratio) < 13: return {"status": "INACTIVE", "current_value": None}
             mom = (float(ratio.iloc[-1]) / float(ratio.iloc[-13])) - 1.0
@@ -573,7 +608,7 @@ def compute_valuation_ratio(rk, rd, all_data):
     ds = rd.get("denominator_scale", 1.0)
     ratio = compute_ratio(all_data.get(rd["numerator"]), all_data.get(rd["denominator"]), denom_scale=ds)
     if ratio is None or len(ratio) < 24:
-        logger.warning(f"  {rk}: insufficient data"); return None
+        logger.warning(f"  {rk}: insufficient data ({0 if ratio is None else len(ratio)} pts)"); return None
     cur = float(ratio.iloc[-1]); am = float(ratio.mean())
     r20 = ratio.rolling(240).mean()
     r20m = float(r20.iloc[-1]) if len(r20.dropna()) > 0 else None
@@ -651,8 +686,9 @@ REGELN:
 6. Erwähne Fragilitäts-Indikatoren nur wenn sie auf WATCH oder ACTIVE stehen
 7. Halte dich an die kausale Kette: Demografie → Deglobalisierung → Fiscal Dominance → Financial Repression → Great Divergence
 
-OUTPUT-FORMAT:
-Antworte AUSSCHLIESSLICH mit einem JSON-Objekt (kein Markdown, keine Backticks, kein Preamble):
+KRITISCH — OUTPUT-FORMAT:
+Antworte AUSSCHLIESSLICH mit einem JSON-Objekt. KEIN Text vor dem JSON. KEIN Markdown. KEINE Backticks.
+Deine Antwort muss DIREKT mit { beginnen und mit } enden. Nichts davor, nichts danach.
 {
     "regime_narratives": {
         "demographic_cliff": "3-5 Sätze...",
@@ -690,12 +726,42 @@ def build_llm_input(cs, rr, vc):
 
 
 def parse_llm_response(resp):
+    """Parse LLM response, robustly extracting JSON even if preceded by prose."""
+    # Collect all text blocks
     txt = "".join(b.text for b in resp.content if b.type == "text").strip()
-    for p in ["```json", "```"]:
-        if txt.startswith(p): txt = txt[len(p):]
-    if txt.endswith("```"): txt = txt[:-3]
-    try: return json.loads(txt.strip())
-    except: logger.error(f"LLM parse fail: {txt[:300]}"); return None
+    if not txt:
+        logger.error("LLM returned no text content")
+        return None
+
+    # Strategy 1: Find first { and last } — extract JSON block
+    first_brace = txt.find("{")
+    last_brace = txt.rfind("}")
+    if first_brace >= 0 and last_brace > first_brace:
+        candidate = txt[first_brace:last_brace + 1]
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            pass
+
+    # Strategy 2: Try to find ```json ... ``` block
+    match = re.search(r'```json\s*(.*?)```', txt, re.DOTALL)
+    if match:
+        try:
+            return json.loads(match.group(1).strip())
+        except json.JSONDecodeError:
+            pass
+
+    # Strategy 3: Strip common prefixes and try raw parse
+    for prefix in ["```json", "```"]:
+        if txt.startswith(prefix):
+            txt = txt[len(prefix):]
+    if txt.endswith("```"):
+        txt = txt[:-3]
+    try:
+        return json.loads(txt.strip())
+    except json.JSONDecodeError:
+        logger.error(f"LLM parse fail — first 500 chars: {txt[:500]}")
+        return None
 
 
 def calc_fund_conf(factors):
@@ -761,7 +827,7 @@ def write_json(cs, rr, vc, llm_ok):
     now = datetime.now(timezone.utc)
     regimes = {r: {"charts": rr[r]["charts"], "narrative": rr[r].get("narrative", "")} for r in REGIME_ORDER}
     out = {
-        "metadata": {"generated_at": now.isoformat(), "version": "1.3",
+        "metadata": {"generated_at": now.isoformat(), "version": "1.4",
                      "data_through": now.strftime("%Y-%m-%d"),
                      "fred_series_count": len(FRED_SERIES), "eod_series_count": len(EOD_TICKERS),
                      "llm_model": CLAUDE_MODEL if llm_ok else "", "llm_success": llm_ok},
@@ -797,7 +863,7 @@ def main():
     args = pa.parse_args()
 
     logger.info("=" * 60)
-    logger.info("SECULAR TRENDS PIPELINE — V1.3")
+    logger.info("SECULAR TRENDS PIPELINE — V1.4")
     logger.info("=" * 60)
 
     all_data = fetch_all_data()
