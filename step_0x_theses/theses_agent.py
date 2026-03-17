@@ -214,14 +214,14 @@ def _try_repair_json(text):
         return None
 
 
-def call_llm(system_prompt, user_message, use_web_search=False):
+def call_llm(system_prompt, user_message, use_web_search=False, max_tokens=None):
     """Generic LLM call. Returns parsed JSON or None."""
     import anthropic
     client = anthropic.Anthropic()
 
     kwargs = {
         "model": LLM_MODEL,
-        "max_tokens": LLM_MAX_TOKENS,
+        "max_tokens": max_tokens or LLM_MAX_TOKENS,
         "temperature": LLM_TEMPERATURE,
         "system": system_prompt,
         "messages": [{"role": "user", "content": user_message}],
@@ -567,7 +567,7 @@ RUNDE 4: Was hat sich VERÄNDERT gegenüber dem Normalzustand? Welche Daten, Flo
 
 Mindestens 15-20 verschiedene Suchbegriffe über alle 4 Runden. Du entscheidest selbst welche Kategorien relevant sind. Gib KEINE Kategorie vor die du aus früheren Runs kennst — denke jede Woche frisch."""
 
-    result = call_llm(STEP2A_SYSTEM_PROMPT, user_msg, use_web_search=True)
+    result = call_llm(STEP2A_SYSTEM_PROMPT, user_msg, use_web_search=True, max_tokens=32000)
     if result:
         findings = result.get("open_search_findings", [])
         logger.info(f"Step 2a OK — {len(findings)} Findings")
@@ -698,7 +698,7 @@ Baue für JEDEN Kandidaten die vollständige Kausalkette mit allen Details.
 Antworte in folgendem JSON-Schema:
 {STEP3_JSON_SCHEMA}"""
 
-    result = call_llm(STEP3B_SYSTEM_PROMPT, user_msg, use_web_search=False)
+    result = call_llm(STEP3B_SYSTEM_PROMPT, user_msg, use_web_search=False, max_tokens=32000)
     if result:
         theses = result.get("theses", [])
         logger.info(f"Step 3b OK — {len(theses)} Thesen mit Kausalketten")
