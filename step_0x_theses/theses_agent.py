@@ -713,7 +713,7 @@ Baue für JEDEN Kandidaten die vollständige Kausalkette mit allen Details.
 Antworte in folgendem JSON-Schema:
 {STEP3_JSON_SCHEMA}"""
 
-    result = call_llm(STEP3B_SYSTEM_PROMPT, user_msg, use_web_search=False, max_tokens=32000)
+    result = call_llm(STEP3B_SYSTEM_PROMPT, user_msg, use_web_search=False, max_tokens=64000)
     if result:
         theses = result.get("theses", [])
         logger.info(f"Step 3b OK — {len(theses)} Thesen mit Kausalketten")
