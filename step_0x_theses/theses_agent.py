@@ -215,13 +215,16 @@ def _try_repair_json(text):
 
 
 def call_llm(system_prompt, user_message, use_web_search=False, max_tokens=None):
-    """Generic LLM call. Returns parsed JSON or None."""
+    """Generic LLM call. Returns parsed JSON or None.
+    Uses streaming for large max_tokens to avoid SDK 10-minute timeout."""
     import anthropic
     client = anthropic.Anthropic()
 
+    effective_max_tokens = max_tokens or LLM_MAX_TOKENS
+
     kwargs = {
         "model": LLM_MODEL,
-        "max_tokens": max_tokens or LLM_MAX_TOKENS,
+        "max_tokens": effective_max_tokens,
         "temperature": LLM_TEMPERATURE,
         "system": system_prompt,
         "messages": [{"role": "user", "content": user_message}],
@@ -229,8 +232,20 @@ def call_llm(system_prompt, user_message, use_web_search=False, max_tokens=None)
     if use_web_search:
         kwargs["tools"] = [WEB_SEARCH_TOOL]
 
-    logger.info(f"LLM Call ({'mit Web Search' if use_web_search else 'ohne Web Search'})...")
-    resp = client.messages.create(**kwargs)
+    logger.info(f"LLM Call ({'mit Web Search' if use_web_search else 'ohne Web Search'}, "
+                f"max_tokens={effective_max_tokens})...")
+
+    # Use streaming for large requests to avoid SDK 10-min timeout
+    if effective_max_tokens > 16000 or use_web_search:
+        # Stream and collect into a final message
+        collected_text = []
+        with client.messages.stream(**kwargs) as stream:
+            for event in stream:
+                pass  # Just consume the stream
+            resp = stream.get_final_message()
+    else:
+        resp = client.messages.create(**kwargs)
+
     parsed = parse_llm_response(resp)
     if parsed:
         logger.info("LLM Call OK — JSON geparsed")
