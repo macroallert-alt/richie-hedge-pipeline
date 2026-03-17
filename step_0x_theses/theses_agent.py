@@ -782,17 +782,15 @@ def step4_counter_theses(step3_out):
         return []
 
     theses = step3_out["theses"]
-    tier1_candidates = [t for t in theses if estimate_tier(t) == 1]
 
-    # Fallback: Wenn keine Tier-1, nimm Top-3 nach geschätztem Score
-    if not tier1_candidates:
-        scored = sorted(theses,
-                        key=lambda t: t.get("conviction", 50) * t.get("asymmetry", 3),
-                        reverse=True)
-        tier1_candidates = scored[:3]
-        logger.info(f"Keine Tier-1 Kandidaten — Top-3 nach Score genommen")
+    # Top-5 nach geschätztem Score — nicht alle, sonst dauert Step 4 zu lange
+    MAX_COUNTER_THESES = 5
+    scored = sorted(theses,
+                    key=lambda t: t.get("conviction", 50) * t.get("asymmetry", 3),
+                    reverse=True)
+    tier1_candidates = scored[:MAX_COUNTER_THESES]
 
-    logger.info(f"{len(tier1_candidates)} Thesen bekommen Gegenthesen")
+    logger.info(f"{len(tier1_candidates)} Thesen bekommen Gegenthesen (Top {MAX_COUNTER_THESES} nach Score)")
 
     counter_results = []
     for thesis in tier1_candidates:
