@@ -1,0 +1,54 @@
+name: "Step 0x — Thesen Agent (Weekly)"
+
+on:
+  schedule:
+    - cron: "0 4 * * 0"   # Sonntag 04:00 UTC (nach Cycles 02:00, nach Secular 03:00)
+  workflow_dispatch:        # Manueller Trigger
+
+permissions:
+  contents: write
+
+jobs:
+  theses-agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30     # LLM Calls mit Web Search können dauern
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install anthropic
+
+      - name: Create data directories
+        run: |
+          mkdir -p step_0x_theses/data
+          mkdir -p step_0x_theses/data/theses_history
+
+      - name: Run Thesen Agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m step_0x_theses.theses_agent
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and Push
+        run: |
+          git add step_0x_theses/data/theses.json step_0x_theses/data/theses_history/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Thesen Agent weekly update $(date -u +%Y-%m-%d)"
+            git pull --rebase
+            git push
+          fi
