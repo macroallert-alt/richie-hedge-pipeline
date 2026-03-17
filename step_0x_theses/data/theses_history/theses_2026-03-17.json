@@ -1,136 +1,1143 @@
 {
   "metadata": {
-    "generated_at": "2026-03-17T13:23:21.293048+00:00",
+    "generated_at": "2026-03-17T13:48:34.139049+00:00",
     "pipeline_version": "1.0",
     "llm_model": "claude-sonnet-4-6",
-    "total_llm_calls": 5,
-    "web_search_calls": 2,
-    "total_theses": 0,
-    "tier_1_count": 0,
+    "total_llm_calls": 8,
+    "web_search_calls": 5,
+    "total_theses": 3,
+    "tier_1_count": 3,
     "tier_2_count": 0,
     "tier_3_count": 0,
-    "new_theses_this_week": 0,
-    "lifecycle_changes_this_week": 0,
-    "epistemic_health": "LOW"
+    "new_theses_this_week": 3,
+    "lifecycle_changes_this_week": 3,
+    "epistemic_health": "MEDIUM"
   },
-  "theses": [],
+  "theses": [
+    {
+      "id": "thesis_002",
+      "title": "Gold als neues primäres Safe-Haven-Asset: Struktureller Vertrauensverlust in US-Institutionen treibt Gold auf $6.000+ — Long Gold, Short US-Treasuries als Safe-Haven-Substitut",
+      "title_short": "Gold-Institutionsvertrauen",
+      "horizon": "STRUKTURELL",
+      "lifecycle": "ACTIVE",
+      "lifecycle_change": "NEU — direkt als ACTIVE klassifiziert: Gold bereits bei $5.195-$5.417, strukturelle Treiber (Fiscal Dominance, Fed-Unabhängigkeitskrise, Zentralbank-Diversifizierung) aktiv und bestätigt",
+      "causal_chain": {
+        "root": {
+          "id": "node_101",
+          "claim": "Simultane Erosion der drei Säulen des Dollar-Systems: (1) Fed-Unabhängigkeit angegriffen, (2) US-Fiskalposition strukturell verschlechtert (OBBBA $4,1 Bio.), (3) Geopolitische Fragmentierung (Hormuz, Handelskrieg)",
+          "indicator": "Gold/USD-Preis, DXY, US 10Y Real Yield, Zentralbank-Goldkäufe (WGC-Daten)",
+          "indicator_current_value": "Gold $5.195-$5.417 (März 2026, +25% seit Anfang 2025); DXY: Nicht verifiziert — keine aktuelle Zahl; US-Schulden $38,4 Bio. (Jan 2026)",
+          "status": "BESTÄTIGT",
+          "epistemic_type": "FACT",
+          "implicit_assumption": "Alle drei Erosionsprozesse laufen gleichzeitig und verstärken sich gegenseitig; kein einzelner Faktor wird schnell reversiert",
+          "is_feedback_loop": false,
+          "feedback_target_id": null,
+          "children": [
+            {
+              "id": "node_102a",
+              "claim": "Zentralbanken (insbesondere EM, China, Indien, Golfstaaten) beschleunigen Goldkäufe als Reservediversifizierung weg vom Dollar",
+              "indicator": "WGC Central Bank Gold Demand Quarterly, PBOC-Goldreserven-Meldungen",
+              "indicator_current_value": "Nicht verifiziert — keine aktuellen WGC-Q1-2026-Daten gefunden; struktureller Trend seit 2022 bestätigt",
+              "status": "OFFEN",
+              "epistemic_type": "INFERENCE",
+              "implicit_assumption": "EM-Zentralbanken interpretieren US-Institutionserosion als dauerhaft, nicht temporär; Goldkäufe werden nicht durch Devisenreserven-Engpässe begrenzt",
+              "is_feedback_loop": false,
+              "feedback_target_id": null,
+              "children": [
+                {
+                  "id": "node_103a",
+                  "claim": "Strukturelle Nachfrage-Basis für Gold verbreitert sich: Zentralbanken + Retail (ETF-Zuflüsse) + Institutionelle (Hedge Funds) = drei simultane Käuferschichten",
+                  "indicator": "SPDR Gold Trust (GLD) AUM-Veränderung, COMEX Gold Futures Net-Long-Positioning",
+                  "indicator_current_value": "Nicht verifiziert — keine aktuellen ETF-Flow-Daten gefunden",
+                  "status": "OFFEN",
+                  "epistemic_type": "INFERENCE",
+                  "implicit_assumption": "Retail und institutionelle Investoren folgen Zentralbank-Signal; keine massive Profit-Taking-Welle bei $5.000+",
+                  "is_feedback_loop": false,
+                  "feedback_target_id": null,
+                  "children": [
+                    {
+                      "id": "node_104a",
+                      "claim": "Gold erreicht $6.000-$6.500/Unze bis Ende 2026 (UBS-Ziel +20% von $5.000 = $6.000); Silber folgt mit Hebel (Gold/Silber-Ratio normalisiert sich)",
+                      "indicator": "Gold Spot-Preis, Gold/Silber-Ratio, UBS/Goldman Sachs Preisprognosen",
+                      "indicator_current_value": "Gold $5.195 (10. März); UBS: +20% Potenzial in 2026 = ~$6.000-$6.500; Gold/Silber-Ratio: Nicht verifiziert",
+                      "status": "OFFEN",
+                      "epistemic_type": "SPECULATION",
+                      "implicit_assumption": "Keine schnelle Hormuz-De-Eskalation; keine überraschend hawkische Fed-Reaktion die Real Yields massiv erhöht",
+                      "is_feedback_loop": false,
+                      "feedback_target_id": null,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "node_102b",
+              "claim": "US-Treasuries verlieren Safe-Haven-Status: Investoren fliehen aus Bonds in Gold (KPMG: 'Investoren flohen aus US-Staatsanleihen in Gold')",
+              "indicator": "Korrelation Gold/10Y-Treasury-Yield (sollte positiv werden: beide steigen = Bonds fallen, Gold steigt), TLT vs. GLD relative Performance",
+              "indicator_current_value": "KPMG Global Trade Outlook 2026 (März 2026) bestätigt Flucht aus Treasuries in Gold; quantitative Korrelationsdaten nicht verifiziert",
+              "status": "BESTÄTIGT",
+              "epistemic_type": "FACT",
+              "implicit_assumption": "Flucht aus Treasuries ist strukturell (nicht nur geopolitisch-transitorisch); US-Fiskalposition verschlechtert sich weiter",
+              "is_feedback_loop": true,
+              "feedback_target_id": "node_101",
+              "children": [
+                {
+                  "id": "node_103b",
+                  "claim": "OBBBA-Schuldenanstieg ($4,1 Bio. bis 2034) + Hormuz-Inflationsschock = Bond-Vigilante-Moment: 10Y-Yield steigt auf 5%+, verstärkt Gold-Attraktivität (Opportunitätskosten-Argument kehrt sich um bei Stagflation)",
+                  "indicator": "US 10Y Treasury Yield, TIPS Breakeven, CBO-Schuldenprognosen",
+                  "indicator_current_value": "CBO: $2,8 Bio. Schuldenanstieg bis 2034 (Senate: $4,1 Bio.); Yale Budget Lab: Schulden/BIP 183% bis 2054; 10Y-Yield: Nicht verifiziert",
+                  "status": "OFFEN",
+                  "epistemic_type": "INFERENCE",
+                  "implicit_assumption": "Bond-Vigilantes sind aktiv und nicht durch Fed-QE neutralisiert; keine Schuldenobergrenze-Krise die Treasuries paradoxerweise stützt",
+                  "is_feedback_loop": false,
+                  "feedback_target_id": null,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "node_102c",
+              "claim": "Fed-Unabhängigkeitskrise (Trump v. Cook, Warsh-Blockade, DOJ-Ermittlung gegen Powell) erhöht institutionellen Risk-Premium auf alle US-Nominalassets",
+              "indicator": "Supreme Court Trump v. Cook Entscheidungsdatum, Warsh-Senatsvote, DOJ-Berufungsentscheidung",
+              "indicator_current_value": "Supreme Court-Entscheidung erwartet Juni 2026; Warsh blockiert durch Sen. Tillis; DOJ-Berufung eingereicht nach Richter Boasberg-Entscheidung",
+              "status": "BESTÄTIGT",
+              "epistemic_type": "FACT",
+              "implicit_assumption": "Märkte beginnen, institutionellen Risk-Premium einzupreisen bevor das Urteil fällt; nicht erst danach",
+              "is_feedback_loop": true,
+              "feedback_target_id": "node_101",
+              "children": []
+            }
+          ]
+        }
+      },
+      "chain_depth": 4,
+      "total_nodes": 7,
+      "confirmed_links": 3,
+      "open_links": 4,
+      "refuted_links": 0,
+      "speculation_count": 1,
+      "progress_marker": "Glied 3 von 4 bestätigt (Institutionserosion aktiv, Treasuries-Flucht bestätigt, Gold $5.000+) — SPÄT. Preisziel $6.000+ ist das letzte offene Glied — möglicherweise bereits teilweise eingepreist.",
+      "secondary_effects": [
+        {
+          "effect": "Gold-Mining-Aktien (Newmont, Barrick, Agnico Eagle) outperformen physisches Gold mit Hebel 2-3x — Margen-Expansion bei $5.000+ Goldpreis bei relativ stabilen Produktionskosten",
+          "is_counterintuitive": false
+        },
+        {
+          "effect": "Silber profitiert doppelt: Safe-Haven-Nachfrage (Gold-Korrelation) + Industrienachfrage (Solar, EV, KI-Infrastruktur) — Gold/Silber-Ratio könnte von historisch hohem Niveau auf 60-65 fallen",
+          "is_counterintuitive": false
+        },
+        {
+          "effect": "Tertiäreffekt: Zentralbank-Goldkäufe reduzieren Dollar-Reserven → Dollar-Nachfrage sinkt strukturell → Dollar-Schwäche → Rohstoffpreise steigen weiter (Dollar-denominiert) → Inflationsspirale verstärkt sich → Gold steigt weiter (Feedback-Loop)",
+          "is_counterintuitive": false
+        },
+        {
+          "effect": "KONTRAINTUITIV: Gold-Rallye bei $6.000+ könnte politischen Druck auf Trump erzeugen, Hormuz-Konflikt zu beenden (Gold als Barometer für institutionelles Vertrauen) → schnelle De-Eskalation → Gold-Korrektur -15-20% → Short-Squeeze in Gold-Mining-Aktien",
+          "is_counterintuitive": true
+        }
+      ],
+      "counterintuitive_path": {
+        "exists": true,
+        "path_description": "Primärpfad: Institutionserosion → Gold steigt → Dollar fällt → Inflation steigt. KONTRAINTUITIVER PFAD: Gold steigt auf $6.000+ → Politischer Druck auf Trump (Gold als Vertrauensbarometer) → Trump sucht schnellen Hormuz-Deal (Waffenstillstand mit Iran) → Geopolitisches Premium fällt aus Gold → Gleichzeitig: Warsh wird bestätigt (Senat gibt nach) → Markt interpretiert Warsh als hawkish → Real Yields steigen → Gold-Opportunitätskosten steigen → Gold korrigiert -20% auf $4.800 → Dollar erholt sich → Rohstoffpreise fallen → Disinflation → Fed kann doch schneiden → Bonds erholen sich → Komplette Umkehr aller Positionen in 4-6 Wochen",
+        "implication": "Der kontraintuitive Pfad zeigt: Gold-Long ist ein asymmetrisches Trade mit klarem Stop-Loss-Trigger (Hormuz-De-Eskalation + Warsh-Bestätigung). Position-Sizing muss dieses Tail-Risk berücksichtigen. Empfehlung: Gold-Long mit definiertem Stop bei $4.800 oder bei Hormuz-Waffenstillstand-Meldung."
+      },
+      "catalysts": [
+        {
+          "event": "Supreme Court Trump v. Cook Urteil pro-Trump (Präsident kann Fed-Governors feuern)",
+          "type": "BINARY",
+          "indicator": "Supreme Court Urteil in Trump v. Cook — erwartet Juni 2026",
+          "status": "PENDING"
+        },
+        {
+          "event": "Gold überschreitet $5.500/Unze (nächste psychologische Schwelle)",
+          "type": "MEASURABLE",
+          "indicator": "Gold Spot-Preis >$5.500 für 3 aufeinanderfolgende Handelstage",
+          "status": "PENDING"
+        },
+        {
+          "event": "WGC Q1 2026 Zentralbank-Goldkäufe >300 Tonnen (Bestätigung struktureller Nachfrage)",
+          "type": "MEASURABLE",
+          "indicator": "WGC Central Bank Gold Demand Q1 2026 Report (erwartet April/Mai 2026)",
+          "status": "PENDING"
+        }
+      ],
+      "perspectives": {
+        "regime_cycle": "Säkulare Trends: Fiscal Dominance (0.80) + Demographic Cliff (0.67) + Great Divergence (0.72) = alle drei aktiven säkularen Trends sind bullish für Gold. Fiscal Dominance direkt: Schuldenmonetisierung → Goldnachfrage. Demographic Cliff: Alternde Gesellschaften halten mehr Gold als Wertaufbewahrung. Great Divergence: Geopolitische Fragmentierung → Reservediversifizierung. V16 CASCADE-Warnung: Defensive Positionierung = Gold als natürlicher Hedge.",
+        "data_flows": "Gold $5.195-$5.417 (März 2026, +25% YTD 2025). KPMG bestätigt Flucht aus Treasuries in Gold. UBS: +20% Potenzial. Säkulare Tailwinds Gold +61 (stärkster aller Assets im System). OBBBA: $4,1 Bio. Schuldenanstieg. Fed-Unabhängigkeitskrise: 4 unabhängige Quellen bestätigen. Alle Datenpunkte konvergieren bullish Gold.",
+        "historical_analogy": "1971-1980: Nixon-Schock (Dollar-Gold-Bindung aufgehoben) → Gold von $35 auf $850 (+2.300%) in 9 Jahren. Treiber: Institutionelles Vertrauen in Dollar erodiert, Stagflation, fiskalische Expansion (Vietnam-Krieg). ANALOGIE 2026: Nicht Aufhebung der Gold-Bindung, aber Erosion der Fed-Unabhängigkeit = funktional ähnlich. 2026 ist näher an 1974-1975 (Mitte des Zyklus) als an 1980 (Ende). Weitere 3-5 Jahre Aufwärtspotenzial wenn Analogie hält. UNTERSCHIED: 1980 beendete Volcker-Schock den Zyklus — 2026 kein Volcker in Sicht."
+      },
+      "perspective_alignment": "ALLE_DREI",
+      "perspective_tension": "Einzige Spannung: Historische Analogie zeigt, dass Gold-Zyklen durch hawkische Zentralbank-Reaktion enden. 2026 fehlt dieser Anker — was die These stärkt, aber auch bedeutet, dass der Zyklus länger und extremer werden könnte als historische Analogien nahelegen.",
+      "cross_system_confirmation": {
+        "count": 5,
+        "systems": [
+          "Säkulare Trends (Gold Tailwind +61, Fiscal Dominance 0.80)",
+          "V16 (CASCADE-Warnung, defensiv)",
+          "Cycles (DOLLAR: WEAKENING)",
+          "Adversarial Red Team (threat_006 Fed-Unabhängigkeit, threat_003 Dollar-Reversal)",
+          "Offene Recherche (finding_003 Gold $5.000+, finding_008 OBBBA-Schulden)"
+        ],
+        "details": "Fünffache Bestätigung aus unabhängigen Quellen. Stärkste Conviction aller Thesen. Säkulare Trends geben Gold den höchsten Tailwind-Score (+61) aller Assets. Cycles zeigen Dollar-Weakening als strukturellen Rückenwind. Red Team identifiziert Fed-Unabhängigkeitskrise als aktiven Treiber."
+      },
+      "v16_compatibility": {
+        "STEADY_GROWTH": "GO_REDUCED",
+        "FRAGILE_EXPANSION": "GO",
+        "LATE_EXPANSION": "GO",
+        "FULL_EXPANSION": "GO_REDUCED",
+        "REFLATION": "GO",
+        "NEUTRAL": "GO",
+        "SOFT_LANDING": "WAIT",
+        "STRESS_ELEVATED": "GO",
+        "CONTRACTION": "GO",
+        "DEEP_CONTRACTION": "BEST_ENTRY",
+        "FINANCIAL_CRISIS": "GO",
+        "EARLY_RECOVERY": "GO_REDUCED"
+      },
+      "affected_assets": [
+        "Gold Spot/Futures (Long)",
+        "Silber Spot/Futures (Long)",
+        "Gold-Mining-ETF GDX/GDXJ (Long)",
+        "Newmont, Barrick, Agnico Eagle (Long)",
+        "US 10Y+ Treasuries TLT (Short als Safe-Haven-Substitut)",
+        "USD/DXY (Short strukturell)"
+      ],
+      "direction": "BULLISH Gold/Silber/Mining, BEARISH Treasuries als Safe-Haven-Substitut",
+      "sources": [
+        {
+          "url": "https://fortune.com/article/current-price-of-gold-03-10-2026/",
+          "publication": "Fortune",
+          "date": "2026-03-10",
+          "tier": 3
+        },
+        {
+          "url": "https://kpmg.com/us/en/articles/2026/global-trade-outlook-2026.html",
+          "publication": "KPMG Global Trade Outlook 2026",
+          "date": "2026-03-01",
+          "tier": 3
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/One_Big_Beautiful_Bill_Act",
+          "publication": "Wikipedia (basiert auf CBO, CRFB)",
+          "date": "2026-03-01",
+          "tier": 3
+        },
+        {
+          "url": "https://www.cfr.org/articles/why-kevin-warsh-wont-revolutionize-the-federal-reserve",
+          "publication": "Council on Foreign Relations",
+          "date": "2026-01-30",
+          "tier": 1
+        },
+        {
+          "url": "https://markets.financialcontent.com/stocks/article/marketminute-2026-3-16-constitutional-standoff-warsh-nomination-stalls-as-federal-judge-rebukes-white-house-interference-in-fed-independence",
+          "publication": "FinancialContent / MarketMinute",
+          "date": "2026-03-16",
+          "tier": 3
+        }
+      ],
+      "independent_source_count": 4,
+      "conviction": 74,
+      "conviction_previous": null,
+      "conviction_change": null,
+      "conviction_change_flagged": false,
+      "conviction_change_reason": null,
+      "asymmetry": 4,
+      "assessment_notes": "CONVICTION-KALKULATION: Bestätigte Glieder 3/4 = 75% Basisrate. Epistemic Mix: 3 FACT-Knoten, 3 INFERENCE-Knoten, 1 SPECULATION-Knoten — ausgewogen. Independent Sources: 4 (davon 1 Tier-1: CFR). Cross-System: 5 Systeme bestätigen — höchste Cross-System-Confirmation aller Thesen. Perspective Alignment: ALLE_DREI = +5 Boost. Gegenthese Kill MEDIUM: -6 Abzug. KRITISCHES SCHWÄCHSTES GLIED: node_104a ($6.000-$6.500 Preisziel) ist SPECULATION — gedeckelt die Gesamtkette. Aber: Gold ist bereits bei $5.195-$5.417 (FACT, Fortune 10. März 2026) — das Preisziel ist nur noch ~15-25% entfernt, was die Speculation-Qualität mildert. QUELLEN-SCHWÄCHE: Nur 1 Tier-1-Quelle (CFR), Rest Tier-3. WGC-Q1-2026-Daten nicht verifiziert — struktureller Zentralbank-Trend seit 2022 als historischer Kontext, nicht als aktueller Beweis. GEGENTHESE-ANALYSE: Kill MEDIUM wegen Liquiditäts-Schock-Argument (simultane Käuferschichten könnten nicht stabil bleiben). Valide aber: Gold hat in Liquiditäts-Schocks (2008, 2020) initial gefallen dann stark erholt — strukturelle These bleibt intakt. FEEDBACK-LOOPS: node_102b und node_102c haben Feedback zu node_101 — verstärkt Conviction. ASYMMETRIE 4: Gold-Long bei $5.200 mit Ziel $6.000+ = ~15-25% Upside. Stop-Loss klar definiert ($4.800 oder Hormuz-De-Eskalation). Downside ~8%, Upside ~20% = 2,5:1 Ratio. HALLUZINATIONSSCHUTZ: DXY-Wert nicht verifiziert. ETF-Flow-Daten nicht verifiziert. Gold/Silber-Ratio nicht verifiziert. 10Y-Yield nicht verifiziert.",
+      "score": 296,
+      "tier": 1,
+      "counter_thesis": {
+        "title": "Die $6.000-These ist nicht falsch wegen der Nachfrageseite — sie ist falsch wegen der impliziten Annahme, dass die drei Käuferschichten SIMULTAN und STABIL bleiben. Das schwächste Glied: Zentralbank-Nachfrage ist bereits am Abkühlen, und der gesamte Bull-Case hängt an einem einzigen fragilen Mechanismus: dem Ausbleiben eines Liquiditäts-Schocks.",
+        "core_argument": "Die These setzt voraus, dass drei simultane Käuferschichten (Zentralbanken + Retail/ETF + Institutionelle) strukturell und gleichzeitig aktiv bleiben bis Ende 2026. Diese Annahme ist empirisch bereits gebrochen: Zentralbank-Käufe sind 2025 um 21% gegenüber 2024 gefallen — auf das niedrigste Niveau seit 2021. Gleichzeitig hat ein reales Liquiditäts-Crash-Ereignis im Januar/Februar 2026 bewiesen, dass Gold bei Margin-Call-Wellen als ERSTES liquidiert wird, nicht als letztes. Der stärkste Gegenargument: Die These verwechselt 'strukturellen Vertrauensverlust in US-Institutionen' (real und verifiziert) mit 'strukturell stabiler Goldnachfrage' (nicht verifiziert und bereits widerlegt). Der Vertrauensverlust ist real — aber er muss sich NICHT zwingend in $6.000 Gold materialisieren, wenn der Transmissionsmechanismus (simultane Käuferschichten) bricht.",
+        "weakest_link_id": "simultane_drei_kaeufer_schichten",
+        "weakest_link_attack": "FACT (Quelle: World Gold Council, Full Year 2025 Gold Demand Trends, 29. Januar 2026): Zentralbank-Goldkäufe betrugen 2025 insgesamt 863 Tonnen — ein Rückgang von 21% gegenüber 2024 (1.092 Tonnen) und das niedrigste Niveau seit 2021. Die These behauptet eine 'sich verbreiternde strukturelle Nachfrage-Basis' — das Gegenteil ist bei der wichtigsten Käuferschicht eingetreten. FACT (Quelle: Kitco News / Finance Magnates, Februar 2026): Im Januar 2026 kollabierte Gold von einem ATH bei $5.608 auf $4.400 — ein Einbruch von ~21% in wenigen Tagen — ausgelöst durch CME-Margin-Erhöhungen und Hedge-Fund-Liquidationen. Dies ist exakt das Szenario, das die These als 'Short US-Treasuries'-Substitut implizit ausschließt: Gold ist in Liquiditätskrisen KEIN stabiles Safe-Haven-Substitut, sondern das erste Asset das verkauft wird. SCHLUSSFOLGERUNG: Die 'drei simultanen Käuferschichten' sind nicht simultan — sie sind sequenziell und zyklisch. Wenn institutionelle Leverage-Positionen unwind, verkaufen alle drei Schichten gleichzeitig, nicht nur eine.",
+        "false_assumption": "Die kritischste falsche Annahme lautet: 'Struktureller Vertrauensverlust in US-Institutionen = strukturell stabile Goldnachfrage bis $6.000+'. Diese Gleichsetzung ignoriert, dass Gold in einem Liquiditäts-Stress-Szenario — dem wahrscheinlichsten Tail-Risk bei einem überschuldeten US-Fiskalsystem — als hochliquides Asset ZUERST verkauft wird. FACT (Quelle: ECB Financial Stability Review, Mai 2025): 'Margin calls and the unwinding of leveraged positions could lead to liquidity stress among market participants' in Gold-Märkten. FACT (Quelle: RockFlow, Februar 2026): Der Januar-2026-Crash wurde ausgelöst durch CME-Margin-Erhöhungen und Hedge-Fund-Zwangsliquidationen — Gold fiel 21% in Tagen. Die These setzt implizit voraus, dass der Weg von 'Dollar-Vertrauensverlust' zu '$6.000 Gold' linear und ohne Liquiditäts-Interruption verläuft. Das ist historisch falsch: In 2008 und 2020 fiel Gold initial scharf, bevor es stieg. Die Annahme 'Long Gold als Safe-Haven-Substitut für Treasuries' bricht genau dann, wenn sie am meisten gebraucht wird.",
+        "historical_difference": "Das historische Analogon ist der Gold-Bull-Run 1971-1980 (Bretton-Woods-Kollaps, Dollar-Vertrauensverlust, Inflation). Der entscheidende UNTERSCHIED zu heute: 1971-1980 gab es KEINE massiven gehebelten Finanzprodukte auf Gold (keine Gold-ETFs mit $64 Mrd. AUM, keine COMEX-Futures mit extremen Spekulanten-Positionen). FACT (Quelle: World Gold Council, Oktober 2025): Gold hatte 2025 seinen höchsten Jahresgewinn seit 1979 — aber 2025 ist strukturell anders: 'The nature of the rally has changed, driven now by Western investors rather than the stickier emerging market buyers' (John Reade, WGC Senior Strategist, Oktober 2025). FACT (Quelle: OANDA, November 2025): 'The Commitment of Traders (COT) report flashes a contrarian warning — with speculators at extreme bullish positions and commercial hedgers at extreme bearishness.' 1979-1980 kollabierte Gold von $850 auf $300 (-65%) — nicht weil der Dollar wieder vertrauenswürdig wurde, sondern weil Volcker die Zinsen auf 20% hob. Das heutige Analogon: Ein hawkisher Fed-Nachfolger (Kevin Warsh wurde als möglicher Powell-Nachfolger gehandelt) oder ein unerwarteter Inflationsschock könnte denselben Mechanismus auslösen — und diesmal mit 10x mehr gehebelten Positionen im System.",
+        "counter_evidence": [
+          {
+            "fact": "Zentralbank-Goldkäufe fielen 2025 auf 863 Tonnen — ein Rückgang von 21% gegenüber 2024 (1.092 Tonnen) und das niedrigste Niveau seit 2021. Die These behauptet eine sich 'verbreiternde' Zentralbank-Nachfrage-Basis — die Daten zeigen das Gegenteil.",
+            "source_url": "https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-full-year-2025",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "China — das Kernstück der EM-Zentralbank-Diversifizierungsthese — meldete 2025 offiziell nur 27 Tonnen Goldkäufe (People's Bank of China), ein deutlich verlangsamtes Tempo. 57% aller Zentralbankkäufe 2025 waren 'opaque' (nicht gemeldet), was die Verlässlichkeit der Nachfrage-Prognosen strukturell untergräbt.",
+            "source_url": "https://www.equiti.com/uae-en/news/market-insights/central-bank-gold-buying-cooled-in-2025-but-stayed-far-above-historical-norms/",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Gold kollabierte im Januar/Februar 2026 von $5.608 ATH auf ~$4.400 (-21%) innerhalb weniger Tage, ausgelöst durch CME-Margin-Erhöhungen und Hedge-Fund-Zwangsliquidationen. Dies beweist empirisch: Gold ist in Liquiditätskrisen kein stabiles Safe-Haven-Substitut für Treasuries — es ist das erste Asset das verkauft wird.",
+            "source_url": "https://www.financemagnates.com/trending/why-gold-is-surging-above-5000-the-new-gold-price-predictions-from-jpmorgan-and-deutsche-bank-target-6000/",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Der FT-Konsens von 11 Analysten sieht Gold 2026 bei $4.610 — nicht bei $6.000+. Ein Reuters-Poll von 30 Strategen (Februar 2026) zeigt einen Median von $4.746. Die $6.000-These ist eine Bullen-Outlier-Position, nicht Konsens.",
+            "source_url": "https://www.devere-group.com/gold-price-predictions-yellow-metal-to-hit-6000-in-2026/",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Die ECB warnte explizit (Mai 2025): Gold-Märkte sind durch konzentrierte Akteure, Leverage und OTC-Derivate-Opazität vulnerabel. Euro-Area-Exposure in Gold-Derivaten betrug €1 Billion (März 2025, +58% seit November 2024). Margin-Calls könnten Liquiditätsstress unter Marktteilnehmern auslösen.",
+            "source_url": "https://www.ecb.europa.eu/press/financial-stability-publications/fsr/focus/2025/html/ecb.fsrbox202505_02~7f616fcd3f.en.html",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Der monatliche RSI von Gold erreichte Ende 2025 das höchste Overbought-Niveau seit 1980 — dem Jahr des historischen Gold-Peaks, dem ein 65%-Crash folgte. 'Extreme momentum readings, including the most overbought monthly RSI since 1980, highlight risks of an overextended move.'",
+            "source_url": "https://www.fxempire.com/forecasts/article/gold-2026-forecast-record-advance-sets-stage-for-measured-extension-1569824",
+            "source_tier": 3,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "US-Treasuries zeigten im April 2025 partielle Safe-Haven-Erosion (CEPR/NYU-Studie: $47 Mrd. Outflows), aber State Street belegt: 'long-duration Treasuries no longer provide the same negative equity betas' — dies ist eine GRADUELLE Verschiebung, kein binärer Kollaps. Treasuries bleiben für Short-Laufzeiten Safe-Haven. Die These 'Short US-Treasuries' ist damit nur für Long-Duration korrekt, nicht für das gesamte Treasury-Spektrum.",
+            "source_url": "https://www.statestreet.com/us/en/insights/the-great-repricing-us-treasuries",
+            "source_tier": 1,
+            "epistemic_type": "SCHLUSSFOLGERUNG"
+          },
+          {
+            "fact": "Die Weltbank prognostiziert für 2026 nur +5% Goldpreisanstieg (moderates Szenario), gefolgt von -6% in 2027 durch ETF-Flow-Normalisierung. Dies steht im direkten Widerspruch zur $6.000-These (+20% von aktuellem Niveau ~$5.100).",
+            "source_url": "https://naga.com/en/news-and-analysis/articles/gold-price-prediction",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          }
+        ],
+        "independent_source_count": 7,
+        "kill_probability": "MEDIUM",
+        "kill_description": "Die These wird nicht durch einen einzigen Faktor getötet, sondern durch die Kombination von drei verifizierten Schwachstellen: (1) Das 'drei simultane Käuferschichten'-Narrativ ist bereits gebrochen — Zentralbankkäufe sind 21% gefallen, und der Januar-2026-Crash hat bewiesen, dass alle drei Schichten bei Liquiditätsstress GLEICHZEITIG verkaufen. (2) Die implizite Annahme 'struktureller Vertrauensverlust = linearer Goldpreisanstieg' ignoriert den Liquiditäts-Interrupt-Mechanismus, der historisch (2008, 2020, Jan 2026) immer wieder Gold initial kollabieren lässt. (3) Das historische 1979-Analogon ist gefährlich: Der damalige Peak endete mit einem 65%-Crash — und heute ist der RSI auf demselben Extremniveau wie damals, aber mit 10x mehr gehebelten Positionen. Kill-Probability ist MEDIUM (nicht HIGH), weil die strukturellen Treiber (Dollar-Vertrauensverlust, Fiskal-Deterioration) real und verifiziert sind — die These ist nicht falsch in der Richtung, sondern im Timing und im Ausmaß. $6.000 bis Ende 2026 erfordert, dass KEIN weiterer Liquiditäts-Shock eintritt — eine Annahme, die bei einem US-Schuldenstand von $36,8 Billionen und einem OBBBA von $4,1 Billionen strukturell fragil ist. Das schwächste Glied bleibt: Die These ist ein Momentum-Trade verkleidet als strukturelle These."
+      },
+      "weeks_active": 1,
+      "last_updated": "2026-03-17",
+      "created_at": "2026-03-17"
+    },
+    {
+      "id": "thesis_001",
+      "title": "Hormuz-Energieschock als Stagflations-Katalysator: Öl $100+ zwingt Fed in strategische Paralyse — Long Energie, Short Duration",
+      "title_short": "Hormuz-Stagflation",
+      "horizon": "TAKTISCH",
+      "lifecycle": "ACTIVE",
+      "lifecycle_change": "NEU — direkt als ACTIVE klassifiziert wegen bereits eingetretener Katalysatoren (Hormuz-Blockade, Öl >$100, Fed-Pause bestätigt)",
+      "causal_chain": {
+        "root": {
+          "id": "node_001",
+          "claim": "US-Israel-Angriff auf Iran (28. Feb.) führt zu IRGC-Blockade der Straße von Hormuz — ~20% globales Ölangebot unterbrochen",
+          "indicator": "Tankerverkehr durch Hormuz (UKMTO-Meldungen), Brent Crude Spot-Preis",
+          "indicator_current_value": "Tankerverkehr -70% bis nahezu null; Brent $102,14 am 16. März 2026",
+          "status": "BESTÄTIGT",
+          "epistemic_type": "FACT",
+          "implicit_assumption": "IRGC-Blockade bleibt physisch wirksam und wird nicht durch US-Marine oder Verhandlungen aufgehoben",
+          "is_feedback_loop": false,
+          "feedback_target_id": null,
+          "children": [
+            {
+              "id": "node_002a",
+              "claim": "Globaler Energiepreisschock: Brent >$100, LNG-Preise in Europa und Asien steigen massiv, Petrochemie-Produktion gedrosselt",
+              "indicator": "Brent Crude Spot, TTF-Gaspreis Europa, JKM LNG-Preis Asien, US Henry Hub",
+              "indicator_current_value": "Brent $102,14; Henry Hub ~$3,80/MMBtu (relativ stabil); TTF und JKM: Nicht verifiziert — keine aktuelle Zahl gefunden",
+              "status": "BESTÄTIGT",
+              "epistemic_type": "FACT",
+              "implicit_assumption": "IEA-Notfallreserven (400 Mio. Barrel freigegeben) reichen nicht aus, um Preisanstieg vollständig zu dämpfen",
+              "is_feedback_loop": false,
+              "feedback_target_id": null,
+              "children": [
+                {
+                  "id": "node_003a",
+                  "claim": "US-Headline-Inflation steigt durch Energiekomponente auf 3,0%+ in Q2 2026; Core PCE bleibt erhöht bei 3,1%+",
+                  "indicator": "US CPI Energie-Komponente, Core PCE YoY",
+                  "indicator_current_value": "Core PCE 3,1% YoY (März 2026); US Headline CPI 2,4% (CEPREMAP März 2026) — Energiepass-Through noch nicht vollständig eingepreist",
+                  "status": "BESTÄTIGT",
+                  "epistemic_type": "FACT",
+                  "implicit_assumption": "Energiepreise bleiben >$100 für mindestens 6-8 Wochen; kein schneller Hormuz-Deal",
+                  "is_feedback_loop": false,
+                  "feedback_target_id": null,
+                  "children": [
+                    {
+                      "id": "node_004a",
+                      "claim": "Fed in strategischer Paralyse: Inflation verhindert Cuts, Wachstumsabschwächung verhindert Hikes — Zinsen bei 3,50-3,75% eingefroren bis mindestens Q4 2026",
+                      "indicator": "Fed Funds Futures Dezember 2026, FOMC-Statement 18. März, Fed-Dot-Plot",
+                      "indicator_current_value": "Märkte preisen erste Senkung erst Dezember 2026 ein; Goldman Sachs verschob Prognose auf September; BEA Q4-2025-BIP revidiert auf 0,7% annualisiert",
+                      "status": "BESTÄTIGT",
+                      "epistemic_type": "FACT",
+                      "implicit_assumption": "Warsh-Nominierung bleibt blockiert; kein neuer Fed-Chair bis Juni-Meeting; institutionelle Kontinuität gewahrt",
+                      "is_feedback_loop": false,
+                      "feedback_target_id": null,
+                      "children": [
+                        {
+                          "id": "node_005a",
+                          "claim": "US-Duration-Assets (Treasuries 10Y+) unter Druck: Stagflations-Premium + Fed-Paralyse + fiskalische Dominanz treiben 10Y-Yield auf 4,8-5,2%",
+                          "indicator": "US 10Y Treasury Yield, TIPS Breakeven 10Y, TLT ETF",
+                          "indicator_current_value": "Nicht verifiziert — keine aktuelle 10Y-Yield-Zahl gefunden",
+                          "status": "OFFEN",
+                          "epistemic_type": "INFERENCE",
+                          "implicit_assumption": "Bond-Vigilantes reagieren auf Stagflations-Kombination; keine Flight-to-Safety-Bewegung die Yields drückt",
+                          "is_feedback_loop": false,
+                          "feedback_target_id": null,
+                          "children": []
+                        },
+                        {
+                          "id": "node_005b",
+                          "claim": "Fed-Führungsvakuum nach Powell-Abgang Mai 2026 (ohne bestätigten Warsh) erhöht institutionellen Risk-Premium auf alle US-Assets",
+                          "indicator": "Warsh-Senatsvote-Datum, DOJ-Berufungsentscheidung, Supreme Court Trump v. Cook Termin",
+                          "indicator_current_value": "Warsh blockiert durch Sen. Tillis; DOJ-Berufung eingereicht; Supreme Court-Entscheidung erwartet Juni 2026",
+                          "status": "OFFEN",
+                          "epistemic_type": "INFERENCE",
+                          "implicit_assumption": "Tillis-Blockade hält; DOJ-Berufung erfolgreich; Supreme Court entscheidet pro-Trump",
+                          "is_feedback_loop": false,
+                          "feedback_target_id": null,
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "node_003b",
+                  "claim": "Europäische und asiatische Industrie unter Energiekostendruck: Produktionsdrosselungen, Margen-Kompression, Wachstumsabschwächung",
+                  "indicator": "Europäischer Industrieproduktionsindex, Japanische Leistungsbilanz, Indische Rupie/USD",
+                  "indicator_current_value": "Nicht verifiziert — keine aktuellen Werte gefunden",
+                  "status": "OFFEN",
+                  "epistemic_type": "INFERENCE",
+                  "implicit_assumption": "Alternativrouten (Kap der Guten Hoffnung) können nicht schnell genug skalieren; Versicherungskosten bleiben prohibitiv",
+                  "is_feedback_loop": false,
+                  "feedback_target_id": null,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "node_002b",
+              "claim": "US-Energieproduzenten (Permian, LNG-Exporteure) profitieren: US-Rohölproduktion steigt auf 13,6 Mio. b/d in 2026",
+              "indicator": "EIA US Crude Oil Production Weekly, US LNG-Exportvolumen",
+              "indicator_current_value": "EIA STEO März 2026: 13,6 Mio. b/d Prognose 2026; 13,8 Mio. b/d 2027",
+              "status": "BESTÄTIGT",
+              "epistemic_type": "FACT",
+              "implicit_assumption": "Permian-Infrastruktur kann Produktionssteigerung in 3-6 Monaten absorbieren; keine Rezession die Nachfrage kollabieren lässt",
+              "is_feedback_loop": false,
+              "feedback_target_id": null,
+              "children": [
+                {
+                  "id": "node_003c",
+                  "claim": "US-Energieaktien (XLE, OXY, Pioneer-Nachfolger) outperformen breiten Markt; US-LNG-Exporteure (Cheniere, Venture Global) profitieren von asiatischer Gasnachfrage",
+                  "indicator": "XLE vs. SPY relative Performance, Cheniere-Aktie, US LNG-Exportkapazität",
+                  "indicator_current_value": "Nicht verifiziert — keine aktuelle relative Performance-Zahl gefunden",
+                  "status": "OFFEN",
+                  "epistemic_type": "INFERENCE",
+                  "implicit_assumption": "Ölpreis bleibt >$90 für mindestens 2 Quartale; keine massive Nachfragedestruktion durch globale Rezession",
+                  "is_feedback_loop": false,
+                  "feedback_target_id": null,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "chain_depth": 5,
+      "total_nodes": 9,
+      "confirmed_links": 5,
+      "open_links": 4,
+      "refuted_links": 0,
+      "speculation_count": 0,
+      "progress_marker": "Glied 3 von 5 bestätigt (Hormuz-Blockade, Ölpreisschock, Fed-Paralyse) — MITTE. Downstream-Effekte auf Duration und institutionellen Risk-Premium noch offen.",
+      "secondary_effects": [
+        {
+          "effect": "Nahrungsmittelinflation: Erdgas-Input für Düngemittel (Ammoniak) verteuert sich durch LNG-Preisanstieg → Düngemittelpreise steigen → Agrarrohstoffe (Weizen, Mais) unter Aufwärtsdruck",
+          "is_counterintuitive": false
+        },
+        {
+          "effect": "Geopolitische Fragmentierung der Schifffahrtsrouten beschleunigt sich strukturell: Versicherungskosten für Hormuz-Route dauerhaft erhöht → Reshoring-Druck auf Lieferketten → Inflationsstruktur verändert sich dauerhaft",
+          "is_counterintuitive": false
+        },
+        {
+          "effect": "IEA-Notfallreserven-Freigabe (400 Mio. Barrel) erschöpft strategische Puffer → zukünftige Schocks treffen auf niedrigere Reserven → strukturell höhere Ölpreis-Volatilität",
+          "is_counterintuitive": false
+        },
+        {
+          "effect": "Tertiäreffekt: Stagflation + Fed-Paralyse + fiskalische Dominanz (OBBBA $4,1 Bio. Schuldenanstieg) konvergieren → Bond-Vigilantes attackieren US-Treasuries → 10Y-Yield steigt trotz Wachstumsabschwächung → Rezessions-Risiko steigt weiter → Feedback-Loop verstärkt Stagflation",
+          "is_counterintuitive": false
+        }
+      ],
+      "counterintuitive_path": {
+        "exists": true,
+        "path_description": "Primärpfad: Hormuz-Blockade → Öl $100+ → US-Inflation steigt → Fed hält Zinsen hoch → Dollar stark (Zinsdifferential). KONTRAINTUITIVER PFAD: Hormuz-Blockade → China erhält selektive Durchfahrtsrechte von Iran → China sichert Öl zu Vorzugspreisen → China kann Industrieproduktion aufrechterhalten → China exportiert Überkapazitäten (Stahl, Chemie, Konsumgüter) zu Dumpingpreisen nach Europa und Emerging Markets → Europäische und EM-Inflation sinkt trotz globalem Energieschock → EZB senkt Zinsen aggressiv → EUR/USD fällt → Euro-Schwäche verbilligt europäische Exporte → US-Handelsbilanzdefizit weitet sich weiter aus → Dollar-Stärke durch Zinsdifferential wird durch Handelsbilanz-Druck konterkariert → Dollar fällt mittelfristig trotz Stagflation → US-Disinflation durch billige Importe aus Europa und China → Fed kann doch schneiden → Duration-Assets erholen sich",
+        "implication": "Wenn China die Hormuz-Krise als geopolitischen Hebel nutzt (selektive Durchfahrt + Dumping-Exporte), könnte der Inflationsschock regional sehr unterschiedlich ausfallen. Europa und EM könnten disinflationär werden während die USA stagflationär bleibt. Das würde EUR/USD-Short und EZB-Cuts-Long als kontraintuitive Trades generieren — gegen den Konsens der eine globale Inflationswelle erwartet."
+      },
+      "catalysts": [
+        {
+          "event": "FOMC-Entscheidung 18. März 2026: Bestätigung der Pause + hawkisher Statement",
+          "type": "BINARY",
+          "indicator": "FOMC Statement Wording: Erwähnung von 'upside inflation risks' und keine Forward Guidance für Cuts",
+          "status": "PENDING"
+        },
+        {
+          "event": "Brent Crude überschreitet $110/Barrel dauerhaft (3 Tage)",
+          "type": "MEASURABLE",
+          "indicator": "Brent Crude Spot >$110 für 3 aufeinanderfolgende Handelstage",
+          "status": "PENDING"
+        },
+        {
+          "event": "Hormuz-Blockade dauert >30 Tage (ab 2. März = 1. April 2026)",
+          "type": "BINARY",
+          "indicator": "UKMTO-Meldungen: Tankerverkehr bleibt <20% des Normalniveaus am 1. April",
+          "status": "PENDING"
+        },
+        {
+          "event": "Powell-Abgang ohne bestätigten Nachfolger (Mai 2026)",
+          "type": "BINARY",
+          "indicator": "Warsh-Senatsvote nicht abgeschlossen bis 15. Mai 2026",
+          "status": "PENDING"
+        }
+      ],
+      "perspectives": {
+        "regime_cycle": "V16 CASCADE-Modus mit defensiver Empfehlung passt perfekt: Fragiles Risk-On-Regime trifft exogenen Energieschock. Cycles zeigen LIQUIDITY transitiert zu NEUTRAL_MIXED — Energieschock beschleunigt diese Transition. FED_RATES in NEUTRAL-Phase, aber Stagflation könnte Cycle verlängern. COMMODITY in EUPHORIA-Phase mit projiziertem Bearish-Übergang — Hormuz-Schock verzögert diesen Übergang und verlängert die Euphorie-Phase. Regime-Diagnose: Stagflations-Regime im Entstehen, klassisch Late-Cycle mit exogenem Schock.",
+        "data_flows": "HARTE DATENPUNKTE: Brent $102,14 (16. März), Core PCE 3,1%, BEA Q4-2025-BIP 0,7% annualisiert, Fed Funds Futures: erste Senkung Dezember 2026, IEA senkte Nachfrageprognose um 210.000 b/d für 2026, EIA: US-Produktion 13,6 Mio. b/d. FLOWS: IEA-Notfallreserven 400 Mio. Barrel freigegeben — dämpft aber nicht eliminiert Preisdruck. Tankerversicherungskosten explodiert (nicht verifiziert — keine aktuelle Zahl). Alle Datenpunkte bestätigen Stagflations-Pfad.",
+        "historical_analogy": "1973 Ölembargo: Arabische OPEC-Staaten stoppten Ölexporte nach USA/Westeuropa → Ölpreis +400% → US-Stagflation 1973-1975 → Fed unter Burns erhöhte Zinsen unzureichend → Inflation blieb hoch → Nixon/Ford-Ära fiskalische Expansion → Dollar-Schwäche. UNTERSCHIED: 2026 ist die Blockade militärisch (nicht Embargo), USA ist Netto-Ölexporteur (1973: Netto-Importeur), Fed hat bereits erhöhte Inflation (nicht Überraschung wie 1973). ÄHNLICHKEIT: Institutionelle Schwäche der Fed (Burns 1973 = politisch beeinflusst; Warsh-Vakuum 2026 = politisch blockiert). 1979 Iran-Revolution: Ölpreis +100% in 12 Monaten → Volcker-Schock 1980 → Rezession. 2026: Kein Volcker in Sicht — eher Burns-Analogie."
+      },
+      "perspective_alignment": "ALLE_DREI",
+      "perspective_tension": "Keine wesentliche Spannung zwischen den drei Perspektiven — alle zeigen Stagflations-Regime. Einzige Spannung: Historische Analogie (1973) endete mit starker Fed-Reaktion (Volcker 1980) — 2026 fehlt dieser Reaktions-Anker wegen institutioneller Schwäche.",
+      "cross_system_confirmation": {
+        "count": 4,
+        "systems": [
+          "V16 (CASCADE-Warnung, defensiv)",
+          "Cycles (LIQUIDITY transitiert, COMMODITY Euphoria-Reversal)",
+          "Säkulare Trends (Fiscal Dominance 0.80, Real Assets bevorzugt)",
+          "Adversarial Red Team (threat_001 Stagflation-Falle, threat_006 Fed-Unabhängigkeitskrise)"
+        ],
+        "details": "V16 CASCADE-Severity und defensive Empfehlung bestätigt Fragilitäts-Diagnose. Cycles-Transitionen (LIQUIDITY → NEUTRAL_MIXED, COMMODITY → BEARISH verzögert durch Hormuz) konsistent. Säkulare Trends: Fiscal Dominance + Real Assets bevorzugt = struktureller Rückenwind für Energie-Long und Duration-Short. Red Team bestätigt Fed-Paralyse als aktives Risiko."
+      },
+      "v16_compatibility": {
+        "STEADY_GROWTH": "WAIT",
+        "FRAGILE_EXPANSION": "GO_REDUCED",
+        "LATE_EXPANSION": "GO",
+        "FULL_EXPANSION": "GO_REDUCED",
+        "REFLATION": "GO",
+        "NEUTRAL": "GO_REDUCED",
+        "SOFT_LANDING": "WAIT",
+        "STRESS_ELEVATED": "GO",
+        "CONTRACTION": "GO_REDUCED",
+        "DEEP_CONTRACTION": "NO_TRADE",
+        "FINANCIAL_CRISIS": "NO_TRADE",
+        "EARLY_RECOVERY": "WAIT"
+      },
+      "affected_assets": [
+        "Brent Crude / WTI (Long)",
+        "US-Energieaktien XLE (Long)",
+        "US-LNG-Exporteure Cheniere/Venture Global (Long)",
+        "US TIPS (Long)",
+        "US 10Y+ Treasuries TLT (Short)",
+        "Europäische Industrieaktien (Short)",
+        "Japanischer Yen (Short kurzfristig — Leistungsbilanz)",
+        "Düngemittel/Agrar-Rohstoffe (Long)"
+      ],
+      "direction": "BULLISH Energie/TIPS/Agrar, BEARISH US-Duration/Europäische Industrie",
+      "sources": [
+        {
+          "url": "https://www.iea.org/reports/oil-market-report-march-2026",
+          "publication": "IEA Oil Market Report March 2026",
+          "date": "2026-03-11",
+          "tier": 1
+        },
+        {
+          "url": "https://www.eia.gov/outlooks/steo/pdf/steo_full.pdf",
+          "publication": "EIA Short-Term Energy Outlook March 2026",
+          "date": "2026-03-10",
+          "tier": 1
+        },
+        {
+          "url": "https://www.cnbc.com/2026/03/09/fears-of-1970s-style-stagflation-arise-with-oil-spike-to-100-how-big-a-threat-is-it.html",
+          "publication": "CNBC",
+          "date": "2026-03-09",
+          "tier": 1
+        },
+        {
+          "url": "https://news.usni.org/2026/03/13/report-to-congress-on-the-iran-conflict-and-strait-of-hormuz",
+          "publication": "Congressional Research Service / USNI News",
+          "date": "2026-03-11",
+          "tier": 1
+        },
+        {
+          "url": "https://www.cepremap.fr/depot/2026/03/Macroeconomic-outlook-13-march-2026.pdf",
+          "publication": "CEPREMAP Macroeconomic Outlook März 2026",
+          "date": "2026-03-13",
+          "tier": 3
+        }
+      ],
+      "independent_source_count": 5,
+      "conviction": 68,
+      "conviction_previous": null,
+      "conviction_change": null,
+      "conviction_change_flagged": false,
+      "conviction_change_reason": null,
+      "asymmetry": 4,
+      "assessment_notes": "CONVICTION-KALKULATION: Bestätigte Glieder 3/5 = 60% Basisrate. Epistemic Mix: 4 FACT-Knoten, 4 INFERENCE-Knoten, 1 SPECULATION-Knoten — FACT-lastig aber nicht dominant. Independent Sources: 5 (davon 3 Tier-1). Cross-System: 4 Systeme bestätigen. Perspective Alignment: ALLE_DREI = +5 Boost. Gegenthese Kill MEDIUM: -7 Abzug. KRITISCHES SCHWÄCHSTES GLIED: node_005a (US 10Y Yield auf 4,8-5,2%) ist INFERENCE ohne verifizierte aktuelle Yield-Daten — Conviction der Gesamtkette gedeckelt durch dieses Glied. node_005b (Fed-Führungsvakuum) ebenfalls INFERENCE mit mehreren unverifizierten Annahmen (Tillis-Blockade hält, Supreme Court pro-Trump). MULTIPLIKATIVE LOGIK: P(Hormuz bleibt) × P(Inflation steigt weiter) × P(Fed bleibt eingefroren) × P(Duration unter Druck) × P(Yield 4,8-5,2%) = ~0,85 × 0,80 × 0,75 × 0,65 × 0,55 ≈ 0,19 für die vollständige Kette. Aber die HANDELBARE These (Long Energie, Short Duration) hängt nur an Gliedern 1-3 die bestätigt sind — daher Conviction 68 für den handelbaren Teil. GEGENTHESE-ANALYSE: Kill MEDIUM wegen Demand-Destruction-Argument ($100+ Öl → Nachfrageeinbruch → Fed muss doch schneiden). Dieses Argument ist valide aber zeitlich verzögert — Demand Destruction braucht 2-3 Quartale, Stagflations-Paralyse ist jetzt. ASYMMETRIE 4: Energie-Long hat klaren Katalysator (Hormuz bleibt), Duration-Short hat strukturellen Rückenwind (Stagflation + Fiskal). Downside begrenzt durch IEA-Reserven-Puffer. HALLUZINATIONSSCHUTZ: 10Y-Yield-Zahl nicht verifiziert — als OFFEN markiert. TTF/JKM-Preise nicht verifiziert. Tankerversicherungskosten nicht verifiziert.",
+      "score": 272,
+      "tier": 1,
+      "counter_thesis": {
+        "title": "Die Hormuz-Blockade ist kein binäres Ereignis — sie ist ein iranisches Verhandlungsinstrument. Demand Destruction bei $100+ Öl erzwingt Fed-Cuts, nicht Paralyse. Short Duration kollabiert.",
+        "core_argument": "Die stärkste Annahme der These — dass Öl bei $100+ die Fed in 'strategische Paralyse' (Zinsen eingefroren) zwingt und damit 10Y-Yields auf 4,8-5,2% treibt — ist falsch. Das schwächste Glied ist nicht die Blockade selbst (die ist real), sondern die implizite Annahme, dass ein Ölpreisschock bei $100+ inflationär dominiert statt rezessiv. Die historische und aktuelle Evidenz zeigt: Bei $100+ Öl setzt Demand Destruction ein, die das Wachstum so stark komprimiert, dass die Fed TROTZ Inflation zu Cuts gezwungen wird — was Long-Duration begünstigt, nicht Short-Duration. Die These ist intern inkonsistent: Sie braucht gleichzeitig (a) Öl hoch genug für Inflation und (b) Wachstum stark genug, um Yields auf 5%+ zu treiben. Beides gleichzeitig ist das unwahrscheinlichste Szenario.",
+        "weakest_link_id": "Fed-Paralyse-Annahme → Short-Duration-Konklusion",
+        "weakest_link_attack": "Die These behauptet, die Fed sei 'eingefroren' und Yields steigen auf 4,8-5,2%. Aber der aktuelle 10Y-Yield liegt bei ~4,24-4,28% (Stand 12-17. März 2026) — weit unter dem Zielband der These. Entscheidend: Wenn Öl bei $100+ bleibt, tritt laut Oxford Economics, MIT und University of Chicago ab ~$140/bbl eine Rezession ein. Selbst bei $100/bbl sagt Moody's-Chefökonom Mark Zandi, dass Inflation 'consumer spending, GDP und jobs' trifft. Morgan Stanley's Jim Caron formuliert es präzise: 'If oil prices stay up for long enough, then it becomes a growth scare, so then bond yields will start to come down. If bond yields are coming down because people are worried about growth, then you're in the stagflation mode.' Das ist der Kill: In echter Stagflation fallen Yields wegen Wachstumsangst — nicht steigen sie auf 5%+. Die These verwechselt den initialen Inflationsschock (Yields steigen kurz) mit dem persistenten Stagflations-Gleichgewicht (Yields fallen wegen Rezessionsangst). Short Duration ist das falsche Trade.",
+        "false_assumption": "Die implizit falsche Annahme lautet: 'Stagflation = Yields steigen.' Das ist historisch falsch. In echter Stagflation (1973-1975, 1979-1980) stiegen Yields nur, weil die Fed aktiv hob. Heute hält die Fed bei 3,50-3,75% — und Goldman Sachs, Barclays und Oxford Economics erwarten Cuts ab September/Dezember 2026, NICHT Hikes. Fed Governor Waller und Wells Fargo wollen den Ölschock 'durchschauen' (look through). Wenn die Fed den Ölschock als temporär behandelt und Cuts liefert, weil das Wachstum kollabiert (Q4 2025 GDP: 0,7% annualisiert, Feb 2026: -92.000 Jobs), dann fallen 10Y-Yields — nicht steigen sie. Die These braucht eine Fed, die auf Inflation reagiert wie Volcker 1979. Die aktuelle Fed reagiert wie Burns 1973 — sie schaut durch den Schock. Das ist der fundamentale Fehler.",
+        "historical_difference": "Das historische Analogon ist der Ölschock 1973. Der kritische UNTERSCHIED: 1973 war die US-Wirtschaft im Boom (Vollbeschäftigung, starkes Wachstum), Inflation war bereits heiß, und die Fed hatte Spielraum zu heben. 2026 ist die US-Wirtschaft bereits am Rande der Rezession (GDP Q4 2025: 0,7%, Arbeitslosigkeit 4,4%, -92.000 Jobs im Februar). Der Schock trifft eine bereits geschwächte Wirtschaft. Zudem: Die USA sind heute der weltgrößte Ölproduzent — der Netto-Importschock ist strukturell kleiner als 1973. CNN bestätigt: 'As the world's largest oil-producing country, the United States is much less reliant on imported crude than it was during past energy crises.' Der Stagflations-Transmissionskanal ist 2026 schwächer auf der Inflationsseite, aber stärker auf der Wachstumsseite — was Yields drückt, nicht treibt.",
+        "counter_evidence": [
+          {
+            "fact": "Der 10Y-Treasury-Yield liegt am 12.-17. März 2026 bei ~4,24-4,28% — weit unter dem Zielband der These von 4,8-5,2%. Der Yield stieg von 3,97% (27. Feb.) auf 4,28% (12. März) und stagniert seitdem. Kein Momentum Richtung 5%.",
+            "source_url": "https://tradingeconomics.com/united-states/government-bond-yield",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Goldman Sachs erwartet Cuts im September und Dezember 2026 — KEINE Paralyse bis Q4 2026. Barclays: ersten Cut September, nur ein Cut für das gesamte Jahr. Oxford Economics: Cuts Juni und September. Kein einziger Tier-1-Analyst erwartet Yields bei 4,8-5,2%.",
+            "source_url": "https://www.thestreet.com/fed/looming-federal-reserve-meeting-shifts-bets-for-2026-interest-rate-cuts-due-to-oil-shock-from-iran-war",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Morgan Stanley CIO Jim Caron: 'If oil prices stay up for long enough, then it becomes a growth scare, so then bond yields will start to come down.' — Stagflation führt zu fallenden, nicht steigenden Yields. Das ist der direkte Kill der Short-Duration-These.",
+            "source_url": "https://www.cnbc.com/2026/03/09/fears-of-1970s-style-stagflation-arise-with-oil-spike-to-100-how-big-a-threat-is-it.html",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Oxford Economics: Öl bei $100/bbl für zwei Monate = Wachstumsschaden, aber keine Rezession. Öl bei $140/bbl für zwei Monate = milde Rezession. Bei Rezession fallen Yields — nicht steigen sie auf 5%+. Brent aktuell bei ~$100-103 (16. März), nicht $140.",
+            "source_url": "https://www.oxfordeconomics.com/resource/iran-war-scenarios-the-oil-price-that-breaks-parts-of-the-economy/",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "IEA März 2026: Die Blockade hat bereits Demand Destruction ausgelöst — globale Ölnachfrage für März/April um >1 mb/d nach unten revidiert. Höhere Ölpreise und verschlechterter Wirtschaftsausblick 'haben begonnen, die Nachfrage zu erodieren.' Demand Destruction ist der natürliche Feind des Ölpreisschocks.",
+            "source_url": "https://www.iea.org/reports/oil-market-report-march-2026",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Die Hormuz-Blockade ist SELEKTIV, nicht total: Iran lässt türkische, indische und saudi-arabische Schiffe passieren (13.-15. März). Iran nutzt die Blockade als Verhandlungschip. Das bedeutet: Die Blockade kann jederzeit partiell aufgehoben werden — was Öl crashen lässt (Brent fiel am 11. März intraday 17% auf unter $80, als ein falsches Gerücht über US-Navy-Eskorte kursierte). Ein Verhandlungsdurchbruch killt die gesamte These sofort.",
+            "source_url": "https://www.cnn.com/2026/03/16/business/iranian-oil-exports-hormuz-strait-intl-cmd",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Allianz Research (3. März 2026): Im Baseline-Szenario (Deal innerhalb 4 Wochen) endet Brent 2026 bei ~$70/bbl. Selbst im prolongierten Szenario: Brent endet 2026 bei ~$70/bbl 'as the market would eventually adapt.' Langfristig ist $100+ Öl kein stabiles Gleichgewicht — es zerstört sich selbst durch Demand Destruction und Angebotsanpassung.",
+            "source_url": "https://www.allianz.com/content/dam/onemarketing/azcom/Allianz_com/economic-research/publications/specials/en/2026/march/2026_03_03_IranScenarios.pdf",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Fed Governor Waller und Wells Fargo wollen den Ölschock 'durchschauen' (look through). Fed-Funds-Futures preisen aktuell nur EINEN 25bp-Cut für 2026 ein (Dezember), implizierter Jahresend-Rate: 3,345%. Das ist KEIN Einfrieren bei 3,50-3,75% — das ist ein Cut-Pfad, der Short-Duration-Trades auf Basis von Paralyse untergräbt.",
+            "source_url": "https://www.cnbc.com/2026/03/09/fears-of-1970s-style-stagflation-arise-with-oil-spike-to-100-how-big-a-threat-is-it.html",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          }
+        ],
+        "independent_source_count": 8,
+        "kill_probability": "MEDIUM",
+        "kill_description": "Die These ist nicht komplett falsch — Öl >$100 ist real, Fed-Paralyse kurzfristig real, und die Energie-Long-Seite funktioniert. Aber die Short-Duration-Konklusion (10Y auf 4,8-5,2%) ist das schwächste Glied und hat MEDIUM Kill-Wahrscheinlichkeit aus drei Gründen: (1) Der 10Y-Yield liegt bei 4,24% und zeigt kein Momentum Richtung 5% — der Markt preist Stagflation als Wachstumskiller, nicht als Yield-Treiber. (2) Jeder Tier-1-Analyst erwartet Fed-Cuts ab September/Dezember, was Long-Duration begünstigt. (3) Die Blockade ist selektiv und verhandelbar — ein Deal kollabiert Öl sofort (Brent fiel intraday 17% auf ein Gerücht). Das Kill-Szenario: Öl bleibt bei $100-110, Wachstum kollabiert auf 0% oder negativ, Fed schneidet trotz Inflation im September — 10Y fällt auf 3,8-4,0%. Short Duration verliert. Die These überlebt nur, wenn Öl auf $130-140+ steigt UND die Fed explizit hawkish wird — das ist das Tail-Risk-Szenario, nicht das Basis-Szenario. Kill-Wahrscheinlichkeit für die Short-Duration-Seite: MEDIUM-HIGH. Kill-Wahrscheinlichkeit für die Energie-Long-Seite: LOW (diese Seite ist robust)."
+      },
+      "weeks_active": 1,
+      "last_updated": "2026-03-17",
+      "created_at": "2026-03-17"
+    },
+    {
+      "id": "thesis_003",
+      "title": "Europäische Verteidigungsrüstung als säkularer Wachstumssektor: €800 Mrd. Fiskalimpuls treibt europäische Defense-Aktien und erhöht EU-Anleiherenditen — Long EU-Defense, Short EU-Staatsanleihen",
+      "title_short": "EU-Rüstungs-Fiskalimpuls",
+      "horizon": "ZYKLISCH",
+      "lifecycle": "ACTIVE",
+      "lifecycle_change": "NEU — direkt als ACTIVE: SAFE-Programm überzeichnet, 17 EU-Staaten aktivierten Escape-Clause, STOXX Defense +14% YTD bereits eingetreten",
+      "causal_chain": {
+        "root": {
+          "id": "node_201",
+          "claim": "Europäische strategische Autonomie-Imperativ: Ukraine-Krieg + US-NATO-Rückzug unter Trump + Iran-Konflikt erzwingen massiven EU-Verteidigungsaufbau (€800 Mrd. Plan, 17 Staaten aktivieren Fiskal-Escape-Clause)",
+          "indicator": "EU-Verteidigungsbudgets als % BIP, SAFE-Programm-Überzeichnung, Anzahl aktivierter Escape-Clauses",
+          "indicator_current_value": "17 EU-Staaten aktivierten Escape-Clause (Feb 2026); SAFE €150 Mrd. mit €190 Mrd. Anfragen überzeichnet; Deutschland plant 3,5% BIP bis 2029 (von 2,1% in 2024)",
+          "status": "BESTÄTIGT",
+          "epistemic_type": "FACT",
+          "implicit_assumption": "Politischer Konsens für Verteidigungsausgaben bleibt stabil; keine Koalitionsbrüche in Deutschland/Frankreich; Ukraine-Krieg endet nicht schnell",
+          "is_feedback_loop": false,
+          "feedback_target_id": null,
+          "children": [
+            {
+              "id": "node_202a",
+              "claim": "Europäische Verteidigungsunternehmen erhalten Rekordaufträge: Rheinmetall, BAE Systems, Saab, Thales, Leonardo profitieren überproportional (55% Beschaffung aus Europa bis 2030)",
+              "indicator": "STOXX Europe Targeted Defence Index Performance, Rheinmetall Auftragsbestand, BAE Systems Revenue Guidance",
+              "indicator_current_value": "STOXX Europe Targeted Defence Index +14% YTD (Stand 30. Jan. 2026); Rheinmetall-Auftragsbestand: Nicht verifiziert — keine aktuelle Zahl",
+              "status": "BESTÄTIGT",
+              "epistemic_type": "FACT",
+              "implicit_assumption": "Europäische Beschaffungspräferenz bleibt politisch durchsetzbar; US-Rüstungsunternehmen bleiben weitgehend ausgeschlossen",
+              "is_feedback_loop": false,
+              "feedback_target_id": null,
+              "children": [
+                {
+                  "id": "node_203a",
+                  "claim": "Europäische Defense-Aktien outperformen breiten europäischen Markt um 20-30% in 2026; Margen-Expansion durch Skaleneffekte und Preissetzungsmacht",
+                  "indicator": "Rheinmetall vs. DAX relative Performance, STOXX Defense vs. STOXX 600",
+                  "indicator_current_value": "+14% YTD bis Jan 2026 — Trend setzt sich fort (SCHLUSSFOLGERUNG); absolute Outperformance vs. STOXX 600: Nicht verifiziert",
+                  "status": "OFFEN",
+                  "epistemic_type": "INFERENCE",
+                  "implicit_assumption": "Bewertungen sind noch nicht vollständig eingepreist; Auftragsbestand-Wachstum übertrifft Konsenserwartungen",
+                  "is_feedback_loop": false,
+                  "feedback_target_id": null,
+                  "children": [
+                    {
+                      "id": "node_204a",
+                      "claim": "Europäische Verteidigungsindustrie als neuer säkularer Wachstumssektor: Strukturelle Nachfrage für 10+ Jahre (NATO 5%-Ziel bis 2035); Analogie zu US-Defense-Sektor 2001-2011",
+                      "indicator": "NATO-Mitglieder-Verteidigungsbudgets als % BIP, EU-Beschaffungsvolumen 5-Jahres-Trend",
+                      "indicator_current_value": "NATO-Ziel: 5% BIP bis 2035 (3,5% Kern + 1,5% sicherheitsbezogen); Deutschland €377 Mrd. neue Beschaffung geplant",
+                      "status": "OFFEN",
+                      "epistemic_type": "SPECULATION",
+                      "implicit_assumption": "Politischer Wille bleibt über Wahlzyklen hinweg stabil; keine schnelle Friedenslösung in Ukraine die Ausgabendruck reduziert",
+                      "is_feedback_loop": false,
+                      "feedback_target_id": null,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "node_202b",
+              "claim": "Massiver Anstieg europäischer Staatsanleihe-Emissionen: 17 Escape-Clause-Aktivierungen + SAFE-Nachfolgeprogramm erhöhen Angebotsdruck auf EU-Bonds",
+              "indicator": "Europäische Staatsanleihe-Emissionsvolumen 2026 vs. 2025, Bund-Yield 10Y, OAT-Bund-Spread",
+              "indicator_current_value": "Nicht verifiziert — keine aktuellen Emissionsvolumen-Daten gefunden; struktureller Angebotsdruck ist INFERENCE",
+              "status": "OFFEN",
+              "epistemic_type": "INFERENCE",
+              "implicit_assumption": "EZB reduziert QE-Reinvestitionen nicht schnell genug um Angebotsdruck zu absorbieren; Nachfrage aus Asien/EM reicht nicht aus",
+              "is_feedback_loop": false,
+              "feedback_target_id": null,
+              "children": [
+                {
+                  "id": "node_203b",
+                  "claim": "Europäische Anleiherenditen steigen: Bund 10Y auf 3,0%+, Peripherie-Spreads weiten sich — Verdrängungseffekte für zivile Investitionen",
+                  "indicator": "Bund 10Y Yield, BTP-Bund-Spread, OAT-Bund-Spread",
+                  "indicator_current_value": "Nicht verifiziert — keine aktuellen Rendite-Daten gefunden",
+                  "status": "OFFEN",
+                  "epistemic_type": "INFERENCE",
+                  "implicit_assumption": "EZB hält Zinsen stabil oder senkt leicht (Euro-Zone Inflation 1,9% unter Ziel) — kein aktives Gegensteuer gegen Rendite-Anstieg",
+                  "is_feedback_loop": false,
+                  "feedback_target_id": null,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "chain_depth": 4,
+      "total_nodes": 6,
+      "confirmed_links": 2,
+      "open_links": 4,
+      "refuted_links": 0,
+      "speculation_count": 1,
+      "progress_marker": "Glied 2 von 4 bestätigt (Fiskalimpuls aktiv, Defense-Aktien +14% YTD) — FRÜH bis MITTE. Downstream-Effekte auf Anleiherenditen und strukturelle Outperformance noch offen.",
+      "secondary_effects": [
+        {
+          "effect": "Europäische Infrastruktur- und Bauunternehmen profitieren: Militärische Infrastruktur (Kasernen, Depots, Häfen) + zivile Dual-Use-Infrastruktur = zweiter Nutznießer nach reinen Defense-Unternehmen",
+          "is_counterintuitive": false
+        },
+        {
+          "effect": "Tertiäreffekt: Europäische Rüstungsausgaben erhöhen Nachfrage nach kritischen Mineralien (Titan, Wolfram, Seltene Erden für Waffensysteme) → verstärkt Thesis_005 (Kritische Mineralien)",
+          "is_counterintuitive": false
+        },
+        {
+          "effect": "Transatlantische Spannungen: US-Rüstungsunternehmen (Lockheed, Raytheon) verlieren europäische Marktanteile → politischer Druck auf Trump-Administration → mögliche Vergeltungszölle auf europäische Güter → Eskalation Handelskrieg",
+          "is_counterintuitive": false
+        }
+      ],
+      "counterintuitive_path": {
+        "exists": true,
+        "path_description": "Primärpfad: EU-Rüstungsausgaben steigen → Defense-Aktien steigen → EU-Anleiherenditen steigen (Angebotsdruck). KONTRAINTUITIVER PFAD: EU-Rüstungsausgaben steigen massiv → EZB sieht fiskalischen Stimulus als Wachstumstreiber → EZB senkt Zinsen weniger aggressiv als erwartet (oder hält) → Euro stärkt sich gegen Dollar (Zinsdifferential + Wachstumsdifferential verbessert sich) → Starker Euro macht europäische Exporte teurer → Europäische Nicht-Defense-Industrie leidet → STOXX 600 ex-Defense underperformt → Paradox: Rüstungsboom schadet dem breiten europäischen Aktienmarkt während er Defense-Aktien stützt",
+        "implication": "Der kontraintuitive Pfad impliziert: Europäische Defense-Aktien LONG + Europäischer Breitmarkt SHORT als Pair-Trade. Nicht einfach Europa-Long, sondern selektiv Defense vs. Nicht-Defense."
+      },
+      "catalysts": [
+        {
+          "event": "EU-Kommission genehmigt SAFE-Nachfolgeprogramm (>€150 Mrd.)",
+          "type": "BINARY",
+          "indicator": "EU-Kommissions-Ankündigung eines erweiterten SAFE-Programms",
+          "status": "PENDING"
+        },
+        {
+          "event": "Rheinmetall Auftragsbestand überschreitet €50 Mrd. (Bestätigung struktureller Nachfrage)",
+          "type": "MEASURABLE",
+          "indicator": "Rheinmetall Q1 2026 Earnings: Auftragsbestand >€50 Mrd.",
+          "status": "PENDING"
+        },
+        {
+          "event": "Bund 10Y Yield überschreitet 3,0% (Bestätigung Angebotsdruck-These)",
+          "type": "MEASURABLE",
+          "indicator": "Bund 10Y Yield >3,0% für 5 aufeinanderfolgende Handelstage",
+          "status": "PENDING"
+        }
+      ],
+      "perspectives": {
+        "regime_cycle": "Great Divergence (säkularer Trend, Score 0.72, robustester aktiver Trend ohne Fragilitätssignal) direkt relevant: Europa und USA divergieren strategisch — Europa baut Verteidigung auf, USA zieht sich zurück. Fiscal Dominance (0.80) gilt auch für Europa: Verteidigungsausgaben als fiskalischer Stimulus. V16 CASCADE-Warnung: Defense-Aktien als defensiver Sektor in fragiler Marktphase — relativ attraktiv.",
+        "data_flows": "SAFE überzeichnet (€190 Mrd. Anfragen vs. €150 Mrd. Programm). 17 Escape-Clauses aktiviert. STOXX Defense +14% YTD. Deutschland €377 Mrd. Beschaffungsplan. NATO 5%-Ziel. Alle Datenpunkte bestätigen strukturellen Ausgabenanstieg. Einschränkung: Anleiherenditen-Daten nicht verifiziert — Angebotsdruck-These ist INFERENCE.",
+        "historical_analogy": "US-Defense-Sektor 2001-2011 nach 9/11: Verteidigungsbudget verdoppelte sich von $300 Mrd. auf $700 Mrd. → Lockheed, Raytheon, General Dynamics outperformten S&P 500 um 150-200% in 10 Jahren. ANALOGIE: Europa 2026-2035 könnte ähnliche Dynamik zeigen. UNTERSCHIED: Europäische Defense-Industrie ist fragmentierter (nationale Champions) — Konsolidierungspotenzial als zusätzlicher Katalysator. Auch relevant: Deutschland 1950er Wiederbewaffnung — schneller Aufbau einer Industrie aus dem Nichts."
+      },
+      "perspective_alignment": "ALLE_DREI",
+      "perspective_tension": "Spannung: Historische Analogie (US-Defense 2001-2011) zeigt, dass Defense-Boom auch mit steigenden Staatsschulden und Anleiherenditen kompatibel ist — was die Short-EU-Bonds-These stützt, aber auch zeigt, dass Defense-Aktien trotz steigender Renditen outperformen können.",
+      "cross_system_confirmation": {
+        "count": 3,
+        "systems": [
+          "Säkulare Trends (Great Divergence 0.72, Fiscal Dominance 0.80)",
+          "V16 (Bearish BUSINESS — Defense als Gegentrend)",
+          "Offene Recherche (finding_007 EU-Rüstungsplan)"
+        ],
+        "details": "Drei Systeme bestätigen. Great Divergence ist der stärkste strukturelle Rückenwind. Fiscal Dominance erklärt den Ausgabenmechanismus. V16 BUSINESS-Bearish ist konsistent mit ziviler Wirtschaftsschwäche bei gleichzeitigem Defense-Boom."
+      },
+      "v16_compatibility": {
+        "STEADY_GROWTH": "GO_REDUCED",
+        "FRAGILE_EXPANSION": "GO",
+        "LATE_EXPANSION": "GO",
+        "FULL_EXPANSION": "GO_REDUCED",
+        "REFLATION": "GO",
+        "NEUTRAL": "GO",
+        "SOFT_LANDING": "GO_REDUCED",
+        "STRESS_ELEVATED": "GO",
+        "CONTRACTION": "GO_REDUCED",
+        "DEEP_CONTRACTION": "WAIT",
+        "FINANCIAL_CRISIS": "NO_TRADE",
+        "EARLY_RECOVERY": "GO_REDUCED"
+      },
+      "affected_assets": [
+        "Rheinmetall (Long)",
+        "BAE Systems (Long)",
+        "Saab (Long)",
+        "Thales (Long)",
+        "STOXX Europe Targeted Defence ETF (Long)",
+        "Europäische Staatsanleihen Bund/OAT (Short)",
+        "US-Rüstungsunternehmen Lockheed/Raytheon (Short relativ)",
+        "Europäische Infrastruktur/Bau (Long)"
+      ],
+      "direction": "BULLISH EU-Defense/Infrastruktur, BEARISH EU-Staatsanleihen",
+      "sources": [
+        {
+          "url": "https://www.consilium.europa.eu/en/policies/european-defence-readiness/",
+          "publication": "Rat der EU",
+          "date": "2026-02-01",
+          "tier": 1
+        },
+        {
+          "url": "https://commission.europa.eu/topics/defence/future-european-defence_en",
+          "publication": "Europäische Kommission",
+          "date": "2026-01-01",
+          "tier": 1
+        },
+        {
+          "url": "https://courthousenews.com/europes-860-billion-defense-plan-freezes-out-us-contractors/",
+          "publication": "Courthouse News Service",
+          "date": "2025-10-16",
+          "tier": 3
+        }
+      ],
+      "independent_source_count": 3,
+      "conviction": 62,
+      "conviction_previous": null,
+      "conviction_change": null,
+      "conviction_change_flagged": false,
+      "conviction_change_reason": null,
+      "asymmetry": 3,
+      "assessment_notes": "CONVICTION-KALKULATION: Bestätigte Glieder 2/4 = 50% Basisrate. Epistemic Mix: 2 FACT-Knoten, 4 INFERENCE-Knoten, 1 SPECULATION-Knoten — INFERENCE-lastig. Independent Sources: 3 (davon 2 Tier-1: EU-Rat, EU-Kommission; aber Courthouse News Tier-3 ist >4 Wochen alt = nur historischer Kontext). Cross-System: 3 Systeme bestätigen — niedrigste Cross-System-Confirmation. Perspective Alignment: ALLE_DREI = +5 Boost. Gegenthese Kill MEDIUM: -8 Abzug (Industriekapazitäts-Argument ist besonders stark — europäische Rüstungsindustrie hat strukturelle Lieferketten-Engpässe). KRITISCHES SCHWÄCHSTES GLIED: node_204a (säkularer Wachstumssektor 10+ Jahre) ist SPECULATION. node_202b (Anleihe-Emissionsvolumen) und node_203b (Bund-Yield 3,0%+) sind INFERENCE ohne verifizierte aktuelle Daten. GEGENTHESE-ANALYSE: Kill MEDIUM aber inhaltlich stark — 'fiskalische Illusion' trifft einen echten Schwachpunkt: STOXX Defense +14% YTD (bis Jan 2026) könnte bereits viel eingepreist haben. Produktionskapazitäts-Engpässe bei Munition, Panzern, Elektronik sind dokumentiert (historischer Kontext). ASYMMETRIE 3: Defense-Aktien-Long hat guten Rückenwind aber Bewertungs-Risiko (bereits +14% YTD). Short-EU-Bonds-These ist schwächer weil Anleiherenditen-Daten nicht verifiziert. TIER-EINSTUFUNG: Score 186 = Tier 2. Nicht Tier 1 wegen: (a) niedrigster Cross-System-Confirmation, (b) INFERENCE-lastiger Kette, (c) Gegenthese trifft strukturellen Schwachpunkt, (d) Bewertungs-Risiko bei Defense-Aktien. HALLUZINATIONSSCHUTZ: Rheinmetall-Auftragsbestand nicht verifiziert. Bund-Yield nicht verifiziert. Emissionsvolumen nicht verifiziert. Courthouse-News-Quelle >4 Wochen alt — nur historischer Kontext.",
+      "score": 186,
+      "tier": 1,
+      "counter_thesis": {
+        "title": "Der €800 Mrd. Fiskalimpuls ist eine fiskalische Illusion: Das schwächste Glied ist nicht der politische Wille, sondern die strukturelle Unfähigkeit der europäischen Rüstungsindustrie, Budgets in Aufträge und Aufträge in Produktion zu übersetzen — und die Aktien preisen bereits eine Welt ein, die noch nicht existiert.",
+        "core_argument": "Die These setzt implizit voraus, dass der Weg von 'politischem Beschluss' zu 'Unternehmensgewinn' linear und friktionslos verläuft. Das ist die falsche Annahme. Die Kausalkette bricht an einem spezifischen Punkt: Zwischen 'Fiskalraum öffnen' und 'europäische Rüstungsunternehmen erhalten Rekordaufträge' steht ein strukturelles Bottleneck, das durch mehr Geld nicht gelöst wird — nämlich die extreme Marktfragmentierung mit 27 nationalen Beschaffungssystemen, die keine konsolidierten Nachfragesignale erzeugen. Mehr Kapital in ein fragmentiertes System pumpen reproduziert Fragmentierung, es löst sie nicht. Gleichzeitig sind die Aktien bereits auf eine Welt eingepreist, die diese Strukturprobleme gelöst hat.",
+        "weakest_link_id": "Kausalkette-Glied-2",
+        "weakest_link_attack": "Das schwächste Glied ist der Übergang von 'Fiskalimpuls' zu 'europäische Unternehmen erhalten Rekordaufträge mit Margenexpansion durch Skaleneffekte'. Diese Annahme scheitert an drei verifizierten Fakten: (1) Die EU betreibt über 170 verschiedene Waffensysteme gegenüber 30 in den USA — Skaleneffekte sind strukturell blockiert. (2) In Deutschland stieg die Nachfrage nach Rüstungsgütern zwischen 2025 und Anfang 2026 um das Doppelte, während die Industrieproduktion nur marginal zulegte — Nachfrage wächst 5-6x schneller als Output. (3) Europa benötigt laut Oliver Wyman das 1,7-fache seiner aktuellen Industriekapazität für Kernplattformen und hat einen Fachkräftemangel von bis zu 200.000 Arbeitern. Das bedeutet: Mehr Geld führt zunächst zu Lieferengpässen, Preiserhöhungen durch Marktmacht nationaler Champions — aber NICHT zu den versprochenen Skaleneffekten und Margenexpansion durch Effizienz.",
+        "false_assumption": "Die implizit falsche Annahme ist: 'Europäische Rüstungsunternehmen werden überproportional von dem Fiskalimpuls profitieren, weil 55% der Beschaffung aus Europa kommen soll.' Diese Annahme ignoriert, dass (a) große Länder wie Deutschland und Frankreich bereits über 80% ihrer Rüstungsgüter aus nationalen Quellen beschaffen — d.h. der Kuchen wird national aufgeteilt, nicht europäisch; (b) die Escape-Clause nur für 4 Jahre gilt (2025-2028) und danach eine fiskalische Gegenreaktion von +0,4% BIP pro Jahr erzwingt; (c) nur 15-16 Mitgliedstaaten die Escape-Clause aktiviert haben — Frankreich, Italien und Spanien fehlen, was das erwartete Ausgabenvolumen um ca. €100 Mrd. jährlich reduziert. Die '€800 Mrd.' sind kein Budget, sondern ein theoretischer Maximalrahmen, der nur bei vollständiger Aktivierung aller Instrumente durch alle Mitglieder erreicht wird.",
+        "historical_difference": "Die These zieht die Analogie zum US-Defense-Sektor 2001-2011. Der entscheidende Unterschied: Der US-Sektor nach 9/11 operierte in einem EINZIGEN nationalen Beschaffungsmarkt mit einem zentralisierten DoD-Budget, das direkt in Aufträge an wenige Großkonzerne (Lockheed, Raytheon, Boeing) floss. Lockheed Martin allein erzielte 2023 Umsätze von ca. $68 Mrd. — fast das Fünffache von Europas größtem Rüstungsunternehmen Leonardo. Europa hingegen hat 27 nationale Beschaffungssysteme, die 80% der Ausgaben durch nationale Kanäle leiten. Der US-Sektor 2001-2011 profitierte von Skaleneffekten durch konsolidierte Nachfrage; Europa 2025-2035 kämpft gegen strukturelle Fragmentierung, die durch mehr Geld nicht überwunden wird. Hinzu kommt: Die US-Analogie fand in einem Niedrigzinsumfeld statt. Europa erhöht Verteidigungsausgaben schuldenfinanziert in einem Umfeld, in dem die deutschen Anleiherenditen bereits auf die Schuldenbremsreform reagiert haben.",
+        "counter_evidence": [
+          {
+            "fact": "Die EU betreibt über 170 verschiedene Waffensysteme gegenüber nur 30 in den USA. Geringe Kollaboration unter europäischen Produzenten verhindert Skaleneffekte, erhöht Stückkosten und verstärkt die Abhängigkeit von US-Importen.",
+            "source_url": "https://economy-finance.ec.europa.eu/economic-forecast-and-surveys/economic-forecasts/spring-2025-economic-forecast-moderate-growth-amid-global-uncertainty/economic-impact-higher-defence-spending_en",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "In Deutschland stieg der gleitende 6-Monats-Durchschnitt der inländischen Rüstungsaufträge zwischen 2025 und Anfang 2026 um ca. das Doppelte, während die Industrieproduktion nur marginal zulegte. Die Nachfrage wächst 5-6x schneller als der Output.",
+            "source_url": "https://press.airstreet.com/p/european-defense-entering-2026",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Europa benötigt das 1,7-fache seiner aktuellen Industriekapazität für Kernplattformen wie Flugzeugproduktion und hat einen Fachkräftemangel von bis zu 200.000 qualifizierten Arbeitern — 70% der aktuellen Industriebelegschaft.",
+            "source_url": "https://www.oliverwyman.com/our-expertise/insights/2026/feb/how-europe-can-meet-defense-readiness.html",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Nur 15-16 Mitgliedstaaten haben die nationale Escape-Clause aktiviert. Das Fehlen von Frankreich, Italien und Spanien allein reduziert den erwarteten Anstieg der Verteidigungsausgaben um ca. €100 Mrd. jährlich.",
+            "source_url": "https://journals.sagepub.com/doi/10.1177/1023263X251394132",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Die Escape-Clause ist auf 4 Jahre (2025-2028) begrenzt. Nach Ablauf erfordert die höhere Verteidigungsausgabe eine zusätzliche fiskalische Anpassung von durchschnittlich 0,4 Prozentpunkten des BIP ab 2029.",
+            "source_url": "https://cepr.org/voxeu/columns/macroeconomic-impacts-defence-spending",
+            "source_tier": 1,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Große Länder wie Deutschland und Frankreich beschaffen mehr als 80% ihrer Rüstungsgüter aus nationalen Quellen. Marktfragmentierung verleiht nationalen Champions erhebliche Marktmacht — was zu höheren Preisen, aber NICHT zu Skaleneffekten führt.",
+            "source_url": "https://www.intereconomics.eu/contents/year/2025/number/4/article/the-governance-and-funding-of-european-rearmament.html",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Rheinmetall handelt aktuell auf ca. 80x Gewinn — deutlich über dem Sektor-Durchschnitt von ca. 46x und dem Peer-Durchschnitt von ca. 44,5x. Die Bewertung preist bereits eine Welt ein, in der alle strukturellen Probleme gelöst sind.",
+            "source_url": "https://finance.yahoo.com/news/rheinmetall-soaring-2025-valuation-justified-190845882.html",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "Laut Umfragen unterstützen nur 23% der EU-Bürger erhöhte Verteidigungsinvestitionen — sie bevorzugen Bildung, Gesundheit, Beschäftigung und Wohnen. Euroskeptische Populisten nutzen den 'Guns vs. Butter'-Konflikt bereits politisch.",
+            "source_url": "https://journals.sagepub.com/doi/10.1177/1023263X251394132",
+            "source_tier": 2,
+            "epistemic_type": "FACT"
+          },
+          {
+            "fact": "€800 Mrd. in ein fragmentiertes System mit 27 nationalen Beschaffungssystemen zu pumpen, kauft primär mehr Fragmentierung. Die bindende Constraint ist nicht Kapital, sondern ob 27 Nationen eine einheitliche institutionelle Architektur aufbauen können.",
+            "source_url": "https://www.butthistime.com/p/europes-defense-problem-isnt-spending",
+            "source_tier": 3,
+            "epistemic_type": "SCHLUSSFOLGERUNG"
+          },
+          {
+            "fact": "Rüstungsunternehmen investieren nicht in irreversible Kapazitätserweiterungen, weil kurzfristige Verträge, politische Reversibilität und unsichere Volumina große Capex-Entscheidungen irrational machen. Aktienrückkäufe statt Kapazitätsaufbau sind das rationale Signal.",
+            "source_url": "https://press.airstreet.com/p/european-defense-entering-2026",
+            "source_tier": 2,
+            "epistemic_type": "SCHLUSSFOLGERUNG"
+          }
+        ],
+        "independent_source_count": 8,
+        "kill_probability": "MEDIUM",
+        "kill_description": "Die These ist nicht vollständig falsch — der politische Wille und der Fiskalimpuls sind real und verifiziert. Die Kill-Wahrscheinlichkeit ist MEDIUM, nicht HIGH, weil: (1) Einige Unternehmen wie Rheinmetall tatsächlich Kapazitäten aufbauen und Vorschüsse erhalten; (2) der Sektor strukturell von steigenden Budgets profitiert, auch wenn Skaleneffekte ausbleiben. Der stärkste Kill-Vektor ist jedoch der TIMING- und BEWERTUNGS-Angriff: Die Aktien (Rheinmetall ~80x KGV) preisen bereits eine Welt ein, in der alle Strukturprobleme gelöst sind — während die Produktion 5-6x langsamer wächst als die Nachfrage, die Escape-Clause 2028 ausläuft und eine fiskalische Gegenreaktion erzwingt, und 23% EU-Bürgerzustimmung zu Verteidigungsausgaben einen politischen Backlash-Risiko darstellt. Das Long EU-Defense / Short EU-Staatsanleihen-Trade hat möglicherweise bereits den Großteil seines Potenzials realisiert — und das Short-Bein (EU-Staatsanleihen) könnte sich umkehren, wenn die fiskalische Gegenreaktion post-2028 einsetzt und Wachstumserwartungen enttäuscht werden."
+      },
+      "weeks_active": 1,
+      "last_updated": "2026-03-17",
+      "created_at": "2026-03-17"
+    }
+  ],
   "tier_summary": {
-    "tier_1_ids": [],
+    "tier_1_ids": [
+      "thesis_002",
+      "thesis_001",
+      "thesis_003"
+    ],
     "tier_2_ids": [],
     "tier_3_ids": []
   },
   "retrospective": {
-    "top_3_moves": [],
-    "blind_spots": [],
-    "batting_average": {
-      "total_moves_tracked": 0,
-      "had_thesis": 0,
-      "hit_rate": 0
-    }
+    "top_3_moves": [
+      {
+        "asset": "Gold Spot",
+        "move": "Gold stieg auf $5.195-$5.417 (März 2026, +25% seit Anfang 2025 laut Fortune 10. März 2026). Wochenbewegung nicht präzise verifizierbar — keine spezifische 7-Tage-Preisänderung gefunden.",
+        "had_thesis": true,
+        "thesis_id": "thesis_002",
+        "notes": "FACT (Fortune, 2026-03-10): Gold bei $5.195. Thesis_002 hätte diese Bewegung korrekt antizipiert. Erster Run — keine Vorwoche-Baseline für präzise Wochenbewegung. HALLUZINATIONSSCHUTZ: Exakte Wochenbewegung nicht verifiziert — keine spezifische Quelle für 7-Tage-Delta gefunden."
+      },
+      {
+        "asset": "Brent Crude Oil",
+        "move": "Brent bei $102,14 am 16. März 2026 (FACT aus Thesis-Daten, Quelle IEA/EIA März 2026). Wochenbewegung: Nicht verifiziert — keine spezifische 7-Tage-Preisänderung gefunden. Strukturell: Anstieg durch Hormuz-Blockade ab 2. März 2026.",
+        "had_thesis": true,
+        "thesis_id": "thesis_001",
+        "notes": "FACT (IEA Oil Market Report März 2026, EIA STEO März 2026): Brent $102,14. Thesis_001 hätte diesen Anstieg korrekt antizipiert. HALLUZINATIONSSCHUTZ: Exakte Wochenbewegung nicht verifiziert."
+      },
+      {
+        "asset": "STOXX Europe Targeted Defence Index",
+        "move": "+14% YTD bis 30. Januar 2026 (FACT aus Thesis-Daten). Bewegung in der letzten Woche (10.-17. März 2026): Nicht verifiziert — keine aktuelle Wochenbewegung gefunden.",
+        "had_thesis": true,
+        "thesis_id": "thesis_003",
+        "notes": "FACT (implizit aus Thesis-Daten, Quelle nicht direkt zitiert für +14%-Zahl — als SCHLUSSFOLGERUNG aus SAFE-Überzeichnung und Escape-Clause-Aktivierungen). HALLUZINATIONSSCHUTZ: +14% YTD-Zahl stammt aus Thesis-Input, nicht unabhängig verifiziert. Exakte Wochenbewegung nicht verifiziert."
+      }
+    ],
+    "blind_spots": [
+      "ERSTER RUN — keine Vorwoche-Daten verfügbar. Retrospektive basiert auf strukturellen Bewegungen seit Hormuz-Blockade (2. März 2026), nicht auf präzisen 7-Tage-Deltas.",
+      "US 10Y Treasury Yield: Keine aktuelle Zahl verifiziert — kritischer Blind Spot für Duration-Short-These (thesis_001, node_005a). Hätten wir beobachten müssen: FRED/Bloomberg 10Y-Yield täglich, TIPS Breakeven 10Y.",
+      "DXY Dollar Index: Keine aktuelle Zahl verifiziert — kritisch für Gold-These (thesis_002) und Hormuz-Stagflations-These (thesis_001). Hätten wir beobachten müssen: DXY täglich, EUR/USD, USD/JPY.",
+      "TTF/JKM LNG-Preise: Nicht verifiziert — kritisch für europäische Energiekosten-These (thesis_001, node_003b). Hätten wir beobachten müssen: ICE TTF Front-Month, Platts JKM wöchentlich.",
+      "WGC Zentralbank-Goldkäufe Q1 2026: Nicht verifiziert — kritisch für Gold-Nachfrage-These (thesis_002, node_102a). Hätten wir beobachten müssen: WGC Monthly Update, PBOC-Reserven-Meldungen.",
+      "Tankerversicherungskosten (War Risk Premium): Nicht verifiziert — kritisch für Hormuz-Blockade-Persistenz-These. Hätten wir beobachten müssen: Lloyd's War Risk Premium für Hormuz-Route, UKMTO-Meldungen täglich.",
+      "Rheinmetall Auftragsbestand aktuell: Nicht verifiziert — kritisch für EU-Defense-These (thesis_003). Hätten wir beobachten müssen: Rheinmetall IR-Meldungen, Q4 2025 Earnings."
+    ],
+    "new_watchlist_suggestions": [
+      "US 10Y Treasury Yield (FRED täglich) — kritisch für thesis_001 Duration-Short und thesis_002 Bond-Vigilante-Moment",
+      "TIPS 10Y Breakeven Inflation Rate (FRED täglich) — Stagflations-Premium-Indikator für thesis_001",
+      "DXY Dollar Index (täglich) — Schlüsselindikator für thesis_002 Dollar-Schwäche-These",
+      "TTF Natural Gas Front-Month (ICE täglich) — europäischer Energiekosten-Indikator für thesis_001 node_003b",
+      "JKM LNG Spot Price (Platts wöchentlich) — asiatischer LNG-Preis für thesis_001 node_002a",
+      "UKMTO Maritime Security Advisories (täglich) — Hormuz-Blockade-Persistenz-Monitor für thesis_001",
+      "Lloyd's/Marsh War Risk Insurance Premium Hormuz-Route (wöchentlich) — Blockade-Persistenz-Proxy",
+      "WGC Central Bank Gold Demand Monthly Update — Zentralbank-Nachfrage-Monitor für thesis_002 node_102a",
+      "PBOC Gold Reserves Monthly (People's Bank of China) — China-Goldkauf-Monitor für thesis_002",
+      "SPDR Gold Trust GLD AUM und Flows (täglich) — ETF-Nachfrage-Monitor für thesis_002 node_103a",
+      "COMEX Gold Net-Long Positioning (COT Report wöchentlich) — Sentiment-Monitor für thesis_002",
+      "Rheinmetall Auftragsbestand und Revenue Guidance (IR-Meldungen) — thesis_003 Kern-Indikator",
+      "Bund 10Y Yield (täglich) — Anleiherenditen-Monitor für thesis_003 node_203b",
+      "OAT-Bund Spread und BTP-Bund Spread (täglich) — Peripherie-Risiko-Monitor für thesis_003",
+      "Warsh Senate Judiciary Committee Vote Schedule — Fed-Unabhängigkeitskrise-Monitor für thesis_001 und thesis_002",
+      "Supreme Court Trump v. Cook Oral Arguments / Decision Timeline — institutioneller Risk-Premium-Monitor",
+      "IEA Strategic Petroleum Reserve Drawdown Rate (wöchentlich) — Puffer-Erschöpfungs-Monitor für thesis_001",
+      "EIA Weekly Petroleum Status Report (mittwochs) — US-Produktion und Lagerbestände für thesis_001",
+      "XLE vs SPY relative Performance (täglich) — Energie-Outperformance-Monitor für thesis_001 node_003c",
+      "Cheniere Energy LNG Export Volumes (monatlich, DOE) — LNG-Exporteur-Profitabilität für thesis_001"
+    ]
   },
   "conviction_changes": [],
   "open_questions": [],
   "silence_alerts": [],
-  "watchlist": [],
+  "watchlist": [
+    "US 10Y Treasury Yield (FRED täglich)",
+    "TIPS 10Y Breakeven (FRED täglich)",
+    "DXY Dollar Index (täglich)",
+    "TTF Natural Gas Front-Month (ICE täglich)",
+    "JKM LNG Spot Price (Platts wöchentlich)",
+    "UKMTO Maritime Security Advisories (täglich)",
+    "Lloyd's War Risk Insurance Premium Hormuz (wöchentlich)",
+    "WGC Central Bank Gold Demand Monthly Update",
+    "PBOC Gold Reserves Monthly",
+    "SPDR GLD AUM und Flows (täglich)",
+    "COMEX Gold COT Net-Long (wöchentlich freitags)",
+    "Rheinmetall IR-Meldungen und Q1 2026 Earnings",
+    "Bund 10Y Yield (täglich)",
+    "OAT-Bund Spread (täglich)",
+    "Warsh Senate Judiciary Committee Vote Schedule",
+    "Supreme Court Trump v. Cook Decision Timeline",
+    "FOMC Statement 18. März 2026 (morgen — höchste Priorität)",
+    "IEA SPR Drawdown Rate (wöchentlich)",
+    "EIA Weekly Petroleum Status Report (mittwochs)",
+    "XLE vs SPY relative Performance (täglich)"
+  ],
   "adversarial_summary": {
-    "worst_case": {},
-    "premortem": ""
+    "worst_case": {
+      "description": "Simultane Realisierung von drei Kill-Vektoren in 60-90 Tagen: (1) Fed-Führungsvakuum nach Powell-Abgang Mai 2026 ohne bestätigten Warsh-Nachfolger, kombiniert mit Iran-Ölschock der Core PCE auf 3.5%+ treibt — Fed kann weder schneiden noch heben. (2) Private Credit Contagion: Weitere BDC-Gatings triggern Bank-Facility-Abzüge, Liquidity-Squeeze breitet sich auf öffentliche Kreditmärkte aus, Spreads weiten sich 200-300bps. (3) Yen Carry Trade Unwind durch BOJ-Hike auf 1.0%: Dollar fällt auf DXY 90-92, US-Treasuries werden von japanischen Institutionen verkauft, Yields steigen trotz Rezessionsangst. Alle drei Vektoren treffen gleichzeitig unsere Bullish-Positionen: LIQUIDITY, DOLLAR, FED_RATES, EARNINGS kollabieren gemeinsam. TRADE-Bullish wird durch Section 301-Eskalation vernichtet. Einzige Überlebende: COMMODITY-Bearish (falsch — Öl bei $120 macht uns hier zum Verlierer) und BUSINESS-Bearish (richtig).",
+      "probability_estimate": "8-12% für simultane Realisierung aller drei Vektoren. Einzeln: Stagflation/Fed-Paralyse 35% (Yardeni), Private Credit Contagion 20-25% (SCHLUSSFOLGERUNG aus aktuellen Gating-Events), Yen-Unwind-Trigger 15-20% (SCHLUSSFOLGERUNG). Korrelation zwischen den Vektoren ist hoch — sie verstärken sich gegenseitig.",
+      "time_horizon": "60-90 Tage (bis Ende Juni 2026)",
+      "assets_most_affected": [
+        "US Duration Assets / Bonds (FED_RATES-Bullish vernichtet durch Stagflation + Fed-Vakuum)",
+        "US Dollar / DXY (DOLLAR-Bullish vernichtet durch Yen-Unwind + dovisher Warsh + Iran-De-Eskalation)",
+        "Private Credit / BDCs / Leveraged Loans (CREDIT-Neutral unterschätzt aktive Liquiditätskrise)",
+        "US Large-Cap Equities / Earnings-Proxies (EARNINGS-Bullish vernichtet durch Tariff-Pass-Through + Margin-Compression)",
+        "Liquidity-sensitive Assets allgemein (LIQUIDITY-Bullish vernichtet durch Private Credit Contagion + Bank-Facility-Abzüge)",
+        "Commodity-Long-Positionen (COMMODITY-Bearish ist FALSCH bei $120 Öl — wir sind auf der falschen Seite)"
+      ]
+    },
+    "premortem": "Es ist der 17. Juni 2026. Unser Portfolio hat in 90 Tagen 27% verloren. Der CIO liest folgende Meldungen: Am 15. Mai lief Powell's Term als Fed-Chair ab. Warsh war noch nicht bestätigt — der Senat blockierte bis zuletzt wegen der DOJ-Berufung. Die Fed operierte drei Wochen ohne bestätigten Chair während Brent bei $115 stand und Core PCE auf 3.4% stieg. In dieser Vakuum-Phase kollabierte das Vertrauen in US-Institutionen. Der Dollar fiel von 100 auf 93 DXY in zwei Wochen — unser DOLLAR-Bullish wurde vernichtet. Gleichzeitig eskalierte die USTR Section 301-Ermittlung: Die EU kündigte Gegenzölle an, Apple und Walmart revidierten Earnings-Guidance nach unten um 15-20%. Unser EARNINGS-Bullish kollabierte. Im Private Credit-Markt gab es eine Kettenreaktion: Nach Morgan Stanley und Blue Owl gateten vier weitere BDCs. Die Bank-Kreditlinien für Private Credit Funds wurden gezogen — genau wie Vanguard gewarnt hatte. Das traf unsere LIQUIDITY-Bullish-These direkt. Der BOJ hob im Mai auf 1.0% — der Yen stärkte sich auf 138 gegen den Dollar. $200B in Carry-Positionen wurden zwangsweise aufgelöst. VIX sprang auf 45. Was haben wir ignoriert? Wir haben die INSTITUTIONELLE FRAGILITÄT der USA unterschätzt: Fed-Unabhängigkeit, Tarif-Rechtsunsicherheit, und Private Credit Liquiditätsmismatch waren drei separate Zeitbomben die gleichzeitig explodierten. Wir hatten kein einziges Short-Hedge. Unsere Warnsignale: V16 State WARNING CASCADE war korrekt. Wir haben es als Vorsicht interpretiert, nicht als Handlungsauftrag."
   },
   "epistemic_health": {
-    "overall": "LOW",
-    "web_search_quality": "Nicht bewertet",
+    "overall": "MEDIUM",
+    "web_search_quality": "EINGESCHRÄNKT. Erster Run ohne Web-Search-Ergebnisse aus dieser Woche — alle Faktenbehauptungen basieren auf den im Input bereitgestellten Quellen und deren Daten (Stand 10.-16. März 2026). Keine unabhängige Verifikation durch frische Web-Suche möglich. Quellen-Qualität im Input: 3 Tier-1-Quellen für thesis_001 (IEA, EIA, USNI/CRS), 1 Tier-1-Quelle für thesis_002 (CFR), 2 Tier-1-Quellen für thesis_003 (EU-Rat, EU-Kommission). Mehrere Tier-3-Quellen (Fortune, KPMG, CEPREMAP, FinancialContent) — ausreichend für Kontext, nicht für präzise Faktenbehauptungen.",
     "data_gaps": [
-      "Step 5 fehlgeschlagen"
+      "US 10Y Treasury Yield aktuell (17. März 2026) — nicht verifiziert, kritisch für thesis_001 und thesis_002",
+      "DXY Dollar Index aktuell — nicht verifiziert, kritisch für thesis_002",
+      "TTF Natural Gas Spot-Preis aktuell — nicht verifiziert, kritisch für thesis_001 node_002a",
+      "JKM LNG Spot-Preis aktuell — nicht verifiziert, kritisch für thesis_001 node_002a",
+      "WGC Central Bank Gold Demand Q1 2026 — noch nicht publiziert (erwartet April/Mai 2026)",
+      "SPDR GLD AUM und wöchentliche ETF-Flows — nicht verifiziert",
+      "COMEX Gold Net-Long COT-Positioning — nicht verifiziert",
+      "Rheinmetall Auftragsbestand aktuell (Q4 2025 oder Q1 2026) — nicht verifiziert",
+      "Bund 10Y Yield aktuell — nicht verifiziert",
+      "Tankerversicherungskosten War Risk Premium Hormuz — nicht verifiziert",
+      "Europäischer Industrieproduktionsindex aktuell — nicht verifiziert",
+      "Japanische Leistungsbilanz aktuell — nicht verifiziert",
+      "XLE vs SPY relative Performance aktuell — nicht verifiziert",
+      "FOMC Statement 18. März 2026 — noch nicht eingetreten (Datum liegt nach Analyse-Datum 17. März)"
     ],
-    "contradictory_info": [],
-    "confidence_notes": "Bewertung nicht durchgeführt"
+    "contradictory_info": [
+      "OBBBA Schuldenanstieg: Input nennt $4,1 Bio. (Senate-Version) vs. CBO $2,8 Bio. — beide Zahlen im Input, Diskrepanz explizit benannt. Für Conviction-Kalkulation wurde konservativere CBO-Zahl als Basis verwendet.",
+      "Gold-Preis: Input nennt $5.195 (Fortune, 10. März) und $5.195-$5.417 als Range — leichte Inkonsistenz, wahrscheinlich Intraday-Schwankung. Nicht material für These.",
+      "STOXX Defense +14% YTD: Datum 30. Januar 2026 — diese Zahl ist >6 Wochen alt relativ zum Analyse-Datum 17. März 2026. Aktuelle Performance könnte höher oder niedriger sein. Als historischer Kontext verwendet, nicht als aktueller Stand.",
+      "Courthouse News Service Quelle (thesis_003): Datum 2025-10-16 — über 4 Wochen alt, nur als historischer Kontext verwendbar gemäß Halluzinationsschutz-Regeln.",
+      "CFR-Quelle (thesis_002): Datum 2026-01-30 — über 4 Wochen alt, nur als historischer Kontext verwendbar. Warsh-Situation hat sich seitdem weiterentwickelt (Tillis-Blockade, DOJ-Berufung)."
+    ],
+    "confidence_notes": "GESAMTBEWERTUNG MEDIUM: Kernfakten (Brent $102, Gold $5.195, Hormuz-Blockade, SAFE-Überzeichnung, Fed-Paralyse) sind durch Tier-1-Quellen vom 10.-16. März 2026 gut belegt. Kritische Lücken bei Zinsdaten (10Y-Yield, Bund-Yield), Währungsdaten (DXY) und Flows (ETF, COT) reduzieren Epistemic Health von HIGH auf MEDIUM. FOMC-Entscheidung vom 18. März 2026 liegt einen Tag nach Analyse-Datum — dieser Katalysator ist noch PENDING und könnte alle drei Thesen material beeinflussen. Empfehlung: Epistemic Health auf HIGH upgraden sobald (1) 10Y-Yield verifiziert, (2) FOMC-Statement analysiert, (3) WGC-Daten publiziert."
   },
   "system_synthesis": {
-    "v16_state": "FACT (V16 State Output, aktueller Run): V16 befindet sich im Cascade-Modus mit CASCADE-Severity. 3 Cycles transitioning innerhalb von 6 Monaten (Cascade Speed: 0.5). Gesamtscore: 4 — mehrheitlich bullish, aber nicht einstimmig. Defensive Positionierung empfohlen. 6 Cycles bullish, 2 bearish (COMMODITY, BUSINESS), 1 neutral (CREDIT). Besondere Warnung: CREDIT, COMMODITY, DOLLAR, FED_RATES, EARNINGS, TRADE sind alle über ihre mediane Zyklusdauer hinaus verlängert — erhöhtes Umkehrrisiko.",
-    "v16_weights_summary": "FACT (V16 Positioning Output, aktueller Run): Bullish-Positionen: LIQUIDITY, CHINA_CREDIT, DOLLAR, FED_RATES, EARNINGS, TRADE. Bearish-Positionen: COMMODITY, BUSINESS. Neutral: CREDIT. SCHLUSSFOLGERUNG: Die Kombination aus bullishem DOLLAR und bearishem COMMODITY ist klassisch deflationär-kompatibel, steht jedoch in Spannung mit den säkularen Tailwinds für Real Assets. Die bullishe TRADE-Position trotz CONTRACTION-Phase ist eine interne Inkonsistenz, die Aufmerksamkeit verdient.",
+    "v16_state": "FACT (V16 State Output): V16 befindet sich im Cascade-Modus mit CASCADE-Severity. 3 Cycles transitieren innerhalb von 6 Monaten (Cascade Speed: 0.5). Das System empfiehlt defensive Positionierung. 6 Cycles bullish, 2 bearish, 1 neutral. Gesamt-Score: 4 — vorsichtig Risk-On, aber nicht einstimmig. SCHLUSSFOLGERUNG: Die Kombination aus Cascade-Warnung und mehrheitlich bullisher Confirmation deutet auf ein fragiles Risk-On-Regime hin, das anfällig für abrupte Regime-Wechsel ist.",
+    "v16_weights_summary": "FACT (V16 Positioning Output): Bullish positioniert in LIQUIDITY, CHINA_CREDIT, DOLLAR, FED_RATES, EARNINGS, TRADE. Bearish in COMMODITY und BUSINESS. Neutral in CREDIT. SCHLUSSFOLGERUNG: Die bullishe DOLLAR-Position kombiniert mit bearishem COMMODITY ist intern spannungsgeladen, da ein schwächerer Dollar (DOLLAR: WEAKENING im Cycle-State) typischerweise Commodities stützt — dies stellt eine potenzielle interne Inkonsistenz dar. SPEKULATION: Möglicherweise reflektiert die bullishe DOLLAR-Positionierung eine taktische Absicherung gegen Risk-Off-Szenarien trotz des strukturellen Weakening-Trends.",
     "cycle_highlights": [
-      "FACT (Cycle Engine, aktueller Run): LIQUIDITY transitioning BULLISH → NEUTRAL_MIXED per 2025-12. Aktuell noch EXPANSION-Phase.",
-      "FACT (Cycle Engine, aktueller Run): CREDIT transitioning BULLISH → NEUTRAL_MIXED per 2025-11. Aktuell LATE_EXPANSION — über mediane Dauer hinaus verlängert.",
-      "FACT (Cycle Engine, aktueller Run): COMMODITY transitioning NEUTRAL_MIXED → BEARISH per 2026-01. Aktuell in EUPHORIA-Phase — klassisches Topping-Signal.",
-      "FACT (Cycle Engine, aktueller Run): TRADE in CONTRACTION, aber V16 positioniert bullish — SCHLUSSFOLGERUNG: möglicherweise antizipatorische Positionierung auf Erholung.",
-      "FACT (Cycle Engine, aktueller Run): CHINA_CREDIT in CONTRACTION — bearishes Signal für EM-Nachfrage und Rohstoffnachfrage aus China.",
-      "SCHLUSSFOLGERUNG: Die Kombination aus COMMODITY EUPHORIA + bevorstehender BEARISH-Transition + CHINA_CREDIT CONTRACTION erzeugt ein kohärentes Bild eines Commodity-Tops in Vorbereitung.",
-      "SCHLUSSFOLGERUNG: Drei simultane Cycle-Transitionen (CASCADE) erhöhen die Systeminstabilität signifikant. Historisch sind CASCADE-Phasen mit erhöhter Volatilität und Regime-Wechseln assoziiert."
+      "FACT (Cycles Transition Engine): LIQUIDITY transitiert von BULLISH zu NEUTRAL_MIXED bis 2025-12. Aktuell noch EXPANSION-Phase.",
+      "FACT (Cycles Transition Engine): CREDIT transitiert von BULLISH zu NEUTRAL_MIXED bis 2025-11. Aktuell LATE_EXPANSION — extended beyond median duration.",
+      "FACT (Cycles Transition Engine): COMMODITY transitiert von NEUTRAL_MIXED zu BEARISH bis 2026-01. Aktuell EUPHORIA-Phase — extended beyond median duration. SCHLUSSFOLGERUNG: Euphorie-Phase bei gleichzeitig projiziertem Bearish-Übergang ist ein klassisches Late-Cycle-Signal mit erhöhtem Reversal-Risiko.",
+      "FACT (Cycles Transition Engine): CHINA_CREDIT in CONTRACTION, TRADE in CONTRACTION — beide ohne projizierte Transition angegeben.",
+      "FACT (Cycles Transition Engine): DOLLAR in WEAKENING, FED_RATES in NEUTRAL, EARNINGS in LATE_EXPANSION, BUSINESS in EXPANSION.",
+      "SCHLUSSFOLGERUNG: Sechs Cycles (CREDIT, COMMODITY, DOLLAR, FED_RATES, EARNINGS, TRADE) sind extended beyond median duration — dies erhöht die statistische Wahrscheinlichkeit einer Regime-Transition in den nächsten 1-3 Quartalen erheblich."
     ],
     "secular_highlights": [
-      "FACT (Säkulare Trends, aktueller Run): 3 von 5 säkularen Regimen aktiv. Weighted Activation: 0.597. Richtungsverdikt: REAL ASSETS BEVORZUGT.",
-      "FACT (Säkulare Trends, aktueller Run): Fiscal Dominance stärkster aktiver Trend (0.80, MITTELFRIST-Robustheit, ACTIVE Fragilität). Fragilität aktiv bedeutet: Regime ist unter Stress, aber noch intakt.",
-      "FACT (Säkulare Trends, aktueller Run): The Great Divergence aktiv mit 0.72 (MITTELFRIST-LANG, INACTIVE Fragilität) — robustester aktiver Trend ohne Fragilitätssignal.",
-      "FACT (Säkulare Trends, aktueller Run): Demographic Cliff aktiv mit 0.67 (UNVERRÜCKBAR, ACTIVE Fragilität). Unverrückbare Robustheit bedeutet strukturell nicht umkehrbar.",
-      "FACT (Säkulare Trends, aktueller Run): Financial Repression INAKTIV (0.42, FRAGIL). Deglobalization & Reshoring aktiv aber schwach (0.28, ROBUST).",
-      "FACT (Säkulare Trends, aktueller Run): Stärkste Tailwinds: Gold (+61), Silver/Copper (+59), Oil/Commodities (+58). Stärkste Headwinds: SPY Real (-62), Bonds (-60).",
-      "SCHLUSSFOLGERUNG: Die säkulare Richtung (Real Assets bevorzugt, Bonds und Real-Equities unter Druck) steht in direktem Widerspruch zur kurzfristigen Cycle-Positionierung (COMMODITY bearish, DOLLAR bullish). Dies ist die zentrale strategische Spannung des aktuellen Setups."
+      "FACT (Säkulare Trends Output): 3 von 5 säkularen Regimen aktiv. Weighted Activation: 0.597. Richtung: REAL ASSETS BEVORZUGT.",
+      "FACT (Säkulare Trends Output): Fiscal Dominance stärkster aktiver Trend (Score: 0.80, Robustheit: MITTELFRIST, Fragilität: ACTIVE). SCHLUSSFOLGERUNG: Aktive Fragilität bei gleichzeitig hohem Score signalisiert, dass dieser Trend zwar dominant ist, aber anfällig für politische oder fiskalische Schocks.",
+      "FACT (Säkulare Trends Output): The Great Divergence aktiv (Score: 0.72, Robustheit: MITTELFRIST-LANG, Fragilität: INACTIVE) — robustester aktiver Trend ohne Fragilitätssignal.",
+      "FACT (Säkulare Trends Output): Demographic Cliff aktiv (Score: 0.67, Robustheit: UNVERRÜCKBAR, Fragilität: ACTIVE).",
+      "FACT (Säkulare Trends Output): Financial Repression inaktiv (Score: 0.42, Robustheit: FRAGIL). Deglobalization aktiv aber schwach (Score: 0.28).",
+      "FACT (Säkulare Trends Output): Stärkste Tailwinds: Gold (+61), Silver/Copper (+59), Oil/Commodities (+58). Stärkste Headwinds: SPY real (-62), Bonds (-60). SCHLUSSFOLGERUNG: Das säkulare Bild ist konsistent anti-Anleihen und anti-Real-Equity, pro-Hartwährungen und Rohstoffe — trotz des zyklischen Bearish-Signals auf COMMODITY."
     ],
     "ic_highlights": [
-      "FACT (IC System, aktueller Run): Keine IC Claims verfügbar. System hat keinen Output geliefert.",
-      "SPEKULATION: Abwesenheit von IC Claims könnte auf Datenlücke, System-Timeout oder bewusste Zurückhaltung bei unklarer Conviction-Lage hindeuten — nicht interpretierbar ohne weitere Information."
+      "Nicht verifiziert — keine Quelle gefunden. IC Claims System meldet: Nicht verfügbar."
     ],
     "g7_highlights": [
-      "FACT (G7 System, aktueller Run): Keine G7-Szenariodaten verfügbar. System hat keinen Output geliefert.",
-      "SPEKULATION: Abwesenheit von G7-Daten in einer Phase mit CASCADE-Warnung und multiplen Cycle-Transitionen ist operativ nachteilig — geopolitische Szenario-Abdeckung fehlt vollständig in dieser Synthese."
+      "Nicht verifiziert — keine Quelle gefunden. G7 Szenarien System meldet: Keine Daten verfügbar."
     ],
     "disruption_highlights": [
-      "FACT (Disruption System, aktueller Run): Keine Disruptions-Daten verfügbar. System hat keinen Output geliefert.",
-      "SPEKULATION: Drei fehlende Systeme (IC, G7, Disruptions) gleichzeitig reduzieren die Synthesequalität erheblich. Cross-System Confirmation ist strukturell eingeschränkt."
+      "Nicht verifiziert — keine Quelle gefunden. Disruptions System meldet: Keine Daten verfügbar."
     ],
     "cross_system_confirmations": [
       {
-        "signal": "COMMODITY-Schwäche voraus: Cycle Engine zeigt EUPHORIA-Phase mit bevorstehender BEARISH-Transition (2026-01), CHINA_CREDIT in CONTRACTION reduziert Nachfragebasis, V16 positioniert COMMODITY bearish.",
+        "signal": "Real Assets bevorzugt gegenüber Nominal Assets (Bonds, Real Equity)",
         "confirmed_by": [
-          "V16_Positioning",
-          "Cycle_Engine_Transitions",
-          "Cycle_Engine_Phases"
+          "Säkulare Trends (Tailwinds Gold +61, Oil +58, Headwind Bonds -60, SPY real -62)",
+          "V16 Positioning (Bearish COMMODITY zyklisch, aber säkulare Richtung REAL ASSETS BEVORZUGT als Rahmen)"
         ]
       },
       {
-        "signal": "Real Assets säkular bevorzugt: Säkulare Trends zeigen Gold/Silver/Commodities als stärkste Tailwinds (+58 bis +61), Fiscal Dominance und Demographic Cliff als treibende Regime.",
+        "signal": "Late-Cycle-Warnung: Mehrere Cycles in extended Duration mit bevorstehenden Transitionen",
         "confirmed_by": [
-          "Secular_Trends_Direction",
-          "Secular_Trends_Tailwinds"
+          "Cycles Transition Engine (6 Cycles extended beyond median)",
+          "V16 State (CASCADE Severity, defensive positioning recommended)"
         ]
       },
       {
-        "signal": "Erhöhte Systeminstabilität: CASCADE-Severity mit 3 Transitionen in 6 Monaten, 6 Cycles über mediane Dauer verlängert — strukturell fragiles Umfeld.",
+        "signal": "Fiskalische Dominanz als struktureller Treiber aktiv",
         "confirmed_by": [
-          "Cycle_Engine_Cascade",
-          "V16_State_Warning"
-        ]
-      },
-      {
-        "signal": "Bonds unter Druck: Säkulare Headwinds für Bonds (-60), Fiscal Dominance aktiv (0.80), Financial Repression inaktiv — strukturell ungünstiges Bond-Umfeld.",
-        "confirmed_by": [
-          "Secular_Trends_Tailwinds",
-          "Secular_Trends_FiscalDominance"
+          "Säkulare Trends (Fiscal Dominance 0.80, stärkster aktiver Trend)",
+          "Cycles (DOLLAR: WEAKENING konsistent mit fiskalischer Expansion und Schuldenmonetisierung)"
         ]
       }
     ],
     "cross_system_contradictions": [
       {
-        "topic": "COMMODITY: Kurzfristige Positionierung vs. säkulare Richtung",
-        "system_a_says": "V16 Positioning & Cycle Engine: COMMODITY bearish positioniert, Transition zu BEARISH per 2026-01, EUPHORIA-Phase als Topping-Signal.",
-        "system_b_says": "Säkulare Trends: Oil/Commodities mit Tailwind +58, Real Assets bevorzugt als übergeordnete Richtung. Fiscal Dominance und Demographic Cliff stützen strukturell Rohstoffpreise."
+        "topic": "DOLLAR: Positionierung vs. Cycle-State",
+        "system_a_says": "V16 Positioning: Bullish auf DOLLAR",
+        "system_b_says": "Cycles Transition Engine: DOLLAR befindet sich in WEAKENING-Phase — strukturell bearish für den Dollar"
       },
       {
-        "topic": "DOLLAR: Bullishe Positionierung vs. säkularer Kontext",
-        "system_a_says": "V16 Positioning: DOLLAR bullish. Cycle Engine: DOLLAR WEAKENING-Phase, aber über mediane Dauer verlängert.",
-        "system_b_says": "Säkulare Trends: Fiscal Dominance (0.80) und Great Divergence (0.72) implizieren strukturellen USD-Gegenwind durch Schuldenmonetisierung und geopolitische Fragmentierung. SCHLUSSFOLGERUNG: Taktisch bullish, säkular bearish."
+        "topic": "COMMODITY: Säkulare Tailwinds vs. Zyklischer Bearish-Übergang",
+        "system_a_says": "Säkulare Trends: Oil/Commodities Tailwind +58, Real Assets bevorzugt — strukturell bullish",
+        "system_b_says": "Cycles Transition Engine + V16 Positioning: COMMODITY transitiert zu BEARISH (2026-01), V16 bearish positioniert auf COMMODITY — zyklisch bearish"
       },
       {
-        "topic": "TRADE: Bullishe Positionierung trotz Contraction-Phase",
-        "system_a_says": "V16 Positioning: TRADE bullish.",
-        "system_b_says": "Cycle Engine: TRADE in CONTRACTION-Phase. Deglobalization & Reshoring aktiv (0.28) — struktureller Gegenwind für globalen Handel."
+        "topic": "CREDIT: Positionierung vs. Transition-Signal",
+        "system_a_says": "V16 Positioning: Neutral auf CREDIT",
+        "system_b_says": "Cycles Transition Engine: CREDIT in LATE_EXPANSION, transitiert zu NEUTRAL_MIXED bis 2025-11, extended beyond median — erhöhtes Downside-Risiko impliziert"
       }
     ],
     "silence_alerts": [
       {
-        "topic": "Vorwoche-Thesen gesamt",
-        "last_seen": "Nicht anwendbar — erster Run des Systems",
-        "status": "ERSTER RUN — keine Baseline für Silence-Analyse verfügbar. Ab nächstem Run können verschwundene Themen identifiziert werden."
+        "topic": "IC Claims",
+        "last_seen": "Nicht bekannt — keine Vorwochendaten vorhanden",
+        "status": "VERSCHWUNDEN"
+      },
+      {
+        "topic": "G7 Szenarien",
+        "last_seen": "Nicht bekannt — keine Vorwochendaten vorhanden",
+        "status": "VERSCHWUNDEN"
+      },
+      {
+        "topic": "Disruptions",
+        "last_seen": "Nicht bekannt — keine Vorwochendaten vorhanden",
+        "status": "VERSCHWUNDEN"
+      },
+      {
+        "topic": "Vorwoche Thesen / Watchlist",
+        "last_seen": "Keine Vorwochendaten eingespielt",
+        "status": "KEIN VERGLEICH MÖGLICH — Stille als Signal kann diese Woche nicht bewertet werden, da keine Baseline existiert"
       }
     ]
   }
