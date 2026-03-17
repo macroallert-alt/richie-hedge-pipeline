@@ -1,24 +1,24 @@
 """
 Säkulare Trends Circle — Main Script
-Baldur Creek Capital | Step 0w (V1.4 — EOD Full History + Series Fix + LLM Parser)
+Baldur Creek Capital | Step 0w (V1.5 — yfinance for market data + all V1.4 fixes)
 
 Pipeline:
-  1. FRED + EOD Daten fetchen (18 FRED + 4 EOD + 2 statisch = 24 Serien)
+  1. FRED + yfinance Daten fetchen (18 FRED + 4 yfinance + 2 statisch = 24 Serien)
   2. Regime-Blöcke berechnen (Ratios, Perzentile, Directional Scores)
   3. Fragilitäts-Indikatoren berechnen
   4. Regime-Activation Scores + Gewichteter Tailwind Score
   5. Conviction Summary
   6. Bewertungs-Kaskade (6 Ratios, Perzentile, Half-Life O-U, Kaskaden-Logik)
   7. LLM-Call (Narrativ + Web Search Fundamental-Bestätigung)
-  8. Combined Signal berechnen (Preis × Fundamental Multiplier)
+  8. Combined Signal berechnen (Preis x Fundamental Multiplier)
   9. JSON schreiben
   10. Git commit + push
 
-Fixes V1.4 (over V1.3):
-  - EOD fetch: chunked year-by-year fetch to get full history (EODHD limits daily to ~1yr)
-  - All 'if not s' / 'if s' on pandas Series replaced with 'is None' / 'is not None'
-  - LLM parser: strip prose before first '{', handle ```json blocks robustly
-  - Added debug logging for EOD raw response count
+Fixes V1.5 (over V1.4):
+  - EODHD API replaced with yfinance (free, full history, no API key needed)
+  - EODHD had 402 Payment Required for historical data beyond ~1 year
+  - yfinance gives SPY since 1993, GLD since 2004, SLV since 2006, DBC since 2006
+  - All V1.4 fixes retained (Series ambiguous, LLM parser, etc.)
 
 Usage:
   python -m step_0w_secular.secular_trends [--skip-git] [--skip-llm]
@@ -58,10 +58,18 @@ from .config import (
     DATA_DIR, OUTPUT_FILE,
 )
 
+# yfinance tickers matching our EOD_TICKERS keys
+YFINANCE_TICKERS = {
+    "SPY":    "SPY",
+    "DBC":    "DBC",
+    "GOLD":   "GLD",
+    "SILVER": "SLV",
+}
 
-# ═══════════════════════════════════════════════════════════════════════════
+
+# ===================================================================
 # 1. DATA FETCHING
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def fetch_fred(series_id, fred_api_key):
     """Fetch a single FRED series."""
@@ -88,56 +96,40 @@ def fetch_fred(series_id, fred_api_key):
             return None
         s = pd.Series(values, index=pd.DatetimeIndex(dates), name=series_id)
         s = s[~s.index.duplicated(keep="last")].sort_index()
-        logger.info(f"FRED {series_id}: {len(s)} obs, {s.index[0].date()} → {s.index[-1].date()}")
+        logger.info(f"FRED {series_id}: {len(s)} obs, {s.index[0].date()} -> {s.index[-1].date()}")
         return s
     except Exception as e:
         logger.error(f"FRED {series_id} failed: {e}")
         return None
 
 
-def fetch_eod_monthly(ticker, eod_api_key):
-    """Fetch daily prices from EOD in year-chunks and resample to monthly.
+def fetch_yfinance_monthly(key, yf_ticker):
+    """Fetch full history via yfinance and resample to monthly.
 
-    EODHD API limits daily data to ~1 year per request on many plans.
-    We fetch year-by-year from 1993 to current year, concatenate, then resample.
+    yfinance is free, no API key needed, gives full history:
+    SPY since 1993, GLD since 2004, SLV since 2006, DBC since 2006.
     """
-    all_rows = []
-    current_year = datetime.now().year
-    start_year = 1993
-
-    for year in range(start_year, current_year + 1):
-        from_date = f"{year}-01-01"
-        to_date = f"{year}-12-31" if year < current_year else datetime.now().strftime("%Y-%m-%d")
-        url = f"{EOD_BASE_URL}/eod/{ticker}"
-        params = {
-            "api_token": eod_api_key, "fmt": "json",
-            "period": "d", "from": from_date, "to": to_date,
-            "order": "a",
-        }
-        try:
-            resp = requests.get(url, params=params, timeout=30)
-            resp.raise_for_status()
-            data = resp.json()
-            if data:
-                all_rows.extend(data)
-        except Exception as e:
-            logger.warning(f"EOD {ticker} chunk {year} failed: {e}")
-            continue
-
-    if not all_rows:
-        logger.warning(f"EOD {ticker}: no data after chunked fetch")
+    try:
+        import yfinance as yf
+        logger.info(f"yfinance {yf_ticker}: downloading full history...")
+        ticker_obj = yf.Ticker(yf_ticker)
+        df = ticker_obj.history(period="max", auto_adjust=True)
+        if df is None or df.empty:
+            logger.warning(f"yfinance {yf_ticker}: no data")
+            return None
+        s = df["Close"].dropna()
+        s.name = key
+        # Remove timezone info if present
+        if s.index.tz is not None:
+            s.index = s.index.tz_localize(None)
+        s = s[~s.index.duplicated(keep="last")].sort_index()
+        # Resample to month-end
+        s = s.resample("ME").last().dropna()
+        logger.info(f"yfinance {yf_ticker}: {len(s)} monthly obs, {s.index[0].date()} -> {s.index[-1].date()}")
+        return s
+    except Exception as e:
+        logger.error(f"yfinance {yf_ticker} failed: {e}")
         return None
-
-    logger.info(f"EOD {ticker}: {len(all_rows)} raw daily rows fetched")
-
-    dates = [pd.Timestamp(d["date"]) for d in all_rows]
-    closes = [float(d["adjusted_close"]) for d in all_rows]
-    s = pd.Series(closes, index=pd.DatetimeIndex(dates), name=ticker)
-    s = s[~s.index.duplicated(keep="last")].sort_index()
-    # Resample to month-end
-    s = s.resample("ME").last().dropna()
-    logger.info(f"EOD {ticker}: {len(s)} monthly obs, {s.index[0].date()} → {s.index[-1].date()}")
-    return s
 
 
 def load_static_wap():
@@ -148,44 +140,43 @@ def load_static_wap():
         dates = [pd.Timestamp(f"{year}-07-01") for year in sorted(data.keys())]
         values = [data[year] for year in sorted(data.keys())]
         s = pd.Series(values, index=pd.DatetimeIndex(dates), name=key)
-        # Resample to monthly (forward-fill annual data)
         s = s.resample("ME").ffill()
-        logger.info(f"Static {key}: {len(s)} monthly obs, {s.index[0].date()} → {s.index[-1].date()}")
+        logger.info(f"Static {key}: {len(s)} monthly obs, {s.index[0].date()} -> {s.index[-1].date()}")
         result[key] = s
     return result
 
 
 def fetch_all_data():
-    """Fetch all series: 18 FRED + 4 EOD + 2 static."""
+    """Fetch all series: 18 FRED + 4 yfinance + 2 static."""
     fred_api_key = os.environ.get("FRED_API_KEY", "")
-    eod_api_key = os.environ.get("EODHD_API_KEY", "")
     if not fred_api_key:
         logger.error("FRED_API_KEY not set"); sys.exit(1)
-    if not eod_api_key:
-        logger.error("EODHD_API_KEY not set"); sys.exit(1)
 
     all_data = {}
     for key, sid in FRED_SERIES.items():
         s = fetch_fred(sid, fred_api_key)
         if s is not None:
             all_data[key] = s
-    for key, ticker in EOD_TICKERS.items():
-        s = fetch_eod_monthly(ticker, eod_api_key)
+
+    # Market data via yfinance (replaces EODHD which had 402 errors)
+    for key, yf_ticker in YFINANCE_TICKERS.items():
+        s = fetch_yfinance_monthly(key, yf_ticker)
         if s is not None:
             all_data[key] = s
+
     static = load_static_wap()
     all_data.update(static)
 
-    total = len(FRED_SERIES) + len(EOD_TICKERS) + len(STATIC_WAP_DATA)
+    total = len(FRED_SERIES) + len(YFINANCE_TICKERS) + len(STATIC_WAP_DATA)
     logger.info(f"Fetched {len(all_data)}/{total} series")
     if len(all_data) < total * 0.5:
         logger.error(f"Only {len(all_data)}/{total} — aborting"); sys.exit(1)
     return all_data
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # 2. HELPERS
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def to_monthly(s):
     if s is None: return None
@@ -217,9 +208,9 @@ def compute_percentile_20y(series, current_value):
     return round(float((recent < current_value).sum() / len(recent) * 100), 1)
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # 3. DIRECTIONAL SCORES
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def calc_directional_score(method, series, percentile, all_data):
     if method == "none" or method is None:
@@ -262,9 +253,9 @@ def calc_directional_score(method, series, percentile, all_data):
         logger.warning(f"Unknown method: {method}"); return 0.5
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # 4. REGIME BLOCK COMPUTATION
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def compute_chart_data(chart_def, all_data):
     cid = chart_def["id"]
@@ -414,7 +405,7 @@ def _s2j(s):
 
 
 def compute_regime_block(rk, bd, all_data):
-    logger.info(f"Regime: {rk} — {bd['name']}")
+    logger.info(f"Regime: {rk} -- {bd['name']}")
     charts, wd, tw = [], 0.0, 0.0
     for cd in bd["charts"]:
         cr = compute_chart_data(cd, all_data)
@@ -422,13 +413,13 @@ def compute_regime_block(rk, bd, all_data):
         w = cd.get("chart_weight", 0.0)
         if w > 0: wd += cr["directional_score"] * w; tw += w
     act = round(wd / tw, 3) if tw > 0 else 0.5
-    logger.info(f"  → Activation: {act:.3f} ({'ACTIVE' if act >= ACTIVE_THRESHOLD else 'INACTIVE'})")
+    logger.info(f"  -> Activation: {act:.3f} ({'ACTIVE' if act >= ACTIVE_THRESHOLD else 'INACTIVE'})")
     return {"charts": charts, "activation": act, "active": act >= ACTIVE_THRESHOLD}
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # 5. FRAGILITY INDICATORS
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def compute_fragility(rk, fd, all_data):
     tr, th, di = fd["transform"], fd["threshold"], fd["threshold_direction"]
@@ -517,9 +508,9 @@ def compute_fragility(rk, fd, all_data):
     return {"status": "INACTIVE", "current_value": None}
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # 6. TAILWIND + CONVICTION
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def compute_tailwind_scores(rr):
     tw = {a: 0.0 for a in ASSET_CLASSES}
@@ -541,7 +532,7 @@ def compute_conviction_summary(rr, ts):
     neg = [a for a in ASSET_CLASSES if ts.get(a, 0) < -20]
     if len(pos) >= 3 and "gold" in pos: conv = "REAL ASSETS BEVORZUGT"
     elif len(neg) >= 3: conv = "FINANCIAL ASSETS BEVORZUGT"
-    else: conv = "GEMISCHT — kein klares säkulares Regime"
+    else: conv = "GEMISCHT -- kein klares saekulares Regime"
     rs = {}
     for r in REGIME_ORDER:
         bd = REGIME_BLOCKS[r]
@@ -563,9 +554,9 @@ def compute_conviction_summary(rr, ts):
     }
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # 7. BEWERTUNGS-KASKADE
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def calculate_half_life(rs):
     if rs is None or len(rs) < 36:
@@ -583,7 +574,7 @@ def calculate_half_life(rs):
         return {"half_life_months": None, "significant": False, "r_squared": None, "p_value": None}
 
 def estimate_normalization(h, sig):
-    if not sig or h is None: return "Kein statistischer Rückkehr-Trend nachweisbar"
+    if not sig or h is None: return "Kein statistischer Rueckkehr-Trend nachweisbar"
     t = h * 2
     if t < 12: return "< 1 Jahr"
     elif t < 24: return "~1-2 Jahre"
@@ -632,14 +623,14 @@ def build_cascade(ratios):
     sm2 = ratios.get("SPY_M2")
     if sm2 and sm2["percentile_alltime"] and sm2["percentile_alltime"] > 60:
         cascade.append({"level": 1, "ratio": "SPY/M2", "signal": "AKTIEN REAL TEUER",
-                        "percentile": sm2["percentile_alltime"], "implication": "→ Alternativen zu Financial Assets"})
+                        "percentile": sm2["percentile_alltime"], "implication": "-> Alternativen zu Financial Assets"})
         for k, n, thr in [("GOLD_SPY", "Gold/SPY", 40), ("DBC_SPY", "DBC/SPY", 40)]:
             r = ratios.get(k)
             if r and r["percentile_alltime"] and r["percentile_alltime"] < thr:
                 cascade.append({"level": 1, "ratio": n, "signal": r["signal"],
-                                "percentile": r["percentile_alltime"], "implication": f"→ {n.split('/')[0]} bevorzugt"})
+                                "percentile": r["percentile_alltime"], "implication": f"-> {n.split('/')[0]} bevorzugt"})
     e2 = []
-    for k, asset, thr_hi in [("GOLD_SILVER", "Silber", True), ("OIL_GOLD", "Öl", False), ("COPPER_GOLD", "Kupfer", False)]:
+    for k, asset, thr_hi in [("GOLD_SILVER", "Silber", True), ("OIL_GOLD", "Oel", False), ("COPPER_GOLD", "Kupfer", False)]:
         r = ratios.get(k)
         if not r or r["percentile_alltime"] is None: continue
         if thr_hi and r["percentile_alltime"] > 70:
@@ -649,7 +640,7 @@ def build_cascade(ratios):
     e2.sort(key=lambda x: abs(x["percentile"] - 50), reverse=True)
     for it in e2:
         cascade.append({"level": 2, "ratio": f"{it['asset']}/{it['vs']}", "signal": it["signal"],
-                        "percentile": it["percentile"], "implication": f"→ {it['asset']} innerhalb Real Assets"})
+                        "percentile": it["percentile"], "implication": f"-> {it['asset']} innerhalb Real Assets"})
     if cascade:
         st = max(cascade, key=lambda x: abs(x["percentile"] - 50))
         sm = {"strongest_signal": {"ratio": st["ratio"], "signal": st["signal"], "percentile": st["percentile"]},
@@ -669,39 +660,39 @@ def compute_valuation_cascade(all_data):
     return {"ratios": ratios, "cascade": cas, "cascade_summary": sm, "narrative": ""}
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # 8. LLM INTEGRATION
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
-SECULAR_SYSTEM_PROMPT = """Du bist der Säkulare-Trends-Analyst von Baldur Creek Capital, einem systematischen Macro-Hedgefund.
+SECULAR_SYSTEM_PROMPT = """Du bist der Saekulare-Trends-Analyst von Baldur Creek Capital, einem systematischen Macro-Hedgefund.
 
-Deine Aufgabe: Interpretiere die berechneten säkularen Regime-Daten und formuliere ein Investor-Briefing auf Deutsch.
+Deine Aufgabe: Interpretiere die berechneten saekularen Regime-Daten und formuliere ein Investor-Briefing auf Deutsch.
 
 REGELN:
 1. Schreibe auf Deutsch, professioneller Investoren-Ton (wie Bridgewater Daily Observations)
 2. Kein "KI" oder "AI" in deinem Text
-3. Jede Aussage muss durch die gelieferten Daten oder Web-Search-Ergebnisse gestützt sein
-4. Keine erfundenen Zahlen — nur Zahlen die in den Inputs stehen oder die du per Web Search findest
-5. Sei direkt und meinungsstark — kein "es könnte sein" wenn die Daten klar sind
-6. Erwähne Fragilitäts-Indikatoren nur wenn sie auf WATCH oder ACTIVE stehen
-7. Halte dich an die kausale Kette: Demografie → Deglobalisierung → Fiscal Dominance → Financial Repression → Great Divergence
+3. Jede Aussage muss durch die gelieferten Daten oder Web-Search-Ergebnisse gestuetzt sein
+4. Keine erfundenen Zahlen -- nur Zahlen die in den Inputs stehen oder die du per Web Search findest
+5. Sei direkt und meinungsstark -- kein "es koennte sein" wenn die Daten klar sind
+6. Erwaehne Fragilitaets-Indikatoren nur wenn sie auf WATCH oder ACTIVE stehen
+7. Halte dich an die kausale Kette: Demografie -> Deglobalisierung -> Fiscal Dominance -> Financial Repression -> Great Divergence
 
-KRITISCH — OUTPUT-FORMAT:
+KRITISCH -- OUTPUT-FORMAT:
 Antworte AUSSCHLIESSLICH mit einem JSON-Objekt. KEIN Text vor dem JSON. KEIN Markdown. KEINE Backticks.
 Deine Antwort muss DIREKT mit { beginnen und mit } enden. Nichts davor, nichts danach.
 {
     "regime_narratives": {
-        "demographic_cliff": "3-5 Sätze...",
-        "deglobalization": "3-5 Sätze...",
-        "fiscal_dominance": "3-5 Sätze...",
-        "financial_repression": "3-5 Sätze...",
-        "great_divergence": "3-5 Sätze..."
+        "demographic_cliff": "3-5 Saetze...",
+        "deglobalization": "3-5 Saetze...",
+        "fiscal_dominance": "3-5 Saetze...",
+        "financial_repression": "3-5 Saetze...",
+        "great_divergence": "3-5 Saetze..."
     },
-    "conviction_narrative": "3-5 Sätze Gesamtbild...",
+    "conviction_narrative": "3-5 Saetze Gesamtbild...",
     "fundamental_assessments": [
-        {"ratio": "RATIO_KEY", "factors": [{"factor": "...", "detail": "...", "direction": "BESTÄTIGT"}]}
+        {"ratio": "RATIO_KEY", "factors": [{"factor": "...", "detail": "...", "direction": "BESTAETIGT"}]}
     ],
-    "valuation_narrative": "3-5 Sätze Bewertungs-Kaskade..."
+    "valuation_narrative": "3-5 Saetze Bewertungs-Kaskade..."
 }"""
 
 
@@ -718,22 +709,21 @@ def build_llm_input(cs, rr, vc):
         sec.append(f"  {rk}: {rv['current']}, Pzl={rv['percentile_alltime']}%, {rv['signal']}, HL={h['half_life_months']}Mo")
     ext = [(k, v) for k, v in vc["ratios"].items() if v["percentile_alltime"] and (v["percentile_alltime"] > 80 or v["percentile_alltime"] < 20)]
     if ext:
-        sec.append("\n## FUNDAMENTAL-BESTÄTIGUNG (Web Search)")
+        sec.append("\n## FUNDAMENTAL-BESTAETIGUNG (Web Search)")
         for k, v in ext:
             a = v["name"].split("/")[0].strip()
-            sec.append(f"### {k} (Pzl: {v['percentile_alltime']}%)\nSuche: Produktionsdefizite {a}, Nachfrage-Treiber, Capex, Lagerbestände")
+            sec.append(f"### {k} (Pzl: {v['percentile_alltime']}%)\nSuche: Produktionsdefizite {a}, Nachfrage-Treiber, Capex, Lagerbestaende")
     return "\n".join(sec)
 
 
 def parse_llm_response(resp):
     """Parse LLM response, robustly extracting JSON even if preceded by prose."""
-    # Collect all text blocks
     txt = "".join(b.text for b in resp.content if b.type == "text").strip()
     if not txt:
         logger.error("LLM returned no text content")
         return None
 
-    # Strategy 1: Find first { and last } — extract JSON block
+    # Strategy 1: Find first { and last }
     first_brace = txt.find("{")
     last_brace = txt.rfind("}")
     if first_brace >= 0 and last_brace > first_brace:
@@ -743,7 +733,7 @@ def parse_llm_response(resp):
         except json.JSONDecodeError:
             pass
 
-    # Strategy 2: Try to find ```json ... ``` block
+    # Strategy 2: ```json ... ``` block
     match = re.search(r'```json\s*(.*?)```', txt, re.DOTALL)
     if match:
         try:
@@ -751,7 +741,7 @@ def parse_llm_response(resp):
         except json.JSONDecodeError:
             pass
 
-    # Strategy 3: Strip common prefixes and try raw parse
+    # Strategy 3: Strip prefixes
     for prefix in ["```json", "```"]:
         if txt.startswith(prefix):
             txt = txt[len(prefix):]
@@ -760,22 +750,22 @@ def parse_llm_response(resp):
     try:
         return json.loads(txt.strip())
     except json.JSONDecodeError:
-        logger.error(f"LLM parse fail — first 500 chars: {txt[:500]}")
+        logger.error(f"LLM parse fail -- first 500 chars: {txt[:500]}")
         return None
 
 
 def calc_fund_conf(factors):
     if not factors: return "KEINE DATEN"
-    s = sum((1 if f.get("direction") == "BESTÄTIGT" else -1 if f.get("direction") == "WIDERSPRICHT" else 0) for f in factors) / len(factors)
-    if s > 0.5: return "STARK BESTÄTIGT"
-    elif s > 0: return "TEILWEISE BESTÄTIGT"
+    s = sum((1 if f.get("direction") == "BESTAETIGT" else -1 if f.get("direction") == "WIDERSPRICHT" else 0) for f in factors) / len(factors)
+    if s > 0.5: return "STARK BESTAETIGT"
+    elif s > 0: return "TEILWEISE BESTAETIGT"
     elif s > -0.5: return "GEMISCHT"
     else: return "WIDERSPRICHT"
 
 
 def calc_combined(ps, fc):
     ps_map = {"EXTREM BILLIG": 5, "SEHR BILLIG": 4, "BILLIG": 3, "FAIR": 0, "TEUER": -3, "SEHR TEUER": -4, "EXTREM TEUER": -5}
-    fm = {"STARK BESTÄTIGT": 1.5, "TEILWEISE BESTÄTIGT": 1.2, "KEINE DATEN": 1.0, "GEMISCHT": 0.8, "WIDERSPRICHT": 0.5}
+    fm = {"STARK BESTAETIGT": 1.5, "TEILWEISE BESTAETIGT": 1.2, "KEINE DATEN": 1.0, "GEMISCHT": 0.8, "WIDERSPRICHT": 0.5}
     c = ps_map.get(ps, 0) * fm.get(fc, 1.0)
     if c >= 6: return "EXTREM STARK"
     elif c >= 4: return "STARK"
@@ -819,17 +809,17 @@ def apply_llm(ld, cs, rr, vc):
     return cs, rr, vc
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # 9. JSON + GIT
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def write_json(cs, rr, vc, llm_ok):
     now = datetime.now(timezone.utc)
     regimes = {r: {"charts": rr[r]["charts"], "narrative": rr[r].get("narrative", "")} for r in REGIME_ORDER}
     out = {
-        "metadata": {"generated_at": now.isoformat(), "version": "1.4",
+        "metadata": {"generated_at": now.isoformat(), "version": "1.5",
                      "data_through": now.strftime("%Y-%m-%d"),
-                     "fred_series_count": len(FRED_SERIES), "eod_series_count": len(EOD_TICKERS),
+                     "fred_series_count": len(FRED_SERIES), "yfinance_series_count": len(YFINANCE_TICKERS),
                      "llm_model": CLAUDE_MODEL if llm_ok else "", "llm_success": llm_ok},
         "conviction_summary": cs, "regimes": regimes, "valuation_cascade": vc,
     }
@@ -852,9 +842,9 @@ def git_push():
         logger.error(f"Git: {e}")
 
 
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 # MAIN
-# ═══════════════════════════════════════════════════════════════════════════
+# ===================================================================
 
 def main():
     pa = argparse.ArgumentParser()
@@ -863,7 +853,7 @@ def main():
     args = pa.parse_args()
 
     logger.info("=" * 60)
-    logger.info("SECULAR TRENDS PIPELINE — V1.4")
+    logger.info("SECULAR TRENDS PIPELINE -- V1.5")
     logger.info("=" * 60)
 
     all_data = fetch_all_data()
@@ -882,7 +872,7 @@ def main():
         rr[rk] = r
 
     ts = compute_tailwind_scores(rr)
-    for a, s in ts.items(): logger.info(f"  {ASSET_CLASS_LABELS.get(a,a):20s} → {s:+d}%")
+    for a, s in ts.items(): logger.info(f"  {ASSET_CLASS_LABELS.get(a,a):20s} -> {s:+d}%")
 
     cs = compute_conviction_summary(rr, ts)
     logger.info(f"  Active: {cs['active_regimes']}/{cs['total_regimes']}, Conv: {cs['convergence_direction']}")
