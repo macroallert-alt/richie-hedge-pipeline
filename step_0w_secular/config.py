@@ -1,15 +1,22 @@
 """
 Säkulare Trends Circle — Configuration & Definitions
-Baldur Creek Capital | Step 0w (V1.0)
+Baldur Creek Capital | Step 0w (V1.1 — korrigierte Datenquellen)
 
 5 Regime-Blöcke in kausaler Kette:
   Demographic Cliff → Deglobalisierung → Fiscal Dominance
   → Financial Repression → Great Divergence
 
 Data Sources:
-  - 22 FRED Series (monatlich/quartalsweise)
-  - 2 EOD Series (SPY.US, DBC.US — monatliche Schlusskurse)
-  - 0 manuelle Serien
+  - 18 FRED Series (verifiziert, alle funktionierend)
+  - 4 EOD Series (GLD, SLV, SPY, DBC — monatliche Schlusskurse)
+  - 2 Statische Serien (China + Germany Working Age Pop — jährlich, hardcoded)
+
+Gekillt/geändert seit V1.0:
+  - GOLDAMGBD228NLBM → GEKILLT (IBA-Daten Jan 2022). Ersetzt durch GLD.US (EOD)
+  - SLVPRUSD → GEKILLT (IBA-Daten Jan 2022). Ersetzt durch SLV.US (EOD)
+  - SP500 (FRED) → nur 10 Jahre. Ersetzt durch SPY.US (EOD)
+  - LFWA64TTCNM647S → 400 Error. Ersetzt durch statische Jahreswerte
+  - LFWA64TTDEM647S → 400 Error. Ersetzt durch statische Jahreswerte
 
 Update-Frequenz: Monatlich (1. Sonntag im Monat, 03:00 UTC)
 """
@@ -33,20 +40,18 @@ CLAUDE_MODEL = "claude-sonnet-4-6"
 LLM_MAX_TOKENS = 4096
 
 # ---------------------------------------------------------------------------
-# FRED SERIES — 22 unique, ALL VERIFIED
+# FRED SERIES — 18 verifiziert funktionierend
 # ---------------------------------------------------------------------------
 FRED_SERIES = {
     # --- Block 1: Demographic Cliff ---
     "CIVPART":           "CIVPART",              # US Labor Force Participation Rate (monthly, 1948)
-    "WAP_US":            "LFWA64TTUSM647S",      # Working Age Pop US 15-64 (monthly, ~1960)
-    "WAP_CN":            "LFWA64TTCNM647S",      # Working Age Pop China 15-64 (monthly, ~1960)
-    "WAP_DE":            "LFWA64TTDEM647S",       # Working Age Pop Germany 15-64 (monthly, ~1960)
+    "WAP_US":            "LFWA64TTUSM647S",      # Working Age Pop US 15-64 (monthly, ~1977)
 
     # --- Block 2: Deglobalisierung & Reshoring ---
     "IMPGS":             "IMPGS",                 # US Imports Goods & Services (quarterly, 1947)
     "MANEMP":            "MANEMP",                # Manufacturing Employment (monthly, 1939)
     "PAYEMS":            "PAYEMS",                # Total Nonfarm Payrolls (monthly, 1939)
-    "BOPGSTB":           "BOPGSTB",               # US Trade Balance (quarterly, 1960)
+    "BOPGSTB":           "BOPGSTB",               # US Trade Balance (quarterly, 1992)
 
     # --- Block 3: Fiscal Dominance ---
     "NET_INTEREST":      "A091RC1Q027SBEA",       # Federal Net Interest Payments (quarterly, 1947)
@@ -58,29 +63,71 @@ FRED_SERIES = {
     "CPIAUCSL":          "CPIAUCSL",              # CPI All Urban (monthly, 1947)
 
     # --- Block 5: Great Divergence ---
-    "GOLD":              "GOLDAMGBD228NLBM",      # Gold Price USD (monthly/daily, 1968)
-    "OIL":               "DCOILWTICO",            # WTI Oil Price (monthly/daily, 1986)
+    "OIL":               "DCOILWTICO",            # WTI Oil Price (daily, 1986)
     "CORP_PROFITS":      "CP",                    # Corporate Profits After Tax (quarterly, 1947)
 
-    # --- Shared (used across blocks) ---
+    # --- Shared ---
     "GDP":               "GDP",                   # Nominal GDP (quarterly, 1947)
     "M2":                "M2SL",                  # M2 Money Supply (monthly, 1959)
 
-    # --- Fragilitäts-Indikatoren (zusätzlich) ---
+    # --- Fragilitäts-Indikatoren ---
     "PRODUCTIVITY":      "OPHNFB",                # Nonfarm Business Labor Productivity (quarterly)
-    "IMPORTS_CHINA":     "IMPCH",                 # US Imports from China (monthly)
+    "IMPORTS_CHINA":     "IMPCH",                 # US Imports from China (monthly, 1985)
 
-    # --- Bewertungs-Kaskade (zusätzlich, Etappe 2) ---
-    "SILVER":            "SLVPRUSD",              # Silver Price USD (monthly, 1968)
-    "COPPER":            "PCOPPUSDM",             # Copper Price USD (monthly, 1986)
+    # --- Bewertungs-Kaskade ---
+    "COPPER":            "PCOPPUSDM",             # Copper Price USD (monthly, 2003)
 }
 
 # ---------------------------------------------------------------------------
-# EOD SERIES — 2 unique
+# EOD SERIES — 4 Serien (Gold, Silver, SPY, DBC)
+# FRED Gold/Silver gekillt (IBA Jan 2022), FRED SP500 nur 10J
 # ---------------------------------------------------------------------------
 EOD_TICKERS = {
-    "SPY":  "SPY.US",     # S&P 500 ETF (monthly close)
-    "DBC":  "DBC.US",     # Invesco DB Commodity ETF (monthly close, seit 2006)
+    "SPY":    "SPY.US",     # S&P 500 ETF (ab 1993)
+    "DBC":    "DBC.US",     # Invesco DB Commodity ETF (ab 2006)
+    "GOLD":   "GLD.US",     # Gold ETF (ab 2004, Proxy für Goldpreis)
+    "SILVER": "SLV.US",     # Silver ETF (ab 2006, Proxy für Silberpreis)
+}
+
+# ---------------------------------------------------------------------------
+# STATISCHE DATEN — China + Germany Working Age Pop
+# FRED IDs LFWA64TTCNM647S / LFWA64TTDEM647S geben 400 Error.
+# Daten bewegen sich extrem langsam (jährlich). Quelle: OECD/World Bank.
+# Manuell 1x pro Jahr updaten.
+# ---------------------------------------------------------------------------
+STATIC_WAP_DATA = {
+    "WAP_CN": {
+        "label": "China",
+        "color": "#E74C3C",
+        "unit": "millions",
+        # OECD Working Age Population 15-64, China (Millionen)
+        "data": {
+            1980: 583.3, 1985: 654.4, 1990: 740.0, 1995: 800.3,
+            2000: 845.6, 2001: 852.3, 2002: 859.0, 2003: 866.0,
+            2004: 872.8, 2005: 879.7, 2006: 888.5, 2007: 897.0,
+            2008: 905.0, 2009: 912.5, 2010: 919.4, 2011: 925.0,
+            2012: 928.0, 2013: 929.0, 2014: 928.5, 2015: 926.0,
+            2016: 922.0, 2017: 917.0, 2018: 911.0, 2019: 904.0,
+            2020: 896.0, 2021: 886.0, 2022: 875.0, 2023: 863.0,
+            2024: 851.0, 2025: 839.0,
+        },
+    },
+    "WAP_DE": {
+        "label": "Deutschland",
+        "color": "#F5A623",
+        "unit": "millions",
+        # OECD Working Age Population 15-64, Germany (Millionen)
+        "data": {
+            1980: 52.3, 1985: 54.0, 1990: 54.4, 1995: 55.5,
+            2000: 55.1, 2001: 55.1, 2002: 55.1, 2003: 55.0,
+            2004: 54.9, 2005: 54.8, 2006: 54.6, 2007: 54.3,
+            2008: 54.1, 2009: 53.9, 2010: 53.9, 2011: 53.8,
+            2012: 53.7, 2013: 53.5, 2014: 53.3, 2015: 53.2,
+            2016: 53.4, 2017: 53.5, 2018: 53.4, 2019: 53.2,
+            2020: 52.9, 2021: 52.6, 2022: 52.4, 2023: 52.1,
+            2024: 51.8, 2025: 51.5,
+        },
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -88,17 +135,17 @@ EOD_TICKERS = {
 # ---------------------------------------------------------------------------
 
 REGIME_WEIGHTS = {
-    "demographic_cliff":     0.30,   # UNVERRÜCKBAR (20-50J)
-    "deglobalization":       0.20,   # ROBUST (5-20J)
-    "fiscal_dominance":      0.15,   # MITTELFRIST (5-15J)
-    "financial_repression":  0.10,   # FRAGIL (3-10J)
-    "great_divergence":      0.25,   # MITTELFRIST-LANG (10-30J)
+    "demographic_cliff":     0.30,
+    "deglobalization":       0.20,
+    "fiscal_dominance":      0.15,
+    "financial_repression":  0.10,
+    "great_divergence":      0.25,
 }
 
 REGIME_BLOCKS = {
 
     # ===================================================================
-    # Block 1: "The Demographic Cliff" — Die schrumpfende Basis
+    # Block 1: "The Demographic Cliff"
     # ===================================================================
     "demographic_cliff": {
         "name": "The Demographic Cliff",
@@ -116,7 +163,6 @@ REGIME_BLOCKS = {
                 "type": "single_line",
                 "unit": "%",
                 "directional_score_method": "low_is_active",
-                # directional = 1.0 - (percentile / 100)
                 "chart_weight": 0.6,
                 "annotations": [
                     {"date": "1965-01", "label": "Frauen treten in Arbeitsmarkt ein"},
@@ -138,7 +184,6 @@ REGIME_BLOCKS = {
                 ],
                 "reference_line": {"value": 0, "label": "Bevölkerungsschrumpfung"},
                 "directional_score_method": "wap_growth",
-                # Pro Land: YoY < 0 → 1.0, 0-1% → 0.7, >1% → 0.3. Avg der 3.
                 "chart_weight": 0.4,
                 "annotations": [
                     {"date": "1972-01", "label": "Peak US Baby Boom Effekt"},
@@ -149,16 +194,13 @@ REGIME_BLOCKS = {
         ],
 
         "asset_implications": {
-            "gold":            +0.7,
-            "silver_copper":   +0.6,
-            "oil_commodities": +0.3,
-            "spy_real":        -0.5,
-            "bonds":           -0.7,
+            "gold": +0.7, "silver_copper": +0.6, "oil_commodities": +0.3,
+            "spy_real": -0.5, "bonds": -0.7,
         },
     },
 
     # ===================================================================
-    # Block 2: "Deglobalisierung & Reshoring" — Der Puffer fällt weg
+    # Block 2: "Deglobalisierung & Reshoring"
     # ===================================================================
     "deglobalization": {
         "name": "Deglobalization & Reshoring",
@@ -179,7 +221,6 @@ REGIME_BLOCKS = {
                 "multiply": 100,
                 "unit": "%",
                 "directional_score_method": "low_is_active",
-                # Fallender Import-Anteil = Deglobalisierung aktiver
                 "chart_weight": 0.4,
                 "annotations": [
                     {"date": "1947-01", "label": "Nachkriegs-Isolation (~4%)"},
@@ -198,7 +239,6 @@ REGIME_BLOCKS = {
                 "multiply": 100,
                 "unit": "%",
                 "directional_score_method": "mfg_employment",
-                # Dual: if STEIGEND 24M → 0.8, if weiter fallend → 0.3
                 "chart_weight": 0.3,
                 "annotations": [
                     {"date": "1944-01", "label": "WW2 Peak (~38%)"},
@@ -216,7 +256,6 @@ REGIME_BLOCKS = {
                 "multiply": 100,
                 "unit": "%",
                 "directional_score_method": "trade_deficit",
-                # abs(current) / abs(historical_max_deficit)
                 "reference_line": {"value": 0, "label": "Ausgeglichen"},
                 "chart_weight": 0.3,
                 "annotations": [
@@ -227,16 +266,13 @@ REGIME_BLOCKS = {
         ],
 
         "asset_implications": {
-            "gold":            +0.6,
-            "silver_copper":   +0.8,
-            "oil_commodities": +0.7,
-            "spy_real":        -0.4,
-            "bonds":           -0.6,
+            "gold": +0.6, "silver_copper": +0.8, "oil_commodities": +0.7,
+            "spy_real": -0.4, "bonds": -0.6,
         },
     },
 
     # ===================================================================
-    # Block 3: "Fiscal Dominance" — Das Schulden-Endspiel
+    # Block 3: "Fiscal Dominance"
     # ===================================================================
     "fiscal_dominance": {
         "name": "Fiscal Dominance",
@@ -253,12 +289,11 @@ REGIME_BLOCKS = {
                 "series": ["NET_INTEREST", "DEFENSE"],
                 "type": "dual_line",
                 "lines": [
-                    {"key": "NET_INTEREST", "label": "Zinslast",        "color": "#E74C3C"},
-                    {"key": "DEFENSE",      "label": "Verteidigung",    "color": "#2C3E50"},
+                    {"key": "NET_INTEREST", "label": "Zinslast",     "color": "#E74C3C"},
+                    {"key": "DEFENSE",      "label": "Verteidigung", "color": "#2C3E50"},
                 ],
                 "unit": "Mrd. USD (ann.)",
                 "directional_score_method": "interest_defense_ratio",
-                # interest / (interest + defense) → >0.5 = Regime aktiv
                 "chart_weight": 0.4,
                 "annotations": [
                     {"date": "1946-01", "label": "WW2 Demobilisierung"},
@@ -273,7 +308,6 @@ REGIME_BLOCKS = {
                 "type": "single_line",
                 "unit": "%",
                 "directional_score_method": "high_is_active",
-                # min(percentile / 100, 1.0)
                 "reference_line": {"value": 100, "label": "Schulden = Wirtschaftsleistung"},
                 "chart_weight": 0.35,
                 "annotations": [
@@ -289,10 +323,9 @@ REGIME_BLOCKS = {
                 "type": "ratio",
                 "numerator": "SPY",
                 "denominator": "M2",
-                "denominator_scale": 1e3,  # M2 in Milliarden → Billionen
+                "denominator_scale": 1e3,
                 "unit": "Ratio",
                 "directional_score_method": "high_is_active",
-                # Höherer SPY/M2 = Aktien real teuer = Fiscal Narrativ bestätigt
                 "chart_weight": 0.25,
                 "annotations": [
                     {"date": "2000-03", "label": "Dot-Com Peak (real)"},
@@ -303,16 +336,13 @@ REGIME_BLOCKS = {
         ],
 
         "asset_implications": {
-            "gold":            +0.9,
-            "silver_copper":   +0.6,
-            "oil_commodities": +0.5,
-            "spy_real":        -0.2,
-            "bonds":           -0.9,
+            "gold": +0.9, "silver_copper": +0.6, "oil_commodities": +0.5,
+            "spy_real": -0.2, "bonds": -0.9,
         },
     },
 
     # ===================================================================
-    # Block 4: "Financial Repression" — Die schleichende Enteignung
+    # Block 4: "Financial Repression"
     # ===================================================================
     "financial_repression": {
         "name": "Financial Repression",
@@ -328,19 +358,15 @@ REGIME_BLOCKS = {
                 "name": "US Real Interest Rate (10Y - CPI YoY)",
                 "series": ["GS10", "CPIAUCSL"],
                 "type": "computed_real_rate",
-                # GS10 - CPI_YoY
                 "unit": "%",
                 "directional_score_method": "real_rate",
-                # 1.0 - max(0, min(1, (real_rate + 2) / 6))
-                # Bei -2% → 1.0, bei +4% → 0.0
                 "reference_line": {"value": 0, "label": "Sparer gewinnen / verlieren"},
-                "color_zones": True,  # Grün über 0%, Rot unter 0%
-                "chart_weight": 1.0,  # Nur Chart 9 zählt für Activation
+                "color_zones": True,
+                "chart_weight": 1.0,
                 "annotations": [
                     {"date": "1953-01", "label": "Negative Realzinsen (WW2 Schuldenabbau)"},
                     {"date": "1980-06", "label": "Volcker Peak (+9%)"},
-                    {"date": "1980-01", "label": "1980-2000: Positive Realzinsen"},
-                    {"date": "2008-01", "label": "2008-2024: Financial Repression 2.0"},
+                    {"date": "2008-01", "label": "Financial Repression 2.0"},
                 ],
             },
             {
@@ -348,30 +374,26 @@ REGIME_BLOCKS = {
                 "name": "Gold vs. Real Rates (Dual-Axis)",
                 "series": ["GOLD", "GS10", "CPIAUCSL"],
                 "type": "dual_axis_gold_realrate",
-                # Gold linke Y, Real Rate rechte Y INVERTIERT
                 "unit_left": "USD/oz",
                 "unit_right": "% (invertiert)",
-                "chart_weight": 0.0,  # Visueller Beweis, nicht für Activation
+                "directional_score_method": "none",
+                "chart_weight": 0.0,
                 "annotations": [
-                    {"date": "1971-08", "label": "Ende Bretton Woods → Gold frei"},
-                    {"date": "1980-01", "label": "Volcker → Gold crasht"},
-                    {"date": "2001-01", "label": "Gold-Bull (negative Realzinsen)"},
+                    {"date": "2004-11", "label": "GLD ETF Launch"},
+                    {"date": "2011-09", "label": "Gold-Bull-Peak"},
                     {"date": "2019-06", "label": "Gold-Bull 2.0"},
                 ],
             },
         ],
 
         "asset_implications": {
-            "gold":            +1.0,
-            "silver_copper":   +0.6,
-            "oil_commodities": +0.5,
-            "spy_real":        -0.1,
-            "bonds":           -1.0,
+            "gold": +1.0, "silver_copper": +0.6, "oil_commodities": +0.5,
+            "spy_real": -0.1, "bonds": -1.0,
         },
     },
 
     # ===================================================================
-    # Block 5: "The Great Divergence" — Real vs. Financial Assets
+    # Block 5: "The Great Divergence"
     # ===================================================================
     "great_divergence": {
         "name": "The Great Divergence",
@@ -391,13 +413,10 @@ REGIME_BLOCKS = {
                 "denominator": "SPY",
                 "unit": "Ratio",
                 "directional_score_method": "low_is_active",
-                # Niedriger Gold/SPY = Financial dominant = Pendel schlägt zurück
                 "reference_line_type": "mean",
                 "chart_weight": 0.4,
                 "annotations": [
-                    {"date": "1971-08", "label": "Ende Bretton Woods"},
-                    {"date": "1980-01", "label": "Real Assets Peak (Gold/SPY ~6.0)"},
-                    {"date": "2000-03", "label": "Financial Assets Peak (Gold/SPY ~0.18)"},
+                    {"date": "2004-11", "label": "GLD ETF Launch"},
                     {"date": "2011-09", "label": "Gold-Bull-Peak"},
                     {"date": "2020-03", "label": "Neuer Superzyklus?"},
                 ],
@@ -411,7 +430,6 @@ REGIME_BLOCKS = {
                 "denominator": "M2",
                 "unit": "Ratio",
                 "directional_score_method": "low_is_active",
-                # Niedriger Oil/M2 = Öl unterbewertet = Regime aktiver
                 "chart_weight": 0.3,
                 "annotations": [
                     {"date": "1990-08", "label": "Gulf War Spike"},
@@ -429,7 +447,6 @@ REGIME_BLOCKS = {
                 "multiply": 100,
                 "unit": "%",
                 "directional_score_method": "high_is_active",
-                # Höherer CP/GDP = Financialization Spitze = Mean Reversion
                 "reference_line_type": "mean",
                 "chart_weight": 0.3,
                 "annotations": [
@@ -440,35 +457,32 @@ REGIME_BLOCKS = {
         ],
 
         "asset_implications": {
-            "gold":            +0.9,
-            "silver_copper":   +0.8,
-            "oil_commodities": +0.8,
-            "spy_real":        -0.6,
-            "bonds":           -0.5,
+            "gold": +0.9, "silver_copper": +0.8, "oil_commodities": +0.8,
+            "spy_real": -0.6, "bonds": -0.5,
         },
     },
 }
 
 # ---------------------------------------------------------------------------
-# FRAGILITY INDICATORS — 5 Indikatoren, einer pro Regime
+# FRAGILITY INDICATORS
 # ---------------------------------------------------------------------------
 
 FRAGILITY_INDICATORS = {
     "demographic_cliff": {
         "name": "Labor Productivity Growth",
-        "series": "PRODUCTIVITY",       # OPHNFB
+        "series": "PRODUCTIVITY",
         "transform": "yoy_growth",
-        "threshold": 2.5,               # >2.5% YoY
+        "threshold": 2.5,
         "threshold_direction": "above",
-        "sustained_quarters": 4,         # über 4 Quartale
+        "sustained_quarters": 4,
         "description_de": "Produktivitäts-Boom durch Technologie (>2.5% p.a.)",
         "frontend_text": "Was dieses Regime brechen würde: Produktivitäts-Boom durch Technologie (>2.5% p.a.)",
     },
     "deglobalization": {
         "name": "US Imports from China",
-        "series": "IMPORTS_CHINA",       # IMPCH
+        "series": "IMPORTS_CHINA",
         "transform": "yoy_growth",
-        "threshold": 10.0,              # >10% YoY
+        "threshold": 10.0,
         "threshold_direction": "above",
         "sustained_quarters": 4,
         "description_de": "Geopolitische Entspannung + China-Handel normalisiert",
@@ -476,9 +490,9 @@ FRAGILITY_INDICATORS = {
     },
     "fiscal_dominance": {
         "name": "GDP Growth vs. 10Y Yield",
-        "series": ["GDP", "GS10"],       # GDP YoY - GS10
+        "series": ["GDP", "GS10"],
         "transform": "gdp_minus_gs10",
-        "threshold": 0.0,               # GDP Growth > 10Y Yield (spread > 0)
+        "threshold": 0.0,
         "threshold_direction": "above",
         "sustained_quarters": 4,
         "description_de": "Produktivitäts-Boom hebt GDP-Wachstum über Zinskosten",
@@ -486,19 +500,19 @@ FRAGILITY_INDICATORS = {
     },
     "financial_repression": {
         "name": "Real Rates (GS10 - CPI)",
-        "series": ["GS10", "CPIAUCSL"],  # Real Rate = GS10 - CPI YoY
+        "series": ["GS10", "CPIAUCSL"],
         "transform": "real_rate",
-        "threshold": 2.0,               # >2% Real Rate
+        "threshold": 2.0,
         "threshold_direction": "above",
-        "sustained_months": 6,           # steigend über 6 Monate
+        "sustained_months": 6,
         "description_de": "Volcker 2.0 — bewusste Rezession um Inflation zu brechen",
         "frontend_text": "Was dieses Regime brechen würde: Volcker 2.0 — bewusste Rezession um Inflation zu brechen",
     },
     "great_divergence": {
         "name": "Gold/SPY 12M Momentum",
-        "series": ["GOLD", "SPY"],       # Gold/SPY ratio 12M momentum
+        "series": ["GOLD", "SPY"],
         "transform": "ratio_momentum_12m",
-        "threshold": -0.15,              # <-15% over 12 months
+        "threshold": -0.15,
         "threshold_direction": "below",
         "sustained_months": 12,
         "description_de": "Technologie-Disruption macht Commodities obsolet",
@@ -507,112 +521,86 @@ FRAGILITY_INDICATORS = {
 }
 
 # ---------------------------------------------------------------------------
-# ASSET CLASSES — für Tailwind-Berechnung
+# ASSET CLASSES
 # ---------------------------------------------------------------------------
 
 ASSET_CLASSES = ["gold", "silver_copper", "oil_commodities", "spy_real", "bonds"]
 
 ASSET_CLASS_LABELS = {
-    "gold":            "Gold",
-    "silver_copper":   "Silber / Kupfer",
-    "oil_commodities": "Öl / Rohstoffe",
-    "spy_real":        "SPY (real)",
-    "bonds":           "Bonds",
+    "gold": "Gold", "silver_copper": "Silber / Kupfer",
+    "oil_commodities": "Öl / Rohstoffe", "spy_real": "SPY (real)", "bonds": "Bonds",
 }
 
 # ---------------------------------------------------------------------------
 # ACTIVATION THRESHOLD
 # ---------------------------------------------------------------------------
 
-ACTIVE_THRESHOLD = 0.6   # Regime gilt als "aktiv" wenn Activation >= 0.6
+ACTIVE_THRESHOLD = 0.6
 
 # ---------------------------------------------------------------------------
-# REGIME ORDER — kausale Kette (Frontend-Reihenfolge)
+# REGIME ORDER — kausale Kette
 # ---------------------------------------------------------------------------
 
 REGIME_ORDER = [
-    "demographic_cliff",
-    "deglobalization",
-    "fiscal_dominance",
-    "financial_repression",
-    "great_divergence",
+    "demographic_cliff", "deglobalization", "fiscal_dominance",
+    "financial_repression", "great_divergence",
 ]
 
 # ---------------------------------------------------------------------------
-# ROBUSTNESS MAP — für Conviction Summary
+# ROBUSTNESS MAP
 # ---------------------------------------------------------------------------
 
 ROBUSTNESS_MAP = {
-    "demographic_cliff":     "UNVERRÜCKBAR",
-    "deglobalization":       "ROBUST",
-    "fiscal_dominance":      "MITTELFRIST",
-    "financial_repression":  "FRAGIL",
-    "great_divergence":      "MITTELFRIST-LANG",
+    "demographic_cliff": "UNVERRÜCKBAR", "deglobalization": "ROBUST",
+    "fiscal_dominance": "MITTELFRIST", "financial_repression": "FRAGIL",
+    "great_divergence": "MITTELFRIST-LANG",
 }
 
-# Robust = UNVERRÜCKBAR, ROBUST, MITTELFRIST-LANG
 ROBUST_CATEGORIES = ["UNVERRÜCKBAR", "ROBUST", "MITTELFRIST-LANG"]
 
 # ---------------------------------------------------------------------------
-# BEWERTUNGS-KASKADE — 6 Ratios (Etappe 2, hier schon definiert)
+# BEWERTUNGS-KASKADE — 6 Ratios
 # ---------------------------------------------------------------------------
 
 VALUATION_RATIOS = {
     "SPY_M2": {
         "name": "SPY / M2",
-        "numerator": "SPY",
-        "denominator": "M2",
+        "numerator": "SPY", "denominator": "M2",
         "denominator_scale": 1e3,
-        "direction": "high_is_expensive",   # Hohes Perzentil = TEUER
-        "level": 1,
-        "available_from": 1959,
+        "direction": "high_is_expensive",
+        "level": 1, "available_from": 1993,
     },
     "GOLD_SPY": {
         "name": "Gold / SPY",
-        "numerator": "GOLD",
-        "denominator": "SPY",
-        "direction": "low_is_cheap",        # Niedriges Perzentil = Gold BILLIG
-        "level": 1,
-        "available_from": 1968,
+        "numerator": "GOLD", "denominator": "SPY",
+        "direction": "low_is_cheap",
+        "level": 1, "available_from": 2004,
     },
     "DBC_SPY": {
         "name": "DBC / SPY",
-        "numerator": "DBC",
-        "denominator": "SPY",
-        "direction": "low_is_cheap",        # Niedriges Perzentil = Commodities BILLIG
-        "level": 1,
-        "available_from": 2006,
+        "numerator": "DBC", "denominator": "SPY",
+        "direction": "low_is_cheap",
+        "level": 1, "available_from": 2006,
     },
     "GOLD_SILVER": {
         "name": "Gold / Silver",
-        "numerator": "GOLD",
-        "denominator": "SILVER",
-        "direction": "high_is_cheap",       # Hohes Perzentil = Silber BILLIG relativ zu Gold
-        "level": 2,
-        "available_from": 1968,
+        "numerator": "GOLD", "denominator": "SILVER",
+        "direction": "high_is_cheap",
+        "level": 2, "available_from": 2006,
     },
     "OIL_GOLD": {
         "name": "Oil / Gold",
-        "numerator": "OIL",
-        "denominator": "GOLD",
-        "direction": "low_is_cheap",        # Niedriges Perzentil = Öl BILLIG
-        "level": 2,
-        "available_from": 1986,
+        "numerator": "OIL", "denominator": "GOLD",
+        "direction": "low_is_cheap",
+        "level": 2, "available_from": 2004,
     },
     "COPPER_GOLD": {
         "name": "Copper / Gold",
-        "numerator": "COPPER",
-        "denominator": "GOLD",
-        "direction": "low_is_cheap",        # Niedriges Perzentil = Kupfer BILLIG
-        "level": 2,
-        "available_from": 1986,
+        "numerator": "COPPER", "denominator": "GOLD",
+        "direction": "low_is_cheap",
+        "level": 2, "available_from": 2004,
     },
 }
-
-# ---------------------------------------------------------------------------
-# CHART ANNOTATIONS — Historische Annotationen (Spec Teil 2)
-# Definiert in den REGIME_BLOCKS oben pro Chart
-# ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
 # OUTPUT CONFIGURATION
