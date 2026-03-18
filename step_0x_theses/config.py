@@ -1,8 +1,9 @@
 # ═══════════════════════════════════════════════════════════════
 # THESEN AGENT — CONFIG
-# Version: 1.0.3
+# Version: 1.0.6
 # Baldur Creek Capital | Circle 16
-# V1.0.3: Sheet-Read für ETF-Preise + Relative-Value-Kette
+# V1.0.5: Korrekter ETF-Map aus Sheet, G7 Drive-Fix, Disruptions-List-Fix
+# V1.0.6: DISRUPTION_NAMES Mapping für summarize_disruptions()
 # ═══════════════════════════════════════════════════════════════
 
 import os
@@ -16,7 +17,6 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 HISTORY_DIR = os.path.join(DATA_DIR, "theses_history")
 OUTPUT_FILE = os.path.join(DATA_DIR, "theses.json")
 
-# Interne System-Outputs (relativ zum Pipeline-Repo Root)
 PIPELINE_ROOT = os.path.dirname(BASE_DIR)
 
 SYSTEM_INPUTS = {
@@ -24,80 +24,120 @@ SYSTEM_INPUTS = {
     "cycles_conditional": os.path.join(PIPELINE_ROOT, "step_0v_cycles", "data", "conditional_returns.json"),
     "cycles_regime": os.path.join(PIPELINE_ROOT, "step_0v_cycles", "data", "regime_interaction.json"),
     "secular_trends": os.path.join(PIPELINE_ROOT, "step_0w_secular", "data", "secular_trends.json"),
-    "g7_monitor": os.path.join(PIPELINE_ROOT, "step_0s_g7", "data", "g7_monitor.json"),
-    "disruptions": os.path.join(PIPELINE_ROOT, "step_0t_disruptions", "data", "disruptions.json"),
+    "disruptions": os.path.join(PIPELINE_ROOT, "data", "disruptions", "disruptions_history.json"),
+    "ic_beliefs": os.path.join(PIPELINE_ROOT, "step_0i_ic_pipeline", "data", "history", "beliefs.json"),
 }
 
-# Vorwoche-Thesen (eigener Output)
-PREVIOUS_THESES_FILE = OUTPUT_FILE  # Wird gelesen bevor überschrieben
+G7_DRIVE_FILE_ID = "1Ny0HA2Rfux0gz2whFkw7V-WtvwlACYUn"
+
+PREVIOUS_THESES_FILE = OUTPUT_FILE
 
 # ═══════════════════════════════════════════════════════════════
-# GOOGLE SHEET — V16 DW Prices
+# GOOGLE SHEET — V16 Prices
 # ═══════════════════════════════════════════════════════════════
 
-DW_SHEET_ID = "1sZeZ4VVztAqjBjyfXcCfhpSWJ4pCGF8ip1ksu_TYMHY"
-DW_PRICES_TAB = "DATA_PRICES"
+DW_SHEET_ID = "11xoZ-E-W0eG23V_HSKloqzC4ubLYg9pfcf6k7HJ0oSE"
+DW_PRICES_TAB = "DATA_Prices"
 
-# V16 ETF Ticker → Anzeigename Mapping
+# V16 ETF Ticker → Anzeigename (EXAKT wie im Sheet Header)
 V16_ETF_MAP = {
-    "SPY": "S&P 500",
-    "QQQ": "Nasdaq 100",
-    "IWM": "Russell 2000",
-    "EFA": "EAFE (Entwickelt ex-US)",
-    "EEM": "Emerging Markets",
+    # Edelmetalle + Miner
     "GLD": "Gold",
     "SLV": "Silber",
-    "DBC": "Commodities Basket",
-    "TLT": "US Treasuries 20Y+",
-    "IEF": "US Treasuries 7-10Y",
-    "SHY": "US Treasuries 1-3Y",
-    "HYG": "High Yield Bonds",
-    "LQD": "Investment Grade Bonds",
-    "UUP": "US Dollar",
-    "FXE": "Euro",
-    "FXY": "Yen",
-    "FXB": "Britisches Pfund",
-    "FXA": "Australischer Dollar",
-    "FXC": "Kanadischer Dollar",
-    "XLE": "Energie",
+    "GDX": "Gold Miners",
+    "GDXJ": "Junior Gold Miners",
+    "SIL": "Silber Miners",
+    # Equity
+    "SPY": "S&P 500",
+    "IWM": "Russell 2000",
+    "EEM": "Emerging Markets",
+    "VGK": "Europa (FTSE Europe)",
+    # Equity Sektoren
+    "XLY": "Consumer Discretionary",
+    "XLI": "Industrials",
     "XLF": "Financials",
-    "XLK": "Technologie",
+    "XLE": "Energie",
     "XLV": "Healthcare",
+    "XLP": "Consumer Staples",
     "XLU": "Utilities",
-    "XLB": "Materials",
+    "VNQ": "REITs",
+    "XLK": "Technologie",
+    # Bonds
+    "TLT": "US Treasuries 20Y+",
+    "TIP": "TIPS (Inflationsgeschützt)",
+    "LQD": "Investment Grade Bonds",
+    "HYG": "High Yield Bonds",
+    # Rohstoffe
+    "DBC": "Commodities Basket",
+    "PLATINUM": "Platin",
+    "COPPER": "Kupfer",
+    # Crypto
+    "BTC": "Bitcoin",
+    "ETH": "Ethereum",
 }
 
-# Sinnvolle Ratio-Paare für Relative-Value-Analyse
-# Format: (Zähler-Ticker, Nenner-Ticker, Beschreibung)
+# Sinnvolle Ratio-Paare (nur Ticker die im Sheet existieren)
 RATIO_PAIRS = [
-    # Equity vs. Safe Haven
+    # Edelmetalle vs. Equity
     ("GLD", "SPY", "Gold/Equity Ratio"),
     ("SLV", "SPY", "Silber/Equity Ratio"),
     ("TLT", "SPY", "Bonds/Equity Ratio"),
     # Edelmetalle untereinander
     ("GLD", "SLV", "Gold/Silber Ratio"),
+    ("SLV", "COPPER", "Silber/Kupfer Ratio"),
+    ("GLD", "COPPER", "Gold/Kupfer Ratio"),
+    ("GLD", "PLATINUM", "Gold/Platin Ratio"),
+    # Miner vs. Metall
+    ("GLD", "GDX", "Gold/Gold-Miners Ratio"),
+    ("SLV", "SIL", "Silber/Silber-Miners Ratio"),
     # Rohstoffe
     ("DBC", "SPY", "Commodities/Equity Ratio"),
     ("DBC", "GLD", "Commodities/Gold Ratio"),
     ("SLV", "DBC", "Silber/Commodities Ratio"),
+    ("COPPER", "DBC", "Kupfer/Commodities Ratio"),
     # Equity-Segmente
     ("IWM", "SPY", "Small Cap/Large Cap Ratio"),
     ("EEM", "SPY", "EM/US Ratio"),
-    ("EFA", "SPY", "Entwickelt ex-US/US Ratio"),
-    ("QQQ", "SPY", "Nasdaq/S&P Ratio (Tech Premium)"),
+    ("VGK", "SPY", "Europa/US Ratio"),
     # Sektoren vs. Markt
     ("XLE", "SPY", "Energie/Markt Ratio"),
     ("XLF", "SPY", "Financials/Markt Ratio"),
     ("XLK", "SPY", "Tech/Markt Ratio"),
-    ("XLB", "SPY", "Materials/Markt Ratio"),
+    ("XLI", "SPY", "Industrials/Markt Ratio"),
+    ("XLV", "SPY", "Healthcare/Markt Ratio"),
+    ("XLU", "SPY", "Utilities/Markt Ratio"),
+    ("VNQ", "SPY", "REITs/Markt Ratio"),
     # Bonds
-    ("TLT", "IEF", "Long/Mid Duration Ratio"),
     ("HYG", "LQD", "High Yield/Investment Grade Ratio"),
     ("HYG", "TLT", "Credit/Treasuries Ratio"),
-    # Währungen
-    ("UUP", "FXE", "Dollar/Euro Ratio"),
-    ("GLD", "UUP", "Gold/Dollar Ratio"),
+    ("TIP", "TLT", "TIPS/Treasuries Ratio (Inflationserwartung)"),
+    # Crypto vs. Tradfi
+    ("BTC", "GLD", "Bitcoin/Gold Ratio"),
+    ("BTC", "SPY", "Bitcoin/Equity Ratio"),
+    ("ETH", "BTC", "Ethereum/Bitcoin Ratio"),
+    # Gold vs. Dollar-Proxy (inverse)
+    ("GLD", "TLT", "Gold/Treasuries Ratio"),
 ]
+
+# ═══════════════════════════════════════════════════════════════
+# DISRUPTION NAMES (aus disruptions_config.json)
+# Mapping ID → Name für summarize_disruptions()
+# ═══════════════════════════════════════════════════════════════
+
+DISRUPTION_NAMES = {
+    "D1": "Artificial Intelligence",
+    "D2": "Robotics & Automation",
+    "D3": "Energy Transition",
+    "D4": "Biotech & Longevity",
+    "D5": "Space & Defense",
+    "D6": "Quantum & Computing",
+    "D7": "Fintech & Digital Assets",
+    "D8": "Climate & Agriculture",
+    "D9": "Cybersecurity & Privacy",
+    "D10": "Supply Chain & Reshoring",
+    "D11": "Demographics & Labor",
+    "D12": "Geopolitical Realignment",
+}
 
 # ═══════════════════════════════════════════════════════════════
 # LLM
@@ -105,36 +145,32 @@ RATIO_PAIRS = [
 
 LLM_MODEL = "claude-sonnet-4-6"
 LLM_MAX_TOKENS = 16000
-LLM_TEMPERATURE = 0.3  # Niedrig für Konsistenz, nicht 0 weil Kreativität nötig
+LLM_TEMPERATURE = 0.3
 
-# Web Search Tool Definition
 WEB_SEARCH_TOOL = {"type": "web_search_20250305", "name": "web_search"}
 
 # ═══════════════════════════════════════════════════════════════
 # SCORING
 # ═══════════════════════════════════════════════════════════════
 
-TIER_1_MIN_SCORE = 150  # conviction * asymmetry
+TIER_1_MIN_SCORE = 150
 TIER_2_MIN_SCORE = 60
-CONVICTION_CHANGE_FLAG_THRESHOLD = 20  # Prozentpunkte
+CONVICTION_CHANGE_FLAG_THRESHOLD = 20
 
-# Lifecycle Auto-Transition Schwellen
-LIFECYCLE_CONFIRMED_FOR_EMERGING = 2  # Mindest bestätigte Glieder
+LIFECYCLE_CONFIRMED_FOR_EMERGING = 2
 LIFECYCLE_CONFIRMED_RATIO_FOR_MATURE = 0.75
 LIFECYCLE_WEEKS_FOR_MATURE = 12
 LIFECYCLE_REFUTED_FOR_CHALLENGED = 1
 LIFECYCLE_REFUTED_FOR_DEAD = 2
 
 # ═══════════════════════════════════════════════════════════════
-# WATCHLIST SEED (leer — Agent baut seine eigene)
+# WATCHLIST SEED
 # ═══════════════════════════════════════════════════════════════
 
 WATCHLIST_SEED = []
-# Manuelle Einträge hier hinzufügen wenn gewünscht:
-# WATCHLIST_SEED = ["Citrini 2028", "Blue Owl OBDC II"]
 
 # ═══════════════════════════════════════════════════════════════
-# V16 MACRO STATES (Referenz für Kompatibilitätsmatrix)
+# V16 MACRO STATES
 # ═══════════════════════════════════════════════════════════════
 
 V16_STATES = [
@@ -144,7 +180,7 @@ V16_STATES = [
 ]
 
 # ═══════════════════════════════════════════════════════════════
-# HALLUZINATIONSSCHUTZ — wird in JEDEN LLM-Call injiziert
+# HALLUZINATIONSSCHUTZ
 # ═══════════════════════════════════════════════════════════════
 
 HALLUCINATION_GUARD = """
@@ -308,7 +344,7 @@ Antworte mit folgendem Schema:
 }}"""
 
 # ═══════════════════════════════════════════════════════════════
-# STEP 3a: THESEN-KANDIDATEN GENERIEREN (kompakt)
+# STEP 3a: THESEN-KANDIDATEN
 # ═══════════════════════════════════════════════════════════════
 
 STEP3A_SYSTEM_PROMPT = f"""Du bist der Chief Investment Strategist von Baldur Creek Capital, einem systematischen Macro Hedgefund.
@@ -366,7 +402,7 @@ Antworte mit folgendem Schema:
 }}"""
 
 # ═══════════════════════════════════════════════════════════════
-# STEP 3b: VOLLSTÄNDIGE KAUSALKETTEN BAUEN
+# STEP 3b: KAUSALKETTEN + RELATIVE VALUE
 # ═══════════════════════════════════════════════════════════════
 
 STEP3B_SYSTEM_PROMPT = f"""Du bist der Chief Investment Strategist von Baldur Creek Capital, einem systematischen Macro Hedgefund. Du baust vollständige Investment-Thesen mit verzweigenden Kausalketten.
@@ -414,15 +450,10 @@ Baue für JEDE These eine Relative-Value-Kette:
 - Jedes Glied braucht: asset, relation (ÜBERBEWERTET_ZU), next, ratio_name, ratio_value, ratio_context (z.B. "über/unter historischem Median"), source ("V16_DATA" oder "WEB_SEARCH" mit URL).
 
 LIFECYCLE: Bestehende Thesen updaten, neue starten als SEED.
-
 ZEITLICHE EINORDNUNG: TAKTISCH (1-3 Mo) / ZYKLISCH (3-18 Mo) / STRUKTURELL (2-10+ J)
-
 KATALYSATOREN: MESSBAR oder BINÄR, nicht vage.
-
 "WIR SIND HIER"-MARKER: Wie viele Glieder bestätigt vs. total?
-
 CROSS-SYSTEM CONFIRMATION: Von wie vielen der 7 Systeme bestätigt?
-
 V16-KOMPATIBILITÄTSMATRIX: In welchen der 12 States tradeable? (GO/GO_REDUCED/WAIT/NO_TRADE/BEST_ENTRY)
 
 Sprache: Deutsch.
@@ -433,17 +464,17 @@ Sprache: Deutsch.
 
 Das JSON-Schema wird in der User-Message angegeben."""
 
-STEP3_JSON_SCHEMA = """{
+STEP3_JSON_SCHEMA = """{{
   "theses": [
-    {
+    {{
       "id": "thesis_001",
       "title": "...",
       "title_short": "...",
       "horizon": "TAKTISCH|ZYKLISCH|STRUKTURELL",
       "lifecycle": "SEED|EMERGING|ACTIVE|MATURE|CHALLENGED|DEAD",
       "lifecycle_change": null,
-      "causal_chain": {
-        "root": {
+      "causal_chain": {{
+        "root": {{
           "id": "node_001",
           "claim": "...",
           "indicator": "...",
@@ -454,8 +485,8 @@ STEP3_JSON_SCHEMA = """{
           "is_feedback_loop": false,
           "feedback_target_id": null,
           "children": []
-        }
-      },
+        }}
+      }},
       "chain_depth": 5,
       "total_nodes": 10,
       "confirmed_links": 2,
@@ -464,26 +495,26 @@ STEP3_JSON_SCHEMA = """{
       "speculation_count": 3,
       "progress_marker": "Glied 2 von 5 bestätigt — FRÜH",
       "secondary_effects": [
-        {"effect": "...", "is_counterintuitive": false}
+        {{"effect": "...", "is_counterintuitive": false}}
       ],
-      "counterintuitive_path": {
+      "counterintuitive_path": {{
         "exists": true,
         "path_description": "...",
         "implication": "..."
-      },
+      }},
       "catalysts": [
-        {"event": "...", "type": "BINARY|MEASURABLE", "indicator": "...", "status": "PENDING|TRIGGERED"}
+        {{"event": "...", "type": "BINARY|MEASURABLE", "indicator": "...", "status": "PENDING|TRIGGERED"}}
       ],
-      "perspectives": {
+      "perspectives": {{
         "regime_cycle": "...",
         "data_flows": "...",
         "historical_analogy": "..."
-      },
+      }},
       "perspective_alignment": "ALLE_DREI|ZWEI_VON_DREI|WIDERSPRUCH",
       "perspective_tension": "...",
-      "relative_value_chain": {
+      "relative_value_chain": {{
         "chain": [
-          {
+          {{
             "asset": "SPY",
             "relation": "ÜBERBEWERTET_ZU",
             "next": "GLD",
@@ -491,18 +522,18 @@ STEP3_JSON_SCHEMA = """{
             "ratio_value": "0.35x",
             "ratio_context": "unter 20J-Median von 0.42x",
             "source": "V16_DATA"
-          }
+          }}
         ],
         "cheapest_asset": "...",
         "cheapest_asset_display": "...",
         "conviction_note": "..."
-      },
-      "cross_system_confirmation": {
+      }},
+      "cross_system_confirmation": {{
         "count": 3,
         "systems": ["V16", "Cycles", "Säkulare Trends"],
         "details": "..."
-      },
-      "v16_compatibility": {
+      }},
+      "v16_compatibility": {{
         "STEADY_GROWTH": "GO",
         "FRAGILE_EXPANSION": "GO",
         "LATE_EXPANSION": "GO_REDUCED",
@@ -515,27 +546,27 @@ STEP3_JSON_SCHEMA = """{
         "DEEP_CONTRACTION": "NO_TRADE",
         "FINANCIAL_CRISIS": "NO_TRADE",
         "EARLY_RECOVERY": "BEST_ENTRY"
-      },
+      }},
       "affected_assets": ["Gold", "US Treasuries"],
       "direction": "BULLISH Gold, BEARISH Treasuries",
       "sources": [
-        {"url": "...", "publication": "...", "date": "...", "tier": 1}
+        {{"url": "...", "publication": "...", "date": "...", "tier": 1}}
       ],
       "independent_source_count": 3
-    }
+    }}
   ],
   "open_questions": [
-    {"question": "...", "why_unanswerable": "...", "suggested_research": "..."}
+    {{"question": "...", "why_unanswerable": "...", "suggested_research": "..."}}
   ],
   "silence_alerts_investigated": [
-    {"topic": "...", "finding": "GELÖST|ESKALIERT|UNKLAR", "evidence": "..."}
+    {{"topic": "...", "finding": "GELÖST|ESKALIERT|UNKLAR", "evidence": "..."}}
   ],
-  "watchlist_updates": {
+  "watchlist_updates": {{
     "add": ["..."],
     "remove": ["..."],
     "reason": ["..."]
-  }
-}"""
+  }}
+}}"""
 
 # ═══════════════════════════════════════════════════════════════
 # STEP 4: GEGENTHESE
@@ -613,12 +644,11 @@ MINI-RETROSPEKTIVE:
 - Was waren die Top-3 Asset-Bewegungen seit letztem Run?
 - Hatten wir eine These die das vorhergesagt hat?
 - Wenn ja: "Gut erkannt — These [id]."
-- Wenn nein: "Blinder Fleck. Was hätten wir beobachten müssen?" → Generiere neue Watchlist-Vorschläge.
+- Wenn nein: "Blinder Fleck. Was hätten wir beobachten müssen?"
 
 CONVICTION CHANGES:
 - Vergleiche die frische Conviction mit der Vorwoche.
 - Flagge alle Thesen mit >{CONVICTION_CHANGE_FLAG_THRESHOLD} Prozentpunkte Veränderung.
-- Für jede geflaggte These: erkläre was sich geändert hat.
 
 EPISTEMIC HEALTH:
 - Wie zuverlässig waren die Web Search Ergebnisse diese Woche?
