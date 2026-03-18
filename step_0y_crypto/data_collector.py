@@ -770,19 +770,23 @@ def write_sheet(gc):
             DATA.get('v16_states_30d',''), DATA.get('v16_unstable',''),
         ]
 
-        # Zahlen als native Types behalten, nur None/bool/leer normalisieren
+        # Alles als Strings — USER_ENTERED mit englischem Locale
+        # interpretiert "0.701" korrekt als Dezimalzahl
         clean = []
         for v in row:
             if v is None or v == '':
                 clean.append('')
             elif isinstance(v, bool):
-                clean.append(v)
-            elif isinstance(v, (int, float)):
-                clean.append(v)  # Native Zahl — RAW schreibt korrekt
+                clean.append('TRUE' if v else 'FALSE')
+            elif isinstance(v, float):
+                # Dezimalzahlen: volle Präzision als String mit Punkt
+                clean.append(f'{v}')
+            elif isinstance(v, int):
+                clean.append(str(v))
             else:
                 clean.append(str(v))
 
-        ws.append_row(clean, value_input_option='RAW')
+        ws.append_row(clean, value_input_option='USER_ENTERED')
         log(f"    ✅ {len(clean)} Werte ({dn})")
     except Exception as e:
         log(f"    ERR: {e}")
