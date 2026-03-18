@@ -701,44 +701,89 @@ def write_sheet(gc):
         sh = gc.open_by_key(CRYPTO_SHEET_ID)
         ws = sh.worksheet(CRYPTO_TABS['data_raw'])
         _,dn = calc_deg()
-        puell = DATA.get('puell_multiple') or DATA.get('puell_calc','')
-        addr = DATA.get('active_addresses') or DATA.get('active_addresses_bc','')
+
+        # Fallback-Logik für Felder mit mehreren Quellen
+        puell = DATA.get('puell_multiple') or DATA.get('puell_calc') or ''
+        addr = DATA.get('active_addresses') or DATA.get('active_addresses_bc') or ''
+        new_addr = DATA.get('new_addresses') or ''
         dom = DATA.get('btc_dominance') or ''
-        fund = DATA.get('funding_btc_3d_avg') or DATA.get('funding_rate_bg','')
+        fund_btc = DATA.get('funding_btc_3d_avg') or DATA.get('funding_rate_bg') or ''
+        fund_eth = DATA.get('funding_eth_3d_avg') or ''
+        fund_sol = DATA.get('funding_sol_3d_avg') or ''
+        stablecoin_bg = DATA.get('stablecoin_supply_bg') or ''
+        etf_bal = DATA.get('etf_balance_bg') or ''
+
+        # 92 Spalten — Reihenfolge MUSS exakt dem Sheet-Header entsprechen
         row = [
-            NOW.strftime('%Y-%m-%d'),'weekly_full',dn,
-            DATA.get('btc_price',''),DATA.get('eth_price',''),DATA.get('sol_price',''),
-            DATA.get('btc_7d_chg',''),'','',DATA.get('btc_30d_chg',''),'','',
-            DATA.get('rainbow_band',''),DATA.get('rainbow_score',''),
-            DATA.get('pi_top_111sma',''),DATA.get('pi_top_2x350ema',''),DATA.get('pi_top_proximity',''),
-            '','','',  # Pi Bottom
-            DATA.get('btc_200dma',''),DATA.get('btc_200dma_slope',''),DATA.get('btc_200wma',''),
-            DATA.get('btc_2yr_ma',''),DATA.get('btc_2yr_ma_x5',''),
-            DATA.get('below_200dma_falling',''),DATA.get('below_200wma',''),
-            DATA.get('mvrv_zscore',''),puell,DATA.get('nupl',''),DATA.get('reserve_risk',''),
-            DATA.get('lth_sopr',''),DATA.get('sth_sopr',''),
-            DATA.get('supply_lth',''),DATA.get('supply_sth',''),
-            DATA.get('sth_realized_price',''),DATA.get('lth_realized_price',''),DATA.get('rhodl_ratio',''),
-            '','','','','','',  # Cycle indicators extras
-            '','','',  # Peak composite
-            DATA.get('days_since_halving',''),DATA.get('halving_phase',''),'',
-            DATA.get('fear_greed_7d_avg',''),fund,DATA.get('funding_eth_3d_avg',''),DATA.get('funding_sol_3d_avg',''),
-            DATA.get('oi_btc',''),DATA.get('oi_mcap_ratio',''),DATA.get('liquidations_24h',''),
-            DATA.get('stablecoin_supply_total',''),'','',DATA.get('usdt_usdc_ratio',''),'',DATA.get('defi_tvl_total',''),'',
-            DATA.get('etf_balance_bg',''),'','','',  # ETF + Exchange
-            '','',  # Korrelation
-            DATA.get('btc_realvol_60d',''),'','',  # Vol + M2
-            dom,'','',DATA.get('eth_btc_ratio',''),'',DATA.get('sol_btc_ratio',''),'',  # Altseason
-            addr,'',  # Network
-            DATA.get('v16_macro_state',''),DATA.get('v16_state_name',''),DATA.get('v16_modifier',''),
-            DATA.get('howell_liq_dir',''),DATA.get('howell_vote_sum',''),
-            DATA.get('usdt_price',''),DATA.get('usdc_price',''),
+            # [1-3] META
+            NOW.strftime('%Y-%m-%d'), 'weekly_full', dn,
+            # [4-6] PREISE
+            DATA.get('btc_price',''), DATA.get('eth_price',''), DATA.get('sol_price',''),
+            # [7-12] CHANGES
+            DATA.get('btc_7d_chg',''), DATA.get('eth_24h_chg',''), DATA.get('sol_24h_chg',''),
+            DATA.get('btc_30d_chg',''), '', '',
+            # [13-14] RAINBOW
+            DATA.get('rainbow_band',''), DATA.get('rainbow_score',''),
+            # [15-20] PI CYCLE (Display)
+            DATA.get('pi_top_111sma',''), DATA.get('pi_top_2x350ema',''), DATA.get('pi_top_proximity',''),
+            '', '', '',  # Pi Bottom — braucht Pre-2010 Daten
+            # [21-27] MOVING AVERAGES
+            DATA.get('btc_200dma',''), DATA.get('btc_200dma_slope',''), DATA.get('btc_200wma',''),
+            DATA.get('btc_2yr_ma',''), DATA.get('btc_2yr_ma_x5',''),
+            DATA.get('below_200dma_falling',''), DATA.get('below_200wma',''),
+            # [28-38] ON-CHAIN
+            DATA.get('mvrv_zscore',''), puell, DATA.get('nupl',''), DATA.get('reserve_risk',''),
+            DATA.get('lth_sopr',''), DATA.get('sth_sopr',''),
+            DATA.get('supply_lth',''), DATA.get('supply_sth',''),
+            DATA.get('sth_realized_price',''), DATA.get('lth_realized_price',''), DATA.get('rhodl_ratio',''),
+            # [39-44] DISPLAY-ONLY (Engines)
+            '', '', '', '', '', '',
+            # [45-47] PEAK COMPOSITE (eigener Score, Engines)
+            '', '', '',
+            # [48-50] HALVING + ETF REGIME
+            DATA.get('days_since_halving',''), DATA.get('halving_phase',''), '',
+            # [51-57] SENTIMENT + DERIVATE
+            DATA.get('fear_greed_7d_avg',''),
+            fund_btc, fund_eth, fund_sol,
+            DATA.get('oi_btc',''), DATA.get('oi_mcap_ratio',''), DATA.get('liquidations_24h',''),
+            # [58-64] STABLECOINS + DEFI
+            DATA.get('stablecoin_supply_total',''), '', '',
+            DATA.get('usdt_usdc_ratio',''), '',
+            DATA.get('defi_tvl_total',''), '',
+            # [65-68] ETF + EXCHANGE
+            etf_bal, '', '', '',
+            # [69-70] KORRELATION (Engines)
+            '', '',
+            # [71-73] VOL + M2
+            DATA.get('btc_realvol_60d',''), '', '',
+            # [74-80] ALTSEASON
+            dom, '', '',
+            DATA.get('eth_btc_ratio',''), '', DATA.get('sol_btc_ratio',''), '',
+            # [81-82] NETWORK
+            addr, new_addr,
+            # [83-87] V16 BRIDGE
+            DATA.get('v16_macro_state',''), DATA.get('v16_state_name',''), DATA.get('v16_modifier',''),
+            DATA.get('howell_liq_dir',''), DATA.get('howell_vote_sum',''),
+            # [88-92] KILL SWITCHES + EXTRAS
+            DATA.get('usdt_price',''), DATA.get('usdc_price',''),
             DATA.get('meme_explosion_count',''),
-            DATA.get('v16_states_30d',''),DATA.get('v16_unstable',''),
+            DATA.get('v16_states_30d',''), DATA.get('v16_unstable',''),
         ]
-        row = [str(v) if v is not None and v!='' else '' for v in row]
-        ws.append_row(row, value_input_option='USER_ENTERED')
-        log(f"    ✅ {len(row)} Werte ({dn})")
+
+        # Zahlen als native Types behalten, nur None/bool/leer normalisieren
+        clean = []
+        for v in row:
+            if v is None or v == '':
+                clean.append('')
+            elif isinstance(v, bool):
+                clean.append(v)
+            elif isinstance(v, (int, float)):
+                clean.append(v)  # Native Zahl — RAW schreibt korrekt
+            else:
+                clean.append(str(v))
+
+        ws.append_row(clean, value_input_option='RAW')
+        log(f"    ✅ {len(clean)} Werte ({dn})")
     except Exception as e:
         log(f"    ERR: {e}")
 
