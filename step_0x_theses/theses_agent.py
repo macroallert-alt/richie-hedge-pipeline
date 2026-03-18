@@ -1,12 +1,13 @@
 """
 Thesen Circle — Main Script
-Baldur Creek Capital | Step 0x (V1.0.12)
+Baldur Creek Capital | Step 0x (V1.0.13)
 
 V1.0.8: Sheet-Read für ETF-Preise, Relative-Value-Ketten, Convergence-Berechnung
 V1.0.9: P0 Fix — G7 Drive-Read, Disruptions + IC Beliefs korrigierte Pfade
 V1.0.10: ETF-Map korrigiert, G7 Drive-Download fix, Disruptions-Liste fix
 V1.0.11: Bug A (Preis-Parsing EU-Format), Bug B (G7 mimeType+export), Bug C (IC Beliefs + Disruptions Struktur)
 V1.0.12: Sheet-Read fix (letzte Zeile mit Datum statt all_values[-1]), G7 mimeType Logging verbessert
+V1.0.13: Ratio-Kontext-Modul Integration (ratio_context.json → gruppierter LLM-Prompt in Step 3b)
 
 Pipeline:
   1. System-Synthese (7 interne JSONs → kompakte Zusammenfassung)
@@ -1091,10 +1092,37 @@ MINDESTENS 10 Kandidaten. Decke alle drei Zeithorizonte ab."""
 
 
 # ═══════════════════════════════════════════════════════════════
+# RATIO-KONTEXT LADEN
+# ═══════════════════════════════════════════════════════════════
+
+def load_ratio_context():
+    """Liest ratio_context.json und gibt den LLM-Prompt-Text zurück.
+    Falls nicht vorhanden: leerer String (graceful degradation)."""
+    ratio_file = os.path.join(DATA_DIR, "ratio_context.json")
+    if not os.path.exists(ratio_file):
+        logger.warning(f"Ratio-Kontext nicht gefunden: {ratio_file}")
+        return ""
+    try:
+        with open(ratio_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        llm_text = data.get("llm_prompt_text", "")
+        n_pairs = data.get("metadata", {}).get("pairs_computed", 0)
+        if llm_text:
+            logger.info(f"Ratio-Kontext geladen: {n_pairs} Paare, "
+                        f"{len(llm_text):,} chars LLM-Text")
+        else:
+            logger.warning("Ratio-Kontext JSON geladen, aber kein llm_prompt_text")
+        return llm_text
+    except Exception as e:
+        logger.warning(f"Ratio-Kontext Fehler: {e}")
+        return ""
+
+
+# ═══════════════════════════════════════════════════════════════
 # STEP 3b: VOLLSTÄNDIGE KAUSALKETTEN BAUEN
 # ═══════════════════════════════════════════════════════════════
 
-def step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text):
+def step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text, ratio_context_text=""):
     """Step 3b: Vollständige Kausalketten + Relative-Value-Ketten."""
     logger.info("=" * 50)
     logger.info("STEP 3b: KAUSALKETTEN + RELATIVE VALUE BAUEN")
@@ -1110,6 +1138,14 @@ def step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text):
     candidates_text = json.dumps(candidates, ensure_ascii=False, indent=2)
     prev_summary = build_previous_theses_summary(prev_theses)
 
+    # Ratio-Kontext Sektion (nur wenn verfügbar)
+    ratio_section = ""
+    if ratio_context_text:
+        ratio_section = f"""
+
+{ratio_context_text}
+"""
+
     user_msg = f"""Datum: {today}
 
 === THESEN-KANDIDATEN (aus Step 3a) ===
@@ -1123,7 +1159,7 @@ def step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text):
 
 === ETF-PREISE UND RATIOS FÜR RELATIVE-VALUE-KETTEN ===
 {prices_text}
-
+{ratio_section}
 Baue für JEDEN Kandidaten die vollständige Kausalkette mit allen Details.
 Baue für JEDEN Kandidaten eine Relative-Value-Kette (wenn Preis-Daten verfügbar).
 
@@ -1499,7 +1535,7 @@ def assemble_output(step1_out, step2a_out, step2b_out, step3_out, step4_out, ste
     output = {
         "metadata": {
             "generated_at": now.isoformat(),
-            "pipeline_version": "1.0.12",
+            "pipeline_version": "1.0.13",
             "llm_model": LLM_MODEL,
             "total_llm_calls": call_count,
             "web_search_calls": search_count,
@@ -1596,13 +1632,13 @@ def git_push():
 # ═══════════════════════════════════════════════════════════════
 
 def main():
-    parser = argparse.ArgumentParser(description="Thesen Agent V1.0.12 — Baldur Creek Capital")
+    parser = argparse.ArgumentParser(description="Thesen Agent V1.0.13 — Baldur Creek Capital")
     parser.add_argument("--skip-git", action="store_true", help="Git push überspringen")
     parser.add_argument("--skip-llm", action="store_true", help="LLM-Calls überspringen (Dry Run)")
     args = parser.parse_args()
 
     logger.info("=" * 60)
-    logger.info("THESEN AGENT PIPELINE — V1.0.12")
+    logger.info("THESEN AGENT PIPELINE — V1.0.13")
     logger.info("=" * 60)
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -1620,6 +1656,12 @@ def main():
     ratios = compute_relative_values(prices) if prices else []
     prices_text = format_prices_for_llm(prices, ratios)
     prices_available = prices is not None and len(prices) > 0
+
+    # ── Ratio-Kontext laden (V1.1 — Log-Ratios, ADF, Halflife) ──
+    logger.info("=" * 50)
+    logger.info("RATIO-KONTEXT LADEN")
+    logger.info("=" * 50)
+    ratio_context_text = load_ratio_context()
 
     if args.skip_llm:
         logger.info("--skip-llm: LLM-Calls übersprungen. Dry Run beendet.")
@@ -1648,7 +1690,7 @@ def main():
     call_count += 1
 
     # ── Step 3b: Vollständige Kausalketten + Relative Value ──
-    step3_out = step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text)
+    step3_out = step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text, ratio_context_text)
     call_count += 1
 
     # ── Step 4: Gegenthesen ──
