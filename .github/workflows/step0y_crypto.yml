@@ -1,0 +1,41 @@
+name: Crypto Circle Data Collector
+
+on:
+  schedule:
+    - cron: '0 5 * * 0'  # Sonntag 05:00 UTC (nach Thesen 04:00)
+  workflow_dispatch:       # Manueller Trigger für Tests
+
+env:
+  GCP_SA_KEY: ${{ secrets.GOOGLE_CREDENTIALS }}
+  GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install numpy pandas gspread google-auth requests
+
+      - name: Run Crypto Data Collector
+        run: |
+          cd step_0y_crypto
+          python data_collector.py
+
+      - name: Commit + Push JSON
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add step_0y_crypto/data/crypto_raw_data.json
+          git diff --cached --quiet || git commit -m "crypto: weekly data $(date -u +%Y-%m-%d)"
+          git push
