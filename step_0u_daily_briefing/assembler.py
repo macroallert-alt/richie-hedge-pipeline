@@ -5,6 +5,8 @@ Based on: DAILY_BRIEFING_SYSTEM_SPEC_TEIL1.md §3.3, TEIL2 §12.1
 
 Builds the full newsletter_YYYY-MM-DD.json with all 15 blocks.
 Deterministic blocks are built from data; narrative blocks use LLM.
+
+V1.1: Added build_crypto_block() for Crypto Circle daily check integration.
 """
 
 import hashlib
@@ -243,6 +245,76 @@ def build_behavioral_block(pipeline_data):
         },
         "system_action": pipeline_data.get("execution_level", "UNKNOWN"),
     }
+
+
+# ---------------------------------------------------------------------------
+# Crypto Circle Block (V1.1) — liest crypto_daily_check.json
+# ---------------------------------------------------------------------------
+
+def build_crypto_block():
+    """Lese crypto_daily_check.json und baue Crypto-Sektion fuer Newsletter.
+
+    Datei wird von daily_risk_check.py geschrieben (Step 0y Crypto Daily).
+    Wenn die Datei nicht existiert oder leer ist: leerer Block.
+    """
+    # Suche crypto_daily_check.json im step_0y_crypto/data/ Verzeichnis
+    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    json_path = os.path.join(base, 'step_0y_crypto', 'data', 'crypto_daily_check.json')
+
+    if not os.path.exists(json_path):
+        logger.info("crypto_daily_check.json nicht gefunden — Crypto-Sektion leer")
+        return None
+
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        # Prüfe ob Daten von heute sind (oder maximal 1 Tag alt)
+        check_date = data.get('date', '')
+        today = date.today().isoformat()
+        if check_date and check_date != today:
+            logger.warning(f"crypto_daily_check.json ist von {check_date}, nicht heute ({today})")
+            # Trotzdem einlesen — lieber alte Daten als keine
+
+        ensemble = data.get('ensemble', {})
+        bonus = data.get('bottom_bonus', {})
+        weekly = data.get('weekly_signal', {})
+        alloc = weekly.get('allocation', {})
+        alerts = data.get('alerts', [])
+
+        block = {
+            'available': True,
+            'date': check_date,
+            'btc_price': data.get('btc_price'),
+            'ensemble_daily': ensemble.get('daily'),
+            'ensemble_weekly': ensemble.get('weekly'),
+            'ensemble_changed': ensemble.get('changed', False),
+            'mom_1M': ensemble.get('mom_1M', False),
+            'mom_3M': ensemble.get('mom_3M', False),
+            'mom_6M': ensemble.get('mom_6M', False),
+            'mom_12M': ensemble.get('mom_12M', False),
+            'below_200wma': bonus.get('active', False),
+            'wma_200': bonus.get('wma_200'),
+            'below_wma_changed': bonus.get('changed', False),
+            'btc_dominance': data.get('btc_dominance', {}).get('daily'),
+            'phase': weekly.get('phase'),
+            'phase_name': weekly.get('phase_name'),
+            'weekly_alloc_total': alloc.get('total'),
+            'weekly_btc': alloc.get('btc'),
+            'weekly_eth': alloc.get('eth'),
+            'weekly_sol': alloc.get('sol'),
+            'weekly_cash': alloc.get('cash'),
+            'alert_count': data.get('alert_count', 0),
+            'alerts': alerts,
+        }
+
+        logger.info(f"Crypto block: Ensemble={ensemble.get('daily')}, "
+                     f"Alerts={len(alerts)}, Changed={ensemble.get('changed')}")
+        return block
+
+    except Exception as e:
+        logger.error(f"Crypto block ERR: {e}")
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -495,6 +567,7 @@ def assemble_newsletter(composite_result, pipeline_data, news_result,
     intel_digest = build_intelligence_digest_block(pipeline_data)
     catalysts = build_catalysts_block(pipeline_data)
     behavioral = build_behavioral_block(pipeline_data)
+    crypto_block = build_crypto_block()
 
     # LLM narrative blocks
     system_prompt, user_prompt = build_llm_prompt(
@@ -530,7 +603,7 @@ def assemble_newsletter(composite_result, pipeline_data, news_result,
 
     # Assemble
     newsletter = {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "date": today.isoformat(),
         "weekday": today.strftime("%A"),
         "format": fmt,
@@ -577,6 +650,8 @@ def assemble_newsletter(composite_result, pipeline_data, news_result,
             pipeline_data.get("risk_emergency_active", False),
             False,
         ),
+        # V1.1: Crypto Circle Daily Check
+        "crypto_briefing": crypto_block,
     }
 
     content_for_hash = json.dumps(newsletter, sort_keys=True, default=str)

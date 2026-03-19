@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-signal_engine.py — Crypto Circle Signal Engine V1.0
+signal_engine.py — Crypto Circle Signal Engine V1.1
 =====================================================
 Baldur Creek Capital | Circle 17 (Crypto Hub)
 
@@ -18,6 +18,12 @@ Datenquellen für BTC Dominance:
 
 Input:  BTC Dominance Zeitreihe (oder aktueller Wert + 30d-ago Wert)
 Output: phase (1-4), tier_weights dict, btc_d_change
+
+V1.1 Änderung: PHASE_NAMES umbenannt für Klarheit
+  Phase 1: BTC_DOMINANT → BTC_FIRST
+  Phase 2: BALANCED → NEUTRAL_FLOW
+  Phase 3: ALTSEASON → ALT_ROTATION
+  Phase 4: ALTSEASON_WARN → ALT_OVERHEATED
 
 Usage:
   from step_0y_crypto.signal_engine import run_signal_engine
@@ -59,13 +65,15 @@ def log(msg):
 
 
 # ═══════════════════════════════════════════════════════
-# PHASE NAMES
+# PHASE NAMES — V1.1: Umbenannt für Klarheit
+# Beschreiben den FLUSS innerhalb Crypto (BTC ↔ Alts),
+# NICHT das Makro-Regime (das ist V16).
 # ═══════════════════════════════════════════════════════
 PHASE_NAMES = {
-    1: 'BTC_DOMINANT',
-    2: 'BALANCED',
-    3: 'ALTSEASON',
-    4: 'ALTSEASON_WARN',
+    1: 'BTC_FIRST',        # BTC.D steigt → Kapital fließt in BTC
+    2: 'NEUTRAL_FLOW',     # BTC.D stabil → kein klarer Fluss
+    3: 'ALT_ROTATION',     # BTC.D fällt → Kapital rotiert in Alts
+    4: 'ALT_OVERHEATED',   # BTC.D crasht → Altseason überhitzt
 }
 
 
@@ -221,7 +229,7 @@ def run_signal_engine(btc_d_values):
         dict mit Phase, Gewichte, Statistiken
     """
     log("=" * 50)
-    log("SIGNAL ENGINE V1.0 — Trickle-Down Rotation")
+    log("SIGNAL ENGINE V1.1 — Trickle-Down Rotation")
     log("=" * 50)
 
     n = len(btc_d_values)
@@ -272,7 +280,7 @@ def run_signal_engine(btc_d_values):
         # Serien für risk_engine
         'phase_series': phase_series,
         'chg_series': chg_series,
-        'engine_version': 'signal_engine V1.0',
+        'engine_version': 'signal_engine V1.1',
         'config_version': CONFIG_VERSION,
     }
 
@@ -308,7 +316,7 @@ def run_signal_engine_single(btc_d_today, btc_d_30d_ago):
         'btc_dominance': round(btc_d_today, 2),
         'btc_d_30d_ago': round(btc_d_30d_ago, 2),
         'btc_d_change': change,
-        'engine_version': 'signal_engine V1.0',
+        'engine_version': 'signal_engine V1.1',
         'config_version': CONFIG_VERSION,
     }
 
@@ -320,13 +328,13 @@ def run_signal_engine_single(btc_d_today, btc_d_30d_ago):
 def main():
     """Standalone Test — Einzelwerte und synthetische Serie."""
     import argparse
-    parser = argparse.ArgumentParser(description='Crypto Circle Signal Engine V1.0')
+    parser = argparse.ArgumentParser(description='Crypto Circle Signal Engine V1.1')
     parser.add_argument('--skip-write', action='store_true', help='Kein Sheet Write')
     args = parser.parse_args()
 
     t0 = datetime.now(timezone.utc)
     print("=" * 60)
-    print("SIGNAL ENGINE V1.0 — Standalone Test")
+    print("SIGNAL ENGINE V1.1 — Standalone Test")
     print(f"  {t0.strftime('%Y-%m-%d %H:%M UTC')}")
     print("=" * 60)
 
@@ -335,22 +343,22 @@ def main():
     # Heute: BTC.D ~55%, 30d ago ~54.3% → Δ +0.7pp → Phase 2
     r1 = run_signal_engine_single(55.0, 54.3)
     assert r1['phase'] == 2, f"Erwartet Phase 2, got {r1['phase']}"
-    print(f"  Phase 2 (Balanced): ✅")
+    print(f"  Phase 2 (NEUTRAL_FLOW): ✅")
 
     # Phase 1: BTC.D steigt stark
     r2 = run_signal_engine_single(62.6, 60.0)
     assert r2['phase'] == 1, f"Erwartet Phase 1, got {r2['phase']}"
-    print(f"  Phase 1 (BTC dominant): ✅")
+    print(f"  Phase 1 (BTC_FIRST): ✅")
 
     # Phase 3: BTC.D fällt moderat
     r3 = run_signal_engine_single(54.4, 57.0)
     assert r3['phase'] == 3, f"Erwartet Phase 3, got {r3['phase']}"
-    print(f"  Phase 3 (Altseason): ✅")
+    print(f"  Phase 3 (ALT_ROTATION): ✅")
 
     # Phase 4: BTC.D crasht
     r4 = run_signal_engine_single(39.5, 46.2)
     assert r4['phase'] == 4, f"Erwartet Phase 4, got {r4['phase']}"
-    print(f"  Phase 4 (Altseason Warn): ✅")
+    print(f"  Phase 4 (ALT_OVERHEATED): ✅")
 
     # Test 2: Grenzen
     print("\n--- Test 2: Grenzwerte ---")

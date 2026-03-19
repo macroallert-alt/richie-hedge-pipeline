@@ -1,32 +1,37 @@
-name: Crypto Circle Weekly
+name: Crypto Circle Weekly Orchestrator
+
 on:
   schedule:
-    - cron: '0 5 * * 0'  # Sonntag 05:00 UTC (nach Thesen 04:00)
-  workflow_dispatch:       # Manueller Trigger
+    - cron: '0 5 * * 0'  # Sonntag 05:00 UTC
+  workflow_dispatch:
 
 jobs:
   crypto-weekly:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    timeout-minutes: 10
 
-      - uses: actions/setup-python@v5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: pip install pandas numpy requests gspread google-auth
+      - name: Install Dependencies
+        run: pip install requests numpy pandas gspread google-auth
 
       - name: Run Crypto Orchestrator
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
         run: python -m step_0y_crypto.crypto_orchestrator
 
-      - name: Commit outputs
+      - name: Commit JSON outputs
         run: |
+          cd step_0y_crypto/data
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add step_0y_crypto/data/
-          git diff --cached --quiet || git commit -m "crypto: weekly run $(date -u +%Y-%m-%d)"
+          git add crypto_state.json crypto_raw_data.json crypto_raw_data_prev.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "crypto weekly $(date -u +%Y-%m-%d)"
           git push

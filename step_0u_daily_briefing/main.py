@@ -2,6 +2,8 @@
 Daily Briefing System — Main Entry Point
 Baldur Creek Capital | Step 0u
 Usage: python -m step_0u_daily_briefing.main [--skip-news] [--skip-telegram] [--latest PATH]
+
+V1.1: Added MSG 10 (Crypto Circle) in Telegram delivery.
 """
 
 import argparse
@@ -362,12 +364,68 @@ Anchor: {newsletter.get('anchor_type', '?')}"""
     if contrarian:
         msg9 += f"\n\n🔄 CONTRARIAN: {contrarian}"
 
-    msg9 += f"\n\n━━━━━━━━━━━━━━━━━━━━━"
-    msg9 += f"\n🏁 Baldur Creek Capital — {newsletter.get('anchor_type', '?')} — {d}"
-
     _send_single_telegram(token, chat_id, msg9)
 
-    logger.info("Telegram full newsletter sent (9 messages)")
+    # =======================================================================
+    # MSG 10: Crypto Circle (V1.1)
+    # =======================================================================
+    crypto = newsletter.get("crypto_briefing")
+    if crypto and crypto.get("available"):
+        c = crypto
+        ens_daily = c.get('ensemble_daily')
+        ens_weekly = c.get('ensemble_weekly')
+        changed_icon = " ← GEAENDERT" if c.get('ensemble_changed') else ""
+
+        msg10 = "━━━ CRYPTO CIRCLE ━━━"
+        msg10 += f"\nBTC: ${c.get('btc_price', 0):,.0f}"
+        msg10 += f"\nEnsemble: {ens_daily:.2f}" if ens_daily is not None else ""
+        msg10 += f" (Weekly: {ens_weekly:.2f})" if ens_weekly is not None else ""
+        msg10 += changed_icon
+        msg10 += f"\nMomentum: 1M={'✅' if c.get('mom_1M') else '❌'} " \
+                 f"3M={'✅' if c.get('mom_3M') else '❌'} " \
+                 f"6M={'✅' if c.get('mom_6M') else '❌'} " \
+                 f"12M={'✅' if c.get('mom_12M') else '❌'}"
+
+        if c.get('below_200wma'):
+            wma = c.get('wma_200', 0)
+            msg10 += f"\n⚠️ BTC UNTER 200WMA (${wma:,.0f})"
+            if c.get('below_wma_changed'):
+                msg10 += " ← NEU"
+
+        phase = c.get('phase')
+        phase_name = c.get('phase_name', '?')
+        msg10 += f"\nPhase: {phase} ({phase_name})"
+
+        w_alloc = c.get('weekly_alloc_total')
+        if w_alloc is not None:
+            msg10 += f"\nAllokation: {w_alloc:.0%}"
+            msg10 += f"  BTC={c.get('weekly_btc', 0):.1%}" \
+                     f" ETH={c.get('weekly_eth', 0):.1%}" \
+                     f" SOL={c.get('weekly_sol', 0):.1%}" \
+                     f" Cash={c.get('weekly_cash', 0):.1%}"
+
+        alert_count = c.get('alert_count', 0)
+        alerts = c.get('alerts', [])
+        if alert_count > 0:
+            msg10 += f"\n\n🔔 {alert_count} Alert(s):"
+            for a in alerts:
+                icon = "🔴" if a.get('severity') == 'HIGH' else "🟡"
+                msg10 += f"\n  {icon} {a.get('type', '?')}: {a.get('message', '')}"
+        else:
+            msg10 += "\n\n✅ Keine Crypto Alerts"
+
+        _send_single_telegram(token, chat_id, msg10)
+
+    # =======================================================================
+    # MSG 11: Closing
+    # =======================================================================
+    msg_close = f"━━━━━━━━━━━━━━━━━━━━━"
+    msg_close += f"\n🏁 Baldur Creek Capital — {newsletter.get('anchor_type', '?')} — {d}"
+
+    _send_single_telegram(token, chat_id, msg_close)
+
+    msg_count = 10 if (crypto and crypto.get("available")) else 9
+    logger.info(f"Telegram full newsletter sent ({msg_count + 1} messages)")
     return True
 
 
