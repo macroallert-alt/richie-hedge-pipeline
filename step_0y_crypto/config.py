@@ -1,16 +1,27 @@
 #!/usr/bin/env python3
 """
-config.py — Crypto Circle Konfiguration V1.0
+config.py — Crypto Circle Konfiguration V2.0
 ==============================================
 Baldur Creek Capital | Circle 17 (Crypto Hub)
-Quellen der Wahrheit:
-  - CRYPTO_CIRCLE_SPEC_V2_TEIL1-4.md
-  - CRYPTO_CIRCLE_SPEC_V2_ADDENDUM.md
-  - Session-Entscheidungen (Pi Cycle Option D, CoinGlass Erweiterung)
 
-Alle Schwellenwerte die mit [CALIBRATE] markiert sind werden via
-Kalibrierungs-Backtest (PoC V3) endgültig festgelegt. Aktuelle Werte
-stammen aus der Spec / Addendum als Startwerte.
+V2.0 — V8+Warn Produktionssystem
+  Quellen der Wahrheit:
+    - CRYPTO_CIRCLE_V8_WARN_PRODUKTIONSSPEZIFIKATION.md (Allokationslogik)
+    - CRYPTO_CIRCLE_SPEC_V2_TEIL1-4.md + ADDENDUM (Datenquellen, Frontend, Intelligence)
+    - V146_SYSTEMSTATUSANALYSE.md (Pipeline-Status)
+
+  Änderungen V1.0 → V2.0:
+    - NEU: V8_ENSEMBLE, V8_BOTTOM_BONUS, V8_TRICKLE_DOWN, V8_PHASE4_WARNING
+    - VERWORFEN: Cluster-Confirmation (CYCLE_STATES, BASE_ALLOCATION, DD_THRESHOLDS,
+      TRAILING_STOP, TRANSITION_SPEED, PEAK_SIGNALS, BOTTOM_SIGNALS, CLASS3,
+      DISTRIBUTION State, ALTSEASON Logik, LIQUIDITY_SCORE, ALLOCATION_CHAIN,
+      CRASH_TAXONOMY, DCA, REENTRY, KILL_SWITCHES automatisch,
+      CORRELATION/FUNDING/OI als Modifier, VOL_TARGETING, V16_MACRO_MODIFIER)
+    - BEHALTEN: Sheet IDs, API Endpoints (data_collector), COINGECKO_IDS,
+      HALVINGS, RAINBOW, PI_CYCLE (Display), V16_STATE_NAMES (Display),
+      GRACEFUL_DEGRADATION, SCHEDULE, DISPLAY_INDICATORS
+    - RÜCKWÄRTSKOMPATIBEL: Alle Symbole die data_collector V1.3.1 importiert
+      bleiben vorhanden (V16_MACRO_MODIFIER, V16_INSTABILITY_*, REAL_VOL_WINDOW)
 """
 
 # ═══════════════════════════════════════════════════════
@@ -50,31 +61,11 @@ CRYPTO_TABS = {
 # ═══════════════════════════════════════════════════════
 
 API_ENDPOINTS = {
-    # ─── BGeometrics (gratis, kein Key) — On-Chain + Derivate + Macro ───
-    'bg_base':              'https://bitcoin-data.com/v1',
-    'bg_mvrv':              'https://bitcoin-data.com/v1/mvrv',
-    'bg_nupl':              'https://bitcoin-data.com/v1/nupl',
-    'bg_sopr':              'https://bitcoin-data.com/v1/sopr',
-    'bg_sopr_lth':          'https://bitcoin-data.com/v1/sopr-lth',
-    'bg_sopr_sth':          'https://bitcoin-data.com/v1/sopr-sth',
-    'bg_puell':             'https://bitcoin-data.com/v1/puell-multiple',
-    'bg_reserve_risk':      'https://bitcoin-data.com/v1/reserve-risk',
-    'bg_rhodl':             'https://bitcoin-data.com/v1/rhodl',
-    'bg_realized_price':    'https://bitcoin-data.com/v1/realized-price',
-    'bg_sth_rp':            'https://bitcoin-data.com/v1/sth-realized-price',
-    'bg_lth_rp':            'https://bitcoin-data.com/v1/lth-realized-price',
-    'bg_supply_lth':        'https://bitcoin-data.com/v1/supply-lth',
-    'bg_supply_sth':        'https://bitcoin-data.com/v1/supply-sth',
-    'bg_supply_profit':     'https://bitcoin-data.com/v1/supply-in-profit',
-    'bg_active_addr':       'https://bitcoin-data.com/v1/active-addresses',
-    'bg_hashrate':          'https://bitcoin-data.com/v1/hashrate',
-    'bg_stablecoin':        'https://bitcoin-data.com/v1/stablecoin-supply',
-    'bg_dominance':         'https://bitcoin-data.com/v1/bitcoin-dominance',
-    'bg_funding':           'https://bitcoin-data.com/v1/funding-rate',
-    'bg_oi':                'https://bitcoin-data.com/v1/open-interest-futures',
-    'bg_etf':               'https://bitcoin-data.com/v1/etf',
+    # ─── BGeometrics GitHub Raw (gratis, kein Key, kein Rate Limit) ───
+    # V146 Entscheidung 3.135: GitHub Raw statt API
+    'bg_github_base':       'https://raw.githubusercontent.com/BGeometrics/bgeometrics.github.io/master/files',
 
-    # ─── Binance Public Futures API (gratis, kein Key) ───
+    # ─── Binance Public Futures API (gratis, kein Key — 451 Geo-Block erwartet) ───
     'binance_funding':      'https://fapi.binance.com/fapi/v1/fundingRate',
     'binance_oi':           'https://fapi.binance.com/fapi/v1/openInterest',
     'binance_liquidations': 'https://fapi.binance.com/fapi/v1/forceOrders',
@@ -83,6 +74,14 @@ API_ENDPOINTS = {
     'coingecko_prices':     'https://api.coingecko.com/api/v3/simple/price',
     'coingecko_global':     'https://api.coingecko.com/api/v3/global',
     'coingecko_markets':    'https://api.coingecko.com/api/v3/coins/markets',
+    'coingecko_sol_chart':  'https://api.coingecko.com/api/v3/coins/solana/market_chart',
+
+    # ─── CoinCap (Fallback für SOL Preise) ───
+    'coincap_sol':          'https://api.coincap.io/v2/assets/solana/history',
+
+    # ─── CoinMetrics (gratis, historische Preise für Warm-Up) ───
+    'coinmetrics_btc':      'https://raw.githubusercontent.com/coinmetrics/data/master/csv/btc.csv',
+    'coinmetrics_eth':      'https://raw.githubusercontent.com/coinmetrics/data/master/csv/eth.csv',
 
     # ─── DeFiLlama (gratis, kein Key) ───
     'defillama_stablecoins': 'https://stablecoins.llama.fi/stablecoins?includePrices=true',
@@ -97,24 +96,12 @@ API_ENDPOINTS = {
 
     # ─── FRED (Key vorhanden: FRED_API_KEY) ───
     'fred_m2':              'https://api.stlouisfed.org/fred/series/observations',
-
-    # ─── Fallbacks (Scraping) ───
-    'sosovalue_etf':        'https://sosovalue.com/assets/etf/us-btc-spot',
-    'farside_etf':          'https://farside.co.uk/btc/',
-    'blockchaincenter_alt': 'https://www.blockchaincenter.net/altcoin-season-index/',
 }
 
 
 # ═══════════════════════════════════════════════════════
 # ASSET UNIVERSE
 # ═══════════════════════════════════════════════════════
-
-TIER_0 = ['BTC']
-TIER_1 = ['ETH', 'SOL']
-TIER_2_MAX_POSITIONS = 5
-TIER_2_MAX_PER_POSITION = 0.05   # 5% pro Einzelposition
-TIER_2_MIN_MCAP = 500_000_000    # $500M Market Cap minimum
-TIER_2_MIN_LIQUIDITY_MULT = 20   # 24h Volume >= 20x geplante Position
 
 COINGECKO_IDS = {
     'BTC': 'bitcoin',
@@ -139,6 +126,7 @@ AVG_CYCLE_DAYS = 1460  # 4 Jahre default
 
 # ═══════════════════════════════════════════════════════
 # RAINBOW REGRESSION (PoC verifiziert — Addendum 3.1)
+# Display only — kein Einfluss auf V8+Warn Allokation
 # ═══════════════════════════════════════════════════════
 
 RAINBOW = {
@@ -175,7 +163,9 @@ PI_CYCLE = {
 
 
 # ═══════════════════════════════════════════════════════
-# V16 MACRO STATE MODIFIER (Spec TEIL1, Abschnitt 1.3)
+# V16 MACRO STATE — NUR DISPLAY + DATA_COLLECTOR
+# V8+Warn Backtest: V16 Modifier kostet -€2-4M → VERWORFEN
+# State-Namen bleiben für Display + data_collector Kompatibilität
 # ═══════════════════════════════════════════════════════
 
 V16_STATE_NAMES = {
@@ -193,6 +183,9 @@ V16_STATE_NAMES = {
     12: 'EARLY_RECOVERY',
 }
 
+# RÜCKWÄRTSKOMPATIBEL: data_collector V1.3.1 importiert V16_MACRO_MODIFIER
+# In V8+Warn hat der Modifier KEINEN Einfluss auf die Allokation
+# Wird nur noch im Sheet als Display-Spalte geschrieben
 V16_MACRO_MODIFIER = {
     1:  1.00,   # STEADY_GROWTH
     2:  1.00,   # FRAGILE_EXPANSION
@@ -208,444 +201,210 @@ V16_MACRO_MODIFIER = {
     12: 1.20,   # EARLY_RECOVERY
 }
 
-# V16 State-Instabilität (Addendum 4.4)
+# RÜCKWÄRTSKOMPATIBEL: data_collector V1.3.1 importiert diese
+# V16 State-Instabilität — nur noch Display
 V16_INSTABILITY_WINDOW_DAYS = 30
 V16_INSTABILITY_THRESHOLD = 3    # >= 3 verschiedene States = UNSTABLE
 
 
 # ═══════════════════════════════════════════════════════
-# CYCLE STATES + BASIS-ALLOKATION (Addendum Abschnitt 9)
+# V8+WARN KOMPONENTE 1: BTC MOMENTUM ENSEMBLE
+# Bestimmt WANN investiert wird (Gesamt-Allokation 0-100%)
+# Quelle: V8+Warn Produktionsspezifikation Abschnitt 3
 # ═══════════════════════════════════════════════════════
 
-CYCLE_STATES = [
-    'KAPITULATION',
-    'LATE_BEAR',
-    'AKKUMULATION',
-    'TRANSITION',
-    'EARLY_BULL',
-    'MID_BULL',
-    'DISTRIBUTION',        # NEU — Addendum Abschnitt 5
-    'MID_BULL_CAUTION',
-    'EUPHORIE',
-    'BLOW_OFF_TOP',
-]
-
-BASE_ALLOCATION = {
-    'KAPITULATION':     0.95,   # DCA
-    'LATE_BEAR':        0.30,
-    'AKKUMULATION':     0.85,
-    'TRANSITION':       0.70,
-    'EARLY_BULL':       0.95,
-    'MID_BULL':         1.00,
-    'DISTRIBUTION':     0.50,   # NEU — Addendum
-    'MID_BULL_CAUTION': 0.80,
-    'EUPHORIE':         0.40,
-    'BLOW_OFF_TOP':     0.10,
-}
-
-
-# ═══════════════════════════════════════════════════════
-# DD-SCHWELLEN (Spec TEIL3, Abschnitt 13.2 + Addendum)
-# ═══════════════════════════════════════════════════════
-
-DD_LOOKBACK_DAYS = 21
-
-DD_THRESHOLDS = {
-    'KAPITULATION':     {'warn': -0.45, 'crit': -0.55, 'w_mult': 0.70, 'c_mult': 0.30},
-    'LATE_BEAR':        {'warn': -0.40, 'crit': -0.50, 'w_mult': 0.70, 'c_mult': 0.30},
-    'AKKUMULATION':     {'warn': -0.35, 'crit': -0.45, 'w_mult': 0.70, 'c_mult': 0.30},
-    'TRANSITION':       {'warn': -0.30, 'crit': -0.40, 'w_mult': 0.60, 'c_mult': 0.20},
-    'EARLY_BULL':       {'warn': -0.30, 'crit': -0.40, 'w_mult': 0.60, 'c_mult': 0.20},
-    'MID_BULL':         {'warn': -0.25, 'crit': -0.35, 'w_mult': 0.50, 'c_mult': 0.20},
-    'DISTRIBUTION':     {'warn': -0.20, 'crit': -0.30, 'w_mult': 0.50, 'c_mult': 0.20},
-    'MID_BULL_CAUTION': {'warn': -0.20, 'crit': -0.30, 'w_mult': 0.50, 'c_mult': 0.15},
-    'EUPHORIE':         {'warn': -0.15, 'crit': -0.25, 'w_mult': 0.40, 'c_mult': 0.10},
-    'BLOW_OFF_TOP':     {'warn': -0.10, 'crit': -0.15, 'w_mult': 0.30, 'c_mult': 0.05},
-}
-
-
-# ═══════════════════════════════════════════════════════
-# TRAILING STOP (Spec TEIL3, Abschnitt 13.3)
-# ═══════════════════════════════════════════════════════
-
-TRAILING_STOP = {
-    'EARLY_BULL':       -0.25,
-    'MID_BULL':         -0.25,
-    'DISTRIBUTION':     -0.20,
-    'MID_BULL_CAUTION': -0.20,
-    'EUPHORIE':         -0.15,
-    'BLOW_OFF_TOP':     -0.10,
-}
-TRAILING_ATH_LOOKBACK = 252  # 1-Jahres-Hoch
-
-
-# ═══════════════════════════════════════════════════════
-# VOLATILITY TARGETING (Spec TEIL3, Abschnitt 13.6)
-# ═══════════════════════════════════════════════════════
-
-TARGET_VOL = 0.25           # 25% annualisiert
-REAL_VOL_WINDOW = 60        # 60-Tage realized vol
-
-
-# ═══════════════════════════════════════════════════════
-# KORRELATION (Spec TEIL3, 13.8 + Addendum 6.2)
-# ═══════════════════════════════════════════════════════
-
-CORRELATION = {
-    'window_days':          30,
-    'btc_spy_high':         0.60,   # Addendum: gesenkt von 0.70
-    'btc_spy_low':          0.30,
-    'btc_spy_high_mult':    0.70,
-    'btc_gld_high':         0.50,
-    'btc_gld_neg':          -0.30,
-    'btc_gld_fts_mult':     0.80,   # Flight to Safety
-}
-
-
-# ═══════════════════════════════════════════════════════
-# LEVERAGE MONITOR (Spec TEIL3, Abschnitt 13.7)
-# ═══════════════════════════════════════════════════════
-
-FUNDING = {
-    'window_periods':       9,      # 3 Tage × 3 pro Tag (8h Intervall)
-    'moderate':             0.05,   # 0.05% = moderate
-    'high':                 0.10,   # 0.10% sustained = HIGH
-    'extreme':              0.30,   # 0.30% = EXTREME
-    'high_mult':            0.85,
-    'extreme_mult':         0.60,
-}
-
-OI_MCAP = {
-    'elevated':             0.03,   # 3% = elevated
-    'extreme':              0.05,   # 5% = extreme
-    'elevated_mult':        0.90,
-}
-
-LIQUIDATION_COOLDOWN = {
-    'cascade_threshold':    500_000_000,  # $500M in 24h
-    'cooldown_hours':       48,
-}
-
-
-# ═══════════════════════════════════════════════════════
-# KILL SWITCHES (Spec TEIL3, Abschnitt 13.5)
-# ═══════════════════════════════════════════════════════
-
-KILL_SWITCHES = {
-    'stablecoin_depeg_threshold':   0.02,   # 2% vom Peg
-    'stablecoin_depeg_hours':       24,     # Sustained 24h
-    'manual_env_var':               'CRYPTO_KILL_SWITCH',
-}
-
-
-# ═══════════════════════════════════════════════════════
-# NO-ACTION BAND (Spec TEIL3, Abschnitt 13.13)
-# ═══════════════════════════════════════════════════════
-
-NO_ACTION_BAND_TOTAL_PP = 10    # ±10pp Gesamtallokation
-NO_ACTION_BAND_ASSET_PP = 5     # ±5pp pro Asset
-
-
-# ═══════════════════════════════════════════════════════
-# TRANSITION SPEED (Spec TEIL2, Abschnitt 9.8)
-# ═══════════════════════════════════════════════════════
-
-TRANSITION_SPEED = {
-    # Richtung Gefahr: sofort oder Mindest-Tage Bestätigung
-    'to_danger': {
-        'MID_BULL->EUPHORIE':       0,      # Sofort
-        'EUPHORIE->BLOW_OFF_TOP':   0,      # Sofort
-        'any->KAPITULATION':        0,      # Sofort
-        'any->LATE_BEAR':           0,      # Sofort
-        'default':                  0,      # Sofort bei Gefahr
+V8_ENSEMBLE = {
+    # 4 Momentum-Lookbacks (akademischer Standard, Handelstage)
+    'lookbacks': {
+        '1M':  21,    # 1 Monat
+        '3M':  63,    # 1 Quartal
+        '6M':  126,   # Halbjahr
+        '12M': 252,   # 1 Jahr
     },
-    # Richtung Sicherheit: Bestätigung nötig (Tage)
-    'to_safety': {
-        'EUPHORIE->MID_BULL':       21,     # 3 Wochen
-        'MID_BULL->EARLY_BULL':     14,     # 2 Wochen
-        'EARLY_BULL->AKKUMULATION': 14,     # 2 Wochen
-        'default':                  10,     # ~1.5 Wochen
+    # 1M-Signal Glättung: 5d SMA des 21d-Returns
+    # Reduziert Noise von ~357 Wechseln/Jahr auf ~171 (-52%)
+    'smooth_1m_window': 5,
+    # Gleichgewichtet (Multi-Speed getestet: kein Vorteil, mehr Komplexität)
+    'equal_weight': True,
+    # Mögliche Ensemble-Werte: 0.00, 0.25, 0.50, 0.75, 1.00
+}
+
+
+# ═══════════════════════════════════════════════════════
+# V8+WARN KOMPONENTE 1b: 200-WOCHEN-MA BOTTOM BONUS
+# Quelle: V8+Warn Produktionsspezifikation Abschnitt 3.4
+# ═══════════════════════════════════════════════════════
+
+V8_BOTTOM_BONUS = {
+    'wma_days':         1400,   # 200 × 7 = 1400 Handelstage
+    'min_periods':      700,    # Halbe Periode für Initialisierung
+    'bonus':            0.50,   # +50pp wenn BTC < 200WMA
+    # Blinder Bonus (nicht konditioniert auf 1M ON)
+    # Konditioniert: €4.7M vs. blind: €10.0M — blind ist besser
+    # Fängt V-Recoveries (COVID, FTX) bevor 1M dreht
+}
+
+
+# ═══════════════════════════════════════════════════════
+# V8+WARN KOMPONENTE 2: TRICKLE-DOWN ROTATION
+# Bestimmt WOHIN investiert wird (BTC/ETH/SOL Verteilung)
+# Quelle: V8+Warn Produktionsspezifikation Abschnitt 4
+# ═══════════════════════════════════════════════════════
+
+V8_TRICKLE_DOWN = {
+    # BTC Dominance 30d-Veränderung in Prozentpunkten → Phase
+    'phase_thresholds': {
+        'phase1_above':  2.0,    # BTC.D steigt >+2pp → BTC dominant
+        'phase3_below': -2.0,    # BTC.D fällt <-2pp → Altseason aktiv
+        'phase4_below': -5.0,    # BTC.D crasht <-5pp → Altseason reif
+        # Phase 2 = Default: -2.0 <= change <= +2.0
     },
+    # Tier-Gewichte pro Phase (summieren sich immer zu 1.00)
+    'phase_weights': {
+        1: {'BTC': 0.70, 'ETH': 0.25, 'SOL': 0.05},  # BTC dominant
+        2: {'BTC': 0.45, 'ETH': 0.35, 'SOL': 0.20},  # Balanced (Default, 77% der Zeit)
+        3: {'BTC': 0.25, 'ETH': 0.35, 'SOL': 0.40},  # Altseason aktiv
+        4: {'BTC': 0.25, 'ETH': 0.35, 'SOL': 0.40},  # Altseason reif (mit Warning)
+    },
+    # BTC.D Lookback für 30d-Veränderung
+    'dominance_lookback_days': 30,
+    # Fallback wenn BTC.D nicht verfügbar
+    'default_phase': 2,
 }
 
 
 # ═══════════════════════════════════════════════════════
-# PEAK / BOTTOM SIGNAL GEWICHTE (Spec TEIL2, 10.2 + 10.4)
-# Erweitert um CoinGlass Indikatoren
-# [CALIBRATE] = wird via Backtest kalibriert
+# V8+WARN KOMPONENTE 3: PHASE 4 ALTSEASON WARNING
+# Quelle: V8+Warn Produktionsspezifikation Abschnitt 5
 # ═══════════════════════════════════════════════════════
 
-PEAK_SIGNALS = {
-    # ─── Aus Original-Spec (Gratis) ───
-    'pi_cycle_top':         {'weight': 0, 'active': False, 'note': 'Display only (Addendum)'},
-    'mvrv_gt_7':            {'weight': 2, 'threshold': 7.0},
-    'puell_gt_4':           {'weight': 2, 'threshold': 4.0},
-    'fear_greed_gt_90':     {'weight': 1, 'threshold': 90},
-    'meme_explosion':       {'weight': 2, 'threshold': 3},       # >= 3 Meme-Coins in Top-100
-    'funding_extreme':      {'weight': 1, 'threshold': 0.10},    # 3d-avg > 0.10%
-    'rainbow_ge_7':         {'weight': 2, 'threshold': 7},       # Addendum: Primary Top Signal
-
-    # ─── NEU: CoinGlass Erweiterung (Gratis via CoinGlass API) ───
-    'nupl_euphoria':        {'weight': 2, 'threshold': 0.75},    # [CALIBRATE]
-    'lth_sopr_dist':        {'weight': 2, 'threshold': 1.05},    # [CALIBRATE] sustained
-    'reserve_risk_high':    {'weight': 1, 'threshold': 0.008},   # [CALIBRATE]
-    'rhodl_high':           {'weight': 1, 'threshold': 50000},   # [CALIBRATE]
-    '2yr_ma_above_x5':     {'weight': 1, 'threshold': 1.0},     # Preis > 2YR MA × 5
-    'btc_m2_divergence':    {'weight': 1, 'threshold': 0.20},    # [CALIBRATE] BTC > 20% über M2 Trend
-
-    # ─── CoinGlass Composite (Meta-Indikator) ───
-    'cg_peak_composite':    {'weight': 2, 'threshold': 22},      # [CALIBRATE] >= 22/30 Hits
-}
-
-PEAK_WEIGHT_TOTAL = sum(s['weight'] for s in PEAK_SIGNALS.values() if s.get('active', True))
-
-BOTTOM_SIGNALS = {
-    # ─── Aus Original-Spec ───
-    'pi_cycle_bottom':      {'weight': 0, 'active': False, 'note': 'Display only (Addendum)'},
-    'below_200w_ma':        {'weight': 2, 'threshold': True},
-    'mvrv_lt_0':            {'weight': 3, 'threshold': 0.0},
-    'puell_lt_05':          {'weight': 2, 'threshold': 0.5},
-    'fear_greed_lt_10':     {'weight': 1, 'threshold': 10},
-    'funding_negative':     {'weight': 1, 'threshold': 0.0},     # 3d-avg < 0
-    'rainbow_le_2':         {'weight': 2, 'threshold': 2},
-
-    # ─── NEU: CoinGlass Erweiterung ───
-    'nupl_capitulation':    {'weight': 2, 'threshold': 0.0},     # NUPL < 0
-    'sth_rp_above_price':   {'weight': 2, 'threshold': True},    # [CALIBRATE] BTC < STH Realized Price
-}
-
-BOTTOM_WEIGHT_TOTAL = sum(s['weight'] for s in BOTTOM_SIGNALS.values() if s.get('active', True))
-
-# Puell > 8 Override (Spec TEIL2, 10.5)
-PUELL_EXTREME_EUPHORIA = 8.0     # Puell > 8 → Peak Prob MINIMUM 60%
-PUELL_EXTREME_MIN_PEAK = 0.60
-
-
-# ═══════════════════════════════════════════════════════
-# COINGLASS BULL MARKET PEAK COMPOSITE
-# ═══════════════════════════════════════════════════════
-
-CG_PEAK_COMPOSITE = {
-    'warn_threshold':       15,     # [CALIBRATE] >= 15/30 = Warnung
-    'sell_threshold':       22,     # [CALIBRATE] >= 22/30 = Sell-Signal
-    'display_always':       True,   # Immer im CIO Tab anzeigen
+V8_PHASE4_WARNING = {
+    'multiplier': 0.60,   # Gesamt-Allokation × 0.60 bei Phase 4
+    # Kostet ~1.5pp CAGR (72.53% vs. 74.07%)
+    # Spart 6.27pp MaxDD (-54.73% vs. -61.00%)
+    # Verbessert Sharpe um 0.08 (1.66 vs. 1.58)
 }
 
 
 # ═══════════════════════════════════════════════════════
-# DISPLAY-ONLY INDIKATOREN (kein Einfluss auf Allokation)
+# V8+WARN: NO-ACTION BAND
+# Quelle: V8+Warn Produktionsspezifikation Abschnitt 12.3
+# ═══════════════════════════════════════════════════════
+
+V8_NO_ACTION_BAND = {
+    'total_pp': 10,   # ±10pp Gesamtallokation → KEINE Aktion
+    'asset_pp': 5,    # ±5pp pro Asset → KEINE Aktion
+}
+
+
+# ═══════════════════════════════════════════════════════
+# V8+WARN: ASYMMETRISCHER AUFBAU (Live-Execution)
+# Quelle: V8+Warn Produktionsspezifikation Abschnitt 12.2
+# NICHT im Backtest — nur für Live-Execution empfohlen
+# ═══════════════════════════════════════════════════════
+
+V8_EXECUTION = {
+    'reduce_immediate': True,     # Reduzierung: sofort
+    'build_weeks': 3,             # Aufbau: über 3 Wochen
+    'build_week1_pct': 0.50,      # Woche 1: 50% des Deltas
+    'build_week2_pct': 0.30,      # Woche 2: 30%
+    'build_week3_pct': 0.20,      # Woche 3: 20%
+}
+
+
+# ═══════════════════════════════════════════════════════
+# V8+WARN: SOL PROXY
+# Wenn SOL-Preise nicht verfügbar: ETH × 1.3 als Proxy
+# Quelle: V8+Warn Produktionsspezifikation Abschnitt 8.2
+# ═══════════════════════════════════════════════════════
+
+V8_SOL_PROXY = {
+    'multiplier': 1.3,           # SOL ≈ ETH × 1.3 (Volatilitätsproxy)
+    'start_date': '2020-09-01',  # SOL echte Daten erst ab hier verfügbar
+}
+
+
+# ═══════════════════════════════════════════════════════
+# V8+WARN: BTC.D PROXY (Korrekturfaktoren nach Jahr)
+# Wenn CoinGecko /global nicht verfügbar: BTC MCap / (BTC+ETH MCap) × CF
+# Quelle: V8+Warn Produktionsspezifikation Abschnitt 8.3
+# ═══════════════════════════════════════════════════════
+
+V8_BTC_D_PROXY = {
+    'correction_factors': {
+        2010: 0.95, 2011: 0.95, 2012: 0.95, 2013: 0.90, 2014: 0.90,
+        2015: 0.85, 2016: 0.80, 2017: 0.60, 2018: 0.55, 2019: 0.65,
+        2020: 0.65, 2021: 0.55, 2022: 0.60, 2023: 0.65, 2024: 0.65,
+        2025: 0.65, 2026: 0.65,
+    },
+    'default_cf': 0.65,
+    'min_dominance': 20.0,   # BTC.D < 20% = unplausibel
+    'max_dominance': 95.0,   # BTC.D > 95% = unplausibel
+}
+
+
+# ═══════════════════════════════════════════════════════
+# DISPLAY-ONLY INDIKATOREN (kein Einfluss auf V8+Warn Allokation)
+# Werden im CryptoHub Frontend angezeigt
 # ═══════════════════════════════════════════════════════
 
 DISPLAY_INDICATORS = [
-    'pi_cycle_top',             # Pi Cycle Top (Addendum: nur Display)
-    'pi_cycle_bottom',          # Pi Cycle Bottom
-    'ahr999',                   # Ahr999 Index
-    'bubble_index',             # Bitcoin Bubble Index
-    'bmo',                      # Bitcoin Macro Oscillator
-    'golden_ratio_multiplier',  # Golden Ratio Multiplier
-    'profitable_days',          # Bitcoin Profitable Days %
-    'active_addresses',         # Network Activity
-    'new_addresses',            # Network Growth
-    'stock_to_flow',            # S2F — bewusst verworfen als Signal, nur Display
+    # On-Chain (BGeometrics GitHub Raw)
+    'mvrv_zscore',
+    'nupl',
+    'sopr', 'sopr_lth', 'sopr_sth',
+    'puell_multiple',
+    'reserve_risk',
+    'rhodl_ratio',
+    'realized_price', 'sth_realized_price', 'lth_realized_price',
+    'lth_supply', 'sth_supply',
+    'supply_in_profit',
+    # Cycle Models
+    'pi_cycle_top', 'pi_cycle_bottom',
+    'rainbow_chart',
+    'halving_phase',
+    # Sentiment + Derivate
+    'fear_greed',
+    'funding_rates',
+    'open_interest',
+    # Network
+    'active_addresses',
+    'hashrate',
+    # ETF
+    'etf_flows',
+    # V16 Bridge
+    'v16_macro_state',
+    'howell_liquidity',
+    # Stablecoins
+    'stablecoin_supply',
+    'defi_tvl',
 ]
 
 
 # ═══════════════════════════════════════════════════════
-# KLASSE 3 GEWICHTE (Addendum Abschnitt 2.7)
-# Pi Cycle RAUS, Rainbow + Funding + V16 Instab + V16 FullExp
+# RÜCKWÄRTSKOMPATIBEL: data_collector V1.3.1 importiert REAL_VOL_WINDOW
+# In V8+Warn nicht als Allokations-Input genutzt, nur Display
 # ═══════════════════════════════════════════════════════
 
-CLASS3_DANGER = {
-    'rainbow_ge_7':             {'weight': 2},
-    'funding_sustained_high':   {'weight': 1, 'threshold': 0.10},  # 3d-avg > 0.10%
-    'v16_full_expansion':       {'weight': 1},                     # V16 State == FULL_EXPANSION
-    'v16_state_instability':    {'weight': 1},                     # >= 3 States in 30d
-}
-CLASS3_DANGER_THRESHOLD = 3   # [CALIBRATE] Summe >= 3 = DANGER
-
-CLASS3_SAFE = {
-    'rainbow_le_2':             {'weight': 2},
-    'below_200w_ma':            {'weight': 2},
-    'below_200dma_falling':     {'weight': 1},
-    'funding_negative':         {'weight': 1, 'threshold': 0.0},   # 3d-avg < 0 sustained
-}
-CLASS3_SAFE_THRESHOLD = 3     # [CALIBRATE] Summe >= 3 = SAFE
+REAL_VOL_WINDOW = 60   # 60-Tage realized vol (Display)
 
 
 # ═══════════════════════════════════════════════════════
-# DISTRIBUTION STATE (Addendum Abschnitt 5.2)
-# ═══════════════════════════════════════════════════════
-
-DISTRIBUTION = {
-    'rainbow_min':      4,       # Rainbow Band 4-6
-    'rainbow_max':      6,
-    'v16_state':        3,       # LATE_EXPANSION
-    'btc_90d_return':   0.0,     # BTC 90d Return < 0
-    'base_allocation':  0.50,
-}
-
-
-# ═══════════════════════════════════════════════════════
-# ALTSEASON (Spec TEIL2, Abschnitt 11)
-# ═══════════════════════════════════════════════════════
-
-ALTSEASON = {
-    # ETH/BTC Momentum (Primary Trigger)
-    'eth_btc_start':        0.0,    # > 0% = Altseason beginnt
-    'eth_btc_confirmed':    0.10,   # > 10% = bestätigt
-    'eth_btc_over':         -0.10,  # < -10% = vorbei
-
-    # Altseason Index (Bestätigung)
-    'index_confirmed':      50,     # > 50 + ETH/BTC pos = doppelt bestätigt
-    'index_ripe':           75,     # > 75 = REIF → Tier 2 reduzieren
-
-    # BTC Dominance Velocity
-    'velocity_fast':        -3.0,   # BTC.D 7d change < -3pp = FAST
-    'velocity_normal_low':  -3.0,
-    'velocity_normal_high': -1.0,
-    'velocity_slow_low':    -1.0,
-    'velocity_slow_high':   1.0,
-    'velocity_reverse':     1.0,    # BTC.D 7d change > +1pp = REVERSE
-
-    # Modell-Wahl (Spec TEIL2, 11.4)
-    'model_a_threshold':    -3.0,   # BTC.D 30d change < -3pp → Klassisch
-    'model_b_sol_threshold': 0.20,  # SOL/BTC 30d > 20% → Parallel
-
-    # Meme-Explosion (Spec TEIL2, 11.5)
-    'meme_7d_change':       2.0,    # > 200% 7d
-    'meme_min_mcap':        1_000_000_000,
-    'meme_count_threshold': 3,
-
-    # Tier 1 Verteilung
-    'tier1_strong_share':   0.60,   # Stärkerer Coin: 60%
-    'tier1_weak_share':     0.40,   # Schwächerer: 40%
-
-    # Überhitzungs-Check
-    'overheat_30d_return':  1.0,    # > 100% in 30d
-    'overheat_funding':     0.05,   # AND Funding > 0.05%
-    'overheat_max_alloc':   0.10,   # → capped bei 10%
-}
-
-# Default Tier-Allokation (kein Altseason aktiv)
-DEFAULT_TIER_ALLOC = {
-    'btc':      0.80,
-    'tier1':    0.15,
-    'tier2':    0.05,
-}
-
-
-# ═══════════════════════════════════════════════════════
-# LIQUIDITY SCORE (Spec TEIL3, Abschnitt 12)
-# ═══════════════════════════════════════════════════════
-
-HOWELL_CRYPTO_MULT = {
-    1:  1.80,   # Expanding
-    0:  1.00,   # Neutral
-    -1: 0.25,   # Contracting
-}
-
-CRYPTO_NATIVE_WEIGHTS = {
-    'stablecoin_minting':       0.25,
-    'usdt_usdc_ratio':          0.10,
-    'stablecoin_defi_share':    0.15,
-    'etf_flows':                0.30,
-    'exchange_reserves':        0.20,
-}
-
-DUAL_LIQUIDITY_GLOBAL_WEIGHT = 0.50
-DUAL_LIQUIDITY_NATIVE_WEIGHT = 0.50
-
-LIQUIDITY_ADJUSTMENT = {
-    (80, 101): 1.20,   # 80-100: Tsunami
-    (60, 80):  1.00,   # 60-80: Gut
-    (40, 60):  0.90,   # 40-60: Abwartend
-    (20, 40):  0.70,   # 20-40: Abfluss
-    (0, 20):   0.50,   # 0-20: Dürre
-}
-
-# ETF Regime Switch (Spec TEIL2, 9.3)
-ETF_REGIME = {
-    'etf_dominant_threshold':   0.50,   # ETF > 50% Spot Vol = ETF-Dominant
-    'crypto_native_threshold':  0.20,   # ETF < 20% = Crypto-Native
-}
-
-
-# ═══════════════════════════════════════════════════════
-# CRASH TAXONOMIE (Spec TEIL3, Abschnitt 13.4)
-# ═══════════════════════════════════════════════════════
-
-CRASH_TAXONOMY = {
-    'type1_liquidity': {
-        'btc_dd_7d':                -0.20,    # > 20% in < 7d
-        'stablecoin_stable':        True,     # Stablecoin Supply stabil
-        'etf_neutral':              True,     # ETF Flows neutral/positiv
-        'cooldown_hours':           48,
-    },
-    'type2_structural': {
-        'btc_dd_14d':               -0.20,    # > 20% über 14d
-        'stablecoin_redemption':    -500_000_000,
-        'etf_outflow_14d':          -1_000_000_000,
-        'max_alloc':                0.30,
-    },
-    'type3_systemic': {
-        'triggers': ['exchange_withdrawal_paused', 'stablecoin_depeg', 'v16_financial_crisis'],
-        'alloc':                    0.0,      # Sofort auf 0-10%
-        'auto_reentry':             False,    # Nur manuell
-    },
-}
-
-
-# ═══════════════════════════════════════════════════════
-# DCA LOGIK (Spec TEIL3, Abschnitt 13.12)
-# ═══════════════════════════════════════════════════════
-
-DCA = {
-    'accumulate_bear':      {'pct_per_week': 0.20, 'weeks': 5},     # 20% Delta/Woche
-    'accumulate_bull':      {'pct_per_week': 0.33, 'weeks': 3},     # 33% Delta/Woche
-    'accumulate_aggressive': {'pct_immediate': 0.50, 'rest_weeks': 2},
-}
-
-
-# ═══════════════════════════════════════════════════════
-# RE-ENTRY LOGIK (Spec TEIL3, Abschnitt 13.11)
-# ═══════════════════════════════════════════════════════
-
-REENTRY = {
-    'after_peak_reduction': {
-        'peak_prob_below':      0.30,
-        'min_weeks':            2,
-    },
-    'after_dd_triggered': {
-        'cooldown_days':        7,
-        'reentry_fraction':     0.80,   # 80% des vorherigen Niveaus
-    },
-    'after_trailing_stop': {
-        'new_21d_high':         True,
-        'peak_prob_below':      0.40,
-    },
-    'after_kill_switch':        'MANUAL_ONLY',
-    'after_crash_type1':        {'cooldown_hours': 48},
-    'after_crash_type2':        {'weeks': 4},
-    'after_crash_type3':        'MANUAL_ONLY',
-}
-
-
-# ═══════════════════════════════════════════════════════
-# GRACEFUL DEGRADATION (Spec TEIL4, Abschnitt 16)
-# Erweitert um CoinGlass Indikatoren
+# GRACEFUL DEGRADATION
+# Angepasst auf V8+Warn: Nur BTC Preis ist kritisch
+# Alles andere = Display only, kein Einfluss auf Allokation
 # ═══════════════════════════════════════════════════════
 
 GRACEFUL_DEGRADATION = {
-    # ─── Kritisch ───
+    # ─── KRITISCH für V8+Warn Allokation ───
     'btc_price':            {'fallback': 'v16_sheet',       'stale_ok_hours': 24,   'critical': True},
+    'eth_price':            {'fallback': 'v16_sheet',       'stale_ok_hours': 24,   'critical': True},
+    'sol_price':            {'fallback': 'eth_proxy',       'stale_ok_hours': 24,   'critical': False},
+    'btc_dominance':        {'fallback': 'mcap_proxy',      'stale_ok_hours': 24,   'critical': False},
 
-    # ─── Preise ───
-    'eth_price':            {'fallback': None,              'stale_ok_hours': 24,   'critical': False},
-    'sol_price':            {'fallback': None,              'stale_ok_hours': 24,   'critical': False},
-
-    # ─── On-Chain (CoinGlass) ───
+    # ─── Display only (kein Einfluss auf Allokation) ───
     'mvrv_zscore':          {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-    'puell_multiple':       {'fallback': 'blockchain_calc', 'stale_ok_hours': 168,  'critical': False},
+    'puell_multiple':       {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
     'nupl':                 {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
     'lth_sopr':             {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
     'sth_sopr':             {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
@@ -655,84 +414,27 @@ GRACEFUL_DEGRADATION = {
     'lth_realized_price':   {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
     'lth_supply':           {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
     'sth_supply':           {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-
-    # ─── CoinGlass Composite ───
-    'cg_peak_composite':    {'fallback': 'last_value',      'stale_ok_hours': 48,   'critical': False},
-
-    # ─── Cycle Models (CoinGlass) ───
-    'ahr999':               {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-    'bubble_index':         {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-    'bmo':                  {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-    'golden_ratio':         {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-    '2yr_ma_mult':          {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-
-    # ─── Sentiment ───
     'fear_greed':           {'fallback': 'last_value',      'stale_ok_hours': 48,   'critical': False},
-
-    # ─── Derivate ───
     'funding_rates':        {'fallback': 'assume_zero',     'stale_ok_hours': 24,   'critical': False},
     'open_interest':        {'fallback': None,              'stale_ok_hours': 24,   'critical': False},
     'liquidations':         {'fallback': None,              'stale_ok_hours': 24,   'critical': False},
-
-    # ─── Stablecoins + DeFi ───
     'stablecoin_supply':    {'fallback': 'last_value',      'stale_ok_hours': 48,   'critical': False},
     'defi_tvl':             {'fallback': 'last_value',      'stale_ok_hours': 336,  'critical': False},
-
-    # ─── ETF ───
-    'etf_flows':            {'fallback': 'farside',         'stale_ok_hours': 168,  'critical': False},
-
-    # ─── Altseason ───
-    'altseason_index':      {'fallback': 'last_value',      'stale_ok_hours': 336,  'critical': False},
-    'btc_dominance':        {'fallback': 'coinmarketcap',   'stale_ok_hours': 24,   'critical': False},
-
-    # ─── V16 Bridge ───
+    'etf_flows':            {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
     'v16_macro_state':      {'fallback': 'last_value',      'stale_ok_hours': 24,   'critical': False},
     'howell_liquidity':     {'fallback': 'last_value',      'stale_ok_hours': 24,   'critical': False},
-
-    # ─── Kill Switch ───
-    'usdt_price':           {'fallback': None,              'stale_ok_hours': 1,    'critical': False},
-    'usdc_price':           {'fallback': None,              'stale_ok_hours': 1,    'critical': False},
-
-    # ─── Network ───
     'active_addresses':     {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-    'new_addresses':        {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
-
-    # ─── BTC vs M2 ───
-    'btc_vs_m2':            {'fallback': 'last_value',      'stale_ok_hours': 336,  'critical': False},
-
-    # ─── Meme ───
-    'top_100_coingecko':    {'fallback': None,              'stale_ok_hours': 168,  'critical': False},
-
-    # ─── Exchange ───
     'exchange_reserves':    {'fallback': 'last_value',      'stale_ok_hours': 168,  'critical': False},
+    'top_100_coingecko':    {'fallback': None,              'stale_ok_hours': 168,  'critical': False},
 }
 
 DEGRADATION_LEVELS = {
     0: 'NOMINAL',       # Alle Quellen OK
-    1: 'DEGRADED',      # 1-3 ausgefallen
-    2: 'MINIMAL',       # > 3 ausgefallen → keine neuen Empfehlungen
+    1: 'DEGRADED',      # 1-3 ausgefallen — Allokation läuft normal
+    2: 'MINIMAL',       # > 3 ausgefallen — Allokation läuft, Display lückenhaft
     3: 'OFFLINE',       # BTC-Preis nicht verfügbar → Run abbrechen
 }
 DEGRADATION_THRESHOLD_MINIMAL = 4   # > 3 Ausfälle = MINIMAL
-
-
-# ═══════════════════════════════════════════════════════
-# ALLOKATIONS-KETTE (Spec TEIL3, 13.10)
-# Reihenfolge der Modifier-Anwendung
-# ═══════════════════════════════════════════════════════
-
-ALLOCATION_CHAIN = [
-    'base_allocation',          # 1. Aus Cycle State
-    'peak_bottom_adjustment',   # 2. Peak/Bottom Probability
-    'liquidity_adjustment',     # 3. Dual Liquidity Score
-    'dd_adjustment',            # 4. DD/Trailing Stop
-    'leverage_adjustment',      # 5. Funding + OI
-    'correlation_adjustment',   # 6. BTC/SPY + BTC/GLD
-    'v16_macro_modifier',       # 7. V16 State
-    'vol_cap',                  # 8. Vol-Normalized Maximum
-    'kill_switch_check',        # 9. Überschreibt alles
-    'no_action_band',           # 10. ±10pp → HOLD
-]
 
 
 # ═══════════════════════════════════════════════════════
@@ -750,6 +452,5 @@ SCHEDULE = {
 # VERSION
 # ═══════════════════════════════════════════════════════
 
-CONFIG_VERSION = '1.0'
-SPEC_VERSION = 'V2 + ADDENDUM'
-INDICATOR_VERSION = 'V2.1 (CoinGlass erweitert)'
+CONFIG_VERSION = '2.0'
+SPEC_VERSION = 'V8+Warn Produktionsspezifikation'
