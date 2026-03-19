@@ -91,6 +91,13 @@ except ImportError:
 NOW = datetime.now(timezone.utc)
 VERSION = "crypto_orchestrator V1.0"
 
+# Basispfad — einmal festlegen, überall nutzen
+try:
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+except NameError:
+    SCRIPT_DIR = os.getcwd()
+DATA_DIR = os.path.join(SCRIPT_DIR, 'data')
+
 
 # ═══════════════════════════════════════════════════════
 # LOGGING
@@ -131,8 +138,7 @@ def get_gspread_client():
 # ═══════════════════════════════════════════════════════
 def load_raw_data():
     """Lade crypto_raw_data.json vom data_collector."""
-    base = os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() else '.'
-    json_path = os.path.join(base, 'data', 'crypto_raw_data.json')
+    json_path = os.path.join(DATA_DIR, 'crypto_raw_data.json')
     if not os.path.exists(json_path):
         log(f"WARNUNG: {json_path} nicht gefunden")
         return {}
@@ -444,10 +450,8 @@ def write_state_json(raw_data, cycle_result, signal_result, risk_result):
         },
     }
 
-    base = os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() else '.'
-    d = os.path.join(base, 'data')
-    os.makedirs(d, exist_ok=True)
-    p = os.path.join(d, 'crypto_state.json')
+    os.makedirs(DATA_DIR, exist_ok=True)
+    p = os.path.join(DATA_DIR, 'crypto_state.json')
     with open(p, 'w', encoding='utf-8') as f:
         json.dump(state, f, indent=2, ensure_ascii=False, default=str)
     log(f"JSON: {p}")
@@ -545,8 +549,7 @@ def main():
     btc_d_30d_ago = None
 
     # Versuche vorherige Rohdaten
-    base = os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() else '.'
-    prev_json_path = os.path.join(base, 'data', 'crypto_raw_data_prev.json')
+    prev_json_path = os.path.join(DATA_DIR, 'crypto_raw_data_prev.json')
     if os.path.exists(prev_json_path):
         try:
             with open(prev_json_path, 'r') as f:
@@ -667,10 +670,8 @@ def main():
         log("Sheet Write übersprungen (kein GCP Auth)")
 
     # Vorherige Rohdaten archivieren (für nächste Woche BTC.D 30d)
-    raw_json_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() else '.',
-        'data', 'crypto_raw_data.json')
-    prev_path = raw_json_path.replace('crypto_raw_data.json', 'crypto_raw_data_prev.json')
+    raw_json_path = os.path.join(DATA_DIR, 'crypto_raw_data.json')
+    prev_path = os.path.join(DATA_DIR, 'crypto_raw_data_prev.json')
     if os.path.exists(raw_json_path):
         import shutil
         shutil.copy2(raw_json_path, prev_path)
