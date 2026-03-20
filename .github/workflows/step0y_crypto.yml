@@ -8,7 +8,7 @@ on:
 jobs:
   crypto-weekly:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
 
     steps:
       - name: Checkout
@@ -27,11 +27,16 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: python -m step_0y_crypto.crypto_orchestrator
 
+      - name: Run Yield Router
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: python -m step_0y_crypto.yield_router
+
       - name: Commit JSON outputs
         run: |
           cd step_0y_crypto/data
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add crypto_state.json crypto_raw_data.json crypto_raw_data_prev.json 2>/dev/null || true
+          git add crypto_state.json crypto_raw_data.json crypto_raw_data_prev.json crypto_yield.json 2>/dev/null || true
           git diff --cached --quiet || git commit -m "crypto weekly $(date -u +%Y-%m-%d)"
           git push
