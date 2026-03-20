@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 """
-config.py — Crypto Circle Konfiguration V2.0
+config.py — Crypto Circle Konfiguration V2.1
 ==============================================
 Baldur Creek Capital | Circle 17 (Crypto Hub)
+
+V2.1 — CALC_Yield Tab für Yield Router
+  Änderungen V2.0 → V2.1:
+    - NEU: CRYPTO_TABS['calc_yield'] = 'CALC_Yield'
 
 V2.0 — V8+Warn Produktionssystem
   Quellen der Wahrheit:
     - CRYPTO_CIRCLE_V8_WARN_PRODUKTIONSSPEZIFIKATION.md (Allokationslogik)
     - CRYPTO_CIRCLE_SPEC_V2_TEIL1-4.md + ADDENDUM (Datenquellen, Frontend, Intelligence)
-    - V146_SYSTEMSTATUSANALYSE.md (Pipeline-Status)
+    - YIELD_ROUTER_SPEC_TEIL1.md + TEIL2.md (Cash Management)
+    - V149_SYSTEMSTATUSANALYSE.md (Pipeline-Status)
 
   Änderungen V1.0 → V2.0:
     - NEU: V8_ENSEMBLE, V8_BOTTOM_BONUS, V8_TRICKLE_DOWN, V8_PHASE4_WARNING
@@ -49,6 +54,7 @@ CRYPTO_TABS = {
     'calc_cycle':     'CALC_Cycle',
     'calc_risk':      'CALC_Risk',
     'calc_alloc':     'CALC_Allocation',
+    'calc_yield':     'CALC_Yield',
     'hist_daily':     'HIST_Daily_Risk',
     'track_override': 'TRACK_Overrides',
     'track_holdings': 'TRACK_Holdings',
@@ -452,5 +458,5 @@ SCHEDULE = {
 # VERSION
 # ═══════════════════════════════════════════════════════
 
-CONFIG_VERSION = '2.0'
-SPEC_VERSION = 'V8+Warn Produktionsspezifikation'
+CONFIG_VERSION = '2.1'
+SPEC_VERSION = 'V8+Warn Produktionsspezifikation + Yield Router Spec'
