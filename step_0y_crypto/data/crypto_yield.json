@@ -1,0 +1,150 @@
+{
+  "version": "yield_router V1.0",
+  "timestamp": "2026-03-20T06:28:24.265847+00:00",
+  "date": "2026-03-20",
+  "inputs": {
+    "ensemble": 0.25,
+    "cash_pct": 0.75,
+    "cash_eur": 7500.0,
+    "total_capital_eur": 10000
+  },
+  "depeg_status": {
+    "USDC": {
+      "status": "OK",
+      "price": 0.999267,
+      "deviation": 0.000733
+    },
+    "USDT": {
+      "status": "OK",
+      "price": 0.999263,
+      "deviation": 0.000737
+    },
+    "DAI": {
+      "status": "OK",
+      "price": 0.998806,
+      "deviation": 0.001194
+    },
+    "USDS": {
+      "status": "OK",
+      "price": 1.0,
+      "deviation": 0.0
+    }
+  },
+  "regime": "CAUTIOUS",
+  "capital_tier": "STANDARD",
+  "tier_weights": {
+    "T0": 0.3,
+    "T1": 0.5,
+    "T2": 0.2
+  },
+  "recommendations": {
+    "T0": [
+      {
+        "coin": "USDC",
+        "weight": 0.6,
+        "amount_eur": 1350.0,
+        "tier": "T0",
+        "apy": 0.0
+      },
+      {
+        "coin": "USDT",
+        "weight": 0.4,
+        "amount_eur": 900.0,
+        "tier": "T0",
+        "apy": 0.0
+      }
+    ],
+    "T1": [
+      {
+        "product": "USDY",
+        "weight": 0.6,
+        "amount_eur": 2250.0,
+        "apy": 3.55,
+        "apy_source": "LIVE",
+        "issuer": "Ondo Finance",
+        "chain": "Ethereum",
+        "tier": "T1"
+      },
+      {
+        "product": "sDAI",
+        "weight": 0.4,
+        "amount_eur": 1500.0,
+        "apy": 3.5,
+        "apy_source": "STATIC",
+        "issuer": "MakerDAO DSR",
+        "chain": "Ethereum",
+        "tier": "T1"
+      }
+    ],
+    "T2": [
+      {
+        "pool_id": "05c5acfb-eb6c-40bd-865c-2015c017e953",
+        "project": "morpho-v1",
+        "symbol": "CSUSDC",
+        "coin": "USDC",
+        "chain": "Ethereum",
+        "tvl_usd": 10891837,
+        "effective_apy": 6.35,
+        "risk_adj_apy": 5.85,
+        "weight": 0.5,
+        "amount_eur": 750.0,
+        "tier": "T2"
+      },
+      {
+        "pool_id": "54e9b138-3146-4c1f-8dce-1cb948f5ef96",
+        "project": "sparklend",
+        "symbol": "USDS",
+        "coin": "USDS",
+        "chain": "Ethereum",
+        "tvl_usd": 620089748,
+        "effective_apy": 4.13,
+        "risk_adj_apy": 3.93,
+        "weight": 0.5,
+        "amount_eur": 750.0,
+        "tier": "T2"
+      }
+    ]
+  },
+  "t1_products": {
+    "USDY": {
+      "apy": 3.55,
+      "apy_source": "LIVE",
+      "issuer": "Ondo Finance",
+      "chain": "Ethereum",
+      "redemption_days": 2,
+      "min_usd": 500
+    },
+    "sDAI": {
+      "apy": 3.5,
+      "apy_source": "STATIC",
+      "issuer": "MakerDAO DSR",
+      "chain": "Ethereum",
+      "redemption_days": 0,
+      "min_usd": 0
+    },
+    "USDM": {
+      "apy": 4.0,
+      "apy_source": "STATIC",
+      "issuer": "Mountain Protocol",
+      "chain": "Ethereum",
+      "redemption_days": 2,
+      "min_usd": 100
+    }
+  },
+  "t2_qualified_pools": 43,
+  "basis_trade_info": {
+    "typical_apy": "3-8%",
+    "note": "Für fortgeschrittene Nutzer mit dediziertem CEX-Setup"
+  },
+  "apy": {
+    "weighted_total": 2.74,
+    "t1_weighted": 3.53,
+    "t2_weighted": 4.89,
+    "annual_yield_eur": 205.5
+  },
+  "rebalancing": {
+    "last_date": "2026-03-20",
+    "next_review": null,
+    "triggers": []
+  }
+}
