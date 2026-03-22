@@ -1,5 +1,5 @@
 {
- "computed_at": "2026-03-15T08:29:54.524673+00:00",
+ "computed_at": "2026-03-22T04:12:50.142305+00:00",
  "engine_version": "1.1",
  "transition_matrices": {
   "LIQUIDITY": {
@@ -812,10 +812,10 @@
      }
     },
     "STRENGTHENING": {
-     "n_occurrences": 30,
+     "n_occurrences": 31,
      "duration_months": {
       "median": 3,
-      "mean": 4.0,
+      "mean": 3.9,
       "min": 1,
       "max": 9,
       "std": 2.7,
@@ -848,6 +848,7 @@
        3,
        7,
        5,
+       1,
        1,
        1
       ]
@@ -898,18 +899,18 @@
        1,
        6,
        1,
-       4
+       3
       ]
      },
      "transitions_to": {
       "STRENGTHENING": {
-       "count": 30,
+       "count": 31,
        "probability": 1.0
       }
      }
     }
    },
-   "total_transitions": 61
+   "total_transitions": 62
   },
   "BUSINESS": {
    "phases": {
@@ -998,27 +999,27 @@
      "transitions_to": {
       "TROUGH": {
        "count": 7,
-       "probability": 0.219
+       "probability": 0.212
       },
       "LATE_EXPANSION": {
-       "count": 17,
-       "probability": 0.531
+       "count": 18,
+       "probability": 0.545
       },
       "EARLY_RECOVERY": {
        "count": 4,
-       "probability": 0.125
+       "probability": 0.121
       },
       "RECESSION": {
        "count": 4,
-       "probability": 0.125
+       "probability": 0.121
       }
      }
     },
     "LATE_EXPANSION": {
-     "n_occurrences": 23,
+     "n_occurrences": 24,
      "duration_months": {
       "median": 1,
-      "mean": 1.6,
+      "mean": 1.5,
       "min": 1,
       "max": 4,
       "std": 0.9,
@@ -1041,6 +1042,7 @@
        3,
        1,
        4,
+       1,
        1,
        1,
        1,
@@ -1129,7 +1131,7 @@
      }
     }
    },
-   "total_transitions": 84
+   "total_transitions": 85
   },
   "FED_RATES": {
    "phases": {
@@ -1802,46 +1804,38 @@
    }
   },
   "DOLLAR": {
-   "current_phase": "WEAKENING",
-   "current_duration_months": 3,
+   "current_phase": "STRENGTHENING",
+   "current_duration_months": 0,
    "median_duration": 3,
-   "phase_position_pct": 100,
-   "remaining_median": 5,
+   "phase_position_pct": 0,
+   "remaining_median": 3,
    "remaining_p25": 1,
-   "remaining_p75": 6,
-   "status": "EXTENDED",
+   "remaining_p75": 7,
+   "status": "EARLY_PHASE",
    "transitions_ahead": {
-    "STRENGTHENING": {
+    "WEAKENING": {
      "count": 30,
      "probability": 1.0
     }
    }
   },
   "BUSINESS": {
-   "current_phase": "EXPANSION",
-   "current_duration_months": 2,
-   "median_duration": 3,
-   "phase_position_pct": 67,
-   "remaining_median": 3,
-   "remaining_p25": 2,
-   "remaining_p75": 10,
-   "status": "MID_PHASE",
+   "current_phase": "LATE_EXPANSION",
+   "current_duration_months": 1,
+   "median_duration": 1,
+   "phase_position_pct": 100,
+   "remaining_median": 2,
+   "remaining_p25": 1,
+   "remaining_p75": 2,
+   "status": "EXTENDED",
    "transitions_ahead": {
-    "TROUGH": {
-     "count": 7,
-     "probability": 0.219
-    },
-    "LATE_EXPANSION": {
-     "count": 17,
-     "probability": 0.531
+    "EXPANSION": {
+     "count": 22,
+     "probability": 0.957
     },
     "EARLY_RECOVERY": {
-     "count": 4,
-     "probability": 0.125
-    },
-    "RECESSION": {
-     "count": 4,
-     "probability": 0.125
+     "count": 1,
+     "probability": 0.043
     }
    }
   },
@@ -5462,18 +5456,18 @@
   "extended_cycles": [
    "CREDIT",
    "COMMODITY",
-   "DOLLAR",
+   "BUSINESS",
    "FED_RATES",
    "EARNINGS",
    "TRADE"
   ],
   "late_cycles": [],
-  "verdict": "WARNING — Cascade Speed CASCADE. 3 cycles transitioning. Defensive positioning recommended. WATCH: CREDIT, COMMODITY, DOLLAR, FED_RATES, EARNINGS, TRADE extended beyond median duration."
+  "verdict": "WARNING — Cascade Speed CASCADE. 3 cycles transitioning. Defensive positioning recommended. WATCH: CREDIT, COMMODITY, BUSINESS, FED_RATES, EARNINGS, TRADE extended beyond median duration."
  },
  "cycle_narrative": {
-  "generated_at": "2026-03-15T08:30:14.773566+00:00",
+  "generated_at": "2026-03-22T04:13:06.818432+00:00",
   "model": "claude-sonnet-4-6",
-  "text": "**GESAMTLAGE**\n\nDie Zyklen-Engine signalisiert erhöhte Wachsamkeit, aber kein unmittelbares Crash-Szenario. Der V16-State LATE_EXPANSION mit 94.2% Growth-Wahrscheinlichkeit und nur 5.8% kombinierter Stress/Crisis-Wahrscheinlichkeit deutet auf ein noch intaktes Makro-Fundament hin. Dennoch: 3 Zyklen-Transitionen in 6 Monaten (Cascade Speed 0.5), gekippte LIQUIDITY, CREDIT und COMMODITY, und ein Confirmation Score von nur 4 — das ist keine Entwarnung.\n\n**ZYKLEN-DETAIL**\n\nKritisch sind FED_RATES (533% über Medianposition, ~0 Monate verbleibend) und EARNINGS (800% extended, ~0 Mo) — beide stehen vor erzwungener Transition, Timing unbestimmt. TRADE bei 800% Extended mit ~0 Mo verbleibend erhöht den strukturellen Druck zusätzlich. CREDIT in LATE_EXPANSION bei 100% Position, COMMODITY in EUPHORIA bei 100%: klassische Late-Cycle-Konfiguration. Stabil erscheinen BUSINESS (EXPANSION, 67%, ~3 Mo) und DOLLAR WEAKENING (Extended, aber ~5 Mo Laufzeit), was kurzfristig Risiko-Assets und Rohstoffe noch stützt. Die historischen Analogien 2009-12, 2016-04 und 2020-06 zeigen breite Streuung (SPY -8.9% bis +18.0%) — Richtungs-Konfidenz ist gering.\n\n**RISIKO**\n\nDie Crash/Korrektur-Daten für CREDIT_BULLISH/BUSINESS_BULLISH fehlen (n=?), was eine präzise Verlust-Quantifizierung unmöglich macht — das ist eine echte Datenlücke, die Vorsicht gebietet. Eskalation tritt ein, wenn FED_RATES und EARNINGS gleichzeitig kippen und CREDIT aus LATE_EXPANSION in CONTRACTION übergeht; das würde den Confirmation Score von 4 schnell unter 2 drücken. Nur 32.8% signifikante Returns im Backtest-Sample (2511/7659) bestätigen: das aktuelle Umfeld produziert viel Rauschen, wenig klare Signale.\n\n**POSITIONIERUNG**\n\nGLD bevorzugt: COMMODITY Euphoria + Dollar Weakening stützen strukturell, historische Analogien zeigen +6.4% bis +9.0%. TLT als partielle Absicherung für den Transition-Fall (2009-12: +14.4%), aber gegen 2020-Szenario kontraindiziert — Sizing klein halten. SPY neutral bis underweight: EARNINGS Extended bei 800% ist das größte kurzfristige Tail-Risk; bei Transition-Bestätigung in FED_RATES sofort reduzieren. Keine großen direktionalen Wetten bis FED_RATES und EARNINGS Zyklusstatus geklärt.",
-  "word_count": 272
+  "text": "GESAMTLAGE: Die Zyklen-Engine zeigt ein klassisches Late-Cycle-Bild mit erhöhter Transition-Geschwindigkeit. Cascade Speed 0.5 mit 3 Kippereignissen in 6 Monaten (LIQUIDITY, CREDIT, COMMODITY) signalisiert strukturellen Übergang, nicht Einzelvolatilität. Nur 32.8% signifikante Returns (2511/7659) bestätigen: Das Regime liefert keine klare Richtung mehr.\n\nZYKLEN-DETAIL: Kritisch sind drei bereits gekippte Zyklen – LIQUIDITY steht erst bei 0% seiner neuen Expansionsphase, CREDIT und COMMODITY sind bei 100% und Extended mit je ~2-3 Monaten Restlaufzeit. EARNINGS (800%, Extended, ~0 Mo) und FED_RATES (533%, Extended, ~0 Mo) sind faktisch am Limit – diese beiden Zyklen hätten bereits drehen sollen. TRADE auf 800% Extended unterstreicht globalen Reflationsstress. Stabil: DOLLAR in EARLY STRENGTHENING (0%, ~3 Mo) und CHINA_CREDIT im geordneten MID-CONTRACTION (67%) – beide liefern noch keine Panik-Signale.\n\nRISIKO: V16 Dual-State CREDIT_BULLISH / REAL_BULLISH (n=90) zeigt 94.2% Growth, 2.3% Stress, 3.5% Crisis – das ist strukturell beruhigend, aber der Zustand ist Late_Expansion, nicht Early. Eskalation droht, wenn EARNINGS und FED_RATES formal kippen UND DOLLAR-Strengthening sich beschleunigt: Dann verkürzt sich das Liquiditätsfenster schlagartig. Historische Analogien 2009-12 und 2016-04 (Sim=1.0) implizieren SPY-Korrekturen von -8.9% bis +2.5% – die Streuung allein ist ein Warnsignal.\n\nPOSITIONIERUNG: Die Analogien bevorzugen klar TLT (+14.4% / +3.6% in den bärischen Szenarien) und GLD als Puffer (+6.4% in 2009-12). SPY ist bei der aktuellen Cascade-Warnung mit Vorsicht zu behandeln – das 2020-06-Szenario (+18%) bleibt möglich, erfordert aber DOLLAR-Schwäche und Liquiditätsflut, wofür die Datenlage fehlt. Übergewicht TLT und GLD, SPY nur über abgesicherte Strukturen; CREDIT-Spreads beobachten als Frühindikator für die nächste Transition.",
+  "word_count": 244
  }
 }
