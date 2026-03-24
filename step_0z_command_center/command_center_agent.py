@@ -2032,8 +2032,12 @@ def build_system_context(systems):
     # ── Disruptions ──
     disrupt = systems.get("disruptions")
     if disrupt:
-        cats = disrupt.get("categories", [])
-        active = [c for c in cats if c.get("phase") in ("ACCELERATING", "MATURING")]
+        # disruptions_history.json kann eine Liste oder ein Dict mit "categories" sein
+        if isinstance(disrupt, list):
+            cats = disrupt
+        else:
+            cats = disrupt.get("categories", [])
+        active = [c for c in cats if isinstance(c, dict) and c.get("phase") in ("ACCELERATING", "MATURING")]
         lines.append(f"\nDISRUPTIONS: {len(cats)} total, {len(active)} aktiv (ACCELERATING/MATURING)")
     else:
         lines.append("\nDISRUPTIONS: Daten nicht verfügbar")
