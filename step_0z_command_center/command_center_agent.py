@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-command_center_agent.py — System Command Center V1.2
+command_center_agent.py — System Command Center V1.4
 =====================================================
 Baldur Creek Capital | Circle 18 | System Command Center
 
@@ -20,6 +20,13 @@ ETAPPE A: Daten-Layer (10 deterministische Berechnungen, kein LLM)
   9.  Surprise-Decay-Timer
   10. Regret-Matrix
   + Markt-Reaktion (Absorbed/Rejected)
+
+V1.4 Änderungen:
+  - Weekly Run implementiert → delegiert an command_center_weekly.py (Etappe C)
+
+V1.3 Änderungen (V155):
+  - GROWTH_EVENTS erweitert auf 37 Keywords
+  - surprise_pct Cap bei 2.0 (200%)
 
 V1.1 Änderungen (V152 Backtest V3.1 kalibriert):
   - FMP Endpoint /stable/economic-calendar + FMP_API_KEY
@@ -62,7 +69,7 @@ from datetime import datetime, timezone, timedelta
 # ═══════════════════════════════════════════════════════════════
 
 # ── Version ──
-CC_VERSION = "1.2"
+CC_VERSION = "1.4"
 
 # ── Paths ──
 try:
@@ -2484,7 +2491,7 @@ def write_outputs(output, skip_write=False):
 # ═══════════════════════════════════════════════════════════════
 
 def main():
-    pa = argparse.ArgumentParser(description="System Command Center V1.1")
+    pa = argparse.ArgumentParser(description="System Command Center V1.4")
     pa.add_argument("--mode", choices=["daily", "weekly"], required=True)
     pa.add_argument("--skip-write", action="store_true")
     pa.add_argument("--skip-telegram", action="store_true")
@@ -2501,7 +2508,11 @@ def main():
     print("=" * 70)
 
     if args.mode == "weekly":
-        log("Weekly Run — Etappe C (noch nicht implementiert)")
+        try:
+            from step_0z_command_center.command_center_weekly import run_weekly
+        except (ImportError, ModuleNotFoundError):
+            from command_center_weekly import run_weekly
+        run_weekly(skip_write=args.skip_write)
         print("=" * 70)
         return
 
