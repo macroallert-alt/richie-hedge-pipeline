@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-command_center_agent.py — System Command Center V1.1
+command_center_agent.py — System Command Center V1.2
 =====================================================
 Baldur Creek Capital | Circle 18 | System Command Center
 
@@ -62,7 +62,7 @@ from datetime import datetime, timezone, timedelta
 # ═══════════════════════════════════════════════════════════════
 
 # ── Version ──
-CC_VERSION = "1.1"
+CC_VERSION = "1.2"
 
 # ── Paths ──
 try:
@@ -350,6 +350,11 @@ CALENDAR_COUNTRIES = ["US", "United States", "EU", "Euro Area", "Eurozone",
                        "Germany", "France", "GB", "United Kingdom",
                        "JP", "Japan", "CN", "China", "CA", "Canada",
                        "AU", "Australia"]
+
+# ── LLM Config (Etappe B: Intelligence Layer, Spec TEIL3 §19) ──
+LLM_MODEL = "claude-sonnet-4-20250514"
+LLM_MAX_TOKENS = 16000
+LLM_TEMPERATURE = 0.2
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -1934,14 +1939,450 @@ def check_triggers(surprises, divergences, alignment, timelines, liq_kombi, anom
 
 
 # ═══════════════════════════════════════════════════════════════
-# OUTPUT ASSEMBLIERUNG
+# ETAPPE B: INTELLIGENCE LAYER (Spec TEIL3 §17-22)
+# Läuft NUR wenn Trigger aktiv. Liest alle System-JSONs,
+# baut System-Kontext, ruft Claude API mit Web Search.
 # ═══════════════════════════════════════════════════════════════
+
+def load_json_safe(filepath):
+    """Lade JSON mit Graceful Degradation."""
+    full = os.path.join(REPO_ROOT, filepath) if not os.path.isabs(filepath) else filepath
+    if not os.path.exists(full):
+        log(f"  JSON nicht gefunden: {filepath}")
+        return None
+    try:
+        with open(full, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        log(f"  JSON Fehler {filepath}: {e}")
+        return None
+
+
+def load_system_jsons():
+    """Lade alle System-JSONs für den Intelligence Layer.
+    Graceful Degradation: fehlende Systeme werden als None markiert."""
+    systems = {}
+    for key, path in SYSTEM_INPUTS.items():
+        systems[key] = load_json_safe(path)
+        status = "OK" if systems[key] else "FEHLT"
+        log(f"  System {key}: {status}")
+    # V16 State aus latest.json
+    latest = load_json_safe(LATEST_JSON_PATH)
+    systems["v16_latest"] = latest
+    log(f"  System v16_latest: {'OK' if latest else 'FEHLT'}")
+    return systems
+
+
+def build_system_context(systems):
+    """Baut kompakten System-Kontext-Text für den LLM-Prompt (Spec TEIL3 §18.2-18.3).
+    Max ~2000 Zeichen pro System, Gesamt max ~6000 Zeichen."""
+    lines = ["=== BALDUR CREEK CAPITAL — SYSTEM-KONTEXT ===\n"]
+
+    # ── V16 State ──
+    latest = systems.get("v16_latest") or {}
+    v16_header = latest.get("header", {})
+    v16_state = v16_header.get("macro_state_name", v16_header.get("macro_state", "?"))
+    v16_sa = v16_header.get("sa_score", "?")
+    v16_weights = latest.get("v16", {}).get("current_weights", {})
+    top5 = sorted(v16_weights.items(), key=lambda x: x[1], reverse=True)[:5] if isinstance(v16_weights, dict) else []
+    weights_str = ", ".join(f"{k}={v:.0%}" for k, v in top5) if top5 else "?"
+    lines.append(f"V16 STATE: {v16_state} (SA Score: {v16_sa})")
+    lines.append(f"V16 POSITIONING: {weights_str}")
+
+    # ── Cycles ──
+    trans = systems.get("cycles_transition")
+    if trans:
+        oa = trans.get("overall_assessment", {})
+        cc = trans.get("confirmation_counter", {})
+        lines.append(f"\nCYCLES: {oa.get('verdict', '?')[:120]}")
+        lines.append(f"  Cascade: {oa.get('cascade_severity', '?')}, Confirmation Score: {cc.get('confirmation_score', '?')}")
+        bull = cc.get("bullish_cycles", [])
+        bear = cc.get("bearish_cycles", [])
+        if bull: lines.append(f"  Bullish: {', '.join(bull[:6])}")
+        if bear: lines.append(f"  Bearish: {', '.join(bear[:6])}")
+        ext = oa.get("extended_cycles", [])
+        if ext: lines.append(f"  Extended: {', '.join(ext[:6])}")
+    else:
+        lines.append("\nCYCLES: Daten nicht verfügbar")
+
+    # ── Thesen ──
+    theses = systems.get("theses")
+    if theses:
+        all_t = theses.get("theses", [])
+        tier1 = [t for t in all_t if t.get("tier") == 1]
+        eh = theses.get("epistemic_health", {}).get("overall", "?")
+        lines.append(f"\nTHESEN: {len(tier1)} Tier-1 von {len(all_t)} total (Health: {eh})")
+        for t in tier1[:5]:
+            pending = [c.get("event", "?") for c in t.get("catalysts", []) if c.get("status") == "PENDING"]
+            cat_str = f" | Pending: {', '.join(pending[:2])}" if pending else ""
+            lines.append(f"  {t.get('id','?')}: {t.get('title_short', t.get('title', '?'))[:50]} "
+                         f"[{t.get('direction', '?')}] Conv={t.get('conviction', '?')}{cat_str}")
+    else:
+        lines.append("\nTHESEN: Daten nicht verfügbar")
+
+    # ── Secular Trends ──
+    secular = systems.get("secular_trends")
+    if secular:
+        cs = secular.get("conviction_summary", {})
+        lines.append(f"\nSÄKULAR: Activation={cs.get('weighted_activation', '?')}, "
+                     f"Direction={cs.get('convergence_direction', '?')}")
+    else:
+        lines.append("\nSÄKULAR: Daten nicht verfügbar")
+
+    # ── Disruptions ──
+    disrupt = systems.get("disruptions")
+    if disrupt:
+        cats = disrupt.get("categories", [])
+        active = [c for c in cats if c.get("phase") in ("ACCELERATING", "MATURING")]
+        lines.append(f"\nDISRUPTIONS: {len(cats)} total, {len(active)} aktiv (ACCELERATING/MATURING)")
+    else:
+        lines.append("\nDISRUPTIONS: Daten nicht verfügbar")
+
+    # ── IC Beliefs ──
+    beliefs = systems.get("ic_beliefs")
+    if beliefs:
+        sources = beliefs.get("sources", {})
+        n = len(sources)
+        lines.append(f"\nIC BELIEFS: {n} Quellen aktiv")
+    else:
+        lines.append("\nIC BELIEFS: Daten nicht verfügbar")
+
+    # ── Crypto ──
+    crypto = systems.get("crypto_state")
+    if crypto:
+        ens = crypto.get("ensemble", {}).get("value", "?")
+        phase = crypto.get("trickle_down", {}).get("phase_name", "?")
+        btc = crypto.get("btc_price", "?")
+        action = crypto.get("action", "?")
+        lines.append(f"\nCRYPTO: Ensemble={ens}, Phase={phase}, BTC=${btc}, Action={action}")
+    else:
+        lines.append("\nCRYPTO: Daten nicht verfügbar")
+
+    # ── Ratio Context ──
+    ratios = systems.get("ratio_context")
+    if ratios:
+        all_r = ratios.get("ratios", [])
+        extreme = [r for r in all_r if abs(r.get("analysis", {}).get("z_full", 0)) >= 1.5]
+        if extreme:
+            lines.append(f"\nEXTREME RATIOS ({len(extreme)} Paare |Z|≥1.5):")
+            for r in extreme[:5]:
+                z = r["analysis"]["z_full"]
+                hl = r["analysis"].get("halflife")
+                hl_str = f", HL={hl:.0f}d" if hl else ""
+                lines.append(f"  {r['pair']} ({r.get('description', '?')}): Z={z:+.2f} → "
+                             f"{r['analysis'].get('signal', '?')}{hl_str}")
+        else:
+            lines.append("\nRATIOS: Keine Extremwerte (|Z|≥1.5)")
+    else:
+        lines.append("\nRATIOS: Daten nicht verfügbar")
+
+    return "\n".join(lines)
+
+
+def build_intelligence_prompt(trigger_reasons, calendar, surprises, divergences,
+                                liquidity, liq_kombi, alignment, timelines,
+                                vol_compression, market_reactions, regret_matrix,
+                                system_context_text):
+    """Baut den vollständigen User Message für den Intelligence LLM Call (Spec TEIL3 §19.2)."""
+
+    # Trigger-Zusammenfassung
+    triggers_text = "\n".join(f"  • {t}" for t in trigger_reasons) if trigger_reasons else "  Keine"
+
+    # Extreme Divergenzen kompakt
+    extreme_pairs = [p for p in divergences.get("pairs", [])
+                     if p.get("signal") in ("EXTREME", "EXTREME_UNCONFIRMED", "ELEVATED")]
+    div_text = "\n".join(
+        f"  {p['pair']} Z={p.get('z_score', '?'):+.2f} → {p['signal']}"
+        + (f" ({p.get('interpretation', '')})" if p.get("interpretation") else "")
+        for p in extreme_pairs
+    ) if extreme_pairs else "  Keine auffälligen Paare"
+
+    # Threats kompakt
+    threats = regret_matrix.get("active_threats", [])
+    threats_text = "\n".join(
+        f"  {t['threat']}: RR={t['regret_ratio']:.1f}x, {t['recommendation']}"
+        for t in threats
+    ) if threats else "  Keine"
+
+    msg = f"""Datum: {TODAY_STR}
+
+=== TRIGGER (warum dieser Call aktiviert wurde) ===
+{triggers_text}
+
+=== CROSS-ASSET DIVERGENZEN (Alert: {divergences.get('alert_level', '?')}) ===
+{div_text}
+
+=== PORTFOLIO P&L ===
+  Daily: {calendar.get('_pnl_daily', '?'):+.2f}%  YTD: {calendar.get('_pnl_ytd', '?'):+.2f}%
+
+=== LIQUIDITÄT ===
+  Net: ${liquidity.get('net_liquidity_usd_T', '?')}T, Direction: {liquidity.get('direction', '?')}, Z(4W): {liquidity.get('liq_z_score', '?')}
+  1W: {liquidity.get('change_1w_usd_B', '?')}B, 4W: {liquidity.get('change_4w_usd_B', '?')}B
+
+=== LIQ-KOMBI ===
+  Signal: {liq_kombi.get('signal', '?')} — {liq_kombi.get('interpretation', '')}
+
+=== ALIGNMENT ===
+  Score: {alignment.get('score', '?'):.2f} — {alignment.get('interpretation', '?')}
+  Systeme: {', '.join(f"{k}={v['direction']}" for k, v in alignment.get('systems', {}).items())}
+
+=== TIMELINES ===
+  {timelines.get('n_active', 0)} aktiv, Level: {timelines.get('convergence_level', '?')}
+
+=== VOL-KOMPRESSION (nur Kontext, kein Trigger) ===
+  Score: {vol_compression.get('compression_score', '?')}, Signal: {vol_compression.get('signal', '?')}
+
+=== MARKT-REAKTIONEN GESTERN ===
+  Absorbed: {market_reactions.get('n_absorbed', 0)}, Rejected: {market_reactions.get('n_rejected', 0)}
+
+=== AKTIVE THREATS (Regret-Matrix) ===
+{threats_text}
+
+=== INTERNE SYSTEM-DATEN ===
+{system_context_text}
+
+=== EVENTS HEUTE ===
+{json.dumps([e.get('event', '?') + ' ' + e.get('country', '') for e in calendar.get('today', [])[:5]], ensure_ascii=False)}
+
+AUFGABE:
+1. Analysiere die Trigger durch alle verfügbaren System-Linsen (V16, Cycles, Thesen, Secular, Crypto, Ratios).
+2. Identifiziere Zeitlücken: Was siehst du JETZT das V16 erst in 4-8 Wochen sehen wird?
+3. Finde Second-Order Effects die der Markt noch nicht einpreist.
+4. Verankere jede Aussage in historischen Mustern wo möglich.
+5. Erstelle Threats (Portfolio-Bedrohungen) und Signals (Katalysatoren, Zeitlücken).
+6. EIN Satz Summary: Was muss ich heute wissen?"""
+
+    return msg
+
+
+INTELLIGENCE_SYSTEM_PROMPT = """Du bist der Event Intelligence Analyst von Baldur Creek Capital,
+einem systematischen Macro Hedgefund mit 18 Investment Circles.
+
+Dein Job ist NICHT Events aufzulisten. Dein Job ist:
+1. Events und Signale durch die Linse unserer internen Systeme zu interpretieren
+2. Die Zeitlücke zu identifizieren: was sieht der Agent JETZT das V16 erst in 4-8 Wochen sehen wird?
+3. Second-Order Effects zu finden die der Markt noch nicht einpreist
+4. Base Rates zu verankern: "In X von Y historischen Fällen folgte Z"
+
+REGELN:
+- Jede Faktenbehauptung braucht Evidenz oder historische Basis.
+- Unterscheide FACT / INFERENCE / SPECULATION klar.
+- Keine generischen Aussagen wie "das könnte zu Volatilität führen."
+  Stattdessen: "In 7 von 11 Fällen mit dieser Signatur folgte SPY -3% in 30 Tagen."
+- Keine "KI" oder "AI" in deinen Texten.
+- Halte dich kurz und präzise. Kein Fülltext.
+
+Antworte NUR mit validem JSON (kein Markdown, keine Backticks). Schema:
+{
+  "trigger_analysis": {
+    "primary_trigger": "...",
+    "trigger_type": "SURPRISE|DIVERGENCE|ALIGNMENT|CONVERGENCE|LIQ_KOMBI|ANOMALY",
+    "severity": "CRITICAL|HIGH|MODERATE",
+    "interpretation": "1-2 Sätze was der Trigger bedeutet"
+  },
+  "system_lens_analysis": {
+    "v16_regime": "Wie verändert das den V16 State? Zeitlücke?",
+    "cycles": "Beschleunigt/bremst das eine Transition?",
+    "thesen": "Triggert das einen Katalysator? Welche These?",
+    "secular": "Verstärkt/schwächt das einen Trend?",
+    "crypto": "Impact auf Ensemble?",
+    "relative_value": "Verschiebt das ein extremes Ratio?"
+  },
+  "time_gap_warning": {
+    "exists": true,
+    "description": "V16 wird in ~X Wochen auf Y wechseln weil...",
+    "confidence": "HIGH|MEDIUM|LOW",
+    "historical_basis": "In N von M Fällen..."
+  },
+  "second_order_effects": [
+    {
+      "effect": "...",
+      "mechanism": "A → B → C",
+      "affected_assets": ["SPY", "TLT"],
+      "timeframe": "2-4 Wochen"
+    }
+  ],
+  "threats": [
+    {
+      "title": "...",
+      "severity": "CRITICAL|HIGH|MODERATE",
+      "description": "...",
+      "exposed_assets": ["SPY"],
+      "time_horizon": "30-60 Tage",
+      "action_suggestion": "..."
+    }
+  ],
+  "signals": [
+    {
+      "title": "...",
+      "type": "TIME_GAP|CATALYST_TRIGGERED|REGIME_SHIFT|DIVERGENCE_CONFIRMED|MARKET_ABSORBED",
+      "description": "...",
+      "affected_assets": ["..."]
+    }
+  ],
+  "portfolio_action_required": false,
+  "summary_one_liner": "Ein Satz. Was muss ich heute wissen?"
+}"""
+
+
+def run_intelligence_layer(trigger_reasons, calendar, pnl, surprises, divergences,
+                            liquidity, liq_kombi, alignment, timelines,
+                            vol_compression, market_reactions, regret_matrix):
+    """Führt den Intelligence Layer aus: System-JSONs laden, Kontext bauen, LLM Call.
+    Returns: intelligence dict oder None bei Fehler."""
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        log("ANTHROPIC_API_KEY nicht gesetzt — Intelligence Layer übersprungen")
+        return None
+
+    try:
+        import anthropic
+    except ImportError:
+        log("anthropic Paket nicht installiert — Intelligence Layer übersprungen")
+        return None
+
+    # 1. System-JSONs laden
+    log("Intelligence Layer: Lade System-JSONs...")
+    systems = load_system_jsons()
+    n_available = sum(1 for v in systems.values() if v is not None)
+    log(f"  {n_available}/{len(systems)} Systeme verfügbar")
+
+    # 2. System-Kontext bauen
+    log("Intelligence Layer: Baue System-Kontext...")
+    system_context_text = build_system_context(systems)
+    log(f"  Kontext: {len(system_context_text)} Zeichen")
+
+    # 3. User Message bauen
+    # P&L in calendar einfügen für den Prompt
+    calendar_with_pnl = dict(calendar)
+    calendar_with_pnl["_pnl_daily"] = pnl.get("daily_return_pct", 0)
+    calendar_with_pnl["_pnl_ytd"] = pnl.get("ytd_return_pct", 0)
+
+    user_msg = build_intelligence_prompt(
+        trigger_reasons, calendar_with_pnl, surprises, divergences,
+        liquidity, liq_kombi, alignment, timelines,
+        vol_compression, market_reactions, regret_matrix,
+        system_context_text,
+    )
+    log(f"  User Message: {len(user_msg)} Zeichen")
+
+    # 4. Anthropic API Call
+    log("Intelligence Layer: Claude API Call (mit Web Search)...")
+    t0 = time.time()
+
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model=LLM_MODEL,
+            max_tokens=LLM_MAX_TOKENS,
+            temperature=LLM_TEMPERATURE,
+            system=INTELLIGENCE_SYSTEM_PROMPT,
+            tools=[{"type": "web_search_20250305", "name": "web_search"}],
+            messages=[{"role": "user", "content": user_msg}],
+        )
+
+        elapsed = time.time() - t0
+        log(f"  API Call: {elapsed:.1f}s, Stop: {response.stop_reason}")
+
+        # 5. Response parsen
+        # Sammle allen Text aus der Response (kann mehrere text blocks haben wegen Web Search)
+        text_parts = []
+        for block in response.content:
+            if hasattr(block, "text") and block.text:
+                text_parts.append(block.text)
+
+        full_text = "\n".join(text_parts)
+
+        # JSON extrahieren (LLM könnte Markdown-Backticks drumherum haben)
+        json_text = full_text.strip()
+        if json_text.startswith("```"):
+            # Entferne Markdown-Backticks
+            lines = json_text.split("\n")
+            start = 1 if lines[0].startswith("```") else 0
+            end = len(lines) - 1 if lines[-1].strip() == "```" else len(lines)
+            json_text = "\n".join(lines[start:end])
+
+        intelligence = json.loads(json_text)
+        log(f"  Intelligence JSON geparst: {len(intelligence)} top-level Keys")
+
+        # Token-Usage loggen
+        usage = response.usage
+        if usage:
+            log(f"  Tokens: {usage.input_tokens} input, {usage.output_tokens} output")
+
+        return intelligence
+
+    except json.JSONDecodeError as e:
+        log(f"  JSON Parse Fehler: {e}")
+        log(f"  Raw Response (erste 500 Zeichen): {full_text[:500]}")
+        # Fallback: Roh-Text als summary speichern
+        return {
+            "trigger_analysis": {"primary_trigger": ", ".join(trigger_reasons), "severity": "MODERATE"},
+            "summary_one_liner": full_text[:200] if full_text else "Intelligence Layer konnte Response nicht parsen.",
+            "_raw_response": full_text[:2000],
+            "_parse_error": str(e),
+        }
+    except Exception as e:
+        log(f"  Intelligence Layer Fehler: {e}")
+        traceback.print_exc()
+        return {
+            "trigger_analysis": {"primary_trigger": ", ".join(trigger_reasons), "severity": "MODERATE"},
+            "summary_one_liner": f"Intelligence Layer Fehler: {str(e)[:100]}",
+            "_error": str(e),
+        }
 
 def assemble_daily_output(calendar, pnl, surprises, divergences, liquidity,
                            liq_kombi, alignment, timelines, vol_compression,
                            decay_events, regret_matrix, market_reactions,
-                           anomalies, trigger_reasons):
+                           anomalies, trigger_reasons, intelligence=None):
     """Assembliere das vollständige Daily Output JSON (Spec TEIL6 §42)."""
+
+    # CIO Paragraph (kompakter Überblick)
+    cio_parts = []
+    cio_parts.append(f"System Alignment {alignment.get('score', 0):.2f} ({alignment.get('interpretation', '?')}).")
+    liq_dir = liquidity.get("direction", "?")
+    liq_1w = liquidity.get("change_1w_usd_B", 0)
+    if liq_dir != "FLAT":
+        cio_parts.append(f"Liquidität {liq_dir} ({liq_1w:+.0f}B/W).")
+    n_threats = regret_matrix.get("n_active_threats", 0)
+    if n_threats > 0:
+        top_threat = regret_matrix["active_threats"][0]
+        cio_parts.append(f"{n_threats} offene Threats. Top: {top_threat.get('threat', '?')}.")
+    else:
+        cio_parts.append("Keine aktiven Threats.")
+    if intelligence and intelligence.get("summary_one_liner"):
+        cio_parts.append(intelligence["summary_one_liner"])
+    cio_paragraph = " ".join(cio_parts)
+
+    # Telegram Message (kompakt)
+    tg_lines = []
+    tg_lines.append(f"📊 Portfolio {pnl['daily_return_pct']:+.2f}% | "
+                     f"YTD {pnl['ytd_return_pct']:+.2f}% | "
+                     f"Alignment {alignment.get('score', 0):.2f}")
+    if intelligence:
+        threats = intelligence.get("threats", [])
+        signals = intelligence.get("signals", [])
+        if threats:
+            tg_lines.append(f"🔴 {len(threats)} Threats")
+            for t in threats[:2]:
+                tg_lines.append(f"  • {t.get('title', '?')}")
+        if signals:
+            tg_lines.append(f"⚡ {len(signals)} Signals")
+            for s in signals[:2]:
+                tg_lines.append(f"  • {s.get('title', '?')}")
+    today_events = sorted(calendar.get("today", []),
+                           key=lambda e: e.get("impact_score", 0), reverse=True)[:3]
+    if today_events:
+        ev_strs = [f"{e.get('time', '?')} {e.get('event', '?')}" for e in today_events]
+        tg_lines.append(f"📅 Heute: {' | '.join(ev_strs)}")
+    if liq_dir and liq_dir not in ("FLAT", "?"):
+        arrow = "↑" if liq_dir == "EXPANDING" else "↓" if liq_dir == "CONTRACTING" else "→"
+        tg_lines.append(f"💧 Liquidität: {liq_dir} {arrow}")
+    if intelligence and intelligence.get("summary_one_liner"):
+        tg_lines.append(f"\n💡 {intelligence['summary_one_liner']}")
+    telegram_message = "\n".join(tg_lines)
+
     return {
         "version": f"command_center V{CC_VERSION}",
         "timestamp": NOW.isoformat(),
@@ -1963,10 +2404,10 @@ def assemble_daily_output(calendar, pnl, surprises, divergences, liquidity,
         "regret_matrix": regret_matrix,
         "anomalies": anomalies,
         # Intelligence-Layer Output (Etappe B)
-        "intelligence": None,
-        # CIO + Telegram (Etappe D)
-        "cio_paragraph": None,
-        "telegram_message": None,
+        "intelligence": intelligence,
+        # CIO + Telegram (Etappe D — jetzt inline generiert)
+        "cio_paragraph": cio_paragraph,
+        "telegram_message": telegram_message,
     }
 
 
@@ -2182,6 +2623,26 @@ def main():
     else:
         log("✅ Kein Trigger — ruhiger Tag. Nur Daten-Layer Output.")
 
+    # ─── Intelligence Layer (Etappe B) ───
+    intelligence = None
+    if trigger_reasons or args.force_intelligence:
+        print(f"\n{'─'*50}")
+        print("INTELLIGENCE LAYER (Etappe B)")
+        print(f"{'─'*50}")
+        if args.force_intelligence and not trigger_reasons:
+            log("Force-Intelligence aktiv (kein natürlicher Trigger)")
+        intelligence = run_intelligence_layer(
+            trigger_reasons, calendar, pnl, surprises, divergences,
+            liquidity, liq_kombi, alignment, timelines,
+            vol_compression, market_reactions, regret_matrix,
+        )
+        if intelligence:
+            log(f"Intelligence Layer: OK — {intelligence.get('summary_one_liner', '?')[:80]}")
+        else:
+            log("Intelligence Layer: Kein Output (Fehler oder kein API Key)")
+    else:
+        log("Intelligence Layer: Nicht aktiviert (kein Trigger)")
+
     # ─── Output assemblieren ───
     print(f"\n{'─'*50}")
     print("OUTPUT ASSEMBLIERUNG")
@@ -2190,6 +2651,7 @@ def main():
         calendar, pnl, surprises, divergences, liquidity, liq_kombi,
         alignment, timelines, vol_compression, decay_events,
         regret_matrix, market_reactions, anomalies, trigger_reasons,
+        intelligence=intelligence,
     )
 
     # ─── Write ───
@@ -2218,7 +2680,13 @@ def main():
     print(f"  Vol:           {vol_compression.get('signal', '?')} "
           f"(Score {vol_compression.get('compression_score', '?')}) — kein Trigger")
     print(f"  Threats:       {regret_matrix['n_active_threats']}")
-    print(f"  Intelligence:  {'TRIGGERED (' + ', '.join(trigger_reasons) + ')' if trigger_reasons else 'Nicht aktiviert'}")
+    intel_status = "Nicht aktiviert"
+    if intelligence:
+        summary = intelligence.get("summary_one_liner", "OK")[:80]
+        intel_status = f"OK — {summary}"
+    elif trigger_reasons:
+        intel_status = "TRIGGERED aber kein Output (API Key?)"
+    print(f"  Intelligence:  {intel_status}")
     print(f"  Timelines:     {timelines['convergence_level']} ({timelines['n_active']} aktiv)")
     print(f"  Surprises:     {surprises['n_surprises']} Events")
     print(f"  Anomalien:     {len(anomalies)}")
