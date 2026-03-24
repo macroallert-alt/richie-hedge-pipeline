@@ -2174,58 +2174,80 @@ REGELN:
 - Keine generischen Aussagen wie "das könnte zu Volatilität führen."
   Stattdessen: "In 7 von 11 Fällen mit dieser Signatur folgte SPY -3% in 30 Tagen."
 - Keine "KI" oder "AI" in deinen Texten.
-- Halte dich kurz und präzise. Kein Fülltext.
+- KEINE <cite> Tags, KEINE XML Tags, KEINE Markdown. Nur reiner Text in den JSON-Werten.
+- Wenn du Web Search nutzt, formuliere die Ergebnisse in eigenen Worten. Keine Zitate.
 
-Antworte NUR mit validem JSON (kein Markdown, keine Backticks). Schema:
+DETAILGRAD — WICHTIG:
+- Jede Threat MUSS mindestens 3-4 Sätze description haben:
+  Was genau passiert? Warum ist das ein Problem? Welches Asset verliert wie viel in welchem Zeitrahmen?
+  Was kostet Nichtstun? Beispiel: "DBC/SPY steht bei Z=+3.18 — Commodities outperformen Aktien
+  auf einem Niveau das in den letzten 20 Jahren nur 8x vorkam. In 6 dieser 8 Fälle folgte ein
+  SPY-Drawdown von mindestens 5% innerhalb von 63 Tagen. Bei aktuellem SPY-Gewicht von 0% im
+  Portfolio ist die direkte Exposure gering, aber HYG (28.8%) und die zyklischen Positionen
+  sind indirekt betroffen über den Kreditkanal."
+- Jedes Signal MUSS 2-3 Sätze description haben:
+  Was genau wurde bestätigt? Was bedeutet das konkret? Was ist das Handlungsfenster?
+- Jeder Second-Order Effect MUSS die vollständige Kausalkette als Text beschreiben,
+  NICHT als Kurzformel. Also NICHT "PMI down → DXY down → DBC up" sondern:
+  "Fallende PMI-Daten signalisieren Wachstumsschwäche, was die Erwartung von Fed-Zinssenkungen
+  stärkt. Ein dovisher Fed-Pivot schwächt den Dollar. Ein schwächerer Dollar macht Commodities
+  (die in Dollar denominiert sind) billiger für internationale Käufer, was die Nachfrage stützt."
+- System-Linsen: Mindestens 2-3 Sätze pro System. Nicht "Kein Impact" sondern erkläre WARUM
+  kein Impact oder warum unklar.
+- Action Suggestions MÜSSEN konkret sein: welches Asset, welche Richtung, welcher Prozentsatz,
+  welcher Stop-Level. NICHT "Position reduzieren" sondern "DBC von 20% auf 15% reduzieren.
+  Stop-Loss bei Z-Score Rückkehr auf +2.0."
+
+Antworte NUR mit validem JSON (kein Markdown, keine Backticks, keine XML Tags). Schema:
 {
   "trigger_analysis": {
     "primary_trigger": "...",
     "trigger_type": "SURPRISE|DIVERGENCE|ALIGNMENT|CONVERGENCE|LIQ_KOMBI|ANOMALY",
     "severity": "CRITICAL|HIGH|MODERATE",
-    "interpretation": "1-2 Sätze was der Trigger bedeutet"
+    "interpretation": "2-3 Sätze: Was ist passiert, warum ist es relevant, was ist die Implikation für das Portfolio"
   },
   "system_lens_analysis": {
-    "v16_regime": "Wie verändert das den V16 State? Zeitlücke?",
-    "cycles": "Beschleunigt/bremst das eine Transition?",
-    "thesen": "Triggert das einen Katalysator? Welche These?",
-    "secular": "Verstärkt/schwächt das einen Trend?",
-    "crypto": "Impact auf Ensemble?",
-    "relative_value": "Verschiebt das ein extremes Ratio?"
+    "v16_regime": "2-3 Sätze: Aktueller State, wie verändert der Trigger das, Zeitlücke zu erwarten?",
+    "cycles": "2-3 Sätze: Welche Zyklen sind betroffen, beschleunigt/bremst eine Transition?",
+    "thesen": "2-3 Sätze: Welche These betroffen, Katalysator triggered?, Conviction-Änderung?",
+    "secular": "2-3 Sätze: Welcher säkulare Trend verstärkt/geschwächt, Activation-Score Implikation?",
+    "crypto": "2-3 Sätze: Impact auf Ensemble, Trickle-Down Phase, BTC-Korrelation?",
+    "relative_value": "2-3 Sätze: Welche Ratio-Paare bewegen sich, Mean-Reversion oder Trend?"
   },
   "time_gap_warning": {
     "exists": true,
-    "description": "V16 wird in ~X Wochen auf Y wechseln weil...",
+    "description": "3-4 Sätze: V16 steht auf X. Agent sieht Y. Prognose: V16 wechselt auf Z in ~N Wochen weil...",
     "confidence": "HIGH|MEDIUM|LOW",
-    "historical_basis": "In N von M Fällen..."
+    "historical_basis": "In N von M historischen Fällen mit dieser Signatur folgte... (konkretes Asset, konkreter Drawdown, konkreter Zeitrahmen)"
   },
   "second_order_effects": [
     {
-      "effect": "...",
-      "mechanism": "A → B → C",
+      "effect": "Überschrift des Effekts",
+      "mechanism": "3-4 Sätze: Vollständige Kausalkette in ganzen Sätzen. A passiert weil B. Das führt zu C. Letztlich bedeutet das D für unser Portfolio.",
       "affected_assets": ["SPY", "TLT"],
       "timeframe": "2-4 Wochen"
     }
   ],
   "threats": [
     {
-      "title": "...",
+      "title": "Kurzer Titel",
       "severity": "CRITICAL|HIGH|MODERATE",
-      "description": "...",
+      "description": "3-4 Sätze: Was genau ist die Bedrohung, welche historische Evidenz gibt es, welches Asset verliert wie viel in welchem Zeitrahmen, was kostet Nichtstun",
       "exposed_assets": ["SPY"],
       "time_horizon": "30-60 Tage",
-      "action_suggestion": "..."
+      "action_suggestion": "Konkret: Welches Asset, welche Richtung, welcher Prozentsatz, welcher Stop-Level"
     }
   ],
   "signals": [
     {
-      "title": "...",
+      "title": "Kurzer Titel",
       "type": "TIME_GAP|CATALYST_TRIGGERED|REGIME_SHIFT|DIVERGENCE_CONFIRMED|MARKET_ABSORBED",
-      "description": "...",
+      "description": "2-3 Sätze: Was wurde bestätigt, was bedeutet das konkret, was ist das Handlungsfenster",
       "affected_assets": ["..."]
     }
   ],
   "portfolio_action_required": false,
-  "summary_one_liner": "Ein Satz. Was muss ich heute wissen?"
+  "summary_one_liner": "Ein Satz. Konkret. Was muss ich heute wissen und was soll ich tun?"
 }"""
 
 
