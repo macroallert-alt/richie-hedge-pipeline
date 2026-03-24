@@ -1085,6 +1085,19 @@ MINDESTENS 10 Kandidaten. Decke alle drei Zeithorizonte ab."""
     result = call_llm(STEP3A_SYSTEM_PROMPT, user_msg, use_web_search=False)
     if result:
         candidates = result.get("candidates", [])
+        # Hardcap: LLM liefert manchmal >15 obwohl 10-15 angefragt.
+        # Top 15 behalten (LLM liefert sie bereits priorisiert), Rest loggen.
+        MAX_CANDIDATES = 15
+        if len(candidates) > MAX_CANDIDATES:
+            dropped = candidates[MAX_CANDIDATES:]
+            dropped_titles = [c.get("title", c.get("id", "?")) for c in dropped]
+            logger.warning(
+                f"Step 3a lieferte {len(candidates)} Kandidaten, "
+                f"Hardcap bei {MAX_CANDIDATES}. Dropped: {dropped_titles}"
+            )
+            result["candidates"] = candidates[:MAX_CANDIDATES]
+            result["dropped_candidates"] = dropped_titles
+            candidates = result["candidates"]
         logger.info(f"Step 3a OK — {len(candidates)} Kandidaten")
     else:
         logger.error("Step 3a FEHLGESCHLAGEN")
@@ -1123,7 +1136,8 @@ def load_ratio_context():
 # ═══════════════════════════════════════════════════════════════
 
 def step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text, ratio_context_text=""):
-    """Step 3b: Vollständige Kausalketten + Relative-Value-Ketten."""
+    """Step 3b: Vollständige Kausalketten + Relative-Value-Ketten.
+    Bei >BATCH_SIZE Kandidaten: aufteilen in Batches, Ergebnisse zusammenführen."""
     logger.info("=" * 50)
     logger.info("STEP 3b: KAUSALKETTEN + RELATIVE VALUE BAUEN")
     logger.info("=" * 50)
@@ -1135,18 +1149,35 @@ def step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text, 
     candidates = step3a_out["candidates"]
     logger.info(f"Baue Kausalketten für {len(candidates)} Kandidaten")
 
-    candidates_text = json.dumps(candidates, ensure_ascii=False, indent=2)
     prev_summary = build_previous_theses_summary(prev_theses)
+    system_context = json.dumps(
+        step1_out.get("system_summary", {}), ensure_ascii=False, indent=2
+    ) if step1_out else "Nicht verfügbar."
 
     # Ratio-Kontext Sektion (nur wenn verfügbar)
     ratio_section = ""
     if ratio_context_text:
-        ratio_section = f"""
+        ratio_section = f"\n{ratio_context_text}\n"
 
-{ratio_context_text}
-"""
+    # ── Batching: max 8 Kandidaten pro LLM Call ──
+    BATCH_SIZE = 8
+    batches = []
+    for i in range(0, len(candidates), BATCH_SIZE):
+        batches.append(candidates[i:i + BATCH_SIZE])
 
-    user_msg = f"""Datum: {today}
+    if len(batches) > 1:
+        logger.info(f"Step 3b: {len(batches)} Batches à max {BATCH_SIZE} Kandidaten")
+
+    all_theses = []
+    merged_open_questions = []
+    merged_silence_alerts = []
+    merged_watchlist_updates = {"add": [], "remove": [], "reason": []}
+
+    for batch_idx, batch in enumerate(batches):
+        batch_label = f"[Batch {batch_idx + 1}/{len(batches)}] " if len(batches) > 1 else ""
+        candidates_text = json.dumps(batch, ensure_ascii=False, indent=2)
+
+        user_msg = f"""Datum: {today}
 
 === THESEN-KANDIDATEN (aus Step 3a) ===
 {candidates_text}
@@ -1155,7 +1186,7 @@ def step3b_build_theses(step3a_out, step1_out, prev_theses, today, prices_text, 
 {prev_summary}
 
 === SYSTEM-KONTEXT (kompakt) ===
-{json.dumps(step1_out.get("system_summary", {}), ensure_ascii=False, indent=2) if step1_out else "Nicht verfügbar."}
+{system_context}
 
 === ETF-PREISE UND RATIOS FÜR RELATIVE-VALUE-KETTEN ===
 {prices_text}
@@ -1166,19 +1197,41 @@ Baue für JEDEN Kandidaten eine Relative-Value-Kette (wenn Preis-Daten verfügba
 Antworte in folgendem JSON-Schema:
 {STEP3_JSON_SCHEMA}"""
 
-    result = call_llm(STEP3B_SYSTEM_PROMPT, user_msg, use_web_search=False, max_tokens=64000)
-    if result:
-        theses = result.get("theses", [])
-        logger.info(f"Step 3b OK — {len(theses)} Thesen mit Kausalketten")
-        if "open_questions" not in result and "open_questions" in step3a_out:
-            result["open_questions"] = step3a_out["open_questions"]
-        if "silence_alerts_investigated" not in result and "silence_alerts_investigated" in step3a_out:
-            result["silence_alerts_investigated"] = step3a_out["silence_alerts_investigated"]
-        if "watchlist_updates" not in result and "watchlist_updates" in step3a_out:
-            result["watchlist_updates"] = step3a_out["watchlist_updates"]
-    else:
-        logger.error("Step 3b FEHLGESCHLAGEN")
-    return result
+        # Token-Budget: skaliert mit Batch-Größe, min 40K, max 64K
+        batch_max_tokens = min(64000, max(40000, len(batch) * 6000))
+
+        result = call_llm(STEP3B_SYSTEM_PROMPT, user_msg, use_web_search=False,
+                          max_tokens=batch_max_tokens)
+
+        if result:
+            batch_theses = result.get("theses", [])
+            logger.info(f"{batch_label}Step 3b OK — {len(batch_theses)} Thesen mit Kausalketten")
+            all_theses.extend(batch_theses)
+
+            # Merge Nebenprodukte aus letztem Batch
+            merged_open_questions.extend(result.get("open_questions", []))
+            merged_silence_alerts.extend(result.get("silence_alerts_investigated", []))
+            wu = result.get("watchlist_updates", {})
+            merged_watchlist_updates["add"].extend(wu.get("add", []))
+            merged_watchlist_updates["remove"].extend(wu.get("remove", []))
+            merged_watchlist_updates["reason"].extend(wu.get("reason", []))
+        else:
+            logger.error(f"{batch_label}Step 3b FEHLGESCHLAGEN")
+
+    if not all_theses:
+        logger.error("Step 3b: Keine Thesen aus allen Batches — Totalausfall")
+        return None
+
+    # ── Ergebnis zusammenführen ──
+    merged_result = {
+        "theses": all_theses,
+        "open_questions": merged_open_questions or step3a_out.get("open_questions", []),
+        "silence_alerts_investigated": merged_silence_alerts or step3a_out.get("silence_alerts_investigated", []),
+        "watchlist_updates": merged_watchlist_updates if merged_watchlist_updates["add"] or merged_watchlist_updates["remove"] else step3a_out.get("watchlist_updates", {}),
+    }
+
+    logger.info(f"Step 3b GESAMT: {len(all_theses)} Thesen aus {len(batches)} Batch(es)")
+    return merged_result
 
 
 # ═══════════════════════════════════════════════════════════════
