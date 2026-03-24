@@ -1,0 +1,45 @@
+name: "Step 0z — Command Center Weekly"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  command-center-weekly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install requests gspread google-auth
+
+      - name: Run Command Center Weekly
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+          FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
+        run: |
+          python -m step_0z_command_center.command_center_agent --mode weekly
+
+      - name: Commit Command Center Weekly outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          DATUM=$(date +%Y-%m-%d)
+          git add step_0z_command_center/data/
+          git add data/command_center/
+          git diff --cached --quiet || git commit -m "Step 0z Command Center Weekly: ${DATUM}"
+          git pull --rebase origin main
+          git push
