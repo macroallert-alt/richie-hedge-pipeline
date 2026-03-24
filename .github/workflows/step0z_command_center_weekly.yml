@@ -6,7 +6,7 @@ on:
 jobs:
   command-center-weekly:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     permissions:
       contents: write
 
@@ -23,13 +23,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests gspread google-auth
+          pip install requests gspread google-auth anthropic
 
       - name: Run Command Center Weekly
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           FMP_API_KEY: ${{ secrets.FMP_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           python -m step_0z_command_center.command_center_agent --mode weekly
 
