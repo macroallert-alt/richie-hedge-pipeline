@@ -144,6 +144,15 @@ GROWTH_EVENTS = [
     "NFP", "Non-Farm", "Nonfarm", "GDP", "ISM", "PMI", "Retail Sales",
     "Industrial Production", "Durable Goods", "Housing Starts",
     "Consumer Confidence", "Michigan Consumer", "Employment", "Unemployment",
+    "Construction Spending", "Trade Balance", "Chicago PMI", "Chicago Fed",
+    "Jobless Claims", "Continuing Claims", "Continuing Jobless",
+    "Initial Jobless", "Richmond Fed", "Dallas Fed", "Kansas City Fed",
+    "Philly Fed", "Philadelphia Fed", "Empire State", "NY Fed",
+    "Composite PMI", "Services PMI", "Manufacturing PMI",
+    "CB Consumer", "Conference Board", "Redbook", "Money Supply",
+    "Capacity Utilization", "Factory Orders", "Business Inventories",
+    "Wholesale Inventories", "Leading Index", "Existing Home Sales",
+    "New Home Sales", "Pending Home Sales", "Building Permits",
 ]
 RATE_EVENTS = [
     "FOMC", "Fed Funds", "ECB", "BOJ", "BOE", "Interest Rate", "Rate Decision",
@@ -785,6 +794,8 @@ def compute_surprises(calendar):
 
         surprise_raw = actual - consensus
         surprise_pct = abs(surprise_raw) / abs(consensus) if consensus != 0 else 0
+        # Cap bei 200% — bei Konsens nahe 0 (z.B. 0.1% → 0.5%) explodiert die Prozentzahl sonst
+        surprise_pct = min(surprise_pct, 2.0)
 
         # Richtung
         ev_type = classify_event_type(ev["event"])
