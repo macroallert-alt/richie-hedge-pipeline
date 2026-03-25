@@ -1,11 +1,11 @@
 {
-  "version": "daily_risk_check V1.0",
-  "timestamp": "2026-03-24T07:29:04.331289+00:00",
-  "date": "2026-03-24",
-  "btc_price": 70880.0,
+  "version": "daily_risk_check V2.0",
+  "timestamp": "2026-03-25T07:14:57.074198+00:00",
+  "date": "2026-03-25",
+  "btc_price": 71090.0,
   "ensemble": {
     "daily": 0.25,
-    "weekly": 0.25,
+    "previous": 0.25,
     "changed": "False",
     "mom_1M": true,
     "mom_3M": false,
@@ -14,24 +14,38 @@
   },
   "bottom_bonus": {
     "active": false,
-    "wma_200": 58719.25,
+    "wma_200": 58749.36,
     "changed": false
   },
   "btc_dominance": {
-    "daily": 56.62,
-    "weekly": 56.29,
-    "delta_pp": 0.33
+    "daily": 56.54,
+    "thirty_d_ago": null,
+    "change_30d": 0.0
   },
-  "weekly_signal": {
+  "signal": {
     "phase": 2,
     "phase_name": "NEUTRAL_FLOW",
-    "allocation": {
-      "total": 0.25,
-      "btc": 0.1125,
-      "eth": 0.0875,
-      "sol": 0.05,
-      "cash": 0.75
+    "phase4_warning": false,
+    "weights": {
+      "BTC": 0.45,
+      "ETH": 0.35,
+      "SOL": 0.2
     }
+  },
+  "allocation": {
+    "total": 0.25,
+    "btc": 0.1125,
+    "eth": 0.0875,
+    "sol": 0.05,
+    "cash": 0.75
+  },
+  "action": "HOLD",
+  "previous_allocation": {
+    "total": 0.25,
+    "btc": 0.1125,
+    "eth": 0.0875,
+    "sol": 0.05,
+    "cash": 0.75
   },
   "alerts": [],
   "alert_count": 0,
