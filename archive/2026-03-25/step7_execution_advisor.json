@@ -1,0 +1,860 @@
+{
+  "date": "2026-03-25",
+  "run_timestamp": "2026-03-25T07:14:34.737310Z",
+  "execution_assessment": {
+    "total_score": 7,
+    "raw_score": 7,
+    "max_possible": 18,
+    "execution_level": "WAIT",
+    "veto_applied": false,
+    "veto_reason": null,
+    "dimensions": {
+      "event_risk": {
+        "score": 0,
+        "max": 3,
+        "label": "1 HIGH events in 14d",
+        "detail": {
+          "events_48h_high": [],
+          "events_48h_medium": [],
+          "events_14d_high_count": 1,
+          "convergence_weeks": [
+            {
+              "start": "2026-04-08",
+              "end": "2026-04-11",
+              "events": [
+                "US PCE Price Index (February)",
+                "US CPI (March)"
+              ],
+              "risk_level": "ELEVATED"
+            }
+          ],
+          "in_convergence_week": false
+        }
+      },
+      "positioning_conflict": {
+        "score": 3,
+        "max": 3,
+        "label": "COT DBC -48.3%",
+        "detail": {
+          "conflicts": [
+            {
+              "asset": "DBC",
+              "weight": 0.202749,
+              "cot_field": "COT_GOLD_COMM_NET",
+              "cot_value": -48.2873,
+              "direction": "long",
+              "severity": "EXTREME"
+            },
+            {
+              "asset": "GLD",
+              "weight": 0.168946,
+              "cot_field": "COT_GOLD_COMM_NET",
+              "cot_value": -48.2873,
+              "direction": "long",
+              "severity": "EXTREME"
+            }
+          ],
+          "confirmations": [
+            {
+              "asset": "HYG",
+              "weight": 0.288278,
+              "cot_field": "COT_SP500_COMM_NET",
+              "cot_value": 1.8874,
+              "direction": "long",
+              "severity": "NONE"
+            },
+            {
+              "asset": "XLU",
+              "weight": 0.179522,
+              "cot_field": "COT_SP500_COMM_NET",
+              "cot_value": 1.8874,
+              "direction": "long",
+              "severity": "NONE"
+            },
+            {
+              "asset": "XLP",
+              "weight": 0.160505,
+              "cot_field": "COT_SP500_COMM_NET",
+              "cot_value": 1.8874,
+              "direction": "long",
+              "severity": "NONE"
+            }
+          ],
+          "fund_flows": -0.05,
+          "flow_conflict": false,
+          "extreme_count": 2,
+          "elevated_count": 0
+        }
+      },
+      "liquidity_risk": {
+        "score": 0,
+        "max": 3,
+        "label": "All clear",
+        "detail": {
+          "signals": {
+            "amihud": {
+              "value": 57.2,
+              "assessment": "LIQUID",
+              "score": 0
+            },
+            "sofr_ffr": {
+              "value": -2.0,
+              "assessment": "NORMAL",
+              "score": 0
+            },
+            "fin_stress": {
+              "value": -0.299,
+              "assessment": "RELAXED",
+              "score": 0
+            },
+            "vix_term": {
+              "value": 1.0147,
+              "assessment": "CONTANGO",
+              "score": 0
+            },
+            "avg_corr": {
+              "value": 0.3852,
+              "assessment": "NORMAL",
+              "score": 0
+            }
+          }
+        }
+      },
+      "cross_asset_confirmation": {
+        "score": 2,
+        "max": 3,
+        "label": "COMMODITY_VS_COPPER",
+        "detail": {
+          "divergences": [
+            {
+              "type": "COMMODITY_VS_COPPER",
+              "detail": "V16 hat 37% Commodity-Exposure aber Copper SMA50 Falling",
+              "severity": "ELEVATED"
+            },
+            {
+              "type": "EQUITY_TREND_DIVERGENCE",
+              "detail": "V16 hat 34% Equity aber SPY SMA50 Falling",
+              "severity": "HIGH"
+            }
+          ],
+          "confirmations": [
+            {
+              "type": "GOLD_DXY_NORMAL",
+              "detail": "Gold -14.9%, DXY +1.6% — normale Relation"
+            },
+            {
+              "type": "GOLD_REAL_YIELD_CONFIRMED",
+              "detail": "Gold 17% + Real Yields Falling — historisch positiv für Gold"
+            }
+          ],
+          "high_count": 1,
+          "elevated_count": 1
+        }
+      },
+      "gex_regime": {
+        "score": 1,
+        "max": 3,
+        "label": "GEX $-0.71B — NEGATIVE",
+        "detail": {
+          "gex": -0.7082,
+          "assessment": "NEGATIVE",
+          "has_imminent_event": false,
+          "note": "Positive GEX = Dealer dampen moves. Negative = Dealer amplify moves."
+        }
+      },
+      "sentiment_extreme": {
+        "score": 1,
+        "max": 3,
+        "label": "cnn_fg: EXTREME_FEAR",
+        "detail": {
+          "signals": {
+            "cnn_fg": {
+              "value": 16.91,
+              "assessment": "EXTREME_FEAR",
+              "warning": true
+            },
+            "vix": {
+              "value": 26.15,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "pcr": {
+              "value": 0.837,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "hy_oas": {
+              "value": 319.0,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "insider": {
+              "value": 2.5,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "move": {
+              "value": 103.01,
+              "assessment": "NORMAL",
+              "warning": false
+            }
+          },
+          "warning_count": 1
+        }
+      }
+    }
+  },
+  "confirming_conflicting": {
+    "confirming": [
+      {
+        "signal": "Keine HIGH-Impact Events in 48h",
+        "source": "EVENT_CALENDAR",
+        "detail": "Nächste 14d: 1 HIGH Events"
+      },
+      {
+        "signal": "COT HYG bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 1.9% — kein Conflict"
+      },
+      {
+        "signal": "COT XLU bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 1.9% — kein Conflict"
+      },
+      {
+        "signal": "COT XLP bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 1.9% — kein Conflict"
+      },
+      {
+        "signal": "amihud: LIQUID",
+        "source": "DW_L5",
+        "detail": "Wert: 57.2"
+      },
+      {
+        "signal": "sofr_ffr: NORMAL",
+        "source": "DW_L5",
+        "detail": "Wert: -2.0"
+      },
+      {
+        "signal": "fin_stress: RELAXED",
+        "source": "DW_L5",
+        "detail": "Wert: -0.299"
+      },
+      {
+        "signal": "vix_term: CONTANGO",
+        "source": "DW_L5",
+        "detail": "Wert: 1.0147"
+      },
+      {
+        "signal": "avg_corr: NORMAL",
+        "source": "DW_L5",
+        "detail": "Wert: 0.3852"
+      },
+      {
+        "signal": "GOLD_DXY_NORMAL",
+        "source": "DW_L7",
+        "detail": "Gold -14.9%, DXY +1.6% — normale Relation"
+      },
+      {
+        "signal": "GOLD_REAL_YIELD_CONFIRMED",
+        "source": "DW_L7",
+        "detail": "Gold 17% + Real Yields Falling — historisch positiv für Gold"
+      },
+      {
+        "signal": "vix: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 26.15"
+      },
+      {
+        "signal": "pcr: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 0.837"
+      },
+      {
+        "signal": "hy_oas: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 319.0"
+      },
+      {
+        "signal": "insider: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 2.5"
+      },
+      {
+        "signal": "move: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 103.01"
+      },
+      {
+        "signal": "V16: Kein materielles Rebalancing",
+        "source": "STEP2_V16",
+        "detail": "Alle Positionen HOLD — kein Execution-Risiko"
+      }
+    ],
+    "conflicting": [
+      {
+        "signal": "COT DBC Conflict (EXTREME)",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = -48.3% — Smart Money gegen DBC (20% im Portfolio)"
+      },
+      {
+        "signal": "COT GLD Conflict (EXTREME)",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = -48.3% — Smart Money gegen GLD (17% im Portfolio)"
+      },
+      {
+        "signal": "COMMODITY_VS_COPPER",
+        "source": "DW_L7",
+        "detail": "V16 hat 37% Commodity-Exposure aber Copper SMA50 Falling"
+      },
+      {
+        "signal": "EQUITY_TREND_DIVERGENCE",
+        "source": "DW_L7",
+        "detail": "V16 hat 34% Equity aber SPY SMA50 Falling"
+      },
+      {
+        "signal": "GEX negativ ($-0.71B) — NEGATIVE",
+        "source": "DW_L4_GEX",
+        "detail": "Dealer-Hedging verstärkt Moves — erhöhte Volatilität"
+      },
+      {
+        "signal": "cnn_fg: EXTREME_FEAR",
+        "source": "DW_L2",
+        "detail": "Wert: 16.91 — Extreme Warnung"
+      },
+      {
+        "signal": "Router Proximity 100%",
+        "source": "STEP2_SIGNAL_GENERATOR",
+        "detail": "Router nähert sich Trigger (COMMODITY_SUPER)"
+      }
+    ],
+    "confirming_count": 17,
+    "conflicting_count": 7,
+    "net_assessment": "STRONGLY_CONFIRMING"
+  },
+  "recommendation": {
+    "action": "WAIT_FOR_CLARITY",
+    "reasoning": "Kein materielles Rebalancing heute nötig — alle Positionen HOLD.",
+    "specific_actions": [],
+    "would_change_my_mind": {
+      "execute_if": [
+        "COT Gold Commercial Net steigt über -30% (aktuell -48.3%) — Smart Money reduziert Short-Positioning",
+        "Copper vs SMA50 dreht auf Rising — Commodity-Frühindikator bestätigt"
+      ],
+      "hold_if": [
+        "VIX steigt über 32 (aktuell 26.15) — Volatilitäts-Spike erhöht Execution-Risiko massiv",
+        "HY OAS steigt über 400bps (aktuell 319bps) — Credit-Stress gefährdet HYG (28.8% Portfolio)"
+      ]
+    }
+  },
+  "event_window": {
+    "next_48h": [],
+    "next_14d": [
+      {
+        "event": "ISM Manufacturing PMI (March)",
+        "date": "2026-04-01",
+        "days_until": 7,
+        "hours_until": 168,
+        "impact": "MEDIUM",
+        "type": "ISM_MFG",
+        "themes": [
+          "RECESSION",
+          "INFLATION"
+        ]
+      },
+      {
+        "event": "US Nonfarm Payrolls (March)",
+        "date": "2026-04-03",
+        "days_until": 9,
+        "hours_until": 216,
+        "impact": "HIGH",
+        "type": "NFP",
+        "themes": [
+          "FED_POLICY",
+          "RECESSION"
+        ]
+      }
+    ],
+    "convergence_weeks": [
+      {
+        "start": "2026-04-08",
+        "end": "2026-04-11",
+        "events": [
+          "US PCE Price Index (February)",
+          "US CPI (March)"
+        ],
+        "risk_level": "ELEVATED"
+      }
+    ],
+    "event_density_14d": 2,
+    "calendar_upcoming": [
+      {
+        "event": "ISM Manufacturing PMI (March)",
+        "date": "2026-04-01",
+        "days_until": 7,
+        "hours_until": 168,
+        "impact": "MEDIUM",
+        "type": "ISM_MFG",
+        "themes": [
+          "RECESSION",
+          "INFLATION"
+        ]
+      },
+      {
+        "event": "US Nonfarm Payrolls (March)",
+        "date": "2026-04-03",
+        "days_until": 9,
+        "hours_until": 216,
+        "impact": "HIGH",
+        "type": "NFP",
+        "themes": [
+          "FED_POLICY",
+          "RECESSION"
+        ]
+      },
+      {
+        "event": "US GDP Q4 2025 (Third Estimate)",
+        "date": "2026-04-09",
+        "days_until": 15,
+        "hours_until": 360,
+        "impact": "MEDIUM",
+        "type": "GDP",
+        "themes": [
+          "RECESSION",
+          "FED_POLICY"
+        ]
+      },
+      {
+        "event": "US PCE Price Index (February)",
+        "date": "2026-04-09",
+        "days_until": 15,
+        "hours_until": 360,
+        "impact": "HIGH",
+        "type": "PCE",
+        "themes": [
+          "INFLATION",
+          "FED_POLICY"
+        ]
+      },
+      {
+        "event": "US CPI (March)",
+        "date": "2026-04-10",
+        "days_until": 16,
+        "hours_until": 384,
+        "impact": "HIGH",
+        "type": "CPI",
+        "themes": [
+          "INFLATION",
+          "FED_POLICY"
+        ]
+      }
+    ],
+    "calendar_monthly": [
+      {
+        "date": "2026-03-11",
+        "event": "US CPI (February)",
+        "type": "CPI",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US PCE Price Index (January)",
+        "type": "PCE",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-13",
+        "event": "US GDP Q4 2025 (Second Estimate)",
+        "type": "GDP",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-18",
+        "event": "FOMC Meeting (March)",
+        "type": "FOMC",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-03-19",
+        "event": "ECB Monetary Policy Meeting",
+        "type": "ECB",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-19",
+        "event": "Bank of Japan Monetary Policy Meeting",
+        "type": "BOJ",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-20",
+        "event": "China LPR (March)",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-03-20",
+        "event": "Quad Witching",
+        "type": "OPEX",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-04-01",
+        "event": "ISM Manufacturing PMI (March)",
+        "type": "ISM_MFG",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-04-03",
+        "event": "US Nonfarm Payrolls (March)",
+        "type": "NFP",
+        "impact": "HIGH"
+      }
+    ]
+  },
+  "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 7/18) ===\n\nCONFIRMING:\n• Keine HIGH-Impact Events in 48h: Execution-Window technisch offen, nächstes HIGH-Event erst in 14d\n• Liquidität grün über alle Dimensionen: Amihud 57.2 (LIQUID), SOFR-FFR -2.0bps (NORMAL), OFR Stress -0.299 (RELAXED)\n• VIX Term Structure 1.0147 (CONTANGO): Markt preist Beruhigung ein, kein akuter Stress\n• Gold/DXY-Relation normal: Gold -14.9%, DXY +1.6% — keine anomale Dislokation trotz Gold-Schwäche\n• HY OAS 319bps (NORMAL): Credit-Spreads im historischen Normalbereich, HYG (28.8% Portfolio) fundamental unterstützt\n• Kein materielles Rebalancing nötig: V16 hält alle Positionen HOLD — diese Bewertung gilt für potenzielle Regime-Wechsel\n\nCONFLICTING:\n• COT Gold Commercial Net -48.3% (EXTREME): Smart Money massiv gegen DBC (20.3%) und GLD (16.9%) — zusammen 37% des Portfolios\n• Copper vs SMA50 Falling: V16 hat 37% Commodity-Exposure (DBC+GLD) aber Kupfer-Trend negativ — Frühindikator für Commodity-Schwäche\n• SPY vs SMA50 Falling: V16 hat 34% Equity-Exposure (HYG+XLU+XLP) aber Equity-Trend negativ — technischer Gegenwind\n• GEX negativ $-0.71B: Dealer-Hedging verstärkt Volatilität in beide Richtungen — erhöhtes Slippage-Risiko bei Execution\n• CNN Fear & Greed 16.91 (EXTREME_FEAR): Sentiment-Extrem signalisiert fragiles Umfeld, Risiko abrupter Moves\n• Router Proximity 100% (COMMODITY_SUPER): V16 könnte kurzfristig Regime wechseln — Timing-Risiko wenn heute executed wird\n• MOVE Index 103.01: Bond-Volatilität erhöht, betrifft indirekt XLU/XLP (Zins-Sensitivität)\n\nNETTO: 17 Confirming vs 7 Conflicting. Technisch ausführbar, aber 37% des Portfolios (DBC+GLD) steht gegen extremes COT-Positioning und fallende Commodity-Trends.\n\nEMPFEHLUNG:\nKein materielles Rebalancing heute nötig — alle Positionen HOLD. Falls V16 morgen Regime wechselt: **WAIT 24-48h** vor Execution. COT Gold -48.3% und Copper Falling sind materielle Warnsignale für 37% des Portfolios. Bei künftigem Rebalancing: **DBC/GLD mit Limit-Orders** (GEX negativ erhöht Slippage), **HYG/XLU/XLP Market-Orders möglich** (Liquidität gut, Spreads normal). Beobachte Router-Trigger: Bei Wechsel zu COMMODITY_SUPER würde V16 Commodities hochfahren — dann COT-Konflikt verschärft. Optimal wäre Execution **nach** Copper-Stabilisierung (SMA50 Crossing) oder COT-Normalisierung (>-30%).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: COT Gold Commercial Net steigt über -30% (aktuell -48.3%) — Smart Money reduziert Short-Positioning\n• Execute sofort wenn: Copper vs SMA50 dreht auf Rising — Commodity-Frühindikator bestätigt\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 32 (aktuell 26.15) — Volatilitäts-Spike erhöht Execution-Risiko massiv\n• Eskaliere zu Wait/Hold wenn: HY OAS steigt über 400bps (aktuell 319bps) — Credit-Stress gefährdet HYG (28.8% Portfolio)",
+  "v16_context": {
+    "regime": "LATE_EXPANSION",
+    "top5": [
+      {
+        "asset": "HYG",
+        "weight": 0.288278
+      },
+      {
+        "asset": "DBC",
+        "weight": 0.202749
+      },
+      {
+        "asset": "XLU",
+        "weight": 0.179522
+      },
+      {
+        "asset": "GLD",
+        "weight": 0.168946
+      },
+      {
+        "asset": "XLP",
+        "weight": 0.160505
+      }
+    ],
+    "material_rebalance_trades": 0,
+    "total_weight": 1.0
+  },
+  "pipeline_context": {
+    "risk_ampel": "UNKNOWN",
+    "cio_conviction": "UNKNOWN",
+    "cio_briefing_type": "ACTION",
+    "fragility_state": "UNKNOWN",
+    "router_state": "US_DOMESTIC",
+    "router_max_proximity": 1.0
+  },
+  "rotation": {
+    "date": "2026-03-25",
+    "status": "ALIGNED",
+    "mode": "STABLE",
+    "total_absolute_delta_pp": 0.0,
+    "material_shifts_count": 0,
+    "days_since_material_rotation": 999,
+    "days_since_state_change": 448,
+    "trigger": {
+      "type": "NONE",
+      "label": "Keine materielle Rotation",
+      "detail": null
+    },
+    "dd_protect": {
+      "active": false,
+      "threshold": -10.0,
+      "current_drawdown": 0.0
+    },
+    "cluster_current": {
+      "EQ_DEFN": {
+        "weight": 0.34,
+        "display_name": "Defensive Equities"
+      },
+      "CREDIT": {
+        "weight": 0.2883,
+        "display_name": "High Yield Credit"
+      },
+      "COMMOD": {
+        "weight": 0.2027,
+        "display_name": "Commodities"
+      },
+      "PM": {
+        "weight": 0.1689,
+        "display_name": "Precious Metals"
+      }
+    },
+    "cluster_deltas": {
+      "EQ_DEFN": {
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE"
+      },
+      "CREDIT": {
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE"
+      },
+      "COMMOD": {
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE"
+      },
+      "PM": {
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE"
+      }
+    },
+    "asset_details": {
+      "HYG": {
+        "weight": 0.2883,
+        "cluster": "CREDIT",
+        "cluster_name": "High Yield Credit",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "DBC": {
+        "weight": 0.2027,
+        "cluster": "COMMOD",
+        "cluster_name": "Commodities",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "XLU": {
+        "weight": 0.1795,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "GLD": {
+        "weight": 0.1689,
+        "cluster": "PM",
+        "cluster_name": "Precious Metals",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "XLP": {
+        "weight": 0.1605,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      }
+    },
+    "new_positions": [],
+    "exited_positions": [],
+    "sparkline_data": {
+      "COMMOD": {
+        "dates": [
+          "2026-03-09",
+          "2026-03-10",
+          "2026-03-11",
+          "2026-03-12",
+          "2026-03-13",
+          "2026-03-16",
+          "2026-03-17",
+          "2026-03-18",
+          "2026-03-19",
+          "2026-03-20",
+          "2026-03-24",
+          "2026-03-25"
+        ],
+        "values": [
+          0.2183,
+          0.2027,
+          0.2027,
+          0.2027,
+          0.2027,
+          0.2027,
+          0.2027,
+          0.2027,
+          0.2027,
+          0.2027,
+          0.2027,
+          0.2027
+        ]
+      },
+      "CREDIT": {
+        "dates": [
+          "2026-03-09",
+          "2026-03-10",
+          "2026-03-11",
+          "2026-03-12",
+          "2026-03-13",
+          "2026-03-16",
+          "2026-03-17",
+          "2026-03-18",
+          "2026-03-19",
+          "2026-03-20",
+          "2026-03-24",
+          "2026-03-25"
+        ],
+        "values": [
+          0.2726,
+          0.2883,
+          0.2883,
+          0.2883,
+          0.2883,
+          0.2883,
+          0.2883,
+          0.2883,
+          0.2883,
+          0.2883,
+          0.2883,
+          0.2883
+        ]
+      },
+      "EQ_DEFN": {
+        "dates": [
+          "2026-03-09",
+          "2026-03-10",
+          "2026-03-11",
+          "2026-03-12",
+          "2026-03-13",
+          "2026-03-16",
+          "2026-03-17",
+          "2026-03-18",
+          "2026-03-19",
+          "2026-03-20",
+          "2026-03-24",
+          "2026-03-25"
+        ],
+        "values": [
+          0.3289,
+          0.34,
+          0.34,
+          0.34,
+          0.34,
+          0.34,
+          0.34,
+          0.34,
+          0.34,
+          0.34,
+          0.34,
+          0.34
+        ]
+      },
+      "PM": {
+        "dates": [
+          "2026-03-09",
+          "2026-03-10",
+          "2026-03-11",
+          "2026-03-12",
+          "2026-03-13",
+          "2026-03-16",
+          "2026-03-17",
+          "2026-03-18",
+          "2026-03-19",
+          "2026-03-20",
+          "2026-03-24",
+          "2026-03-25"
+        ],
+        "values": [
+          0.1802,
+          0.1689,
+          0.1689,
+          0.1689,
+          0.1689,
+          0.1689,
+          0.1689,
+          0.1689,
+          0.1689,
+          0.1689,
+          0.1689,
+          0.1689
+        ]
+      }
+    },
+    "sparkline_state_changes": [],
+    "state_history": [],
+    "comparison_snapshots": {
+      "1d": {
+        "date": "2026-03-24",
+        "weights": {
+          "GLD": 0.1689,
+          "XLP": 0.1605,
+          "XLU": 0.1795,
+          "HYG": 0.2883,
+          "DBC": 0.2027
+        },
+        "cluster_weights": {
+          "PM": 0.1689,
+          "EQ_DEFN": 0.34,
+          "CREDIT": 0.2883,
+          "COMMOD": 0.2027
+        }
+      },
+      "1w": {
+        "date": "2026-03-18",
+        "weights": {
+          "GLD": 0.1689,
+          "XLP": 0.1605,
+          "XLU": 0.1795,
+          "HYG": 0.2883,
+          "DBC": 0.2027
+        },
+        "cluster_weights": {
+          "PM": 0.1689,
+          "EQ_DEFN": 0.34,
+          "CREDIT": 0.2883,
+          "COMMOD": 0.2027
+        }
+      },
+      "1m": null,
+      "3m": null,
+      "6m": null,
+      "9m": null,
+      "1y": null
+    }
+  },
+  "meta": {
+    "execution_path": "FULL",
+    "degraded": false,
+    "degraded_reasons": [],
+    "llm_model": "claude-sonnet-4-5-20250929",
+    "llm_used": true,
+    "llm_fallback": false,
+    "engine_time_seconds": 22.41,
+    "total_time_seconds": 22.4
+  }
+}
