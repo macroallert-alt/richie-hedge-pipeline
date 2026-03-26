@@ -679,7 +679,8 @@
       "EQ_DEFN": 0.34,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2883,
+      "BOND": 0.0,
+      "CREDIT": 0.2883,
       "COMMOD": 0.2027,
       "CRYPTO": 0.0
     },
@@ -3808,16 +3809,16 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-03-25",
+    "date": "2026-03-26",
     "execution_level": "WAIT",
-    "total_score": 7,
+    "total_score": 8,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
       "event_risk": {
-        "score": 0,
+        "score": 1,
         "max": 3,
-        "label": "1 HIGH events in 14d"
+        "label": "2 HIGH events in 14d"
       },
       "positioning_conflict": {
         "score": 3,
@@ -3837,7 +3838,7 @@
       "gex_regime": {
         "score": 1,
         "max": 3,
-        "label": "GEX $-0.71B — NEGATIVE"
+        "label": "GEX $-0.77B — NEGATIVE"
       },
       "sentiment_extreme": {
         "score": 1,
@@ -3845,13 +3846,13 @@
         "label": "cnn_fg: EXTREME_FEAR"
       }
     },
-    "confirming_count": 17,
+    "confirming_count": 16,
     "conflicting_count": 7,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
-      "Keine HIGH-Impact Events in 48h — Nächste 14d: 1 HIGH Events",
       "COT HYG bestätigt — COT_SP500_COMM_NET = 1.9% — kein Conflict",
-      "COT XLU bestätigt — COT_SP500_COMM_NET = 1.9% — kein Conflict"
+      "COT XLU bestätigt — COT_SP500_COMM_NET = 1.9% — kein Conflict",
+      "COT XLP bestätigt — COT_SP500_COMM_NET = 1.9% — kein Conflict"
     ],
     "top_conflicting": [
       "COT DBC Conflict (EXTREME) — COT_GOLD_COMM_NET = -48.3% — Smart Money gegen DBC (20% im Portfolio)",
@@ -3859,45 +3860,45 @@
       "COMMODITY_VS_COPPER — V16 hat 37% Commodity-Exposure aber Copper SMA50 Falling"
     ],
     "recommendation_action": "WAIT_FOR_CLARITY",
-    "recommendation_short": "Kein materielles Rebalancing heute nötig — alle Positionen HOLD.",
+    "recommendation_short": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
     "specific_actions": [],
     "event_window": {
       "next_48h_count": 0,
       "next_48h_events": [],
-      "next_14d_count": 2,
+      "next_14d_count": 4,
       "convergence_week": true,
-      "event_density_label": "NORMAL"
+      "event_density_label": "ELEVATED"
     },
     "calendar_upcoming": [
       {
         "date": "2026-04-01",
         "event": "ISM Manufacturing PMI (March)",
         "impact": "MEDIUM",
-        "days_until": 7
+        "days_until": 6
       },
       {
         "date": "2026-04-03",
         "event": "US Nonfarm Payrolls (March)",
         "impact": "HIGH",
-        "days_until": 9
+        "days_until": 8
       },
       {
         "date": "2026-04-09",
         "event": "US GDP Q4 2025 (Third Estimate)",
         "impact": "MEDIUM",
-        "days_until": 15
+        "days_until": 14
       },
       {
         "date": "2026-04-09",
         "event": "US PCE Price Index (February)",
         "impact": "HIGH",
-        "days_until": 15
+        "days_until": 14
       },
       {
         "date": "2026-04-10",
         "event": "US CPI (March)",
         "impact": "HIGH",
-        "days_until": 16
+        "days_until": 15
       }
     ],
     "calendar_monthly": [
@@ -3962,26 +3963,26 @@
         "impact": "HIGH"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 7/18) ===\n\nCONFIRMING:\n• Keine HIGH-Impact Events in 48h: Execution-Window technisch offen, nächstes HIGH-Event erst in 14d\n• Liquidität grün über alle Dimensionen: Amihud 57.2 (LIQUID), SOFR-FFR -2.0bps (NORMAL), OFR Stress -0.299 (RELAXED)\n• VIX Term Structure 1.0147 (CONTANGO): Markt preist Beruhigung ein, kein akuter Stress\n• Gold/DXY-Relation normal: Gold -14.9%, DXY +1.6% — keine anomale Dislokation trotz Gold-Schwäche\n• HY OAS 319bps (NORMAL): Credit-Spreads im historischen Normalbereich, HYG (28.8% Portfolio) fundamental unterstützt\n• Kein materielles Rebalancing nötig: V16 hält alle Positionen HOLD — diese Bewertung gilt für potenzielle Regime-Wechsel\n\nCONFLICTING:\n• COT Gold Commercial Net -48.3% (EXTREME): Smart Money massiv gegen DBC (20.3%) und GLD (16.9%) — zusammen 37% des Portfolios\n• Copper vs SMA50 Falling: V16 hat 37% Commodity-Exposure (DBC+GLD) aber Kupfer-Trend negativ — Frühindikator für Commodity-Schwäche\n• SPY vs SMA50 Falling: V16 hat 34% Equity-Exposure (HYG+XLU+XLP) aber Equity-Trend negativ — technischer Gegenwind\n• GEX negativ $-0.71B: Dealer-Hedging verstärkt Volatilität in beide Richtungen — erhöhtes Slippage-Risiko bei Execution\n• CNN Fear & Greed 16.91 (EXTREME_FEAR): Sentiment-Extrem signalisiert fragiles Umfeld, Risiko abrupter Moves\n• Router Proximity 100% (COMMODITY_SUPER): V16 könnte kurzfristig Regime wechseln — Timing-Risiko wenn heute executed wird\n• MOVE Index 103.01: Bond-Volatilität erhöht, betrifft indirekt XLU/XLP (Zins-Sensitivität)\n\nNETTO: 17 Confirming vs 7 Conflicting. Technisch ausführbar, aber 37% des Portfolios (DBC+GLD) steht gegen extremes COT-Positioning und fallende Commodity-Trends.\n\nEMPFEHLUNG:\nKein materielles Rebalancing heute nötig — alle Positionen HOLD. Falls V16 morgen Regime wechselt: **WAIT 24-48h** vor Execution. COT Gold -48.3% und Copper Falling sind materielle Warnsignale für 37% des Portfolios. Bei künftigem Rebalancing: **DBC/GLD mit Limit-Orders** (GEX negativ erhöht Slippage), **HYG/XLU/XLP Market-Orders möglich** (Liquidität gut, Spreads normal). Beobachte Router-Trigger: Bei Wechsel zu COMMODITY_SUPER würde V16 Commodities hochfahren — dann COT-Konflikt verschärft. Optimal wäre Execution **nach** Copper-Stabilisierung (SMA50 Crossing) oder COT-Normalisierung (>-30%).\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: COT Gold Commercial Net steigt über -30% (aktuell -48.3%) — Smart Money reduziert Short-Positioning\n• Execute sofort wenn: Copper vs SMA50 dreht auf Rising — Commodity-Frühindikator bestätigt\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 32 (aktuell 26.15) — Volatilitäts-Spike erhöht Execution-Risiko massiv\n• Eskaliere zu Wait/Hold wenn: HY OAS steigt über 400bps (aktuell 319bps) — Credit-Stress gefährdet HYG (28.8% Portfolio)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 8/18) ===\n\nCONFIRMING:\n• Liquidität: Amihud 50.0 — optimale Execution-Bedingungen, SOFR-FFR -1.0bp normal, OFR Stress -0.37 entspannt\n• VIX Term Structure: Contango 0.9883 — Markt preist Beruhigung ein, keine Panik-Prämie\n• COT Equity-Positionen bestätigt: HYG/XLU/XLP durch S&P500 Commercial Net +1.9% unterstützt — Smart Money neutral bis leicht long\n• Gold-DXY Relation normal: Gold -12.1%, DXY +1.9% — historisch konsistente Korrelation, kein Stress-Signal\n• Gold-Real Yield Setup: Gold 17% Gewicht + Real Yields Falling — fundamentales Tailwind-Szenario intakt\n• Sentiment-Indikatoren im Rahmen: VIX 26.95, Put/Call 0.817, HY OAS 319bps, MOVE 97.6, Insider 2.5 — alle NORMAL-Range\n• Kein Execution-Risiko: V16 hat heute KEINE materiellen Trades (alle HOLD) — keine Slippage-Gefahr, keine Timing-Frage\n• Average Correlation 0.40: NORMAL — Portfolio-Diversifikation funktioniert, keine Regime-Breakdown\n\nCONFLICTING:\n• COT Commodity Extreme: Gold Commercial Net -48.3% — Smart Money massiv short gegen DBC (20%) und GLD (17%), zusammen 37% Portfolio-Exposure\n• Copper-Trend divergiert: Copper SMA50 Falling aber V16 hält 37% Commodities — führender Indikator signalisiert Schwäche\n• Equity-Trend divergiert: SPY SMA50 Falling aber V16 hält 34% Equities (HYG/XLU/XLP) — technischer Gegenwind\n• GEX negativ $-0.77B: Dealer müssen Moves verstärken (short Gamma) — erhöhte Intraday-Volatilität, schlechtere Fills möglich\n• CNN Fear & Greed 19.3: EXTREME_FEAR — Sentiment-Extrem, historisch oft Wendepunkt (aber Richtung unklar)\n• Router Proximity 100%: COMMODITY_SUPER-Trigger nah — V16 könnte morgen/übermorgen Regime wechseln\n• Convergence Week: 4 Events in 14d, 2 davon HIGH — Macro-Katalysatoren könnten Positioning kippen\n\nNETTO: 8 Confirming vs 7 Conflicting. Liquidität optimal, aber COT-Positionierung und Trend-Divergenzen sprechen gegen sofortige Execution bei materiellem Rebalancing.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall dass V16 morgen Regime wechselt: **WAIT 24-48h** vor Execution. COT Gold -48.3% ist historisches Extrem (37% Portfolio-Exposure betroffen), Copper/SPY Trends fallen, Router steht bei 100% Proximity. Falls V16 morgen zu COMMODITY_SUPER rotiert: **DBC/GLD mit Limit-Orders aufstocken** (nicht Market), **HYG/XLU/XLP schrittweise reduzieren** über 2 Tage. GEX negativ bedeutet: Intraday-Swings nutzen, nicht in erste 30min oder letzte 15min traden. Convergence Week startet — warte auf Event-Klarheit (2 HIGH Events in 14d) bevor große Shifts.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: COT Gold Commercial Net steigt über -35% (aktuell -48.3%) UND Copper vs SMA50 dreht auf Rising — Commodity-Positioning normalisiert sich\n• Execute sofort wenn: GEX dreht positiv über $+0.5B UND VIX fällt unter 22 (aktuell 26.95) — Volatilitäts-Regime beruhigt sich\n• Eskaliere zu Wait/Hold wenn: HY OAS steigt über 375bps (aktuell 319bps) ODER CNN Fear & Greed fällt unter 15 (aktuell 19.3) — Credit-Stress oder Sentiment-Kapitulation\n• Eskaliere zu Wait/Hold wenn: VIX springt über 32 ODER MOVE Index über 115 (aktuell 97.6) — Volatilitäts-Spike in Rates oder Equities",
     "would_change_my_mind": {
       "execute_if": [
-        "COT Gold Commercial Net steigt über -30% (aktuell -48.3%) — Smart Money reduziert Short-Positioning",
-        "Copper vs SMA50 dreht auf Rising — Commodity-Frühindikator bestätigt"
+        "COT Gold Commercial Net steigt über -35% (aktuell -48.3%) UND Copper vs SMA50 dreht auf Rising — Commodity-Positioning normalisiert sich",
+        "GEX dreht positiv über $+0.5B UND VIX fällt unter 22 (aktuell 26.95) — Volatilitäts-Regime beruhigt sich"
       ],
       "hold_if": [
-        "VIX steigt über 32 (aktuell 26.15) — Volatilitäts-Spike erhöht Execution-Risiko massiv",
-        "HY OAS steigt über 400bps (aktuell 319bps) — Credit-Stress gefährdet HYG (28.8% Portfolio)"
+        "HY OAS steigt über 375bps (aktuell 319bps) ODER CNN Fear & Greed fällt unter 15 (aktuell 19.3) — Credit-Stress oder Sentiment-Kapitulation",
+        "VIX springt über 32 ODER MOVE Index über 115 (aktuell 97.6) — Volatilitäts-Spike in Rates oder Equities"
       ]
     }
   },
   "rotation": {
-    "date": "2026-03-25",
+    "date": "2026-03-26",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
     "days_since_material_rotation": 999,
-    "days_since_state_change": 448,
+    "days_since_state_change": 449,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -4122,10 +4123,12 @@
           "2026-03-19",
           "2026-03-20",
           "2026-03-24",
-          "2026-03-25"
+          "2026-03-25",
+          "2026-03-26"
         ],
         "values": [
           0.2183,
+          0.2027,
           0.2027,
           0.2027,
           0.2027,
@@ -4152,10 +4155,12 @@
           "2026-03-19",
           "2026-03-20",
           "2026-03-24",
-          "2026-03-25"
+          "2026-03-25",
+          "2026-03-26"
         ],
         "values": [
           0.2726,
+          0.2883,
           0.2883,
           0.2883,
           0.2883,
@@ -4182,10 +4187,12 @@
           "2026-03-19",
           "2026-03-20",
           "2026-03-24",
-          "2026-03-25"
+          "2026-03-25",
+          "2026-03-26"
         ],
         "values": [
           0.3289,
+          0.34,
           0.34,
           0.34,
           0.34,
@@ -4212,10 +4219,12 @@
           "2026-03-19",
           "2026-03-20",
           "2026-03-24",
-          "2026-03-25"
+          "2026-03-25",
+          "2026-03-26"
         ],
         "values": [
           0.1802,
+          0.1689,
           0.1689,
           0.1689,
           0.1689,
@@ -4234,7 +4243,7 @@
     "state_history": [],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-03-24",
+        "date": "2026-03-25",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
@@ -4250,7 +4259,7 @@
         }
       },
       "1w": {
-        "date": "2026-03-18",
+        "date": "2026-03-19",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
