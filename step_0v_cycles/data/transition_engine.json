@@ -1,5 +1,5 @@
 {
- "computed_at": "2026-03-22T04:12:50.142305+00:00",
+ "computed_at": "2026-03-29T04:32:07.147177+00:00",
  "engine_version": "1.1",
  "transition_matrices": {
   "LIQUIDITY": {
@@ -53,8 +53,8 @@
       "median": 1,
       "mean": 1.2,
       "min": 1,
-      "max": 2,
-      "std": 0.4,
+      "max": 3,
+      "std": 0.6,
       "all_durations": [
        1,
        1,
@@ -67,29 +67,29 @@
        1,
        1,
        1,
-       2
+       3
       ]
      },
      "transitions_to": {
       "CONTRACTION": {
        "count": 6,
-       "probability": 0.5
+       "probability": 0.545
       },
       "EXPANSION": {
-       "count": 5,
-       "probability": 0.417
+       "count": 4,
+       "probability": 0.364
       },
       "LATE_EXPANSION": {
        "count": 1,
-       "probability": 0.083
+       "probability": 0.091
       }
      }
     },
     "EXPANSION": {
-     "n_occurrences": 25,
+     "n_occurrences": 24,
      "duration_months": {
-      "median": 2,
-      "mean": 4.8,
+      "median": 3,
+      "mean": 5.0,
       "min": 1,
       "max": 23,
       "std": 5.1,
@@ -117,8 +117,7 @@
        3,
        1,
        1,
-       2,
-       1
+       2
       ]
      },
      "transitions_to": {
@@ -182,7 +181,7 @@
      }
     }
    },
-   "total_transitions": 72
+   "total_transitions": 71
   },
   "CREDIT": {
    "phases": {
@@ -1712,26 +1711,26 @@
  },
  "phase_positions": {
   "LIQUIDITY": {
-   "current_phase": "EXPANSION",
-   "current_duration_months": 0,
-   "median_duration": 2,
-   "phase_position_pct": 0,
-   "remaining_median": 2,
+   "current_phase": "EARLY_RECOVERY",
+   "current_duration_months": 2,
+   "median_duration": 1,
+   "phase_position_pct": 200,
+   "remaining_median": 1,
    "remaining_p25": 1,
-   "remaining_p75": 8,
-   "status": "EARLY_PHASE",
+   "remaining_p75": 1,
+   "status": "EXTENDED",
    "transitions_ahead": {
-    "LATE_EXPANSION": {
-     "count": 15,
-     "probability": 0.625
-    },
-    "EARLY_RECOVERY": {
-     "count": 4,
-     "probability": 0.167
-    },
     "CONTRACTION": {
-     "count": 5,
-     "probability": 0.208
+     "count": 6,
+     "probability": 0.545
+    },
+    "EXPANSION": {
+     "count": 4,
+     "probability": 0.364
+    },
+    "LATE_EXPANSION": {
+     "count": 1,
+     "probability": 0.091
     }
    }
   },
@@ -5448,12 +5447,13 @@
   "interpretation": "Mehrheitlich bullish, aber nicht einstimmig. Vorsichtig Risk-On."
  },
  "overall_assessment": {
-  "n_significant_returns": 2511,
+  "n_significant_returns": 2510,
   "n_total_returns": 7659,
   "pct_significant": 32.8,
   "cascade_severity": "CASCADE",
   "confirmation_score": 4,
   "extended_cycles": [
+   "LIQUIDITY",
    "CREDIT",
    "COMMODITY",
    "BUSINESS",
@@ -5462,12 +5462,12 @@
    "TRADE"
   ],
   "late_cycles": [],
-  "verdict": "WARNING — Cascade Speed CASCADE. 3 cycles transitioning. Defensive positioning recommended. WATCH: CREDIT, COMMODITY, BUSINESS, FED_RATES, EARNINGS, TRADE extended beyond median duration."
+  "verdict": "WARNING — Cascade Speed CASCADE. 3 cycles transitioning. Defensive positioning recommended. WATCH: LIQUIDITY, CREDIT, COMMODITY, BUSINESS, FED_RATES, EARNINGS, TRADE extended beyond median duration."
  },
  "cycle_narrative": {
-  "generated_at": "2026-03-22T04:13:06.818432+00:00",
+  "generated_at": "2026-03-29T04:32:25.314259+00:00",
   "model": "claude-sonnet-4-6",
-  "text": "GESAMTLAGE: Die Zyklen-Engine zeigt ein klassisches Late-Cycle-Bild mit erhöhter Transition-Geschwindigkeit. Cascade Speed 0.5 mit 3 Kippereignissen in 6 Monaten (LIQUIDITY, CREDIT, COMMODITY) signalisiert strukturellen Übergang, nicht Einzelvolatilität. Nur 32.8% signifikante Returns (2511/7659) bestätigen: Das Regime liefert keine klare Richtung mehr.\n\nZYKLEN-DETAIL: Kritisch sind drei bereits gekippte Zyklen – LIQUIDITY steht erst bei 0% seiner neuen Expansionsphase, CREDIT und COMMODITY sind bei 100% und Extended mit je ~2-3 Monaten Restlaufzeit. EARNINGS (800%, Extended, ~0 Mo) und FED_RATES (533%, Extended, ~0 Mo) sind faktisch am Limit – diese beiden Zyklen hätten bereits drehen sollen. TRADE auf 800% Extended unterstreicht globalen Reflationsstress. Stabil: DOLLAR in EARLY STRENGTHENING (0%, ~3 Mo) und CHINA_CREDIT im geordneten MID-CONTRACTION (67%) – beide liefern noch keine Panik-Signale.\n\nRISIKO: V16 Dual-State CREDIT_BULLISH / REAL_BULLISH (n=90) zeigt 94.2% Growth, 2.3% Stress, 3.5% Crisis – das ist strukturell beruhigend, aber der Zustand ist Late_Expansion, nicht Early. Eskalation droht, wenn EARNINGS und FED_RATES formal kippen UND DOLLAR-Strengthening sich beschleunigt: Dann verkürzt sich das Liquiditätsfenster schlagartig. Historische Analogien 2009-12 und 2016-04 (Sim=1.0) implizieren SPY-Korrekturen von -8.9% bis +2.5% – die Streuung allein ist ein Warnsignal.\n\nPOSITIONIERUNG: Die Analogien bevorzugen klar TLT (+14.4% / +3.6% in den bärischen Szenarien) und GLD als Puffer (+6.4% in 2009-12). SPY ist bei der aktuellen Cascade-Warnung mit Vorsicht zu behandeln – das 2020-06-Szenario (+18%) bleibt möglich, erfordert aber DOLLAR-Schwäche und Liquiditätsflut, wofür die Datenlage fehlt. Übergewicht TLT und GLD, SPY nur über abgesicherte Strukturen; CREDIT-Spreads beobachten als Frühindikator für die nächste Transition.",
-  "word_count": 244
+  "text": "GESAMTLAGE\n\nDie Zyklen-Engine signalisiert WARNING mit Cascade-Speed CASCADE — drei Zyklen (LIQUIDITY, CREDIT, COMMODITY) haben bereits gedreht, sieben weitere laufen extended beyond median duration. Nur 32,8% der simulierten Returns sind signifikant positiv, was das Chance/Risiko-Profil erheblich eintrübt. Der V16-State LATE_EXPANSION kombiniert mit multiplen extended Cycles deutet auf ein spätzyklisches Regime hin, das historisch selten komfortabel endet.\n\nZYKLEN-DETAIL\n\nKritisch: FED_RATES bei 533% Position mit ~0 Monaten Remaining und EARNINGS bei 800% Position ebenfalls auf Null — beide Zyklen stehen unmittelbar vor dem Kippen. TRADE bei 800% Position und ebenfalls ~0 Monaten ist strukturell bearish und bereits in Contraction. Stabilisierend wirkt der V16 Dual-State CREDIT_BULLISH__REAL_BULLISH (n=90) mit 94,2% Growth-Wahrscheinlichkeit und nur 2,3% Stress — das ist der stärkste Gegenwind zur Warning-Diagnose. DOLLAR befindet sich in EARLY_PHASE STRENGTHENING mit ~3 Monaten Runway, was Real Assets und EM unter Druck setzt.\n\nRISIKO\n\nDie Crash/Korrektur-Daten für CREDIT_BULLISH__BUSINESS_BULLISH sind nicht verfügbar (n=?), was eine präzise Downside-Quantifizierung unmöglich macht — Unsicherheit explizit. Eskalation zum Stress-Szenario (2,3% Wahrscheinlichkeit laut V16) würde eine gleichzeitige Transition von FED_RATES und EARNINGS innerhalb der nächsten 4 Wochen erfordern, kombiniert mit einem China-Credit-Durchbruch tiefer in Contraction. Die historischen Analogien 2009-12 und 2016-04 zeigen SPY-Verluste bzw. marginale Gains bei deutlicher TLT-Outperformance — das ist das Basis-Playbook.\n\nPOSITIONIERUNG\n\nTLT bevorzugt: Alle drei Analogien zeigen positive TLT-Returns (+3,6% bis +14,4%), der Dollar-Strengthening-Zyklus unterstützt Duration selektiv. GLD trotz COMMODITY-Euphoria mit Vorsicht halten — Extended-Phase bedeutet erhöhtes Reversal-Risiko, Dollar-Stärke als Gegenwind. SPY untergewichten: Das Upside-Szenario (2020-06-Analogie, +18%) erfordert einen Bruch des Warning-Signals, der aktuell nicht bestätigt ist. Cash-Quote erhöhen bis FED_RATES und EARNINGS-Transition abgeschlossen sind.",
+  "word_count": 257
  }
 }
