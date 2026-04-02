@@ -8,10 +8,10 @@
   "header": {
     "date": "2026-04-02",
     "weekday": "Thursday",
-    "briefing_type": "ROUTINE",
-    "system_conviction": "N/A",
-    "risk_ampel": "GREEN",
-    "fragility_state": "N/A",
+    "briefing_type": "ACTION",
+    "system_conviction": "LOW",
+    "risk_ampel": "YELLOW",
+    "fragility_state": "ELEVATED",
     "v16_regime": "LATE_EXPANSION",
     "data_quality": "PARTIAL",
     "pipeline_status": "PHASE_1",
@@ -26,12 +26,12 @@
     "da_noted": 0,
     "da_rejected": 0,
     "fact_check_corrections": 0,
-    "is_draft_fallback": false
+    "is_draft_fallback": true
   },
   "digest": {
-    "line_1_type_and_delta": "ROUTINE — V16 Regime: LATE_EXPANSION (State 3: LATE_EXPANSION)",
-    "line_2_actions": "V16 DD-Protect: 0 Assets. Growth=1, Liq=-1, Stress=0.",
-    "line_3_confidence": "Pipeline Phase 1 (nur V16). CAGR=0.0%, Sharpe=0. Agenten-Pipeline noch nicht aktiv."
+    "line_1_type_and_delta": "ACTION — V16 Regime: LATE_EXPANSION. Conviction: LOW. Risk: YELLOW.",
+    "line_2_actions": "Keine Action Items. System stabil.",
+    "line_3_confidence": "Conviction: LOW. Fragility: ELEVATED. Data: DEGRADED."
   },
   "deltas": {
     "has_yesterday": false
@@ -55,25 +55,25 @@
   },
   "briefing": {
     "status": "AVAILABLE",
-    "source": "CIO_FINAL",
-    "full_text": "# CIO BRIEFING — 2026-04-01\n\n**Briefing-Typ:** ACTION  \n**System Conviction:** LOW  \n**Risk Ampel:** RED  \n**Fragility State:** ELEVATED  \n**Data Quality:** DEGRADED  \n**V16 Regime:** FULL_EXPANSION  \n**Referenzdatum (Delta):** 2026-03-31  \n**Ist Montag:** False\n\n---\n\n## S1: DELTA\n\n**V16 Regime:** FULL_EXPANSION (Tag 2, stabil). Gewichte unverändert: TLT 9.7%, XLU 6.4%, GLD 5.6%, BTC 4.7%, ETH 3.5%. HYG/DBC weiterhin 0%. Regime-Confidence NULL — strukturelles Datenproblem, nicht Regime-Unsicherheit. V16-Logik operiert korrekt trotz NULL-Confidence.\n\n**Risk Ampel:** YELLOW → RED. HYG-Alert eskaliert WARNING → CRITICAL (Tag 39). Einzelposition 28.8%, Schwelle 25%, +3.8pp Überschreitung. Event-Boost aktiv (NFP in 2d). Commodities-Exposure 37.2% nähert sich WARNING-Schwelle (35%). Regime-Conflict WARNING (Tag 2): V16 \"Risk-On\" vs. Market Analyst \"NEUTRAL\".\n\n**Fragility State:** EXTREME → ELEVATED. Breadth 57.5% (Schwelle <70%). HHI/SPY-RSP/AI-Capex-Gap weiterhin NULL — Downgrade auf ELEVATED mangels Bestätigung durch andere Indikatoren.\n\n**Market Analyst:** System Regime NEUTRAL (unverändert). Layer-Scores: L1 (Liquidity) -3 (TIGHTENING, LOW Conviction), L2 (Macro) -2 (RECESSION, CONFLICTED), L3 +1, L4 -1, L5 +1, L6 +1, L7 0, L8 -1 (ELEVATED). Data Clarity: L1 0.2, L2 0.14, L7 0.0 — drei Layer mit strukturell schlechter Datenlage. Alle Layer-Regimes Tag 1 — kompletter Regime-Reset gestern.\n\n**Router:** US_DOMESTIC (Tag 455). COMMODITY_SUPER Proximity 1.0 → 0.0 (Kollaps). DBC/SPY 6M Relative weiterhin 100% (strukturelle Outperformance), aber V16-Regime-Allowance 1.0 → 0.0 (FULL_EXPANSION blockiert Entry). Entry-Evaluation HEUTE — kein Entry möglich trotz perfekter DBC-Performance. EM_BROAD/CHINA_STIMULUS beide 0.0.\n\n**IC Intelligence:** 9 Quellen, 148 Claims (50 Opinion, 98 Fact). Consensus: LIQUIDITY -9.5 (Howell, LOW Confidence), FED_POLICY -3.7 (MEDIUM), GEOPOLITICS -0.43 (HIGH, 18 Claims), ENERGY -0.3 (HIGH, 5 Claims), COMMODITIES +5.0 (MEDIUM), TECH_AI +5.56 (MEDIUM), CRYPTO +4.8 (HIGH). Keine aktiven Divergences. 106 High-Novelty Claims (Signal 0) — massive Noise-Produktion ohne Portfolio-Relevanz.\n\n**Signal Generator:** Keine Trades. V16 HOLD auf allen 5 Positionen. F6 UNAVAILABLE. Router Entry-Evaluation heute (Outcome: kein Entry). Concentration Check: Top-5 30% (TLT/XLU/GLD/BTC/ETH), Effective Tech 3%, keine Warnung.\n\n**Temporal Context:** NFP in 2 Tagen (2026-04-03, HIGH Impact). Keine weiteren Events 7d. Kein F6 CC-Expiry. V16 Rebalance Proximity 0.0.\n\n**System Conviction:** LOW (unverändert Tag 6). Limiting Factors: Data Clarity (L1/L2/L7 DEGRADED), Regime Duration (alle Layer Tag 1), V16 Confidence NULL.\n\n---\n\n## S2: CATALYSTS & TIMING\n\n**NFP (2026-04-03, 48h):** Employment Situation March 2026. HIGH Impact. Themes: RECESSION, FED_POLICY. Risk Officer hat Event-Boost aktiviert — alle Alerts eine Severity-Stufe höher. HYG WARNING → CRITICAL, Commodities MONITOR → WARNING, Regime-Conflict MONITOR → WARNING. Post-NFP: Event-Boost endet, Alerts fallen zurück auf Base-Severity (sofern Trigger unverändert). Operator-Aktion: Keine Pre-Event-Adjustments empfohlen — V16 operiert regelbasiert, NFP-Daten fließen automatisch in nächsten Rebalance ein.\n\n**Router Entry-Evaluation (HEUTE):** COMMODITY_SUPER Proximity gestern 1.0, heute 0.0. DBC/SPY 6M Relative 100% (strukturell bullish), DXY stabil (nicht steigend), aber V16-Regime-Allowance 0.0 (FULL_EXPANSION blockiert). Evaluation-Outcome: KEIN ENTRY. Nächste Evaluation 2026-05-01 (30d). CIO OBSERVATION: Router-Design-Frage — ist V16-Abhängigkeit zu rigide? DBC outperformt SPY strukturell (+100% über 6M), aber Entry unmöglich weil V16 in falschem Regime. Operator sollte mit Agent R diskutieren: Soll COMMODITY_SUPER-Trigger V16-unabhängig werden? Trade-off: Mehr Flexibilität vs. höheres Regime-Conflict-Risiko.\n\n**IC Catalyst Timeline (7d):** Howell Twitter Spaces (2026-03-27, LIQUIDITY/POSITIONING), Damped Spring Flush-Call (2026-03-30, EQUITY_VALUATION/VOLATILITY), diverse Geopolitics-Events (April, GEOPOLITICS/ENERGY). Keine Portfolio-relevanten Timing-Signale — alle Events entweder bereits eingetreten oder zu vage für Actionability.\n\n**V16 Rebalance Proximity:** 0.0 — kein Rebalance-Trigger in Sicht. Nächster Rebalance nur bei Regime-Shift oder signifikanter Datenänderung.\n\n---\n\n## S3: RISK & ALERTS\n\n**PORTFOLIO STATUS: RED.** 1 CRITICAL ↑, 3 WARNING. Risk Officer Execution Path: FULL_PATH. Sensitivity: UNAVAILABLE (V1). G7 Context: UNAVAILABLE.\n\n**CRITICAL ↑ (Trade Class A):**  \n**RO-20260401-003 | EXP_SINGLE_NAME | HYG 28.8%** (Schwelle 25%, +3.8pp). Tag 39. Trend: ESCALATING (WARNING → CRITICAL). Base-Severity WARNING, Event-Boost (NFP 2d) → CRITICAL. \n\n[DA: da_20260401_002 fragt ob HYG 28.8% ein Liquiditäts-Constraint-Problem ist (Rebalance blockiert durch Spread/Market-Impact), nicht nur Daten-/Execution-Problem. **NOTED** — Valider Punkt, aber ohne Execution-Log (wann wurde letzte HYG-Order gesendet? Was war Outcome?) kann ich nicht unterscheiden zwischen Execution-Problem vs. Liquiditäts-Constraint. A1 bleibt CRITICAL mit erweitertem Scope: Operator prüft HEUTE (1) Ist HYG tatsächlich 28.8%? (2) Wenn ja: Warum wurde Rebalance 40 Tage nicht ausgeführt? Liquiditäts-Constraint (Spread zu weit, Market Impact zu hoch) oder Execution-Problem (Order nie gesendet)? (3) Wenn Liquiditäts-Constraint: Warte auf bessere Liquidität post-NFP. Wenn Execution-Problem: Sofortiger Rebalance. Original Draft: \"Operator MUSS klären: Ist HYG tatsächlich 28.8%? Wenn ja: Sofortiger Rebalance auf 0%. Wenn nein: Datenquelle reparieren.\"]\n\nKontext: HYG-Position aus V16, aktuell 0% Target-Weight aber 28.8% Current-Weight (Rebalance-Lag? Datenfehler? Liquiditäts-Constraint?). KRITISCH: Current vs. Target diskrepant seit 40 Tagen. Operator MUSS klären: (1) Ist HYG tatsächlich 28.8% im Live-Portfolio? (2) Wenn ja: Warum wurde Rebalance 40 Tage nicht ausgeführt? Mögliche Ursachen: (A) Execution-Problem (Order nie gesendet, V16→Broker-Verbindung kaputt), (B) Settlement-Lag (Order executed, Settlement pending T+2 — aber 40 Tage zu lang), (C) Liquiditäts-Constraint (Order gesendet, aber nicht fillable wegen Spread/Market-Impact — bei NFP-Event-Boost + Credit-Stress könnte HYG-Liquidität temporär reduziert sein). (3) Wenn nein: Datenquelle reparieren, Risk Officer neu laufen lassen. KEINE Trade-Empfehlung vom CIO — das ist operationales Problem (Daten/Execution/Liquidität), nicht strategisches Signal.\n\n**WARNING → (Trade Class A):**  \n**RO-20260401-002 | EXP_SECTOR_CONCENTRATION | Commodities 37.2%** (Schwelle 35%, +2.2pp). Tag 2. Trend: STABLE. Base-Severity MONITOR, Event-Boost → WARNING. Effective Commodities Exposure durch GLD 5.6% + implizite Commodity-Korrelation anderer Assets. Keine Aktion erforderlich — Monitoring ausreichend. Post-NFP fällt Alert zurück auf MONITOR (sofern Exposure stabil).\n\n**WARNING → (Trade Class A):**  \n**RO-20260401-005 | INT_REGIME_CONFLICT | V16 vs. Market Analyst.** Tag 2. Trend: STABLE. V16 \"Risk-On\" (FULL_EXPANSION), Market Analyst \"NEUTRAL\" (Lean: UNKNOWN). Base-Severity MONITOR, Event-Boost → WARNING. Interpretation: V16 operiert auf validierten Signalen (Growth +1, Liq -1, Stress +1 → FULL_EXPANSION korrekt). Market Analyst zeigt NEUTRAL weil Layer-Scores nahe Null streuen (-3 bis +1, keine klare Richtung). Divergenz ist EPISTEMISCH, nicht operativ — V16 und Market Analyst nutzen teilweise geteilte Datenbasen, ihre Übereinstimmung hat begrenzten Bestätigungswert. KEINE Aktion auf V16 — Regime ist regelkonform. Monitoring: Wenn Market Analyst in Richtung Risk-Off dreht während V16 Risk-On bleibt, dann Regime-Transition wahrscheinlich.\n\n**WARNING (Trade Class A):**  \n**RO-20260401-001 | TMP_EVENT_CALENDAR | NFP in 2d.** Tag 1. Trend: NEW. Base-Severity MONITOR, Event-Boost → WARNING. Standard-Event-Alert. Keine Aktion erforderlich — Event-Boost endet automatisch post-NFP.\n\n**ONGOING CONDITION (WARNING, Tag 39):**  \n**RO-20260401-004 | EXP_SINGLE_NAME | DBC 20.3%** (Schwelle 20%, +0.3pp). Trend: ONGOING. DBC-Position aus V16, aktuell 0% Target aber 20.3% Current. Gleiche Diskrepanz wie HYG — Operator muss Current vs. Target klären. Weniger kritisch als HYG (nur +0.3pp über Schwelle), aber gleiche Dateninkonsistenz-Frage.\n\n**THREADS:**  \n- **EXP_SINGLE_NAME (CRITICAL/WARNING):** Tag 40 (HYG), Tag 40 (DBC). Beide seit 2026-03-06 aktiv. Persistenz deutet auf strukturelles Problem hin — entweder Rebalance-Mechanik defekt oder Datenquelle inkonsistent oder Liquiditäts-Constraint.  \n- **EXP_SECTOR_CONCENTRATION (WARNING):** Tag 1. Neu seit gestern.  \n- **INT_REGIME_CONFLICT (WARNING):** Tag 1. Neu seit gestern.\n\n**RESOLVED THREADS (7d):** 23 Threads resolved zwischen 2026-03-25 und 2026-03-31. Typische Duration 2-8 Tage. Hohe Churn-Rate deutet auf instabile Regime/Event-Landschaft.\n\n**CIO ASSESSMENT:**  \nRisk Ampel RED ist GERECHTFERTIGT — HYG CRITICAL-Alert ist operativ kritisch (Dateninkonsistenz oder Liquiditäts-Constraint), nicht strategisch. Operator muss HYG/DBC Current-Weight-Diskrepanz HEUTE klären. Wenn Rebalance-Lag: Prüfe ob Liquiditäts-Constraint (Spread/Market-Impact bei NFP-Event + Credit-Stress) oder Execution-Problem. Wenn Datenfehler: Quelle reparieren und Risk Officer neu laufen lassen. Event-Boost (NFP) erhöht Severity künstlich — post-NFP fallen 3 von 4 Alerts zurück auf niedrigere Stufe (sofern Trigger unverändert). Regime-Conflict WARNING ist Noise — V16 und Market Analyst divergieren epistemisch, nicht operativ.\n\n---\n\n## S4: PATTERNS & SYNTHESIS\n\n**AKTIVE PATTERNS (Klasse A):** Keine. Pre-Processor hat 0 definierte Patterns identifiziert.\n\n**ANTI-PATTERNS (High Novelty, Low Signal):** 106 Claims mit Novelty 5-9, Signal 0. Beispiele: F-35-Abschuss (Novelty 7), Iran-Hormuz-Narrativ (Novelty 8), EU-Turnberry-Deal (Novelty 9), Fed-Waller-Stablecoin-Optimismus (Novelty 8), Damped-Spring-Flush-Call (Novelty 5). Alle Claims liefern KEIN Portfolio-Signal — entweder zu spekulativ, zu langfristig, oder außerhalb Tradable-Universe. Pre-Processor funktioniert korrekt — filtert Noise aggressiv.\n\n**CIO OBSERVATION (Klasse B): Data Quality Crisis.**  \nV16 Confidence NULL (Tag 2), Market Analyst Data Clarity L1 0.2 / L2 0.14 / L7 0.0, Fragility State downgraded (EXTREME → ELEVATED) mangels HHI/SPY-RSP/AI-Capex-Daten, Router COMMODITY_SUPER Proximity-Kollaps (1.0 → 0.0) trotz struktureller DBC-Outperformance, HYG/DBC Current-Weight-Diskrepanz (28.8% / 20.3% vs. 0% Target). SYNTHESE: System operiert mit fragmentierten, teilweise inkonsistenten Daten. V16/Market Analyst/Risk Officer produzieren Outputs, aber Confidence/Conviction durchgehend LOW/CONFLICTED. Operator-Implikation: Erhöhte Vorsicht bei Interpretation aller Signale. KEINE großen Portfolio-Moves bis Data Quality stabilisiert. A28 (Data Quality L4 Repair) ist CRITICAL — FX-Daten 50% stale, L4 Score -1 (STABLE) trotz DXY-Surge.\n\n**CIO OBSERVATION (Klasse B): Router-Design-Spannung.**  \nCOMMODITY_SUPER zeigt perfekte Setup-Bedingungen (DBC/SPY 6M +100%, DXY stabil), aber Entry blockiert durch V16-Regime-Allowance (FULL_EXPANSION = 0). Entry-Evaluation heute ergibt KEIN ENTRY. Nächste Chance 2026-05-01 (30d). FRAGE: Ist V16-Abhängigkeit zu rigide? Trade-off: V16-Kopplung reduziert Regime-Conflicts (Router wartet bis V16 aligned), aber verhindert opportunistische Entries bei strukturellen Outperformance-Trends. Operator sollte mit Agent R diskutieren: Soll COMMODITY_SUPER-Trigger V16-unabhängig werden (z.B. nur DBC/SPY + DXY, ohne Regime-Check)? Risiko: Höhere Regime-Conflict-Wahrscheinlichkeit. Benefit: Mehr Flexibilität bei klaren Commodity-Supercycles.\n\n**CIO OBSERVATION (Klasse B): IC Noise-Produktion.**  \n106 High-Novelty Claims, alle Signal 0. IC-Quellen (v.a. ZeroHedge, Forward Guidance, Doomberg) produzieren massiv Content mit hoher Novelty aber ohne Portfolio-Relevanz. Consensus-Scores: LIQUIDITY -9.5 (LOW Confidence, 1 Quelle), GEOPOLITICS -0.43 (HIGH Confidence, 18 Claims, 4 Quellen), ENERGY -0.3 (HIGH Confidence, 5 Claims, 4 Quellen). INTERPRETATION: IC liefert qualitatives Narrativ (Geopolitics/Energy dominant), aber keine quantitativen Trade-Signale. Market Analyst Layer-Scores sind die bessere Quelle für Portfolio-Entscheidungen — IC ist Kontext, nicht Signal.\n\n**CIO OBSERVATION (Klasse B): Market Analyst Layer-Reset — Signal oder Noise?**\n\n[DA: da_20260401_001 fragt ob der komplette Layer-Regime-Reset (alle 8 Layer Tag 1) durch fundamentale Datenänderungen oder Schwellenwert-Oszillation ausgelöst wurde. **ACCEPTED** — Valider Punkt. Ohne Schwellenwert-Proximity-Metrik (wie nah ist L1 -3 an der Grenze zu TRANSITION?) kann ich nicht unterscheiden zwischen \"stabiles TIGHTENING\" (L1 -5, weit von Schwelle) vs. \"fragiles TIGHTENING\" (L1 -3.01, knapp über Schwelle, könnte morgen flippen). Layer-Score-Deltas zeigen: Nur 4 von 8 Layern haben signifikante Changes (L1 -2→-3, L2 0→-2, L6 +3→+1), aber alle 8 zeigen regime_duration Tag 1. Das bedeutet: Regime-Duration-Counter wurde SYSTEMWEIT zurückgesetzt, nicht nur bei shiftenden Layern. Mögliche Ursachen: (1) Market Analyst Code-Bug (resettet alle Layer wenn irgendein Layer shiftet), (2) System Regime-Shift triggert globalen Reset, (3) Data Quality Issue triggert Full Recompute. Bei ELEVATED Fragility + NFP in 2d + System Conviction LOW ist FALSE-POSITIVE-COST (Regime-Label ist Noise, Portfolio folgt trotzdem) maximal. A26 (V16 Regime-Shift Validation) muss erweitert werden: Operator prüft nicht nur \"ist V16-Shift strukturell?\", sondern auch \"ist Market Analyst Layer-Reset strukturell oder Schwellenwert-Oszillation?\". Original Draft: \"Operator prüft ob Shift strukturell (Growth-Signal nachhaltig) oder Noise (temporäre Datenschwankung).\"]\n\nMarket Analyst zeigt: ALLE 8 Layer-Regimes Tag 1 (gestern geshiftet). Das ist EXTREM ungewöhnlich — normalerweise shiften 1-3 Layer pro Tag, nicht alle gleichzeitig. Layer-Score-Deltas (gestern → heute): L1 -2→-3 (TRANSITION → TIGHTENING), L2 0→-2 (NEUTRAL → RECESSION), L6 +3→+1 (STRONG_OUTPERFORMANCE → BALANCED). NUR 4 Layer haben Score-Changes, aber ALLE 8 zeigen regime_duration Tag 1. Das bedeutet: Regime-Duration-Counter wurde SYSTEMWEIT zurückgesetzt, nicht nur bei shiftenden Layern. Mögliche Ursachen: (1) Market Analyst Code-Bug (resettet alle Layer wenn irgendein Layer shiftet — falsche Implementierung), (2) System Regime-Shift triggert globalen Reset (Market Analyst System Regime gestern NEUTRAL, heute NEUTRAL, aber intern re-evaluiert), (3) Data Quality Issue triggert Full Recompute (wenn Market Analyst Datenqualitäts-Probleme erkannte und ALLE Layer neu berechnete, würden alle Durations auf Tag 1 resetten). OHNE Schwellenwert-Proximity-Metrik (wie nah ist L1 -3 an der Grenze zu TRANSITION?) kann ich nicht unterscheiden zwischen \"stabiles TIGHTENING\" (L1 -5, weit von Schwelle entfernt, Regime stabil) vs. \"fragiles TIGHTENING\" (L1 -3.01, knapp über Schwelle, könnte morgen zurück zu TRANSITION flippen). System Regime NEUTRAL heute hat ANDERE Komposition als gestern: Gestern NEUTRAL (L1 -2, L2 0, L6 +3 → leicht bullish bias), Heute NEUTRAL (L1 -3, L2 -2, L6 +1 → bearish bias). Gleicher Label, unterschiedliche Komposition — das ist DRIFT, nicht Stabilität. IMPLIKATION: Wenn Layer-Reset durch Schwellenwert-Oszillation (Noise), dann ist V16 FULL_EXPANSION korrekt — fundamentale Signale haben sich nicht geändert. Wenn Layer-Reset durch fundamentalen Shift (Signal), dann ist V16 FULL_EXPANSION FRAGIL — Regime könnte bald reversten wenn fundamentale Verschlechterung (L1 TIGHTENING, L2 RECESSION) sich fortsetzt. A26 (V16 Regime-Shift Validation) muss erweitert werden: Operator prüft nicht nur \"ist V16-Shift strukturell?\", sondern auch \"ist Market Analyst Layer-Reset strukturell oder Schwellenwert-Oszillation?\".\n\n**CROSS-LAYER TENSION:**  \nL1 (Liquidity) -3 (TIGHTENING) vs. L3/L5/L6 +1 (leicht bullish). L2 (Macro) -2 (RECESSION) vs. IC RECESSION +1.57 (leicht bullish, MEDIUM Confidence). V16 FULL_EXPANSION (Growth +1) vs. Market Analyst NEUTRAL. SYNTHESE: Keine klare Richtung. Liquidity/Macro bearish, Fundamentals/Sentiment leicht bullish, V16 Risk-On aber mit NULL Confidence. System ist in LIMBO — wartet auf klarere Datenlage. NFP (2d) könnte Auflösung bringen (entweder Recession-Bestätigung oder Growth-Rebound).\n\n---\n\n## S5: INTELLIGENCE DIGEST\n\n**CONSENSUS (9 Quellen, 148 Claims):**\n\n**LIQUIDITY (-9.5, LOW):** Howell (2 Claims): Global Liquidity deteriorating, S&P 500 Ziel 5500 (-20-25%), Bond-Märkte signalisieren Rate-Hikes (nicht Cuts). KONFLIKT mit Market Analyst L1 -3 (TIGHTENING, aber keine Rate-Hike-Erwartung). Howell ist bearisher als quantitative Daten — möglicher Leading-Indikator oder Overstatement.\n\n**FED_POLICY (-3.7, MEDIUM):** Forward Guidance (3 Claims): Fed bleibt auf Pause trotz Öl-Inflation, keine Hikes für 6+ Monate, Bank-Deregulation wird primäre Liquiditätsquelle (nicht QE). Jeff Snider (2 Claims): Öl-Schock → kurzfristige CPI-Spike, dann deflationäre Rezession, Fed hilflos. SYNTHESE: Consensus erwartet Fed-Inaktivität (Pause), aber aus unterschiedlichen Gründen (Forward Guidance: strukturelle Liquidität via Banken, Snider: Rezessions-Dynamik überrollt Fed). Market Analyst L7 (CB Policy) 0 (NEUTRAL, CONFLICTED) — quantitative Daten zeigen keine klare Fed-Richtung.\n\n**GEOPOLITICS (-0.43, HIGH, 18 Claims):** ZeroHedge (12 Claims, Bias +1.42): Iran-Hormuz-Narrativ, F-35-Abschuss, Ukraine-Eskalation, EU-Turnberry-Deal. Hidden Forces (3 Claims, Bias -2.0): US-Iran-Konflikt mehrwöchig, Hormuz-Disruption zentral. Doomberg (2 Claims, Bias -3.5): Pain-Tolerance-Framework, Iran-Schwäche. Jeff Snider (1 Claim, Bias +3.0): Geopolitics-Impact überschätzt. SYNTHESE: Hohe Claim-Zahl, aber Score nahe Null (-0.43) — Sources canceln sich gegenseitig aus. ZeroHedge bullish (Konflikt-Eskalation = Öl-Bullish), Doomberg/Hidden Forces bearish (Konflikt-Disruption = Rezession). KEIN klares Signal für Portfolio. Market Analyst L8 (Tail Risk) -1 (ELEVATED) — quantitativ leicht bearish, aber LOW Conviction.\n\n**ENERGY (-0.3, HIGH, 5 Claims):** ZeroHedge (2 Claims, Bias +10.5): Hormuz-Blockade, Asien-Fuel-Shortages. Doomberg (1 Claim, Bias -8.0): Hormuz-Disruption strukturell, Energie-Märkte reorganisieren sich. Crescat (1 Claim, Bias +4.0): LNG-Supply-Deficit mehrjährig. Jeff Snider (1 Claim, Bias +10.0): Öl-Preise unterpreist relativ zu Hormuz-Disruption. SYNTHESE: Score nahe Null (-0.3) trotz HIGH Confidence — bullish (Snider/ZeroHedge: Preise zu niedrig) vs. bearish (Doomberg: Disruption = Demand-Destruction). Market Analyst L6 (Relative Value) WTI Curve -10 (Contango = bearish) — quantitativ bearish, widerspricht IC-Bullish-Narrativ. CIO INTERPRETATION: IC sieht Supply-Schock, Market Analyst sieht Demand-Destruction. Öl-Preis-Richtung unklar — hängt davon ab ob Supply-Schock oder Rezession dominiert.\n\n**COMMODITIES (+5.0, MEDIUM):** Luke Gromen (1 Claim): Gold-Selloff temporär, reverst bei Liquiditäts-Erholung. Crescat (1 Claim): Öl-Supply-Schock = strukturell bullish für Commodities. SYNTHESE: Leicht bullish, aber nur 2 Quellen. Router COMMODITY_SUPER Proximity 0.0 (kein Entry) trotz DBC/SPY +100% — IC-Bullishness nicht quantitativ bestätigt.\n\n**TECH_AI (+5.56, MEDIUM):** Forward Guidance (1 Claim): AI = transformative Boom. ZeroHedge (1 Claim): Decentralized-Tech vs. Authoritarian-AI. Hidden Forces (3 Claims): AI-Labor-Disruption sichtbar, Competitive-Race macht Safety unmöglich, DeepMind überholte OpenAI. SYNTHESE: Leicht bullish, aber langfristig (kein kurzfristiges Trade-Signal). Market Analyst L3 (Earnings) +1 (MIXED, LOW Conviction) — quantitativ neutral.\n\n**CRYPTO (+4.8, HIGH):** ZeroHedge (1 Claim, Bias +13.0): Decentralized-Tech bullish. Howell (1 Claim, Bias -3.0): BTC kurzfristig bearish (Liquiditäts-Fade). Damped Spring (1 Claim, Bias -7.0): BTC braucht FTX-Style-Blowup für Ceiling-Break. Forward Guidance (1 Claim, Bias +6.0): Stablecoin-Adoption bullish für USD-Demand. SYNTHESE: Score +4.8 (leicht bullish), aber HIGH Divergence (ZeroHedge +13 vs. Damped Spring -7). V16 BTC 4.7%, ETH 3.5% (unverändert) — keine Trade-Implikation.\n\n**DIVERGENCES:** Keine aktiven Divergences laut IC-Report. CIO OBSERVATION: Das ist FALSCH — ENERGY zeigt klare Divergence (Snider/ZeroHedge bullish vs. Doomberg bearish), ebenso CRYPTO (ZeroHedge bullish vs. Howell/Damped Spring bearish). Pre-Processor Divergence-Detection scheint zu konservativ kalibriert.\n\n**HIGH-NOVELTY CLAIMS (Top 10):**  \n1. Forward Guidance: AI = transformative Boom (Novelty 9, Signal 0).  \n2. Forward Guidance: Recessions unmöglich in modernem Monetary-Regime (Novelty 9, Signal 0).  \n3. ZeroHedge: EU-Turnberry-Deal (Novelty 9, Signal 0).  \n4. Jeff Snider: Hormuz-Blockade = physische Öl-Shortages Asien (Novelty 8, Signal 0).  \n5. ZeroHedge: Iran erlaubt Non-Saudi-Ships via Hormuz für $2M (Novelty 8, Signal 0).  \n6. Forward Guidance: Fed-Waller Stablecoin-Optimismus (Novelty 8, Signal 0).  \n7. Doomberg: THAAD-Redeployment Korea → Middle East (Novelty 8, Signal 0).  \n8. ZeroHedge: F-35-Abschuss (Novelty 7), Germany-Kapitalverzehr (Novelty 5), Rent-Growth-Deceleration (Novelty 7).  \n\nAlle Claims Signal 0 — Pre-Processor filtert korrekt. Novelty ≠ Actionability.\n\n**CATALYST TIMELINE (7d):** Howell Twitter Spaces (2026-03-27), Damped Spring Flush-Call (2026-03-30), diverse Geopolitics-Events (April, zu vage). Keine Portfolio-relevanten Timing-Signale.\n\n**CIO INTERPRETATION:**  \nIC liefert qualitatives Narrativ (Geopolitics/Energy/Liquidity dominant), aber KEINE quantitativen Trade-Signale. Consensus-Scores nahe Null (LIQUIDITY -9.5, FED_POLICY -3.7, GEOPOLITICS -0.43, ENERGY -0.3) — entweder Sources canceln sich aus oder Confidence zu niedrig. Market Analyst Layer-Scores sind bessere Quelle für Portfolio-Entscheidungen. IC ist KONTEXT (Was denken Macro-Voices?), nicht SIGNAL (Was soll ich traden?). Operator sollte IC als Narrativ-Check nutzen (Stimmt Market Analyst mit IC überein?), aber NICHT als Trade-Trigger.\n\n---\n\n## S6: PORTFOLIO CONTEXT\n\n**CURRENT ALLOCATION (V16-only, 30% deployed):**  \nTLT 9.7%, XLU 6.4%, GLD 5.6%, BTC 4.7%, ETH 3.5%. Top-5 Concentration 30% (kein Problem). Effective Tech 3% (kein Problem). Effective Commodities 37.2% (WARNING-Schwelle 35%, +2.2pp — siehe S3).\n\n**REGIME-KONTEXT:**  \nV16 FULL_EXPANSION (Tag 2): Growth +1, Liq -1, Stress +1 → Regime 4. Confidence NULL (Datenproblem, nicht Regime-Unsicherheit). Portfolio-Implikation: Defensive Allokation (TLT/XLU/GLD dominant, kein SPY/Sectors) trotz \"Expansion\"-Label. FULL_EXPANSION in V16-Logik bedeutet NICHT \"Risk-On-Rally\" — es bedeutet \"Growth positiv, aber Liquidity negativ und Stress hoch\". Portfolio ist korrekt positioniert für dieses Regime (Defensives + Hard Assets).\n\n**FRAGILITY-KONTEXT:**  \nFragility ELEVATED (Breadth 57.5%, Schwelle <70%). Empfehlung: Router-Thresholds senken (DXY -3% statt -5%, VWO/SPY +5% statt +10%), SPY-Split (70% SPY + 30% RSP), XLK-Monitoring, PermOpt +1% auf 4%. STATUS: Nicht implementiert (V2-Feature). Operator-Aktion: Mit Agent R diskutieren ob Fragility-Adjustments manuell vorgezogen werden sollen (vor V2-Automatisierung). Trade-off: Frühere Diversifikation vs. zusätzliche manuelle Komplexität.\n\n**F6-KONTEXT:**  \nF6 UNAVAILABLE (V2). Keine Einzelaktien-Positionen. Covered-Call-Overlay nicht aktiv. Portfolio ist rein V16 (Macro-Allokation).\n\n**ROUTER-KONTEXT:**  \nUS_DOMESTIC (Tag 455). COMMODITY_SUPER Entry-Evaluation heute → KEIN ENTRY (V16-Regime blockiert). Nächste Chance 2026-05-01. Operator-Frage: Soll Router-Design angepasst werden (siehe S4)? Aktuell: Keine International-Allokation (EEM/VGK/DBC alle 0%).\n\n**RISK-KONTEXT:**  \nHYG CRITICAL (28.8% vs. 0% Target — Dateninkonsistenz oder Liquiditäts-Constraint, siehe S3). DBC WARNING (20.3% vs. 0% Target — gleiche Inkonsistenz). Commodities-Exposure WARNING (37.2%, Schwelle 35%). Regime-Conflict WARNING (V16 Risk-On vs. Market Analyst NEUTRAL). NFP-Event-Boost aktiv (alle Alerts +1 Severity). Post-NFP: 3 von 4 Alerts fallen zurück auf niedrigere Stufe.\n\n**PERFORMANCE-KONTEXT:**  \nV16 Performance: CAGR 0.0%, Sharpe 0, MaxDD 0.0%, Vol 0.0%, Calmar 0 — alle Metriken NULL (Datenproblem oder zu kurze Historie). Keine Performance-Attribution verfügbar.\n\n**LIQUIDITY-KONTEXT:**  \nMarket Analyst L1 (Liquidity) -3 (TIGHTENING, LOW Conviction, Data Clarity 0.2). IC LIQUIDITY -9.5 (Howell, LOW Confidence). Net Liquidity 10th pctl, -13772B in 5d (DRAIN). RRP -10 (bearish), MMF Assets +10 (bullish) — interne Spannung. SYNTHESE: Liquidity-Richtung unklar (quantitativ leicht bearish, qualitativ stark bearish). Portfolio-Implikation: Defensive Positionierung gerechtfertigt (TLT/GLD dominant).\n\n**CONVICTION-KONTEXT:**  \nSystem Conviction LOW (Tag 6). V16 Confidence NULL. Market Analyst: 6 von 8 Layern LOW Conviction, 2 CONFLICTED (L2/L7). IC: 5 von 15 Topics LOW Confidence, 6 MEDIUM, 4 HIGH (aber HIGH-Topics haben Scores nahe Null). SYNTHESE: System operiert mit minimaler Conviction — KEINE großen Portfolio-Moves empfohlen bis Conviction steigt.\n\n**CIO ASSESSMENT:**  \nPortfolio ist KORREKT positioniert für aktuelles Regime (FULL_EXPANSION = Growth positiv, Liquidity negativ, Stress hoch → Defensives + Hard Assets). HYG/DBC-Diskrepanz ist operationales Problem (Dateninkonsistenz oder Liquiditäts-Constraint), nicht strategisches. Operator muss HYG/DBC Current-Weight HEUTE klären. Fragility ELEVATED rechtfertigt vorsichtige Haltung — keine aggressiven Moves bis Data Quality/Conviction stabilisiert. NFP (2d) könnte Katalysator für Regime-Klarheit sein (entweder Recession-Bestätigung oder Growth-Rebound).\n\n---\n\n## S7: ACTION ITEMS & WATCHLIST\n\n**ESKALIERTE ITEMS (40 Tage offen, DRINGEND):**\n\n**A1 (CRITICAL, Trade Class A, Tag 40):** HYG-Konzentration Review.  \n**Trigger:** HYG 28.8% vs. 0% Target-Weight (Diskrepanz seit 40 Tagen).  \n**Kontext:** Risk Officer meldet HYG CRITICAL (Schwelle 25%, +3.8pp). V16 Target-Weight 0%, aber Current-Weight 28.8%. Entweder Rebalance nicht ausgeführt oder Datenquelle inkonsistent oder Liquiditäts-Constraint (Spread/Market-Impact bei NFP-Event + Credit-Stress).  \n**Nächste Schritte:** Operator prüft HEUTE: (1) Ist HYG tatsächlich 28.8% im Live-Portfolio? (2) Wenn ja: Warum wurde Rebalance 40 Tage nicht ausgeführt? Mögliche Ursachen: (A) Execution-Problem (Order nie gesendet, V16→Broker-Verbindung kaputt), (B) Settlement-Lag (Order executed, Settlement pending T+2 — aber 40 Tage zu lang), (C) Liquiditäts-Constraint (Order gesendet, aber nicht fillable wegen Spread/Market-Impact — bei NFP-Event-Boost + Credit-Stress könnte HYG-Liquidität temporär reduziert sein). (3) Wenn Liquiditäts-Constraint: Warte auf bessere Liquidität post-NFP (Event-Boost endet, Spreads normalisieren). Wenn Execution-Problem: Sofortiger Rebalance auf 0% (V16-Regel). (4) Wenn nein: Datenquelle reparieren, Risk Officer neu laufen lassen. KEINE Trade-Empfehlung vom CIO — das ist Daten-/Execution-/Liquiditäts-Problem.  \n**Deadline:** HEUTE (vor Marktschluss).  \n**Status:** OPEN seit 2026-03-06, eskaliert.\n\n**A2 (HIGH, Trade Class A, Tag 40):** NFP/ECB Event-Monitoring.  \n**Trigger:** Ursprünglich NFP/ECB März, jetzt NFP April (2026-04-03, 2d).  \n**Kontext:** Event-Monitoring-Item aus März, nie geschlossen. NFP-Event-Boost aktiv (Risk Officer Alerts +1 Severity).  \n**Nächste Schritte:** Operator monitored NFP-Daten (2026-04-03). Post-NFP: Event-Boost endet, Alerts fallen zurück. KEINE Pre-Event-Action empfohlen — V16 operiert regelbasiert.  \n**Deadline:** 2026-04-03 (NFP-Tag).  \n**Status:** OPEN seit 2026-03-06, eskaliert (aber Trigger noch aktiv — NFP steht bevor).\n\n**A3 (MEDIUM, Trade Class A, Tag 40):** CPI-Vorbereitung.  \n**Trigger:** Ursprünglich CPI März (bereits vorbei).  \n**Kontext:** Item aus März, Trigger nicht mehr aktiv (CPI bereits released).  \n**Nächste Schritte:** CLOSE empfohlen — Trigger obsolet. Nächster CPI April (Datum TBD), neues Item bei Bedarf.  \n**Deadline:** N/A (Trigger obsolet).  \n**Status:** OPEN seit 2026-03-06, eskaliert, aber CLOSE-Kandidat.\n\n**A4 (MEDIUM, Trade Class B, Tag 40):** Liquidity-Mechanik-Tracking.  \n**Trigger:** Liquidity-Deterioration (Howell-Warnung März).  \n**Kontext:** Market Analyst L1 -3 (TIGHTENING, LOW Conviction), IC LIQUIDITY -9.5 (Howell, LOW Confidence). Trigger noch aktiv (Liquidity weiterhin bearish).  \n**Nächste Schritte:** Operator tracked L1-Score und IC LIQUIDITY wöchentlich. Wenn L1 < -5 oder IC < -15: Eskalation zu Trade Class A. Aktuell: Monitoring ausreichend.  \n**Deadline:** ONGOING (wöchentlicher Check).  \n**Status:** OPEN seit 2026-03-06, eskaliert.\n\n**NEUE ITEMS (HEUTE):**\n\n**A26 (CRITICAL, Trade Class A, NEU):** V16 Regime-Shift Validation + Market Analyst Layer-Reset Investigation.  \n**Trigger:** LATE_EXPANSION → FULL_EXPANSION (gestern, erster Shift 2026). Market Analyst: Alle 8 Layer regime_duration Tag 1 (kompletter Reset gestern).  \n**Kontext:** V16 Confidence NULL, aber Regime-Logik korrekt (Growth +1, Liq -1, Stress +1 → Regime 4). Market Analyst Layer-Reset: Nur 4 von 8 Layern haben signifikante Score-Changes (L1/L2/L6), aber alle 8 zeigen Tag 1 — Regime-Duration-Counter wurde SYSTEMWEIT zurückgesetzt. Mögliche Ursachen: (1) Code-Bug (resettet alle Layer wenn irgendein Layer shiftet), (2) System Regime-Shift triggert globalen Reset, (3) Data Quality Issue triggert Full Recompute. Ohne Schwellenwert-Proximity-Metrik (wie nah ist L1 -3 an der Grenze zu TRANSITION?) kann Operator nicht unterscheiden zwischen \"stabiles TIGHTENING\" (L1 -5, weit von Schwelle) vs. \"fragiles TIGHTENING\" (L1 -3.01, knapp über Schwelle, könnte morgen flippen).  \n**Nächste Schritte:** (1) Operator reviewed V16 Growth-Signal-Komponenten (welche Daten triggerten Growth +1?). Wenn strukturell: FULL_EXPANSION stabil, Portfolio korrekt. Wenn Noise: Regime-Shift reverst bald, Portfolio-Anpassung erforderlich. (2) Operator reviewed Market Analyst Layer-Reset-Ursache: Ist Reset durch fundamentale Datenänderungen (Signal) oder Schwellenwert-Oszillation (Noise)? Wenn Noise: V16 FULL_EXPANSION korrekt. Wenn Signal: V16 FULL_EXPANSION FRAGIL — Regime könnte bald reversten wenn fundamentale Verschlechterung (L1 TIGHTENING, L2 RECESSION) sich fortsetzt. (3) Operator kontaktiert Market Analyst Maintainer: Warum wurden alle Layer-Durations zurückgesetzt obwohl nur 4 Layer Score-Changes hatten? Ist das Bug oder Feature?  \n**Deadline:** HEUTE (vor NFP — NFP-Daten könnten Regime erneut shiften).  \n**Status:** OPEN, NEU.\n\n**A27 (HIGH, Trade Class A, NEU):** Router Entry-Evaluation Post-Processing.  \n**Trigger:** Entry-Evaluation HEUTE (2026-04-01).  \n**Kontext:** COMMODITY_SUPER Proximity 0.0 (kein Entry), aber DBC/SPY-Outperformance 100% (strukturell). Operator sollte Router-Design-Frage mit Agent R diskutieren: Ist V16-Abhängigkeit zu rigide?  \n**Nächste Schritte:** (1) Post-Evaluation: Wenn Entry: Implementiere International-Allokation (min. 5% DBC/EEM/VGK). (2) Wenn kein Entry (erwartet): Operator reviewed mit Agent R: Soll COMMODITY_SUPER-Trigger V16-unabhängig werden? Trade-off: Mehr Flexibilität vs. höheres Regime-Conflict-Risiko.  \n**Deadline:** 2026-04-01 (nach Entry-Evaluation, vor Marktschluss).  \n**Status:** OPEN, NEU.\n\n**A28 (MEDIUM, Trade Class B, NEU):** Data Quality L4 (FX) Repair.  \n**Trigger:** USDCNH/China 10Y 50% stale (Market Analyst L4 Data Clarity 0.33).  \n**Kontext:** L4 Score -1 (STABLE), aber Conviction LOW, Data Clarity 0.33. USDCNH/China-10Y-Daten veraltet. L4 misst Cross-Border-Flows — kritisch für Router EM_BROAD/CHINA_STIMULUS.  \n**Nächste Schritte:** (1) Operator prüft Datenfeeds (Bloomberg/Yahoo/Alternative). (2) Wenn reparierbar: Fix deployen, Market Analyst neu laufen lassen. (3) Wenn nicht reparierbar: L4-Gewichtung in Market Analyst reduzieren (V2-Feature — manuelle Anpassung erforderlich).  \n**Deadline:** THIS_WEEK (vor nächstem Briefing).  \n**Status:** OPEN, NEU.\n\n**AKTIVE WATCH-ITEMS (Monitoring, keine Deadline):**\n\n**W1 (Tag 40):** Breadth-Deterioration (Hussman-Warnung). Breadth 57.5% (Schwelle <70%). Fragility ELEVATED. Monitoring: Wenn Breadth < 50%: Eskalation zu ACT.\n\n**W2 (Tag 40):** Japan JGB-Stress (Luke Gromen-Szenario). Aktuell: Kein Stress sichtbar (USDJPY -2, stabil). Monitoring: Wenn USDJPY > +5 oder JGB-Yields spike: Eskalation.\n\n**W3 (Tag 40):** Geopolitik-Eskalation (Doomberg/ZeroHedge). IC GEOPOLITICS -0.43 (HIGH Confidence, 18 Claims). Monitoring: Wenn IC GEOPOLITICS < -5 oder Market Analyst L8 (Tail Risk) < -3: Eskalation.\n\n**W4 (Tag 40):** Commodities-Rotation (Crescat vs. Doomberg). DBC/SPY +100% (strukturell bullish), aber Router Entry blockiert. Monitoring: Wenn Router Entry triggert: Implementierung.\n\n**W5 (Tag 38):** V16 Regime-Shift Proximity. Aktuell: FULL_EXPANSION (Tag 2), keine Proximity zu anderem Regime. Monitoring: Wenn Proximity > 0.5: Vorbereitung auf Shift.\n\n**W15 (Tag 19):** Market Analyst Conviction Recovery. Aktuell: 6 von 8 Layern LOW Conviction. Monitoring: Wenn Conviction steigt (≥4 Layer MEDIUM/HIGH): Portfolio-Adjustments möglich.\n\n**W16 (Tag 19):** IC Geopolitics Divergenz Resolution. Aktuell: GEOPOLITICS -0.43 (Sources canceln sich aus). Monitoring: Wenn Consensus klar wird (Score < -3 oder > +3): Trade-Implikation prüfen.\n\n**W17 (Tag 19):** Howell Liquidity Update. Aktuell: IC LIQUIDITY -9.5 (Howell, LOW Confidence). Monitoring: Wenn Howell Update released: Vergleich mit Market Analyst L1.\n\n**W18 (Tag 16):** Credit Spread Diskrepanz. Aktuell: HY OAS -10 (bearish), IG OAS -9 (bearish), aber Real 10Y Yield +7 (bullish). Monitoring: Wenn Spreads weiten (HY > +5): Rezessions-Signal.\n\n**W19 (Tag 6):** PCE Reaction. Aktuell: Kein PCE-Event in 7d. Monitoring: Nächster PCE (Datum TBD): Inflation-Signal für Fed-Policy.\n\n**W20 (Tag 6):** Router Entry Window. Aktuell: COMMODITY_SUPER Proximity 0.0 (kein Entry). Monitoring: Wenn Proximity > 0.8: Entry-Vorbereitung.\n\n**W21 (Tag 5):** Valero-Damage-Assessment. Aktuell: Kein Update (Trigger aus März — Valero-Refinery-Damage). Monitoring: Wenn Valero-Update released: Energy-Supply-Implikation.\n\n**W22 (Tag 5):** PCE-Energy-Pass-Through. Aktuell: Kein PCE-Event. Monitoring: Nächster PCE: Prüfe ob Öl-Preise in Core-PCE durchschlagen.\n\n**W23 (Tag 5):** Iran-Response-Window. Aktuell: IC GEOPOLITICS -0.43 (Iran-Narrativ dominant). Monitoring: Wenn Iran-Eskalation (IC GEOPOLITICS < -5): Öl-Spike-Risiko.\n\n**CLOSE-EMPFEHLUNGEN:**\n\n**A3 (CPI-Vorbereitung):** Trigger obsolet (CPI März bereits vorbei). CLOSE empfohlen.\n\n**Diverse WATCH-Items (W1-W4, Tag 40):** Lange Laufzeit, aber Trigger noch aktiv. KEEP OPEN — Monitoring weiterhin relevant.\n\n**CIO PRIORISIERUNG:**  \n1. **A1 (HYG-Diskrepanz):** HEUTE klären — operativ kritisch. Erweitert um Liquiditäts-Constraint-Check.  \n2. **A26 (V16 Regime-Shift Validation + Market Analyst Layer-Reset):** HEUTE vor NFP — Regime-Stabilität prüfen, Layer-Reset-Ursache klären.  \n3. **A27 (Router Entry-Evaluation):** HEUTE nach Evaluation — Design-Frage mit Agent R.  \n4. **A28 (Data Quality L4 Repair):** THIS_WEEK — kritisch für Router EM/CHINA.  \n5. **A2 (NFP-Monitoring):** 2026-04-03 — Event-Monitoring (keine Pre-Action).  \n6. **A4 (Liquidity-Tracking):** ONGOING — wöchentlicher Check ausreichend.  \n7. **WATCH-Items:** Monitoring läuft — keine sofortige Action erforderlich.\n\n---\n\n## KEY ASSUMPTIONS\n\n**KA1: data_quality_degraded** — V16 Confidence NULL, Market Analyst Data Clarity L1/L2/L7 DEGRADED, HYG/DBC Current-Weight-Diskrepanz, Fragility-Indikatoren teilweise NULL. System operiert mit fragmentierten Daten.  \n**Wenn falsch:** Wenn Daten repariert werden (A28 erfolgreich, V16 Confidence restored), dann System Conviction steigt von LOW → MEDIUM/HIGH, Portfolio-Adjustments werden möglich (aktuell: defensive Haltung wegen LOW Conviction gerechtfertigt).\n\n**KA2: nfp_catalyst** — NFP (2026-04-03, 2d) könnte Regime-Klarheit bringen (entweder Recession-Bestätigung via schwache Jobs oder Growth-Rebound via starke Jobs). Market Analyst L2 (Macro) -2 (RECESSION, CONFLICTED) wartet auf Bestätigung.  \n**Wenn falsch:** Wenn NFP neutral/gemischt (weder klar schwach noch klar stark), dann Regime bleibt CONFLICTED, System Conviction bleibt LOW, defensive Positionierung persistiert. Portfolio-Implikation: Keine großen Moves post-NFP.\n\n**KA3: v16_regime_stable** — V16 FULL_EXPANSION (Tag 2) ist strukturell (Growth-Signal nachhaltig), nicht Noise (temporäre Datenschwankung). Portfolio (TLT/XLU/GLD/BTC/ETH) ist korrekt für dieses Regime.  \n**Wenn falsch:** Wenn Regime-Shift reverst (FULL_EXPANSION → LATE_EXPANSION oder STEADY_GROWTH), dann Portfolio-Rebalance erforderlich (möglicherweise HYG/DBC zurück, SPY/Sectors rein). A26 (Regime-Shift Validation) prüft diese Annahme HEUTE.\n\n---\n\n## DA RESOLUTION SUMMARY\n\n**da_20260320_002 (Tag 7, V16 Confidence NULL):** **REJECTED.** Challenge fragt ob NULL technisches Problem oder fundamentales Signal ist. Nach 7 Tagen Persistenz (NULL seit 2026-03-24, 4 Tage nach Regime-Shift zu LATE_EXPANSION) ist die wahrscheinlichste Erklärung: NULL ist TECHNISCHES Problem (Confidence-Berechnung kaputt oder Confidence-Metrik wird nicht geschrieben). Wenn NULL fundamental wäre (Confidence <5%), hätte V16 in NEUTRAL-State gehen müssen (Equal-Weight oder Cash) — aber V16 IST in LATE_EXPANSION seit 9 Tagen mit stabilen Gewichten. Das bedeutet: V16-Regime-Logik operiert normal, nur Confidence-Metrik fehlt. A21 (V16 Confidence NULL Investigation) bleibt CRITICAL — Operator prüft V16-Logs, kontaktiert Maintainer, dokumentiert Ursache. Wenn Bug: Fix. Wenn Feature: Update Dokumentation. KEINE Portfolio-Entscheidungen pausieren — V16-Gewichte sind sakrosankt, Confidence-NULL ändert nichts an Regime-Logik.\n\n**da_20260311_005 (Tag 15, S6 Portfolio-Beschreibung):** **REJECTED.** Challenge ist unvollständig (Text endet abrupt \"Ist dir aufgefallen dass S6 sagt \\\"V16\"). Ohne vollständigen Challenge-Text kann ich nicht evaluieren. Challenge wird als INCOMPLETE markiert und aus History entfernt.\n\n**da_20260309_005 (Tag 32, S7 Action Items Dringlichkeit):** **REJECTED.** Challenge ist unvollständig (Text endet abrupt \"Der CIO nimmt an dass \\\"Item offen seit X Tagen\\\" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle \\\"Tag 11\\\" oder \\\"Tag 9\\\") haben UNTERSCHIEDLICHE\"). Ohne vollständigen Challenge-Text kann ich nicht evaluieren. Challenge wird als INCOMPLETE markiert und aus History entfernt.\n\n**da_20260311_001 (Tag 14, IC High-Novelty-Claims Omission):** **REJECTED.** Challenge fragt ob 5 omitted Howell-Claims (Novelty 7-8) durch IC-Processing gefiltert wurden oder vom CIO gesehen aber als nicht-material eingeschätzt. ANTWORT: IC-Processing hat Claims korrekt gefiltert. Die 5 omitted Claims (claim_003 Bond-Vol, claim_006 Gold=China) sind NICHT Portfolio-relevant: (1) claim_003 (Bond-Vol) ist LEADING für HYG-Spreads, aber HYG ist bereits 0% Target-Weight — keine Trade-Implikation. (2) claim_006 (Gold=China) widerspricht NICHT KA3 (Geopolitics=Leading) — GLD 5.6% ist MULTI-FAKTOR-Position (Safe Haven + Inflation Hedge + Geopolitics), nicht rein Geopolitics-getrieben. Pre-Processor Relevanz-Scores funktionieren korrekt — Claims mit HIGH Novelty aber LOW Signal werden gefiltert. A6 (IC-Daten-Refresh) bleibt HIGH — Problem ist DATA FRESHNESS (IC-Daten 48h alt), nicht Pattern-Recognition.\n\n**da_20260312_002 (Tag 13, FOMC Event-Day Liquidität):** **REJECTED.** Challenge fragt ob System Event-Aware Execution-Policy hat (Slippage-Vermeidung bei Event-Window-Trades). ANTWORT: Das ist EXECUTION-LAYER-Problem, nicht CIO-Problem. Signal Generator zeigt \"FAST_PATH, V16 weights unmodified\" — keine Execution-Logik sichtbar, weil Execution-Logik NICHT Teil von Signal Generator ist. Execution-Policy (Market Order vs. Limit Order, Event-Window-Timing, Slippage-Minimierung) ist Operator-Verantwortung, nicht System-Verantwortung. CIO-Rolle ist SIGNAL (Was soll getradet werden?), nicht EXECUTION (Wie soll getradet werden?). A13 (FOMC Pre-Event Portfolio-Check) sagt korrekt \"keine präemptiven Trades\" — das ist strategische Guidance. Execution-Timing (intraday, Event-Window-Vermeidung) ist Operator-Entscheidung basierend auf Live-Market-Conditions.\n\n**da_20260401_001 (Tag 2, Market Analyst Layer-Reset):** **ACCEPTED.** Challenge fragt ob kompletter Layer-Regime-Reset (alle 8 Layer Tag 1) durch fundamentale Datenänderungen oder Schwellenwert-Oszillation ausgelöst wurde. VALIDER PUNKT — ohne Schwellenwert-Proximity-Metrik kann ich nicht unterscheiden zwischen \"stabiles TIGHTENING\" (L1 -5, weit von Schwelle) vs. \"fragiles TIGHTENING\" (L1 -3.01, knapp über Schwelle). Layer-Score-Deltas zeigen: Nur 4 von 8 Layern haben signifikante Changes, aber alle 8 zeigen regime_duration Tag 1 — Regime-Duration-Counter wurde SYSTEMWEIT zurückgesetzt. Mögliche Ursachen: (1) Code-Bug, (2) System Regime-Shift triggert globalen Reset, (3) Data Quality Issue triggert Full Recompute. Bei ELEVATED Fragility + NFP in 2d + System Conviction LOW ist FALSE-POSITIVE-COST (Regime-Label ist Noise, Portfolio folgt trotzdem) maximal. **IMPLIKATION:** A26 (V16 Regime-Shift Validation) wird erweitert um Market Analyst Layer-Reset Investigation. Operator prüft nicht nur \"ist V16-Shift strukturell?\", sondern auch \"ist Market Analyst Layer-Reset strukturell oder Schwellenwert-Oszillation?\". S4 PATTERNS & SYNTHESIS wird erweitert um CIO OBSERVATION (Klasse B): Market Analyst Layer-Reset — Signal oder Noise?\n\n**da_20260401_002 (Tag 1, HYG Liquiditäts-Constraint):** **NOTED.** Challenge fragt ob HYG 28.8% ein Liquiditäts-Constraint-Problem ist (Rebalance blockiert durch Spread/Market-Impact), nicht nur Daten-/Execution-Problem. VALIDER PUNKT — nach 40 Tagen ohne Resolution ist die Frage nicht mehr \"Was ist die Ursache?\" sondern \"WARUM kann das System die Ursache nicht selbst identifizieren?\". Ohne Execution-Log (wann wurde letzte HYG-Order gesendet? Was war Outcome?) kann ich nicht unterscheiden zwischen Execution-Problem vs. Liquiditäts-Constraint. **IMPLIKATION:** A1 (HYG-Konzentration Review) wird erweitert um Liquiditäts-Constraint-Check. Operator prüft HEUTE: (1) Ist HYG tatsächlich 28.8%? (2) Wenn ja: Warum wurde Rebalance 40 Tage nicht ausgeführt? Liquiditäts-Constraint (Spread zu weit, Market Impact zu hoch bei NFP-Event + Credit-Stress) oder Execution-Problem (Order nie gesendet)? (3) Wenn Liquiditäts-Constraint: Warte auf bessere Liquidität post-NFP. Wenn Execution-Problem: Sofortiger Rebalance. S3 RISK & ALERTS wird erweitert um Liquiditäts-Constraint-Kontext in HYG CRITICAL-Alert.\n\n**da_20260330_002 (Tag 2, Portfolio als Liquidity-Barbell):** **NOTED.** Challenge bietet alternative Lesart: Portfolio ist NICHT \"unhedged bet\", sondern LIQUIDITY-REGIME-BARBELL (65.9% Liquidity-SENSITIVE Assets vs. 34.1% Liquidity-INSENSITIVE Assets). VALIDER PERSPEKTIV-SHIFT — ohne Sensitivity-Daten (SPY Beta, Correlation Matrix) kann ich nicht quantifizieren ob 34.1% Defensives + 16.9% GLD = 51% defensive Komponente ein STARKER oder SCHWACHER Hedge ist. Challenge wird NOTED (nicht ACCEPTED) weil sie keine Änderung am Briefing erfordert — sie bietet eine alternative Interpretation die der Operator selbst evaluieren muss. S6 PORTFOLIO CONTEXT bleibt unverändert.\n\n**da_20260330_004 (Tag 2, L1 Liquidity STABLE seit 3 Tagen):** **NOTED.** Challenge fragt ob L1 (Liquidity) -2 TRANSITION seit 3 Tagen STABLE bedeutet \"keine neue Daten\" (Liquidity-Daten sind STALE) statt \"Liquidity-Situation hat sich nicht verändert\". VALIDER",
+    "source": "FALLBACK",
+    "full_text": "2026-04-02 | FALLBACK | ACTION | Conviction: LOW | Risk: YELLOW | Fragility: ELEVATED | Data: DEGRADED | V16: LATE_EXPANSION\n\nLLM NICHT VERFUEGBAR — Deterministisches Fallback-Briefing.\n\n## S1: DELTA\n\nV16: LATE_EXPANSION. DD-Protect: Inaktiv.\nMarket Analyst: {'regime': 'NEUTRAL', 'reason': 'Most layers near zero — no strong directional signal', 'positive_layers': [], 'negative_layers': ['Global Liquidity Cycle (L1)']}. Fragility: {'state': 'ELEVATED', 'triggers_active': [{'indicator': 'Breadth', 'value': 58.8, 'threshold': '<70%', 'implies': 'ELEVATED'}], 'indicators': {'hhi': None, 'breadth_pct': 58.8, 'spy_rsp_6m_delta': None, 'ai_capex_revenue_gap': None}}.\nKeine neuen oder eskalierenden Alerts.\nIC Novelty 7: zerohedge: Germany's energy crisis, driven by the green transition and geopolitical disruptions, is the primary\nIC Novelty 7: zerohedge: Germany faces growing social and political instability as economic deterioration deepens, raising th\nIC Novelty 9: zerohedge: Saudi Arabia is successfully rerouting a substantial portion of its oil exports through the Yanbu Re\nIC Novelty 8: zerohedge: Iran is allowing non-Saudi 'friendly' ships to transit the Strait of Hormuz for a reported $2 millio\nIC Novelty 7: zerohedge: The Iran war is boosting Russian oil export revenues by elevating global oil prices, materially stre\n\n## S2: CATALYSTS & TIMING\n\n2026-04-03  — NFP (Impact: HIGH)\n\n## S3: RISK & ALERTS\n\nEmergency Triggers: Alle INACTIVE.\nWARNING EXP_SECTOR_CONCENTRATION — STABLE (Tag 3)\n  Recommendation: No action required. Monitor for further increases.\nWARNING EXP_SINGLE_NAME — DEESCALATING (Tag 40)\nWARNING INT_REGIME_CONFLICT — STABLE (Tag 3)\n  Recommendation: V16 and Market Analyst slightly divergent. V16 validated — no action on V16 required. Monitor for V16 regime transition.\nWARNING TMP_EVENT_CALENDAR — STABLE (Tag 2)\n  Recommendation: Macro event approaching. Existing risk assessments carry elevated uncertainty. No preemptive action recommended.\n\n## S4: PATTERNS & SYNTHESIS\n\nKeine Klasse A Patterns aktiv.\nKeine Klasse B Observations (LLM nicht verfuegbar).\n\n## S5: INTELLIGENCE DIGEST\n\nzerohedge (Novelty 9): Saudi Arabia is successfully rerouting a substantial portion of its oil exports through the Yanbu Red Sea terminals, partially offsetting the Hormuz b\nzerohedge (Novelty 9): The EU-US 'Turnberry' trade deal — eliminating EU tariffs on major US imports and capping EU export tariffs at 15% — represents a pragmatic de-escalat\nforward_guidance (Novelty 9): The Fed will not hike despite oil-driven inflation and will instead remain on pause for at least 6 months, eventually cutting only if labor market det\ncrescat (Novelty 9): Global LNG markets face a structural multi-year supply deficit due to conflict-driven infrastructure damage in Qatar and the Middle East, making LNG a\nzerohedge (Novelty 9): A potential Easter ceasefire between Russia and Ukraine could represent a meaningful diplomatic breakthrough if it holds, reducing near-term conflict \nforward_guidance (Novelty 9): Fed Governor Waller believes current monetary policy is modestly restrictive and should be eased toward neutral, as inflation fears from oil shocks ar\njeff_snider (Novelty 9): Oil prices are materially underpriced relative to the historic scale of Hormuz disruption, with futures curve spreads signaling extreme supply panic t\nzerohedge (Novelty 8): Iran is allowing non-Saudi 'friendly' ships to transit the Strait of Hormuz for a reported $2 million per crossing, creating a two-tier supply market \nzerohedge (Novelty 8): Active U.S. military escalation in the Strait of Hormuz represents a significant new phase of conflict that threatens one of the world's most critical\ndoomberg (Novelty 8): The redeployment of THAAD assets from South Korea to the Middle East meaningfully degrades the Korean Peninsula's missile defense posture, making Kore\n\n## S6: PORTFOLIO CONTEXT\n\nV16 Top-5: HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%\n\n## S7: ACTION ITEMS & WATCHLIST\n\nREVIEW: EXP_SECTOR_CONCENTRATION WARNING — No action required. Monitor for further increases.\nREVIEW: EXP_SINGLE_NAME WARNING — \nREVIEW: INT_REGIME_CONFLICT WARNING — V16 and Market Analyst slightly divergent. V16 validated — no action on V16 required. Monitor for V16 regime transition.\nREVIEW: TMP_EVENT_CALENDAR WARNING — Macro event approaching. Existing risk assessments carry elevated uncertainty. No preemptive action recommended.\nOFFEN (Tag 41): A1: HYG-Konzentration Review (CRITICAL, Trade Class A)\nOFFEN (Tag 41): A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A)\nOFFEN (Tag 41): A3: CPI-Vorbereitung (MEDIUM, Trade Class A)\nOFFEN (Tag 41): A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B)\nOFFEN (Tag 41): W1: Breadth-Deterioration (Hussman-Warnung)\nOFFEN (Tag 41): W2: Japan JGB-Stress (Luke Gromen-Szenario)\nOFFEN (Tag 41): W3: Geopolitik-Eskalation (Doomberg/ZeroHedge)\nOFFEN (Tag 41): W4: Commodities-Rotation (Crescat vs. Doomberg)\nOFFEN (Tag 40): Was\nOFFEN (Tag 40): Warum\nOFFEN (Tag 40): Monitoring\nOFFEN (Tag 40): Trigger noch aktiv\nOFFEN (Tag 40): Status\nOFFEN (Tag 39): A5: Post-NFP/ECB System-Review (HIGH, Trade Class A) — HEUTE ABEND\nOFFEN (Tag 39): W5: V16 Regime-Shift Proximity — NEU\nOFFEN (Tag 38): Nächster Check\nOFFEN (Tag 37): Trigger\nOFFEN (Tag 34): A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, NEU)\nOFFEN (Tag 33): Wie dringend\nOFFEN (Tag 32): A7: Post-CPI System-Review (HIGH, Trade Class A, NEU)\nOFFEN (Tag 32): Urgency\nOFFEN (Tag 32): HEUTE (2026-03-09)\nOFFEN (Tag 32): THIS_WEEK\nOFFEN (Tag 32): 2026-03-11 (Post-CPI)\nOFFEN (Tag 32): CLOSE-Empfehlungen\nOFFEN (Tag 32): AKTIVE WATCH\nOFFEN (Tag 29): A8: Router-Proximity Persistenz-Check (MEDIUM, Trade Class B) — NEU\nOFFEN (Tag 29): W14: HYG Post-CPI Rebalance-Watch — NEU\nOFFEN (Tag 24): A9: HYG Post-CPI Rebalance-Readiness (HIGH, Trade Class A, NEU)\nOFFEN (Tag 20): W15: Market Analyst Conviction Recovery (NEU)\nOFFEN (Tag 20): W16: IC Geopolitics Divergenz Resolution (NEU)\nOFFEN (Tag 20): W17: Howell Liquidity Update (NEU)\nOFFEN (Tag 18): A10: HYG Post-CPI Immediate Review (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 18): A11: Router COMMODITY_SUPER Persistence Validation (HIGH, Trade Class B, NEU)\nOFFEN (Tag 18): A12: IC Geopolitics Narrative Resolution Tracking (MEDIUM, Trade Class B, NEU)\nOFFEN (Tag 17): W18: Credit Spread Diskrepanz (NEU)\nOFFEN (Tag 12): A13: FOMC Pre-Event Portfolio-Check (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 10): A14: Fragility-Maßnahmen Review (HIGH, Trade Class A, NEU).\nOFFEN (Tag 8): A15: OPEX Volatility Monitoring (MEDIUM, Trade Class B, NEU).\nOFFEN (Tag 8): A16: HYG WARNING Acknowledgment (HIGH, Trade Class A, NEU).\nOFFEN (Tag 7): A17: V16 Regime Confidence NULL Investigation (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 7): A18: Howell Liquidity Shift Validation (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 7): A19: Energy Tail Risk Hedge Evaluation (HIGH, Trade Class B, NEU)\nOFFEN (Tag 7): W19: PCE Reaction (NEU)\nOFFEN (Tag 7): W20: Router Entry Window (NEU)\nOFFEN (Tag 6): A20: HYG CRITICAL Acknowledgment (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 6): A21: V16 Regime Confidence NULL Resolution (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 6): A22: Howell Liquidity-Fade Validation (HIGH, Trade Class A, NEU)\nOFFEN (Tag 6): A23: Energy-Tail-Risk Hedge Evaluation (HIGH, Trade Class B, NEU)\nOFFEN (Tag 6): A24: Router COMMODITY_SUPER Entry-Prep (MEDIUM, Trade Class B, NEU)\nOFFEN (Tag 6): W21: Valero-Damage-Assessment (NEU)\nOFFEN (Tag 6): W22: PCE-Energy-Pass-Through (NEU)\nOFFEN (Tag 6): W23: Iran-Response-Window (NEU)\nOFFEN (Tag 4): A25: PCE-Reaction-Monitoring (MEDIUM, Trade Class B, NEU)\nOFFEN (Tag 2): A26 (CRITICAL, NEU): V16 Regime-Shift Validation. Trigger: LATE_EXPANSION → FULL_EXPANSION (erster Shift 2026). Kontext: Confidence NULL, aber Regime-Logik korrekt. Nächste Schritte: Operator prüft ob Shift strukturell (Growth-Signal nachhaltig) oder Noise (temporäre Datenschwankung). Wenn strukturell: FULL_EXPANSION stabil, Portfolio korrekt. Wenn Noise: Regime-Shift reverst bald, Portfolio-Anpassung erforderlich. Deadline: HEUTE (vor NFP).\nOFFEN (Tag 2): A27 (HIGH, NEU): Router Entry-Evaluation Post-Processing. Trigger: Entry-Evaluation morgen (2026-04-01). Kontext: COMMODITY_SUPER Proximity 0.0, aber DBC/SPY-Outperformance 100% (strukturell). Nächste Schritte: Post-Evaluation: Wenn Entry: Implementiere International-Allokation (min. 5%). Wenn kein Entry: Operator reviewed Proximity-Logik — ist V16-Abhängigkeit zu starr? Deadline: 2026-04-01 (nach Entry-Evaluation).\nOFFEN (Tag 2): A28 (MEDIUM, NEU): Data Quality L4 (FX) Repair. Trigger: USDCNH/China 10Y 50% stale. Kontext: L4 Score -1, Conviction CONFLICTED, Data Clarity 0.0. Nächste Schritte: Operator prüft Datenfeeds. Wenn reparierbar: Fix deployen. Wenn nicht: L4-Gewichtung reduzieren in Market Analyst (V2-Feature). Deadline: THIS_WEEK.\n\n---\nFALLBACK BRIEFING — LLM nicht verfuegbar.\n\n---\nDevil's Advocate nicht verfuegbar — Draft als Final uebernommen.\n---",
     "sections": {
-      "S1_delta": "DELTA\n\n**V16 Regime:** FULL_EXPANSION (Tag 2, stabil). Gewichte unverändert: TLT 9.7%, XLU 6.4%, GLD 5.6%, BTC 4.7%, ETH 3.5%. HYG/DBC weiterhin 0%. Regime-Confidence NULL — strukturelles Datenproblem, nicht Regime-Unsicherheit. V16-Logik operiert korrekt trotz NULL-Confidence.\n\n**Risk Ampel:** YELLOW → RED. HYG-Alert eskaliert WARNING → CRITICAL (Tag 39). Einzelposition 28.8%, Schwelle 25%, +3.8pp Überschreitung. Event-Boost aktiv (NFP in 2d). Commodities-Exposure 37.2% nähert sich WARNING-Schwelle (35%). Regime-Conflict WARNING (Tag 2): V16 \"Risk-On\" vs. Market Analyst \"NEUTRAL\".\n\n**Fragility State:** EXTREME → ELEVATED. Breadth 57.5% (Schwelle <70%). HHI/SPY-RSP/AI-Capex-Gap weiterhin NULL — Downgrade auf ELEVATED mangels Bestätigung durch andere Indikatoren.\n\n**Market Analyst:** System Regime NEUTRAL (unverändert). Layer-Scores: L1 (Liquidity) -3 (TIGHTENING, LOW Conviction), L2 (Macro) -2 (RECESSION, CONFLICTED), L3 +1, L4 -1, L5 +1, L6 +1, L7 0, L8 -1 (ELEVATED). Data Clarity: L1 0.2, L2 0.14, L7 0.0 — drei Layer mit strukturell schlechter Datenlage. Alle Layer-Regimes Tag 1 — kompletter Regime-Reset gestern.\n\n**Router:** US_DOMESTIC (Tag 455). COMMODITY_SUPER Proximity 1.0 → 0.0 (Kollaps). DBC/SPY 6M Relative weiterhin 100% (strukturelle Outperformance), aber V16-Regime-Allowance 1.0 → 0.0 (FULL_EXPANSION blockiert Entry). Entry-Evaluation HEUTE — kein Entry möglich trotz perfekter DBC-Performance. EM_BROAD/CHINA_STIMULUS beide 0.0.\n\n**IC Intelligence:** 9 Quellen, 148 Claims (50 Opinion, 98 Fact). Consensus: LIQUIDITY -9.5 (Howell, LOW Confidence), FED_POLICY -3.7 (MEDIUM), GEOPOLITICS -0.43 (HIGH, 18 Claims), ENERGY -0.3 (HIGH, 5 Claims), COMMODITIES +5.0 (MEDIUM), TECH_AI +5.56 (MEDIUM), CRYPTO +4.8 (HIGH). Keine aktiven Divergences. 106 High-Novelty Claims (Signal 0) — massive Noise-Produktion ohne Portfolio-Relevanz.\n\n**Signal Generator:** Keine Trades. V16 HOLD auf allen 5 Positionen. F6 UNAVAILABLE. Router Entry-Evaluation heute (Outcome: kein Entry). Concentration Check: Top-5 30% (TLT/XLU/GLD/BTC/ETH), Effective Tech 3%, keine Warnung.\n\n**Temporal Context:** NFP in 2 Tagen (2026-04-03, HIGH Impact). Keine weiteren Events 7d. Kein F6 CC-Expiry. V16 Rebalance Proximity 0.0.\n\n**System Conviction:** LOW (unverändert Tag 6). Limiting Factors: Data Clarity (L1/L2/L7 DEGRADED), Regime Duration (alle Layer Tag 1), V16 Confidence NULL.",
-      "S2_catalysts": "CATALYSTS & TIMING\n\n**NFP (2026-04-03, 48h):** Employment Situation March 2026. HIGH Impact. Themes: RECESSION, FED_POLICY. Risk Officer hat Event-Boost aktiviert — alle Alerts eine Severity-Stufe höher. HYG WARNING → CRITICAL, Commodities MONITOR → WARNING, Regime-Conflict MONITOR → WARNING. Post-NFP: Event-Boost endet, Alerts fallen zurück auf Base-Severity (sofern Trigger unverändert). Operator-Aktion: Keine Pre-Event-Adjustments empfohlen — V16 operiert regelbasiert, NFP-Daten fließen automatisch in nächsten Rebalance ein.\n\n**Router Entry-Evaluation (HEUTE):** COMMODITY_SUPER Proximity gestern 1.0, heute 0.0. DBC/SPY 6M Relative 100% (strukturell bullish), DXY stabil (nicht steigend), aber V16-Regime-Allowance 0.0 (FULL_EXPANSION blockiert). Evaluation-Outcome: KEIN ENTRY. Nächste Evaluation 2026-05-01 (30d). CIO OBSERVATION: Router-Design-Frage — ist V16-Abhängigkeit zu rigide? DBC outperformt SPY strukturell (+100% über 6M), aber Entry unmöglich weil V16 in falschem Regime. Operator sollte mit Agent R diskutieren: Soll COMMODITY_SUPER-Trigger V16-unabhängig werden? Trade-off: Mehr Flexibilität vs. höheres Regime-Conflict-Risiko.\n\n**IC Catalyst Timeline (7d):** Howell Twitter Spaces (2026-03-27, LIQUIDITY/POSITIONING), Damped Spring Flush-Call (2026-03-30, EQUITY_VALUATION/VOLATILITY), diverse Geopolitics-Events (April, GEOPOLITICS/ENERGY). Keine Portfolio-relevanten Timing-Signale — alle Events entweder bereits eingetreten oder zu vage für Actionability.\n\n**V16 Rebalance Proximity:** 0.0 — kein Rebalance-Trigger in Sicht. Nächster Rebalance nur bei Regime-Shift oder signifikanter Datenänderung.",
-      "S3_risk": "RISK & ALERTS\n\n**PORTFOLIO STATUS: RED.** 1 CRITICAL ↑, 3 WARNING. Risk Officer Execution Path: FULL_PATH. Sensitivity: UNAVAILABLE (V1). G7 Context: UNAVAILABLE.\n\n**CRITICAL ↑ (Trade Class A):**  \n**RO-20260401-003 | EXP_SINGLE_NAME | HYG 28.8%** (Schwelle 25%, +3.8pp). Tag 39. Trend: ESCALATING (WARNING → CRITICAL). Base-Severity WARNING, Event-Boost (NFP 2d) → CRITICAL. \n\n[DA: da_20260401_002 fragt ob HYG 28.8% ein Liquiditäts-Constraint-Problem ist (Rebalance blockiert durch Spread/Market-Impact), nicht nur Daten-/Execution-Problem. **NOTED** — Valider Punkt, aber ohne Execution-Log (wann wurde letzte HYG-Order gesendet? Was war Outcome?) kann ich nicht unterscheiden zwischen Execution-Problem vs. Liquiditäts-Constraint. A1 bleibt CRITICAL mit erweitertem Scope: Operator prüft HEUTE (1) Ist HYG tatsächlich 28.8%? (2) Wenn ja: Warum wurde Rebalance 40 Tage nicht ausgeführt? Liquiditäts-Constraint (Spread zu weit, Market Impact zu hoch) oder Execution-Problem (Order nie gesendet)? (3) Wenn Liquiditäts-Constraint: Warte auf bessere Liquidität post-NFP. Wenn Execution-Problem: Sofortiger Rebalance. Original Draft: \"Operator MUSS klären: Ist HYG tatsächlich 28.8%? Wenn ja: Sofortiger Rebalance auf 0%. Wenn nein: Datenquelle reparieren.\"]\n\nKontext: HYG-Position aus V16, aktuell 0% Target-Weight aber 28.8% Current-Weight (Rebalance-Lag? Datenfehler? Liquiditäts-Constraint?). KRITISCH: Current vs. Target diskrepant seit 40 Tagen. Operator MUSS klären: (1) Ist HYG tatsächlich 28.8% im Live-Portfolio? (2) Wenn ja: Warum wurde Rebalance 40 Tage nicht ausgeführt? Mögliche Ursachen: (A) Execution-Problem (Order nie gesendet, V16→Broker-Verbindung kaputt), (B) Settlement-Lag (Order executed, Settlement pending T+2 — aber 40 Tage zu lang), (C) Liquiditäts-Constraint (Order gesendet, aber nicht fillable wegen Spread/Market-Impact — bei NFP-Event-Boost + Credit-Stress könnte HYG-Liquidität temporär reduziert sein). (3) Wenn nein: Datenquelle reparieren, Risk Officer neu laufen lassen. KEINE Trade-Empfehlung vom CIO — das ist operationales Problem (Daten/Execution/Liquidität), nicht strategisches Signal.\n\n**WARNING → (Trade Class A):**  \n**RO-20260401-002 | EXP_SECTOR_CONCENTRATION | Commodities 37.2%** (Schwelle 35%, +2.2pp). Tag 2. Trend: STABLE. Base-Severity MONITOR, Event-Boost → WARNING. Effective Commodities Exposure durch GLD 5.6% + implizite Commodity-Korrelation anderer Assets. Keine Aktion erforderlich — Monitoring ausreichend. Post-NFP fällt Alert zurück auf MONITOR (sofern Exposure stabil).\n\n**WARNING → (Trade Class A):**  \n**RO-20260401-005 | INT_REGIME_CONFLICT | V16 vs. Market Analyst.** Tag 2. Trend: STABLE. V16 \"Risk-On\" (FULL_EXPANSION), Market Analyst \"NEUTRAL\" (Lean: UNKNOWN). Base-Severity MONITOR, Event-Boost → WARNING. Interpretation: V16 operiert auf validierten Signalen (Growth +1, Liq -1, Stress +1 → FULL_EXPANSION korrekt). Market Analyst zeigt NEUTRAL weil Layer-Scores nahe Null streuen (-3 bis +1, keine klare Richtung). Divergenz ist EPISTEMISCH, nicht operativ — V16 und Market Analyst nutzen teilweise geteilte Datenbasen, ihre Übereinstimmung hat begrenzten Bestätigungswert. KEINE Aktion auf V16 — Regime ist regelkonform. Monitoring: Wenn Market Analyst in Richtung Risk-Off dreht während V16 Risk-On bleibt, dann Regime-Transition wahrscheinlich.\n\n**WARNING (Trade Class A):**  \n**RO-20260401-001 | TMP_EVENT_CALENDAR | NFP in 2d.** Tag 1. Trend: NEW. Base-Severity MONITOR, Event-Boost → WARNING. Standard-Event-Alert. Keine Aktion erforderlich — Event-Boost endet automatisch post-NFP.\n\n**ONGOING CONDITION (WARNING, Tag 39):**  \n**RO-20260401-004 | EXP_SINGLE_NAME | DBC 20.3%** (Schwelle 20%, +0.3pp). Trend: ONGOING. DBC-Position aus V16, aktuell 0% Target aber 20.3% Current. Gleiche Diskrepanz wie HYG — Operator muss Current vs. Target klären. Weniger kritisch als HYG (nur +0.3pp über Schwelle), aber gleiche Dateninkonsistenz-Frage.\n\n**THREADS:**  \n- **EXP_SINGLE_NAME (CRITICAL/WARNING):** Tag 40 (HYG), Tag 40 (DBC). Beide seit 2026-03-06 aktiv. Persistenz deutet auf strukturelles Problem hin — entweder Rebalance-Mechanik defekt oder Datenquelle inkonsistent oder Liquiditäts-Constraint.  \n- **EXP_SECTOR_CONCENTRATION (WARNING):** Tag 1. Neu seit gestern.  \n- **INT_REGIME_CONFLICT (WARNING):** Tag 1. Neu seit gestern.\n\n**RESOLVED THREADS (7d):** 23 Threads resolved zwischen 2026-03-25 und 2026-03-31. Typische Duration 2-8 Tage. Hohe Churn-Rate deutet auf instabile Regime/Event-Landschaft.\n\n**CIO ASSESSMENT:**  \nRisk Ampel RED ist GERECHTFERTIGT — HYG CRITICAL-Alert ist operativ kritisch (Dateninkonsistenz oder Liquiditäts-Constraint), nicht strategisch. Operator muss HYG/DBC Current-Weight-Diskrepanz HEUTE klären. Wenn Rebalance-Lag: Prüfe ob Liquiditäts-Constraint (Spread/Market-Impact bei NFP-Event + Credit-Stress) oder Execution-Problem. Wenn Datenfehler: Quelle reparieren und Risk Officer neu laufen lassen. Event-Boost (NFP) erhöht Severity künstlich — post-NFP fallen 3 von 4 Alerts zurück auf niedrigere Stufe (sofern Trigger unverändert). Regime-Conflict WARNING ist Noise — V16 und Market Analyst divergieren epistemisch, nicht operativ.",
-      "S4_patterns": "PATTERNS & SYNTHESIS\n\n**AKTIVE PATTERNS (Klasse A):** Keine. Pre-Processor hat 0 definierte Patterns identifiziert.\n\n**ANTI-PATTERNS (High Novelty, Low Signal):** 106 Claims mit Novelty 5-9, Signal 0. Beispiele: F-35-Abschuss (Novelty 7), Iran-Hormuz-Narrativ (Novelty 8), EU-Turnberry-Deal (Novelty 9), Fed-Waller-Stablecoin-Optimismus (Novelty 8), Damped-Spring-Flush-Call (Novelty 5). Alle Claims liefern KEIN Portfolio-Signal — entweder zu spekulativ, zu langfristig, oder außerhalb Tradable-Universe. Pre-Processor funktioniert korrekt — filtert Noise aggressiv.\n\n**CIO OBSERVATION (Klasse B): Data Quality Crisis.**  \nV16 Confidence NULL (Tag 2), Market Analyst Data Clarity L1 0.2 / L2 0.14 / L7 0.0, Fragility State downgraded (EXTREME → ELEVATED) mangels HHI/SPY-RSP/AI-Capex-Daten, Router COMMODITY_SUPER Proximity-Kollaps (1.0 → 0.0) trotz struktureller DBC-Outperformance, HYG/DBC Current-Weight-Diskrepanz (28.8% / 20.3% vs. 0% Target). SYNTHESE: System operiert mit fragmentierten, teilweise inkonsistenten Daten. V16/Market Analyst/Risk Officer produzieren Outputs, aber Confidence/Conviction durchgehend LOW/CONFLICTED. Operator-Implikation: Erhöhte Vorsicht bei Interpretation aller Signale. KEINE großen Portfolio-Moves bis Data Quality stabilisiert. A28 (Data Quality L4 Repair) ist CRITICAL — FX-Daten 50% stale, L4 Score -1 (STABLE) trotz DXY-Surge.\n\n**CIO OBSERVATION (Klasse B): Router-Design-Spannung.**  \nCOMMODITY_SUPER zeigt perfekte Setup-Bedingungen (DBC/SPY 6M +100%, DXY stabil), aber Entry blockiert durch V16-Regime-Allowance (FULL_EXPANSION = 0). Entry-Evaluation heute ergibt KEIN ENTRY. Nächste Chance 2026-05-01 (30d). FRAGE: Ist V16-Abhängigkeit zu rigide? Trade-off: V16-Kopplung reduziert Regime-Conflicts (Router wartet bis V16 aligned), aber verhindert opportunistische Entries bei strukturellen Outperformance-Trends. Operator sollte mit Agent R diskutieren: Soll COMMODITY_SUPER-Trigger V16-unabhängig werden (z.B. nur DBC/SPY + DXY, ohne Regime-Check)? Risiko: Höhere Regime-Conflict-Wahrscheinlichkeit. Benefit: Mehr Flexibilität bei klaren Commodity-Supercycles.\n\n**CIO OBSERVATION (Klasse B): IC Noise-Produktion.**  \n106 High-Novelty Claims, alle Signal 0. IC-Quellen (v.a. ZeroHedge, Forward Guidance, Doomberg) produzieren massiv Content mit hoher Novelty aber ohne Portfolio-Relevanz. Consensus-Scores: LIQUIDITY -9.5 (LOW Confidence, 1 Quelle), GEOPOLITICS -0.43 (HIGH Confidence, 18 Claims, 4 Quellen), ENERGY -0.3 (HIGH Confidence, 5 Claims, 4 Quellen). INTERPRETATION: IC liefert qualitatives Narrativ (Geopolitics/Energy dominant), aber keine quantitativen Trade-Signale. Market Analyst Layer-Scores sind die bessere Quelle für Portfolio-Entscheidungen — IC ist Kontext, nicht Signal.\n\n**CIO OBSERVATION (Klasse B): Market Analyst Layer-Reset — Signal oder Noise?**\n\n[DA: da_20260401_001 fragt ob der komplette Layer-Regime-Reset (alle 8 Layer Tag 1) durch fundamentale Datenänderungen oder Schwellenwert-Oszillation ausgelöst wurde. **ACCEPTED** — Valider Punkt. Ohne Schwellenwert-Proximity-Metrik (wie nah ist L1 -3 an der Grenze zu TRANSITION?) kann ich nicht unterscheiden zwischen \"stabiles TIGHTENING\" (L1 -5, weit von Schwelle) vs. \"fragiles TIGHTENING\" (L1 -3.01, knapp über Schwelle, könnte morgen flippen). Layer-Score-Deltas zeigen: Nur 4 von 8 Layern haben signifikante Changes (L1 -2→-3, L2 0→-2, L6 +3→+1), aber alle 8 zeigen regime_duration Tag 1. Das bedeutet: Regime-Duration-Counter wurde SYSTEMWEIT zurückgesetzt, nicht nur bei shiftenden Layern. Mögliche Ursachen: (1) Market Analyst Code-Bug (resettet alle Layer wenn irgendein Layer shiftet), (2) System Regime-Shift triggert globalen Reset, (3) Data Quality Issue triggert Full Recompute. Bei ELEVATED Fragility + NFP in 2d + System Conviction LOW ist FALSE-POSITIVE-COST (Regime-Label ist Noise, Portfolio folgt trotzdem) maximal. A26 (V16 Regime-Shift Validation) muss erweitert werden: Operator prüft nicht nur \"ist V16-Shift strukturell?\", sondern auch \"ist Market Analyst Layer-Reset strukturell oder Schwellenwert-Oszillation?\". Original Draft: \"Operator prüft ob Shift strukturell (Growth-Signal nachhaltig) oder Noise (temporäre Datenschwankung).\"]\n\nMarket Analyst zeigt: ALLE 8 Layer-Regimes Tag 1 (gestern geshiftet). Das ist EXTREM ungewöhnlich — normalerweise shiften 1-3 Layer pro Tag, nicht alle gleichzeitig. Layer-Score-Deltas (gestern → heute): L1 -2→-3 (TRANSITION → TIGHTENING), L2 0→-2 (NEUTRAL → RECESSION), L6 +3→+1 (STRONG_OUTPERFORMANCE → BALANCED). NUR 4 Layer haben Score-Changes, aber ALLE 8 zeigen regime_duration Tag 1. Das bedeutet: Regime-Duration-Counter wurde SYSTEMWEIT zurückgesetzt, nicht nur bei shiftenden Layern. Mögliche Ursachen: (1) Market Analyst Code-Bug (resettet alle Layer wenn irgendein Layer shiftet — falsche Implementierung), (2) System Regime-Shift triggert globalen Reset (Market Analyst System Regime gestern NEUTRAL, heute NEUTRAL, aber intern re-evaluiert), (3) Data Quality Issue triggert Full Recompute (wenn Market Analyst Datenqualitäts-Probleme erkannte und ALLE Layer neu berechnete, würden alle Durations auf Tag 1 resetten). OHNE Schwellenwert-Proximity-Metrik (wie nah ist L1 -3 an der Grenze zu TRANSITION?) kann ich nicht unterscheiden zwischen \"stabiles TIGHTENING\" (L1 -5, weit von Schwelle entfernt, Regime stabil) vs. \"fragiles TIGHTENING\" (L1 -3.01, knapp über Schwelle, könnte morgen zurück zu TRANSITION flippen). System Regime NEUTRAL heute hat ANDERE Komposition als gestern: Gestern NEUTRAL (L1 -2, L2 0, L6 +3 → leicht bullish bias), Heute NEUTRAL (L1 -3, L2 -2, L6 +1 → bearish bias). Gleicher Label, unterschiedliche Komposition — das ist DRIFT, nicht Stabilität. IMPLIKATION: Wenn Layer-Reset durch Schwellenwert-Oszillation (Noise), dann ist V16 FULL_EXPANSION korrekt — fundamentale Signale haben sich nicht geändert. Wenn Layer-Reset durch fundamentalen Shift (Signal), dann ist V16 FULL_EXPANSION FRAGIL — Regime könnte bald reversten wenn fundamentale Verschlechterung (L1 TIGHTENING, L2 RECESSION) sich fortsetzt. A26 (V16 Regime-Shift Validation) muss erweitert werden: Operator prüft nicht nur \"ist V16-Shift strukturell?\", sondern auch \"ist Market Analyst Layer-Reset strukturell oder Schwellenwert-Oszillation?\".\n\n**CROSS-LAYER TENSION:**  \nL1 (Liquidity) -3 (TIGHTENING) vs. L3/L5/L6 +1 (leicht bullish). L2 (Macro) -2 (RECESSION) vs. IC RECESSION +1.57 (leicht bullish, MEDIUM Confidence). V16 FULL_EXPANSION (Growth +1) vs. Market Analyst NEUTRAL. SYNTHESE: Keine klare Richtung. Liquidity/Macro bearish, Fundamentals/Sentiment leicht bullish, V16 Risk-On aber mit NULL Confidence. System ist in LIMBO — wartet auf klarere Datenlage. NFP (2d) könnte Auflösung bringen (entweder Recession-Bestätigung oder Growth-Rebound).",
-      "S5_intelligence": "INTELLIGENCE DIGEST\n\n**CONSENSUS (9 Quellen, 148 Claims):**\n\n**LIQUIDITY (-9.5, LOW):** Howell (2 Claims): Global Liquidity deteriorating, S&P 500 Ziel 5500 (-20-25%), Bond-Märkte signalisieren Rate-Hikes (nicht Cuts). KONFLIKT mit Market Analyst L1 -3 (TIGHTENING, aber keine Rate-Hike-Erwartung). Howell ist bearisher als quantitative Daten — möglicher Leading-Indikator oder Overstatement.\n\n**FED_POLICY (-3.7, MEDIUM):** Forward Guidance (3 Claims): Fed bleibt auf Pause trotz Öl-Inflation, keine Hikes für 6+ Monate, Bank-Deregulation wird primäre Liquiditätsquelle (nicht QE). Jeff Snider (2 Claims): Öl-Schock → kurzfristige CPI-Spike, dann deflationäre Rezession, Fed hilflos. SYNTHESE: Consensus erwartet Fed-Inaktivität (Pause), aber aus unterschiedlichen Gründen (Forward Guidance: strukturelle Liquidität via Banken, Snider: Rezessions-Dynamik überrollt Fed). Market Analyst L7 (CB Policy) 0 (NEUTRAL, CONFLICTED) — quantitative Daten zeigen keine klare Fed-Richtung.\n\n**GEOPOLITICS (-0.43, HIGH, 18 Claims):** ZeroHedge (12 Claims, Bias +1.42): Iran-Hormuz-Narrativ, F-35-Abschuss, Ukraine-Eskalation, EU-Turnberry-Deal. Hidden Forces (3 Claims, Bias -2.0): US-Iran-Konflikt mehrwöchig, Hormuz-Disruption zentral. Doomberg (2 Claims, Bias -3.5): Pain-Tolerance-Framework, Iran-Schwäche. Jeff Snider (1 Claim, Bias +3.0): Geopolitics-Impact überschätzt. SYNTHESE: Hohe Claim-Zahl, aber Score nahe Null (-0.43) — Sources canceln sich gegenseitig aus. ZeroHedge bullish (Konflikt-Eskalation = Öl-Bullish), Doomberg/Hidden Forces bearish (Konflikt-Disruption = Rezession). KEIN klares Signal für Portfolio. Market Analyst L8 (Tail Risk) -1 (ELEVATED) — quantitativ leicht bearish, aber LOW Conviction.\n\n**ENERGY (-0.3, HIGH, 5 Claims):** ZeroHedge (2 Claims, Bias +10.5): Hormuz-Blockade, Asien-Fuel-Shortages. Doomberg (1 Claim, Bias -8.0): Hormuz-Disruption strukturell, Energie-Märkte reorganisieren sich. Crescat (1 Claim, Bias +4.0): LNG-Supply-Deficit mehrjährig. Jeff Snider (1 Claim, Bias +10.0): Öl-Preise unterpreist relativ zu Hormuz-Disruption. SYNTHESE: Score nahe Null (-0.3) trotz HIGH Confidence — bullish (Snider/ZeroHedge: Preise zu niedrig) vs. bearish (Doomberg: Disruption = Demand-Destruction). Market Analyst L6 (Relative Value) WTI Curve -10 (Contango = bearish) — quantitativ bearish, widerspricht IC-Bullish-Narrativ. CIO INTERPRETATION: IC sieht Supply-Schock, Market Analyst sieht Demand-Destruction. Öl-Preis-Richtung unklar — hängt davon ab ob Supply-Schock oder Rezession dominiert.\n\n**COMMODITIES (+5.0, MEDIUM):** Luke Gromen (1 Claim): Gold-Selloff temporär, reverst bei Liquiditäts-Erholung. Crescat (1 Claim): Öl-Supply-Schock = strukturell bullish für Commodities. SYNTHESE: Leicht bullish, aber nur 2 Quellen. Router COMMODITY_SUPER Proximity 0.0 (kein Entry) trotz DBC/SPY +100% — IC-Bullishness nicht quantitativ bestätigt.\n\n**TECH_AI (+5.56, MEDIUM):** Forward Guidance (1 Claim): AI = transformative Boom. ZeroHedge (1 Claim): Decentralized-Tech vs. Authoritarian-AI. Hidden Forces (3 Claims): AI-Labor-Disruption sichtbar, Competitive-Race macht Safety unmöglich, DeepMind überholte OpenAI. SYNTHESE: Leicht bullish, aber langfristig (kein kurzfristiges Trade-Signal). Market Analyst L3 (Earnings) +1 (MIXED, LOW Conviction) — quantitativ neutral.\n\n**CRYPTO (+4.8, HIGH):** ZeroHedge (1 Claim, Bias +13.0): Decentralized-Tech bullish. Howell (1 Claim, Bias -3.0): BTC kurzfristig bearish (Liquiditäts-Fade). Damped Spring (1 Claim, Bias -7.0): BTC braucht FTX-Style-Blowup für Ceiling-Break. Forward Guidance (1 Claim, Bias +6.0): Stablecoin-Adoption bullish für USD-Demand. SYNTHESE: Score +4.8 (leicht bullish), aber HIGH Divergence (ZeroHedge +13 vs. Damped Spring -7). V16 BTC 4.7%, ETH 3.5% (unverändert) — keine Trade-Implikation.\n\n**DIVERGENCES:** Keine aktiven Divergences laut IC-Report. CIO OBSERVATION: Das ist FALSCH — ENERGY zeigt klare Divergence (Snider/ZeroHedge bullish vs. Doomberg bearish), ebenso CRYPTO (ZeroHedge bullish vs. Howell/Damped Spring bearish). Pre-Processor Divergence-Detection scheint zu konservativ kalibriert.\n\n**HIGH-NOVELTY CLAIMS (Top 10):**  \n1. Forward Guidance: AI = transformative Boom (Novelty 9, Signal 0).  \n2. Forward Guidance: Recessions unmöglich in modernem Monetary-Regime (Novelty 9, Signal 0).  \n3. ZeroHedge: EU-Turnberry-Deal (Novelty 9, Signal 0).  \n4. Jeff Snider: Hormuz-Blockade = physische Öl-Shortages Asien (Novelty 8, Signal 0).  \n5. ZeroHedge: Iran erlaubt Non-Saudi-Ships via Hormuz für $2M (Novelty 8, Signal 0).  \n6. Forward Guidance: Fed-Waller Stablecoin-Optimismus (Novelty 8, Signal 0).  \n7. Doomberg: THAAD-Redeployment Korea → Middle East (Novelty 8, Signal 0).  \n8. ZeroHedge: F-35-Abschuss (Novelty 7), Germany-Kapitalverzehr (Novelty 5), Rent-Growth-Deceleration (Novelty 7).  \n\nAlle Claims Signal 0 — Pre-Processor filtert korrekt. Novelty ≠ Actionability.\n\n**CATALYST TIMELINE (7d):** Howell Twitter Spaces (2026-03-27), Damped Spring Flush-Call (2026-03-30), diverse Geopolitics-Events (April, zu vage). Keine Portfolio-relevanten Timing-Signale.\n\n**CIO INTERPRETATION:**  \nIC liefert qualitatives Narrativ (Geopolitics/Energy/Liquidity dominant), aber KEINE quantitativen Trade-Signale. Consensus-Scores nahe Null (LIQUIDITY -9.5, FED_POLICY -3.7, GEOPOLITICS -0.43, ENERGY -0.3) — entweder Sources canceln sich aus oder Confidence zu niedrig. Market Analyst Layer-Scores sind bessere Quelle für Portfolio-Entscheidungen. IC ist KONTEXT (Was denken Macro-Voices?), nicht SIGNAL (Was soll ich traden?). Operator sollte IC als Narrativ-Check nutzen (Stimmt Market Analyst mit IC überein?), aber NICHT als Trade-Trigger.",
-      "S6_portfolio": "PORTFOLIO CONTEXT\n\n**CURRENT ALLOCATION (V16-only, 30% deployed):**  \nTLT 9.7%, XLU 6.4%, GLD 5.6%, BTC 4.7%, ETH 3.5%. Top-5 Concentration 30% (kein Problem). Effective Tech 3% (kein Problem). Effective Commodities 37.2% (WARNING-Schwelle 35%, +2.2pp — siehe S3).\n\n**REGIME-KONTEXT:**  \nV16 FULL_EXPANSION (Tag 2): Growth +1, Liq -1, Stress +1 → Regime 4. Confidence NULL (Datenproblem, nicht Regime-Unsicherheit). Portfolio-Implikation: Defensive Allokation (TLT/XLU/GLD dominant, kein SPY/Sectors) trotz \"Expansion\"-Label. FULL_EXPANSION in V16-Logik bedeutet NICHT \"Risk-On-Rally\" — es bedeutet \"Growth positiv, aber Liquidity negativ und Stress hoch\". Portfolio ist korrekt positioniert für dieses Regime (Defensives + Hard Assets).\n\n**FRAGILITY-KONTEXT:**  \nFragility ELEVATED (Breadth 57.5%, Schwelle <70%). Empfehlung: Router-Thresholds senken (DXY -3% statt -5%, VWO/SPY +5% statt +10%), SPY-Split (70% SPY + 30% RSP), XLK-Monitoring, PermOpt +1% auf 4%. STATUS: Nicht implementiert (V2-Feature). Operator-Aktion: Mit Agent R diskutieren ob Fragility-Adjustments manuell vorgezogen werden sollen (vor V2-Automatisierung). Trade-off: Frühere Diversifikation vs. zusätzliche manuelle Komplexität.\n\n**F6-KONTEXT:**  \nF6 UNAVAILABLE (V2). Keine Einzelaktien-Positionen. Covered-Call-Overlay nicht aktiv. Portfolio ist rein V16 (Macro-Allokation).\n\n**ROUTER-KONTEXT:**  \nUS_DOMESTIC (Tag 455). COMMODITY_SUPER Entry-Evaluation heute → KEIN ENTRY (V16-Regime blockiert). Nächste Chance 2026-05-01. Operator-Frage: Soll Router-Design angepasst werden (siehe S4)? Aktuell: Keine International-Allokation (EEM/VGK/DBC alle 0%).\n\n**RISK-KONTEXT:**  \nHYG CRITICAL (28.8% vs. 0% Target — Dateninkonsistenz oder Liquiditäts-Constraint, siehe S3). DBC WARNING (20.3% vs. 0% Target — gleiche Inkonsistenz). Commodities-Exposure WARNING (37.2%, Schwelle 35%). Regime-Conflict WARNING (V16 Risk-On vs. Market Analyst NEUTRAL). NFP-Event-Boost aktiv (alle Alerts +1 Severity). Post-NFP: 3 von 4 Alerts fallen zurück auf niedrigere Stufe.\n\n**PERFORMANCE-KONTEXT:**  \nV16 Performance: CAGR 0.0%, Sharpe 0, MaxDD 0.0%, Vol 0.0%, Calmar 0 — alle Metriken NULL (Datenproblem oder zu kurze Historie). Keine Performance-Attribution verfügbar.\n\n**LIQUIDITY-KONTEXT:**  \nMarket Analyst L1 (Liquidity) -3 (TIGHTENING, LOW Conviction, Data Clarity 0.2). IC LIQUIDITY -9.5 (Howell, LOW Confidence). Net Liquidity 10th pctl, -13772B in 5d (DRAIN). RRP -10 (bearish), MMF Assets +10 (bullish) — interne Spannung. SYNTHESE: Liquidity-Richtung unklar (quantitativ leicht bearish, qualitativ stark bearish). Portfolio-Implikation: Defensive Positionierung gerechtfertigt (TLT/GLD dominant).\n\n**CONVICTION-KONTEXT:**  \nSystem Conviction LOW (Tag 6). V16 Confidence NULL. Market Analyst: 6 von 8 Layern LOW Conviction, 2 CONFLICTED (L2/L7). IC: 5 von 15 Topics LOW Confidence, 6 MEDIUM, 4 HIGH (aber HIGH-Topics haben Scores nahe Null). SYNTHESE: System operiert mit minimaler Conviction — KEINE großen Portfolio-Moves empfohlen bis Conviction steigt.\n\n**CIO ASSESSMENT:**  \nPortfolio ist KORREKT positioniert für aktuelles Regime (FULL_EXPANSION = Growth positiv, Liquidity negativ, Stress hoch → Defensives + Hard Assets). HYG/DBC-Diskrepanz ist operationales Problem (Dateninkonsistenz oder Liquiditäts-Constraint), nicht strategisches. Operator muss HYG/DBC Current-Weight HEUTE klären. Fragility ELEVATED rechtfertigt vorsichtige Haltung — keine aggressiven Moves bis Data Quality/Conviction stabilisiert. NFP (2d) könnte Katalysator für Regime-Klarheit sein (entweder Recession-Bestätigung oder Growth-Rebound).",
-      "S7_actions": "ACTION ITEMS & WATCHLIST\n\n**ESKALIERTE ITEMS (40 Tage offen, DRINGEND):**\n\n**A1 (CRITICAL, Trade Class A, Tag 40):** HYG-Konzentration Review.  \n**Trigger:** HYG 28.8% vs. 0% Target-Weight (Diskrepanz seit 40 Tagen).  \n**Kontext:** Risk Officer meldet HYG CRITICAL (Schwelle 25%, +3.8pp). V16 Target-Weight 0%, aber Current-Weight 28.8%. Entweder Rebalance nicht ausgeführt oder Datenquelle inkonsistent oder Liquiditäts-Constraint (Spread/Market-Impact bei NFP-Event + Credit-Stress).  \n**Nächste Schritte:** Operator prüft HEUTE: (1) Ist HYG tatsächlich 28.8% im Live-Portfolio? (2) Wenn ja: Warum wurde Rebalance 40 Tage nicht ausgeführt? Mögliche Ursachen: (A) Execution-Problem (Order nie gesendet, V16→Broker-Verbindung kaputt), (B) Settlement-Lag (Order executed, Settlement pending T+2 — aber 40 Tage zu lang), (C) Liquiditäts-Constraint (Order gesendet, aber nicht fillable wegen Spread/Market-Impact — bei NFP-Event-Boost + Credit-Stress könnte HYG-Liquidität temporär reduziert sein). (3) Wenn Liquiditäts-Constraint: Warte auf bessere Liquidität post-NFP (Event-Boost endet, Spreads normalisieren). Wenn Execution-Problem: Sofortiger Rebalance auf 0% (V16-Regel). (4) Wenn nein: Datenquelle reparieren, Risk Officer neu laufen lassen. KEINE Trade-Empfehlung vom CIO — das ist Daten-/Execution-/Liquiditäts-Problem.  \n**Deadline:** HEUTE (vor Marktschluss).  \n**Status:** OPEN seit 2026-03-06, eskaliert.\n\n**A2 (HIGH, Trade Class A, Tag 40):** NFP/ECB Event-Monitoring.  \n**Trigger:** Ursprünglich NFP/ECB März, jetzt NFP April (2026-04-03, 2d).  \n**Kontext:** Event-Monitoring-Item aus März, nie geschlossen. NFP-Event-Boost aktiv (Risk Officer Alerts +1 Severity).  \n**Nächste Schritte:** Operator monitored NFP-Daten (2026-04-03). Post-NFP: Event-Boost endet, Alerts fallen zurück. KEINE Pre-Event-Action empfohlen — V16 operiert regelbasiert.  \n**Deadline:** 2026-04-03 (NFP-Tag).  \n**Status:** OPEN seit 2026-03-06, eskaliert (aber Trigger noch aktiv — NFP steht bevor).\n\n**A3 (MEDIUM, Trade Class A, Tag 40):** CPI-Vorbereitung.  \n**Trigger:** Ursprünglich CPI März (bereits vorbei).  \n**Kontext:** Item aus März, Trigger nicht mehr aktiv (CPI bereits released).  \n**Nächste Schritte:** CLOSE empfohlen — Trigger obsolet. Nächster CPI April (Datum TBD), neues Item bei Bedarf.  \n**Deadline:** N/A (Trigger obsolet).  \n**Status:** OPEN seit 2026-03-06, eskaliert, aber CLOSE-Kandidat.\n\n**A4 (MEDIUM, Trade Class B, Tag 40):** Liquidity-Mechanik-Tracking.  \n**Trigger:** Liquidity-Deterioration (Howell-Warnung März).  \n**Kontext:** Market Analyst L1 -3 (TIGHTENING, LOW Conviction), IC LIQUIDITY -9.5 (Howell, LOW Confidence). Trigger noch aktiv (Liquidity weiterhin bearish).  \n**Nächste Schritte:** Operator tracked L1-Score und IC LIQUIDITY wöchentlich. Wenn L1 < -5 oder IC < -15: Eskalation zu Trade Class A. Aktuell: Monitoring ausreichend.  \n**Deadline:** ONGOING (wöchentlicher Check).  \n**Status:** OPEN seit 2026-03-06, eskaliert.\n\n**NEUE ITEMS (HEUTE):**\n\n**A26 (CRITICAL, Trade Class A, NEU):** V16 Regime-Shift Validation + Market Analyst Layer-Reset Investigation.  \n**Trigger:** LATE_EXPANSION → FULL_EXPANSION (gestern, erster Shift 2026). Market Analyst: Alle 8 Layer regime_duration Tag 1 (kompletter Reset gestern).  \n**Kontext:** V16 Confidence NULL, aber Regime-Logik korrekt (Growth +1, Liq -1, Stress +1 → Regime 4). Market Analyst Layer-Reset: Nur 4 von 8 Layern haben signifikante Score-Changes (L1/L2/L6), aber alle 8 zeigen Tag 1 — Regime-Duration-Counter wurde SYSTEMWEIT zurückgesetzt. Mögliche Ursachen: (1) Code-Bug (resettet alle Layer wenn irgendein Layer shiftet), (2) System Regime-Shift triggert globalen Reset, (3) Data Quality Issue triggert Full Recompute. Ohne Schwellenwert-Proximity-Metrik (wie nah ist L1 -3 an der Grenze zu TRANSITION?) kann Operator nicht unterscheiden zwischen \"stabiles TIGHTENING\" (L1 -5, weit von Schwelle) vs. \"fragiles TIGHTENING\" (L1 -3.01, knapp über Schwelle, könnte morgen flippen).  \n**Nächste Schritte:** (1) Operator reviewed V16 Growth-Signal-Komponenten (welche Daten triggerten Growth +1?). Wenn strukturell: FULL_EXPANSION stabil, Portfolio korrekt. Wenn Noise: Regime-Shift reverst bald, Portfolio-Anpassung erforderlich. (2) Operator reviewed Market Analyst Layer-Reset-Ursache: Ist Reset durch fundamentale Datenänderungen (Signal) oder Schwellenwert-Oszillation (Noise)? Wenn Noise: V16 FULL_EXPANSION korrekt. Wenn Signal: V16 FULL_EXPANSION FRAGIL — Regime könnte bald reversten wenn fundamentale Verschlechterung (L1 TIGHTENING, L2 RECESSION) sich fortsetzt. (3) Operator kontaktiert Market Analyst Maintainer: Warum wurden alle Layer-Durations zurückgesetzt obwohl nur 4 Layer Score-Changes hatten? Ist das Bug oder Feature?  \n**Deadline:** HEUTE (vor NFP — NFP-Daten könnten Regime erneut shiften).  \n**Status:** OPEN, NEU.\n\n**A27 (HIGH, Trade Class A, NEU):** Router Entry-Evaluation Post-Processing.  \n**Trigger:** Entry-Evaluation HEUTE (2026-04-01).  \n**Kontext:** COMMODITY_SUPER Proximity 0.0 (kein Entry), aber DBC/SPY-Outperformance 100% (strukturell). Operator sollte Router-Design-Frage mit Agent R diskutieren: Ist V16-Abhängigkeit zu rigide?  \n**Nächste Schritte:** (1) Post-Evaluation: Wenn Entry: Implementiere International-Allokation (min. 5% DBC/EEM/VGK). (2) Wenn kein Entry (erwartet): Operator reviewed mit Agent R: Soll COMMODITY_SUPER-Trigger V16-unabhängig werden? Trade-off: Mehr Flexibilität vs. höheres Regime-Conflict-Risiko.  \n**Deadline:** 2026-04-01 (nach Entry-Evaluation, vor Marktschluss).  \n**Status:** OPEN, NEU.\n\n**A28 (MEDIUM, Trade Class B, NEU):** Data Quality L4 (FX) Repair.  \n**Trigger:** USDCNH/China 10Y 50% stale (Market Analyst L4 Data Clarity 0.33).  \n**Kontext:** L4 Score -1 (STABLE), aber Conviction LOW, Data Clarity 0.33. USDCNH/China-10Y-Daten veraltet. L4 misst Cross-Border-Flows — kritisch für Router EM_BROAD/CHINA_STIMULUS.  \n**Nächste Schritte:** (1) Operator prüft Datenfeeds (Bloomberg/Yahoo/Alternative). (2) Wenn reparierbar: Fix deployen, Market Analyst neu laufen lassen. (3) Wenn nicht reparierbar: L4-Gewichtung in Market Analyst reduzieren (V2-Feature — manuelle Anpassung erforderlich).  \n**Deadline:** THIS_WEEK (vor nächstem Briefing).  \n**Status:** OPEN, NEU.\n\n**AKTIVE WATCH-ITEMS (Monitoring, keine Deadline):**\n\n**W1 (Tag 40):** Breadth-Deterioration (Hussman-Warnung). Breadth 57.5% (Schwelle <70%). Fragility ELEVATED. Monitoring: Wenn Breadth < 50%: Eskalation zu ACT.\n\n**W2 (Tag 40):** Japan JGB-Stress (Luke Gromen-Szenario). Aktuell: Kein Stress sichtbar (USDJPY -2, stabil). Monitoring: Wenn USDJPY > +5 oder JGB-Yields spike: Eskalation.\n\n**W3 (Tag 40):** Geopolitik-Eskalation (Doomberg/ZeroHedge). IC GEOPOLITICS -0.43 (HIGH Confidence, 18 Claims). Monitoring: Wenn IC GEOPOLITICS < -5 oder Market Analyst L8 (Tail Risk) < -3: Eskalation.\n\n**W4 (Tag 40):** Commodities-Rotation (Crescat vs. Doomberg). DBC/SPY +100% (strukturell bullish), aber Router Entry blockiert. Monitoring: Wenn Router Entry triggert: Implementierung.\n\n**W5 (Tag 38):** V16 Regime-Shift Proximity. Aktuell: FULL_EXPANSION (Tag 2), keine Proximity zu anderem Regime. Monitoring: Wenn Proximity > 0.5: Vorbereitung auf Shift.\n\n**W15 (Tag 19):** Market Analyst Conviction Recovery. Aktuell: 6 von 8 Layern LOW Conviction. Monitoring: Wenn Conviction steigt (≥4 Layer MEDIUM/HIGH): Portfolio-Adjustments möglich.\n\n**W16 (Tag 19):** IC Geopolitics Divergenz Resolution. Aktuell: GEOPOLITICS -0.43 (Sources canceln sich aus). Monitoring: Wenn Consensus klar wird (Score < -3 oder > +3): Trade-Implikation prüfen.\n\n**W17 (Tag 19):** Howell Liquidity Update. Aktuell: IC LIQUIDITY -9.5 (Howell, LOW Confidence). Monitoring: Wenn Howell Update released: Vergleich mit Market Analyst L1.\n\n**W18 (Tag 16):** Credit Spread Diskrepanz. Aktuell: HY OAS -10 (bearish), IG OAS -9 (bearish), aber Real 10Y Yield +7 (bullish). Monitoring: Wenn Spreads weiten (HY > +5): Rezessions-Signal.\n\n**W19 (Tag 6):** PCE Reaction. Aktuell: Kein PCE-Event in 7d. Monitoring: Nächster PCE (Datum TBD): Inflation-Signal für Fed-Policy.\n\n**W20 (Tag 6):** Router Entry Window. Aktuell: COMMODITY_SUPER Proximity 0.0 (kein Entry). Monitoring: Wenn Proximity > 0.8: Entry-Vorbereitung.\n\n**W21 (Tag 5):** Valero-Damage-Assessment. Aktuell: Kein Update (Trigger aus März — Valero-Refinery-Damage). Monitoring: Wenn Valero-Update released: Energy-Supply-Implikation.\n\n**W22 (Tag 5):** PCE-Energy-Pass-Through. Aktuell: Kein PCE-Event. Monitoring: Nächster PCE: Prüfe ob Öl-Preise in Core-PCE durchschlagen.\n\n**W23 (Tag 5):** Iran-Response-Window. Aktuell: IC GEOPOLITICS -0.43 (Iran-Narrativ dominant). Monitoring: Wenn Iran-Eskalation (IC GEOPOLITICS < -5): Öl-Spike-Risiko.\n\n**CLOSE-EMPFEHLUNGEN:**\n\n**A3 (CPI-Vorbereitung):** Trigger obsolet (CPI März bereits vorbei). CLOSE empfohlen.\n\n**Diverse WATCH-Items (W1-W4, Tag 40):** Lange Laufzeit, aber Trigger noch aktiv. KEEP OPEN — Monitoring weiterhin relevant.\n\n**CIO PRIORISIERUNG:**  \n1. **A1 (HYG-Diskrepanz):** HEUTE klären — operativ kritisch. Erweitert um Liquiditäts-Constraint-Check.  \n2. **A26 (V16 Regime-Shift Validation + Market Analyst Layer-Reset):** HEUTE vor NFP — Regime-Stabilität prüfen, Layer-Reset-Ursache klären.  \n3. **A27 (Router Entry-Evaluation):** HEUTE nach Evaluation — Design-Frage mit Agent R.  \n4. **A28 (Data Quality L4 Repair):** THIS_WEEK — kritisch für Router EM/CHINA.  \n5. **A2 (NFP-Monitoring):** 2026-04-03 — Event-Monitoring (keine Pre-Action).  \n6. **A4 (Liquidity-Tracking):** ONGOING — wöchentlicher Check ausreichend.  \n7. **WATCH-Items:** Monitoring läuft — keine sofortige Action erforderlich."
+      "S1_delta": "DELTA\n\nV16: LATE_EXPANSION. DD-Protect: Inaktiv.\nMarket Analyst: {'regime': 'NEUTRAL', 'reason': 'Most layers near zero — no strong directional signal', 'positive_layers': [], 'negative_layers': ['Global Liquidity Cycle (L1)']}. Fragility: {'state': 'ELEVATED', 'triggers_active': [{'indicator': 'Breadth', 'value': 58.8, 'threshold': '<70%', 'implies': 'ELEVATED'}], 'indicators': {'hhi': None, 'breadth_pct': 58.8, 'spy_rsp_6m_delta': None, 'ai_capex_revenue_gap': None}}.\nKeine neuen oder eskalierenden Alerts.\nIC Novelty 7: zerohedge: Germany's energy crisis, driven by the green transition and geopolitical disruptions, is the primary\nIC Novelty 7: zerohedge: Germany faces growing social and political instability as economic deterioration deepens, raising th\nIC Novelty 9: zerohedge: Saudi Arabia is successfully rerouting a substantial portion of its oil exports through the Yanbu Re\nIC Novelty 8: zerohedge: Iran is allowing non-Saudi 'friendly' ships to transit the Strait of Hormuz for a reported $2 millio\nIC Novelty 7: zerohedge: The Iran war is boosting Russian oil export revenues by elevating global oil prices, materially stre",
+      "S2_catalysts": "CATALYSTS & TIMING\n\n2026-04-03  — NFP (Impact: HIGH)",
+      "S3_risk": "RISK & ALERTS\n\nEmergency Triggers: Alle INACTIVE.\nWARNING EXP_SECTOR_CONCENTRATION — STABLE (Tag 3)\n  Recommendation: No action required. Monitor for further increases.\nWARNING EXP_SINGLE_NAME — DEESCALATING (Tag 40)\nWARNING INT_REGIME_CONFLICT — STABLE (Tag 3)\n  Recommendation: V16 and Market Analyst slightly divergent. V16 validated — no action on V16 required. Monitor for V16 regime transition.\nWARNING TMP_EVENT_CALENDAR — STABLE (Tag 2)\n  Recommendation: Macro event approaching. Existing risk assessments carry elevated uncertainty. No preemptive action recommended.",
+      "S4_patterns": "PATTERNS & SYNTHESIS\n\nKeine Klasse A Patterns aktiv.\nKeine Klasse B Observations (LLM nicht verfuegbar).",
+      "S5_intelligence": "INTELLIGENCE DIGEST\n\nzerohedge (Novelty 9): Saudi Arabia is successfully rerouting a substantial portion of its oil exports through the Yanbu Red Sea terminals, partially offsetting the Hormuz b\nzerohedge (Novelty 9): The EU-US 'Turnberry' trade deal — eliminating EU tariffs on major US imports and capping EU export tariffs at 15% — represents a pragmatic de-escalat\nforward_guidance (Novelty 9): The Fed will not hike despite oil-driven inflation and will instead remain on pause for at least 6 months, eventually cutting only if labor market det\ncrescat (Novelty 9): Global LNG markets face a structural multi-year supply deficit due to conflict-driven infrastructure damage in Qatar and the Middle East, making LNG a\nzerohedge (Novelty 9): A potential Easter ceasefire between Russia and Ukraine could represent a meaningful diplomatic breakthrough if it holds, reducing near-term conflict \nforward_guidance (Novelty 9): Fed Governor Waller believes current monetary policy is modestly restrictive and should be eased toward neutral, as inflation fears from oil shocks ar\njeff_snider (Novelty 9): Oil prices are materially underpriced relative to the historic scale of Hormuz disruption, with futures curve spreads signaling extreme supply panic t\nzerohedge (Novelty 8): Iran is allowing non-Saudi 'friendly' ships to transit the Strait of Hormuz for a reported $2 million per crossing, creating a two-tier supply market \nzerohedge (Novelty 8): Active U.S. military escalation in the Strait of Hormuz represents a significant new phase of conflict that threatens one of the world's most critical\ndoomberg (Novelty 8): The redeployment of THAAD assets from South Korea to the Middle East meaningfully degrades the Korean Peninsula's missile defense posture, making Kore",
+      "S6_portfolio": "PORTFOLIO CONTEXT\n\nV16 Top-5: HYG 28.8%, DBC 20.3%, XLU 18.0%, GLD 16.9%, XLP 16.1%",
+      "S7_actions": "ACTION ITEMS & WATCHLIST\n\nREVIEW: EXP_SECTOR_CONCENTRATION WARNING — No action required. Monitor for further increases.\nREVIEW: EXP_SINGLE_NAME WARNING — \nREVIEW: INT_REGIME_CONFLICT WARNING — V16 and Market Analyst slightly divergent. V16 validated — no action on V16 required. Monitor for V16 regime transition.\nREVIEW: TMP_EVENT_CALENDAR WARNING — Macro event approaching. Existing risk assessments carry elevated uncertainty. No preemptive action recommended.\nOFFEN (Tag 41): A1: HYG-Konzentration Review (CRITICAL, Trade Class A)\nOFFEN (Tag 41): A2: NFP/ECB Event-Monitoring (HIGH, Trade Class A)\nOFFEN (Tag 41): A3: CPI-Vorbereitung (MEDIUM, Trade Class A)\nOFFEN (Tag 41): A4: Liquidity-Mechanik-Tracking (MEDIUM, Trade Class B)\nOFFEN (Tag 41): W1: Breadth-Deterioration (Hussman-Warnung)\nOFFEN (Tag 41): W2: Japan JGB-Stress (Luke Gromen-Szenario)\nOFFEN (Tag 41): W3: Geopolitik-Eskalation (Doomberg/ZeroHedge)\nOFFEN (Tag 41): W4: Commodities-Rotation (Crescat vs. Doomberg)\nOFFEN (Tag 40): Was\nOFFEN (Tag 40): Warum\nOFFEN (Tag 40): Monitoring\nOFFEN (Tag 40): Trigger noch aktiv\nOFFEN (Tag 40): Status\nOFFEN (Tag 39): A5: Post-NFP/ECB System-Review (HIGH, Trade Class A) — HEUTE ABEND\nOFFEN (Tag 39): W5: V16 Regime-Shift Proximity — NEU\nOFFEN (Tag 38): Nächster Check\nOFFEN (Tag 37): Trigger\nOFFEN (Tag 34): A6: IC-Daten-Refresh-Eskalation (HIGH, Trade Class A, NEU)\nOFFEN (Tag 33): Wie dringend\nOFFEN (Tag 32): A7: Post-CPI System-Review (HIGH, Trade Class A, NEU)\nOFFEN (Tag 32): Urgency\nOFFEN (Tag 32): HEUTE (2026-03-09)\nOFFEN (Tag 32): THIS_WEEK\nOFFEN (Tag 32): 2026-03-11 (Post-CPI)\nOFFEN (Tag 32): CLOSE-Empfehlungen\nOFFEN (Tag 32): AKTIVE WATCH\nOFFEN (Tag 29): A8: Router-Proximity Persistenz-Check (MEDIUM, Trade Class B) — NEU\nOFFEN (Tag 29): W14: HYG Post-CPI Rebalance-Watch — NEU\nOFFEN (Tag 24): A9: HYG Post-CPI Rebalance-Readiness (HIGH, Trade Class A, NEU)\nOFFEN (Tag 20): W15: Market Analyst Conviction Recovery (NEU)\nOFFEN (Tag 20): W16: IC Geopolitics Divergenz Resolution (NEU)\nOFFEN (Tag 20): W17: Howell Liquidity Update (NEU)\nOFFEN (Tag 18): A10: HYG Post-CPI Immediate Review (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 18): A11: Router COMMODITY_SUPER Persistence Validation (HIGH, Trade Class B, NEU)\nOFFEN (Tag 18): A12: IC Geopolitics Narrative Resolution Tracking (MEDIUM, Trade Class B, NEU)\nOFFEN (Tag 17): W18: Credit Spread Diskrepanz (NEU)\nOFFEN (Tag 12): A13: FOMC Pre-Event Portfolio-Check (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 10): A14: Fragility-Maßnahmen Review (HIGH, Trade Class A, NEU).\nOFFEN (Tag 8): A15: OPEX Volatility Monitoring (MEDIUM, Trade Class B, NEU).\nOFFEN (Tag 8): A16: HYG WARNING Acknowledgment (HIGH, Trade Class A, NEU).\nOFFEN (Tag 7): A17: V16 Regime Confidence NULL Investigation (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 7): A18: Howell Liquidity Shift Validation (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 7): A19: Energy Tail Risk Hedge Evaluation (HIGH, Trade Class B, NEU)\nOFFEN (Tag 7): W19: PCE Reaction (NEU)\nOFFEN (Tag 7): W20: Router Entry Window (NEU)\nOFFEN (Tag 6): A20: HYG CRITICAL Acknowledgment (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 6): A21: V16 Regime Confidence NULL Resolution (CRITICAL, Trade Class A, NEU)\nOFFEN (Tag 6): A22: Howell Liquidity-Fade Validation (HIGH, Trade Class A, NEU)\nOFFEN (Tag 6): A23: Energy-Tail-Risk Hedge Evaluation (HIGH, Trade Class B, NEU)\nOFFEN (Tag 6): A24: Router COMMODITY_SUPER Entry-Prep (MEDIUM, Trade Class B, NEU)\nOFFEN (Tag 6): W21: Valero-Damage-Assessment (NEU)\nOFFEN (Tag 6): W22: PCE-Energy-Pass-Through (NEU)\nOFFEN (Tag 6): W23: Iran-Response-Window (NEU)\nOFFEN (Tag 4): A25: PCE-Reaction-Monitoring (MEDIUM, Trade Class B, NEU)\nOFFEN (Tag 2): A26 (CRITICAL, NEU): V16 Regime-Shift Validation. Trigger: LATE_EXPANSION → FULL_EXPANSION (erster Shift 2026). Kontext: Confidence NULL, aber Regime-Logik korrekt. Nächste Schritte: Operator prüft ob Shift strukturell (Growth-Signal nachhaltig) oder Noise (temporäre Datenschwankung). Wenn strukturell: FULL_EXPANSION stabil, Portfolio korrekt. Wenn Noise: Regime-Shift reverst bald, Portfolio-Anpassung erforderlich. Deadline: HEUTE (vor NFP).\nOFFEN (Tag 2): A27 (HIGH, NEU): Router Entry-Evaluation Post-Processing. Trigger: Entry-Evaluation morgen (2026-04-01). Kontext: COMMODITY_SUPER Proximity 0.0, aber DBC/SPY-Outperformance 100% (strukturell). Nächste Schritte: Post-Evaluation: Wenn Entry: Implementiere International-Allokation (min. 5%). Wenn kein Entry: Operator reviewed Proximity-Logik — ist V16-Abhängigkeit zu starr? Deadline: 2026-04-01 (nach Entry-Evaluation).\nOFFEN (Tag 2): A28 (MEDIUM, NEU): Data Quality L4 (FX) Repair. Trigger: USDCNH/China 10Y 50% stale. Kontext: L4 Score -1, Conviction CONFLICTED, Data Clarity 0.0. Nächste Schritte: Operator prüft Datenfeeds. Wenn reparierbar: Fix deployen. Wenn nicht: L4-Gewichtung reduzieren in Market Analyst (V2-Feature). Deadline: THIS_WEEK."
     },
     "section_word_counts": {
-      "S1_delta": 305,
-      "S2_catalysts": 183,
-      "S3_risk": 632,
-      "S4_patterns": 835,
-      "S5_intelligence": 675,
-      "S6_portfolio": 426,
-      "S7_actions": 1154
+      "S1_delta": 148,
+      "S2_catalysts": 8,
+      "S3_risk": 73,
+      "S4_patterns": 15,
+      "S5_intelligence": 264,
+      "S6_portfolio": 14,
+      "S7_actions": 672
     },
     "da_markers": [],
     "da_resolution_summary": {
@@ -84,323 +84,62 @@
       "details": []
     },
     "key_assumptions": [],
-    "confidence_markers": [
-      {
-        "section": "S3_RISK",
-        "claim": "Overall risk assessment",
-        "confidence": "HIGH",
-        "basis": "No blind spots, few divergences"
-      },
-      {
-        "section": "S5_INTELLIGENCE",
-        "claim": "IC consensus reliability",
-        "confidence": "HIGH",
-        "basis": "9 sources processed"
-      }
-    ]
+    "confidence_markers": []
   },
   "action_items": {
     "summary": {
-      "act_count": 8,
+      "act_count": 0,
       "review_count": 0,
-      "watch_count": 14,
-      "total": 22,
+      "watch_count": 0,
+      "total": 0,
       "escalated_today": 0,
-      "new_today": 22,
+      "new_today": 0,
       "resolved_today": 0
     },
-    "prominent": [
-      {
-        "id": "action_2026-04-01_001",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A1 (CRITICAL, Trade Class A, Tag 40): HYG-Konzentration Review.",
-        "source_alerts": [],
-        "source_patterns": []
-      },
-      {
-        "id": "action_2026-04-01_002",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A2 (HIGH, Trade Class A, Tag 40): NFP/ECB Event-Monitoring.",
-        "source_alerts": [],
-        "source_patterns": []
-      },
-      {
-        "id": "action_2026-04-01_003",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A3 (MEDIUM, Trade Class A, Tag 40): CPI-Vorbereitung.",
-        "source_alerts": [],
-        "source_patterns": []
-      },
-      {
-        "id": "action_2026-04-01_004",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A4 (MEDIUM, Trade Class B, Tag 40): Liquidity-Mechanik-Tracking.",
-        "source_alerts": [],
-        "source_patterns": []
-      },
-      {
-        "id": "action_2026-04-01_005",
-        "type": "ACT",
-        "urgency": "THIS_WEEK",
-        "description": "A26 (CRITICAL, Trade Class A, NEU): V16 Regime-Shift Validation + Market Analyst Layer-Reset Investigation.",
-        "source_alerts": [],
-        "source_patterns": []
-      }
-    ],
+    "prominent": [],
     "aggregated": {
-      "count": 22,
-      "items": [
-        {
-          "type": "ACT",
-          "description": "A1 (CRITICAL, Trade Class A, Tag 40): HYG-Konzentration Review.",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-04-01_001"
-        },
-        {
-          "type": "ACT",
-          "description": "A2 (HIGH, Trade Class A, Tag 40): NFP/ECB Event-Monitoring.",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-04-01_002"
-        },
-        {
-          "type": "ACT",
-          "description": "A3 (MEDIUM, Trade Class A, Tag 40): CPI-Vorbereitung.",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-04-01_003"
-        },
-        {
-          "type": "ACT",
-          "description": "A4 (MEDIUM, Trade Class B, Tag 40): Liquidity-Mechanik-Tracking.",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-04-01_004"
-        },
-        {
-          "type": "ACT",
-          "description": "A26 (CRITICAL, Trade Class A, NEU): V16 Regime-Shift Validation + Market Analyst Layer-Reset Investigation.",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-04-01_005"
-        },
-        {
-          "type": "ACT",
-          "description": "A27 (HIGH, Trade Class A, NEU): Router Entry-Evaluation Post-Processing.",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-04-01_006"
-        },
-        {
-          "type": "ACT",
-          "description": "A28 (MEDIUM, Trade Class B, NEU): Data Quality L4 (FX) Repair.",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-04-01_007"
-        },
-        {
-          "type": "WATCH",
-          "description": "W1 (Tag 40): Breadth-Deterioration (Hussman-Warnung). Breadth 57.5% (Schwelle <70%). Fragility ELEVATED. Monitoring: Wenn Breadth < 50%: Eskalation zu ACT.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_008"
-        },
-        {
-          "type": "WATCH",
-          "description": "W2 (Tag 40): Japan JGB-Stress (Luke Gromen-Szenario). Aktuell: Kein Stress sichtbar (USDJPY -2, stabil). Monitoring: Wenn USDJPY > +5 oder JGB-Yields spike: Eskalation.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_009"
-        },
-        {
-          "type": "WATCH",
-          "description": "W3 (Tag 40): Geopolitik-Eskalation (Doomberg/ZeroHedge). IC GEOPOLITICS -0.43 (HIGH Confidence, 18 Claims). Monitoring: Wenn IC GEOPOLITICS < -5 oder Market Analyst L8 (Tail Risk) < -3: Eskalation.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_010"
-        },
-        {
-          "type": "WATCH",
-          "description": "W4 (Tag 40): Commodities-Rotation (Crescat vs. Doomberg). DBC/SPY +100% (strukturell bullish), aber Router Entry blockiert. Monitoring: Wenn Router Entry triggert: Implementierung.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_011"
-        },
-        {
-          "type": "WATCH",
-          "description": "W5 (Tag 38): V16 Regime-Shift Proximity. Aktuell: FULL_EXPANSION (Tag 2), keine Proximity zu anderem Regime. Monitoring: Wenn Proximity > 0.5: Vorbereitung auf Shift.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_012"
-        },
-        {
-          "type": "WATCH",
-          "description": "W15 (Tag 19): Market Analyst Conviction Recovery. Aktuell: 6 von 8 Layern LOW Conviction. Monitoring: Wenn Conviction steigt (≥4 Layer MEDIUM/HIGH): Portfolio-Adjustments möglich.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_013"
-        },
-        {
-          "type": "WATCH",
-          "description": "W16 (Tag 19): IC Geopolitics Divergenz Resolution. Aktuell: GEOPOLITICS -0.43 (Sources canceln sich aus). Monitoring: Wenn Consensus klar wird (Score < -3 oder > +3): Trade-Implikation prüfen.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_014"
-        },
-        {
-          "type": "WATCH",
-          "description": "W17 (Tag 19): Howell Liquidity Update. Aktuell: IC LIQUIDITY -9.5 (Howell, LOW Confidence). Monitoring: Wenn Howell Update released: Vergleich mit Market Analyst L1.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_015"
-        },
-        {
-          "type": "WATCH",
-          "description": "W18 (Tag 16): Credit Spread Diskrepanz. Aktuell: HY OAS -10 (bearish), IG OAS -9 (bearish), aber Real 10Y Yield +7 (bullish). Monitoring: Wenn Spreads weiten (HY > +5): Rezessions-Signal.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_016"
-        },
-        {
-          "type": "WATCH",
-          "description": "W19 (Tag 6): PCE Reaction. Aktuell: Kein PCE-Event in 7d. Monitoring: Nächster PCE (Datum TBD): Inflation-Signal für Fed-Policy.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_017"
-        },
-        {
-          "type": "WATCH",
-          "description": "W20 (Tag 6): Router Entry Window. Aktuell: COMMODITY_SUPER Proximity 0.0 (kein Entry). Monitoring: Wenn Proximity > 0.8: Entry-Vorbereitung.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_018"
-        },
-        {
-          "type": "WATCH",
-          "description": "W21 (Tag 5): Valero-Damage-Assessment. Aktuell: Kein Update (Trigger aus März — Valero-Refinery-Damage). Monitoring: Wenn Valero-Update released: Energy-Supply-Implikation.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_019"
-        },
-        {
-          "type": "WATCH",
-          "description": "W22 (Tag 5): PCE-Energy-Pass-Through. Aktuell: Kein PCE-Event. Monitoring: Nächster PCE: Prüfe ob Öl-Preise in Core-PCE durchschlagen.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_020"
-        },
-        {
-          "type": "WATCH",
-          "description": "W23 (Tag 5): Iran-Response-Window. Aktuell: IC GEOPOLITICS -0.43 (Iran-Narrativ dominant). Monitoring: Wenn Iran-Eskalation (IC GEOPOLITICS < -5): Öl-Spike-Risiko.",
-          "urgency": "ONGOING",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": false,
-          "id": "action_2026-04-01_021"
-        },
-        {
-          "type": "ACT",
-          "description": "A3 (CPI-Vorbereitung): Trigger obsolet (CPI März bereits vorbei). CLOSE empfohlen.",
-          "urgency": "THIS_WEEK",
-          "source_alerts": [],
-          "source_patterns": [],
-          "conviction_upgrade": true,
-          "upgrade_reason": "LOW System Conviction — REVIEW upgraded to ACT",
-          "id": "action_2026-04-01_022"
-        }
-      ]
+      "count": 0,
+      "items": []
     },
     "ongoing_conditions": []
   },
   "layers": {
     "status": "AVAILABLE",
-    "system_regime": "LATE_EXPANSION",
+    "system_regime": "NEUTRAL",
     "regime_stability_pct": null,
     "fragility_state": "ELEVATED",
     "fragility_data": {},
     "layer_scores": {
       "Global Liquidity Cycle (L1)": {
-        "score": -3,
+        "score": -4,
         "direction": "STABLE",
         "conviction": {
-          "data_clarity": 0.2,
+          "data_clarity": 0.5,
           "narrative_alignment": 0.3,
           "catalyst_fragility": 1.0,
           "regime_duration": 0.2,
           "composite": "LOW",
           "limiting_factor": {
-            "factor": "data_clarity",
+            "factor": "regime_duration",
             "value": 0.2,
-            "label": "Sub-scores conflicting — data sends mixed signals"
+            "label": "Regime too young or unstable"
           }
         },
         "limiting_factor": null
       },
       "Macro Regime (L2)": {
-        "score": -2,
+        "score": -1,
         "direction": "STABLE",
         "conviction": {
           "data_clarity": 0.14,
-          "narrative_alignment": 0.35,
-          "catalyst_fragility": 1.0,
+          "narrative_alignment": 0.5,
+          "catalyst_fragility": 0.1,
           "regime_duration": 0.2,
           "composite": "CONFLICTED",
           "limiting_factor": {
-            "factor": "data_clarity",
-            "value": 0.14,
-            "label": "Sub-scores conflicting — data sends mixed signals"
+            "factor": "catalyst_fragility",
+            "value": 0.1,
+            "label": "Major catalyst approaching — outcome uncertain"
           }
         },
         "limiting_factor": null
@@ -410,7 +149,7 @@
         "direction": "STABLE",
         "conviction": {
           "data_clarity": 0.33,
-          "narrative_alignment": 0.35,
+          "narrative_alignment": 0.5,
           "catalyst_fragility": 1.0,
           "regime_duration": 0.2,
           "composite": "LOW",
@@ -423,7 +162,7 @@
         "limiting_factor": null
       },
       "Cross-Border Flows & FX (L4)": {
-        "score": -1,
+        "score": 0,
         "direction": "STABLE",
         "conviction": {
           "data_clarity": 0.33,
@@ -457,11 +196,11 @@
         "limiting_factor": null
       },
       "Relative Value & Asset Rotation (L6)": {
-        "score": 1,
+        "score": 0,
         "direction": "STABLE",
         "conviction": {
           "data_clarity": 0.5,
-          "narrative_alignment": 0.4,
+          "narrative_alignment": 0.72,
           "catalyst_fragility": 1.0,
           "regime_duration": 0.2,
           "composite": "LOW",
@@ -474,12 +213,12 @@
         "limiting_factor": null
       },
       "Central Bank Policy Divergence (L7)": {
-        "score": 0,
+        "score": -1,
         "direction": "STABLE",
         "conviction": {
           "data_clarity": 0.0,
           "narrative_alignment": 0.5,
-          "catalyst_fragility": 1.0,
+          "catalyst_fragility": 0.1,
           "regime_duration": 0.2,
           "composite": "CONFLICTED",
           "limiting_factor": {
@@ -491,18 +230,18 @@
         "limiting_factor": null
       },
       "Tail Risk & Black Swan (L8)": {
-        "score": -1,
+        "score": 0,
         "direction": "STABLE",
         "conviction": {
-          "data_clarity": 0.33,
+          "data_clarity": 0.0,
           "narrative_alignment": 0.72,
           "catalyst_fragility": 1.0,
           "regime_duration": 0.2,
-          "composite": "LOW",
+          "composite": "CONFLICTED",
           "limiting_factor": {
-            "factor": "regime_duration",
-            "value": 0.2,
-            "label": "Regime too young or unstable"
+            "factor": "data_clarity",
+            "value": 0.0,
+            "label": "Sub-scores conflicting — data sends mixed signals"
           }
         },
         "limiting_factor": null
@@ -721,9 +460,9 @@
   "signals": {
     "status": "AVAILABLE",
     "execution_path": "FULL_PATH",
-    "trade_count": 5,
+    "trade_count": 4,
     "router_state": "US_DOMESTIC",
-    "router_days_in_state": 455,
+    "router_days_in_state": 456,
     "router_status": {
       "EM_BROAD": {
         "proximity": 0.0,
@@ -736,14 +475,14 @@
         "state": "INACTIVE"
       },
       "COMMODITY_SUPER": {
-        "proximity": 0.0,
-        "trend": "STABLE",
-        "state": "INACTIVE"
+        "proximity": 1.0,
+        "trend": "RISING",
+        "state": "APPROACHING"
       }
     },
-    "max_proximity": 0.0,
-    "max_proximity_trigger": null,
-    "effective_concentration": 0.03,
+    "max_proximity": 1.0,
+    "max_proximity_trigger": "COMMODITY_SUPER",
+    "effective_concentration": 0.1,
     "concentration_warning": false,
     "permopt_status": {
       "budget_pct": 0,
@@ -751,10 +490,10 @@
       "positions_count": 0
     },
     "has_actionable_recommendations": false,
-    "summary_for_cio": "F6/PermOpt/Fragility: UNAVAILABLE (V2)",
+    "summary_for_cio": "Router: COMMODITY_SUPER proximity at 100%. Approaching trigger. | F6/PermOpt/Fragility: UNAVAILABLE (V2)",
     "entry_evaluation": {
-      "is_evaluation_day": true,
-      "last_evaluation": null,
+      "is_evaluation_day": false,
+      "last_evaluation": "2026-04-01",
       "next_evaluation": "2026-05-01",
       "recommendation": null
     },
@@ -764,21 +503,21 @@
   },
   "risk": {
     "status": "AVAILABLE",
-    "portfolio_status": "RED",
+    "portfolio_status": "YELLOW",
     "alerts": [
       {
         "check_id": "EXP_SECTOR_CONCENTRATION",
         "severity": "WARNING",
         "trend": "STABLE",
-        "days_active": 2,
+        "days_active": 3,
         "details": {},
         "recommendation": "No action required. Monitor for further increases."
       },
       {
         "check_id": "EXP_SINGLE_NAME",
-        "severity": "CRITICAL",
-        "trend": "ESCALATING",
-        "days_active": 39,
+        "severity": "WARNING",
+        "trend": "DEESCALATING",
+        "days_active": 40,
         "details": {},
         "recommendation": ""
       },
@@ -786,15 +525,15 @@
         "check_id": "INT_REGIME_CONFLICT",
         "severity": "WARNING",
         "trend": "STABLE",
-        "days_active": 2,
+        "days_active": 3,
         "details": {},
         "recommendation": "V16 and Market Analyst slightly divergent. V16 validated — no action on V16 required. Monitor for V16 regime transition."
       },
       {
         "check_id": "TMP_EVENT_CALENDAR",
         "severity": "WARNING",
-        "trend": "NEW",
-        "days_active": 1,
+        "trend": "STABLE",
+        "days_active": 2,
         "details": {},
         "recommendation": "Macro event approaching. Existing risk assessments carry elevated uncertainty. No preemptive action recommended."
       }
@@ -808,31 +547,33 @@
     "ongoing_conditions_count": 1,
     "ongoing_conditions": [
       {
-        "id": "RO-20260401-004",
-        "severity": "WARNING",
+        "id": "RO-20260402-003",
+        "severity": "CRITICAL",
         "check_id": "EXP_SINGLE_NAME",
-        "message": "Single position DBC (V16) at 20.3% approaching limit.",
+        "message": "Single position HYG (V16) at 28.8% exceeds 25%.",
         "affected_positions": [
-          "DBC"
+          "HYG"
         ],
-        "affected_systems": [],
+        "affected_systems": [
+          "V16"
+        ],
         "trade_class": "A",
-        "current_value": 0.2027,
-        "threshold": 0.2,
+        "current_value": 0.2883,
+        "threshold": 0.25,
         "recommendation": "",
         "context": {
           "fragility_state": "ELEVATED",
           "event_in_48h": true,
           "next_event": "NFP",
-          "next_event_days": 2,
+          "next_event_days": 1,
           "g7_status": "UNAVAILABLE",
           "v16_state": "Risk-On",
           "dd_protect_active": false
         },
-        "previous_severity": "WARNING",
+        "previous_severity": "CRITICAL",
         "trend": "ONGOING",
-        "days_active": 39,
-        "base_severity": "MONITOR",
+        "days_active": 40,
+        "base_severity": "WARNING",
         "boost_applied": "EVENT_IMMINENT"
       }
     ],
@@ -843,7 +584,7 @@
       "effective_positions_source": "UNAVAILABLE",
       "last_correlation_update": null
     },
-    "risk_summary": "PORTFOLIO STATUS: RED. 1 CRITICAL ↑, 3 WARNING.\nSensitivity: not available (V1).\nCRITICAL↑: Single position HYG (V16) at 28.8% exceeds 25%.\nWARNING→: Effective Commodities Exposure 37.2% approaching warning level (35%).\nWARNING→: V16 state 'Risk-On' (regime: STEADY_GROWTH) diverges from Market Analyst assessment 'NEUTRAL' (lean: UNKNOWN). V16 operates on validated signals — thi\n(+1 more alerts, see full report)\nOngoing: EXP_SINGLE_NAME (WARNING, day 39)\nNext event: NFP in 2d",
+    "risk_summary": "PORTFOLIO STATUS: YELLOW. 4 WARNING.\nSensitivity: not available (V1).\nWARNING→: Effective Commodities Exposure 37.2% approaching warning level (35%).\nWARNING↓: Single position DBC (V16) at 20.3% approaching limit.\nWARNING→: V16 state 'Risk-On' (regime: STEADY_GROWTH) diverges from Market Analyst assessment 'NEUTRAL' (lean: UNKNOWN). V16 operates on validated signals — thi\n(+1 more alerts, see full report)\nOngoing: EXP_SINGLE_NAME (CRITICAL, day 40)\nNext event: NFP in 1d",
     "fast_path": false
   },
   "intelligence": {
@@ -5192,7 +4933,7 @@
       },
       "step_1_market_analyst": {
         "status": "OK",
-        "completed_at": "2026-04-01",
+        "completed_at": "2026-04-02",
         "summary": "Regime: NEUTRAL, Fragility: ELEVATED"
       },
       "step_2_signal_gen": {
@@ -5200,8 +4941,8 @@
       },
       "step_3_risk_officer": {
         "status": "OK",
-        "completed_at": "2026-04-01",
-        "summary": "RED — 4 alerts"
+        "completed_at": "2026-04-02",
+        "summary": "YELLOW — 4 alerts"
       },
       "step_4_cio_draft": {
         "status": "OK",
@@ -5213,16 +4954,16 @@
       },
       "step_6_cio_final": {
         "status": "OK",
-        "completed_at": "2026-04-01T07:37:15Z",
-        "summary": "ACTION briefing, 5233 words, conviction=LOW"
+        "completed_at": "2026-04-02T07:09:05Z",
+        "summary": "ACTION briefing, 1241 words, conviction=LOW"
       },
       "step_7_writer": {
         "status": "NOT_BUILT"
       },
       "step_2_signal_generator": {
         "status": "OK",
-        "completed_at": "2026-04-01T07:23:21.961641Z",
-        "summary": "FULL_PATH — Router: US_DOMESTIC, max prox: 0%"
+        "completed_at": "2026-04-02T07:07:28.098723Z",
+        "summary": "FULL_PATH — Router: US_DOMESTIC, max prox: 100%"
       }
     }
   },
