@@ -645,11 +645,12 @@ def run_engine(prices, macro, k16, rv, cm):
         cluster_weights[cn] = round(cw, 4)
 
     # State name mapping (aus PARAMS_STATE_ALIGN, rekalibriert 2026-02-21)
+    # 1:1 aus macro_state_engine.py (Single Source of Truth)
     STATE_NAMES = {
-        1: "STEADY_GROWTH", 2: "FRAGILE_EXPANSION", 3: "LATE_EXPANSION",
-        4: "FULL_EXPANSION", 5: "REFLATION", 6: "NEUTRAL",
-        7: "SOFT_LANDING", 8: "STRESS_ELEVATED", 9: "CONTRACTION",
-        10: "DEEP_CONTRACTION", 11: "FINANCIAL_CRISIS", 12: "EARLY_RECOVERY"
+        1: "FULL_EXPANSION", 2: "STEADY_GROWTH", 3: "LATE_EXPANSION",
+        4: "FRAGILE_EXPANSION", 5: "REFLATION", 6: "NEUTRAL",
+        7: "SOFT_LANDING", 8: "EARLY_RECOVERY", 9: "CONTRACTION",
+        10: "DEEP_CONTRACTION", 11: "STRESS_ELEVATED", 12: "FINANCIAL_CRISIS",
     }
 
     # Regime = offizieller State Name (1:1 aus Excel, kein Bucketing)
@@ -994,7 +995,7 @@ def main():
         # Spezielle Felder die V16 in anderen Bloecken updaten muss:
         # - layers.system_regime
         if 'layers' in existing and existing['layers']:
-            existing['layers']['system_regime'] = v16_data["regime"]
+            existing['layers']['system_regime'] = regime
         # - regime_context bleibt (wird von Steps gesetzt), V16 setzt nur Fallback
         if 'regime_context' not in existing or not existing.get('regime_context'):
             existing['regime_context'] = dashboard.get('regime_context', {})
