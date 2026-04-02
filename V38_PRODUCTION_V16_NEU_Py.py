@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 """
-V16_DAILY_RUNNER.py — Daily Production Runner
-==============================================
-Liest V16 Sheet, berechnet heutige Allokation (V38 Engine 1:1),
-generiert data/dashboard/latest.json fuer Vercel Frontend.
-
-Engine-Logik: Identisch zu V38_PRODUCTION_V16_NEU.py
-Output: Minimale dashboard.json mit V16-Daten (Schema v2.0 kompatibel)
-
-Laeuft taeglich via GitHub Actions um ~06:00 UTC.
+V38_PRODUCTION_V16_NEU.py — Global Macro RV System (V16-NEU)
+=============================================================
+25 tradeable Assets + PLATINUM/COPPER als Indikatoren
+9 Liquidity Transmission Channels (statt 4 RISK_CAT)
+8 differenzierte Cluster Caps (statt uniform KR1=0.65)
+CV-Cutoff (Aggro: high_cv=0.8, high_pct=80, mid_cv=0.5, mid_pct=70, low_pct=55)
+Basis: V38_PRODUCTION_V16_PATCHED.py (Engine 1:1)
+Sheet: Neues Sheet 11xoZ-... (27 Spalten)
+Performance-Erwartung (Backtest): ~34% CAGR, 2.76 Sharpe, -9.65% MaxDD
+Colab: !pip install pandas numpy gspread google-auth -q
 """
 import pandas as pd
 import numpy as np
-from datetime import datetime, timezone
-import json
-import os
-import sys
+from datetime import datetime
+import warnings
+warnings.filterwarnings('ignore')
 
 # ═══════════════════════════════════════════════════════
 # SHEET
@@ -36,7 +36,6 @@ ASSETS = [
     'BTC','ETH',
 ]
 
-# 9 Liquidity Transmission Channels
 RISK_CAT = {
     'GLD':'MONETARY_DIRECT', 'TLT':'MONETARY_DIRECT',
     'GDX':'MONETARY_LEVERAGED', 'GDXJ':'MONETARY_LEVERAGED', 'SIL':'MONETARY_LEVERAGED',
@@ -50,7 +49,6 @@ RISK_CAT = {
     'BTC':'SPECULATIVE_EXCESS', 'ETH':'SPECULATIVE_EXCESS',
 }
 
-# 8 Cluster Caps
 CLUSTERS = {
     'PM': ['GLD','SLV','GDX','GDXJ','SIL'],
     'EQ_CYCL': ['SPY','XLY','XLI','XLF','XLE','IWM'],
@@ -67,7 +65,6 @@ KR1 = {
     'PM': 0.29, 'EQ_CYCL': 0.35, 'EQ_DEFN': 0.34, 'EQ_GROW': 0.21,
     'EQ_INTL': 0.15, 'BOND': 0.36, 'COMMOD': 0.15, 'CRYPTO': 0.38,
 }
-
 TX_BPS = {a: (15 if a in ['BTC','ETH'] else 5) for a in ASSETS}
 
 # ═══════════════════════════════════════════════════════
@@ -91,7 +88,6 @@ HOWELL_STRESS = {
     'DEFENSIVE_DAMPENED': 0.4, 'GLOBAL_FLOW': 0.4, 'SPECULATIVE_EXCESS': 1.3,
 }
 
-# LIQ_ALIGN — 0.50 flat
 LIQ_ALIGN = {
     1: {ch: 0.50 for ch in set(RISK_CAT.values())},
     0: {ch: 0.50 for ch in set(RISK_CAT.values())},
@@ -219,20 +215,16 @@ RV_PAIR_ASSETS = {
 # ═══════════════════════════════════════════════════════
 W_SA = 0.75; W_LQ = 0.25; W_RV = 0.00; W_TM = 0.00; VOL_LB = 60
 SIGMOID_STEEP = 12; SIGMOID_MID = 0.50
-
 DD_PROT_LB = 8; DD_PROT_WARN = -0.08; DD_PROT_CRIT = -0.15
 MC_THRESHOLD = 0.03; MC_DD_EXEMPT = True
-
 RV_ZSCALE = 0.3; RV_STEEP = 0.5; RV_MID = 0.2
 RV_PCT_WINDOW = 252; RV_PCT_MINPER = 126
-
 ASSET_MAX_WT = 0.25; VOL_FLOOR = 0.08; BOND_CORR_THRESH = 0.30
 BOND_VOL_FLOOR_HIGH = 0.15; FM_EMA_SPAN = 5
-
 CV_CUTOFF = {'high_cv': 0.8, 'high_pct': 80, 'mid_cv': 0.5, 'mid_pct': 70, 'low_pct': 55}
 
 # ═══════════════════════════════════════════════════════
-# FUNCTIONS (identisch zu V38)
+# FUNCTIONS
 # ═══════════════════════════════════════════════════════
 def sigmoid_vec(x, s=SIGMOID_STEEP, m=SIGMOID_MID):
     return 1.0 / (1.0 + np.exp(-s * (x - m)))
@@ -306,12 +298,10 @@ def mets(r):
             'Vol': round(vol,2), 'Calmar': round(cal,2)}
 
 # ═══════════════════════════════════════════════════════
-# DATA LOADING (identisch zu V38)
+# DATA LOADING
 # ═══════════════════════════════════════════════════════
 def load_data():
-    print("\n" + "="*60)
-    print("DATEN LADEN")
-    print("="*60)
+    print("\n" + "="*70 + "\nSEKTION 1: DATEN LADEN\n" + "="*70)
     base = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet="
 
     def load_tab(name):
@@ -383,10 +373,9 @@ def load_data():
     return prices, macro, k16, rv_pct, cm
 
 # ═══════════════════════════════════════════════════════
-# ENGINE (identisch zu V38)
+# ENGINE
 # ═══════════════════════════════════════════════════════
-def run_engine(prices, macro, k16, rv, cm):
-    """Laeuft die V38-Engine und gibt heutige Gewichte + Metadaten zurueck."""
+def run_bt(prices, macro, k16, rv, cm, *, apply_mc=True, use_cv_cutoff=True, label="PROD"):
     ms_c = cm.get('ms','Macro_State_Num'); gr_c = cm.get('gr','Growth_Signal')
     st_c = cm.get('st','Stress_Score')
     N_ASSETS = len(ASSETS)
@@ -405,7 +394,7 @@ def run_engine(prices, macro, k16, rv, cm):
     df = df.sort_values('Date').reset_index(drop=True)
     N = len(df)
 
-    print(f"  OEWS+CTM...", end=' ', flush=True)
+    print(f"  [{label}] OEWS+CTM...", end=' ', flush=True)
     for a in ASSETS:
         if a in prices.columns:
             df = df.merge(calc_oews(prices, a), left_on='Date', right_index=True, how='left')
@@ -422,7 +411,7 @@ def run_engine(prices, macro, k16, rv, cm):
             if 'liq_dir' in c.lower(): ldc = c; break
 
     # SC-6
-    print(f"  SC-6...", end=' ', flush=True)
+    print(f"  [{label}] SC-6...", end=' ', flush=True)
     ld_vals = df[ldc].fillna(0).astype(float).values if ldc else np.zeros(N)
     st_vals = df[st_c].fillna(0).astype(float).values if st_c in df.columns else np.zeros(N)
     is_liq1 = (ld_vals == 1).astype(int)
@@ -448,7 +437,7 @@ def run_engine(prices, macro, k16, rv, cm):
             ret_matrix[:, j] = df[a].pct_change().fillna(0).values
 
     # Confluence + FM
-    print(f"  Confluence+FM...", end=' ', flush=True)
+    print(f"  [{label}] Confluence+FM...", end=' ', flush=True)
     fm_matrix = np.zeros((N, N_ASSETS))
     fm_matrix_pre_dd = np.zeros((N, N_ASSETS))
     dd_prot_active = np.zeros((N, N_ASSETS), dtype=bool)
@@ -518,18 +507,13 @@ def run_engine(prices, macro, k16, rv, cm):
         fm_matrix[:, j] = fm
         fm_matrix_pre_dd[:, j] = fm_pre_dd
 
-    print("OK", flush=True)
-
-    # DD-Protect
-    print(f"  DD-Prot...", end=' ', flush=True)
     print(f"OK | DD-Prot: {int(dd_prot_active.sum())} Asset-Tage", flush=True)
 
-    # KR-1 Cluster Caps
-    print(f"  KR-1...", end=' ', flush=True)
+    # KR-1
+    print(f"  [{label}] KR-1...", end=' ', flush=True)
     for cn, ca in CLUSTERS.items():
         idxs = [ASSETS.index(a) for a in ca if a in prices.columns]
-        if not idxs:
-            continue
+        if not idxs: continue
         cap = KR1[cn]
         for mat in [fm_matrix, fm_matrix_pre_dd]:
             cs = mat[:, idxs].sum(axis=1)
@@ -540,60 +524,70 @@ def run_engine(prices, macro, k16, rv, cm):
                     mat[over, idx] *= scale[over]
     print("OK", flush=True)
 
-    # Dynamic CV-Cutoff
-    print(f"  CV-Cutoff...", end=' ', flush=True)
-    assets_killed = 0
-    for i in range(N):
-        row = fm_matrix[i, :]
-        nonzero = row[row > 0.001]
-        if len(nonzero) > 2:
-            cv = np.std(nonzero) / np.mean(nonzero) if np.mean(nonzero) > 0 else 0
-            if cv > CV_CUTOFF['high_cv']:
-                pct = CV_CUTOFF['high_pct']
-            elif cv > CV_CUTOFF['mid_cv']:
-                pct = CV_CUTOFF['mid_pct']
-            else:
-                pct = CV_CUTOFF['low_pct']
-            threshold = np.percentile(nonzero, pct)
-            kill_mask = row < threshold
-            assets_killed += kill_mask.sum()
-            fm_matrix[i, kill_mask] = 0.0
-    avg_alive = N_ASSETS - assets_killed / N
-    print(f"OK | Avg alive: {avg_alive:.1f}/{N_ASSETS}", flush=True)
+    # CV-Cutoff
+    if use_cv_cutoff and CV_CUTOFF is not None:
+        print(f"  [{label}] CV-Cutoff...", end=' ', flush=True)
+        assets_killed = 0
+        for i in range(N):
+            row = fm_matrix[i, :]
+            nonzero = row[row > 0.001]
+            if len(nonzero) > 2:
+                cv = np.std(nonzero) / np.mean(nonzero) if np.mean(nonzero) > 0 else 0
+                if cv > CV_CUTOFF['high_cv']:
+                    pct = CV_CUTOFF['high_pct']
+                elif cv > CV_CUTOFF['mid_cv']:
+                    pct = CV_CUTOFF['mid_pct']
+                else:
+                    pct = CV_CUTOFF['low_pct']
+                threshold = np.percentile(nonzero, pct)
+                kill_mask = row < threshold
+                assets_killed += kill_mask.sum()
+                fm_matrix[i, kill_mask] = 0.0
+        avg_alive = N_ASSETS - assets_killed / N
+        print(f"OK | Avg alive: {avg_alive:.1f}/{N_ASSETS}", flush=True)
 
     fm_sum_pre = fm_matrix.sum(axis=1)
 
     denom = np.where(fm_sum_pre < 0.01, 1.0, fm_sum_pre)
 
-    # Portfolio with MC
-    print(f"  Portfolio (MC)...", end=' ', flush=True)
+    # Portfolio
+    print(f"  [{label}] Portfolio...", end=' ', flush=True)
     w_target = fm_matrix / denom.reshape(-1, 1)
 
-    w_actual = np.zeros_like(w_target)
-    port_ret_mc = np.zeros(N)
-    w_actual[0] = w_target[0]
-    port_ret_mc[0] = (w_actual[0] * ret_matrix[0]).sum()
-    for i in range(1, N):
-        w_drifted = w_actual[i-1] * (1 + ret_matrix[i])
-        ws = w_drifted.sum()
-        w_drifted = w_drifted / ws if ws > 1e-8 else w_target[i]
-        max_dev = np.abs(w_target[i] - w_drifted).max()
-        if max_dev > MC_THRESHOLD:
-            w_actual[i] = w_target[i]
-        else:
-            w_actual[i] = w_drifted
-        if MC_DD_EXEMPT:
-            changed = False
-            for j in range(N_ASSETS):
-                if dd_prot_active[i, j]:
-                    w_actual[i, j] = w_target[i, j]
-                    changed = True
-            if changed:
-                ws2 = w_actual[i].sum()
-                if ws2 > 1e-8:
-                    w_actual[i] = w_actual[i] / ws2
-        port_ret_mc[i] = (w_actual[i] * ret_matrix[i]).sum()
+    if apply_mc:
+        w_actual = np.zeros_like(w_target)
+        port_ret_mc = np.zeros(N)
+        w_actual[0] = w_target[0]
+        port_ret_mc[0] = (w_actual[0] * ret_matrix[0]).sum()
+        for i in range(1, N):
+            w_drifted = w_actual[i-1] * (1 + ret_matrix[i])
+            ws = w_drifted.sum()
+            w_drifted = w_drifted / ws if ws > 1e-8 else w_target[i]
+            max_dev = np.abs(w_target[i] - w_drifted).max()
+            if max_dev > MC_THRESHOLD:
+                w_actual[i] = w_target[i]
+            else:
+                w_actual[i] = w_drifted
+            if MC_DD_EXEMPT:
+                changed = False
+                for j in range(N_ASSETS):
+                    if dd_prot_active[i, j]:
+                        w_actual[i, j] = w_target[i, j]
+                        changed = True
+                if changed:
+                    ws2 = w_actual[i].sum()
+                    if ws2 > 1e-8:
+                        w_actual[i] = w_actual[i] / ws2
+            port_ret_mc[i] = (w_actual[i] * ret_matrix[i]).sum()
+        w_matrix = w_actual
+        port_ret = port_ret_mc
+    else:
+        port_ret = (fm_matrix * ret_matrix).sum(axis=1) / denom
+        w_matrix = w_target
     print("OK", flush=True)
+
+    spy_idx = ASSETS.index('SPY')
+    spy_ret = ret_matrix[:, spy_idx]
 
     # Trim to 2007-07-01
     dates = df['Date'].values
@@ -601,530 +595,89 @@ def run_engine(prices, macro, k16, rv, cm):
     mask = dates >= start
     idx_s = np.argmax(mask)
     sl = slice(idx_s, None)
-    pr_s = pd.Series(port_ret_mc[sl]).reset_index(drop=True)
-    spy_idx = ASSETS.index('SPY')
-    spy_ret = ret_matrix[:, spy_idx]
+    pr_s = pd.Series(port_ret[sl]).reset_index(drop=True)
     spy_s = pd.Series(spy_ret[sl]).reset_index(drop=True)
-    wdf = pd.DataFrame(w_actual[sl], columns=ASSETS)
+    wdf = pd.DataFrame(w_matrix[sl], columns=ASSETS)
+    ret_df = pd.DataFrame(ret_matrix[sl], columns=ASSETS)
     dates_s = pd.Series(dates[sl]).reset_index(drop=True)
 
-    # Performance metrics
-    m_prod = mets(pr_s)
-    m_spy = mets(spy_s)
-
-    # Extract TODAY's data (last row)
-    last_idx = len(dates_s) - 1
-    today_date = pd.Timestamp(dates_s.iloc[last_idx])
-    today_weights = {a: round(float(wdf.iloc[last_idx][a]), 6) for a in ASSETS}
-    today_target_weights = {a: round(float(w_target[sl][last_idx, j]), 6) for j, a in enumerate(ASSETS)}
-    today_macro_state = int(eff_ms[idx_s + last_idx])
-    today_growth = int(gr_vals[idx_s + last_idx])
-    today_liq_dir = int(ld_int[idx_s + last_idx])
-    today_stress = int(eff_st_arr[idx_s + last_idx])
-
-    # DD-Protect Status
-    today_dd_prot = [ASSETS[j] for j in range(N_ASSETS) if dd_prot_active[idx_s + last_idx, j]]
-
-    # Cumulative return for drawdown calc
-    cum = (1 + pr_s).cumprod()
-    current_dd = float((cum.iloc[-1] / cum.cummax().iloc[-1] - 1) * 100)
-
-    # Top weights
-    sorted_wts = sorted(today_weights.items(), key=lambda x: x[1], reverse=True)
-    top5 = [{"ticker": t, "weight": w} for t, w in sorted_wts[:5]]
-
-    # Cluster weights
-    cluster_weights = {}
-    for cn, ca in CLUSTERS.items():
-        cw = sum(today_weights.get(a, 0) for a in ca)
-        cluster_weights[cn] = round(cw, 4)
-
-    # State name mapping (aus PARAMS_STATE_ALIGN, rekalibriert 2026-02-21)
-    # 1:1 aus macro_state_engine.py (Single Source of Truth)
-    STATE_NAMES = {
-        1: "FULL_EXPANSION", 2: "STEADY_GROWTH", 3: "LATE_EXPANSION",
-        4: "FRAGILE_EXPANSION", 5: "REFLATION", 6: "NEUTRAL",
-        7: "SOFT_LANDING", 8: "EARLY_RECOVERY", 9: "CONTRACTION",
-        10: "DEEP_CONTRACTION", 11: "STRESS_ELEVATED", 12: "FINANCIAL_CRISIS",
-    }
-
-    # Regime = offizieller State Name (1:1 aus Excel, kein Bucketing)
-    regime = STATE_NAMES.get(today_macro_state, "NEUTRAL")
-
-    return {
-        "date": today_date.strftime('%Y-%m-%d'),
-        "regime": regime,
-        "macro_state_num": today_macro_state,
-        "macro_state_name": STATE_NAMES.get(today_macro_state, f"STATE_{today_macro_state}"),
-        "growth_signal": today_growth,
-        "liq_direction": today_liq_dir,
-        "stress_score": today_stress,
-        "current_weights": today_weights,
-        "target_weights": today_target_weights,
-        "top_5_weights": top5,
-        "cluster_weights": cluster_weights,
-        "dd_protect_active": today_dd_prot,
-        "current_drawdown_pct": round(current_dd, 2),
-        "performance": m_prod,
-        "spy_performance": m_spy,
-        "data_date": prices['Date'].max().strftime('%Y-%m-%d'),
-        "assets_count": len(found) if 'found' in dir() else len([a for a in ASSETS if a in prices.columns]),
-        "history_days": len(dates_s),
-    }
-
-
-# ═══════════════════════════════════════════════════════
-# WEIGHT DELTAS + ROTATION TRACKING
-# ═══════════════════════════════════════════════════════
-def _compute_weight_deltas(current_weights, previous_weights):
-    """Berechnet Gewichts-Deltas zwischen aktuellem und vorherigem Portfolio.
-
-    Returns dict mit:
-        - top_increases: Top 5 Ticker mit groesstem Zuwachs
-        - top_decreases: Top 5 Ticker mit groesstem Rueckgang
-        - rotation_needed: True wenn max Delta > 3% (MC_THRESHOLD)
-        - max_delta_pct: Groesste absolute Abweichung in %
-        - new_positions: Ticker die neu ins Portfolio kommen (vorher 0)
-        - exited_positions: Ticker die rausfliegen (jetzt 0, vorher >0)
-        - total_turnover_pct: Summe aller absoluten Deltas / 2 (One-Way)
-    """
-    if not previous_weights:
-        return {
-            "top_increases": [], "top_decreases": [],
-            "rotation_needed": False, "max_delta_pct": 0,
-            "new_positions": [], "exited_positions": [],
-            "total_turnover_pct": 0,
-            "has_previous": False,
-        }
-
-    all_tickers = set(list(current_weights.keys()) + list(previous_weights.keys()))
-    deltas = {}
-    for t in all_tickers:
-        curr = current_weights.get(t, 0)
-        prev = previous_weights.get(t, 0)
-        d = curr - prev
-        if abs(d) > 0.0001:
-            deltas[t] = round(d, 6)
-
-    sorted_inc = sorted([(t, d) for t, d in deltas.items() if d > 0], key=lambda x: x[1], reverse=True)
-    sorted_dec = sorted([(t, d) for t, d in deltas.items() if d < 0], key=lambda x: x[1])
-
-    top_increases = [{"ticker": t, "delta": round(d * 100, 2)} for t, d in sorted_inc[:5]]
-    top_decreases = [{"ticker": t, "delta": round(d * 100, 2)} for t, d in sorted_dec[:5]]
-
-    new_positions = [t for t, d in deltas.items() if d > 0 and previous_weights.get(t, 0) < 0.001]
-    exited_positions = [t for t, d in deltas.items() if d < 0 and current_weights.get(t, 0) < 0.001]
-
-    abs_deltas = [abs(d) for d in deltas.values()]
-    max_delta = max(abs_deltas) if abs_deltas else 0
-    turnover = sum(abs_deltas) / 2  # One-Way
-
-    return {
-        "top_increases": top_increases,
-        "top_decreases": top_decreases,
-        "rotation_needed": max_delta > 0.03,  # MC_THRESHOLD = 3%
-        "max_delta_pct": round(max_delta * 100, 2),
-        "new_positions": new_positions,
-        "exited_positions": exited_positions,
-        "total_turnover_pct": round(turnover * 100, 2),
-        "has_previous": True,
-    }
-
-
-# ═══════════════════════════════════════════════════════
-# DASHBOARD JSON BUILDER
-# ═══════════════════════════════════════════════════════
-def build_dashboard_json(v16_data, previous_weights=None):
-    """Baut eine Schema-v2.0-kompatible dashboard.json aus V16-Daten.
-    Felder die wir noch nicht haben (Agenten-Pipeline) werden mit Platzhaltern gefuellt.
-
-    Args:
-        v16_data: Engine-Output dict
-        previous_weights: dict {ticker: weight} aus gestriger latest.json (oder None)
-    """
-
-    now_utc = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    date = v16_data["date"]
-    regime = v16_data["regime"]
-
-    # Briefing type heuristic (vereinfacht, bis CIO-Agent steht)
-    stress = v16_data["stress_score"]
-    dd_active = len(v16_data["dd_protect_active"]) > 0
-    if stress >= 2 or dd_active:
-        briefing_type = "ACTION"
-    elif stress >= 1:
-        briefing_type = "WATCH"
-    else:
-        briefing_type = "ROUTINE"
-
-    dashboard = {
-        "schema_version": "2.0",
-        "date": date,
-        "weekday": pd.Timestamp(date).day_name(),
-        "generated_at": now_utc,
-        "degradation_level": "PARTIAL",
-        "degradation_banner": "Pipeline Phase 1: Nur V16-Daten. Agenten-Pipeline noch nicht aktiv.",
-
-        # ── HEADER ──
-        "header": {
-            "date": date,
-            "weekday": pd.Timestamp(date).day_name(),
-            "briefing_type": briefing_type,
-            "system_conviction": "N/A",
-            "risk_ampel": "YELLOW" if stress >= 1 else "GREEN",
-            "fragility_state": "N/A",
-            "v16_regime": regime,
-            "data_quality": "PARTIAL",
-            "pipeline_status": "PHASE_1",
-            "f6_positions_count": 0,
-            "alerts_active_count": len(v16_data["dd_protect_active"]),
-            "divergences_count": 0,
-            "action_items_act_count": 0,
-            "action_items_review_count": 0,
-            "action_items_watch_count": 0,
-            "da_challenges_total": 0,
-            "da_accepted": 0,
-            "da_noted": 0,
-            "da_rejected": 0,
-            "fact_check_corrections": 0,
-            "is_draft_fallback": False,
-        },
-
-        # ── DIGEST ──
-        "digest": {
-            "line_1_type_and_delta": f"{briefing_type} — V16 Regime: {regime} (State {v16_data['macro_state_num']}: {v16_data['macro_state_name']})",
-            "line_2_actions": f"V16 DD-Protect: {len(v16_data['dd_protect_active'])} Assets. Growth={v16_data['growth_signal']}, Liq={v16_data['liq_direction']}, Stress={v16_data['stress_score']}.",
-            "line_3_confidence": f"Pipeline Phase 1 (nur V16). CAGR={v16_data['performance']['CAGR']}%, Sharpe={v16_data['performance']['Sharpe']}. Agenten-Pipeline noch nicht aktiv.",
-        },
-
-        # ── DELTAS ── (leer bis wir yesterday-Vergleich haben)
-        "deltas": {"has_yesterday": False},
-
-        # ── REGIME CONTEXT ──
-        "regime_context": {
-            "layout_mode": "STANDARD",
-            "panel_priorities": {},
-            "auto_expand": ["digest", "v16"],
-            "auto_minimize": [],
-            "show_operative_details": False,
-        },
-
-        # ── CONSISTENCY FLAGS ──
-        "consistency_flags": [],
-
-        # ── OVERCONFIDENCE ──
-        "overconfidence": {"flag": False, "message": None, "da_prominence": "NORMAL", "confidence_saturation": None},
-
-        # ── BRIEFING ── (Platzhalter bis CIO-Agent steht)
-        "briefing": {
-            "status": "UNAVAILABLE",
-            "source": "NONE",
-            "full_text": "CIO Briefing noch nicht verfuegbar (Pipeline Phase 1).",
-            "sections": {},
-            "section_word_counts": {},
-            "da_markers": [],
-            "da_resolution_summary": {"total": 0, "accepted": 0, "noted": 0, "rejected": 0, "details": []},
-            "key_assumptions": [],
-            "confidence_markers": [],
-        },
-
-        # ── ACTION ITEMS ── (Platzhalter)
-        "action_items": {
-            "summary": {"act_count": 0, "review_count": 0, "watch_count": 0, "total": 0,
-                         "escalated_today": 0, "new_today": 0, "resolved_today": 0},
-            "prominent": [],
-            "aggregated": {"count": 0, "items": []},
-            "ongoing_conditions": [],
-        },
-
-        # ── LAYERS ── (Platzhalter bis Market Analyst steht)
-        "layers": {
-            "status": "UNAVAILABLE",
-            "system_regime": regime,
-            "regime_stability_pct": None,
-            "fragility_state": "N/A",
-            "fragility_data": {},
-            "layer_scores": {},
-        },
-
-        # ── V16 ── (ECHTE DATEN)
-        "v16": {
-            "status": "AVAILABLE",
-            "regime": regime,
-            "regime_confidence": None,
-            "macro_state_num": v16_data["macro_state_num"],
-            "macro_state_name": v16_data["macro_state_name"],
-            "growth_signal": v16_data["growth_signal"],
-            "liq_direction": v16_data["liq_direction"],
-            "stress_score": v16_data["stress_score"],
-            "dd_protect_status": "ACTIVE" if v16_data["dd_protect_active"] else "INACTIVE",
-            "dd_protect_assets": v16_data["dd_protect_active"],
-            "current_drawdown": v16_data["current_drawdown_pct"],
-            "dd_protect_threshold": -10.0,
-            "current_weights": v16_data["current_weights"],
-            "target_weights": v16_data["target_weights"],
-            "previous_weights": previous_weights or {},
-            "top_5_weights": v16_data["top_5_weights"],
-            "cluster_weights": v16_data["cluster_weights"],
-            "weight_deltas": _compute_weight_deltas(v16_data["current_weights"], previous_weights),
-            "performance": v16_data["performance"],
-            "spy_performance": v16_data["spy_performance"],
-        },
-
-        # ── F6 ── (Platzhalter)
-        "f6": {
-            "status": "UNAVAILABLE",
-            "portfolio_summary": {"positions_count": 0, "pending_signals_count": 0,
-                                   "total_exposure_pct": 0, "avg_holding_days": 0, "cc_coverage_pct": 0},
-            "active_positions": [],
-            "pending_signals": [],
-            "cc_expiry_warnings": [],
-        },
-
-        # ── SIGNALS ── (Platzhalter)
-        "signals": {
-            "status": "UNAVAILABLE",
-            "trade_count": 0,
-            "router_status": {},
-            "effective_concentration": None,
-            "permopt_status": {"budget_pct": 0.05, "active": False, "positions_count": 0},
-        },
-
-        # ── RISK ── (Minimal aus V16 DD-Protect)
-        "risk": {
-            "status": "PARTIAL",
-            "portfolio_status": "YELLOW" if stress >= 1 else "GREEN",
-            "alerts": [
-                {"id": f"DD-{a}", "check_name": "DD_PROTECT", "severity": "WARNING",
-                 "message": f"DD-Protect aktiv fuer {a}", "trend": "ACTIVE", "days_active": 1}
-                for a in v16_data["dd_protect_active"]
-            ],
-            "emergency_triggers": {
-                "max_drawdown_breach": False, "correlation_crisis": False,
-                "liquidity_crisis": False, "regime_forced": False,
-            },
-            "ongoing_conditions_count": 0,
-            "ongoing_conditions": [],
-        },
-
-        # ── INTELLIGENCE ── (Platzhalter)
-        "intelligence": {
-            "status": "UNAVAILABLE",
-            "consensus": {},
-            "divergences": [],
-            "divergences_count": 0,
-            "high_novelty_claims": [],
-            "catalyst_timeline": [],
-        },
-
-        # ── PIPELINE HEALTH ──
-        "pipeline_health": {
-            "overall_status": "PHASE_1",
-            "steps": {
-                "v16_daily_runner": {"status": "OK", "completed_at": now_utc, "summary": "V16 Gewichte berechnet"},
-                "step_0a_dc": {"status": "NOT_BUILT", "summary": "Data Collector noch nicht implementiert"},
-                "step_0b_ic": {"status": "NOT_BUILT", "summary": "Intelligence Collector noch nicht implementiert"},
-                "step_1_market_analyst": {"status": "NOT_BUILT"},
-                "step_2_signal_gen": {"status": "NOT_BUILT"},
-                "step_3_risk_officer": {"status": "NOT_BUILT"},
-                "step_4_cio_draft": {"status": "NOT_BUILT"},
-                "step_5_da": {"status": "NOT_BUILT"},
-                "step_6_cio_final": {"status": "NOT_BUILT"},
-                "step_7_writer": {"status": "NOT_BUILT"},
-            },
-        },
-
-        # ── KNOWN UNKNOWNS ──
-        "known_unknowns": [
-            {"gap": "FULL_PIPELINE", "reason": "phase_1_v16_only", "permanent": False},
-            {"gap": "CIO_BRIEFING", "reason": "cio_agent_not_built", "permanent": False},
-            {"gap": "INTELLIGENCE", "reason": "ic_not_built", "permanent": False},
-            {"gap": "LAYER_SCORES", "reason": "market_analyst_not_built", "permanent": False},
-        ],
-
-        # ── TEMPORAL MAP ──
-        "temporal_map": {
-            "market_data_as_of": v16_data["data_date"] + "T21:00:00Z",
-            "v16_regime_based_on": v16_data["data_date"] + " close",
-            "dashboard_rendered_at": now_utc,
-        },
-
-        # ── AGENT R CONTEXT ──
-        "agent_r_context": {
-            "date": date,
-            "briefing_type": briefing_type,
-            "regime": regime,
-            "regime_transition": False,
-            "conviction": "N/A",
-            "risk_ampel": "YELLOW" if stress >= 1 else "GREEN",
-            "data_quality": "PARTIAL",
-            "top_risk": f"DD-Protect: {v16_data['dd_protect_active']}" if v16_data["dd_protect_active"] else "Kein akutes Risiko",
-            "action_items_act": [],
-            "action_items_review": [],
-            "divergences": [],
-            "consistency_flags": [],
-            "f6_pending": [],
-            "cc_expiry_warnings": [],
-            "regime_stability_pct": None,
-        },
-
-        # ── TIMESERIES ROW ──
-        "timeseries_row": {
-            "date": date,
-            "regime": regime,
-            "macro_state": v16_data["macro_state_num"],
-            "growth": v16_data["growth_signal"],
-            "liq_dir": v16_data["liq_direction"],
-            "stress": v16_data["stress_score"],
-            "dd_protect_count": len(v16_data["dd_protect_active"]),
-            "pipeline_status": "PHASE_1",
-        },
-
-        # ── VALIDATION ──
-        "validation": {
-            "status": "PASS",
-            "checks_run": 3,
-            "checks_passed": 3,
-            "checks_failed": 0,
-            "warnings": ["Pipeline Phase 1: Nur V16-Daten verfuegbar"],
-            "errors": [],
-        },
-    }
-
-    return dashboard
-
+    return pr_s, wdf, dates_s, spy_s, ret_df
 
 # ═══════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════
 def main():
     t0 = datetime.now()
-    print("="*60)
-    print("V16 DAILY RUNNER — Phase 1")
-    print(f"Datum: {t0.strftime('%Y-%m-%d %H:%M:%S UTC')}")
+    print("="*70)
+    print("V38_PRODUCTION_V16_NEU.py — Global Macro RV System (25 Assets)")
+    print(f"Datum: {t0.strftime('%Y-%m-%d %H:%M')}")
     print(f"Assets: {len(ASSETS)} | Channels: 9 | Clusters: {len(CLUSTERS)}")
-    print("="*60)
+    print(f"CV-Cutoff: Aggro | SA=0.75/LQ=0.25 | DD-Prot LB=8/-8%/-15%")
+    print("="*70)
 
-    # 1. Load data
-    prices, macro, k16, rv_pct, cm = load_data()
+    prices, macro, k16, rv, cm = load_data()
 
-    # 2. Run engine
-    print("\n" + "="*60)
-    print("ENGINE (V38 1:1)")
-    print("="*60)
-    v16_data = run_engine(prices, macro, k16, rv_pct, cm)
+    # PRODUCTION RUN
+    print("\n" + "="*70 + "\nSEKTION 2: PRODUCTION (N48 + MC-3%+DDex + CV-Cutoff)\n" + "="*70)
+    r_prod, w_prod, dates, spy, ret_df = run_bt(
+        prices, macro, k16, rv, cm, apply_mc=True, use_cv_cutoff=True, label="PROD")
+    m_prod = mets(r_prod)
+    m_spy = mets(spy)
 
-    # 3. Build dashboard JSON
-    print("\n" + "="*60)
-    print("DASHBOARD JSON")
-    print("="*60)
+    # RAW
+    print("\n" + "="*70 + "\nSEKTION 3: RAW (no MC, no cutoff)\n" + "="*70)
+    r_raw, w_raw, _, _, _ = run_bt(
+        prices, macro, k16, rv, cm, apply_mc=False, use_cv_cutoff=False, label="RAW")
+    m_raw = mets(r_raw)
 
-    # Bestehende latest.json laden fuer Previous Weights
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    out_dir = os.path.join(script_dir, "data", "dashboard")
-    os.makedirs(out_dir, exist_ok=True)
-    latest_path = os.path.join(out_dir, "latest.json")
+    # Summary
+    print(f"\n{'='*70}")
+    print(f"ERGEBNISSE")
+    print(f"{'='*70}")
+    print(f"\n  {'Variant':<20} {'CAGR':>8} {'Sharpe':>8} {'MaxDD':>8} {'Vol':>8} {'Calmar':>8}")
+    print("  " + "-"*60)
+    print(f"  {'PRODUCTION':<20} {m_prod['CAGR']:>7.2f}% {m_prod['Sharpe']:>8.2f} {m_prod['MaxDD']:>7.2f}% {m_prod['Vol']:>7.2f}% {m_prod['Calmar']:>8.2f}")
+    print(f"  {'RAW (no MC/CV)':<20} {m_raw['CAGR']:>7.2f}% {m_raw['Sharpe']:>8.2f} {m_raw['MaxDD']:>7.2f}% {m_raw['Vol']:>7.2f}% {m_raw['Calmar']:>8.2f}")
+    print(f"  {'SPY':<20} {m_spy['CAGR']:>7.2f}% {m_spy['Sharpe']:>8.2f} {m_spy['MaxDD']:>7.2f}% {m_spy['Vol']:>7.2f}% {m_spy['Calmar']:>8.2f}")
 
-    existing = {}
-    previous_weights = None
-    if os.path.exists(latest_path):
-        try:
-            with open(latest_path, 'r', encoding='utf-8') as f:
-                existing = json.load(f)
-            print(f"  Bestehende latest.json geladen ({os.path.getsize(latest_path)} bytes)")
-            # Previous Weights extrahieren
-            prev_v16 = existing.get('v16', {})
-            if prev_v16.get('current_weights'):
-                previous_weights = prev_v16['current_weights']
-                prev_date = existing.get('date', '?')
-                print(f"  Previous Weights geladen (vom {prev_date})")
-        except (json.JSONDecodeError, IOError):
-            print("  [WARN] latest.json nicht lesbar — schreibe komplett neu")
-            existing = {}
+    # Turnover
+    to_prod = round(w_prod.diff().abs().sum(axis=1).mean() * 252, 1)
+    tx_prod = sum(w_prod[a].diff().abs() * TX_BPS[a] / 10000 for a in ASSETS if a in w_prod.columns).mean() * 252 * 100
+    print(f"\n  Turnover: {to_prod:.1f}x | TX: {tx_prod:.2f}pp | Netto: {m_prod['CAGR']-tx_prod:.2f}%")
 
-    dashboard = build_dashboard_json(v16_data, previous_weights=previous_weights)
+    # Cluster Weights
+    print(f"\n  Cluster Weights (avg):")
+    for cn, ca in CLUSTERS.items():
+        cw = sum(w_prod[a].mean() for a in ca if a in w_prod.columns) * 100
+        print(f"    {cn:<10}: {cw:>5.1f}%")
 
-    # Rotation-Info ausgeben
-    wd = dashboard.get('v16', {}).get('weight_deltas', {})
-    if wd.get('has_previous'):
-        rot = "JA" if wd['rotation_needed'] else "NEIN"
-        print(f"  Rotation noetig: {rot} (Max Delta: {wd['max_delta_pct']:.1f}%, Turnover: {wd['total_turnover_pct']:.1f}%)")
-        if wd.get('new_positions'):
-            print(f"  Neue Positionen: {', '.join(wd['new_positions'])}")
-        if wd.get('exited_positions'):
-            print(f"  Exits: {', '.join(wd['exited_positions'])}")
-    else:
-        print("  Kein Previous Portfolio — erster Run oder keine bestehende latest.json")
+    # Yearly
+    print(f"\n--- JAHRESVERGLEICH ---")
+    print(f"  {'Jahr':<6} {'PROD':>10} {'RAW':>10} {'SPY':>10}")
+    print("  " + "-"*36)
+    for yr in sorted(dates.dt.year.unique()):
+        mask = dates.dt.year == yr
+        rp = (1+r_prod[mask]).prod()-1 if mask.sum() > 0 else np.nan
+        rr = (1+r_raw[mask]).prod()-1 if mask.sum() > 0 else np.nan
+        rs = (1+spy[mask]).prod()-1 if mask.sum() > 0 else np.nan
+        print(f"  {yr:<6} {rp*100:>10.1f}% {rr*100:>10.1f}% {rs*100:>10.1f}%")
 
-    # V16-eigene Bloecke in bestehende JSON mergen
-    # Diese Bloecke gehoeren dem V16 Runner und werden IMMER ueberschrieben:
-    v16_owned_keys = [
-        'schema_version', 'date', 'weekday', 'generated_at',
-        'header', 'digest', 'deltas', 'v16',
-        'timeseries_row', 'temporal_map', 'agent_r_context', 'validation',
-    ]
+    # CSV Export
+    print(f"\n{'='*70}")
+    print("CSV EXPORT")
+    print(f"{'='*70}")
+    pd.DataFrame({'Date': dates.values, 'PROD': r_prod.values, 'SPY': spy.values}).to_csv('V16_NEU_DAILY.csv', index=False)
+    print("V16_NEU_DAILY.csv")
+    wout = w_prod.copy(); wout.insert(0, 'Date', dates.values)
+    wout.to_csv('V16_NEU_WEIGHTS.csv', index=False)
+    print("V16_NEU_WEIGHTS.csv")
 
-    if existing:
-        # Merge: V16-Bloecke updaten, Rest behalten
-        for key in v16_owned_keys:
-            if key in dashboard:
-                existing[key] = dashboard[key]
-
-        # Spezielle Felder die V16 in anderen Bloecken updaten muss:
-        # - layers.system_regime
-        if 'layers' in existing and existing['layers']:
-            existing['layers']['system_regime'] = v16_data["regime"]
-        # - regime_context bleibt (wird von Steps gesetzt), V16 setzt nur Fallback
-        if 'regime_context' not in existing or not existing.get('regime_context'):
-            existing['regime_context'] = dashboard.get('regime_context', {})
-        # - degradation_level/banner nur setzen wenn noch kein besserer Status
-        if existing.get('degradation_level') in (None, 'PARTIAL', 'UNAVAILABLE'):
-            existing['degradation_level'] = dashboard.get('degradation_level', 'PARTIAL')
-            existing['degradation_banner'] = dashboard.get('degradation_banner', '')
-
-        # Bloecke die V16 NUR als Platzhalter hat — NICHT ueberschreiben wenn bereits befuellt:
-        placeholder_keys = [
-            'briefing', 'action_items', 'layers', 'f6', 'signals', 'risk',
-            'intelligence', 'pipeline_health', 'known_unknowns',
-            'consistency_flags', 'overconfidence',
-            'execution', 'rotation', 'g7_summary', 'disruptions',
-        ]
-        for key in placeholder_keys:
-            if key not in existing and key in dashboard:
-                existing[key] = dashboard[key]
-
-        merged = existing
-        print(f"  MERGE: {len(v16_owned_keys)} V16-Bloecke aktualisiert, Rest beibehalten")
-    else:
-        # Kein bestehendes File — schreibe alles (erster Run)
-        merged = dashboard
-        print("  FRESH: Neue latest.json erstellt (kein bestehendes File)")
-
-    # latest.json schreiben
-    with open(latest_path, 'w', encoding='utf-8') as f:
-        json.dump(merged, f, indent=2, ensure_ascii=False)
-    print(f"  latest.json ({os.path.getsize(latest_path)} bytes)")
-
-    # Datiertes Backup (immer nur V16-Daten, nicht merged)
-    dated_path = os.path.join(out_dir, f"dashboard_{v16_data['date']}.json")
-    with open(dated_path, 'w', encoding='utf-8') as f:
-        json.dump(dashboard, f, indent=2, ensure_ascii=False)
-    print(f"  dashboard_{v16_data['date']}.json (Backup, V16-only)")
-
-    # 5. Summary
     elapsed = (datetime.now() - t0).total_seconds()
-    print(f"\n{'='*60}")
-    print(f"FERTIG ({elapsed:.0f}s)")
-    print(f"{'='*60}")
-    print(f"  Date:    {v16_data['date']}")
-    print(f"  Regime:  {v16_data['regime']} (State {v16_data['macro_state_num']}: {v16_data['macro_state_name']})")
-    print(f"  Growth:  {v16_data['growth_signal']} | Liq: {v16_data['liq_direction']} | Stress: {v16_data['stress_score']}")
-    print(f"  DD-Prot: {v16_data['dd_protect_active'] or 'Keine'}")
-    print(f"  Top 5:   {', '.join(f'{w['ticker']}={w['weight']:.1%}' for w in v16_data['top_5_weights'])}")
-    print(f"  CAGR:    {v16_data['performance']['CAGR']}% | Sharpe: {v16_data['performance']['Sharpe']}")
-    print(f"  Output:  {latest_path}")
-
-    return 0
+    print(f"\n{'='*70}")
+    print(f"V38_PRODUCTION_V16_NEU — FERTIG ({elapsed:.0f}s)")
+    print(f"{'='*70}")
+    print(f"  PRODUCTION: CAGR={m_prod['CAGR']:.2f}%, Sharpe={m_prod['Sharpe']:.2f}, MaxDD={m_prod['MaxDD']:.2f}%")
+    print(f"  SPY: CAGR={m_spy['CAGR']:.2f}%")
 
 if __name__ == '__main__':
-    sys.exit(main() or 0)
+    main()
