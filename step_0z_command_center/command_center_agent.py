@@ -704,7 +704,10 @@ def load_v16_weights():
 
 
 def compute_portfolio_pnl(sheet_data, weights):
-    """Berechne Portfolio Daily P&L + YTD (Spec TEIL2 §7.2)."""
+    """Berechne Portfolio Daily P&L + YTD (Spec TEIL2 §7.2).
+    Daily P&L: heutige Gewichte × 1-Tages-Returns (korrekte Approximation).
+    YTD: aus latest.json (korrekt kumuliert vom Daily Runner).
+    """
     if not sheet_data or not weights:
         return {
             "daily_return_pct": 0, "ytd_return_pct": 0, "daily_return_eur": 0,
@@ -716,7 +719,6 @@ def compute_portfolio_pnl(sheet_data, weights):
     header = sheet_data["header"]
     today_row = sheet_data["today"]
     prev_row = sheet_data["yesterday"]
-    ytd_row = sheet_data.get("ytd_start")
 
     # Header → Index Mapping
     col_map = {}
@@ -747,21 +749,20 @@ def compute_portfolio_pnl(sheet_data, weights):
             })
             n_tracked += 1
 
-    # YTD Returns
+    # YTD: aus latest.json (korrekt kumuliert vom V16 Daily Runner)
     portfolio_ytd = 0.0
+    spy_ytd = 0.0
     ytd_start_date = None
-    if ytd_row:
-        ytd_start_date = ytd_row[0] if ytd_row else None
-        for ticker, weight in weights.items():
-            t_upper = ticker.upper()
-            idx = col_map.get(t_upper)
-            if idx is None:
-                continue
-            p_today = safe_float(today_row[idx]) if idx < len(today_row) else None
-            p_ytd = safe_float(ytd_row[idx]) if idx < len(ytd_row) else None
-            if p_today and p_ytd and p_ytd > 0:
-                ytd_ret = (p_today - p_ytd) / p_ytd
-                portfolio_ytd += weight * ytd_ret
+    v16_json = load_json_safe(LATEST_JSON_PATH)
+    if v16_json:
+        v16_block = v16_json.get("v16", {})
+        portfolio_ytd = v16_block.get("ytd_return_pct", 0.0)
+        spy_ytd = v16_block.get("spy_ytd_return_pct", 0.0)
+        ytd_start_date = v16_block.get("ytd_start_date")
+        if portfolio_ytd:
+            log(f"YTD aus latest.json: {portfolio_ytd:+.2f}% (SPY: {spy_ytd:+.2f}%)")
+        else:
+            log("YTD: latest.json hat kein ytd_return_pct — Daily Runner Update noetig")
 
     # Sortiere Contributors
     sorted_contrib = sorted(contributions, key=lambda c: c["contribution"], reverse=True)
@@ -774,7 +775,8 @@ def compute_portfolio_pnl(sheet_data, weights):
 
     return {
         "daily_return_pct": round(portfolio_daily * 100, 2),
-        "ytd_return_pct": round(portfolio_ytd * 100, 2),
+        "ytd_return_pct": portfolio_ytd,
+        "spy_ytd_return_pct": spy_ytd,
         "daily_return_eur": daily_eur,
         "top_3_contributors": top_3,
         "top_3_detractors": bottom_3,

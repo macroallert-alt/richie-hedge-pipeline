@@ -629,6 +629,20 @@ def run_engine(prices, macro, k16, rv, cm):
     cum = (1 + pr_s).cumprod()
     current_dd = float((cum.iloc[-1] / cum.cummax().iloc[-1] - 1) * 100)
 
+    # YTD Performance (korrekt: kumulative tägliche Returns seit Jahresanfang)
+    dates_ts = pd.to_datetime(dates_s)
+    ytd_mask = dates_ts.dt.year == today_date.year
+    if ytd_mask.sum() > 0:
+        ytd_cum = (1 + pr_s[ytd_mask]).cumprod()
+        ytd_return_pct = round(float((ytd_cum.iloc[-1] - 1) * 100), 2)
+        spy_ytd_cum = (1 + spy_s[ytd_mask]).cumprod()
+        spy_ytd_return_pct = round(float((spy_ytd_cum.iloc[-1] - 1) * 100), 2)
+        ytd_start_date = dates_ts[ytd_mask].iloc[0].strftime('%Y-%m-%d')
+    else:
+        ytd_return_pct = 0.0
+        spy_ytd_return_pct = 0.0
+        ytd_start_date = None
+
     # Top weights
     sorted_wts = sorted(today_weights.items(), key=lambda x: x[1], reverse=True)
     top5 = [{"ticker": t, "weight": w} for t, w in sorted_wts[:5]]
@@ -667,6 +681,9 @@ def run_engine(prices, macro, k16, rv, cm):
         "current_drawdown_pct": round(current_dd, 2),
         "performance": m_prod,
         "spy_performance": m_spy,
+        "ytd_return_pct": ytd_return_pct,
+        "spy_ytd_return_pct": spy_ytd_return_pct,
+        "ytd_start_date": ytd_start_date,
         "data_date": prices['Date'].max().strftime('%Y-%m-%d'),
         "assets_count": len(found) if 'found' in dir() else len([a for a in ASSETS if a in prices.columns]),
         "history_days": len(dates_s),
@@ -869,6 +886,9 @@ def build_dashboard_json(v16_data, previous_weights=None):
             "weight_deltas": _compute_weight_deltas(v16_data["current_weights"], previous_weights),
             "performance": v16_data["performance"],
             "spy_performance": v16_data["spy_performance"],
+            "ytd_return_pct": v16_data["ytd_return_pct"],
+            "spy_ytd_return_pct": v16_data["spy_ytd_return_pct"],
+            "ytd_start_date": v16_data["ytd_start_date"],
         },
 
         # ── F6 ── (Platzhalter)
