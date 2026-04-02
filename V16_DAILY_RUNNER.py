@@ -679,11 +679,74 @@ def run_engine(prices, macro, k16, rv, cm):
 
 
 # ═══════════════════════════════════════════════════════
+# WEIGHT DELTAS + ROTATION TRACKING
+# ═══════════════════════════════════════════════════════
+def _compute_weight_deltas(current_weights, previous_weights):
+    """Berechnet Gewichts-Deltas zwischen aktuellem und vorherigem Portfolio.
+
+    Returns dict mit:
+        - top_increases: Top 5 Ticker mit groesstem Zuwachs
+        - top_decreases: Top 5 Ticker mit groesstem Rueckgang
+        - rotation_needed: True wenn max Delta > 3% (MC_THRESHOLD)
+        - max_delta_pct: Groesste absolute Abweichung in %
+        - new_positions: Ticker die neu ins Portfolio kommen (vorher 0)
+        - exited_positions: Ticker die rausfliegen (jetzt 0, vorher >0)
+        - total_turnover_pct: Summe aller absoluten Deltas / 2 (One-Way)
+    """
+    if not previous_weights:
+        return {
+            "top_increases": [], "top_decreases": [],
+            "rotation_needed": False, "max_delta_pct": 0,
+            "new_positions": [], "exited_positions": [],
+            "total_turnover_pct": 0,
+            "has_previous": False,
+        }
+
+    all_tickers = set(list(current_weights.keys()) + list(previous_weights.keys()))
+    deltas = {}
+    for t in all_tickers:
+        curr = current_weights.get(t, 0)
+        prev = previous_weights.get(t, 0)
+        d = curr - prev
+        if abs(d) > 0.0001:
+            deltas[t] = round(d, 6)
+
+    sorted_inc = sorted([(t, d) for t, d in deltas.items() if d > 0], key=lambda x: x[1], reverse=True)
+    sorted_dec = sorted([(t, d) for t, d in deltas.items() if d < 0], key=lambda x: x[1])
+
+    top_increases = [{"ticker": t, "delta": round(d * 100, 2)} for t, d in sorted_inc[:5]]
+    top_decreases = [{"ticker": t, "delta": round(d * 100, 2)} for t, d in sorted_dec[:5]]
+
+    new_positions = [t for t, d in deltas.items() if d > 0 and previous_weights.get(t, 0) < 0.001]
+    exited_positions = [t for t, d in deltas.items() if d < 0 and current_weights.get(t, 0) < 0.001]
+
+    abs_deltas = [abs(d) for d in deltas.values()]
+    max_delta = max(abs_deltas) if abs_deltas else 0
+    turnover = sum(abs_deltas) / 2  # One-Way
+
+    return {
+        "top_increases": top_increases,
+        "top_decreases": top_decreases,
+        "rotation_needed": max_delta > 0.03,  # MC_THRESHOLD = 3%
+        "max_delta_pct": round(max_delta * 100, 2),
+        "new_positions": new_positions,
+        "exited_positions": exited_positions,
+        "total_turnover_pct": round(turnover * 100, 2),
+        "has_previous": True,
+    }
+
+
+# ═══════════════════════════════════════════════════════
 # DASHBOARD JSON BUILDER
 # ═══════════════════════════════════════════════════════
-def build_dashboard_json(v16_data):
+def build_dashboard_json(v16_data, previous_weights=None):
     """Baut eine Schema-v2.0-kompatible dashboard.json aus V16-Daten.
-    Felder die wir noch nicht haben (Agenten-Pipeline) werden mit Platzhaltern gefuellt."""
+    Felder die wir noch nicht haben (Agenten-Pipeline) werden mit Platzhaltern gefuellt.
+
+    Args:
+        v16_data: Engine-Output dict
+        previous_weights: dict {ticker: weight} aus gestriger latest.json (oder None)
+    """
 
     now_utc = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     date = v16_data["date"]
@@ -805,9 +868,10 @@ def build_dashboard_json(v16_data):
             "dd_protect_threshold": -10.0,
             "current_weights": v16_data["current_weights"],
             "target_weights": v16_data["target_weights"],
+            "previous_weights": previous_weights or {},
             "top_5_weights": v16_data["top_5_weights"],
             "cluster_weights": v16_data["cluster_weights"],
-            "weight_deltas": {"top_increases": [], "top_decreases": []},
+            "weight_deltas": _compute_weight_deltas(v16_data["current_weights"], previous_weights),
             "performance": v16_data["performance"],
             "spy_performance": v16_data["spy_performance"],
         },
@@ -959,24 +1023,43 @@ def main():
     print("\n" + "="*60)
     print("DASHBOARD JSON")
     print("="*60)
-    dashboard = build_dashboard_json(v16_data)
 
-    # 4. Save — MERGE mit bestehender latest.json (nicht ueberschreiben!)
+    # Bestehende latest.json laden fuer Previous Weights
     script_dir = os.path.dirname(os.path.abspath(__file__))
     out_dir = os.path.join(script_dir, "data", "dashboard")
     os.makedirs(out_dir, exist_ok=True)
     latest_path = os.path.join(out_dir, "latest.json")
 
-    # Bestehende latest.json laden (falls vorhanden)
     existing = {}
+    previous_weights = None
     if os.path.exists(latest_path):
         try:
             with open(latest_path, 'r', encoding='utf-8') as f:
                 existing = json.load(f)
             print(f"  Bestehende latest.json geladen ({os.path.getsize(latest_path)} bytes)")
+            # Previous Weights extrahieren
+            prev_v16 = existing.get('v16', {})
+            if prev_v16.get('current_weights'):
+                previous_weights = prev_v16['current_weights']
+                prev_date = existing.get('date', '?')
+                print(f"  Previous Weights geladen (vom {prev_date})")
         except (json.JSONDecodeError, IOError):
             print("  [WARN] latest.json nicht lesbar — schreibe komplett neu")
             existing = {}
+
+    dashboard = build_dashboard_json(v16_data, previous_weights=previous_weights)
+
+    # Rotation-Info ausgeben
+    wd = dashboard.get('v16', {}).get('weight_deltas', {})
+    if wd.get('has_previous'):
+        rot = "JA" if wd['rotation_needed'] else "NEIN"
+        print(f"  Rotation noetig: {rot} (Max Delta: {wd['max_delta_pct']:.1f}%, Turnover: {wd['total_turnover_pct']:.1f}%)")
+        if wd.get('new_positions'):
+            print(f"  Neue Positionen: {', '.join(wd['new_positions'])}")
+        if wd.get('exited_positions'):
+            print(f"  Exits: {', '.join(wd['exited_positions'])}")
+    else:
+        print("  Kein Previous Portfolio — erster Run oder keine bestehende latest.json")
 
     # V16-eigene Bloecke in bestehende JSON mergen
     # Diese Bloecke gehoeren dem V16 Runner und werden IMMER ueberschrieben:
@@ -995,7 +1078,7 @@ def main():
         # Spezielle Felder die V16 in anderen Bloecken updaten muss:
         # - layers.system_regime
         if 'layers' in existing and existing['layers']:
-            existing['layers']['system_regime'] = regime
+            existing['layers']['system_regime'] = v16_data["regime"]
         # - regime_context bleibt (wird von Steps gesetzt), V16 setzt nur Fallback
         if 'regime_context' not in existing or not existing.get('regime_context'):
             existing['regime_context'] = dashboard.get('regime_context', {})
