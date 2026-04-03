@@ -7625,29 +7625,29 @@
   },
   "newsletter": {
     "schema_version": "1.2",
-    "date": "2026-04-02",
-    "weekday": "Thursday",
-    "format": "DAILY",
-    "generated_at": "2026-04-02T07:11:06.318822+00:00",
-    "one_thing": "Composite 67.6 ELEVATED. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
+    "date": "2026-04-03",
+    "weekday": "Friday",
+    "format": "DAILY_CONTRARIAN",
+    "generated_at": "2026-04-03T07:07:19.814633+00:00",
+    "one_thing": "Composite 55.0 ELEVATED. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
     "composite_scores": {
       "tactical": {
-        "score": 67.6,
+        "score": 55.0,
         "zone": "ELEVATED",
-        "velocity": 12.0,
-        "acceleration": 12.3
+        "velocity": -12.6,
+        "acceleration": -24.6
       },
       "positional": {
-        "score": 59.6,
+        "score": 52.0,
         "zone": "ELEVATED",
-        "velocity": 7.0,
-        "acceleration": 2.3
+        "velocity": -7.6,
+        "acceleration": -14.6
       },
       "structural": {
-        "score": 51.7,
-        "zone": "ELEVATED",
-        "velocity": 1.2,
-        "acceleration": -0.6
+        "score": 43.0,
+        "zone": "STRESS",
+        "velocity": -8.7,
+        "acceleration": -9.9
       }
     },
     "data_integrity": {
@@ -7753,9 +7753,9 @@
         {
           "key": "HY_OAS",
           "name": "High Yield Credit Spreads (OAS)",
-          "value": 328.0,
+          "value": 316.0,
           "unit_label": "bps",
-          "normalized": 82.7,
+          "normalized": 85.3,
           "weight": 0.2,
           "status": "OK",
           "alert": false,
@@ -7795,9 +7795,9 @@
         {
           "key": "VIX_TERM",
           "name": "VIX Term Structure (VIX/VIX3M Ratio)",
-          "value": 0.9871,
+          "value": 0.9656,
           "unit_label": "Ratio",
-          "normalized": 46.5,
+          "normalized": 52.7,
           "weight": 0.12,
           "status": "OK",
           "alert": false,
@@ -7809,7 +7809,7 @@
         {
           "key": "NET_LIQ",
           "name": "Netto-Liquiditaet (Fed Reserve Drain Proxy)",
-          "value": 28190000000.0,
+          "value": 11180000000.0,
           "unit_label": "$",
           "normalized": 0.0,
           "weight": 0.1,
@@ -7839,9 +7839,9 @@
         {
           "key": "MOVE",
           "name": "MOVE Index (Bond-Volatilitaet)",
-          "value": 90.19,
+          "value": 84.41,
           "unit_label": "Index",
-          "normalized": 89.8,
+          "normalized": 95.6,
           "weight": 0.1,
           "status": "OK",
           "alert": false,
@@ -7868,16 +7868,21 @@
       "watchlist_triggered": []
     },
     "pipeline_coherence": {
-      "score": 85,
+      "score": 66,
       "subsystems": {
         "v16": "LATE_EXPANSION",
         "market_analyst": "NEUTRAL",
         "ic_consensus": "BEARISH",
-        "risk_officer": "YELLOW",
+        "risk_officer": "RED",
         "cio": "ACTION",
         "execution_advisor": "HOLD"
       },
-      "divergences": []
+      "divergences": [
+        {
+          "type": "REGIME_CONFLICT",
+          "detail": "V16 LATE_EXPANSION vs MA NEUTRAL"
+        }
+      ]
     },
     "scenarios": [],
     "behavioral": {
@@ -7918,12 +7923,18 @@
         "date": "2026-04-03",
         "event": "US Employment Situation (March 2026)",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
+      },
+      {
+        "date": "2026-04-05",
+        "event": "OPEC+ JMMC 65th Meeting",
+        "impact": "MEDIUM",
+        "hours_until": 48
       }
     ],
     "intelligence_digest": {
       "ic_net_direction": "BEARISH",
-      "ic_net_score": -3,
+      "ic_net_score": -5,
       "pre_mortem_high_count": 2,
       "active_threads": 12,
       "threatening_threads": 4,
@@ -7941,7 +7952,76 @@
     "breaking_news": [
       {
         "category": "GEOPOLITIK",
-        "title": "Emirates says Iranian nationals are not allowed to enter or transit through UAE – as it happened | US-Israel war on Iran | The Guardian",
+        "title": "U.S. bombs Iran's civilian infrastructure for first time after \"Stone Ages\" threat",
+        "impact": "HIGH",
+        "source": "www.axios.com",
+        "portfolio_transmission": {
+          "DBC": {
+            "direction": "BULLISH",
+            "mechanism": "Geopolitical risk → commodity bid",
+            "exposure_pct": 20.3
+          },
+          "HYG": {
+            "direction": "BEARISH",
+            "mechanism": "Risk-off → credit spread widening",
+            "exposure_pct": 28.8
+          },
+          "GLD": {
+            "direction": "BULLISH",
+            "mechanism": "Safe haven flows",
+            "exposure_pct": 16.9
+          }
+        }
+      },
+      {
+        "category": "GEOPOLITIK",
+        "title": "IRGC claims to have attacked Dubai Oracle data center, US fighter jets at Jordan | The Jerusalem Post",
+        "impact": "HIGH",
+        "source": "www.jpost.com",
+        "portfolio_transmission": {
+          "DBC": {
+            "direction": "BULLISH",
+            "mechanism": "Geopolitical risk → commodity bid",
+            "exposure_pct": 20.3
+          },
+          "HYG": {
+            "direction": "BEARISH",
+            "mechanism": "Risk-off → credit spread widening",
+            "exposure_pct": 28.8
+          },
+          "GLD": {
+            "direction": "BULLISH",
+            "mechanism": "Safe haven flows",
+            "exposure_pct": 16.9
+          }
+        }
+      },
+      {
+        "category": "GEOPOLITIK",
+        "title": "Iran War News: Oracle Office In Dubai Hit In Iran Strikes? What UAE Said",
+        "impact": "HIGH",
+        "source": "www.ndtv.com",
+        "portfolio_transmission": {
+          "DBC": {
+            "direction": "BULLISH",
+            "mechanism": "Geopolitical risk → commodity bid",
+            "exposure_pct": 20.3
+          },
+          "HYG": {
+            "direction": "BEARISH",
+            "mechanism": "Risk-off → credit spread widening",
+            "exposure_pct": 28.8
+          },
+          "GLD": {
+            "direction": "BULLISH",
+            "mechanism": "Safe haven flows",
+            "exposure_pct": 16.9
+          }
+        }
+      },
+      {
+        "category": "GEOPOLITIK",
+        "title": "Kuwait’s military says its air defences working to intercept missiles – as it happened | US-Israel war on Iran | The Guardian",
         "impact": "HIGH",
         "source": "www.theguardian.com",
         "portfolio_transmission": {
@@ -7964,78 +8044,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Trump Initially Laid Out Five Goals for the Iran War. Here’s Where They Stand. - The New York Times",
+        "title": "Russia's Putin and Saudi MBS discuss Middle East, OPEC+ cooperation, Kremlin says | Reuters",
         "impact": "HIGH",
-        "source": "www.nytimes.com",
-        "portfolio_transmission": {
-          "DBC": {
-            "direction": "BULLISH",
-            "mechanism": "Geopolitical risk → commodity bid",
-            "exposure_pct": 20.3
-          },
-          "HYG": {
-            "direction": "BEARISH",
-            "mechanism": "Risk-off → credit spread widening",
-            "exposure_pct": 28.8
-          },
-          "GLD": {
-            "direction": "BULLISH",
-            "mechanism": "Safe haven flows",
-            "exposure_pct": 16.9
-          }
-        }
-      },
-      {
-        "category": "GEOPOLITIK",
-        "title": "Iran war updates: Pezeshkian urges US public to question gov’t war motives | US-Israel war on Iran News | Al Jazeera",
-        "impact": "HIGH",
-        "source": "www.aljazeera.com",
-        "portfolio_transmission": {
-          "DBC": {
-            "direction": "BULLISH",
-            "mechanism": "Geopolitical risk → commodity bid",
-            "exposure_pct": 20.3
-          },
-          "HYG": {
-            "direction": "BEARISH",
-            "mechanism": "Risk-off → credit spread widening",
-            "exposure_pct": 28.8
-          },
-          "GLD": {
-            "direction": "BULLISH",
-            "mechanism": "Safe haven flows",
-            "exposure_pct": 16.9
-          }
-        }
-      },
-      {
-        "category": "GEOPOLITIK",
-        "title": "‘I came, I saw, I conquered:’ Trump set to claim victory in Iran at primetime address - POLITICO",
-        "impact": "HIGH",
-        "source": "www.politico.com",
-        "portfolio_transmission": {
-          "DBC": {
-            "direction": "BULLISH",
-            "mechanism": "Geopolitical risk → commodity bid",
-            "exposure_pct": 20.3
-          },
-          "HYG": {
-            "direction": "BEARISH",
-            "mechanism": "Risk-off → credit spread widening",
-            "exposure_pct": 28.8
-          },
-          "GLD": {
-            "direction": "BULLISH",
-            "mechanism": "Safe haven flows",
-            "exposure_pct": 16.9
-          }
-        }
-      },
-      {
-        "category": "GEOPOLITIK",
-        "title": "Trump says war in Iran will not end until Strait of Hormuz is reopened - POLITICO",
-        "impact": "HIGH",
-        "source": "www.politico.com",
+        "source": "www.reuters.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -8055,8 +8066,14 @@
         }
       }
     ],
-    "breaking_news_summary": "BREAKING: Emirates says Iranian nationals are not allowed to enter or transit through UAE ",
-    "warning_triggers": [],
+    "breaking_news_summary": "BREAKING: U.S. bombs Iran's civilian infrastructure for first time after \"Stone Ages\" thre",
+    "warning_triggers": [
+      {
+        "id": "REGIME_CONFLICT",
+        "description": "V16 vs Market Analyst Regime-Konflikt",
+        "penalty": -5
+      }
+    ],
     "contrarian_check": null,
     "prediction_log": {
       "todays_predictions": []
@@ -8064,19 +8081,19 @@
     "anchor_type": "CRITICAL",
     "crypto_briefing": {
       "available": true,
-      "date": "2026-04-02",
-      "btc_price": 66662.0,
-      "ensemble_daily": 0.25,
+      "date": "2026-04-03",
+      "btc_price": 66800.0,
+      "ensemble_daily": 0.0,
       "ensemble_weekly": null,
-      "ensemble_changed": "False",
-      "mom_1M": true,
+      "ensemble_changed": "True",
+      "mom_1M": false,
       "mom_3M": false,
       "mom_6M": false,
       "mom_12M": false,
       "below_200wma": false,
-      "wma_200": 58913.26,
+      "wma_200": 58940.48,
       "below_wma_changed": false,
-      "btc_dominance": 56.16,
+      "btc_dominance": 56.06,
       "phase": null,
       "phase_name": null,
       "weekly_alloc_total": null,
@@ -8084,8 +8101,16 @@
       "weekly_eth": null,
       "weekly_sol": null,
       "weekly_cash": null,
-      "alert_count": 0,
-      "alerts": []
+      "alert_count": 1,
+      "alerts": [
+        {
+          "type": "ENSEMBLE_CHANGE",
+          "message": "Ensemble ↓ 0.25 → 0.00 (Allokation ändert sich)",
+          "severity": "MEDIUM",
+          "previous": 0.25,
+          "daily": 0.0
+        }
+      ]
     }
   },
   "cycles": {
