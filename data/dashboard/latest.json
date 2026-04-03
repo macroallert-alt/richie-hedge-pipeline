@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.34,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2883,
+      "BOND": 0.0,
+      "CREDIT": 0.2883,
       "COMMOD": 0.2027,
       "CRYPTO": 0.0
     },
@@ -4527,9 +4528,9 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-04-02",
+    "date": "2026-04-03",
     "execution_level": "HOLD",
-    "total_score": 10,
+    "total_score": 11,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
@@ -4554,9 +4555,9 @@
         "label": "COMMODITY_VS_COPPER"
       },
       "gex_regime": {
-        "score": 0,
+        "score": 1,
         "max": 3,
-        "label": "GEX $0.07B — POSITIVE_STABILIZING"
+        "label": "GEX $-0.19B — SLIGHTLY_NEGATIVE"
       },
       "sentiment_extreme": {
         "score": 1,
@@ -4564,7 +4565,7 @@
         "label": "cnn_fg: EXTREME_FEAR"
       }
     },
-    "confirming_count": 15,
+    "confirming_count": 14,
     "conflicting_count": 9,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
@@ -4581,11 +4582,12 @@
     "recommendation_short": "Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 1,
+      "next_48h_count": 2,
       "next_48h_events": [
-        "US Employment Situation (March 2026) (24h)"
+        "US Employment Situation (March 2026) (0h)",
+        "OPEC+ JMMC 65th Meeting (48h)"
       ],
-      "next_14d_count": 6,
+      "next_14d_count": 7,
       "convergence_week": true,
       "event_density_label": "HIGH"
     },
@@ -4594,31 +4596,31 @@
         "date": "2026-04-03",
         "event": "US Employment Situation (March 2026)",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-04-05",
         "event": "OPEC+ JMMC 65th Meeting",
         "impact": "MEDIUM",
-        "days_until": 3
+        "hours_until": 48
       },
       {
         "date": "2026-04-09",
         "event": "US PCE / Personal Income & Outlays (February 2026)",
         "impact": "HIGH",
-        "days_until": 7
+        "days_until": 6
       },
       {
         "date": "2026-04-09",
         "event": "GDP (Third Estimate) Q4 2025 & Year 2025",
         "impact": "MEDIUM",
-        "days_until": 7
+        "days_until": 6
       },
       {
         "date": "2026-04-10",
         "event": "US CPI (March 2026)",
         "impact": "HIGH",
-        "days_until": 8
+        "days_until": 7
       }
     ],
     "calendar_monthly": [
@@ -4683,24 +4685,24 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING (15):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -2.5% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -2.5% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -2.5% — kein Conflict\n  • sofr_ffr: NORMAL: Wert: 4.0\n  • fin_stress: RELAXED: Wert: -0.1828\n\nCONFLICTING (9):\n  • US Employment Situation (March 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -50.5% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -50.5% — Smart Money gegen GLD (17% im Portfolio)\n  • amihud: ILLIQUID: Wert: 83.05 — Liquiditäts-Risiko\n  • COMMODITY_VS_COPPER: V16 hat 37% Commodity-Exposure aber Copper SMA50 Falling\n\nNETTO: 15 Confirming vs 9 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 11/18) ===\n\nCONFIRMING (14):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -2.5% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -2.5% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -2.5% — kein Conflict\n  • sofr_ffr: NORMAL: Wert: 1.0\n  • fin_stress: RELAXED: Wert: -0.1828\n\nCONFLICTING (9):\n  • US Employment Situation (March 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -50.5% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -50.5% — Smart Money gegen GLD (17% im Portfolio)\n  • amihud: ILLIQUID: Wert: 82.2 — Liquiditäts-Risiko\n  • COMMODITY_VS_COPPER: V16 hat 37% Commodity-Exposure aber Copper SMA50 Falling\n\nNETTO: 14 Confirming vs 9 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-04-02",
-    "status": "BIG_ROTATION",
-    "mode": "STATE_TRANSITION",
-    "total_absolute_delta_pp": 105.9,
-    "material_shifts_count": 6,
-    "days_since_material_rotation": 0,
-    "days_since_state_change": 0,
+    "date": "2026-04-03",
+    "status": "ALIGNED",
+    "mode": "STABLE",
+    "total_absolute_delta_pp": 0.0,
+    "material_shifts_count": 0,
+    "days_since_material_rotation": 1,
+    "days_since_state_change": 1,
     "trigger": {
-      "type": "STATE_CHANGE",
-      "label": "State 4 → 3: LATE_EXPANSION",
-      "detail": "Growth: POSITIVE, Liquidity: TIGHTENING"
+      "type": "NONE",
+      "label": "Keine materielle Rotation",
+      "detail": null
     },
     "dd_protect": {
       "active": false,
@@ -4727,52 +4729,36 @@
     },
     "cluster_deltas": {
       "EQ_DEFN": {
-        "delta_1d": 0.2756,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": 0.0111,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING"
+        "materiality": "GREEN",
+        "direction": "STABLE"
       },
       "CREDIT": {
-        "delta_1d": 0.2883,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": 0.0157,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING"
+        "materiality": "GREEN",
+        "direction": "STABLE"
       },
       "COMMOD": {
-        "delta_1d": 0.2027,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": -0.0156,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING"
+        "materiality": "GREEN",
+        "direction": "STABLE"
       },
       "PM": {
-        "delta_1d": 0.1128,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": -0.0113,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING"
-      },
-      "BOND": {
-        "delta_1d": -0.0974,
-        "delta_1w": null,
-        "delta_1m": null,
-        "delta_3m": null,
-        "materiality": "ORANGE",
-        "direction": "FALLING"
-      },
-      "CRYPTO": {
-        "delta_1d": -0.0821,
-        "delta_1w": null,
-        "delta_1m": null,
-        "delta_3m": null,
-        "materiality": "ORANGE",
-        "direction": "FALLING"
+        "materiality": "GREEN",
+        "direction": "STABLE"
       }
     },
     "asset_details": {
@@ -4780,139 +4766,65 @@
         "weight": 0.2883,
         "cluster": "CREDIT",
         "cluster_name": "High Yield Credit",
-        "delta_1d": 0.2883,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": 0.0157,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING",
-        "label": "NEW"
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
       },
       "DBC": {
         "weight": 0.2027,
         "cluster": "COMMOD",
         "cluster_name": "Commodities",
-        "delta_1d": 0.2027,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": -0.0156,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING",
-        "label": "NEW"
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
       },
       "XLU": {
         "weight": 0.1795,
         "cluster": "EQ_DEFN",
         "cluster_name": "Defensive Equities",
-        "delta_1d": 0.1151,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": -0.0001,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING",
-        "label": "SHIFT"
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
       },
       "GLD": {
         "weight": 0.1689,
         "cluster": "PM",
         "cluster_name": "Precious Metals",
-        "delta_1d": 0.1128,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": -0.0113,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING",
-        "label": "SHIFT"
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
       },
       "XLP": {
         "weight": 0.1605,
         "cluster": "EQ_DEFN",
         "cluster_name": "Defensive Equities",
-        "delta_1d": 0.1605,
+        "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": null,
+        "delta_1m": 0.0112,
         "delta_3m": null,
-        "materiality": "RED",
-        "direction": "RISING",
-        "label": "NEW"
-      },
-      "BTC": {
-        "weight": 0.0,
-        "cluster": "CRYPTO",
-        "cluster_name": "Crypto",
-        "delta_1d": -0.0471,
-        "delta_1w": null,
-        "delta_1m": null,
-        "delta_3m": null,
-        "materiality": "YELLOW",
-        "direction": "FALLING",
-        "label": "EXIT"
-      },
-      "ETH": {
-        "weight": 0.0,
-        "cluster": "CRYPTO",
-        "cluster_name": "Crypto",
-        "delta_1d": -0.035,
-        "delta_1w": null,
-        "delta_1m": null,
-        "delta_3m": null,
-        "materiality": "YELLOW",
-        "direction": "FALLING",
-        "label": "EXIT"
-      },
-      "TLT": {
-        "weight": 0.0,
-        "cluster": "BOND",
-        "cluster_name": "Government & IG Bonds",
-        "delta_1d": -0.0974,
-        "delta_1w": null,
-        "delta_1m": null,
-        "delta_3m": null,
-        "materiality": "ORANGE",
-        "direction": "FALLING",
-        "label": "EXIT"
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
       }
     },
-    "new_positions": [
-      {
-        "asset": "HYG",
-        "cluster": "CREDIT",
-        "cluster_name": "High Yield Credit",
-        "weight": 0.2883
-      },
-      {
-        "asset": "DBC",
-        "cluster": "COMMOD",
-        "cluster_name": "Commodities",
-        "weight": 0.2027
-      },
-      {
-        "asset": "XLP",
-        "cluster": "EQ_DEFN",
-        "cluster_name": "Defensive Equities",
-        "weight": 0.1605
-      }
-    ],
-    "exited_positions": [
-      {
-        "asset": "BTC",
-        "cluster": "CRYPTO",
-        "cluster_name": "Crypto",
-        "prev_weight": 0.0471
-      },
-      {
-        "asset": "ETH",
-        "cluster": "CRYPTO",
-        "cluster_name": "Crypto",
-        "prev_weight": 0.035
-      },
-      {
-        "asset": "TLT",
-        "cluster": "BOND",
-        "cluster_name": "Government & IG Bonds",
-        "prev_weight": 0.0974
-      }
-    ],
+    "new_positions": [],
+    "exited_positions": [],
     "sparkline_data": {
       "BOND": {
         "dates": [
@@ -4933,7 +4845,8 @@
           "2026-03-30",
           "2026-03-31",
           "2026-04-01",
-          "2026-04-02"
+          "2026-04-02",
+          "2026-04-03"
         ],
         "values": [
           0.0,
@@ -4953,6 +4866,7 @@
           0.0,
           0.0974,
           0.0974,
+          0.0,
           0.0
         ]
       },
@@ -4975,7 +4889,8 @@
           "2026-03-30",
           "2026-03-31",
           "2026-04-01",
-          "2026-04-02"
+          "2026-04-02",
+          "2026-04-03"
         ],
         "values": [
           0.2183,
@@ -4995,6 +4910,7 @@
           0.2027,
           0.0,
           0.0,
+          0.2027,
           0.2027
         ]
       },
@@ -5017,7 +4933,8 @@
           "2026-03-30",
           "2026-03-31",
           "2026-04-01",
-          "2026-04-02"
+          "2026-04-02",
+          "2026-04-03"
         ],
         "values": [
           0.2726,
@@ -5037,6 +4954,7 @@
           0.2883,
           0.0,
           0.0,
+          0.2883,
           0.2883
         ]
       },
@@ -5059,7 +4977,8 @@
           "2026-03-30",
           "2026-03-31",
           "2026-04-01",
-          "2026-04-02"
+          "2026-04-02",
+          "2026-04-03"
         ],
         "values": [
           0.0,
@@ -5079,6 +4998,7 @@
           0.0,
           0.0821,
           0.0821,
+          0.0,
           0.0
         ]
       },
@@ -5101,7 +5021,8 @@
           "2026-03-30",
           "2026-03-31",
           "2026-04-01",
-          "2026-04-02"
+          "2026-04-02",
+          "2026-04-03"
         ],
         "values": [
           0.3289,
@@ -5121,6 +5042,7 @@
           0.34,
           0.0644,
           0.0644,
+          0.34,
           0.34
         ]
       },
@@ -5143,7 +5065,8 @@
           "2026-03-30",
           "2026-03-31",
           "2026-04-01",
-          "2026-04-02"
+          "2026-04-02",
+          "2026-04-03"
         ],
         "values": [
           0.1802,
@@ -5163,6 +5086,7 @@
           0.1689,
           0.0561,
           0.0561,
+          0.1689,
           0.1689
         ]
       }
@@ -5243,23 +5167,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-04-01",
-        "weights": {
-          "GLD": 0.0561,
-          "XLU": 0.0644,
-          "TLT": 0.0974,
-          "BTC": 0.0471,
-          "ETH": 0.035
-        },
-        "cluster_weights": {
-          "PM": 0.0561,
-          "EQ_DEFN": 0.0644,
-          "BOND": 0.0974,
-          "CRYPTO": 0.0821
-        }
-      },
-      "1w": {
-        "date": "2026-03-26",
+        "date": "2026-04-02",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
@@ -5274,7 +5182,38 @@
           "COMMOD": 0.2027
         }
       },
-      "1m": null,
+      "1w": {
+        "date": "2026-03-27",
+        "weights": {
+          "GLD": 0.1689,
+          "XLP": 0.1605,
+          "XLU": 0.1795,
+          "HYG": 0.2883,
+          "DBC": 0.2027
+        },
+        "cluster_weights": {
+          "PM": 0.1689,
+          "EQ_DEFN": 0.34,
+          "CREDIT": 0.2883,
+          "COMMOD": 0.2027
+        }
+      },
+      "1m": {
+        "date": "2026-03-09",
+        "weights": {
+          "GLD": 0.1802,
+          "XLP": 0.1493,
+          "XLU": 0.1796,
+          "HYG": 0.2726,
+          "DBC": 0.2183
+        },
+        "cluster_weights": {
+          "PM": 0.1802,
+          "EQ_DEFN": 0.3289,
+          "CREDIT": 0.2726,
+          "COMMOD": 0.2183
+        }
+      },
       "3m": null,
       "6m": null,
       "9m": null,
