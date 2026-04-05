@@ -5237,7 +5237,7 @@
   },
   "g7": {
     "status": "STABLE",
-    "attention_flag": "NOTE",
+    "attention_flag": "NONE",
     "available": true,
     "power_scores": {
       "USA": {
@@ -5247,25 +5247,25 @@
         "phase": "Late Decline?"
       },
       "CHINA": {
-        "score": 51.6,
+        "score": 51.7,
         "momentum": 0.0,
         "acceleration": 0.0,
         "phase": "Peak / Early Decline?"
       },
       "EU": {
-        "score": 42.8,
+        "score": 43.1,
         "momentum": 0.0,
         "acceleration": 0.0,
         "phase": "Managed Decline"
       },
       "INDIA": {
-        "score": 43.5,
+        "score": 43.6,
         "momentum": 0.0,
         "acceleration": 0.0,
         "phase": "Early Rise"
       },
       "JP_KR_TW": {
-        "score": 41.0,
+        "score": 41.1,
         "momentum": 0.0,
         "acceleration": 0.0,
         "phase": "Tech Power, Geo Risk"
@@ -5284,19 +5284,6 @@
       }
     },
     "power_scores_history": [
-      {
-        "date": "2026-03-08",
-        "scores": {
-          "USA": 69.2,
-          "CHINA": 55.6,
-          "EU": 49.2,
-          "INDIA": 45.6,
-          "JP_KR_TW": 46.3,
-          "GULF": 48.9,
-          "REST_EM": 32.6
-        },
-        "gap": 13.6
-      },
       {
         "date": "2026-03-08",
         "scores": {
@@ -5439,23 +5426,36 @@
           "REST_EM": 26.4
         },
         "gap": 18.2
+      },
+      {
+        "date": "2026-04-05",
+        "scores": {
+          "USA": 69.8,
+          "CHINA": 51.7,
+          "EU": 43.1,
+          "INDIA": 43.6,
+          "JP_KR_TW": 41.1,
+          "GULF": 44.9,
+          "REST_EM": 26.4
+        },
+        "gap": 18.1
       }
     ],
     "gap": {
-      "value": 18.2,
+      "value": 18.1,
       "trend": "STABLE"
     },
     "scenarios": {
       "probabilities": {
-        "managed_decline": 0.262,
-        "conflict_escalation": 0.272,
-        "us_renewal": 0.234,
-        "multipolar_chaos": 0.232
+        "managed_decline": 0.256,
+        "conflict_escalation": 0.238,
+        "us_renewal": 0.267,
+        "multipolar_chaos": 0.238
       },
-      "dominant": "Managed Decline",
+      "dominant": "US Renewal",
       "confidence": "LOW",
-      "interim_flag": "False",
-      "probability_source": "LLM"
+      "interim_flag": false,
+      "probability_source": "QUANTITATIVE_FALLBACK"
     },
     "tilts_matrix": [
       {
@@ -5464,7 +5464,7 @@
         "conflict_escalation": 0.9,
         "us_renewal": -0.3,
         "multipolar_chaos": 0.8,
-        "composite": 0.544
+        "composite": 0.504
       },
       {
         "asset": "KWEB",
@@ -5472,7 +5472,7 @@
         "conflict_escalation": -1.0,
         "us_renewal": -0.5,
         "multipolar_chaos": 0.0,
-        "composite": -0.363
+        "composite": -0.346
       },
       {
         "asset": "DBC",
@@ -5480,7 +5480,7 @@
         "conflict_escalation": 0.3,
         "us_renewal": 0.2,
         "multipolar_chaos": 0.5,
-        "composite": 0.297
+        "composite": 0.295
       },
       {
         "asset": "FXI",
@@ -5488,15 +5488,7 @@
         "conflict_escalation": -1.0,
         "us_renewal": -0.4,
         "multipolar_chaos": 0.1,
-        "composite": -0.29
-      },
-      {
-        "asset": "QQQ",
-        "managed_decline": -0.4,
-        "conflict_escalation": -0.9,
-        "us_renewal": 1.0,
-        "multipolar_chaos": -0.6,
-        "composite": -0.255
+        "composite": -0.27
       },
       {
         "asset": "BTC",
@@ -5504,7 +5496,15 @@
         "conflict_escalation": -0.3,
         "us_renewal": 0.3,
         "multipolar_chaos": 0.5,
-        "composite": 0.209
+        "composite": 0.23
+      },
+      {
+        "asset": "QQQ",
+        "managed_decline": -0.4,
+        "conflict_escalation": -0.9,
+        "us_renewal": 1.0,
+        "multipolar_chaos": -0.6,
+        "composite": -0.192
       },
       {
         "asset": "SPY",
@@ -5512,23 +5512,7 @@
         "conflict_escalation": -0.8,
         "us_renewal": 0.9,
         "multipolar_chaos": -0.5,
-        "composite": -0.202
-      },
-      {
-        "asset": "EEM",
-        "managed_decline": 0.3,
-        "conflict_escalation": -0.7,
-        "us_renewal": -0.2,
-        "multipolar_chaos": 0.2,
-        "composite": -0.112
-      },
-      {
-        "asset": "TLT",
-        "managed_decline": 0.2,
-        "conflict_escalation": 0.5,
-        "us_renewal": -0.5,
-        "multipolar_chaos": 0.1,
-        "composite": 0.095
+        "composite": -0.146
       },
       {
         "asset": "INDA",
@@ -5536,7 +5520,23 @@
         "conflict_escalation": -0.3,
         "us_renewal": -0.1,
         "multipolar_chaos": 0.4,
-        "composite": 0.093
+        "composite": 0.1
+      },
+      {
+        "asset": "EEM",
+        "managed_decline": 0.3,
+        "conflict_escalation": -0.7,
+        "us_renewal": -0.2,
+        "multipolar_chaos": 0.2,
+        "composite": -0.096
+      },
+      {
+        "asset": "TLT",
+        "managed_decline": 0.2,
+        "conflict_escalation": 0.5,
+        "us_renewal": -0.5,
+        "multipolar_chaos": 0.1,
+        "composite": 0.06
       }
     ],
     "action_map": {
@@ -5610,22 +5610,26 @@
         "vetos": []
       }
     },
-    "permopt": {},
+    "permopt": {
+      "total_pct": 0.02,
+      "assets": [],
+      "ddi_level": 0
+    },
     "overlays": {
       "scsi": {
         "value": 30.0,
         "trend": "RISING"
       },
       "ddi": {
-        "value": 40.4,
+        "value": 42.7,
         "trend": "RISING"
       },
       "fdp_usa": {
         "value": 0.0
       },
       "ewi": {
-        "active_signals": 2,
-        "severity": "MEDIUM"
+        "active_signals": 1,
+        "severity": "LOW"
       }
     },
     "overlay_history": [
@@ -5656,32 +5660,39 @@
         "ddi": 40.4,
         "fdp_usa": 0.0,
         "ewi_signals": 2
+      },
+      {
+        "date": "2026-04-05",
+        "scsi": 30.0,
+        "ddi": 42.7,
+        "fdp_usa": 0.0,
+        "ewi_signals": 1
       }
     ],
     "sit": {
-      "global_trend": "ESCALATING",
-      "dominant_driver": "China is aggressively scaling CIPS as a SWIFT alternative while deploying UEL mechanisms offensively, with MOFCOM issuing 10 UEL decisions and 76 foreign entity additions in 2025.",
+      "global_trend": "STABLE",
+      "dominant_driver": "Increasing tech/semiconductor sanctions from US and allies.",
       "portfolio_vetos": [
         "KWEB",
         "FXI"
       ],
       "severity_by_region": {
-        "USA": 1.8,
-        "CHINA": 5.2,
-        "EU": 2.1,
-        "INDIA": 1.4,
-        "JP_KR_TW": 3.1,
-        "GULF": 2.6,
-        "REST_EM": 3.4
+        "USA": 1.5,
+        "CHINA": 5.0,
+        "EU": 1.0,
+        "INDIA": 0.5,
+        "JP_KR_TW": 1.0,
+        "GULF": 1.5,
+        "REST_EM": 3.0
       },
       "highlights": {
-        "USA": "OFAC enforcement remains robust in 2025 with continued expansion of SDN and Entity List designations, reinforcing US dominance as the primary sanctions imposer.",
-        "CHINA": "China is aggressively scaling CIPS as a SWIFT alternative while deploying UEL mechanisms offensively, with MOFCOM issuing 10 UEL decisions and 76 foreign entity additions in 2025.",
-        "EU": "The EU's 17th Russia sanctions package in May 2025 upgraded the SWIFT ban to a full transaction ban and added major Russian oil producer Surgutneftegaz, signaling continued escalation against Moscow.",
-        "INDIA": "India maintains a largely neutral sanctions posture, implementing UN-mandated measures while avoiding autonomous alignment with Western or Chinese sanctions blocs.",
-        "JP_KR_TW": "US-aligned tech and defense export controls are tightening across Japan, South Korea, and Taiwan, with North Korean weapons proliferation adding regional escalation pressure.",
-        "GULF": "Gulf states face selective compliance pressures as US-Saudi tensions surface over potential sanctions threats, while the region lacks transparent autonomous sanctions frameworks.",
-        "REST_EM": "Emerging markets face mounting compliance burdens and de-dollarization pressures as sanctions regimes grow more complex, with secondary sanctions risk creating spillover exposure across the bloc."
+        "USA": "Primary sanctions imposer; minimal own exposure.",
+        "CHINA": "Increasing tech/semiconductor sanctions from US and allies.",
+        "EU": "Active sanctions imposer aligned with US; low own exposure.",
+        "INDIA": "Mostly neutral; minor secondary sanctions risk from Russia trade.",
+        "JP_KR_TW": "US-aligned imposers; chip export controls on China active.",
+        "GULF": "Selective compliance; balancing US and China relationships.",
+        "REST_EM": "Mixed exposure; Russia/Iran sanctions affect some EMs."
       }
     },
     "challenge": {
@@ -5784,10 +5795,10 @@
         "label": "D8 Capital Markets",
         "scores": {
           "USA": 95.0,
-          "CHINA": 25.9,
-          "EU": 18.0,
-          "INDIA": 73.6,
-          "JP_KR_TW": 73.6,
+          "CHINA": 26.1,
+          "EU": 21.1,
+          "INDIA": 74.2,
+          "JP_KR_TW": 74.2,
           "GULF": 10.0,
           "REST_EM": 10.0
         }
@@ -5842,24 +5853,24 @@
       }
     },
     "narrative": {
-      "headline": "G7 Status STABLE — Abstand 18.2, SCSI 30, DDI 40",
-      "weekly_shift": "G7 Weltordnungs-Monitor meldet Status STABLE. USA-China Machtabstand beträgt 18.2 Punkte. Supply Chain Stress (SCSI) bei 30/100. De-Dollarisierungs-Index (DDI) bei 40/100. US Fiskal-Dominanz-Nähe bei 54%. Frühwarnsystem zeigt 2 aktive Signale. Vollständige Narrative ausstehend — LLM nicht verfügbar.",
+      "headline": "G7 Status STABLE — Abstand 18.1, SCSI 30, DDI 43",
+      "weekly_shift": "G7 Weltordnungs-Monitor meldet Status STABLE. USA-China Machtabstand beträgt 18.1 Punkte. Supply Chain Stress (SCSI) bei 30/100. De-Dollarisierungs-Index (DDI) bei 43/100. US Fiskal-Dominanz-Nähe bei 54%. Frühwarnsystem zeigt 1 aktive Signale. Vollständige Narrative ausstehend — LLM nicht verfügbar.",
       "scenario_implications": "Szenario-Analyse ausstehend — LLM nicht verfügbar.",
       "portfolio_context": "Portfolio-Kontext ausstehend — LLM nicht verfügbar."
     },
     "explanations": {
       "status": "G7 Status STABIL — keine Auslöser aktiv. Alle überwachten Schwellenwerte im Normalbereich. Keine sofortige Risikomanagement-Aktion nötig.",
-      "power_gap": "USA führt China mit 18.2 Punkten — ein komfortabler Vorsprung. Trend: STABLE. Auf diesem Niveau ist das Thukydides-Fallen-Risiko NIEDRIG. Primäre US-Vorteile: Kapitalmarkttiefe, Reservewährung, Energieunabhängigkeit. Ein Abstand unter 15 würde VERSCHIEBUNG auslösen, unter 10 ERHÖHTES RISIKO.",
+      "power_gap": "USA führt China mit 18.1 Punkten — ein komfortabler Vorsprung. Trend: STABLE. Auf diesem Niveau ist das Thukydides-Fallen-Risiko NIEDRIG. Primäre US-Vorteile: Kapitalmarkttiefe, Reservewährung, Energieunabhängigkeit. Ein Abstand unter 15 würde VERSCHIEBUNG auslösen, unter 10 ERHÖHTES RISIKO.",
       "scsi": "Supply-Chain-Stress bei 30/100 — moderat. Frachtkosten erhöht. Chokepoint-Eskalation beobachten. Energieimportierende Regionen (JP/KR/TW, EU, Indien) am stärksten exponiert.",
-      "ddi": "De-Dollarisierungs-Index bei 40/100 — unter neutral. USD-Dominanz weiterhin intakt. COFER-Reserveanteil stabil. Aktuelle Gold-Allokation angemessen, kein Handlungsdruck.",
+      "ddi": "De-Dollarisierungs-Index bei 43/100 — unter neutral. USD-Dominanz weiterhin intakt. COFER-Reserveanteil stabil. Aktuelle Gold-Allokation angemessen, kein Handlungsdruck.",
       "fdp": "US Fiskal-Dominanz-Nähe bei 54% — handhabbar. Zinskosten signifikant aber noch nicht Fed-Politik einschränkend. TLT-Position vorerst sicher, Schuldenentwicklung beobachten.",
-      "ewi": "2 Frühwarnsignal(e) aktiv, Schwere MEDIUM. Erhöht aber nicht alarmierend. Auf Clustering achten — 3+ Signale würden zur VERSCHIEBUNG beitragen."
+      "ewi": "1 Frühwarnsignal(e) aktiv, Schwere LOW. Erhöht aber nicht alarmierend. Auf Clustering achten — 3+ Signale würden zur VERSCHIEBUNG beitragen."
     },
     "meta": {
-      "last_run": "2026-03-29 08:56 UTC",
-      "run_type": "WEEKLY",
-      "run_id": "g7_weekly_20260329_085103",
-      "duration_s": 335.0,
+      "last_run": "2026-04-05 08:55 UTC",
+      "run_type": "QUARTERLY",
+      "run_id": "g7_quarterly_20260405_085344",
+      "duration_s": 80.8,
       "errors_count": 0
     }
   },
