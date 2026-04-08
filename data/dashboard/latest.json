@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.34,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2883,
+      "BOND": 0.0,
+      "CREDIT": 0.2883,
       "COMMOD": 0.2027,
       "CRYPTO": 0.0
     },
@@ -2248,14 +2249,14 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-04-07",
+    "date": "2026-04-08",
     "execution_level": "HOLD",
-    "total_score": 10,
+    "total_score": 11,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
       "event_risk": {
-        "score": 2,
+        "score": 3,
         "max": 3,
         "label": "US PCE / Personal Income & Outlays (February 2026)"
       },
@@ -2277,7 +2278,7 @@
       "gex_regime": {
         "score": 1,
         "max": 3,
-        "label": "GEX $-0.16B — SLIGHTLY_NEGATIVE"
+        "label": "GEX $-0.26B — SLIGHTLY_NEGATIVE"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -2286,7 +2287,7 @@
       }
     },
     "confirming_count": 14,
-    "conflicting_count": 9,
+    "conflicting_count": 11,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
       "COT HYG bestätigt — COT_SP500_COMM_NET = -1.6% — kein Conflict",
@@ -2295,17 +2296,18 @@
     ],
     "top_conflicting": [
       "US PCE / Personal Income & Outlays (February 2026) in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
-      "COT DBC Conflict (EXTREME) — COT_GOLD_COMM_NET = -55.8% — Smart Money gegen DBC (20% im Portfolio)",
-      "COT GLD Conflict (EXTREME) — COT_GOLD_COMM_NET = -55.8% — Smart Money gegen GLD (17% im Portfolio)"
+      "US CPI (March 2026) in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
+      "Convergence Week aktiv — Mehrere HIGH Events: US PCE / Personal Income & Outlays (February 2026), US CPI (March 2026), FOMC Meeting Decision (April 2026)"
     ],
     "recommendation_action": "DO_NOT_REBALANCE",
     "recommendation_short": "Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 2,
+      "next_48h_count": 3,
       "next_48h_events": [
-        "US PCE / Personal Income & Outlays (February 2026) (48h)",
-        "GDP (Third Estimate) Q4 2025 & Year 2025 (48h)"
+        "US PCE / Personal Income & Outlays (February 2026) (24h)",
+        "GDP (Third Estimate) Q4 2025 & Year 2025 (24h)",
+        "US CPI (March 2026) (48h)"
       ],
       "next_14d_count": 6,
       "convergence_week": true,
@@ -2316,31 +2318,31 @@
         "date": "2026-04-09",
         "event": "US PCE / Personal Income & Outlays (February 2026)",
         "impact": "HIGH",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-04-09",
         "event": "GDP (Third Estimate) Q4 2025 & Year 2025",
         "impact": "MEDIUM",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-04-10",
         "event": "US CPI (March 2026)",
         "impact": "HIGH",
-        "days_until": 3
+        "hours_until": 48
       },
       {
         "date": "2026-04-16",
         "event": "China GDP Q1 2026 + Industrial Production + Retail Sales",
         "impact": "MEDIUM",
-        "days_until": 9
+        "days_until": 8
       },
       {
         "date": "2026-04-17",
         "event": "Monthly Options Expiry",
         "impact": "MEDIUM",
-        "days_until": 10
+        "days_until": 9
       }
     ],
     "calendar_monthly": [
@@ -2405,20 +2407,20 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING (14):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -1.6% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -1.6% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -1.6% — kein Conflict\n  • sofr_ffr: NORMAL: Wert: 2.0\n  • fin_stress: RELAXED: Wert: -0.1828\n\nCONFLICTING (9):\n  • US PCE / Personal Income & Outlays (February 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -55.8% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -55.8% — Smart Money gegen GLD (17% im Portfolio)\n  • amihud: ILLIQUID: Wert: 82.13 — Liquiditäts-Risiko\n  • COMMODITY_VS_COPPER: V16 hat 37% Commodity-Exposure aber Copper SMA50 Falling\n\nNETTO: 14 Confirming vs 9 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 11/18) ===\n\nCONFIRMING (14):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -1.6% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -1.6% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -1.6% — kein Conflict\n  • sofr_ffr: NORMAL: Wert: 1.0\n  • fin_stress: RELAXED: Wert: -0.1828\n\nCONFLICTING (11):\n  • US PCE / Personal Income & Outlays (February 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • US CPI (March 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • Convergence Week aktiv: Mehrere HIGH Events: US PCE / Personal Income & Outlays (February 2026), US CPI (March 2026), FOMC Meeting Decision (April 2026)\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -55.8% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -55.8% — Smart Money gegen GLD (17% im Portfolio)\n\nNETTO: 14 Confirming vs 11 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-04-07",
+    "date": "2026-04-08",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 5,
-    "days_since_state_change": 5,
+    "days_since_material_rotation": 6,
+    "days_since_state_change": 6,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -2568,7 +2570,8 @@
           "2026-04-02",
           "2026-04-03",
           "2026-04-06",
-          "2026-04-07"
+          "2026-04-07",
+          "2026-04-08"
         ],
         "values": [
           0.0,
@@ -2588,6 +2591,7 @@
           0.0,
           0.0974,
           0.0974,
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -2616,7 +2620,8 @@
           "2026-04-02",
           "2026-04-03",
           "2026-04-06",
-          "2026-04-07"
+          "2026-04-07",
+          "2026-04-08"
         ],
         "values": [
           0.2183,
@@ -2636,6 +2641,7 @@
           0.2027,
           0.0,
           0.0,
+          0.2027,
           0.2027,
           0.2027,
           0.2027,
@@ -2664,7 +2670,8 @@
           "2026-04-02",
           "2026-04-03",
           "2026-04-06",
-          "2026-04-07"
+          "2026-04-07",
+          "2026-04-08"
         ],
         "values": [
           0.2726,
@@ -2684,6 +2691,7 @@
           0.2883,
           0.0,
           0.0,
+          0.2883,
           0.2883,
           0.2883,
           0.2883,
@@ -2712,7 +2720,8 @@
           "2026-04-02",
           "2026-04-03",
           "2026-04-06",
-          "2026-04-07"
+          "2026-04-07",
+          "2026-04-08"
         ],
         "values": [
           0.0,
@@ -2732,6 +2741,7 @@
           0.0,
           0.0821,
           0.0821,
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -2760,7 +2770,8 @@
           "2026-04-02",
           "2026-04-03",
           "2026-04-06",
-          "2026-04-07"
+          "2026-04-07",
+          "2026-04-08"
         ],
         "values": [
           0.3289,
@@ -2780,6 +2791,7 @@
           0.34,
           0.0644,
           0.0644,
+          0.34,
           0.34,
           0.34,
           0.34,
@@ -2808,7 +2820,8 @@
           "2026-04-02",
           "2026-04-03",
           "2026-04-06",
-          "2026-04-07"
+          "2026-04-07",
+          "2026-04-08"
         ],
         "values": [
           0.1802,
@@ -2828,6 +2841,7 @@
           0.1689,
           0.0561,
           0.0561,
+          0.1689,
           0.1689,
           0.1689,
           0.1689,
@@ -2911,7 +2925,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-04-06",
+        "date": "2026-04-07",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
@@ -2927,7 +2941,7 @@
         }
       },
       "1w": {
-        "date": "2026-03-31",
+        "date": "2026-04-01",
         "weights": {
           "GLD": 0.0561,
           "XLU": 0.0644,
