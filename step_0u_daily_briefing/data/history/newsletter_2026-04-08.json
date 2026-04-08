@@ -1,0 +1,478 @@
+{
+  "schema_version": "1.2",
+  "date": "2026-04-08",
+  "weekday": "Wednesday",
+  "format": "DAILY",
+  "generated_at": "2026-04-08T07:16:48.433893+00:00",
+  "one_thing": "Composite 70.6 CALM. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
+  "composite_scores": {
+    "tactical": {
+      "score": 70.6,
+      "zone": "CALM",
+      "velocity": 0.6,
+      "acceleration": 0.9
+    },
+    "positional": {
+      "score": 62.6,
+      "zone": "ELEVATED",
+      "velocity": 0.6,
+      "acceleration": 0.9
+    },
+    "structural": {
+      "score": 48.5,
+      "zone": "STRESS",
+      "velocity": -4.4,
+      "acceleration": -4.2
+    }
+  },
+  "data_integrity": {
+    "score": 85,
+    "total_feeds": 13,
+    "active_feeds": 11,
+    "stale_feeds": [
+      {
+        "name": "CU_AU",
+        "type": "indicator"
+      },
+      {
+        "name": "HYG_FLOWS",
+        "type": "indicator"
+      }
+    ]
+  },
+  "regime_context": {
+    "v16_regime": "LATE_EXPANSION",
+    "regime_duration_days": 1,
+    "previous_regime": null,
+    "system_regime": "SELECTIVE",
+    "fragility_state": "ELEVATED",
+    "shift_countdown": {
+      "available": false
+    }
+  },
+  "regime_interpretation": "V16 Regime: LATE_EXPANSION. Keine LLM-Interpretation verfuegbar.",
+  "portfolio_attribution": {
+    "total_pnl_pct": null,
+    "positions": [
+      {
+        "asset": "HYG",
+        "weight_pct": 28.8,
+        "pnl_pct": null,
+        "pnl_contribution": null,
+        "held_days": null
+      },
+      {
+        "asset": "DBC",
+        "weight_pct": 20.3,
+        "pnl_pct": null,
+        "pnl_contribution": null,
+        "held_days": null
+      },
+      {
+        "asset": "XLU",
+        "weight_pct": 18.0,
+        "pnl_pct": null,
+        "pnl_contribution": null,
+        "held_days": null
+      },
+      {
+        "asset": "GLD",
+        "weight_pct": 16.9,
+        "pnl_pct": null,
+        "pnl_contribution": null,
+        "held_days": null
+      },
+      {
+        "asset": "XLP",
+        "weight_pct": 16.1,
+        "pnl_pct": null,
+        "pnl_contribution": null,
+        "held_days": null
+      }
+    ],
+    "effective_independent_bets": null,
+    "peer_comparison": null
+  },
+  "risk_heatmap": {
+    "positions": [
+      "HYG",
+      "DBC",
+      "XLU"
+    ],
+    "risk_factors": [
+      "Credit Spreads",
+      "Oil/Iran",
+      "Fed Policy"
+    ],
+    "matrix": [
+      [
+        "DIREKT",
+        "INDIREKT",
+        "DIREKT"
+      ],
+      [
+        "INDIREKT",
+        "DIREKT",
+        "INDIREKT"
+      ],
+      [
+        "INDIREKT",
+        "MINIMAL",
+        "INDIREKT"
+      ]
+    ],
+    "assessments": {}
+  },
+  "indicators": {
+    "core": [
+      {
+        "key": "HY_OAS",
+        "name": "High Yield Credit Spreads (OAS)",
+        "value": 305.0,
+        "unit_label": "bps",
+        "normalized": 87.8,
+        "weight": 0.2,
+        "status": "OK",
+        "alert": false,
+        "what": "Der Risikoaufschlag, den Unternehmen mit schwacher Bonitaet gegenueber Staatsanleihen zahlen muessen. Misst den Grad an Credit-Stress im Markt — je hoeher der Spread, desto mehr Angst vor Zahlungsausfaellen.",
+        "thresholds": "Unter 300 bps = entspannt (Maerkte sorglos). 300-450 bps = normal. 450-600 bps = erhoehte Vorsicht. Ueber 600 bps = akuter Stress (2008: 2000+ bps).",
+        "why_it_matters": "HYG ist die direkteste Verbindung — jede Spread-Ausweitung um 50 bps kostet ca. 2-3% im HYG-Preis. Auch DBC und Rohstoffe leiden indirekt, weil hohe Spreads Rezessionsangst signalisieren.",
+        "current_assessment": ""
+      },
+      {
+        "key": "BREADTH",
+        "name": "Marktbreite (Advance/Decline Proxy)",
+        "value": 2.5,
+        "unit_label": "Ratio",
+        "normalized": 100.0,
+        "weight": 0.15,
+        "status": "OK",
+        "alert": false,
+        "what": "Misst wie breit eine Rallye oder ein Sell-Off getragen wird. Hohe Breadth = viele Aktien steigen (gesunde Rallye). Niedrige Breadth = nur wenige Mega-Caps tragen den Index (fragil).",
+        "thresholds": "Ueber 1.5 = sehr gesund. 1.0-1.5 = normal. 0.5-1.0 = schwaecher. Unter 0.5 fuer 3+ Tage = Breadth Collapse (-10 Punkte Composite Penalty).",
+        "why_it_matters": "Fallende Breadth in LATE_EXPANSION ist ein klassisches Zyklusende-Signal. Wenn nur 5-10 Mega-Caps den Markt tragen, steigt das Risiko eines breiten Sell-Offs der alle Positionen trifft.",
+        "current_assessment": ""
+      },
+      {
+        "key": "CU_AU",
+        "name": "Copper/Gold Ratio",
+        "value": null,
+        "unit_label": "Ratio",
+        "normalized": null,
+        "weight": 0.15,
+        "status": "MISSING",
+        "alert": false,
+        "what": "Kupferpreis geteilt durch Goldpreis. Kupfer = Industrie (steigt bei Wachstum), Gold = Sicherheit (steigt bei Angst). Das Ratio misst 'Wachstum vs. Sicherheit' im Markt.",
+        "thresholds": "Ueber 0.25 = starke Wirtschaft. 0.18-0.25 = normal. 0.12-0.18 = Schwaeche. Unter 0.12 = extreme Risikoaversion. Trend wichtiger als Niveau.",
+        "why_it_matters": "Direkt relevant fuer DBC: fallendes Ratio = nachlassende Industrienachfrage = DBC unter Druck. GLD profitiert gleichzeitig. In LATE_EXPANSION hat CU/AU 15% Gewicht — dritthoechstes im Composite.",
+        "current_assessment": ""
+      },
+      {
+        "key": "VIX_TERM",
+        "name": "VIX Term Structure (VIX/VIX3M Ratio)",
+        "value": 0.9758,
+        "unit_label": "Ratio",
+        "normalized": 49.8,
+        "weight": 0.12,
+        "status": "OK",
+        "alert": false,
+        "what": "Verhaeltnis zwischen kurzfristiger (30d) und mittelfristiger (90d) erwarteter Aktienvolatilitaet. Normalerweise ist kurzfristige Vol niedriger (Ratio unter 1.0). Wenn das Ratio ueber 1.0 steigt (Inversion), erwarten Haendler JETZT mehr Turbulenzen als in 3 Monaten — ein Panik-Signal.",
+        "thresholds": "Unter 0.85 = sehr ruhig. 0.85-0.95 = normal. 0.95-1.0 = erhoehte Wachsamkeit. Ueber 1.0 = INVERTIERT — automatisch -15 Punkte Composite Penalty.",
+        "why_it_matters": "Inversion trifft alle Risk-On-Positionen (HYG, DBC). GLD profitiert typischerweise als Safe Haven. Einer der zuverlaessigsten Stress-Indikatoren ueberhaupt.",
+        "current_assessment": ""
+      },
+      {
+        "key": "NET_LIQ",
+        "name": "Netto-Liquiditaet (Fed Reserve Drain Proxy)",
+        "value": 11180000000.0,
+        "unit_label": "$",
+        "normalized": 0.0,
+        "weight": 0.1,
+        "status": "OK",
+        "alert": true,
+        "what": "Verfuegbare Liquiditaet im Finanzsystem: Fed-Bilanz minus Treasury General Account minus Reverse Repo. Steigende Liquiditaet hebt alle Risiko-Assets. Fallende Liquiditaet drueckt alles.",
+        "thresholds": "Ueber $6.5T = reichlich. $5.5-6.5T = normal. Unter $5.5T = restriktiv. Unter $5.0T = Stress. Die Richtung (steigend/fallend) ist wichtiger als das Niveau.",
+        "why_it_matters": "Liquiditaet ist der wichtigste Makro-Treiber fuer ALLE Assets im Portfolio. Steigende Liq hebt DBC, GLD und HYG gleichzeitig. Fallende Liq drueckt alles — kein Versteck ausser Cash und kurze Treasuries.",
+        "current_assessment": ""
+      }
+    ],
+    "regime_sensitive": [
+      {
+        "key": "2Y10Y",
+        "name": "Yield Curve 10Y-2Y (Zinsstrukturkurve)",
+        "value": 0.52,
+        "unit_label": "%",
+        "normalized": 57.4,
+        "weight": 0.08,
+        "status": "OK",
+        "alert": false,
+        "what": "Differenz zwischen 10-Jahres- und 2-Jahres-US-Staatsanleihenrendite. Negativ = invertiert — historisch der zuverlaessigste Rezessions-Indikator. Jede US-Rezession seit 1970 wurde vorhergesagt (Vorlauf 6-18 Monate).",
+        "thresholds": "Ueber +1.0% = steil (Erholung). 0 bis +1.0% = normal. -0.5 bis 0% = flach/leicht invertiert (Warnsignal). Unter -0.5% = tief invertiert (Rezession wahrscheinlich). ACHTUNG: Re-Steepening (zurueck zu positiv) ist oft die gefaehrlichste Phase — signalisiert unmittelbar bevorstehende Rezession.",
+        "why_it_matters": "Direkte Implikation fuer V16-Regime: Reinversion oder schnelles Steepening kann Regime-Wechsel ausloesen. HYG besonders verwundbar bei Shift zu CONTRACTION.",
+        "current_assessment": ""
+      },
+      {
+        "key": "MOVE",
+        "name": "MOVE Index (Bond-Volatilitaet)",
+        "value": 81.68,
+        "unit_label": "Index",
+        "normalized": 98.3,
+        "weight": 0.1,
+        "status": "OK",
+        "alert": false,
+        "what": "Der 'VIX fuer Anleihen' — erwartete Volatilitaet am US-Treasury-Markt. Hohe Werte = Unsicherheit ueber Zinsentwicklung und Fed-Politik. Seit 2022 besonders bedeutend, weil die Fed der dominante Markt-Treiber ist.",
+        "thresholds": "Unter 80 = ruhig (selten seit 2022). 80-120 = erhoehte Basisvol (neue Normalitaet). 120-150 = Stress. Ueber 150 = akute Anleihen-Krise. 180+ = Panik (Maerz 2023, Sept 2022).",
+        "why_it_matters": "Hohe Bond-Vol strahlt auf alle Assets: HYG leidet direkt (Spreads), DBC indirekt (Dollar-Vol), GLD kann profitieren (Safe Haven) oder leiden (steigende Real Yields). MOVE ueber 150 = systemisches Warnsignal.",
+        "current_assessment": ""
+      },
+      {
+        "key": "HYG_FLOWS",
+        "name": "HYG Fund Flows (Wochenzufluesse)",
+        "value": null,
+        "unit_label": "$",
+        "normalized": null,
+        "weight": 0.1,
+        "status": "MISSING",
+        "alert": false,
+        "what": "Netto-Kapitalzufluesse in High-Yield-Bond-Fonds. Positive Flows = Anleger kaufen Kreditrisiko. Negative = Anleger verkaufen. Direktes Mass fuer Nachfrage nach genau der Asset-Klasse unserer groessten Position.",
+        "thresholds": "Ueber +$500M/Wo = starke Zufluesse. 0 bis +$500M = neutral. -$500M bis 0 = leichte Abfluesse. -$500M bis -$1B = erhoehte Abfluesse. Unter -$1B = Kapitalflucht (akutes Warnsignal).",
+        "why_it_matters": "Direkt relevant fuer HYG — anhaltende Abfluesse druecken den Kurs auch ohne fundamentale Spread-Veraenderung, weil ETF-Market-Maker Anleihen liquidieren muessen.",
+        "current_assessment": ""
+      }
+    ],
+    "watchlist_triggered": []
+  },
+  "pipeline_coherence": {
+    "score": 68,
+    "subsystems": {
+      "v16": "LATE_EXPANSION",
+      "market_analyst": "SELECTIVE",
+      "ic_consensus": "NEUTRAL",
+      "risk_officer": "GREEN",
+      "cio": "WATCH",
+      "execution_advisor": "HOLD"
+    },
+    "divergences": []
+  },
+  "scenarios": [],
+  "behavioral": {
+    "anchoring_alerts": [
+      {
+        "asset": "HYG",
+        "weight_pct": 28.8,
+        "question": "Wuerdest du HYG heute NEU kaufen bei 28.8%?"
+      },
+      {
+        "asset": "DBC",
+        "weight_pct": 20.3,
+        "question": "Wuerdest du DBC heute NEU kaufen bei 20.3%?"
+      }
+    ],
+    "inaction_tracker": {
+      "status": "WARTEN_IST_STRATEGIE"
+    },
+    "system_action": "HOLD"
+  },
+  "against_you": {
+    "positions": [],
+    "if_wrong_summary": "LLM nicht verfuegbar — keine Szenario-Analyse."
+  },
+  "epistemic_status": {
+    "data_quality": "PARTIAL",
+    "system_conviction": "LOW",
+    "stale_sources": [],
+    "blind_spots": [
+      "LLM-Analyse nicht verfuegbar"
+    ],
+    "signal_freshness": {
+      "regime_age_days": 1
+    }
+  },
+  "catalysts_48h": [
+    {
+      "date": "2026-04-09",
+      "event": "US PCE / Personal Income & Outlays (February 2026)",
+      "impact": "HIGH",
+      "hours_until": 24
+    },
+    {
+      "date": "2026-04-09",
+      "event": "GDP (Third Estimate) Q4 2025 & Year 2025",
+      "impact": "MEDIUM",
+      "hours_until": 24
+    },
+    {
+      "date": "2026-04-10",
+      "event": "US CPI (March 2026)",
+      "impact": "HIGH",
+      "hours_until": 48
+    }
+  ],
+  "intelligence_digest": {
+    "ic_net_direction": "NEUTRAL",
+    "ic_net_score": 1,
+    "pre_mortem_high_count": 2,
+    "active_threads": 12,
+    "threatening_threads": 4,
+    "cadence_anomalies": 0,
+    "expert_disagreements": 0
+  },
+  "liquidity_pipeline_7d": {
+    "available": false,
+    "placeholder": "Liquidity Pipeline ab Phase 5 verfuegbar"
+  },
+  "history_enrichment": {
+    "available": false,
+    "placeholder": "History Enrichment ab April 2026 verfuegbar"
+  },
+  "breaking_news": [
+    {
+      "category": "GEOPOLITIK",
+      "title": "Trump pauses planned Iran attack, cites progress toward peace deal | Fox News",
+      "impact": "HIGH",
+      "source": "www.foxnews.com",
+      "portfolio_transmission": {
+        "DBC": {
+          "direction": "BULLISH",
+          "mechanism": "Geopolitical risk → commodity bid",
+          "exposure_pct": 20.3
+        },
+        "HYG": {
+          "direction": "BEARISH",
+          "mechanism": "Risk-off → credit spread widening",
+          "exposure_pct": 28.8
+        },
+        "GLD": {
+          "direction": "BULLISH",
+          "mechanism": "Safe haven flows",
+          "exposure_pct": 16.9
+        }
+      }
+    },
+    {
+      "category": "GEOPOLITIK",
+      "title": "Iran war live updates: Trump, Iran agree to two-week ceasefire after threat of massive attacks",
+      "impact": "HIGH",
+      "source": "www.nbcnews.com",
+      "portfolio_transmission": {
+        "DBC": {
+          "direction": "BULLISH",
+          "mechanism": "Geopolitical risk → commodity bid",
+          "exposure_pct": 20.3
+        },
+        "HYG": {
+          "direction": "BEARISH",
+          "mechanism": "Risk-off → credit spread widening",
+          "exposure_pct": 28.8
+        },
+        "GLD": {
+          "direction": "BULLISH",
+          "mechanism": "Safe haven flows",
+          "exposure_pct": 16.9
+        }
+      }
+    },
+    {
+      "category": "GEOPOLITIK",
+      "title": "Oil prices plunge below $100 after Iran agrees to safe passage through Strait of Hormuz during ceasefire",
+      "impact": "HIGH",
+      "source": "www.cnbc.com",
+      "portfolio_transmission": {
+        "DBC": {
+          "direction": "BULLISH",
+          "mechanism": "Geopolitical risk → commodity bid",
+          "exposure_pct": 20.3
+        },
+        "HYG": {
+          "direction": "BEARISH",
+          "mechanism": "Risk-off → credit spread widening",
+          "exposure_pct": 28.8
+        },
+        "GLD": {
+          "direction": "BULLISH",
+          "mechanism": "Safe haven flows",
+          "exposure_pct": 16.9
+        }
+      }
+    },
+    {
+      "category": "GEOPOLITIK",
+      "title": "IEA Chief: Current Energy Crisis Worse Than 1973, 1979, and 2022 Combined | OilPrice.com",
+      "impact": "HIGH",
+      "source": "oilprice.com",
+      "portfolio_transmission": {
+        "DBC": {
+          "direction": "BULLISH",
+          "mechanism": "Geopolitical risk → commodity bid",
+          "exposure_pct": 20.3
+        },
+        "HYG": {
+          "direction": "BEARISH",
+          "mechanism": "Risk-off → credit spread widening",
+          "exposure_pct": 28.8
+        },
+        "GLD": {
+          "direction": "BULLISH",
+          "mechanism": "Safe haven flows",
+          "exposure_pct": 16.9
+        }
+      }
+    },
+    {
+      "category": "GEOPOLITIK",
+      "title": "Global Economy Braces for Prolonged Shock From Iran War | OilPrice.com",
+      "impact": "HIGH",
+      "source": "oilprice.com",
+      "portfolio_transmission": {
+        "DBC": {
+          "direction": "BULLISH",
+          "mechanism": "Geopolitical risk → commodity bid",
+          "exposure_pct": 20.3
+        },
+        "HYG": {
+          "direction": "BEARISH",
+          "mechanism": "Risk-off → credit spread widening",
+          "exposure_pct": 28.8
+        },
+        "GLD": {
+          "direction": "BULLISH",
+          "mechanism": "Safe haven flows",
+          "exposure_pct": 16.9
+        }
+      }
+    }
+  ],
+  "breaking_news_summary": "BREAKING: Trump pauses planned Iran attack, cites progress toward peace deal | Fox News",
+  "warning_triggers": [],
+  "contrarian_check": null,
+  "prediction_log": {
+    "todays_predictions": []
+  },
+  "anchor_type": "CRITICAL",
+  "crypto_briefing": {
+    "available": true,
+    "date": "2026-04-08",
+    "btc_price": 71741.0,
+    "ensemble_daily": 0.0,
+    "ensemble_weekly": null,
+    "ensemble_changed": "False",
+    "mom_1M": false,
+    "mom_3M": false,
+    "mom_6M": false,
+    "mom_12M": false,
+    "below_200wma": false,
+    "wma_200": 59026.47,
+    "below_wma_changed": false,
+    "btc_dominance": 56.8,
+    "phase": null,
+    "phase_name": null,
+    "weekly_alloc_total": null,
+    "weekly_btc": null,
+    "weekly_eth": null,
+    "weekly_sol": null,
+    "weekly_cash": null,
+    "alert_count": 0,
+    "alerts": []
+  },
+  "hash": "sha256:ad967a6a7d79ebdb83cbf3781fb8ebb2569ec72392f89fa9dffff5350546fb9e"
+}
