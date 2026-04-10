@@ -22,6 +22,16 @@ warnings.filterwarnings('ignore')
 # ═══════════════════════════════════════════════════════
 SHEET_ID = "11xoZ-E-W0eG23V_HSKloqzC4ubLYg9pfcf6k7HJ0oSE"
 
+# FIX 2026-04-10: Sheet-Tab GIDs fuer CSV-Export-Loader.
+# gviz-API liefert historische Liq_Dir-Werte als NaN zurueck (99% der Zeilen).
+# Direkter CSV-Export liefert die echten Werte (1735x -1, 1167x 0, 3157x +1).
+# Bug-Signatur: Backtest lieferte 13.94% CAGR mit BTC=0%; Fix liefert 34.29% CAGR mit BTC=15.32%.
+SHEET_GIDS = {
+    'DATA_Prices':      1302493928,
+    'CALC_Macro_State': 1440224653,
+    'DATA_K16_K17':      278019944,
+}
+
 # ═══════════════════════════════════════════════════════
 # ASSET UNIVERSE — 25 tradeable + 2 indicator
 # ═══════════════════════════════════════════════════════
@@ -302,10 +312,18 @@ def mets(r):
 # ═══════════════════════════════════════════════════════
 def load_data():
     print("\n" + "="*70 + "\nSEKTION 1: DATEN LADEN\n" + "="*70)
-    base = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet="
 
+    # FIX 2026-04-10: CSV-Export-Loader statt gviz.
+    # gviz-API liefert historische Liq_Dir-Werte als NaN.
+    # CSV-Export via export?format=csv&gid=... liefert die echten Werte.
     def load_tab(name):
-        df = pd.read_csv(base + name)
+        gid = SHEET_GIDS.get(name)
+        if gid is not None:
+            url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={gid}"
+        else:
+            # Fallback fuer nicht registrierte Tabs (sollte nicht vorkommen)
+            url = f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={name}"
+        df = pd.read_csv(url)
         df.columns = df.columns.str.strip()
         df = df.rename(columns={df.columns[0]: 'Date'})
         if not str(df.iloc[0]['Date'])[:4].isdigit():
@@ -345,15 +363,29 @@ def load_data():
     print(f"  Macro: {len(macro)} Zeilen")
 
     k16 = load_tab("DATA_K16_K17")
-    for c in k16.columns:
+    # FIX 2026-04-10: Column-Matching fuer Liq_Dir und Vote_Sum_Magnitude.
+    # Alte Logik war fragil gegen Sheet-Spaltennamen mit Suffixen
+    # (z.B. "Liq_Dir_Confirmed 5T-Bestaetigter Liq_Dir").
+    for c in list(k16.columns):
         cl = c.lower()
-        if 'liq_dir_confirmed' in cl: k16 = k16.rename(columns={c: 'Liq_Dir_Confirmed'})
-        elif 'vote_sum_magnitude' in cl: k16 = k16.rename(columns={c: 'Vote_Sum_Magnitude'})
+        if 'liq_dir_confirmed' in cl:
+            k16 = k16.rename(columns={c: 'Liq_Dir_Confirmed'})
+        elif 'liq_dir_final' in cl:
+            k16 = k16.rename(columns={c: 'Liq_Dir_Final'})
+        elif 'vote_sum_magnitude' in cl:
+            k16 = k16.rename(columns={c: 'Vote_Sum_Magnitude'})
+    # Vote_Sum_Magnitude Fallback: matcht auch "Vote_Sum Sum 4 Votes" (mit Suffix)
     if 'Vote_Sum_Magnitude' not in k16.columns:
-        vs_col = [c for c in k16.columns if c.strip().lower() == 'vote_sum']
+        vs_col = None
+        for c in k16.columns:
+            cl = c.lower()
+            # Spalte die mit 'vote_sum' startet, aber nicht '_magnitude', kein Emoji, kein 'score'
+            if cl.startswith('vote_sum') and '🟡' not in c and 'score' not in cl and 'magnitude' not in cl:
+                vs_col = c
+                break
         if vs_col:
-            k16['Vote_Sum_Magnitude'] = pd.to_numeric(k16[vs_col[0]], errors='coerce').abs()
-            print(f"  ! Vote_Sum_Magnitude aus abs(Vote_Sum) berechnet")
+            k16['Vote_Sum_Magnitude'] = pd.to_numeric(k16[vs_col], errors='coerce').abs()
+            print(f"  ! Vote_Sum_Magnitude aus abs('{vs_col}') berechnet")
     print(f"  K16: {len(k16)} Zeilen")
 
     print("  RV Percentile-Ranks...", end=' ', flush=True)
@@ -401,14 +433,33 @@ def run_bt(prices, macro, k16, rv, cm, *, apply_mc=True, use_cv_cutoff=True, lab
             df = df.merge(calc_ctm(prices, a), left_on='Date', right_index=True, how='left')
     print("OK", flush=True)
 
+    # FIX 2026-04-10: ldc-Priorisierung. Alte Logik nahm die erste passende Spalte
+    # in df.columns Reihenfolge, was zu 'Liq_Dir_Final' fuehrte statt 'Liq_Dir_Confirmed'.
+    # Jetzt wird explizit Confirmed bevorzugt (V55-Spec: 5T-bestaetigter Wert).
     ldc = vsmc = None
+    # Schritt 1: Suche explizit Liq_Dir_Confirmed
     for c in df.columns:
-        cl = c.lower()
-        if 'liq_dir_confirmed' in cl or 'liq_dir_final' in cl: ldc = c
-        if 'vote_sum_magnitude' in cl: vsmc = c
+        if 'liq_dir_confirmed' in c.lower():
+            ldc = c
+            break
+    # Schritt 2: Fallback auf Liq_Dir_Final wenn Confirmed nicht existiert
     if not ldc:
         for c in df.columns:
-            if 'liq_dir' in c.lower(): ldc = c; break
+            if 'liq_dir_final' in c.lower():
+                ldc = c
+                break
+    # Schritt 3: Fallback auf beliebige liq_dir Spalte (aber nicht _detail oder _confirm_detail)
+    if not ldc:
+        for c in df.columns:
+            cl = c.lower()
+            if 'liq_dir' in cl and 'detail' not in cl:
+                ldc = c
+                break
+    # Vote_Sum_Magnitude
+    for c in df.columns:
+        if 'vote_sum_magnitude' in c.lower():
+            vsmc = c
+            break
 
     # SC-6
     print(f"  [{label}] SC-6...", end=' ', flush=True)
