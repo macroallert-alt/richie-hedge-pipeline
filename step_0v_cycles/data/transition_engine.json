@@ -1,5 +1,5 @@
 {
- "computed_at": "2026-04-05T04:32:05.360698+00:00",
+ "computed_at": "2026-04-12T04:42:08.920806+00:00",
  "engine_version": "1.1",
  "transition_matrices": {
   "LIQUIDITY": {
@@ -621,7 +621,7 @@
      "n_occurrences": 25,
      "duration_months": {
       "median": 3,
-      "mean": 3.8,
+      "mean": 3.7,
       "min": 1,
       "max": 11,
       "std": 2.4,
@@ -650,29 +650,29 @@
        2,
        7,
        8,
-       4
+       3
       ]
      },
      "transitions_to": {
       "EARLY_STIMULUS": {
-       "count": 17,
-       "probability": 0.708
+       "count": 18,
+       "probability": 0.72
       },
       "PEAK": {
        "count": 2,
-       "probability": 0.083
+       "probability": 0.08
       },
       "EXPANSION": {
        "count": 5,
-       "probability": 0.208
+       "probability": 0.2
       }
      }
     },
     "EARLY_STIMULUS": {
-     "n_occurrences": 20,
+     "n_occurrences": 21,
      "duration_months": {
       "median": 1,
-      "mean": 1.8,
+      "mean": 1.7,
       "min": 1,
       "max": 5,
       "std": 1.1,
@@ -696,6 +696,7 @@
        1,
        1,
        2,
+       1,
        1
       ]
      },
@@ -788,7 +789,7 @@
      }
     }
    },
-   "total_transitions": 73
+   "total_transitions": 74
   },
   "DOLLAR": {
    "phases": {
@@ -850,7 +851,7 @@
        5,
        1,
        1,
-       1
+       2
       ]
      },
      "transitions_to": {
@@ -1367,20 +1368,24 @@
      "transitions_to": {
       "EXPANSION": {
        "count": 7,
-       "probability": 0.368
+       "probability": 0.35
       },
       "CONTRACTION": {
        "count": 11,
-       "probability": 0.579
+       "probability": 0.55
       },
       "TROUGH": {
        "count": 1,
-       "probability": 0.053
+       "probability": 0.05
+      },
+      "RECOVERY": {
+       "count": 1,
+       "probability": 0.05
       }
      }
     },
     "RECOVERY": {
-     "n_occurrences": 12,
+     "n_occurrences": 13,
      "duration_months": {
       "median": 1,
       "mean": 1.5,
@@ -1397,6 +1402,7 @@
        1,
        1,
        4,
+       1,
        1,
        1,
        1
@@ -1461,7 +1467,7 @@
      }
     }
    },
-   "total_transitions": 96
+   "total_transitions": 97
   },
   "TRADE": {
    "phases": {
@@ -1780,26 +1786,22 @@
    }
   },
   "CHINA_CREDIT": {
-   "current_phase": "CONTRACTION",
-   "current_duration_months": 3,
-   "median_duration": 3,
-   "phase_position_pct": 100,
-   "remaining_median": 2,
+   "current_phase": "EARLY_STIMULUS",
+   "current_duration_months": 0,
+   "median_duration": 1,
+   "phase_position_pct": 0,
+   "remaining_median": 1,
    "remaining_p25": 1,
-   "remaining_p75": 4,
-   "status": "EXTENDED",
+   "remaining_p75": 2,
+   "status": "EARLY_PHASE",
    "transitions_ahead": {
-    "EARLY_STIMULUS": {
-     "count": 17,
-     "probability": 0.708
-    },
-    "PEAK": {
-     "count": 2,
-     "probability": 0.083
+    "CONTRACTION": {
+     "count": 13,
+     "probability": 0.65
     },
     "EXPANSION": {
-     "count": 5,
-     "probability": 0.208
+     "count": 7,
+     "probability": 0.35
     }
    }
   },
@@ -1860,26 +1862,26 @@
    }
   },
   "EARNINGS": {
-   "current_phase": "LATE_EXPANSION",
-   "current_duration_months": 9,
+   "current_phase": "RECOVERY",
+   "current_duration_months": 6,
    "median_duration": 1,
-   "phase_position_pct": 900,
+   "phase_position_pct": 600,
    "remaining_median": 0,
    "remaining_p25": 0,
    "remaining_p75": 0,
    "status": "EXTENDED",
    "transitions_ahead": {
     "EXPANSION": {
-     "count": 7,
-     "probability": 0.368
-    },
-    "CONTRACTION": {
-     "count": 11,
-     "probability": 0.579
+     "count": 8,
+     "probability": 0.667
     },
     "TROUGH": {
+     "count": 3,
+     "probability": 0.25
+    },
+    "LATE_EXPANSION": {
      "count": 1,
-     "probability": 0.053
+     "probability": 0.083
     }
    }
   },
@@ -5430,11 +5432,10 @@
   }
  },
  "confirmation_counter": {
-  "bullish_count": 7,
+  "bullish_count": 6,
   "bearish_count": 2,
-  "neutral_count": 0,
+  "neutral_count": 1,
   "bullish_cycles": [
-   "LIQUIDITY",
    "CREDIT",
    "CHINA_CREDIT",
    "DOLLAR",
@@ -5446,26 +5447,33 @@
    "COMMODITY",
    "BUSINESS"
   ],
-  "neutral_cycles": [],
-  "confirmation_score": 5,
-  "interpretation": "Starker Konsens bullish. Risk-On."
+  "neutral_cycles": [
+   "LIQUIDITY"
+  ],
+  "confirmation_score": 4,
+  "interpretation": "Mehrheitlich bullish, aber nicht einstimmig. Vorsichtig Risk-On."
  },
  "overall_assessment": {
-  "n_significant_returns": 2542,
-  "n_total_returns": 7659,
-  "pct_significant": 33.2,
+  "n_significant_returns": 2536,
+  "n_total_returns": 7662,
+  "pct_significant": 33.1,
   "cascade_severity": "CASCADE",
-  "confirmation_score": 5,
+  "confirmation_score": 4,
   "extended_cycles": [
    "CREDIT",
    "COMMODITY",
-   "CHINA_CREDIT",
    "BUSINESS",
    "FED_RATES",
    "EARNINGS",
    "TRADE"
   ],
   "late_cycles": [],
-  "verdict": "WARNING — Cascade Speed CASCADE. 3 cycles transitioning. Defensive positioning recommended. WATCH: CREDIT, COMMODITY, CHINA_CREDIT, BUSINESS, FED_RATES, EARNINGS, TRADE extended beyond median duration."
+  "verdict": "WARNING — Cascade Speed CASCADE. 3 cycles transitioning. Defensive positioning recommended. WATCH: CREDIT, COMMODITY, BUSINESS, FED_RATES, EARNINGS, TRADE extended beyond median duration."
+ },
+ "cycle_narrative": {
+  "generated_at": "2026-04-12T04:42:25.663328+00:00",
+  "model": "claude-sonnet-4-6",
+  "text": "**BALDUR CREEK CAPITAL — ZYKLEN-ANALYSE | 12. APRIL 2026**\n\nDie Zyklen-Engine zeigt ein gespaltenes Bild: Confirmation Score 4 mit 6 bullishen Signalen dominiert kurzfristig, aber CASCADE-Speed 0.5 mit 3 Transitionen in 6 Monaten signalisiert strukturellen Umschwung. V16-State LATE_EXPANSION mit 94.2% Growth-Wahrscheinlichkeit gibt Bullen noch Deckung — doch 6 Zyklen sind über ihre Median-Dauer hinaus, eine Konstellation, die selten länger als 1–2 Monate stabil bleibt.\n\nKritisch: FED_RATES bei 567% Positionsdauer mit ~0 Mo Restlaufzeit, EARNINGS bei 600% und TRADE bei 900% — alle drei faktisch überfällig für Transition. BUSINESS und CREDIT (beide 200%, LATE_EXPANSION) haben je ~1 Mo Puffer, aber CREDIT hat bereits gekippt. Stabil sind LIQUIDITY (EARLY_PHASE, ~2 Mo) und DOLLAR (STRENGTHENING, ~3 Mo). China-Stimulus im frühen Stadium (~1 Mo) könnte als Gegengewicht wirken, ist aber zu früh um zu stützen. COMMODITY in EUPHORIA bei 150% Dauer — historisch ein Spätindikator, nicht bullish zu interpretieren.\n\nCrash-Daten fehlen für den aktuellen State CREDIT_BULLISH/BUSINESS_BULLISH (n=?), was die Risikoabschätzung einschränkt. Die historischen Analogien divergieren stark: 2019-11 und 2020-01 zeigen SPY flat/minimal (+2.5%/−0.9%), GLD +17-22%, TLT +17% — klassisches Late-Cycle Risk-off. 2021-01 dagegen SPY +15.8%, Risk-on. Eskalation zum Stress-Szenario (aktuell 2.3% + 3.5% = 5.8% kombiniert) würde ein simultanes Kippen von FED_RATES, EARNINGS und TRADE innerhalb von 4–6 Wochen erfordern — mathematisch möglich bei aktueller Überdehnung.\n\nPositionierung: GLD und TLT bevorzugt — zwei von drei Analogien zeigen +16–22% in GLD und TLT bei ähnlicher Zyklusstruktur. SPY untergewichten, nicht shorten: 94.2% Growth-Wahrscheinlichkeit verbietet aggressive Short-Exposure. COMMODITY-Longs (z.B. DJP) reduzieren — EUPHORIA-Phase bei 150% Überdehnung ist Exit-Signal, kein Einstieg. Liquiditätspuffer aufbauen; wenn TRADE-Zyklus kippt, folgt typischerweise innerhalb von 4 Wochen EARNINGS-Revision.",
+  "word_count": 265
  }
 }
