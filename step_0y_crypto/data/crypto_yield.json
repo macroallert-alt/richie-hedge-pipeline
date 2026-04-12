@@ -1,11 +1,11 @@
 {
   "version": "yield_router V1.0",
-  "timestamp": "2026-04-05T06:14:06.094158+00:00",
-  "date": "2026-04-05",
+  "timestamp": "2026-04-12T06:22:57.049588+00:00",
+  "date": "2026-04-12",
   "inputs": {
-    "ensemble": 0.0,
-    "cash_pct": 1.0,
-    "cash_eur": 10000.0,
+    "ensemble": 0.25,
+    "cash_pct": 0.75,
+    "cash_eur": 7500.0,
     "total_capital_eur": 10000
   },
   "depeg_status": {
@@ -30,19 +30,26 @@
       "deviation": 0.0
     }
   },
-  "regime": "BEAR",
+  "regime": "CAUTIOUS",
   "capital_tier": "STANDARD",
   "tier_weights": {
-    "T0": 0.2,
+    "T0": 0.3,
     "T1": 0.5,
-    "T2": 0.3
+    "T2": 0.2
   },
   "recommendations": {
     "T0": [
       {
         "coin": "USDC",
-        "weight": 1.0,
-        "amount_eur": 2000.0,
+        "weight": 0.6,
+        "amount_eur": 1350.0,
+        "tier": "T0",
+        "apy": 0.0
+      },
+      {
+        "coin": "USDT",
+        "weight": 0.4,
+        "amount_eur": 900.0,
         "tier": "T0",
         "apy": 0.0
       }
@@ -51,7 +58,7 @@
       {
         "product": "USDY",
         "weight": 0.6,
-        "amount_eur": 3000.0,
+        "amount_eur": 2250.0,
         "apy": 3.55,
         "apy_source": "LIVE",
         "issuer": "Ondo Finance",
@@ -61,7 +68,7 @@
       {
         "product": "sDAI",
         "weight": 0.4,
-        "amount_eur": 2000.0,
+        "amount_eur": 1500.0,
         "apy": 3.5,
         "apy_source": "STATIC",
         "issuer": "MakerDAO DSR",
@@ -71,16 +78,16 @@
     ],
     "T2": [
       {
-        "pool_id": "507af9bc-1139-4bf1-b158-ae1f36eb4396",
+        "pool_id": "086d98c3-e23e-42b2-9425-cb8915724337",
         "project": "morpho-v1",
-        "symbol": "AUSDC",
+        "symbol": "GTUSDCRWA",
         "coin": "USDC",
         "chain": "Ethereum",
-        "tvl_usd": 13023746,
-        "effective_apy": 7.18,
-        "risk_adj_apy": 6.68,
+        "tvl_usd": 11833584,
+        "effective_apy": 10.54,
+        "risk_adj_apy": 10.04,
         "weight": 0.5,
-        "amount_eur": 1500.0,
+        "amount_eur": 750.0,
         "tier": "T2"
       },
       {
@@ -89,11 +96,11 @@
         "symbol": "USDS",
         "coin": "USDS",
         "chain": "Ethereum",
-        "tvl_usd": 611769054,
-        "effective_apy": 4.02,
-        "risk_adj_apy": 3.82,
+        "tvl_usd": 592117983,
+        "effective_apy": 3.95,
+        "risk_adj_apy": 3.75,
         "weight": 0.5,
-        "amount_eur": 1500.0,
+        "amount_eur": 750.0,
         "tier": "T2"
       }
     ]
@@ -126,17 +133,17 @@
   },
   "t2_qualified_pools": 42,
   "basis_trade_info": {
-    "typical_apy": "0-3%",
+    "typical_apy": "3-8%",
     "note": "Für fortgeschrittene Nutzer mit dediziertem CEX-Setup"
   },
   "apy": {
-    "weighted_total": 3.34,
+    "weighted_total": 3.14,
     "t1_weighted": 3.53,
-    "t2_weighted": 5.25,
-    "annual_yield_eur": 334.0
+    "t2_weighted": 6.89,
+    "annual_yield_eur": 235.5
   },
   "rebalancing": {
-    "last_date": "2026-04-05",
+    "last_date": "2026-04-12",
     "next_review": null,
     "triggers": []
   }
