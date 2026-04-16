@@ -518,13 +518,14 @@
       }
     ],
     "cluster_weights": {
-      "PM": 0.1596,
+      "PM": 0.1689,
       "EQ_CYCL": 0.0,
-      "EQ_DEFN": 0.3456,
+      "EQ_DEFN": 0.34,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
-      "COMMOD": 0.1976,
+      "BOND": 0.0,
+      "CREDIT": 0.2883,
+      "COMMOD": 0.2027,
       "CRYPTO": 0.0
     },
     "weight_deltas": {
@@ -5692,7 +5693,7 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-04-15",
+    "date": "2026-04-16",
     "execution_level": "WAIT",
     "total_score": 9,
     "max_score": 18,
@@ -5721,7 +5722,7 @@
       "gex_regime": {
         "score": 0,
         "max": 3,
-        "label": "GEX $0.65B — POSITIVE_STABILIZING"
+        "label": "GEX $0.57B — POSITIVE_STABILIZING"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -5740,18 +5741,18 @@
     "top_conflicting": [
       "COT DBC Conflict (EXTREME) — COT_GOLD_COMM_NET = -54.6% — Smart Money gegen DBC (20% im Portfolio)",
       "COT GLD Conflict (EXTREME) — COT_GOLD_COMM_NET = -54.6% — Smart Money gegen GLD (16% im Portfolio)",
-      "amihud: ILLIQUID — Wert: 89.79 — Liquiditäts-Risiko"
+      "amihud: ILLIQUID — Wert: 90.64 — Liquiditäts-Risiko"
     ],
     "recommendation_action": "WAIT_FOR_CLARITY",
-    "recommendation_short": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
+    "recommendation_short": "Kein materielles Rebalancing heute nötig — alle Positionen HOLD.",
     "specific_actions": [],
     "event_window": {
       "next_48h_count": 2,
       "next_48h_events": [
-        "China GDP Q1 2026 + Industrial Production + Retail Sales (24h)",
-        "Monthly Options Expiry (48h)"
+        "China GDP Q1 2026 + Industrial Production + Retail Sales (0h)",
+        "Monthly Options Expiry (24h)"
       ],
-      "next_14d_count": 6,
+      "next_14d_count": 8,
       "convergence_week": true,
       "event_density_label": "HIGH"
     },
@@ -5760,31 +5761,31 @@
         "date": "2026-04-16",
         "event": "China GDP Q1 2026 + Industrial Production + Retail Sales",
         "impact": "MEDIUM",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-04-17",
         "event": "Monthly Options Expiry",
         "impact": "MEDIUM",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-04-20",
         "event": "PBoC LPR Announcement (April 2026)",
         "impact": "MEDIUM",
-        "days_until": 5
+        "days_until": 4
       },
       {
         "date": "2026-04-28",
         "event": "FOMC Meeting Decision (April 2026)",
         "impact": "HIGH",
-        "days_until": 13
+        "days_until": 12
       },
       {
         "date": "2026-04-28",
         "event": "BoJ Monetary Policy Meeting (April 2026) — Outlook Report",
         "impact": "MEDIUM",
-        "days_until": 13
+        "days_until": 12
       }
     ],
     "calendar_monthly": [
@@ -5849,26 +5850,26 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 9/18) ===\n\nCONFIRMING:\n• Finanzstress entspannt: OFR Index -0.24, SOFR-FFR -1.0bp — keine systemischen Spannungen\n• GEX positiv ($0.65B): Dealer-Hedging dämpft Volatilität — stabilisierendes Umfeld für Execution\n• HY OAS 295bps: Credit-Spreads im Normalbereich — HYG (29.7% Portfolio) ohne Stress-Signal\n• Sentiment neutral: CNN Fear & Greed 46.9, VIX 19.1, Put/Call 0.73 — keine Panik, keine Euphorie\n• Gold/DXY-Relation normal: Gold -3.3%, DXY -1.6% — keine ungewöhnlichen FX-Verzerrungen\n• COT Equity-Positionen sauber: S&P500 Commercial Net -0.9% — kein Smart-Money-Conflict für HYG/XLU/XLP (64% Portfolio)\n• MOVE Index 74.4: Bond-Volatilität im Normalbereich — kein Zinsmarkt-Stress\n\nCONFLICTING:\n• COT Commodities extrem negativ: Gold Commercial Net -54.6% — Smart Money massiv gegen DBC (19.8%) und GLD (16.0%), zusammen 36% Portfolio\n• Liquidität angespannt: Amihud 89.8 (ILLIQUID), VIX Term Structure 0.88 (BACKWARDATION) — Slippage-Risiko erhöht\n• Commodity-Trend divergiert: V16 hat 36% Commodity-Exposure, aber Copper vs SMA50 Falling — Momentum gegen Position\n• Equity-Trend divergiert: V16 hat 35% Equity (HYG/XLU/XLP), aber SPY vs SMA50 Falling — technischer Gegenwind\n• Gold-Real-Yield-Divergenz: V16 hat 16% GLD, aber Real Yields Rising — fundamentaler Gegenwind für Gold\n• China-Event in 24h: GDP Q1 + Industrial Production + Retail Sales — direkter Impact auf DBC (Rohstoffe) wahrscheinlich\n• Router Proximity 100%: System nähert sich COMMODITY_SUPER-Trigger — möglicher Regime-Wechsel unmittelbar\n• Convergence Week: 6 Events in 14d inkl. Monthly Options Expiry in 48h — erhöhte Markt-Volatilität zu erwarten\n\nNETTO: 7 Confirming vs 8 Conflicting. Kein materielles Rebalancing nötig heute, aber China-Event morgen und extreme COT-Divergenz bei 36% des Portfolios sprechen gegen vorzeitige Trades.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall dass V16 morgen Regime wechselt: WARTE bis nach China-Daten (morgen früh ET). DBC und GLD sind mit -54.6% COT-Positioning und fallendem Copper-Trend verwundbar — bei materiellem Verkauf Limit-Orders setzen (nicht Market). HYG/XLU/XLP haben sauberes Setup, aber illiquide Bedingungen (Amihud 89.8, VIX Backwardation) erfordern gestaffelte Execution über 2-3 Tage falls V16 größere Shifts plant. Router steht bei 100% Proximity — wenn COMMODITY_SUPER triggert, könnte DBC/GLD-Exposure steigen statt fallen. Abwarten ob China-GDP Commodity-Sentiment dreht oder COT-Divergenz bestätigt.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: China GDP enttäuscht UND Copper vs SMA50 bleibt Falling UND COT Gold Commercial Net unter -60% fällt (Capitulation-Signal)\n• Execute sofort wenn: VIX springt über 25 UND HY OAS steigt über 350bps (Credit-Stress würde HYG-Exit erzwingen trotz illiquider Bedingungen)\n• Eskaliere zu Wait/Hold wenn: Router triggert COMMODITY_SUPER vor China-Daten (würde DBC/GLD von Verkaufs- zu Kauf-Kandidaten machen)\n• Eskaliere zu Wait/Hold wenn: Amihud steigt über 100 ODER VIX Term Structure fällt unter 0.85 (Liquidität verschlechtert sich weiter — jede Execution verschieben)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 9/18) ===\n\nCONFIRMING:\n• Finanzielle Stabilität: OFR Stress Index -0.65 (RELAXED), SOFR-FFR Spread 2.0bps (NORMAL) — systemisches Risiko niedrig\n• Credit-Märkte stabil: HY OAS 284bps (NORMAL), Put/Call Ratio 0.73 (NORMAL) — HYG (29.7% Portfolio) hat sauberes Umfeld\n• GEX positiv: $0.57B stabilisierend — Dealer-Hedging dämpft Volatilität, reduziert Slippage-Risiko bei Execution\n• Sentiment neutral: CNN Fear & Greed 56.5 (NEUTRAL), VIX 18.4 (NORMAL) — keine Panik, keine Euphorie\n• Insider-Aktivität: Buy/Sell Ratio 2.5 (NORMAL) — keine Warnsignale von Corporate Insiders\n• MOVE Index: 67.9 (NORMAL) — Bond-Volatilität unauffällig, kein Stress in Fixed Income\n• Gold-DXY Relation normal: Gold -4.1%, DXY -1.5% — keine ungewöhnlichen FX-Verzerrungen\n\nCONFLICTING:\n• COT Commodity-Warnung EXTREM: Gold Commercial Net -54.6% — Smart Money massiv gegen DBC (19.8%) und GLD (16.0%), zusammen 35.8% des Portfolios\n• Liquidität angespannt: Amihud 90.6 (ILLIQUID), VIX Term Structure 0.87 (BACKWARDATION) — erhöhtes Slippage-Risiko\n• Copper-Divergenz: V16 hält 36% Commodity-Exposure aber Copper vs SMA50 Falling — führender Indikator schwächelt\n• Equity-Trend negativ: SPY vs SMA50 Falling während V16 35% Equity-Exposure (HYG, XLU, XLP) hält\n• Gold-Headwind: Real Yield 10Y Rising — struktureller Gegenwind für 16% GLD-Position\n• China-Event in 0h: GDP Q1 + Industrial Production + Retail Sales (MEDIUM Impact) — direkte Relevanz für DBC\n• Router Proximity 100%: COMMODITY_SUPER-Trigger unmittelbar — möglicher Regime-Wechsel steht bevor\n• Convergence Week: 8 Events in 14d inkl. Monthly Options Expiry morgen — erhöhte Markt-Unsicherheit\n\nNETTO: 7 Confirming vs 8 Conflicting. Systemische Stabilität gut, aber Commodity-Positionierung (36% Portfolio) steht gegen Smart Money, Liquidität und Trend.\n\nEMPFEHLUNG:\nKein materielles Rebalancing heute nötig — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall dass V16 morgen Regime wechselt: **WAIT bis China-Daten verdaut (heute Nacht) und Monthly Options Expiry durch (morgen).** Wenn V16 dann Trades generiert: **DBC und GLD mit Limit-Orders arbeiten** (COT -54.6% + Illiquid-Warnung = Slippage-Risiko). **HYG kann bei Bedarf aggressiver executed werden** (Credit-Märkte stabil, GEX positiv). Router steht bei 100% Proximity zu COMMODITY_SUPER — wenn Trigger morgen feuert, könnte V16 ohnehin umschichten. Besser 24h warten als heute in illiquide Commodity-Märkte gegen Smart Money zu traden.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: Amihud fällt unter 70 UND VIX Term Structure steigt über 0.95 (Liquidität normalisiert sich)\n• Execute sofort wenn: COT Gold Commercial Net steigt über -40% (Smart Money reduziert Short-Bias gegen Commodities)\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 25 ODER HY OAS steigt über 350bps (systemisches Risiko materialisiert sich)\n• Eskaliere zu Wait/Hold wenn: China GDP Q1 verfehlt Konsensus um >0.5pp UND Copper vs SMA50 bleibt Falling (Commodity-Nachfrage-Schock bestätigt)",
     "would_change_my_mind": {
       "execute_if": [
-        "China GDP enttäuscht UND Copper vs SMA50 bleibt Falling UND COT Gold Commercial Net unter -60% fällt (Capitulation-Signal)",
-        "VIX springt über 25 UND HY OAS steigt über 350bps (Credit-Stress würde HYG-Exit erzwingen trotz illiquider Bedingungen)"
+        "Amihud fällt unter 70 UND VIX Term Structure steigt über 0.95 (Liquidität normalisiert sich)",
+        "COT Gold Commercial Net steigt über -40% (Smart Money reduziert Short-Bias gegen Commodities)"
       ],
       "hold_if": [
-        "Router triggert COMMODITY_SUPER vor China-Daten (würde DBC/GLD von Verkaufs- zu Kauf-Kandidaten machen)",
-        "Amihud steigt über 100 ODER VIX Term Structure fällt unter 0.85 (Liquidität verschlechtert sich weiter — jede Execution verschieben)"
+        "VIX steigt über 25 ODER HY OAS steigt über 350bps (systemisches Risiko materialisiert sich)",
+        "China GDP Q1 verfehlt Konsensus um >0.5pp UND Copper vs SMA50 bleibt Falling (Commodity-Nachfrage-Schock bestätigt)"
       ]
     }
   },
   "rotation": {
-    "date": "2026-04-15",
+    "date": "2026-04-16",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 13,
-    "days_since_state_change": 13,
+    "days_since_material_rotation": 14,
+    "days_since_state_change": 14,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -6025,7 +6026,8 @@
           "2026-04-11",
           "2026-04-13",
           "2026-04-14",
-          "2026-04-15"
+          "2026-04-15",
+          "2026-04-16"
         ],
         "values": [
           0.0,
@@ -6045,6 +6047,7 @@
           0.0,
           0.0974,
           0.0974,
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -6087,7 +6090,8 @@
           "2026-04-11",
           "2026-04-13",
           "2026-04-14",
-          "2026-04-15"
+          "2026-04-15",
+          "2026-04-16"
         ],
         "values": [
           0.2183,
@@ -6114,6 +6118,7 @@
           0.2027,
           0.2027,
           0.2027,
+          0.1976,
           0.1976,
           0.1976,
           0.1976,
@@ -6149,7 +6154,8 @@
           "2026-04-11",
           "2026-04-13",
           "2026-04-14",
-          "2026-04-15"
+          "2026-04-15",
+          "2026-04-16"
         ],
         "values": [
           0.2726,
@@ -6176,6 +6182,7 @@
           0.2883,
           0.2883,
           0.2883,
+          0.2972,
           0.2972,
           0.2972,
           0.2972,
@@ -6211,7 +6218,8 @@
           "2026-04-11",
           "2026-04-13",
           "2026-04-14",
-          "2026-04-15"
+          "2026-04-15",
+          "2026-04-16"
         ],
         "values": [
           0.0,
@@ -6231,6 +6239,7 @@
           0.0,
           0.0821,
           0.0821,
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -6273,7 +6282,8 @@
           "2026-04-11",
           "2026-04-13",
           "2026-04-14",
-          "2026-04-15"
+          "2026-04-15",
+          "2026-04-16"
         ],
         "values": [
           0.3289,
@@ -6300,6 +6310,7 @@
           0.34,
           0.34,
           0.34,
+          0.3455,
           0.3455,
           0.3455,
           0.3455,
@@ -6335,7 +6346,8 @@
           "2026-04-11",
           "2026-04-13",
           "2026-04-14",
-          "2026-04-15"
+          "2026-04-15",
+          "2026-04-16"
         ],
         "values": [
           0.1802,
@@ -6362,6 +6374,7 @@
           0.1689,
           0.1689,
           0.1689,
+          0.1596,
           0.1596,
           0.1596,
           0.1596,
@@ -6445,7 +6458,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-04-14",
+        "date": "2026-04-15",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -6461,7 +6474,7 @@
         }
       },
       "1w": {
-        "date": "2026-04-08",
+        "date": "2026-04-09",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
@@ -6477,7 +6490,7 @@
         }
       },
       "1m": {
-        "date": "2026-03-16",
+        "date": "2026-03-17",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
