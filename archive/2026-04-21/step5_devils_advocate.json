@@ -1,0 +1,971 @@
+{
+  "date": "2026-04-21",
+  "run_id": "da_20260421_074859",
+  "draft_run_id": "cio_draft_20260421_074056",
+  "primary_focus": "UNASKED_QUESTION",
+  "perspective_seed": "Versicherungs-Aktuar",
+  "challenges": [
+    {
+      "id": "da_20260414_001",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S3",
+      "target_assumption": "KA2",
+      "challenge_text": "FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Ist dir aufgefallen dass KA2 (\"CPI in-line oder cooler\") als Baseline-Annahme formuliert ist — aber die Expected-Loss-Kalkulation für das Gegenszenario (CPI hot) FEHLT, obwohl AI-001 genau dieses Szenario als CRITICAL-Trigger identifiziert?\n\n**VERSICHERUNGS-AKTUAR-PERSPEKTIVE:**\n\nDu schreibst: \"KA2: cpi_inline — CPI (Mar) heute kommt in-line oder cooler (keine hot surprise). Wenn falsch: HYG drawdown (AI-001 triggert), L5 Sentiment bearisher...\"\n\nDas ist DESKRIPTIV (was passiert), nicht QUANTITATIV (Expected Loss).\n\nAI-001 sagt: \"Falls HYG >30% post-CPI UND OAS >400bps → REVIEW Hedge-Optionen.\"\n\nAber du zeigst NICHT:\n- Wahrscheinlichkeit dass CPI hot kommt (>Konsens)\n- HYG-Drawdown-Magnitude bei CPI +0.1pp / +0.2pp / +0.3pp über Konsens\n- Portfolio-Impact (HYG 28.8% × Drawdown = Portfolio-Loss)\n- Slippage-Kosten falls V16 HYG reduzieren muss (Regime-Shift zu RECESSION)\n\n**SZENARIO-KALKULATION (die du NICHT lieferst):**\n\n**CPI Konsens (implizit aus L2 NFCI -9):** Angenommen 0.3% MoM (3.6% YoY). Market erwartet \"in-line oder cooler\" per KA2.\n\n**Hot CPI Szenarien:**\n1. **+0.1pp über Konsens (0.4% MoM):** Moderate Überraschung. HYG OAS erweitert sich 350bps → 380bps (+30bps). HYG fällt ~1.5% (Duration 4.2 × 30bps Spread-Widening). Portfolio-Impact: 28.8% × -1.5% = -0.43% of AUM = -$215k auf $50m.\n\n2. **+0.2pp über Konsens (0.5% MoM):** Substantielle Überraschung. HYG OAS → 420bps (+70bps). HYG fällt ~3.5%. Portfolio-Impact: 28.8% × -3.5% = -1.01% of AUM = -$505k.\n\n3. **+0.3pp über Konsens (0.6% MoM):** Extreme Überraschung. HYG OAS → 480bps (+130bps). HYG fällt ~6.5%. Portfolio-Impact: 28.8% × -6.5% = -1.87% of AUM = -$935k.\n\n**Wahrscheinlichkeiten (aus L2 NFCI -9 + IC LIQUIDITY -10.0):**\n\nL2 NFCI -9 (7.0th percentile) bedeutet \"financial conditions tight\" — upside risk für Inflation (tight conditions = weniger Kredit = weniger Nachfrage = EIGENTLICH disinflationär). Aber IC LIQUIDITY -10.0 (Howell: \"Fed injections too small\") bedeutet \"Liquidity tightening\" — das ist INFLATIONÄR (weniger Liquidität = höhere Asset-Preise nötig um Nachfrage zu halten = Inflation sticky).\n\n**TENSION:** L2 sagt \"disinflationary pressure\", IC sagt \"inflationary liquidity backdrop\".\n\n**Konservative Wahrscheinlichkeits-Schätzung:**\n- CPI in-line/cooler (KA2 korrekt): 60%\n- CPI +0.1pp (Szenario 1): 25%\n- CPI +0.2pp (Szenario 2): 10%\n- CPI +0.3pp (Szenario 3): 5%\n\n**Expected Loss (nur CPI-Überraschung, ohne Regime-Shift):**\n\n(60% × $0) + (25% × -$215k) + (10% × -$505k) + (5% × -$935k) = -$53.75k - $50.5k - $46.75k = **-$151k Expected Loss (0.30% of AUM).**\n\n**ABER:** Das ist NUR direkter HYG-Drawdown. Wenn CPI hot → V16 könnte Regime shiften (LATE_EXPANSION → RECESSION falls Growth fällt + Stress steigt).\n\n**V16 Regime-Shift-Szenario (bei CPI +0.2pp oder höher):**\n\nFalls CPI +0.2pp → Fed bleibt hawkish → Growth-Erwartungen fallen → V16 Growth Signal könnte von +1 zu -1 fallen. Stress Score könnte von 0 zu +1 steigen (Market Stress bei hawkish Fed). Liquidity Direction bereits -1.\n\n**Regime-Logik:** Growth -1, Liq -1, Stress +1 = RECESSION.\n\n**RECESSION-Allokation (historisch):** HYG <15% (Credit riskant), DBC <10% (Commodities fallen in Rezession außer Gold), GLD >25% (Safe Haven).\n\n**Trade-Größe bei Regime-Shift:**\n- HYG: 28.8% → 12% (angenommen) = -16.8pp = -$8.4m Trade\n- DBC: 19.8% → 8% = -11.8pp = -$5.9m Trade\n- GLD: 16.0% → 28% = +12pp = +$6m Trade\n\n**Execution-Kontext:** Post-CPI (14:30 ET), Market-Wide Risk-Off aktiv.\n\n**Slippage (aus Persistent Challenge da_20260312_002, die du 13x NOTED hast):**\n\nHYG Event-Day Spread 0.03-0.05% (3x-5x normal). $8.4m Trade × 0.04% Spread = $3,360 Slippage. Market Impact 0.02-0.05% × $8.4m = $1,680-$4,200. Total Slippage: $5,040-$7,560.\n\nDBC ähnlich: $5.9m × 0.03% = $1,770 Slippage + $1,180-$2,950 Impact = $2,950-$4,720.\n\n**Kumulativer Slippage bei Regime-Shift:** $7,990-$12,280 (0.016-0.025% of AUM).\n\n**Portfolio-Drawdown WÄHREND Execution (HYG fällt bevor Trade executiert wird):**\n\nSzenario 2 (CPI +0.2pp): HYG fällt 3.5% BEVOR V16 rebalanced (V16 braucht 1-2 Stunden Post-CPI um Regime zu shiften + Trade zu generieren). \n\n**Realized Loss:** 28.8% × 3.5% = 1.01% of AUM = $505k.\n\n**TOTAL EXPECTED LOSS (Szenario 2, Wahrscheinlichkeit 10%):**\n\nDirekter HYG-Drawdown: $505k\nSlippage bei Regime-Shift-Execution: $10k (Mittelwert)\n**Total:** $515k (1.03% of AUM)\n\n**Expected Loss über alle Szenarien:**\n\n(60% × $0) + (25% × -$215k) + (10% × -$515k) + (5% × -$935k + Slippage $10k) = -$53.75k - $51.5k - $47.25k = **-$152.5k (0.305% of AUM).**\n\n**IST DAS AKZEPTABEL?**\n\nDu hast KEINE Hedges (DD-Protect inaktiv, Perm-Opt UNAVAILABLE, keine Options-Overlay). Portfolio ist 100% V16 (F6 UNAVAILABLE). \n\n**Ein Versicherungs-Aktuar fragt:** Ist $152.5k Expected Loss (0.305% of AUM) für ein 8-Stunden-Event (CPI) akzeptabel bei einem Portfolio das KEINE Tail-Risk-Mitigation hat?\n\n**STABILISIERENDE FAKTOREN (die du NICHT erwähnst):**\n\n1. **L1 Liquidity Score 8 (EXPANSION):** RRP drain -0.105B, Net Liquidity +148654.105B (100th percentile). Liquidity expandiert TROTZ Howell's \"too small injections\". Falls Liquidity weiter expandiert Post-CPI → HYG könnte NICHT fallen (Liquidity-Support überwiegt Inflation-Shock).\n\n2. **L3 Earnings Catalyst (MEDIUM, Tier 2):** Big Tech Earnings diese Woche. Falls Earnings beat → Sentiment bullish → HYG könnte halten TROTZ hot CPI (Risk-Appetite-Offset).\n\n3. **IC GEOPOLITICS -0.4 (nahe neutral):** Falls Ceasefire hält (KA1) → Geopolitik-Risk fällt → Safe-Haven-Bid für GLD schwächer → Commodities (DBC) profitieren NICHT von Risk-Off → V16 Regime-Shift WENIGER wahrscheinlich (Stress Score bleibt 0).\n\n**IMPLIKATION:**\n\nExpected Loss $152.5k basiert auf Annahme dass CPI hot → HYG fällt OHNE Liquidity/Sentiment/Geopolitik-Offset.\n\nAber L1 + L3 + IC GEOPOLITICS zeigen stabilisierende Faktoren. \n\n**Adjustierte Expected Loss (mit Stabilisatoren):** $152.5k × 0.6 (40% Offset durch Liquidity/Sentiment) = **$91.5k (0.18% of AUM).**\n\n**DAS IST HALB so viel wie ursprüngliche Kalkulation.**\n\n**ABER:** Du zeigst KEINE dieser Kalkulationen. KA2 sagt nur \"wenn falsch: HYG drawdown\" — OHNE Magnitude, Wahrscheinlichkeit, Expected Loss, oder Stabilisatoren.\n\n**Ein Versicherungs-Aktuar würde sagen:** \"Zeige mir die Zahlen. Was ist der Expected Loss? Mit/ohne Stabilisatoren? Ist er akzeptabel? Falls nein, was ist der Hedge? Falls ja, dokumentiere die Kalkulation.\"\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "KA2 formuliert Szenario, aber KEINE Expected-Loss-Kalkulation",
+        "AI-001 identifiziert HYG-Risk, aber KEINE Quantifizierung",
+        "L2 NFCI -9 (tight conditions) vs. IC LIQUIDITY -10.0 (inflationary backdrop) = CPI-Upside-Risk",
+        "HYG 28.8% CRITICAL + CPI Event = größte Portfolio-Exposition heute",
+        "Persistent Challenge da_20260330_003 (6x NOTED) fragte bereits nach Expected-Loss-Kalkulation für HYG-Konzentration — du hast 6x NOTED ohne Antwort",
+        "L1/L3/IC GEOPOLITICS zeigen stabilisierende Faktoren die Expected Loss reduzieren könnten — nicht im Draft erwähnt"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 5,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260410_002",
+      "type": "NARRATIVE",
+      "target_section": "S5",
+      "target_assumption": null,
+      "challenge_text": "FORCED DECISION (Tag 8, 5x NOTED): FORCED DECISION (Tag 7, 4x NOTED): FORCED DECISION (Tag 6, 3x NOTED): Ist dir aufgefallen dass du IC GEOPOLITICS -0.38 (Ceasefire-Hoffnung, 6 Quellen) als \"leicht bullish\" interpretierst — aber die Daten auch SO gelesen werden können: Ceasefire-Narrativ ist KONSENS (6 Quellen einig), was bedeutet dass Ceasefire-SCHEITERN ein TAIL-EVENT mit ASYMMETRISCHEM Impact wäre (Market nicht gepreist, Portfolio 35.8% Commodities exponiert)?\n\n**ALTERNATIVE NARRATIVE:**\n\nDu schreibst in S5: \"IC GEOPOLITICS -0.38 (HIGH Confidence, 6 Quellen, 14 Claims) — leicht bullish, getrieben von Ceasefire-Hoffnung (Doomberg 'worst phase passed', ZeroHedge 'talks ongoing').\"\n\nUnd in OBS-2: \"Qualitatives Narrativ (Ceasefire-Hoffnung) divergiert von quantitativen Energy-Signalen (Contango, Snider's eurodollar stress).\"\n\n**Das ist EINE Interpretation: \"Ceasefire-Hoffnung ist im Narrativ, aber nicht in Fundamentals = Narrativ könnte kollabieren.\"**\n\n**ALTERNATIVE INTERPRETATION:**\n\n**IC GEOPOLITICS -0.38 ist NICHT \"leicht bullish\". Es ist KONSENS-BULLISH.**\n\n6 Quellen (Doomberg, ZeroHedge, Gromen, Forward Guidance, Crescat, Hidden Forces — implizit aus \"6 Quellen, 14 Claims\") sind sich EINIG dass Ceasefire wahrscheinlich ist.\n\n**HIGH Confidence bedeutet: Niedrige Divergenz zwischen Quellen.**\n\n**Wenn 6 unabhängige Quellen (unterschiedliche Expertise-Weights, unterschiedliche Perspektiven) zum SELBEN Schluss kommen, ist das NICHT \"schwacher Konsens\". Das ist STARKER Konsens.**\n\n**IMPLIKATION:**\n\nWenn Ceasefire KONSENS ist (Market erwartet es), dann ist Ceasefire-ERFOLG bereits GEPREIST.\n\n**Market-Mechanik:**\n\n- **Ceasefire erfolgt (Konsens-Szenario):** IC GEOPOLITICS bleibt neutral/leicht positiv. IC ENERGY normalisiert sich (Hormuz öffnet, WTI Contango bleibt/verstärkt sich = weak demand). DBC/Commodities fallen ODER bleiben flat (kein bullischer Trigger). Portfolio-Impact: DBC 19.8% + GLD 16.0% = 35.8% Commodities underperformen. Expected Loss: 35.8% × -3% (moderate Underperformance bei Ceasefire) = -1.07% of AUM = -$535k.\n\n- **Ceasefire scheitert (Tail-Event, NICHT Konsens):** IC GEOPOLITICS dreht stark negativ (z.B. -8.0, alle 6 Quellen revidieren). IC ENERGY eskaliert bearish (Hormuz bleibt geschlossen, WTI Backwardation = supply shock). DBC/Commodities spiked. Portfolio-Impact: 35.8% × +15% (substantieller Spike bei Geopolitik-Eskalation, historisch 2022 Russia-Ukraine) = +5.37% of AUM = +$2.685m.\n\n**ASYMMETRIE:**\n\n- **Downside (Ceasefire erfolgt, 70% Wahrscheinlichkeit per Konsens):** -$535k (-1.07% of AUM)\n- **Upside (Ceasefire scheitert, 30% Wahrscheinlichkeit):** +$2.685m (+5.37% of AUM)\n\n**Expected Value:** (70% × -$535k) + (30% × +$2.685m) = -$374.5k + $805.5k = **+$431k (+0.86% of AUM).**\n\n**Expected Value ist POSITIV.**\n\n**ABER:** Das ist NUR korrekt wenn Ceasefire-Scheitern tatsächlich 30% Wahrscheinlichkeit hat.\n\n**Wenn IC GEOPOLITICS -0.38 (HIGH Confidence, 6 Quellen) bedeutet dass Ceasefire 80-90% wahrscheinlich ist (nicht 70%), dann:**\n\n(85% × -$535k) + (15% × +$2.685m) = -$454.75k + $402.75k = **-$52k (-0.10% of AUM).**\n\n**Expected Value wird NEGATIV.**\n\n**DEINE NARRATIVE (Ceasefire-Hoffnung ist Narrativ, nicht Fundamentals) impliziert dass Ceasefire FRAGIL ist = höhere Scheitern-Wahrscheinlichkeit = positive Expected Value.**\n\n**ALTERNATIVE NARRATIVE (Ceasefire ist KONSENS, HIGH Confidence) impliziert dass Ceasefire WAHRSCHEINLICH ist = niedrigere Scheitern-Wahrscheinlichkeit = negative Expected Value.**\n\n**WELCHE IST KORREKT?**\n\n**EVIDENZ FÜR ALTERNATIVE NARRATIVE:**\n\n1. **IC GEOPOLITICS HIGH Confidence (6 Quellen):** Niedrige Divergenz = Konsens robust, nicht fragil.\n\n2. **ZeroHedge 8 Claims GEOPOLITICS (volumenstärkste Quelle):** Wenn ZeroHedge (typischerweise bearish/alarmistisch) 8 Claims über Ceasefire-Talks schreibt (nicht über Eskalation), ist das SIGNAL. ZeroHedge schreibt über \"Hormuz blockade testing\" (bearish), aber auch \"talks ongoing\" (bullish) = ambivalent, nicht einseitig bearish.\n\n3. **Doomberg \"worst phase passed\" (Novelty 9, Anti-Pattern):** Novelty 9 = sehr ungewöhnliche Aussage für Doomberg (typischerweise Energy-bullish/Geopolitik-bearish). Wenn Doomberg sagt \"worst phase passed\", ist das STARKES Signal (gegen eigenen Bias).\n\n4. **IC ENERGY -0.33 (neutral-bearish, nicht stark bearish):** Wenn Hormuz-Risiko AKUT wäre, wäre IC ENERGY <-5.0 (wie IC CREDIT -5.0 Snider). -0.33 ist \"leichte Sorge\", nicht \"Krise\".\n\n**IMPLIKATION FÜR PORTFOLIO:**\n\nWenn Ceasefire KONSENS ist (80-90% Wahrscheinlichkeit), dann ist DBC 19.8% + GLD 16.0% = 35.8% Commodities ÜBERGEWICHTET relativ zu Expected Value.\n\n**V16-Logik:** LATE_EXPANSION + COMMODITY_SUPER Router-Trigger = Commodities-Exposure korrekt.\n\n**ABER:** V16 kennt NICHT IC GEOPOLITICS Konsens. V16 basiert auf quantitativen Signalen (DBC/SPY 6m relative, DXY, Regime). \n\n**Wenn IC GEOPOLITICS Konsens (Ceasefire wahrscheinlich) NICHT in V16-Signalen reflektiert ist, dann ist V16 Commodities-Exposure basierend auf VERGANGENHEIT (6m relative performance), nicht ZUKUNFT (Ceasefire-Outcome).**\n\n**TAIL-RISK-KALKULATION:**\n\nFalls Ceasefire scheitert (15-30% Wahrscheinlichkeit), ist Portfolio OPTIMAL positioniert (35.8% Commodities = +$2.685m Upside).\n\nFalls Ceasefire erfolgt (70-85% Wahrscheinlichkeit), ist Portfolio SUB-OPTIMAL (-$535k Downside).\n\n**Ein Versicherungs-Aktuar würde sagen:** \"Ist dir klar dass du eine Wette GEGEN den Konsens hältst (35.8% Commodities bei Ceasefire-Konsens)? Das ist nur korrekt wenn Konsens FALSCH ist. Wie sicher bist du dass 6 unabhängige Quellen (HIGH Confidence) sich irren?\"\n[PERSISTENT: Tag 5, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "IC GEOPOLITICS -0.38, HIGH Confidence, 6 Quellen = robuster Konsens, nicht fragiles Narrativ",
+        "ZeroHedge 8 Claims GEOPOLITICS (volumenstärkste Quelle) = Ceasefire-Thema dominant, nicht Eskalation",
+        "Doomberg \"worst phase passed\" Novelty 9 = ungewöhnliche"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 8,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260327_003",
+      "type": "PREMISE_ATTACK",
+      "target_section": "SYSTEM",
+      "target_assumption": "da_20260311_001",
+      "challenge_text": "FORCED DECISION (Tag 13, 11x NOTED): FORCED DECISION (Tag 12, 10x NOTED): FORCED DECISION (Tag 11, 9x NOTED): FORCED DECISION (Tag 10, 8x NOTED): FORCED DECISION (Tag 9, 7x NOTED): FORCED DECISION (Tag 8, 6x NOTED): FORCED DECISION (Tag 7, 5x NOTED): FORCED DECISION (Tag 6, 4x NOTED): FORCED DECISION (Tag 5, 3x NOTED): **🚨 FORCED DECISION ESKALATION — da_20260311_001 (Tag 10, 14x NOTED):**\n\nCIO, du MUSST mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\n\nDie Challenge fragt: **Wurden die 5 omitted Howell-Claims (Novelty 7-8) durch IC-Processing gefiltert, oder hast du sie gesehen aber als nicht-material eingeschätzt?**\n\nDu hast diese Frage 14x NOTED. Jetzt ist Tag 10.\n\n**Ist dir aufgefallen dass dein Draft HEUTE diese Frage implizit beantwortet — aber die Antwort widerspricht A6?**\n\nA6 sagt: \"IC-Daten teilweise veraltet (48h alt). System Conviction LOW, teilweise durch veraltete IC-Daten. Nächste Schritte: IC-Extraktion manuell triggern.\"\n\nDas impliziert: Problem ist DATA FRESHNESS (alte Daten = LOW Conviction).\n\nAber S5 Intelligence Digest zeigt:\n\n**Du hast Howell-Claim LIQUIDITY -10.0 VERARBEITET.**\n\nS5 listet: \"LIQUIDITY -10.0 (LOW, 1 Claim): Howell (2026-03-24): 'CB-Injections scheitern, Liquidity fällt absolut.' Einordnung: Bestätigt Market Analyst L1 unabhängig.\"\n\nUnd OBS-4 schreibt: \"Howell bestätigt L1-Richtung unabhängig. V16 LATE_EXPANSION basiert auf Liq_Direction=-1 (negativ)... Howell-Warnung ist Leading Indicator für V16-Shift.\"\n\n**DAS BEDEUTET:**\n\nDu HAST Howell-Daten gesehen (2026-03-24, 3 Tage alt, nicht 48h aber nah genug). Du HAST sie verarbeitet (S5 + OBS-4). Du HAST sie als material eingeschätzt (Leading Indicator für V16-Shift).\n\nAber Pre-Processor flaggt: **5x IC_HIGH_NOVELTY_OMISSION (alle Howell, Novelty 7-8).**\n\nDas bedeutet: Es gibt MEHR Howell-Claims (5 Stück, Novelty 7-8) die du NICHT erwähnt hast.\n\n**Die persistente Challenge listete zwei davon:**\n\n1. **claim_003 (Novelty 7):** \"Low volatility contributed to recent positive liquidity, but bond volatility jump signals next update less favorable.\"\n\n2. **claim_006 (Novelty 7):** \"Gold surge structurally driven by Chinese demand.\"\n\n**BEIDE sind DIREKT relevant für dein Portfolio:**\n\n- claim_003: \"Bond volatility jump\" = Credit-Stress-Indikator. Du hast HYG 28.8% CRITICAL. Bond-Vol ist LEADING für HYG-Spreads. Warum nicht erwähnt?\n\n- claim_006: \"Gold = China-driven, nicht Geopolitik.\" Du hast GLD 16.9%. KA3 sagt \"IC GEOPOLITICS ist Leading Indicator.\" Aber wenn Gold NICHT Geopolitik-getrieben ist (sondern China-Demand), dann ist GLD 16.9% NICHT exponiert gegen Iran-Konflikt-Resolution. Das widerspricht deiner Tail-Risk-Logik (A23).\n\n**FORCED DECISION:**\n\nA6 sagt: Problem ist DATA FRESHNESS (IC-Refresh löst es).\n\nAber die Evidenz sagt: Problem ist PATTERN RECOGNITION (du siehst Claims, verarbeitest selektiv).\n\n**ACCEPTED (Challenge ist korrekt):** IC-Refresh löst das Problem NICHT. Du wirst neue High-Novelty-Claims bekommen und wieder selektiv verarbeiten. Das ist kein Daten-Problem, das ist ein CIO-Filter-Problem. Implikation: A6 wird zu \"Review CIO-Relevanz-Kriterien für IC-Claims\" (Prozess-Change, nicht Daten-Refresh).\n\n**REJECTED (Challenge ist falsch):** Die 5 omitted Claims sind tatsächlich LOW_SIGNAL trotz HIGH Novelty. Howell Novelty-Scores sind inflated (Howell schreibt dramatisch, aber nicht immer material). Implikation: Pre-Processor Novelty-Kalibrierung muss adjustiert werden (Howell-Expertise-Weight von 7 auf 5 senken).\n\nWelche Erklärung ist korrekt? Du kannst nicht NOTED sagen. Du musst entscheiden.\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\n[PERSISTENT: Tag 3, erneuert aus History]\n[PERSISTENT: Tag 4, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "S5 zeigt Howell LIQUIDITY -10.0 verarbeitet (Claim von 2026-03-24)",
+        "Pre-Processor flaggt 5x IC_HIGH_NOVELTY_OMISSION (alle Howell, Novelty 7-8)",
+        "claim_003 (Bond-Vol) ist direkt relevant für HYG 28.8% CRITICAL",
+        "claim_006 (Gold=China) widerspricht KA3 (Geopolitics=Leading)",
+        "A6 klassifiziert Problem als \"veraltete Daten\" ohne zu erklären warum EINIGE Howell-Claims verarbeitet wurden, andere nicht"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 13,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260327_002",
+      "type": "PREMISE_ATTACK",
+      "target_section": "SYSTEM",
+      "target_assumption": "KA1",
+      "challenge_text": "FORCED DECISION (Tag 13, 11x NOTED): FORCED DECISION (Tag 12, 10x NOTED): FORCED DECISION (Tag 11, 9x NOTED): FORCED DECISION (Tag 10, 8x NOTED): FORCED DECISION (Tag 9, 7x NOTED): FORCED DECISION (Tag 8, 6x NOTED): FORCED DECISION (Tag 7, 5x NOTED): FORCED DECISION (Tag 6, 4x NOTED): FORCED DECISION (Tag 5, 3x NOTED): **🚨 FORCED DECISION ESKALATION — da_20260320_002 (Tag 3, 4x NOTED):**\n\nCIO, du MUSST mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\n\nDie Challenge fragt: **Ist V16 Regime Confidence NULL ein technisches Problem oder ein fundamentales Signal?**\n\nDu hast diese Frage 4x NOTED. Jetzt ist Tag 3 Post-FOMC. V16 hat NICHT geshiftet (Regime bleibt LATE_EXPANSION Tag 9). Aber Confidence ist IMMER NOCH NULL.\n\n**KA1 sagt:** \"NULL ist technisches Problem (Bug oder Daten-Feed-Issue).\"\n\n**Ist dir aufgefallen dass diese Annahme durch KEINE Daten im Draft gestuetzt ist?**\n\nDu schreibst in A21: \"Operator prüft V16-Logs, kontaktiert V16-Maintainer, dokumentiert Ursache. Falls Bug: Fix. Falls Feature: Update Dokumentation.\"\n\nDas ist PROZEDURAL. Aber du triffst HEUTE Portfolio-Entscheidungen basierend auf einem V16-State den du als \"technisches Problem\" klassifizierst — ohne zu wissen OB es ein technisches Problem ist.\n\n**ALTERNATIVE LESART:**\n\nV16 Confidence NULL seit 2026-03-24 (Tag 4). Das ist NACH dem Regime-Shift zu LATE_EXPANSION (2026-03-18, Tag 9 heute = Shift vor 9 Tagen).\n\nWenn NULL ein Bug wäre, warum trat er 6 Tage NACH dem Shift auf? Bugs treten typischerweise beim State-Change auf (Shift-Tag), nicht 6 Tage später.\n\n**Mögliche Erklärung:** NULL ist kein Bug. NULL bedeutet \"Confidence-Berechnung liefert Wert unter Reporting-Schwelle\" (z.B. <5% = zu niedrig um zu reporten, wird als NULL geschrieben).\n\nDas würde bedeuten: V16 ist in LATE_EXPANSION, aber mit EXTREM niedriger Confidence (<5%). System ist \"fast unsicher genug um zu sagen: ich weiß es nicht.\"\n\n**IMPLIKATION:**\n\nWenn NULL = \"Confidence <5%\" (fundamental, nicht technisch), dann ist deine gesamte Regime-Interpretation fragwürdig.\n\nDu schreibst in S6: \"Portfolio ist defensiver als Regime-Label suggeriert. Ursache: V16 Regime Confidence NULL — System unsicher, hält defensive Positionen trotz Risk-On-Signal.\"\n\nAber V16 HÄLT nicht defensive Positionen \"trotz\" Risk-On. V16 IST in LATE_EXPANSION seit 9 Tagen. Die Gewichte (HYG 28.8%, DBC 20.3%) sind LATE_EXPANSION-Allokation.\n\nWenn Confidence NULL = fundamental unsicher, dann sollte V16 NICHT in LATE_EXPANSION sein. System sollte in NEUTRAL-State gehen (Equal-Weight oder Cash).\n\n**DIE UNGESTELLTE FRAGE:**\n\nHat V16 einen NEUTRAL-State? Oder muss V16 immer in einem der 4 Regime sein (RECESSION, EARLY_EXPANSION, LATE_EXPANSION, FRAGILE_EXPANSION)?\n\nWenn V16 KEINEN NEUTRAL-State hat, dann ist NULL-Confidence ein DESIGN-PROBLEM: System ist gezwungen ein Regime zu wählen auch wenn Confidence <5% ist.\n\nDas wäre nicht \"technisch\" (Bug), sondern STRUKTURELL (System-Design erlaubt keine Unsicherheit).\n\n**FORCED DECISION:**\n\nDu MUSST eine der beiden Hypothesen wählen:\n\n**ACCEPTED (KA1 ist falsch):** NULL ist fundamental (Confidence <5%), nicht technisch. Implikation: V16-Regime-Label ist unreliable. Portfolio-Entscheidungen basierend auf LATE_EXPANSION sind fragwürdig. A21 wird zu \"Evaluate V16 NEUTRAL-State Implementation\" (System-Design-Change).\n\n**REJECTED (KA1 ist korrekt):** NULL ist technisch (Bug). Implikation: Du operierst heute auf einem kaputten System-State. A21 wird zu CRITICAL-BLOCKER — keine Portfolio-Entscheidungen bis V16-Confidence restored. Das bedeutet: A24 (Router Entry-Prep) und A23 (Tail-Risk-Hedge) müssen pausiert werden bis V16 reliable ist.\n\nWelche Hypothese ist korrekt? Du kannst nicht NOTED sagen. Du musst entscheiden — und die Konsequenzen akzeptieren.\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\n[PERSISTENT: Tag 3, erneuert aus History]\n[PERSISTENT: Tag 4, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "V16 Regime Confidence NULL seit 2026-03-24 (4 Tage)",
+        "Regime-Shift zu LATE_EXPANSION war 2026-03-18 (6 Tage VOR NULL-Onset)",
+        "NULL trat NICHT beim Shift auf (typisches Bug-Timing), sondern 6 Tage später",
+        "KA1 klassifiziert NULL als \"technisch\" ohne Evidenz (keine Log-Analyse, kein Maintainer-Kontakt dokumentiert)",
+        "A21 ist prozedural (\"prüfe Logs\"), nicht diagnostisch (\"hier ist die Ursache\")",
+        "Risk Officer INT_REGIME_CONFLICT basiert auf V16-State — wenn V16 unreliable, ist Alert selbst fragwürdig"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 13,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260320_002",
+      "type": "PREMISE_ATTACK",
+      "target_section": "SYSTEM",
+      "target_assumption": "da_20260318_004",
+      "challenge_text": "FORCED DECISION (Tag 17, 15x NOTED): FORCED DECISION (Tag 16, 14x NOTED): FORCED DECISION (Tag 15, 13x NOTED): FORCED DECISION (Tag 14, 12x NOTED): FORCED DECISION (Tag 13, 11x NOTED): FORCED DECISION (Tag 12, 10x NOTED): FORCED DECISION (Tag 11, 9x NOTED): FORCED DECISION (Tag 10, 8x NOTED): FORCED DECISION (Tag 9, 7x NOTED): FORCED DECISION (Tag 8, 6x NOTED): FORCED DECISION (Tag 7, 6x NOTED): FORCED DECISION (Tag 6, 6x NOTED): FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): **FORCED DECISION RESPONSE (Tag 2, 2x NOTED):** Ist dir aufgefallen dass du in S2 schreibst \"V16 operiert auf validierten Signalen — keine Intraday-Änderung durch FOMC erwartet\" — aber FOMC war GESTERN (2026-03-19), nicht heute, und V16 Production zeigt regime_confidence NULL?\n\n**TIMING-KORREKTUR:**\n\nDein Draft sagt: \"FOMC Pre-Event Portfolio-Check\" (A13, Tag 4, CRITICAL). Aber heute ist 2026-03-20. FOMC war 2026-03-19 (gestern).\n\nA13 ist OBSOLET (Event vorbei). Du listest A13 unter \"CLOSE-Empfehlung\" in S7. Korrekt.\n\nAber S2 Catalysts sagt: \"Keine Tier-1-Events diese Woche. PCE in 7 Tagen.\"\n\nDas ist inkonsistent. Wenn FOMC gestern war, dann sollte S2 sagen: \"FOMC gestern (2026-03-19) — Post-Event-Assessment. Nächster Tier-1-Event: PCE in 7 Tagen.\"\n\n**V16 REGIME-CONFIDENCE NULL:**\n\nV16 Production zeigt:\n```\n\"regime\": \"LATE_EXPANSION\",\n\"regime_confidence\": null,\n```\n\nNULL bedeutet ENTWEDER:\n(A) Confidence nicht berechnet (technisches Problem, Daten fehlen).\n(B) Confidence ist ZERO (Regime maximal unsicher).\n\nWenn (A): V16 operiert \"blind\" — Regime ist LATE_EXPANSION, aber System weiß nicht WIE sicher.\n\nWenn (B): V16 ist in LATE_EXPANSION, aber mit ZERO Confidence — Regime könnte morgen flippen.\n\n**DIE PERSISTENTE FRAGE (aus da_20260318_004):**\n\n\"V16 shiftete GESTERN (vor FOMC) von FRAGILE_EXPANSION zu LATE_EXPANSION. FOMC-Daten sind NOCH NICHT im System (Event heute [korrigiert: gestern]). Wie sicher ist der gestrige Shift wenn Confidence NULL ist?\"\n\nDu hast diese Challenge 2x NOTED. Jetzt ist FOMC vorbei (gestern). Die Frage ist AKUTER:\n\n**FOMC war gestern. V16-Daten updaten heute (frühestens).** \n\nWenn V16 heute (Post-FOMC) Regime bestätigt (LATE_EXPANSION bleibt, Confidence wird non-NULL), dann war der gestrige Shift (vor FOMC) KORREKT — V16 antizipierte FOMC-Outcome.\n\nWenn V16 heute (Post-FOMC) Regime ÄNDERT (LATE_EXPANSION → anderes Regime), dann war der gestrige Shift FALSCH — V16 shiftete zu früh, FOMC-Daten korrigieren.\n\n**DU ZEIGST KEINE POST-FOMC V16-ÄNDERUNG:**\n\nS1 Delta sagt: \"V16: Keine Änderungen. HOLD auf allen 5 Positionen. Regime LATE_EXPANSION Tag 3, stabil.\"\n\nTag 3 bedeutet: Regime seit 3 Tagen = 2026-03-18 (Shift-Tag). Gestern (2026-03-19, FOMC-Tag) war Tag 2. Heute (2026-03-20) ist Tag 3.\n\nV16 hat NACH FOMC (heute) NICHT geshiftet. Regime bleibt LATE_EXPANSION.\n\n**ABER CONFIDENCE IST IMMER NOCH NULL.**\n\nWenn V16 Post-FOMC nicht shiftet (Regime bestätigt), warum ist Confidence NULL?\n\nMögliche Erklärungen:\n\n(1) **Confidence-Berechnung ist kaputt.** V16 operiert normal, aber Confidence-Metrik wird nicht geschrieben. Technisches Problem.\n\n(2) **Confidence ist strukturell niedrig.** V16-Regime-Logik basiert auf Growth + Liquidity. Wenn beide Signale nahe Schwellenwerten sind (z.B. Growth knapp positiv, Liquidity knapp negativ), dann ist Regime-Zuordnung unsicher → Confidence niedrig/NULL.\n\n(3) **FOMC-Daten sind NOCH NICHT integriert.** V16 Production Timestamp: \"2026-03-20T07:00:00.232321Z\" (heute Morgen). Wenn FOMC-Daten (Fed-Balance-Sheet-Update, RRP-Update, TGA-Update) erst heute Nachmittag verfügbar sind, dann operiert V16 heute Morgen noch auf Pre-FOMC-Daten. Regime-Shift könnte heute Nachmittag/Abend erfolgen.\n\n**IMPLIKATION FÜR PORTFOLIO:**\n\nWenn (3) zutrifft: V16 könnte heute noch shiften (Post-FOMC-Daten kommen verzögert). HYG 28.8% ist LATE_EXPANSION-Allokation. Wenn V16 zu RECESSION oder EARLY_EXPANSION shiftet, wird HYG reduziert (Regime-Logik: Credit riskant in Rezession/Früh-Zyklus).\n\nRisk Officer HYG WARNING (28.8%, +3.8pp über Schwelle) eskaliert seit gestern. Wenn V16 heute shiftet UND HYG-Trade erfolgt, ist Timing: Post-OPEX (Event heute), aber intraday-Liquidität könnte noch gestresst sein (Gamma-Unwind).\n\n**DU SAGST IN S2:** \"Keine V16-Rebalance-Trigger erwartet.\"\n\nAber wenn V16 Confidence NULL ist UND FOMC-Daten noch nicht integriert sind, dann ist \"keine Rebalance erwartet\" eine ANNAHME, keine Gewissheit.\n\n**FORCED DECISION ANTWORT:**\n\nDie persistente Challenge fragt: \"Wie sicher ist V16-Regime wenn Confidence NULL ist?\"\n\nDu hast 2x NOTED. Jetzt Post-FOMC: V16 hat nicht geshiftet (Regime bestätigt), aber Confidence ist IMMER NOCH NULL.\n\nDas bedeutet ENTWEDER:\n- Confidence-NULL ist technisches Problem (ignorieren, V16 operiert normal) → Challenge REJECTED.\n- Confidence-NULL ist Signal (Regime unsicher, Shift möglich heute/morgen) → Challenge ACCEPTED, Monitoring intensivieren.\n\nWelche Erklärung ist korrekt?\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "V16 Production: \"regime_confidence\": null (heute, Post-FOMC)",
+        "V16 Regime LATE_EXPANSION Tag 3 (seit 2026-03-18, vor FOMC)",
+        "FOMC Event 2026-03-19 (gestern)",
+        "S1 Delta: \"V16: Keine Änderungen\" (Post-FOMC)",
+        "S2: \"Keine V16-Rebalance-Trigger erwartet\" (Annahme, nicht Gewissheit)",
+        "HYG 28.8%, Risk Officer WARNING (ESCALATING, Tag 32)",
+        "OPEX heute (Tier 2, Vol-Spike-Risiko)"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 17,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260311_005",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S6",
+      "target_assumption": "Implicit (V16 LATE_EXPANSION Allokation ist Regime-konform)",
+      "challenge_text": "FORCED DECISION (Tag 25, 23x NOTED): FORCED DECISION (Tag 24, 22x NOTED): FORCED DECISION (Tag 23, 21x NOTED): FORCED DECISION (Tag 22, 20x NOTED): FORCED DECISION (Tag 21, 19x NOTED): FORCED DECISION (Tag 20, 18x NOTED): FORCED DECISION (Tag 19, 17x NOTED): FORCED DECISION (Tag 18, 16x NOTED): FORCED DECISION (Tag 17, 15x NOTED): FORCED DECISION (Tag 16, 14x NOTED): FORCED DECISION (Tag 15, 14x NOTED): FORCED DECISION (Tag 14, 14x NOTED): FORCED DECISION (Tag 13, 13x NOTED): FORCED DECISION (Tag 12, 12x NOTED): FORCED DECISION (Tag 11, 11x NOTED): FORCED DECISION (Tag 10, 10x NOTED): FORCED DECISION (Tag 9, 9x NOTED): FORCED DECISION (Tag 8, 8x NOTED): FORCED DECISION (Tag 7, 7x NOTED): FORCED DECISION (Tag 6, 6x NOTED): FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Ist dir aufgefallen dass S6 sagt \"V16\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 25,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260309_005",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S7",
+      "target_assumption": null,
+      "challenge_text": "FORCED DECISION (Tag 42, 37x NOTED): FORCED DECISION (Tag 41, 36x NOTED): FORCED DECISION (Tag 40, 35x NOTED): FORCED DECISION (Tag 39, 34x NOTED): FORCED DECISION (Tag 38, 33x NOTED): FORCED DECISION (Tag 37, 32x NOTED): FORCED DECISION (Tag 36, 31x NOTED): FORCED DECISION (Tag 35, 30x NOTED): FORCED DECISION (Tag 34, 29x NOTED): FORCED DECISION (Tag 33, 28x NOTED): FORCED DECISION (Tag 32, 28x NOTED): FORCED DECISION (Tag 31, 28x NOTED): FORCED DECISION (Tag 30, 27x NOTED): FORCED DECISION (Tag 29, 26x NOTED): FORCED DECISION (Tag 28, 25x NOTED): FORCED DECISION (Tag 27, 24x NOTED): FORCED DECISION (Tag 26, 23x NOTED): FORCED DECISION (Tag 25, 22x NOTED): FORCED DECISION (Tag 24, 21x NOTED): FORCED DECISION (Tag 23, 20x NOTED): FORCED DECISION (Tag 22, 19x NOTED): FORCED DECISION (Tag 21, 18x NOTED): FORCED DECISION (Tag 20, 17x NOTED): FORCED DECISION (Tag 19, 16x NOTED): FORCED DECISION (Tag 18, 15x NOTED): FORCED DECISION (Tag 17, 14x NOTED): FORCED DECISION (Tag 16, 13x NOTED): FORCED DECISION (Tag 15, 12x NOTED): FORCED DECISION (Tag 14, 11x NOTED): FORCED DECISION (Tag 13, 10x NOTED): FORCED DECISION (Tag 12, 9x NOTED): FORCED DECISION (Tag 11, 9x NOTED): FORCED DECISION (Tag 10, 9x NOTED): FORCED DECISION (Tag 9, 8x NOTED): FORCED DECISION (Tag 8, 7x NOTED): FORCED DECISION (Tag 7, 6x NOTED): FORCED DECISION (Tag 6, 6x NOTED): FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOTED): Der CIO nimmt an dass \"Item offen seit X Tagen\" = Dringlichkeit, aber mehrere eskalierte Items (A1, A2, A3, A4, A5 alle \"Tag 11\" oder \"Tag 9\") haben UNTERSCHIEDLICHE\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 42,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260311_001",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S5",
+      "target_assumption": "Implizite Annahme dass \"90 High-Novelty-Claims als Anti-Patterns klassifiziert\" ein DATA-FRESHNESS-Problem ist",
+      "challenge_text": "FORCED DECISION (Tag 24, 25x NOTED): FORCED DECISION (Tag 23, 24x NOTED): FORCED DECISION (Tag 22, 23x NOTED): FORCED DECISION (Tag 21, 22x NOTED): FORCED DECISION (Tag 20, 21x NOTED): FORCED DECISION (Tag 19, 20x NOTED): FORCED DECISION (Tag 18, 19x NOTED): FORCED DECISION (Tag 17, 18x NOTED): FORCED DECISION (Tag 16, 17x NOTED): FORCED DECISION (Tag 15, 16x NOTED): FORCED DECISION (Tag 14, 16x NOTED): FORCED DECISION (Tag 13, 16x NOTED): FORCED DECISION (Tag 12, 15x NOTED): FORCED DECISION (Tag 11, 14x NOTED): FORCED DECISION (Tag 10, 13x NOTED): FORCED DECISION (Tag 9, 12x NOTED): FORCED DECISION (Tag 8, 11x NOTED): FORCED DECISION (Tag 7, 10x NOTED): FORCED DECISION (Tag 6, 9x NOTED): FORCED DECISION (Tag 5, 8x NOTED): FORCED DECISION (Tag 4, 8x NOTED): FORCED DECISION (Tag 3, 6x NOTED): FORCED DECISION (Tag 2, 6x NOTED): FORCED DECISION (Tag 1, 3x NOTED): Ist dir aufgefallen dass A6 (\"IC-Daten-Refresh-Eskalation\") annimmt dass 97 High-Novelty-Claims als Anti-Patterns klassifiziert wurden WEIL IC-Daten 48h alt sind — aber Pre-Processor Flags zeigen dass 5 HIGH-significance Howell-Claims (Novelty 7-8) GESEHEN wurden (sonst keine Omission-Flags), nur nicht im Draft verarbeitet?\n\nA6 sagt: \"IC-Daten teilweise veraltet... System Conviction LOW, teilweise durch veraltete IC-Daten. Nächste Schritte: IC-Extraktion manuell triggern, Pre-Processor re-run mit frischen Daten.\"\n\nAber Pre-Processor Flags zeigen:\n- 5x IC_HIGH_NOVELTY_OMISSION (alle Howell, Novelty 7-8, Significance HIGH)\n- \"IC Claim von howell (Novelty 7-8) nicht im Draft erwähnt\"\n\nWenn Pre-Processor Claims als \"omitted\" flaggt, bedeutet das: Claims wurden DURCH das System prozessiert (IC → Pre-Processor → CIO), aber im Draft NICHT erwähnt.\n\nDas sind zwei unterschiedliche Probleme:\n\n**Problem A (Data Freshness):** IC-Daten sind alt → neue Extraktion bringt neue Claims → System hat mehr Input.\n\n**Problem B (Pattern Recognition Calibration):** IC-Daten wurden prozessiert → Claims erreichten CIO → CIO erwähnt sie nicht im Draft → entweder (1) CIO-Filter zu strikt, oder (2) Claims sind tatsächlich LOW_SIGNAL trotz HIGH Novelty.\n\nA6 behandelt nur Problem A. Aber wenn Problem B zutrifft (Claims wurden gesehen, nur nicht verarbeitet), dann löst IC-Refresh das Problem NICHT — frische Daten produzieren neue High-Novelty-Claims die wieder ignoriert werden.\n\nDie 5 omitted Howell-Claims sind:\n\n1. **claim_003 (Novelty 7):** \"Low volatility contributed to recent positive liquidity, but bond volatility jump signals next update less favorable\" — DIREKT relevant für A10 (HYG Post-CPI Review), weil HYG = Credit, Bond-Vol = Credit-Stress-Indikator.\n\n2. **claim_006 (Novelty 7):** \"Gold surge structurally driven by Chinese demand\" — DIREKT relevant für KA1 (geopolitics_resolution_timeline), weil wenn Gold = China-getrieben (nicht Geopolitik), dann ist GLD 16.9% NICHT exponiert gegen Iran-Konflikt-Resolution.\n\n3. Drei weitere (nicht im Draft gelistet, aber Pre-Processor flaggt sie).\n\nDiese Claims sind NICHT in S5 Intelligence Digest erwähnt. S5 listet nur claim_002 (China Gold), claim_004 (Treasury Term Premia), claim_005 (Crypto Underperformance).\n\n**Die ungestellte Frage:** Wurden diese 5 Claims durch IC-Processing gefiltert (Relevanz-Scores zu niedrig), oder hat der CIO sie gesehen aber als nicht-material eingeschätzt?\n\nWenn Ersteres: IC-Filter ist zu strikt (filtert HIGH-significance Claims trotz Howell Expertise Weight 7).\n\nWenn Letzteres: CIO unterschätzt Liquidity-Mechanik-Importance in LATE_EXPANSION (Liquidity-sensitives Regime).\n\nA6 nimmt implizit Ersteres an (\"veraltete Daten = Problem\"). Aber Pre-Processor Flags deuten auf Letzteres (\"Claims gesehen, nicht verarbeitet = Pattern-Recognition-Problem\").\n\n**IC-Refresh löst nur Problem A. Wenn Problem B existiert, persistiert das Issue.**\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "Pre-Processor Flags: 5x IC_HIGH_NOVELTY_OMISSION (Howell, Novelty 7-8, Significance HIGH)",
+        "S5 Intelligence Digest listet nur 3 Howell-Claims (claim_002, claim_004, claim_005)",
+        "Howell Expertise Weight 7 (höchste Autorität für Liquidity)",
+        "Market Analyst L1 (Liquidity) zeigt Conviction LOW, data_clarity 0.0 (CONFLICTED) — System ist BLIND auf Liquidity",
+        "V16 Regime LATE_EXPANSION ist Liquidity-sensitiv (liq_direction -1)"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 24,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260312_002",
+      "type": "PREMISE_ATTACK",
+      "target_section": "SYSTEM",
+      "target_assumption": "da_20260311_005",
+      "challenge_text": "FORCED DECISION (Tag 23, 18x NOTED): FORCED DECISION (Tag 22, 17x NOTED): FORCED DECISION (Tag 21, 16x NOTED): FORCED DECISION (Tag 20, 15x NOTED): FORCED DECISION (Tag 19, 14x NOTED): FORCED DECISION (Tag 18, 13x NOTED): FORCED DECISION (Tag 17, 12x NOTED): FORCED DECISION (Tag 16, 11x NOTED): FORCED DECISION (Tag 15, 10x NOTED): FORCED DECISION (Tag 14, 9x NOTED): FORCED DECISION (Tag 13, 9x NOTED): FORCED DECISION (Tag 12, 9x NOTED): FORCED DECISION (Tag 11, 8x NOTED): FORCED DECISION (Tag 10, 7x NOTED): FORCED DECISION (Tag 9, 6x NOTED): FORCED DECISION (Tag 8, 5x NOTED): FORCED DECISION (Tag 7, 4x NOTED): FORCED DECISION (Tag 6, 3x NOTED): **FORCED DECISION (Tag 5, 6x NOTED):** Ist dir aufgefallen dass A13 (FOMC Pre-Event Portfolio-Check, CRITICAL, \"HEUTE ABSCHLIESSEN\") sagt \"keine präemptiven Trades\" — aber das System hat KEINE Execution-Policy für Event-Day-Liquidität dokumentiert?\n\nHYG 28.8% = $14.4m auf $50m AUM (angenommen). HYG Average Daily Volume $1.2bn. Normal: $14.4m = 1.2% of ADV, executierbar mit Spread 0.01% = $1,440 Slippage.\n\n**FOMC-Event-Day Liquiditäts-Profil (historisch):**\n- Statement 14:00 ET (19:00 UTC) + Presser 14:30 ET = 90-Minuten Event-Window\n- HYG Bid-Ask-Spread erweitert sich 3x-5x (0.01% → 0.03-0.05%)\n- Volume konzentriert sich auf erste 60min (50% of Daily Volume)\n- Order Book Depth fällt 60-70% (Market Maker ziehen Quotes)\n\n**Slippage-Szenario wenn A13 zu Trade-Entscheidung führt:**\n\nFalls V16 morgen (Post-FOMC) HYG reduziert (Regime-Shift zu RECESSION/EARLY_EXPANSION), ist Execution-Timing UNKLAR:\n- Option A: Trade WÄHREND Event-Window (14:00-16:00 ET) = Spread 0.03-0.05% = $4,320-$7,200 Slippage + Market Impact 0.02-0.05% = $2,880-$7,200 → Total $7,200-$14,400 (0.014-0.029% of AUM)\n- Option B: Trade POST Event-Window (17:00+ ET) = Spread normalisiert 0.01% = $1,440 Slippage → Total $1,440-$3,000 (0.003-0.006% of AUM)\n\n**Differenz: $5,760-$11,400 vermeidbarer Slippage durch 2-3 Stunden Timing-Verzögerung.**\n\nA13 sagt \"keine präemptiven Trades\" (korrekt — V16-Gewichte sind sakrosankt), aber sagt NICHTS über Post-FOMC Execution-Timing wenn V16 rebalanced.\n\nSignal Generator zeigt \"FAST_PATH, V16 weights unmodified\" — keine Execution-Logik sichtbar. Risk Officer meldet Concentration (HYG CRITICAL), aber NICHT Instrument-Liquidity-Stress oder Event-Execution-Risk.\n\n**Die ungestellte Frage:** Hat das System eine Event-Aware Execution-Policy? Oder ist jede V16-Rebalance \"Market Order, sofort\" unabhängig von Event-Window-Liquidität?\n\nFalls V16 morgen HYG reduziert UND Execution ist Market Order während Event-Window → $7k-$14k Slippage ist MESSBAR und VERMEIDBAR.\n\n**Zusätzlich:** Falls FOMC hawkish (worst case), könnten MEHRERE Positionen gleichzeitig rebalanced werden (HYG/DBC/XLU alle zinsempfindlich). Kumulativer Slippage über 2-3 Trades während Event-Window könnte $15k-$30k erreichen (0.03-0.06% of AUM).\n\n**CIO MUSS MIT ACCEPTED ODER REJECTED ANTWORTEN. NOTED IST NICHT MEHR ERLAUBT.**\n[PERSISTENT: Tag 5, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [
+        "A13: \"FOMC Pre-Event Portfolio-Check (CRITICAL, Tag 2). Nächste Schritte: Operator führt manuellen Check durch. V16-Gewichte sind sakrosankt — kein präemptiver Override.\"",
+        "Signal Generator: \"execution_path: FULL_PATH, v16_trades.modified: false\" — keine Execution-Logik-Dokumentation",
+        "Risk Officer RO-20260318-003: \"HYG 28.8% (Schwelle 25%). ONGOING seit 30 Tagen.\" — meldet Concentration, NICHT Liquidity-Stress",
+        "Market Analyst L1: \"Transition-Proximity 0.6 zu EXPANSION\" — V16-Regime-Shift morgen möglich",
+        "Historische Event-Day-Daten: HYG Spread-Erweiterung 3x-5x, Volume-Konzentration 50% in ersten 60min, Order Book Depth -60-70%"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 23,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260330_004",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S7",
+      "target_assumption": "KA2 — \"Market Analyst L1 (Liquidity) TRANSITION (-2) bleibt moderat, eskaliert nicht zu TIGHTENING (-8)\"",
+      "challenge_text": "FORCED DECISION (Tag 12, 10x NOTED): FORCED DECISION (Tag 11, 9x NOTED): FORCED DECISION (Tag 10, 8x NOTED): FORCED DECISION (Tag 9, 7x NOTED): FORCED DECISION (Tag 8, 6x NOTED): FORCED DECISION (Tag 7, 5x NOTED): FORCED DECISION (Tag 6, 4x NOTED): FORCED DECISION (Tag 5, 3x NOTED): Ist dir aufgefallen dass KA2 annimmt \"Liquidity TRANSITION bleibt moderat\" — aber Market Analyst Layer Scores zeigen dass L1 (Liquidity) seit 2026-03-27 (3 Tage) UNVERÄNDERT bei -2 ist, während ALLE anderen Layer sich bewegt haben?\n\nMarket Analyst Output (heute vs. Freitag):\n- L1 (Liquidity): -2 → -2 (STABLE, keine Bewegung)\n- L2 (Macro): 0 → 0 (STABLE)\n- L3 (Earnings): 1 → 1 (STABLE)\n- L6 (Relative Value): +3 → +3 (STABLE, aber regime_duration 1 Tag — gerade erst geshiftet)\n- L8 (Tail Risk): -1 → -1 (STABLE)\n\n**\"STABLE\" bedeutet NICHT \"sicher\". \"STABLE\" bedeutet \"keine neue Daten seit letztem Update\".**\n\n**ALTERNATIVE LESART:**\n\nL1 (Liquidity) -2 TRANSITION ist seit 3 Tagen eingefroren. Aber Liquidity-Daten updaten TÄGLICH (Fed Balance Sheet, RRP, TGA, Money Market Flows).\n\nWenn L1 3 Tage STABLE ist, bedeutet das ENTWEDER:\n(A) Liquidity-Situation hat sich tatsächlich nicht verändert (unwahrscheinlich — Liquidity ist volatilste Metrik)\n(B) Liquidity-Daten sind STALE (Market Analyst Input-Feed hat Problem)\n\n**EVIDENZ F\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]\n[PERSISTENT: Tag 3, erneuert aus History]\n[PERSISTENT: Tag 4, erneuert aus History]\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.\nCIO MUSS mit ACCEPTED oder REJECTED antworten. NOTED ist nicht mehr erlaubt.",
+      "evidence": [],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 12,
+      "is_forced_decision": true,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260421_001",
+      "type": "UNASKED_QUESTION",
+      "target_section": "SYSTEM",
+      "target_assumption": null,
+      "challenge_text": "Ist dir aufgefallen dass Data Quality DEGRADED (L1 60% stale, L2 86% stale, L7 75% stale) seit Freitag besteht — aber du zeigst NICHT ob die 5x IC_HIGH_NOVELTY_OMISSION (alle Howell/ZH, Novelty 7-9) DURCH stale Daten verursacht wurden oder TROTZ staler Daten auftraten, obwohl diese Unterscheidung determiniert ob IC-Refresh (A6-Logik aus History) das Problem löst?\n\n**VERSICHERUNGS-AKTUAR-PERSPEKTIVE:**\n\nPre-Processor flaggt 5x IC_HIGH_NOVELTY_OMISSION (alle Howell/ZH, Novelty 7, HIGH significance). Du schreibst in S5: \"IC Intelligence: 7 Quellen, 126 Claims (33 Opinion, 92 Fact). 91 High-Novelty Claims (Novelty ≥5).\"\n\n**ABER:** Du listest nur Top 10 High-Novelty Claims in S5. Pre-Processor flaggt 5 OMISSIONS — Claims die NICHT im Draft erwähnt sind.\n\n**ZWEI MÖGLICHE ERKLÄRUNGEN:**\n\n**Erklärung A (Daten-Freshness-Problem):**\nDie 5 omitted Claims sind aus Howell/ZH-Artikeln die NACH dem letzten IC-Extraction-Run publiziert wurden (z.B. Samstag/Sonntag, aber IC-Extraction läuft nur Werktags). System hat sie NICHT gesehen (nicht extrahiert). Pre-Processor erkennt sie als \"omitted\" weil sie in der Datenbank existieren (manuell eingepflegt oder Backup-Scraper), aber nicht im IC-Processing-Output.\n\n**Implikation:** IC-Refresh (A6 aus History) löst das Problem. Neue Extraktion holt die fehlenden Claims, nächster Draft enthält sie.\n\n**Erklärung B (Pattern-Recognition-Problem):**\nDie 5 omitted Claims wurden durch IC-Extraction GESEHEN (sind im IC-Processing-Output), aber im Draft NICHT erwähnt. CIO hat sie gefiltert (Relevanz-Score zu niedrig) oder übersehen (zu viele Claims, selektive Verarbeitung).\n\n**Implikation:** IC-Refresh löst das Problem NICHT. Neue Extraktion bringt neue Claims, aber CIO filtert wieder selektiv. Das ist ein CIO-Kalibrierungs-Problem, kein Daten-Problem.\n\n**WIE UNTERSCHEIDEST DU?**\n\nDu zeigst NICHT:\n- Timestamp des letzten IC-Extraction-Runs (wann wurden die 126 Claims extrahiert?)\n- Content-Dates der 5 omitted Claims (wann wurden die Howell/ZH-Artikel publiziert?)\n- IC-Processing-Output-Vollständigkeit (sind die 5 Claims im IC-JSON, aber nicht im Draft? Oder fehlen sie im IC-JSON?)\n\n**OHNE diese Daten kannst du NICHT determinieren ob A6-Logik (IC-Refresh) korrekt ist.**\n\n**EVIDENZ FÜR ERKLÄRUNG B (Pattern-Recognition-Problem):**\n\nPersistent Challenge da_20260311_001 (Tag 23, 25x NOTED, FORCED DECISION) fragt GENAU diese Frage: \"Wurden die 5 omitted Howell-Claims durch IC-Processing gefiltert, oder hast du sie gesehen aber als nicht-material eingeschätzt?\"\n\nDu hast diese Challenge 25x NOTED über 23 Tage. Das bedeutet: Du hast die Frage NICHT beantwortet, aber auch NICHT resolved.\n\n**HEUTE (Draft 2026-04-21) zeigst du:**\n\nS5 listet Howell LIQUIDITY -10.0 (LOW confidence, 1 Claim). Du HAST Howell-Daten verarbeitet (mindestens 1 Claim).\n\nPre-Processor flaggt 5x IC_HIGH_NOVELTY_OMISSION (alle Howell/ZH, Novelty 7). Das bedeutet: Es gibt MEHR Howell/ZH-Claims (mindestens 5) die du NICHT erwähnt hast.\n\n**DISKREPANZ:** Du verarbeitest Howell (1 Claim in S5), aber Pre-Processor sagt \"5 Howell-Claims omitted\". Das bedeutet: Howell-Daten SIND im System (sonst keine Omission-Flags), aber du erwähnst nur 1 von 6+ Claims.\n\n**Das ist Erklärung B (Pattern-Recognition-Problem), nicht Erklärung A (Daten-Freshness-Problem).**\n\n**IMPLIKATION FÜR DATA QUALITY DEGRADED:**\n\nDu schreibst in S3: \"Data Quality DEGRADED. L1 3 stale fields (60%), L2 6 stale (86%), L7 3 stale (75%). IMPLIKATION: Liquidity (L1), Macro (L2), CB Policy (L7) Scores basieren auf veralteten Daten. Risk Assessment könnte Regime-Shifts verpassen.\"\n\n**ABER:** Data Quality DEGRADED betrifft L1/L2/L7 (Market Analyst Layer-Daten). IC-Omissions betreffen IC-Claims (Intelligence-Daten). Das sind SEPARATE Datenströme.\n\n**Falls IC-Omissions DURCH stale L1/L2/L7-Daten verursacht wurden:**\nHowell-Claims diskutieren Liquidity/Macro/CB-Policy. Falls L1/L2/L7-Daten stale sind, könnte IC-Processing Howell-Claims als \"redundant\" filtern (System denkt: \"Howell sagt Liquidity fällt, aber L1 zeigt Expansion — Howell ist outdated, ignorieren\"). Das wäre Erklärung A (Daten-Freshness).\n\n**Falls IC-Omissions TROTZ staler L1/L2/L7-Daten auftraten:**\nHowell-Claims wurden verarbeitet (sind im IC-JSON), aber du erwähnst sie nicht im Draft (selektive Verarbeitung). Stale L1/L2/L7-Daten sind IRRELEVANT für IC-Omissions. Das wäre Erklärung B (Pattern-Recognition).\n\n**EXPECTED LOSS KALKULATION:**\n\n**Szenario A (Daten-Freshness-Problem, 40% Wahrscheinlichkeit):**\n- IC-Refresh (A6) löst das Problem. Nächster Draft enthält alle Howell/ZH-Claims.\n- Cost: Operator-Zeit 30min (IC-Extraction manuell triggern) = $50 (angenommen $100/h Operator-Rate).\n- Benefit: System Conviction steigt von LOW zu MEDIUM (mehr Daten = höhere Confidence). Portfolio-Entscheidungen basieren auf vollständigem IC-Input.\n- **Expected Value:** +$0 (kein direkter Portfolio-Impact, aber epistemische Verbesserung).\n\n**Szenario B (Pattern-Recognition-Problem, 60% Wahrscheinlichkeit):**\n- IC-Refresh löst das Problem NICHT. Nächster Draft filtert wieder selektiv.\n- Cost: Operator-Zeit 30min (IC-Refresh) + CIO-Kalibrierungs-Aufwand 2h (Review IC-Filter-Logik, adjust Relevanz-Scores) = $250.\n- Benefit: Falls Howell-Claims MATERIAL sind (z.B. \"Bond volatility jump signals next update less favorable\" = HYG-Risiko-Warnung), dann ist Omission = MISSED SIGNAL. Expected Loss: 28.8% HYG × 2% Drawdown (bei Bond-Vol-Spike) = 0.576% of AUM = $288k auf $50m.\n- **Expected Value:** -$288k + $250 Cost = -$288.25k (falls Claims material). Falls Claims NICHT material (Signal=0 korrekt), Expected Value = -$250 (wasted effort).\n\n**GEWICHTETER EXPECTED LOSS:**\n\n(40% × $0) + (60% × -$288.25k) = **-$172.95k Expected Loss.**\n\n**ABER:** Das ist NUR korrekt wenn die 5 omitted Claims tatsächlich MATERIAL sind (nicht Signal=0).\n\n**STABILISIERENDE FAKTOREN:**\n\nPre-Processor klassifiziert 91 High-Novelty-Claims als Signal=0 (Anti-Patterns). Falls die 5 omitted Claims AUCH Signal=0 sind (hohe Novelty, aber kein Trade-Impact), dann ist Expected Loss = $0 (Omission irrelevant).\n\n**ABER:** Du zeigst NICHT ob die 5 omitted Claims Signal=0 sind oder nicht. Pre-Processor flaggt sie als \"HIGH significance\" — das widerspricht Signal=0.\n\n**Ein Versicherungs-Aktuar würde sagen:** \"Zeige mir die Daten. Sind die 5 omitted Claims im IC-JSON oder nicht? Falls ja, warum erwähnst du sie nicht? Falls nein, wann war der letzte IC-Extraction-Run? Ohne diese Daten kann ich Expected Loss nicht kalkulieren — und du kannst nicht determinieren ob A6 (IC-Refresh) korrekt ist.\"",
+      "evidence": [
+        "Pre-Processor: 5x IC_HIGH_NOVELTY_OMISSION (alle Howell/ZH, Novelty 7, HIGH significance)",
+        "S5: Howell LIQUIDITY -10.0 (1 Claim verarbeitet) — aber 5 Claims omitted",
+        "Persistent Challenge da_20260311_001 (Tag 23, 25x NOTED): Identische Frage seit 23 Tagen unbeantwortet",
+        "S3: Data Quality DEGRADED (L1 60% stale, L2 86% stale, L7 75% stale) — aber KEINE Analyse ob IC-Omissions DURCH stale Daten verursacht wurden",
+        "IC extraction_summary: \"7 sources, 126 total claims, 91 high-novelty\" — aber KEIN Timestamp des letzten Extraction-Runs"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 1,
+      "is_forced_decision": false,
+      "validation_warnings": []
+    },
+    {
+      "id": "da_20260421_002",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S4",
+      "target_assumption": "KA2",
+      "challenge_text": "Ist dir aufgefallen dass KA2 (\"EM_BROAD Proximity-Volatilität ist DXY-Momentum-Artefakt, nicht echter Regime-Shift\") als Baseline-Annahme formuliert ist — aber die Expected-Loss-Kalkulation für das GEGENSZENARIO (DXY-Momentum war Leading-Indikator, VWO/SPY folgt verzögert) FEHLT, obwohl dieses Szenario bei Router Entry Evaluation 2026-05-01 (10 Tage) BINÄREN Portfolio-Impact hat?\n\n**VERSICHERUNGS-AKTUAR-PERSPEKTIVE:**\n\nDu schreibst: \"EM_BROAD Proximity 2.6%→8.9% (+6.3pp) nach Kollaps 15.8%→2.7% (-13.1pp). DXY-Momentum-Indikator volatil, aber VWO/SPY stabil 23.1% = fundamentaler Relative-Strength zeigt kein EM-Signal.\"\n\nDas ist DESKRIPTIV (was passiert), nicht QUANTITATIV (Expected Loss).\n\n**SZENARIO-KALKULATION (die du NICHT lieferst):**\n\n**Szenario A (KA2 korrekt — DXY-Momentum-Artefakt, 60% Wahrscheinlichkeit):**\n- VWO/SPY bleibt <50% bis 2026-05-01 (10 Tage).\n- Router Entry Evaluation: EM_BROAD Proximity 8.9% (aktuell) bleibt <40%-Trigger.\n- KEIN Entry-Signal. Portfolio bleibt US_DOMESTIC (V16 LATE_EXPANSION: HYG 29.7%, DBC 19.8%, XLU 18.0%, XLP 16.5%, GLD 16.0%).\n- **Portfolio-Impact:** $0 (keine Änderung).\n\n**Szenario B (KA2 falsch — DXY-Momentum war Leading-Indikator, 40% Wahrscheinlichkeit):**\n- VWO/SPY steigt von 23.1% auf >50% in nächsten 10 Tagen (verzögerte Reaktion auf DXY-Momentum-Shift).\n- EM_BROAD Proximity steigt von 8.9% auf >40% (Trigger-Schwelle).\n- Router Entry Evaluation 2026-05-01: Entry-Signal EM_BROAD.\n- V16 muss EEM-Exposure aufbauen (aktuell 0.0%). Router-Logik (historisch): EM_BROAD Entry = 20-30% EEM-Allokation.\n- **Trade-Größe:** +25% EEM (angenommen $12.5m auf $50m AUM). Funding: Reduziere Commodities (DBC 19.8% → 10%, GLD 16.0% → 10%) = -15.8pp Commodities, +25pp EEM.\n\n**Portfolio-Impact (Szenario B):**\n\n**Falls EM-Regime tatsächlich startet (VWO/SPY >50% = EM outperformt US):**\n- EEM +25% Allokation × +8% Return (EM-Rally erste 30 Tage, historisch 2020/2023) = +2.0% of AUM = +$1.0m.\n- DBC -9.8pp × -3% (Commodities underperformen bei EM-Rotation, Risk-Off in US) = -0.29% of AUM = -$145k.\n- GLD -6.0pp × -2% (Gold fällt bei DXY-Reversal, EM-Strength = USD-Weakness endet) = -0.12% of AUM = -$60k.\n- **Net Portfolio-Impact:** +$1.0m - $145k - $60k = **+$795k (+1.59% of AUM).**\n\n**Falls EM-Regime NICHT startet (VWO/SPY Spike war false signal):**\n- EEM +25% × -5% (EM-Rally kollabiert, Mean-Reversion) = -1.25% of AUM = -$625k.\n- DBC -9.8pp × +2% (Commodities outperformen, COMMODITY_SUPER 100% bleibt aktiv) = +0.20% of AUM = +$100k (foregone upside).\n- GLD -6.0pp × +1% (Gold outperformt, Safe-Haven-Bid) = +0.06% of AUM = +$30k (foregone upside).\n- **Net Portfolio-Impact:** -$625k - $100k - $30k = **-$755k (-1.51% of AUM).**\n\n**BINÄRE UNSICHERHEIT:**\n\nFalls Router Entry-Signal triggert (Szenario B, 40% Wahrscheinlichkeit), dann ist INNERHALB Szenario B eine WEITERE Unsicherheit: Ist VWO/SPY >50% ein ECHTER Regime-Shift (EM outperformt nachhaltig, 50% Wahrscheinlichkeit) oder FALSE SIGNAL (Mean-Reversion, 50% Wahrscheinlichkeit",
+      "evidence": [],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": false,
+      "persistent_days": 0,
+      "is_forced_decision": false,
+      "validation_warnings": [
+        "MISSING_EVIDENCE"
+      ]
+    },
+    {
+      "id": "da_20260417_001",
+      "type": "PREMISE_ATTACK",
+      "target_section": "S1",
+      "target_assumption": "KA2",
+      "challenge_text": "Ist dir aufgefallen dass KA2 (\"VIX-Suppression + OPEX-Unwind = Vol-Spike möglich\") als Tail-Risk-Warnung formuliert ist — aber die Expected-Loss-Kalkulation für das GEGENSZENARIO (VIX bleibt suppressed, kein Unwind) FEHLT, obwohl dieses Szenario bei 70-85% Wahrscheinlichkeit liegt und GRÖSSEREN Portfolio-Impact hat?\n\n**VERSICHERUNGS-AKTUAR-PERSPEKTIVE:**\n\nDu schreibst: \"Falls VIX bleibt niedrig post-OPEX, L8 CALM-Reading korrekt, Tail-Risk tatsächlich niedrig, L5 extreme bullish positioning (NAAIM/COT) = false contrarian signal.\"\n\nDas ist DESKRIPTIV (was passiert), nicht QUANTITATIV (Expected Loss).\n\n**SZENARIO-KALKULATION (die du NICHT lieferst):**\n\n**Szenario A (KA2 korrekt — VIX-Spike post-OPEX, 15-30% Wahrscheinlichkeit):**\n- VIX steigt von 0.0th pctl (~11-12 impliziert) auf >15 (+25-35% Vol-Spike).\n- L5 NAAIM 100.0th pctl, COT ES 84.0th pctl = extreme bullish positioning unwinds.\n- SPY fällt 2-3% (moderate Risk-Off).\n- Portfolio-Impact: V16 LATE_EXPANSION = 50.5% Defensives (XLU/XLP/GLD) + 29.7% HYG + 19.8% DBC.\n  - Defensives (XLU/XLP/GLD): +0.5% bis +1.5% (Safe-Haven-Bid, Utilities/Staples outperform).\n  - HYG: -1.5% bis -2.5% (Credit-Spreads weiten sich bei Risk-Off).\n  - DBC: -1.0% bis -2.0% (Commodities fallen bei Demand-Sorgen, außer Gold).\n- **Gewichteter Portfolio-Drawdown:** (50.5% × +0.5%) + (29.7% × -2.0%) + (19.8% × -1.5%) = +0.25% - 0.59% - 0.30% = **-0.64% of AUM = -$320k auf $50m.**\n\n**Szenario B (KA2 falsch — VIX bleibt suppressed, 70-85% Wahrscheinlichkeit):**\n- VIX bleibt <12 post-OPEX (L8 CALM korrekt, keine Gamma-Unwind).\n- L5 extreme bullish positioning = NICHT contrarian bearish, sondern MOMENTUM-Signal (Retail/Institutions bleiben long).\n- SPY steigt 1-2% (Risk-On fortsetzt, OPEX-Relief-Rally).\n- Portfolio-Impact: V16 LATE_EXPANSION = 50.5% Defensives + 29.7% HYG + 19.8% DBC.\n  - Defensives (XLU/XLP/GLD): -0.5% bis +0.5% (underperform bei Risk-On, aber stabil).\n  - HYG: +0.5% bis +1.0% (Credit outperforms bei niedrigem Vol).\n  - DBC: +1.0% bis +2.0% (Commodities outperformen bei Risk-On + COMMODITY_SUPER 100%).\n- **Gewichteter Portfolio-Return:** (50.5% × 0.0%) + (29.7% × +0.75%) + (19.8% × +1.5%) = 0% + 0.22% + 0.30% = **+0.52% of AUM = +$260k.**\n\n**Expected Value über beide Szenarien (konservativ 75% Szenario B):**\n\n(25% × -$320k) + (75% × +$260k) = -$80k + $195k = **+$115k (+0.23% of AUM).**\n\n**Expected Value ist POSITIV — aber NUR wenn Szenario B 75% Wahrscheinlichkeit hat.**\n\n**ABER:** Deine Narrative (KA2) fokussiert auf Szenario A (VIX-Spike-Risiko), NICHT auf Szenario B (VIX-bleibt-niedrig-Opportunity).\n\n**ALTERNATIVE LESART:**\n\n**Wenn L8 SUSPICIOUS-Flag (\"VIX suppressed by dealer gamma\") KORREKT ist, dann ist VIX 0.0th pctl NICHT \"echter CALM\", sondern TECHNISCHE SUPPRESSION.**\n\n**ABER:** Technische Suppression bedeutet NICHT automatisch \"Unwind = Vol-Spike\". Es bedeutet \"VIX ist KÜNSTLICH niedrig, aber könnte AUCH künstlich niedrig BLEIBEN falls Dealer-Gamma-Positionen nicht unwinden.\"\n\n**OPEX-Mechanik:**\n\n- **Gamma-Unwind tritt auf WENN:** Market Maker haben große Short-Gamma-Positionen (verkaufte Calls/Puts) die bei OPEX expiren. Expiry = Positionen schließen = Delta-Hedges unwinden = Volatilität.\n- **Gamma-Unwind tritt NICHT auf WENN:** Positionen rollen (nicht expiren), oder neue Positionen ersetzen alte (nächster OPEX-Zyklus startet sofort), oder Dealer-Gamma ist LONG (nicht Short).\n\n**L8 sagt:** \"VIX suppressed by dealer gamma\" — impliziert Dealer sind SHORT Gamma (verkaufte Vol). **ABER:** L8 zeigt NICHT ob diese Positionen bei OPEX expiren oder rollen.\n\n**Historische OPEX-Vol-Spike-Rate (2020-2025, grobe Schätzung):**\n\n- OPEX-Tage mit VIX-Spike >10%: ~25-30% der Fälle.\n- OPEX-Tage mit VIX flat/down: ~70-75% der Fälle.\n\n**Das bedeutet:** Szenario B (kein Spike) ist HISTORISCH 2-3x wahrscheinlicher als Szenario A (Spike).\n\n**IMPLIKATION FÜR PORTFOLIO:**\n\n**V16 LATE_EXPANSION = 50.5% Defensives** ist OPTIMAL für Szenario A (VIX-Spike = Safe-Haven-Bid), aber SUB-OPTIMAL für Szenario B (VIX bleibt niedrig = Risk-On fortsetzt, Defensives underperformen).\n\n**Expected Loss bei aktueller Allokation:**\n\n- **Szenario A (25%):** Portfolio verliert -$320k, aber Defensives 50.5% = HEDGE funktioniert (Verlust wäre -$500k+ ohne Defensives).\n- **Szenario B (75%):** Portfolio gewinnt +$260k, aber Defensives 50.5% = OPPORTUNITY COST (Gewinn wäre +$400k+ mit weniger Defensives, mehr HYG/DBC).\n\n**Opportunity Cost (Szenario B):** $400k - $260k = **$140k foregone upside (0.28% of AUM).**\n\n**ABER:** Opportunity Cost ist NUR relevant wenn Szenario B tatsächlich 75% Wahrscheinlichkeit hat.\n\n**STABILISIERENDE FAKTOREN (die du NICHT erwähnst):**\n\n1. **L1 Liquidity EXPANSION (Score 8, 100.0th pctl Net Liquidity):** RRP drain, Fed Balance Sheet expansion. Liquidity-Expansion = Vol-Suppression-Mechanik (mehr Liquidity = weniger Stress = niedrigere Vol). Falls L1 weiter expandiert, VIX bleibt suppressed STRUKTURELL, nicht nur technisch.\n\n2. **L4 ECB heute (BINARY, MEDIUM impact):** Falls ECB dovish (Rate Cut oder QE-Expansion), globale Liquidity steigt weiter, Vol bleibt niedrig. Falls ECB hawkish, FX-Volatilität steigt, aber Equity-Vol könnte AUCH steigen (Spillover).\n\n3. **IC GEOPOLITICS 0.13 (neutral, HIGH confidence):** Kein Geopolitik-Eskalations-Signal. Falls Iran-Ceasefire hält (~2026-04-21), Tail-Risk fällt strukturell, VIX bleibt niedrig über Wochen (nicht nur OPEX).\n\n4. **Earnings Season (Tier 2, diese Woche):** Big Tech Earnings = binärer Catalyst. Falls Earnings beat (L3 Breadth 77.4% suggeriert technisch strong), Risk-On fortsetzt, VIX bleibt niedrig. Falls Earnings miss, Vol steigt — ABER L3 Score 6 (HEALTHY) + IC TECH_AI -2.33 (moderate Skepsis, nicht Panik) = Earnings-Miss-Wahrscheinlichkeit <30%.\n\n**ADJUSTIERTE WAHRSCHEINLICHKEITEN (mit Stabilisatoren):**\n\n- **Szenario A (VIX-Spike):** 15-20% (reduziert von 25%, wegen L1 Liquidity + IC GEOPOLITICS neutral + Earnings-Upside-Bias).\n- **Szenario B (VIX bleibt niedrig):** 80-85% (erhöht von 75%).\n\n**ADJUSTIERTE EXPECTED VALUE:**\n\n(20% × -$320k) + (80% × +$260k) = -$64k + $208k = **+$144k (+0.29% of AUM).**\n\n**Expected Value steigt von +$115k auf +$144k (+25% höher) wenn Stabilisatoren berücksichtigt werden.**\n\n**ABER:** Du zeigst KEINE dieser Kalkulationen. KA2 sagt nur \"VIX-Spike möglich\" — OHNE Wahrscheinlichkeit, Expected Loss, Opportunity Cost, oder Stabilisatoren.\n\n**Ein Versicherungs-Aktuar würde sagen:** \"Zeige mir die Zahlen. Was ist die Wahrscheinlichkeit von Szenario A vs. B? Was ist der Expected Loss/Gain in jedem Szenario? Was ist der Opportunity Cost der aktuellen Allokation (50.5% Defensives)? Ist diese Allokation OPTIMAL für die Wahrscheinlichkeitsverteilung? Falls nein, was ist die optimale Allokation?\"\n\n**ZUSÄTZLICH:** Falls Szenario B (80-85% Wahrscheinlichkeit) korrekt ist, dann ist deine NARRATIVE (KA2 fokussiert auf Tail-Risk) FALSCH-GEWICHTET. Du warnst vor einem 15-20%-Event (VIX-Spike), aber ignorierst das 80-85%-Event (VIX bleibt niedrig = Opportunity).\n\n**Das ist NICHT wie ein Versicherungs-Aktuar denkt. Ein Aktuar fokussiert auf Expected Loss, nicht auf Tail-Event-Wahrscheinlichkeit.**\n[PERSISTENT: Tag 1, erneuert aus History]\n[PERSISTENT: Tag 2, erneuert aus History]",
+      "evidence": [
+        "L8 VIX 0.0th pctl (SUSPICIOUS quality, \"suppressed by dealer gamma\")",
+        "L5 NAAIM 100.0th pctl, COT ES 84.0th pctl (extreme bullish positioning)",
+        "L1 Liquidity EXPANSION (Score 8, 100.0th pctl Net Liquidity) — Vol-Suppression-Mechanik",
+        "IC GEOPOLITICS 0.13 (neutral, HIGH confidence) — kein Tail-Risk-Katalysator",
+        "L3 Score 6 (HEALTHY), Breadth 77.4% — Earnings-Upside-Bias",
+        "V16 50.5% Defensives (XLU/XLP/GLD) — optimal für Szenario A, sub-optimal für Szenario B",
+        "Historische OPEX-Vol-Spike-Rate ~25-30% (Szenario A), flat/down ~70-75% (Szenario B)"
+      ],
+      "severity": "SUBSTANTIVE",
+      "is_persistent": true,
+      "persistent_days": 2,
+      "is_forced_decision": false,
+      "validation_warnings": []
+    }
+  ],
+  "preprocessor_flags_unused": [
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 9) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 9) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 9) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 9) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 9) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 9) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 8) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_HIGH_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 7) nicht im Draft erwaehnt",
+      "significance": "HIGH"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von forward_guidance (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von howell (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von doomberg (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von hidden_forces (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von zerohedge (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 5) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "IC_MODERATE_NOVELTY_OMISSION",
+      "detail": "IC Claim von jeff_snider (Novelty 6) nicht erwaehnt — moeglicherweise relevant",
+      "significance": "LOW"
+    },
+    {
+      "flag_type": "DRIFT_MILD_OVERREACTION",
+      "detail": "CIO Ton veraendert (ACTION->ACTION) ohne messbare Datenaenderung.",
+      "significance": "LOW"
+    }
+  ],
+  "persistent_challenges_renewed": [
+    {
+      "original_id": "da_20260414_001",
+      "original_challenge": "FORCED DECISION (Tag 5, 5x NOTED): FORCED DECISION (Tag 4, 4x NOTED): FORCED DECISION (Tag 3, 3x NOT",
+      "days_open": 5,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 5 Tagen"
+    },
+    {
+      "original_id": "da_20260410_002",
+      "original_challenge": "FORCED DECISION (Tag 8, 5x NOTED): FORCED DECISION (Tag 7, 4x NOTED): FORCED DECISION (Tag 6, 3x NOT",
+      "days_open": 8,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 8 Tagen"
+    },
+    {
+      "original_id": "da_20260327_003",
+      "original_challenge": "FORCED DECISION (Tag 13, 11x NOTED): FORCED DECISION (Tag 12, 10x NOTED): FORCED DECISION (Tag 11, 9",
+      "days_open": 13,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 13 Tagen"
+    },
+    {
+      "original_id": "da_20260327_002",
+      "original_challenge": "FORCED DECISION (Tag 13, 11x NOTED): FORCED DECISION (Tag 12, 10x NOTED): FORCED DECISION (Tag 11, 9",
+      "days_open": 13,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 13 Tagen"
+    },
+    {
+      "original_id": "da_20260320_002",
+      "original_challenge": "FORCED DECISION (Tag 17, 15x NOTED): FORCED DECISION (Tag 16, 14x NOTED): FORCED DECISION (Tag 15, 1",
+      "days_open": 17,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 17 Tagen"
+    },
+    {
+      "original_id": "da_20260311_005",
+      "original_challenge": "FORCED DECISION (Tag 25, 23x NOTED): FORCED DECISION (Tag 24, 22x NOTED): FORCED DECISION (Tag 23, 2",
+      "days_open": 25,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 25 Tagen"
+    },
+    {
+      "original_id": "da_20260309_005",
+      "original_challenge": "FORCED DECISION (Tag 42, 37x NOTED): FORCED DECISION (Tag 41, 36x NOTED): FORCED DECISION (Tag 40, 3",
+      "days_open": 42,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 42 Tagen"
+    },
+    {
+      "original_id": "da_20260311_001",
+      "original_challenge": "FORCED DECISION (Tag 24, 25x NOTED): FORCED DECISION (Tag 23, 24x NOTED): FORCED DECISION (Tag 22, 2",
+      "days_open": 24,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 24 Tagen"
+    },
+    {
+      "original_id": "da_20260312_002",
+      "original_challenge": "FORCED DECISION (Tag 23, 18x NOTED): FORCED DECISION (Tag 22, 17x NOTED): FORCED DECISION (Tag 21, 1",
+      "days_open": 23,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 23 Tagen"
+    },
+    {
+      "original_id": "da_20260330_004",
+      "original_challenge": "FORCED DECISION (Tag 12, 10x NOTED): FORCED DECISION (Tag 11, 9x NOTED): FORCED DECISION (Tag 10, 8x",
+      "days_open": 12,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "FORCED DECISION nach 12 Tagen"
+    },
+    {
+      "original_id": "da_20260420_002",
+      "original_challenge": "Ist dir aufgefallen dass Data Quality DEGRADED (L1 60% stale, L2 86% stale, L7 75% stale) seit Freit",
+      "days_open": 1,
+      "cio_response_history": [
+        "NOTED"
+      ],
+      "escalation_note": "Tag 1, erneuert"
+    },
+    {
+      "original_id": "da_20260417_001",
+      "original_challenge": "Ist dir aufgefallen dass KA2 (\"VIX-Suppression + OPEX-Unwind = Vol-Spike möglich\") als Tail-Risk-War",
+      "days_open": 2,
+      "cio_response_history": [
+        "NOTED",
+        "NOTED"
+      ],
+      "escalation_note": "Tag 2, erneuert"
+    }
+  ],
+  "confidence_saturation": {
+    "active": false,
+    "score": 0.55,
+    "components": {
+      "all_ampeln_green": true,
+      "all_layers_aligned": true,
+      "ic_consensus_high": false,
+      "conviction_high": false,
+      "no_divergences": true,
+      "fragility_healthy": true,
+      "briefing_routine": false
+    },
+    "interpretation": "Confidence Saturation bei 55% — unter Schwelle (85%)."
+  },
+  "metadata": {
+    "total_challenges": 13,
+    "by_type": {
+      "NARRATIVE": 1,
+      "UNASKED_QUESTION": 1,
+      "PREMISE_ATTACK": 11
+    },
+    "by_severity": {
+      "SUBSTANTIVE": 13,
+      "MODERATE": 0,
+      "MINOR": 0
+    },
+    "persistent_renewed": 12,
+    "forced_decisions": 10,
+    "preprocessor_flags_total": 92,
+    "preprocessor_flags_used": 5,
+    "llm_model": "claude-sonnet-4-5-20250929",
+    "llm_temperature": 0.4,
+    "llm_attempt": 1,
+    "generation_time_seconds": 96.5
+  }
+}
