@@ -1,0 +1,691 @@
+{
+  "date": "2026-04-23",
+  "run_timestamp": "2026-04-23T07:47:11.350718",
+  "v16_state": {
+    "v16_state": "Risk-On",
+    "v16_confluence": 0.0
+  },
+  "system_regime": {
+    "regime": "SELECTIVE",
+    "lean": "POSITIVE",
+    "reason": "3 positive, 0 negative \u2014 opportunities in specific areas",
+    "positive_layers": [
+      "Global Liquidity Cycle (L1)",
+      "Earnings & Fundamentals (L3)",
+      "Cross-Border Flows & FX (L4)"
+    ],
+    "negative_layers": []
+  },
+  "fragility_state": {
+    "state": "HEALTHY",
+    "triggers_active": [],
+    "indicators": {
+      "hhi": null,
+      "breadth_pct": 81.0,
+      "spy_rsp_6m_delta": null,
+      "ai_capex_revenue_gap": null
+    }
+  },
+  "fragility_recommendations": {
+    "summary": "No fragility concerns. V16 operates normally.",
+    "router": "Standard thresholds active.",
+    "spy_rsp": "100% SPY as is.",
+    "xlk": "No cap.",
+    "perm_opt": "Base allocation (3%).",
+    "action_required": false
+  },
+  "active_cross_checks": [],
+  "active_cascades": [],
+  "surprise_alerts": [],
+  "layers": {
+    "Global Liquidity Cycle (L1)": {
+      "layer_id": "L1",
+      "layer_name": "Global Liquidity Cycle (L1)",
+      "score": 6,
+      "regime": "EXPANSION",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "acceleration": "FLAT",
+      "conviction": {
+        "data_clarity": 1.0,
+        "narrative_alignment": 0.5,
+        "catalyst_fragility": 1.0,
+        "regime_duration": 0.2,
+        "composite": "LOW",
+        "limiting_factor": {
+          "factor": "regime_duration",
+          "value": 0.2,
+          "label": "Regime too young or unstable"
+        }
+      },
+      "surprise": {
+        "z_score": 0.0,
+        "category": "NORMAL"
+      },
+      "transition_proximity": {
+        "proximity": 0.14,
+        "target_regime": "TRANSITION",
+        "target_direction": "DOWN",
+        "estimated_days": null,
+        "distance_to_boundary": 3
+      },
+      "regime_history": {
+        "current_regime": "EXPANSION",
+        "duration_days": 1,
+        "regime_changes_30d": 0,
+        "oscillation_flag": false,
+        "chaotic_flag": false,
+        "unique_regimes_30d": [
+          "EXPANSION"
+        ]
+      },
+      "signal_phase": "CONFIRMED",
+      "signal_quality": {
+        "status": "CONFIRMED",
+        "reason": null,
+        "suppression_checks": [],
+        "stale_fields": [],
+        "anomaly_fields": [],
+        "data_clarity": 1.0
+      },
+      "key_driver": "Net Liquidity expanding at 94.0th pctl, +157500.794B in 5d \u2014 supported by WALCL expansion (UP)",
+      "tension": null,
+      "catalyst_exposure": [],
+      "ic_status": {
+        "confirmation": "NO_DATA",
+        "dissent": false,
+        "thesis_shift": null,
+        "weight_used": "CONTEXTUAL"
+      },
+      "sub_scores": {
+        "net_liquidity": 9,
+        "walcl": 6,
+        "tga": 5,
+        "rrp": 2,
+        "mmf_assets": 9,
+        "ic_LIQUIDITY": 0
+      },
+      "data_clarity": 1.0
+    },
+    "Macro Regime (L2)": {
+      "layer_id": "L2",
+      "layer_name": "Macro Regime (L2)",
+      "score": 1,
+      "regime": "SLOWDOWN",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "acceleration": "FLAT",
+      "conviction": {
+        "data_clarity": 0.43,
+        "narrative_alignment": 0.54,
+        "catalyst_fragility": 1.0,
+        "regime_duration": 0.2,
+        "composite": "LOW",
+        "limiting_factor": {
+          "factor": "regime_duration",
+          "value": 0.2,
+          "label": "Regime too young or unstable"
+        }
+      },
+      "surprise": {
+        "z_score": 0.0,
+        "category": "NORMAL"
+      },
+      "transition_proximity": {
+        "proximity": 0.0,
+        "target_regime": "GROWTH",
+        "target_direction": "UP",
+        "estimated_days": null,
+        "distance_to_boundary": 2
+      },
+      "regime_history": {
+        "current_regime": "SLOWDOWN",
+        "duration_days": 1,
+        "regime_changes_30d": 0,
+        "oscillation_flag": false,
+        "chaotic_flag": false,
+        "unique_regimes_30d": [
+          "SLOWDOWN"
+        ]
+      },
+      "signal_phase": "CONFLICTED",
+      "signal_quality": {
+        "status": "CONFIRMED",
+        "reason": null,
+        "suppression_checks": [],
+        "stale_fields": [],
+        "anomaly_fields": [],
+        "data_clarity": 0.43
+      },
+      "key_driver": "HY spreads tight at 9.0th pctl \u2014 credit conditions accommodative",
+      "tension": "Ig Oas (bullish, score 9) BUT Nfci (bearish, score -10)",
+      "catalyst_exposure": [],
+      "ic_status": {
+        "confirmation": "CONFIRMING",
+        "dissent": false,
+        "thesis_shift": null,
+        "weight_used": "PRIMARY"
+      },
+      "sub_scores": {
+        "spread_2y10y": 3,
+        "spread_3m10y": 3,
+        "hy_oas": 8,
+        "ig_oas": 9,
+        "nfci": -10,
+        "anfci": -9,
+        "real_10y_yield": 1,
+        "ic_RECESSION": 0,
+        "ic_FED_POLICY": 0
+      },
+      "data_clarity": 0.43
+    },
+    "Earnings & Fundamentals (L3)": {
+      "layer_id": "L3",
+      "layer_name": "Earnings & Fundamentals (L3)",
+      "score": 6,
+      "regime": "HEALTHY",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "acceleration": "FLAT",
+      "conviction": {
+        "data_clarity": 1.0,
+        "narrative_alignment": 0.35,
+        "catalyst_fragility": 0.3,
+        "regime_duration": 0.2,
+        "composite": "LOW",
+        "limiting_factor": {
+          "factor": "regime_duration",
+          "value": 0.2,
+          "label": "Regime too young or unstable"
+        }
+      },
+      "surprise": {
+        "z_score": 0.0,
+        "category": "NORMAL"
+      },
+      "transition_proximity": {
+        "proximity": 0.14,
+        "target_regime": "MIXED",
+        "target_direction": "DOWN",
+        "estimated_days": null,
+        "distance_to_boundary": 3
+      },
+      "regime_history": {
+        "current_regime": "HEALTHY",
+        "duration_days": 1,
+        "regime_changes_30d": 0,
+        "oscillation_flag": false,
+        "chaotic_flag": false,
+        "unique_regimes_30d": [
+          "HEALTHY"
+        ]
+      },
+      "signal_phase": "NO_SIGNAL",
+      "signal_quality": {
+        "status": "CONFIRMED",
+        "reason": null,
+        "suppression_checks": [],
+        "stale_fields": [],
+        "anomaly_fields": [],
+        "data_clarity": 1.0
+      },
+      "key_driver": "Market breadth strong: 81.0% above 200d MA",
+      "tension": null,
+      "catalyst_exposure": [
+        {
+          "event": "EARNINGS_SEASON",
+          "tier": 2,
+          "days_until": -9,
+          "direction": "DIRECTIONAL",
+          "impact": "MEDIUM",
+          "pre_event_action": "MONITOR",
+          "notes": "Big Tech week especially. Guidance > actuals."
+        }
+      ],
+      "ic_status": {
+        "confirmation": "NO_DATA",
+        "dissent": true,
+        "thesis_shift": null,
+        "weight_used": "CONTEXTUAL"
+      },
+      "sub_scores": {
+        "pct_above_200dma": 10,
+        "nh_nl": 7,
+        "spy_tlt_corr": 6,
+        "ic_EQUITY_VALUATION": 0,
+        "ic_TECH_AI": 0
+      },
+      "data_clarity": 1.0
+    },
+    "Cross-Border Flows & FX (L4)": {
+      "layer_id": "L4",
+      "layer_name": "Cross-Border Flows & FX (L4)",
+      "score": 3,
+      "regime": "INFLOW",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "acceleration": "FLAT",
+      "conviction": {
+        "data_clarity": 1.0,
+        "narrative_alignment": 0.5,
+        "catalyst_fragility": 1.0,
+        "regime_duration": 0.2,
+        "composite": "LOW",
+        "limiting_factor": {
+          "factor": "regime_duration",
+          "value": 0.2,
+          "label": "Regime too young or unstable"
+        }
+      },
+      "surprise": {
+        "z_score": 0.0,
+        "category": "NORMAL"
+      },
+      "transition_proximity": {
+        "proximity": 1.0,
+        "target_regime": "STABLE",
+        "target_direction": "DOWN",
+        "estimated_days": null,
+        "distance_to_boundary": 0
+      },
+      "regime_history": {
+        "current_regime": "INFLOW",
+        "duration_days": 1,
+        "regime_changes_30d": 0,
+        "oscillation_flag": false,
+        "chaotic_flag": false,
+        "unique_regimes_30d": [
+          "INFLOW"
+        ]
+      },
+      "signal_phase": "NO_SIGNAL",
+      "signal_quality": {
+        "status": "CONFIRMED",
+        "reason": null,
+        "suppression_checks": [],
+        "stale_fields": [
+          {
+            "field": "china_10y",
+            "confidence": 0.0,
+            "impact": "Sub-score halved due to data staleness"
+          }
+        ],
+        "anomaly_fields": [],
+        "data_clarity": 1.0
+      },
+      "key_driver": "DXY weakening at 22.0th pctl \u2014 favorable for EM/commodities",
+      "tension": null,
+      "catalyst_exposure": [],
+      "ic_status": {
+        "confirmation": "NO_DATA",
+        "dissent": false,
+        "thesis_shift": null,
+        "weight_used": "CONTEXTUAL"
+      },
+      "sub_scores": {
+        "dxy": 6,
+        "usdjpy": 6,
+        "usdcnh": 3,
+        "china_10y": 0,
+        "ic_CHINA_EM": 0,
+        "ic_DOLLAR": 0,
+        "ic_GEOPOLITICS": 0
+      },
+      "data_clarity": 1.0
+    },
+    "Risk Appetite & Sentiment (L5)": {
+      "layer_id": "L5",
+      "layer_name": "Risk Appetite & Sentiment (L5)",
+      "score": -2,
+      "regime": "NEUTRAL",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "acceleration": "FLAT",
+      "conviction": {
+        "data_clarity": 0.33,
+        "narrative_alignment": 0.5,
+        "catalyst_fragility": 0.3,
+        "regime_duration": 0.2,
+        "composite": "LOW",
+        "limiting_factor": {
+          "factor": "regime_duration",
+          "value": 0.2,
+          "label": "Regime too young or unstable"
+        }
+      },
+      "surprise": {
+        "z_score": 0.0,
+        "category": "NORMAL"
+      },
+      "transition_proximity": {
+        "proximity": 1.0,
+        "target_regime": "OPTIMISM",
+        "target_direction": "DOWN",
+        "estimated_days": null,
+        "distance_to_boundary": 0
+      },
+      "regime_history": {
+        "current_regime": "NEUTRAL",
+        "duration_days": 1,
+        "regime_changes_30d": 0,
+        "oscillation_flag": false,
+        "chaotic_flag": false,
+        "unique_regimes_30d": [
+          "NEUTRAL"
+        ]
+      },
+      "signal_phase": "NO_SIGNAL",
+      "signal_quality": {
+        "status": "CONFIRMED",
+        "reason": null,
+        "suppression_checks": [],
+        "stale_fields": [],
+        "anomaly_fields": [],
+        "data_clarity": 0.33
+      },
+      "key_driver": "Positioning at extreme bullish levels: NAAIM at 100.0th pctl, COT ES at 17.0th pctl \u2014 contrarian BEARISH",
+      "tension": null,
+      "catalyst_exposure": [
+        {
+          "event": "EARNINGS_SEASON",
+          "tier": 2,
+          "days_until": -9,
+          "direction": "DIRECTIONAL",
+          "impact": "MEDIUM",
+          "pre_event_action": "MONITOR",
+          "notes": "Big Tech week especially. Guidance > actuals."
+        }
+      ],
+      "ic_status": {
+        "confirmation": "NO_DATA",
+        "dissent": false,
+        "thesis_shift": null,
+        "weight_used": "PRIMARY"
+      },
+      "sub_scores": {
+        "naaim_exposure": -10,
+        "aaii_bull_bear": 0,
+        "cot_es_leveraged": 2,
+        "cot_zn_leveraged": -6,
+        "ic_POSITIONING": 0,
+        "ic_VOLATILITY": 0
+      },
+      "data_clarity": 0.33
+    },
+    "Relative Value & Asset Rotation (L6)": {
+      "layer_id": "L6",
+      "layer_name": "Relative Value & Asset Rotation (L6)",
+      "score": 2,
+      "regime": "BALANCED",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "acceleration": "FLAT",
+      "conviction": {
+        "data_clarity": 0.5,
+        "narrative_alignment": 0.4,
+        "catalyst_fragility": 1.0,
+        "regime_duration": 0.2,
+        "composite": "LOW",
+        "limiting_factor": {
+          "factor": "regime_duration",
+          "value": 0.2,
+          "label": "Regime too young or unstable"
+        }
+      },
+      "surprise": {
+        "z_score": 0.0,
+        "category": "NORMAL"
+      },
+      "transition_proximity": {
+        "proximity": 0.6,
+        "target_regime": "RISK_ON_ROTATION",
+        "target_direction": "UP",
+        "estimated_days": null,
+        "distance_to_boundary": 1
+      },
+      "regime_history": {
+        "current_regime": "BALANCED",
+        "duration_days": 1,
+        "regime_changes_30d": 0,
+        "oscillation_flag": false,
+        "chaotic_flag": false,
+        "unique_regimes_30d": [
+          "BALANCED"
+        ]
+      },
+      "signal_phase": "EARLY_SIGNAL",
+      "signal_quality": {
+        "status": "CONFIRMED",
+        "reason": null,
+        "suppression_checks": [],
+        "stale_fields": [],
+        "anomaly_fields": [],
+        "data_clarity": 0.5
+      },
+      "key_driver": "Cu/Au ratio at 100.0th pctl \u2014 cyclical outperformance, growth optimism",
+      "tension": "Cu Au Ratio (bullish, score 10) BUT Wti Curve (bearish, score -7)",
+      "catalyst_exposure": [],
+      "ic_status": {
+        "confirmation": "NO_DATA",
+        "dissent": false,
+        "thesis_shift": null,
+        "weight_used": "CONTEXTUAL"
+      },
+      "sub_scores": {
+        "cu_au_ratio": 10,
+        "wti_curve": -7,
+        "real_10y_yield": 1,
+        "spy_tlt_corr": 6,
+        "ic_ENERGY": 0,
+        "ic_COMMODITIES": 0
+      },
+      "data_clarity": 0.5
+    },
+    "Central Bank Policy Divergence (L7)": {
+      "layer_id": "L7",
+      "layer_name": "Central Bank Policy Divergence (L7)",
+      "score": 0,
+      "regime": "NEUTRAL",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "acceleration": "FLAT",
+      "conviction": {
+        "data_clarity": 0.33,
+        "narrative_alignment": 0.3,
+        "catalyst_fragility": 1.0,
+        "regime_duration": 0.2,
+        "composite": "LOW",
+        "limiting_factor": {
+          "factor": "regime_duration",
+          "value": 0.2,
+          "label": "Regime too young or unstable"
+        }
+      },
+      "surprise": {
+        "z_score": 0.0,
+        "category": "NORMAL"
+      },
+      "transition_proximity": {
+        "proximity": 0.2,
+        "target_regime": "TIGHTENING",
+        "target_direction": "DOWN",
+        "estimated_days": null,
+        "distance_to_boundary": 2
+      },
+      "regime_history": {
+        "current_regime": "NEUTRAL",
+        "duration_days": 1,
+        "regime_changes_30d": 0,
+        "oscillation_flag": false,
+        "chaotic_flag": false,
+        "unique_regimes_30d": [
+          "NEUTRAL"
+        ]
+      },
+      "signal_phase": "CONFLICTED",
+      "signal_quality": {
+        "status": "CONFIRMED",
+        "reason": null,
+        "suppression_checks": [],
+        "stale_fields": [],
+        "anomaly_fields": [],
+        "data_clarity": 0.33
+      },
+      "key_driver": "nfci: score -10",
+      "tension": "Spread 2Y10Y (bullish, score 3) BUT Nfci (bearish, score -10)",
+      "catalyst_exposure": [],
+      "ic_status": {
+        "confirmation": "NO_DATA",
+        "dissent": false,
+        "thesis_shift": null,
+        "weight_used": "PRIMARY"
+      },
+      "sub_scores": {
+        "spread_2y10y": 3,
+        "real_10y_yield": 1,
+        "nfci": -10,
+        "disc_window": 0,
+        "ic_FED_POLICY": 0,
+        "ic_LIQUIDITY": 0
+      },
+      "data_clarity": 0.33
+    },
+    "Tail Risk & Black Swan (L8)": {
+      "layer_id": "L8",
+      "layer_name": "Tail Risk & Black Swan (L8)",
+      "score": 2,
+      "regime": "CALM",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "acceleration": "FLAT",
+      "conviction": {
+        "data_clarity": 0.6,
+        "narrative_alignment": 0.35,
+        "catalyst_fragility": 1.0,
+        "regime_duration": 0.2,
+        "composite": "LOW",
+        "limiting_factor": {
+          "factor": "regime_duration",
+          "value": 0.2,
+          "label": "Regime too young or unstable"
+        }
+      },
+      "surprise": {
+        "z_score": 0.0,
+        "category": "NORMAL"
+      },
+      "transition_proximity": {
+        "proximity": 1.0,
+        "target_regime": "ELEVATED",
+        "target_direction": "DOWN",
+        "estimated_days": null,
+        "distance_to_boundary": 0
+      },
+      "regime_history": {
+        "current_regime": "ELEVATED",
+        "duration_days": 1,
+        "regime_changes_30d": 0,
+        "oscillation_flag": false,
+        "chaotic_flag": false,
+        "unique_regimes_30d": [
+          "ELEVATED"
+        ]
+      },
+      "signal_phase": "MIXED",
+      "signal_quality": {
+        "status": "CONFIRMED",
+        "reason": null,
+        "suppression_checks": [],
+        "stale_fields": [],
+        "anomaly_fields": [],
+        "data_clarity": 0.6
+      },
+      "key_driver": "hy_oas: score 8",
+      "tension": "Hy Oas (bullish, score 8) BUT Vix Term Struct (bearish, score -5)",
+      "catalyst_exposure": [],
+      "ic_status": {
+        "confirmation": "NO_DATA",
+        "dissent": true,
+        "thesis_shift": null,
+        "weight_used": "CONTEXTUAL"
+      },
+      "sub_scores": {
+        "vix": 3,
+        "vix_term_struct": -5,
+        "iv_rv_spread": 1,
+        "pc_ratio_equity": 0,
+        "hy_oas": 8,
+        "disc_window": 0,
+        "usdjpy": 6,
+        "ic_GEOPOLITICS": 0
+      },
+      "data_clarity": 0.6
+    }
+  },
+  "layer_summary": {
+    "Global Liquidity Cycle (L1)": {
+      "score": 6,
+      "regime": "EXPANSION",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "conviction": "LOW",
+      "limiting_factor": "regime_duration"
+    },
+    "Macro Regime (L2)": {
+      "score": 1,
+      "regime": "SLOWDOWN",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "conviction": "LOW",
+      "limiting_factor": "regime_duration"
+    },
+    "Earnings & Fundamentals (L3)": {
+      "score": 6,
+      "regime": "HEALTHY",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "conviction": "LOW",
+      "limiting_factor": "regime_duration"
+    },
+    "Cross-Border Flows & FX (L4)": {
+      "score": 3,
+      "regime": "INFLOW",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "conviction": "LOW",
+      "limiting_factor": "regime_duration"
+    },
+    "Risk Appetite & Sentiment (L5)": {
+      "score": -2,
+      "regime": "NEUTRAL",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "conviction": "LOW",
+      "limiting_factor": "regime_duration"
+    },
+    "Relative Value & Asset Rotation (L6)": {
+      "score": 2,
+      "regime": "BALANCED",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "conviction": "LOW",
+      "limiting_factor": "regime_duration"
+    },
+    "Central Bank Policy Divergence (L7)": {
+      "score": 0,
+      "regime": "NEUTRAL",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "conviction": "LOW",
+      "limiting_factor": "regime_duration"
+    },
+    "Tail Risk & Black Swan (L8)": {
+      "score": 2,
+      "regime": "CALM",
+      "direction": "STABLE",
+      "velocity": "STEADY",
+      "conviction": "LOW",
+      "limiting_factor": "regime_duration"
+    }
+  }
+}
