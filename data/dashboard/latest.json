@@ -627,7 +627,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -6022,7 +6023,7 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-04-27",
+    "date": "2026-04-28",
     "execution_level": "HOLD",
     "total_score": 10,
     "max_score": 18,
@@ -6051,7 +6052,7 @@
       "gex_regime": {
         "score": 0,
         "max": 3,
-        "label": "GEX $0.06B — POSITIVE_STABILIZING"
+        "label": "GEX $0.09B — POSITIVE_STABILIZING"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -6073,14 +6074,16 @@
       "Convergence Week aktiv — Mehrere HIGH Events: FOMC Meeting Decision (April 2026), FOMC Meeting Decision (April 2026) — Statement Release, US Employment Situation (April 2026)"
     ],
     "recommendation_action": "DO_NOT_REBALANCE",
-    "recommendation_short": "Kein materielles Rebalancing nötig heute — alle Positionen HOLD.",
+    "recommendation_short": "Kein materielles Rebalancing heute nötig — alle Positionen HOLD.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 3,
+      "next_48h_count": 5,
       "next_48h_events": [
-        "FOMC Meeting Decision (April 2026) (24h)",
-        "BoJ Monetary Policy Meeting (April 2026) — Outlook Report (24h)",
-        "FOMC Meeting Decision (April 2026) — Statement Release (48h)"
+        "FOMC Meeting Decision (April 2026) (0h)",
+        "BoJ Monetary Policy Meeting (April 2026) — Outlook Report (0h)",
+        "FOMC Meeting Decision (April 2026) — Statement Release (24h)",
+        "ECB Governing Council Monetary Policy Meeting (April 2026) (48h)",
+        "GDP (Advance Estimate) Q1 2026 (48h)"
       ],
       "next_14d_count": 7,
       "convergence_week": true,
@@ -6091,31 +6094,31 @@
         "date": "2026-04-28",
         "event": "FOMC Meeting Decision (April 2026)",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-04-28",
         "event": "BoJ Monetary Policy Meeting (April 2026) — Outlook Report",
         "impact": "MEDIUM",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-04-29",
         "event": "FOMC Meeting Decision (April 2026) — Statement Release",
         "impact": "HIGH",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-04-30",
         "event": "ECB Governing Council Monetary Policy Meeting (April 2026)",
         "impact": "MEDIUM",
-        "days_until": 3
+        "hours_until": 48
       },
       {
         "date": "2026-04-30",
         "event": "GDP (Advance Estimate) Q1 2026",
         "impact": "MEDIUM",
-        "days_until": 3
+        "hours_until": 48
       }
     ],
     "calendar_monthly": [
@@ -6180,26 +6183,26 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING:\n• Finanzstress entspannt: OFR Financial Stress Index bei -0.7584 — systemisches Risiko niedrig\n• SOFR-FFR Spread normal: 1.0bp — Geldmarkt funktioniert reibungslos\n• Sentiment neutral: CNN Fear & Greed 66.03, VIX 19.31, Put/Call 0.739 — keine Extrempositionen\n• HY OAS 286bps: Credit-Spreads im normalen Bereich — kein Stress in HYG (29.7% Portfolio)\n• GEX positiv ($0.06B): Dealer-Hedging dämpft Volatilität — stabilisierendes Umfeld\n• Commodity-Trend bestätigt: Copper Rising, V16 hält 36% Commodities (DBC 19.8%, GLD 16%) — Trend intakt\n• Equity-Trend bestätigt: SPY Rising, V16 hält 35% Equities (XLU 18%, XLP 16.5%) — kein Trendbruch\n• COT Equity-Positionen sauber: S&P500 Commercial Net 0.9% — kein Positioning-Konflikt bei HYG/XLU/XLP\n\nCONFLICTING:\n• FOMC Decision in 24h: HIGH-Impact Event kann Zinspfad und Liquidität abrupt ändern\n• FOMC Statement Release in 48h: Zweiter HIGH-Impact Trigger — doppeltes Event-Risiko\n• Convergence Week aktiv: 3 HIGH-Events (FOMC + US Employment) innerhalb 14d — erhöhtes Regime-Wechsel-Risiko\n• COT Gold extrem negativ: -55.5% Commercial Net — Smart Money massiv gegen DBC (19.8%) und GLD (16%)\n• Liquidität angespannt: Amihud 93.64 (ILLIQUID) + VIX Term Structure 0.8784 (BACKWARDATION) — Slippage-Risiko erhöht\n• Gold-Real Yield Divergenz: Real Yields Rising, V16 hält 16% GLD — struktureller Gegenwind\n• MOVE Index 66.97: Bond-Volatilität erhöht — Risiko für XLU/XLP (34.5% Portfolio)\n• Router Proximity 100%: COMMODITY_SUPER Trigger nah — möglicher Regime-Shift nach FOMC\n• Fund Flows Equity negativ: -0.1 — leichte Abflüsse aus Aktien\n\nNETTO: 16 Confirming vs 9 Conflicting. Markt technisch stabil, aber FOMC in 24h und extreme COT-Divergenz bei Gold/Commodities erzwingen Warteposition.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig heute — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall, dass V16 morgen nach FOMC Regime wechselt: **Warte bis Mittwoch 14:30 ET (FOMC Statement Release abgeschlossen)**. Bei Trades dann: **DBC/GLD mit Limit-Orders** (COT -55.5% zeigt Widerstand, Liquidität angespannt). **HYG/XLU/XLP Market-Orders möglich** (COT sauber, Credit-Spreads normal). **Vermeide Execution während FOMC-Pressekonferenz** (14:30-15:30 ET) — Slippage-Risiko durch Backwardation und Amihud 93.64. Falls Router auf COMMODITY_SUPER wechselt: Prüfe ob COT Gold sich normalisiert (aktuell -55.5%) bevor DBC/GLD aufgestockt wird.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX steigt über 28 UND HY OAS über 350bps (systemischer Stress erfordert sofortige Defensiv-Positionierung unabhängig von FOMC)\n• Execute sofort wenn: COT Gold Commercial Net steigt über -30% (Smart Money dreht, DBC/GLD Gegenwind verschwindet)\n• Eskaliere zu Wait/Hold wenn: MOVE Index steigt über 90 (Bond-Volatilität gefährdet XLU/XLP Execution, warte auf Beruhigung)\n• Eskaliere zu Wait/Hold wenn: Amihud steigt über 120 ODER VIX Term Structure fällt unter 0.80 (Liquidität kollabiert, jede Execution riskant)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING:\n• OFR Financial Stress Index -0.76: Entspanntes Systemrisiko unterstützt risikoreichere Assets wie HYG (29.7%)\n• GEX positiv $0.09B: Dealer-Hedging dämpft Volatilität, stabilisiert Execution-Umfeld für alle Positionen\n• SOFR-FFR Spread 2.0bps: Normale Geldmarkt-Bedingungen, kein Funding-Stress für Credit-Positionen\n• COT S&P500 Commercial Net 0.93%: Smart Money neutral zu Equities, kein Conflict für XLU (18.0%) und XLP (16.5%)\n• Gold/DXY-Relation normal: Gold +3.7%, DXY -1.7% bewegen sich erwartungsgemäß gegenläufig\n• Copper Rising + SPY Rising: Bestätigt V16's 36% Commodity-Exposure (DBC) und 35% Equity-Exposure (XLU/XLP)\n• VIX 18.71, Put/Call 0.73, HY OAS 286bps: Alle Sentiment-Indikatoren im Normalbereich, keine Panik-Signale\n\nCONFLICTING:\n• FOMC Meeting Decision in 48h (HIGH-Impact): Statement kann Zinspfad und damit HYG (29.7%) materiell bewegen\n• Convergence Week aktiv: FOMC + Employment Situation + GDP Q1 innerhalb 72h — dreifacher Macro-Schock möglich\n• COT Gold Commercial Net -55.5%: Smart Money extrem short gegen DBC (19.8%) und GLD (16.0%) — 36% Portfolio-Exposure betroffen\n• Amihud 93.64 (ILLIQUID) + VIX Term Structure 0.87 (BACKWARDATION): Liquidität angespannt, Slippage-Risiko erhöht\n• Real Yields Rising: Gegenwind für GLD (16.0%), obwohl Gold kurzfristig +3.7% performt\n• Router Proximity 100% zu COMMODITY_SUPER: V16 könnte morgen Regime wechseln und materielles Rebalancing auslösen\n\nNETTO: 16 Confirming vs 9 Conflicting. Marktstruktur stabil, aber Event-Cluster und COT-Divergenz bei 36% des Portfolios rechtfertigen Zurückhaltung vor FOMC.\n\nEMPFEHLUNG:\nKein materielles Rebalancing heute nötig — alle Positionen HOLD. Falls V16 morgen nach FOMC Regime wechselt: Warte bis Statement-Digest (Mittwoch 16:00 ET). Bei DBC/GLD-Reduktionen: Limit-Orders setzen wegen Illiquidität (Amihud 93.64), Slippage-Budget 15-20bps einplanen. Bei HYG-Aufstockung: Market Orders akzeptabel wenn HY OAS < 300bps bleibt. XLU/XLP: Unkritisch, normale Execution. Vermeide Trades während FOMC-Pressekonferenz (Mittwoch 14:30 ET) — Spreads weiten sich typisch 30-50%.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: HY OAS fällt unter 270bps UND VIX unter 16 — Risikoappetit bestätigt HYG-Exposure\n• Execute sofort wenn: VIX Term Structure steigt über 0.95 (Contango) UND Amihud fällt unter 85 — Liquidität normalisiert\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 24 ODER HY OAS über 320bps — Credit-Stress gefährdet HYG (29.7%)\n• Eskaliere zu Wait/Hold wenn: COT Gold Commercial Net fällt unter -65% — Smart Money intensiviert Short-Position gegen 36% Portfolio",
     "would_change_my_mind": {
       "execute_if": [
-        "VIX steigt über 28 UND HY OAS über 350bps (systemischer Stress erfordert sofortige Defensiv-Positionierung unabhängig von FOMC)",
-        "COT Gold Commercial Net steigt über -30% (Smart Money dreht, DBC/GLD Gegenwind verschwindet)"
+        "HY OAS fällt unter 270bps UND VIX unter 16 — Risikoappetit bestätigt HYG-Exposure",
+        "VIX Term Structure steigt über 0.95 (Contango) UND Amihud fällt unter 85 — Liquidität normalisiert"
       ],
       "hold_if": [
-        "MOVE Index steigt über 90 (Bond-Volatilität gefährdet XLU/XLP Execution, warte auf Beruhigung)",
-        "Amihud steigt über 120 ODER VIX Term Structure fällt unter 0.80 (Liquidität kollabiert, jede Execution riskant)"
+        "VIX steigt über 24 ODER HY OAS über 320bps — Credit-Stress gefährdet HYG (29.7%)",
+        "COT Gold Commercial Net fällt unter -65% — Smart Money intensiviert Short-Position gegen 36% Portfolio"
       ]
     }
   },
   "rotation": {
-    "date": "2026-04-27",
+    "date": "2026-04-28",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 25,
-    "days_since_state_change": 25,
+    "days_since_material_rotation": 26,
+    "days_since_state_change": 26,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -6329,7 +6332,6 @@
     "sparkline_data": {
       "BOND": {
         "dates": [
-          "2026-03-17",
           "2026-03-18",
           "2026-03-19",
           "2026-03-20",
@@ -6358,7 +6360,8 @@
           "2026-04-22",
           "2026-04-23",
           "2026-04-24",
-          "2026-04-27"
+          "2026-04-27",
+          "2026-04-28"
         ],
         "values": [
           0.0,
@@ -6369,9 +6372,9 @@
           0.0,
           0.0,
           0.0,
+          0.0974,
+          0.0974,
           0.0,
-          0.0974,
-          0.0974,
           0.0,
           0.0,
           0.0,
@@ -6395,7 +6398,6 @@
       },
       "COMMOD": {
         "dates": [
-          "2026-03-17",
           "2026-03-18",
           "2026-03-19",
           "2026-03-20",
@@ -6424,7 +6426,8 @@
           "2026-04-22",
           "2026-04-23",
           "2026-04-24",
-          "2026-04-27"
+          "2026-04-27",
+          "2026-04-28"
         ],
         "values": [
           0.2027,
@@ -6435,7 +6438,6 @@
           0.2027,
           0.2027,
           0.2027,
-          0.2027,
           0.0,
           0.0,
           0.2027,
@@ -6445,6 +6447,7 @@
           0.2027,
           0.2027,
           0.2027,
+          0.1976,
           0.1976,
           0.1976,
           0.1976,
@@ -6461,7 +6464,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-03-17",
           "2026-03-18",
           "2026-03-19",
           "2026-03-20",
@@ -6490,7 +6492,8 @@
           "2026-04-22",
           "2026-04-23",
           "2026-04-24",
-          "2026-04-27"
+          "2026-04-27",
+          "2026-04-28"
         ],
         "values": [
           0.2883,
@@ -6501,7 +6504,6 @@
           0.2883,
           0.2883,
           0.2883,
-          0.2883,
           0.0,
           0.0,
           0.2883,
@@ -6511,6 +6513,7 @@
           0.2883,
           0.2883,
           0.2883,
+          0.2972,
           0.2972,
           0.2972,
           0.2972,
@@ -6527,7 +6530,6 @@
       },
       "CRYPTO": {
         "dates": [
-          "2026-03-17",
           "2026-03-18",
           "2026-03-19",
           "2026-03-20",
@@ -6556,7 +6558,8 @@
           "2026-04-22",
           "2026-04-23",
           "2026-04-24",
-          "2026-04-27"
+          "2026-04-27",
+          "2026-04-28"
         ],
         "values": [
           0.0,
@@ -6567,9 +6570,9 @@
           0.0,
           0.0,
           0.0,
+          0.0821,
+          0.0821,
           0.0,
-          0.0821,
-          0.0821,
           0.0,
           0.0,
           0.0,
@@ -6593,7 +6596,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-03-17",
           "2026-03-18",
           "2026-03-19",
           "2026-03-20",
@@ -6622,7 +6624,8 @@
           "2026-04-22",
           "2026-04-23",
           "2026-04-24",
-          "2026-04-27"
+          "2026-04-27",
+          "2026-04-28"
         ],
         "values": [
           0.34,
@@ -6633,7 +6636,6 @@
           0.34,
           0.34,
           0.34,
-          0.34,
           0.0644,
           0.0644,
           0.34,
@@ -6643,6 +6645,7 @@
           0.34,
           0.34,
           0.34,
+          0.3455,
           0.3455,
           0.3455,
           0.3455,
@@ -6659,7 +6662,6 @@
       },
       "PM": {
         "dates": [
-          "2026-03-17",
           "2026-03-18",
           "2026-03-19",
           "2026-03-20",
@@ -6688,7 +6690,8 @@
           "2026-04-22",
           "2026-04-23",
           "2026-04-24",
-          "2026-04-27"
+          "2026-04-27",
+          "2026-04-28"
         ],
         "values": [
           0.1689,
@@ -6699,7 +6702,6 @@
           0.1689,
           0.1689,
           0.1689,
-          0.1689,
           0.0561,
           0.0561,
           0.1689,
@@ -6709,6 +6711,7 @@
           0.1689,
           0.1689,
           0.1689,
+          0.1596,
           0.1596,
           0.1596,
           0.1596,
@@ -6816,7 +6819,7 @@
         }
       },
       "1w": {
-        "date": "2026-04-20",
+        "date": "2026-04-21",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -6832,7 +6835,7 @@
         }
       },
       "1m": {
-        "date": "2026-03-27",
+        "date": "2026-03-30",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
