@@ -1,0 +1,192 @@
+{
+  "date": "2026-04-29",
+  "run_timestamp": "2026-04-29T08:17:25Z",
+  "execution_path": "FULL_PATH",
+  "portfolio_status": "RED",
+  "portfolio_status_reason": "1 CRITICAL alert(s). Immediate review recommended.",
+  "alerts": [
+    {
+      "id": "RO-20260429-002",
+      "severity": "WARNING",
+      "check_id": "EXP_SECTOR_CONCENTRATION",
+      "message": "Effective Commodities Exposure 37.2% approaching warning level (35%).",
+      "affected_positions": [],
+      "affected_systems": [],
+      "trade_class": "A",
+      "current_value": 0.3717,
+      "threshold": 0.35,
+      "recommendation": "No action required. Monitor for further increases.",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": true,
+        "next_event": "FOMC",
+        "next_event_days": 0,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": "WARNING",
+      "trend": "STABLE",
+      "days_active": 2,
+      "base_severity": "MONITOR",
+      "boost_applied": "EVENT_IMMINENT"
+    },
+    {
+      "id": "RO-20260429-003",
+      "severity": "CRITICAL",
+      "check_id": "EXP_SINGLE_NAME",
+      "message": "Single position HYG (V16) at 28.8% exceeds 25%.",
+      "affected_positions": [
+        "HYG"
+      ],
+      "affected_systems": [
+        "V16"
+      ],
+      "trade_class": "A",
+      "current_value": 0.2883,
+      "threshold": 0.25,
+      "recommendation": "",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": true,
+        "next_event": "FOMC",
+        "next_event_days": 0,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": "WARNING",
+      "trend": "ESCALATING",
+      "days_active": 2,
+      "base_severity": "WARNING",
+      "boost_applied": "EVENT_IMMINENT"
+    },
+    {
+      "id": "RO-20260429-004",
+      "severity": "WARNING",
+      "check_id": "EXP_SINGLE_NAME",
+      "message": "Single position DBC (V16) at 20.3% approaching limit.",
+      "affected_positions": [
+        "DBC"
+      ],
+      "affected_systems": [],
+      "trade_class": "A",
+      "current_value": 0.2027,
+      "threshold": 0.2,
+      "recommendation": "",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": true,
+        "next_event": "FOMC",
+        "next_event_days": 0,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": "WARNING",
+      "trend": "STABLE",
+      "days_active": 2,
+      "base_severity": "MONITOR",
+      "boost_applied": "EVENT_IMMINENT"
+    },
+    {
+      "id": "RO-20260429-005",
+      "severity": "WARNING",
+      "check_id": "INT_REGIME_CONFLICT",
+      "message": "V16 state 'Risk-On' (regime: STEADY_GROWTH) diverges from Market Analyst assessment 'NEUTRAL' (lean: UNKNOWN). V16 operates on validated signals \u2014 this divergence may indicate V16 will transition soon. No action required on V16.",
+      "affected_positions": [],
+      "affected_systems": [
+        "V16",
+        "MARKET_ANALYST"
+      ],
+      "trade_class": "A",
+      "current_value": null,
+      "threshold": null,
+      "recommendation": "V16 and Market Analyst slightly divergent. V16 validated \u2014 no action on V16 required. Monitor for V16 regime transition.",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": true,
+        "next_event": "FOMC",
+        "next_event_days": 0,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": null,
+      "trend": "NEW",
+      "days_active": 1,
+      "base_severity": "MONITOR",
+      "boost_applied": "EVENT_IMMINENT"
+    },
+    {
+      "id": "RO-20260429-001",
+      "severity": "WARNING",
+      "check_id": "TMP_EVENT_CALENDAR",
+      "message": "Upcoming macro event(s): FOMC in 0d (2026-04-29). Increased uncertainty may affect existing risk assessments.",
+      "affected_positions": [],
+      "affected_systems": [],
+      "trade_class": "A",
+      "current_value": null,
+      "threshold": null,
+      "recommendation": "Macro event approaching. Existing risk assessments carry elevated uncertainty. No preemptive action recommended.",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": true,
+        "next_event": "FOMC",
+        "next_event_days": 0,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": "WARNING",
+      "trend": "STABLE",
+      "days_active": 3,
+      "base_severity": "MONITOR",
+      "boost_applied": "EVENT_IMMINENT"
+    }
+  ],
+  "ongoing_conditions": [],
+  "emergency_triggers": {
+    "max_drawdown_breach": false,
+    "correlation_crisis": false,
+    "liquidity_crisis": false,
+    "regime_forced": false
+  },
+  "sensitivity": {
+    "spy_beta": null,
+    "spy_beta_interpretation": null,
+    "effective_positions": null,
+    "effective_positions_source": "UNAVAILABLE",
+    "last_correlation_update": null
+  },
+  "g7_context": {
+    "status": "UNAVAILABLE",
+    "last_update": null,
+    "severity_impact": "NONE"
+  },
+  "risk_summary": "PORTFOLIO STATUS: RED. 1 CRITICAL \u2191, 4 WARNING.\nSensitivity: not available (V1).\nCRITICAL\u2191: Single position HYG (V16) at 28.8% exceeds 25%.\nWARNING\u2192: Effective Commodities Exposure 37.2% approaching warning level (35%).\nWARNING\u2192: Single position DBC (V16) at 20.3% approaching limit.\n(+2 more alerts, see full report)\nNext event: FOMC in 0d",
+  "metadata": {
+    "execution_path": "FULL_PATH",
+    "checks_run": 6,
+    "checks_skipped": 0,
+    "execution_time_ms": 52,
+    "config_version": "1.0.0",
+    "fast_path_taken": false,
+    "signal_generator_available": false,
+    "g7_available": false,
+    "input_errors": [],
+    "v16_state": "Risk-On",
+    "router_state": "US_DOMESTIC",
+    "fragility_state": "HEALTHY",
+    "alerts_count": 5,
+    "ongoing_conditions_count": 0,
+    "dod_checklist": {
+      "portfolio_status_set": true,
+      "checks_executed": true,
+      "alerts_deduplicated": true,
+      "risk_summary_generated": true,
+      "metadata_logged": true
+    },
+    "dod_passed": true
+  }
+}
