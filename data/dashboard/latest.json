@@ -572,7 +572,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -5924,16 +5925,16 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-04-29",
-    "execution_level": "HOLD",
-    "total_score": 10,
+    "date": "2026-04-30",
+    "execution_level": "WAIT",
+    "total_score": 8,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
       "event_risk": {
-        "score": 2,
+        "score": 1,
         "max": 3,
-        "label": "FOMC Meeting Decision (April 2026) — Statement Release"
+        "label": "ECB Governing Council Monetary Policy Meeting (April 2026)"
       },
       "positioning_conflict": {
         "score": 3,
@@ -5951,9 +5952,9 @@
         "label": "GOLD_REAL_YIELD_DIVERGENCE"
       },
       "gex_regime": {
-        "score": 1,
+        "score": 0,
         "max": 3,
-        "label": "GEX $-0.00B — SLIGHTLY_NEGATIVE"
+        "label": "GEX $0.17B — POSITIVE_STABILIZING"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -5961,8 +5962,8 @@
         "label": "Neutral"
       }
     },
-    "confirming_count": 15,
-    "conflicting_count": 8,
+    "confirming_count": 16,
+    "conflicting_count": 6,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
       "COT HYG bestätigt — COT_SP500_COMM_NET = 0.9% — kein Conflict",
@@ -5970,55 +5971,54 @@
       "COT XLP bestätigt — COT_SP500_COMM_NET = 0.9% — kein Conflict"
     ],
     "top_conflicting": [
-      "FOMC Meeting Decision (April 2026) — Statement Release in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
       "COT DBC Conflict (EXTREME) — COT_GOLD_COMM_NET = -55.5% — Smart Money gegen DBC (20% im Portfolio)",
-      "COT GLD Conflict (EXTREME) — COT_GOLD_COMM_NET = -55.5% — Smart Money gegen GLD (16% im Portfolio)"
+      "COT GLD Conflict (EXTREME) — COT_GOLD_COMM_NET = -55.5% — Smart Money gegen GLD (16% im Portfolio)",
+      "amihud: ILLIQUID — Wert: 90.25 — Liquiditäts-Risiko"
     ],
-    "recommendation_action": "DO_NOT_REBALANCE",
-    "recommendation_short": "Kein materielles Rebalancing nötig — alle Positionen HOLD, Delta <1%.",
+    "recommendation_action": "WAIT_FOR_CLARITY",
+    "recommendation_short": "Kein materielles Rebalancing nötig heute — alle Positionen HOLD.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 4,
+      "next_48h_count": 3,
       "next_48h_events": [
-        "FOMC Meeting Decision (April 2026) — Statement Release (0h)",
-        "ECB Governing Council Monetary Policy Meeting (April 2026) (24h)",
-        "GDP (Advance Estimate) Q1 2026 (24h)",
-        "ISM Manufacturing PMI (April 2026) (48h)"
+        "ECB Governing Council Monetary Policy Meeting (April 2026) (0h)",
+        "GDP (Advance Estimate) Q1 2026 (0h)",
+        "ISM Manufacturing PMI (April 2026) (24h)"
       ],
-      "next_14d_count": 6,
+      "next_14d_count": 5,
       "convergence_week": true,
       "event_density_label": "HIGH"
     },
     "calendar_upcoming": [
       {
-        "date": "2026-04-29",
-        "event": "FOMC Meeting Decision (April 2026) — Statement Release",
-        "impact": "HIGH",
-        "hours_until": 0
-      },
-      {
         "date": "2026-04-30",
         "event": "ECB Governing Council Monetary Policy Meeting (April 2026)",
         "impact": "MEDIUM",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-04-30",
         "event": "GDP (Advance Estimate) Q1 2026",
         "impact": "MEDIUM",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-05-01",
         "event": "ISM Manufacturing PMI (April 2026)",
         "impact": "MEDIUM",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-05-08",
         "event": "US Employment Situation (April 2026)",
         "impact": "HIGH",
-        "days_until": 9
+        "days_until": 8
+      },
+      {
+        "date": "2026-05-13",
+        "event": "US CPI (April 2026)",
+        "impact": "HIGH",
+        "days_until": 13
       }
     ],
     "calendar_monthly": [
@@ -6083,26 +6083,26 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING:\n• COT Equity-Positionen sauber: COT S&P500 Commercial Net +0.9% — kein Positioning-Konflikt bei HYG (30%), XLU (18%), XLP (17%)\n• Finanzstress entspannt: OFR Financial Stress Index -0.76 — systemisches Risiko niedrig\n• SOFR-FFR Spread normal: 2.0bps — Geldmarkt funktioniert reibungslos\n• Commodity-Trend bestätigt: V16 hält 36% Commodities (DBC 20%, GLD 16%) + Copper Rising — Trendfolge intakt\n• Equity-Trend bestätigt: V16 hält 35% Equities + SPY Rising — Positionierung passt zu Marktrichtung\n• Gold-Dollar-Relation normal: Gold +1.8%, DXY -1.9% — typische inverse Korrelation\n• Sentiment neutral: CNN Fear & Greed 63.8, VIX 18.0, Put/Call 0.72 — keine Extremwerte\n• Credit-Spreads ruhig: HY OAS 284bps — kein Stress im größten Portfolio-Holding (HYG 30%)\n\nCONFLICTING:\n• FOMC Statement Release HEUTE (in 0h, HIGH): Zinsentscheidung kann Liquidität und Richtung sofort verändern — höchstes Event-Risk\n• COT Gold/Commodities extrem negativ: COT Gold Commercial Net -55.5% — Smart Money massiv gegen DBC (20%) und GLD (16%), zusammen 36% des Portfolios\n• Liquidität angespannt: Amihud 94.1 (ILLIQUID) + VIX Term Structure 0.87 (BACKWARDATION) — Slippage-Risiko erhöht\n• Gold-Real Yield Divergenz: V16 hält 16% GLD aber Real Yield 10Y Rising — struktureller Gegenwind für Gold\n• GEX leicht negativ: $-0.003B — Dealer-Hedging verstärkt Intraday-Moves, erhöhte Volatilität möglich\n• Router Proximity 100%: COMMODITY_SUPER-Trigger unmittelbar — möglicher Regime-Wechsel in Sicht\n• Convergence Week: 6 Events in 14d inkl. ECB (morgen), GDP Q1 (morgen), ISM PMI (übermorgen) — Event-Cluster\n\nNETTO: 8 Confirming vs 7 Conflicting. FOMC-Statement heute + COT-Extremwerte bei 36% Portfolio + Liquiditätsrisiko überwiegen neutrale Fundamentals.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD, Delta <1%. Die Empfehlung bezieht sich auf den Fall dass V16 morgen Regime wechselt: **Warte FOMC-Statement ab (heute 14:00 ET).** Danach Neubewertung. Falls V16 morgen DBC/GLD erhöht: Limit-Orders setzen (COT -55.5% = Crowding-Risk). Falls HYG reduziert wird: Market-Orders akzeptabel (HY OAS 284bps stabil, Liquidität in IG besser als Commodities). XLU/XLP: Standard-Execution, keine Besonderheiten. Beobachte Router — bei COMMODITY_SUPER-Trigger (Proximity 100%) könnte V16 DBC/GLD weiter erhöhen, dann COT-Konflikt verschärft sich.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 15.0 UND Amihud fällt unter 80.0 (Liquidität normalisiert sich)\n• Execute sofort wenn: COT Gold Commercial Net steigt über -40.0% (Smart Money reduziert Short-Positioning)\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 25.0 ODER HY OAS steigt über 350bps (Stress-Regime)\n• Eskaliere zu Wait/Hold wenn: FOMC-Statement hawkish UND Real Yield 10Y steigt >20bps in 24h (Gold-Gegenwind intensiviert)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 8/18) ===\n\nCONFIRMING:\n• Finanzstress entspannt: OFR Index -0.68 — systemisches Risiko niedrig\n• GEX positiv stabilisierend: $0.17B — Dealer-Hedging dämpft Volatilität, reduziert Slippage-Risiko\n• SOFR-FFR Spread normal: 0.0bps — keine Funding-Verwerfungen\n• Equity-Trend bestätigt Portfolio: V16 35% Equity + SPY Rising — strukturell aligned\n• Commodity-Trend bestätigt Portfolio: V16 36% Commodity + Copper Rising — strukturell aligned\n• Gold-DXY Relation normal: Gold -3.0%, DXY -1.0% — keine Cross-Asset-Anomalie\n• VIX ruhig: 17.83 — kein Stress-Regime\n• HY OAS normal: 285bps — Credit-Spreads unauffällig\n• Put/Call Ratio neutral: 0.733 — keine Panik-Signale\n• COT Equity-Positionen sauber: S&P500 Commercial Net +0.9% — kein Conflict für HYG/XLU/XLP\n\nCONFLICTING:\n• COT DBC Conflict EXTREME: Gold Commercial Net -55.5% — Smart Money massiv gegen DBC (20% Portfolio-Gewicht)\n• COT GLD Conflict EXTREME: Gold Commercial Net -55.5% — Smart Money massiv gegen GLD (16% Portfolio-Gewicht)\n• Amihud illiquid: 90.25 — erhöhtes Slippage-Risiko bei Execution\n• VIX Term Structure Backwardation: 0.8877 — Liquiditäts-Stress-Signal\n• Gold-Real-Yield-Divergenz: V16 16% Gold aber Real Yields Rising — struktureller Gegenwind\n• Event-Cluster heute: ECB Meeting + US GDP Advance + ISM Manufacturing (24h) — Convergence Week aktiv\n\nNETTO: 10 Confirming vs 6 Conflicting. Systemisch ruhig, aber 36% des Portfolios (DBC+GLD) steht gegen Smart Money Positioning und Event-Cluster läuft.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig heute — alle Positionen HOLD. Die Empfehlung bezieht sich auf den Fall dass V16 morgen Regime wechselt oder Router triggert (Proximity 100% zu COMMODITY_SUPER). WARTE bis Event-Cluster durch ist (ISM Manufacturing morgen 10:00 ET). Bei künftigem Rebalancing: DBC und GLD mit Limit-Orders arbeiten (COT -55.5% + Amihud illiquid = Slippage-Risiko). HYG kann bei Bedarf Market-Orders nutzen (COT sauber, Credit-Spreads stabil). Beobachte Router-Trigger: Falls COMMODITY_SUPER aktiviert, würde das DBC/GLD-Exposure verstärken — dann COT-Conflict eskaliert.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 15.0 UND Amihud fällt unter 70.0 (Liquidität normalisiert)\n• Execute sofort wenn: HY OAS fällt unter 250bps UND VIX Term Structure steigt über 1.0 (Stress-Signale verschwinden)\n• Eskaliere zu Hold wenn: VIX steigt über 25.0 ODER HY OAS steigt über 350bps (systemischer Stress)\n• Eskaliere zu Hold wenn: GLD fällt >5% vom aktuellen Kurs ODER COT Gold Commercial Net fällt unter -65% (Smart Money Conflict verschärft sich)",
     "would_change_my_mind": {
       "execute_if": [
-        "VIX fällt unter 15.0 UND Amihud fällt unter 80.0 (Liquidität normalisiert sich)",
-        "COT Gold Commercial Net steigt über -40.0% (Smart Money reduziert Short-Positioning)"
+        "VIX fällt unter 15.0 UND Amihud fällt unter 70.0 (Liquidität normalisiert)",
+        "HY OAS fällt unter 250bps UND VIX Term Structure steigt über 1.0 (Stress-Signale verschwinden)"
       ],
       "hold_if": [
-        "VIX steigt über 25.0 ODER HY OAS steigt über 350bps (Stress-Regime)",
-        "FOMC-Statement hawkish UND Real Yield 10Y steigt >20bps in 24h (Gold-Gegenwind intensiviert)"
+        "VIX steigt über 25.0 ODER HY OAS steigt über 350bps (systemischer Stress)",
+        "GLD fällt >5% vom aktuellen Kurs ODER COT Gold Commercial Net fällt unter -65% (Smart Money Conflict verschärft sich)"
       ]
     }
   },
   "rotation": {
-    "date": "2026-04-29",
+    "date": "2026-04-30",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 27,
-    "days_since_state_change": 27,
+    "days_since_material_rotation": 28,
+    "days_since_state_change": 28,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -6135,7 +6135,7 @@
       "EQ_DEFN": {
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": 0.0055,
+        "delta_1m": 0.2811,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE"
@@ -6143,7 +6143,7 @@
       "CREDIT": {
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": 0.0089,
+        "delta_1m": 0.2972,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE"
@@ -6151,7 +6151,7 @@
       "COMMOD": {
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": -0.0051,
+        "delta_1m": 0.1976,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE"
@@ -6159,7 +6159,7 @@
       "PM": {
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": -0.0093,
+        "delta_1m": 0.1035,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE"
@@ -6172,7 +6172,7 @@
         "cluster_name": "High Yield Credit",
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": 0.0089,
+        "delta_1m": 0.2972,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE",
@@ -6184,7 +6184,7 @@
         "cluster_name": "Commodities",
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": -0.0051,
+        "delta_1m": 0.1976,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE",
@@ -6196,7 +6196,7 @@
         "cluster_name": "Defensive Equities",
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": 0.0009,
+        "delta_1m": 0.116,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE",
@@ -6208,7 +6208,7 @@
         "cluster_name": "Defensive Equities",
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": 0.0046,
+        "delta_1m": 0.1651,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE",
@@ -6220,7 +6220,7 @@
         "cluster_name": "Precious Metals",
         "delta_1d": 0.0,
         "delta_1w": null,
-        "delta_1m": -0.0093,
+        "delta_1m": 0.1035,
         "delta_3m": null,
         "materiality": "GREEN",
         "direction": "STABLE",
@@ -6232,7 +6232,6 @@
     "sparkline_data": {
       "BOND": {
         "dates": [
-          "2026-03-19",
           "2026-03-20",
           "2026-03-24",
           "2026-03-25",
@@ -6261,7 +6260,8 @@
           "2026-04-24",
           "2026-04-27",
           "2026-04-28",
-          "2026-04-29"
+          "2026-04-29",
+          "2026-04-30"
         ],
         "values": [
           0.0,
@@ -6270,9 +6270,9 @@
           0.0,
           0.0,
           0.0,
+          0.0974,
+          0.0974,
           0.0,
-          0.0974,
-          0.0974,
           0.0,
           0.0,
           0.0,
@@ -6298,7 +6298,6 @@
       },
       "COMMOD": {
         "dates": [
-          "2026-03-19",
           "2026-03-20",
           "2026-03-24",
           "2026-03-25",
@@ -6327,7 +6326,8 @@
           "2026-04-24",
           "2026-04-27",
           "2026-04-28",
-          "2026-04-29"
+          "2026-04-29",
+          "2026-04-30"
         ],
         "values": [
           0.2027,
@@ -6336,7 +6336,6 @@
           0.2027,
           0.2027,
           0.2027,
-          0.2027,
           0.0,
           0.0,
           0.2027,
@@ -6346,6 +6345,7 @@
           0.2027,
           0.2027,
           0.2027,
+          0.1976,
           0.1976,
           0.1976,
           0.1976,
@@ -6364,7 +6364,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-03-19",
           "2026-03-20",
           "2026-03-24",
           "2026-03-25",
@@ -6393,7 +6392,8 @@
           "2026-04-24",
           "2026-04-27",
           "2026-04-28",
-          "2026-04-29"
+          "2026-04-29",
+          "2026-04-30"
         ],
         "values": [
           0.2883,
@@ -6402,7 +6402,6 @@
           0.2883,
           0.2883,
           0.2883,
-          0.2883,
           0.0,
           0.0,
           0.2883,
@@ -6412,6 +6411,7 @@
           0.2883,
           0.2883,
           0.2883,
+          0.2972,
           0.2972,
           0.2972,
           0.2972,
@@ -6430,7 +6430,6 @@
       },
       "CRYPTO": {
         "dates": [
-          "2026-03-19",
           "2026-03-20",
           "2026-03-24",
           "2026-03-25",
@@ -6459,7 +6458,8 @@
           "2026-04-24",
           "2026-04-27",
           "2026-04-28",
-          "2026-04-29"
+          "2026-04-29",
+          "2026-04-30"
         ],
         "values": [
           0.0,
@@ -6468,9 +6468,9 @@
           0.0,
           0.0,
           0.0,
+          0.0821,
+          0.0821,
           0.0,
-          0.0821,
-          0.0821,
           0.0,
           0.0,
           0.0,
@@ -6496,7 +6496,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-03-19",
           "2026-03-20",
           "2026-03-24",
           "2026-03-25",
@@ -6525,7 +6524,8 @@
           "2026-04-24",
           "2026-04-27",
           "2026-04-28",
-          "2026-04-29"
+          "2026-04-29",
+          "2026-04-30"
         ],
         "values": [
           0.34,
@@ -6534,7 +6534,6 @@
           0.34,
           0.34,
           0.34,
-          0.34,
           0.0644,
           0.0644,
           0.34,
@@ -6544,6 +6543,7 @@
           0.34,
           0.34,
           0.34,
+          0.3455,
           0.3455,
           0.3455,
           0.3455,
@@ -6562,7 +6562,6 @@
       },
       "PM": {
         "dates": [
-          "2026-03-19",
           "2026-03-20",
           "2026-03-24",
           "2026-03-25",
@@ -6591,7 +6590,8 @@
           "2026-04-24",
           "2026-04-27",
           "2026-04-28",
-          "2026-04-29"
+          "2026-04-29",
+          "2026-04-30"
         ],
         "values": [
           0.1689,
@@ -6600,7 +6600,6 @@
           0.1689,
           0.1689,
           0.1689,
-          0.1689,
           0.0561,
           0.0561,
           0.1689,
@@ -6610,6 +6609,7 @@
           0.1689,
           0.1689,
           0.1689,
+          0.1596,
           0.1596,
           0.1596,
           0.1596,
@@ -6703,7 +6703,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-04-28",
+        "date": "2026-04-29",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -6719,7 +6719,7 @@
         }
       },
       "1w": {
-        "date": "2026-04-22",
+        "date": "2026-04-23",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -6735,19 +6735,19 @@
         }
       },
       "1m": {
-        "date": "2026-03-30",
+        "date": "2026-03-31",
         "weights": {
-          "GLD": 0.1689,
-          "XLP": 0.1605,
-          "XLU": 0.1795,
-          "HYG": 0.2883,
-          "DBC": 0.2027
+          "GLD": 0.0561,
+          "XLU": 0.0644,
+          "TLT": 0.0974,
+          "BTC": 0.0471,
+          "ETH": 0.035
         },
         "cluster_weights": {
-          "PM": 0.1689,
-          "EQ_DEFN": 0.34,
-          "CREDIT": 0.2883,
-          "COMMOD": 0.2027
+          "PM": 0.0561,
+          "EQ_DEFN": 0.0644,
+          "BOND": 0.0974,
+          "CRYPTO": 0.0821
         }
       },
       "3m": null,
