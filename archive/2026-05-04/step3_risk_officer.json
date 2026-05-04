@@ -1,0 +1,138 @@
+{
+  "date": "2026-05-04",
+  "run_timestamp": "2026-05-04T08:40:46Z",
+  "execution_path": "FULL_PATH",
+  "portfolio_status": "GREEN",
+  "portfolio_status_reason": "All limits within bounds. 2 MONITOR(s) noted.",
+  "alerts": [
+    {
+      "id": "RO-20260504-001",
+      "severity": "MONITOR",
+      "check_id": "EXP_SECTOR_CONCENTRATION",
+      "message": "Effective Commodities Exposure 37.2% approaching warning level (35%).",
+      "affected_positions": [],
+      "affected_systems": [],
+      "trade_class": "A",
+      "current_value": 0.3717,
+      "threshold": 0.35,
+      "recommendation": "No action required. Monitor for further increases.",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": false,
+        "next_event": "NFP",
+        "next_event_days": 4,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": null,
+      "trend": "NEW",
+      "days_active": 1,
+      "base_severity": "MONITOR",
+      "boost_applied": null
+    },
+    {
+      "id": "RO-20260504-003",
+      "severity": "MONITOR",
+      "check_id": "EXP_SINGLE_NAME",
+      "message": "Single position DBC (V16) at 20.3% approaching limit.",
+      "affected_positions": [
+        "DBC"
+      ],
+      "affected_systems": [],
+      "trade_class": "A",
+      "current_value": 0.2027,
+      "threshold": 0.2,
+      "recommendation": "",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": false,
+        "next_event": "NFP",
+        "next_event_days": 4,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": "WARNING",
+      "trend": "DEESCALATING",
+      "days_active": 5,
+      "base_severity": "MONITOR",
+      "boost_applied": null
+    }
+  ],
+  "ongoing_conditions": [
+    {
+      "id": "RO-20260504-002",
+      "severity": "WARNING",
+      "check_id": "EXP_SINGLE_NAME",
+      "message": "Single position HYG (V16) at 28.8% exceeds 25%.",
+      "affected_positions": [
+        "HYG"
+      ],
+      "affected_systems": [
+        "V16"
+      ],
+      "trade_class": "A",
+      "current_value": 0.2883,
+      "threshold": 0.25,
+      "recommendation": "",
+      "context": {
+        "fragility_state": "HEALTHY",
+        "event_in_48h": false,
+        "next_event": "NFP",
+        "next_event_days": 4,
+        "g7_status": "UNAVAILABLE",
+        "v16_state": "Risk-On",
+        "dd_protect_active": false
+      },
+      "previous_severity": "WARNING",
+      "trend": "ONGOING",
+      "days_active": 5,
+      "base_severity": "WARNING",
+      "boost_applied": null
+    }
+  ],
+  "emergency_triggers": {
+    "max_drawdown_breach": false,
+    "correlation_crisis": false,
+    "liquidity_crisis": false,
+    "regime_forced": false
+  },
+  "sensitivity": {
+    "spy_beta": null,
+    "spy_beta_interpretation": null,
+    "effective_positions": null,
+    "effective_positions_source": "UNAVAILABLE",
+    "last_correlation_update": null
+  },
+  "g7_context": {
+    "status": "UNAVAILABLE",
+    "last_update": null,
+    "severity_impact": "NONE"
+  },
+  "risk_summary": "PORTFOLIO STATUS: GREEN. 2 MONITOR.\nSensitivity: not available (V1).\nMONITOR\u25cf: Effective Commodities Exposure 37.2% approaching warning level (35%).\nMONITOR\u2193: Single position DBC (V16) at 20.3% approaching limit.\nOngoing: EXP_SINGLE_NAME (WARNING, day 5)\nNext event: NFP in 4d",
+  "metadata": {
+    "execution_path": "FULL_PATH",
+    "checks_run": 6,
+    "checks_skipped": 0,
+    "execution_time_ms": 31,
+    "config_version": "1.0.0",
+    "fast_path_taken": false,
+    "signal_generator_available": false,
+    "g7_available": false,
+    "input_errors": [],
+    "v16_state": "Risk-On",
+    "router_state": "US_DOMESTIC",
+    "fragility_state": "HEALTHY",
+    "alerts_count": 2,
+    "ongoing_conditions_count": 1,
+    "dod_checklist": {
+      "portfolio_status_set": true,
+      "checks_executed": true,
+      "alerts_deduplicated": true,
+      "risk_summary_generated": true,
+      "metadata_logged": true
+    },
+    "dod_passed": true
+  }
+}
