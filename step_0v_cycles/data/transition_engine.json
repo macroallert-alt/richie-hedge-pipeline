@@ -1,5 +1,5 @@
 {
- "computed_at": "2026-05-10T05:32:08.768657+00:00",
+ "computed_at": "2026-05-17T05:43:03.269335+00:00",
  "engine_version": "1.1",
  "transition_matrices": {
   "LIQUIDITY": {
@@ -1049,7 +1049,7 @@
        1,
        1,
        1,
-       2
+       3
       ]
      },
      "transitions_to": {
@@ -1138,10 +1138,10 @@
   "FED_RATES": {
    "phases": {
     "EASING": {
-     "n_occurrences": 8,
+     "n_occurrences": 9,
      "duration_months": {
-      "median": 31,
-      "mean": 23.8,
+      "median": 11,
+      "mean": 21.2,
       "min": 1,
       "max": 62,
       "std": 21.1,
@@ -1153,7 +1153,8 @@
        62,
        3,
        37,
-       42
+       42,
+       1
       ]
      },
      "transitions_to": {
@@ -1167,10 +1168,10 @@
      "n_occurrences": 14,
      "duration_months": {
       "median": 3,
-      "mean": 5.3,
+      "mean": 5.2,
       "min": 1,
-      "max": 18,
-      "std": 4.8,
+      "max": 17,
+      "std": 4.6,
       "all_durations": [
        5,
        1,
@@ -1185,17 +1186,17 @@
        1,
        3,
        2,
-       18
+       17
       ]
      },
      "transitions_to": {
       "EASING": {
-       "count": 8,
-       "probability": 0.615
+       "count": 9,
+       "probability": 0.643
       },
       "RESTRICTIVE": {
        "count": 5,
-       "probability": 0.385
+       "probability": 0.357
       }
      }
     },
@@ -1223,7 +1224,7 @@
      }
     }
    },
-   "total_transitions": 26
+   "total_transitions": 27
   },
   "EARNINGS": {
    "phases": {
@@ -1671,7 +1672,7 @@
      "n_occurrences": 21,
      "duration_months": {
       "median": 1,
-      "mean": 1.6,
+      "mean": 1.7,
       "min": 1,
       "max": 3,
       "std": 0.8,
@@ -1696,7 +1697,7 @@
        2,
        1,
        3,
-       1
+       2
       ]
      },
      "transitions_to": {
@@ -1852,22 +1853,18 @@
    }
   },
   "FED_RATES": {
-   "current_phase": "NEUTRAL",
-   "current_duration_months": 18,
-   "median_duration": 3,
-   "phase_position_pct": 600,
-   "remaining_median": 0,
-   "remaining_p25": 0,
-   "remaining_p75": 0,
-   "status": "EXTENDED",
+   "current_phase": "EASING",
+   "current_duration_months": 1,
+   "median_duration": 11,
+   "phase_position_pct": 9,
+   "remaining_median": 30,
+   "remaining_p25": 2,
+   "remaining_p75": 41,
+   "status": "EARLY_PHASE",
    "transitions_ahead": {
-    "EASING": {
+    "NEUTRAL": {
      "count": 8,
-     "probability": 0.615
-    },
-    "RESTRICTIVE": {
-     "count": 5,
-     "probability": 0.385
+     "probability": 1.0
     }
    }
   },
@@ -5462,7 +5459,7 @@
   "interpretation": "Starker Konsens bullish. Risk-On."
  },
  "overall_assessment": {
-  "n_significant_returns": 2530,
+  "n_significant_returns": 2531,
   "n_total_returns": 7662,
   "pct_significant": 33.0,
   "cascade_severity": "MODERATE",
@@ -5470,17 +5467,16 @@
   "extended_cycles": [
    "COMMODITY",
    "BUSINESS",
-   "FED_RATES",
    "EARNINGS",
    "TRADE"
   ],
   "late_cycles": [],
-  "verdict": "BULLISH — Strong consensus. Risk-on positioning supported. WATCH: COMMODITY, BUSINESS, FED_RATES, EARNINGS, TRADE extended beyond median duration."
+  "verdict": "BULLISH — Strong consensus. Risk-on positioning supported. WATCH: COMMODITY, BUSINESS, EARNINGS, TRADE extended beyond median duration."
  },
  "cycle_narrative": {
-  "generated_at": "2026-05-10T05:32:25.234652+00:00",
+  "generated_at": "2026-05-17T05:43:19.885419+00:00",
   "model": "claude-sonnet-4-6",
-  "text": "**GESAMTLAGE**\n\nDie Zyklen-Engine signalisiert klar bullish mit Confirmation Score 5 (7 bullish, 2 bearish). Liquidity-Zyklus gerade erst in Early Expansion (0%, ~2 Monate verbleibend), Credit Mid-Phase – beide stützen Risk-on. Das Bild ist konstruktiv, aber die gehäuften Extended-Zyklen (COMMODITY, BUSINESS, FED_RATES, EARNINGS, TRADE) signalisieren ein spätzyklisches Setup, das mehr Disziplin als Euphorie verlangt.\n\n**ZYKLEN-DETAIL**\n\nKritisch: FED_RATES (600%, ~0 Monate) und EARNINGS (700%, ~0 Monate) sind massiv überdehnt – beide Zyklen stehen unmittelbar vor der Transition. BUSINESS bei 300% mit nur ~1 Monat Restlaufzeit erhöht den Druck. COMMODITY (EUPHORIA, 200%, ~4 Monate verbleibend) ist extended, hat aber noch Luft. Stabil und konstruktiv: DOLLAR Mid-Phase (~5 Monate), CHINA_CREDIT Mid-Phase (~2 Monate) – diese geben dem Bullish-Case Rückenwind ohne unmittelbaren Transitionsdruck.\n\n**RISIKO**\n\nV16-Transition (State: LATE_EXPANSION, n=90) zeigt Growth-Wahrscheinlichkeit 94.2%, Stress 2.3%, Crisis 3.5% – das ist kein unmittelbares Crash-Signal. Cascade Speed 0.333 (moderat, 2 Transitions in 6 Monaten) deutet auf kontrollierten Übergang, nicht Panik-Kaskade. Eskalation würde eintreten, wenn FED_RATES und EARNINGS simultan kippen und BUSINESS folgt – das könnte innerhalb von 4–6 Wochen Realität werden; historische Analogien 2019/2020 zeigen, dass TLT (+16–17%) und GLD (+17–22%) in solchen Phasen outperformen, während SPY divergiert (-0.9% bis +2.5%).\n\n**POSITIONIERUNG**\n\nBevorzugt: GLD (alle drei Analogien zeigen starke Performance außer 2021), TLT als Hedge gegen den bevorstehenden FED_RATES-Zykluswechsel. SPY selektiv halten – 2021-Analogie zeigt +15.8%, aber 2019/2020 mahnen zur Vorsicht; Gewichtung abhängig davon, ob BUSINESS-Zyklus weich oder abrupt dreht. Meiden: Hochzyklische Rohstoff-Longs (COMMODITY in EUPHORIA, extended 200%) und Dollar-Shorts (DOLLAR noch ~5 Monate Strengthening). Daten sind gemischt genug, um Tail-Hedges über TLT zu rechtfertigen.",
-  "word_count": 256
+  "text": "GESAMTLAGE: Die Zyklen-Engine zeigt per 17. Mai 2026 starken Bullen-Konsens mit einem Confirmation Score von 5 (7 bullish, 2 bearisch). Der V16-Dual-State CREDIT_BULLISH__REAL_BULLISH (n=90) weist 94,2% Wahrscheinlichkeit für Growth-Regime aus, Stress und Crisis zusammen unter 6%. Gleichzeitig signalisieren vier extended Zyklen — COMMODITY, BUSINESS, EARNINGS, TRADE — erhöhten Spätzyklusdruck, der nicht ignoriert werden sollte.\n\nZYKLEN-DETAIL: Kritisch ist die Kombination aus BUSINESS bei 300% Überstreckung mit nur ~1 Monat Restlaufzeit und EARNINGS bei 700% Extension mit ~0 Monaten — beide stehen unmittelbar vor einer Transition. TRADE (200%, ~1 Mo) bestätigt diesen Druck. COMMODITY in EUPHORIA-Phase (200%, ~4 Mo) bleibt strukturell heiß, hat aber mehr Puffer. Stabilisierend wirken LIQUIDITY in EARLY_PHASE (~2 Mo), FED_RATES in EASING mit ungewöhnlich langen ~30 Monaten Restlaufzeit sowie CREDIT und CHINA_CREDIT beide in MID_EXPANSION — diese Trias liefert die makroökonomische Rückendeckung für das bullishe Gesamtbild.\n\nRISIKO: Die historischen Analogien zeigen ein gemischtes Bild: 2019-11 und 2020-01 (Sim=1,0) liefen über 12 Monate stark in GLD (+17-22%) und TLT (+16-17%), während SPY flach bis moderat war — ein Muster, das Spätzyklusrotation widerspiegelt. 2021-01 dagegen: SPY +15,8%, GLD und TLT negativ. Crash/Korrektur-Statistiken für CREDIT_BULLISH__BUSINESS_BULLISH fehlen (n=?), was die Tail-Risk-Quantifizierung einschränkt. Eskalation droht, falls BUSINESS- und EARNINGS-Transition abrupt kippt und LIQUIDITY nicht schnell genug nachzieht.\n\nPOSITIONIERUNG: Bevorzugt: GLD und TLT als Absicherung gegen die Spätzyklus-Unsicherheit — zwei von drei historischen Analogien zeigen dort klare Outperformance. SPY bleibt im Portfolio, aber mit reduziertem Beta angesichts der BUSINESS/EARNINGS-Cliffs innerhalb eines Monats. DOLLAR STRENGTHENING (~5 Mo) stützt USD-Cash als taktischen Puffer; Commodity-Exposure via breite Rohstoff-ETFs wegen EUPHORIA-Phase nur mit engem Stop halten.",
+  "word_count": 258
  }
 }
