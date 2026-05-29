@@ -5,94 +5,93 @@
       "v16_weight": 0.159639,
       "v16_weight_pct": 16.0,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-05-28",
-      "evidence_last_updated": "2026-05-28",
+      "generated_at": "2026-05-29",
+      "evidence_last_updated": "2026-05-29",
       "failure_scenarios": [
         {
           "scenario_id": "PM_GLD_001",
-          "description": "Incoming Fed Chair Warsh delivers a hawkish policy shock in his first 60 days, driving real yields 70-90bps higher and collapsing the gold thesis as the rate-cut narrative dies and the dollar rallies sharply.",
+          "description": "Incoming Fed Chair Warsh delivers an accelerated hawkish pivot within 45 days, driving 10-year TIPS yields 80-100bps higher as the U.S. labor market strength removes any Fed optionality, triggering a simultaneous dollar rally and gold liquidation that erases 15-20% of GLD's value.",
           "failure_category": "MACRO_REGIME_SHIFT",
           "probability_label": "HIGH",
-          "reasoning": "THR_FED_POLICY_20260513_001 (conviction 7.2, THREATENING) explicitly warns Warsh cannot deliver rate cuts and will likely pursue hawkish credentialing. THR_FED_POLICY_20260330_001 (conviction 7.1) confirms bond markets are already pricing rate hikes contrary to consensus. A 70-90bps spike in the 10-year TIPS yield from current levels would historically map to a 14-20% decline in GLD, compressing the position by roughly 2.2-3.2% at the portfolio level given 16% weight. The LATE_EXPANSION regime a",
+          "reasoning": "THR_FED_POLICY_20260513_001 (conviction 6.9, THREATENING) explicitly models Warsh as unable to deliver rate cuts, and THR_FED_POLICY_20260330_001 (conviction 7.1) confirms bond markets are already pricing hikes contrary to consensus narrative. Four consecutive months of strong private-sector job creation (zerohedge, novelty 9) removes the economic softness that would have justified accommodation. In LATE_EXPANSION regimes, gold's sensitivity to real yield moves is maximized \u2014 a 90bps TIPS spike ",
           "ic_evidence_for": [
-            "THR_FED_POLICY_20260513_001 (forward_guidance, jeff_snider, macro_alf): Warsh unable to deliver rate cuts via productivity narrative \u2014 hawkish arrival scenario explicitly modeled",
-            "THR_FED_POLICY_20260330_001 (howell, forward_guidance, crescat): Bond markets signaling imminent rate hikes contrary to mainstream messaging",
-            "THR_FED_POLICY_20260508_001 (howell, jeff_snider, conviction 7.2): Lower Fed funds rates may no longer stimulate \u2014 removes the 'Fed put' that sustains gold's inflation hedge premium",
-            "zerohedge (BULLISH, novelty 9): Strong U.S. labor market for four consecutive months under Trump reduces the urgency for any Fed accommodation"
+            "THR_FED_POLICY_20260513_001 (forward_guidance, jeff_snider, macro_alf): Warsh explicitly modeled as unable to deliver rate cuts \u2014 hawkish credentialing scenario as most likely first-act",
+            "THR_FED_POLICY_20260330_001 (howell, forward_guidance, crescat, conviction 7.1): Bond markets already signaling imminent rate hikes contrary to mainstream messaging",
+            "zerohedge (BULLISH on economy, novelty 9): Four consecutive months of strong private-sector job creation eliminates labor-market rationale for Fed easing",
+            "THR_FED_POLICY_20260508_001 (howell, jeff_snider, conviction 7.2): Lower Fed funds rates may no longer stimulate \u2014 Fed loses the inflation-hedge narrative anchor that sustains gold"
           ],
           "ic_evidence_against": [
-            "THR_POSITIONING_20260526_001 (macro_alf, conviction 6.6, CONFIRMING): Gold options skew has flipped \u2014 downside puts more expensive than upside calls, signaling institutional underinvestment that creat",
-            "THR_DOLLAR_20260410_001 (conviction 5.4): Structural de-dollarization flows from Hormuz disruption could absorb dollar-bullish impulse and offset gold selling",
-            "THR_ENERGY_20260313_001 (conviction 7.3, THREATENING to other assets but CONFIRMING for gold): Ongoing Hormuz disruption maintains an inflationary premium in gold regardless of Fed posture"
+            "THR_POSITIONING_20260526_001 (macro_alf, conviction 6.1, CONFIRMING): Gold options skew flipped \u2014 downside puts more expensive than calls, signaling institutional underinvestment that creates a struct",
+            "THR_DOLLAR_20260410_001 (forward_guidance, doomberg, conviction 5.4): Structural de-dollarization from Hormuz disruption provides a countervailing bid for gold independent of rate dynamics",
+            "THR_ENERGY_20260313_001 (conviction 7.3): Persistent Hormuz energy shock sustains inflationary pressures that constrain how hawkish Warsh can realistically be without breaking something"
           ],
-          "early_warning_indicator": "10-year TIPS yield rises above 2.3% within a 3-week window while DXY breaks above 106; simultaneously GLD fails to hold the $2,800 support level on a weekly close",
-          "early_warning_source": "TreasuryDirect / Bloomberg TIPS yield curve (V16 macro layer); DXY spot price; GLD weekly close on TradingView",
-          "portfolio_impact": "-14% to -20% on GLD position (-2.2% to -3.2% portfolio-level)",
+          "early_warning_indicator": "10-year TIPS yield breaks above current level by 40bps within any 15-trading-day window while DXY simultaneously rallies >2.5%; GLD fails to hold prior 3-month support on the weekly chart",
+          "early_warning_source": "TIPS yield curve (Bloomberg USGG10YR vs. BEI breakevens), DXY daily close, GLD technical support level on V16 price feed",
+          "portfolio_impact": "-15 to -20% on GLD position (~2.4 to 3.2% portfolio-level loss at 16% weight)",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_GLD_002",
-          "description": "A surprise Hormuz reopening or credible Iran ceasefire removes the geopolitical risk premium from commodities, triggering a rapid unwind of the inflation-hedge narrative that has driven GLD's recent outperformance.",
+          "description": "Industrial commodities (copper, agricultural inputs) dramatically outperform gold as the Hormuz disruption resolves faster than expected via Syria supply-chain rerouting and a negotiated ceasefire, collapsing the geopolitical premium in gold while rotating macro flows into DBC and hard industrial assets.",
           "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "MEDIUM",
-          "reasoning": "THR_ENERGY_20260313_001 and THR_ENERGY_20260413_001 (both ESTABLISHED, convictions 7.3 and 7.2) have been key THREATENING threads that paradoxically confirm gold through inflationary energy shock transmission. If the Hormuz disruption resolves \u2014 via diplomatic breakthrough, Iranian regime change, or U.S.-brokered ceasefire \u2014 the energy-inflation narrative collapses simultaneously with the geopolitical safe-haven bid. GLD could shed 10-14% as the two primary pillars supporting current price level",
+          "reasoning": "THR_COMMODITIES_20260506_001 (conviction 4.7, THREATENING) explicitly flags that industrial commodities are positioned to outperform gold and silver \u2014 this represents a thesis rotation risk rather than a gold crash, but even a relative 10-12% underperformance in gold versus the broader commodity complex could trigger systematic de-allocation from GLD. The Syria-as-alternative-hub narrative (zerohedge, MIXED, novelty 6) directly threatens the energy-disruption premium that is one of gold's key su",
           "ic_evidence_for": [
-            "THR_ENERGY_20260317_001 (doomberg, zerohedge, conviction 8.4, NEUTRAL): Oil markets already pricing risk efficiently \u2014 any surprise positive resolution would trigger outsized mean-reversion",
-            "THR_ENERGY_20260317_002 (conviction 8.5, NEUTRAL): Unexplained resilience of oil prices signals positioning-driven premium that could unwind violently on good news",
-            "howell (BULLISH, novelty 9): Risk appetite rotating into DM equities \u2014 a peace catalyst would accelerate this rotation away from safe havens including gold",
-            "zerohedge (BULLISH, novelty 9): U.S. private sector reindustrialization momentum would be turbocharged by lower energy costs \u2014 risk-on rotation would be severe"
+            "THR_COMMODITIES_20260506_001 (forward_guidance, howell, jeff_snider, conviction 4.7, THREATENING): Industrial commodities explicitly modeled to outperform gold \u2014 thesis rotation risk is named",
+            "zerohedge (MIXED, novelty 6): Syria's emergence as alternative supply chain hub could accelerate Hormuz premium collapse, removing gold's geopolitical bid",
+            "howell (BULLISH, novelty 9): Risk appetite rotating from EM into Developed Markets signals risk-on, not risk-off \u2014 gold's safe-haven bid weakens in this environment",
+            "THR_ENERGY_20260320_001 (conviction 8.4, CONFIRMING on energy self-sufficiency): 'Fortress North America' narrative reduces the urgency of the energy-shock premium that has sustained gold"
           ],
           "ic_evidence_against": [
-            "THR_ENERGY_20260313_001 (conviction 7.3, ESTABLISHED): Multiple credible sources treat Hormuz closure as persistent structural feature, not transient shock \u2014 rapid resolution viewed as low-probability",
-            "THR_DOLLAR_20260410_001 (conviction 5.4): De-dollarization thesis for gold is structurally independent of Hormuz resolution and would persist as a bid",
-            "THR_POSITIONING_20260526_001 (macro_alf): Contrarian-bullish options positioning suggests gold would find buyers on any dip from institutional underweights covering"
+            "zerohedge (BULLISH, novelty 7): Full Hormuz oil flow restoration unlikely before Q1-Q2 2027 \u2014 geopolitical premium in gold cannot collapse if the underlying disruption persists for 12+ months",
+            "THR_ENERGY_20260413_001 (conviction 7.2, ESTABLISHED): Persistent energy price shock from Iran war closure \u2014 not a transient risk event that resolves quickly",
+            "macro_alf (BULLISH, novelty 7): Gold options contrarian-bullish skew signals institutional underinvestment \u2014 structural buyer base not yet exhausted, limits the downside from narrative rotation"
           ],
-          "early_warning_indicator": "Brent crude drops more than 8% in a single week on confirmed diplomatic progress; simultaneously GLD/Oil ratio spikes above 1.05 (gold failing to hold gains vs. oil), and front-month gold futures open interest drops >5% in 5 trading sessions",
-          "early_warning_source": "Brent front-month futures (ICE); CME COMEX gold open interest data; GLD/USO ratio on Bloomberg",
-          "portfolio_impact": "-10% to -14% on GLD position (-1.6% to -2.2% portfolio-level)",
-          "time_horizon": "IMMEDIATE"
+          "early_warning_indicator": "Copper (HG1) outperforms GLD by more than 8% over any rolling 20-trading-day window; GSCI Industrial Metals subindex breaks to new 6-month high while GLD fails to make a new high; news flow on Syria supply chain deals exceeds 3 credible confirmed agreements within 30 days",
+          "early_warning_source": "Relative performance ratio HG1/GLD on V16 price feed; THR_COMMODITIES_20260506_001 conviction score trajectory; geopolitical news feed on Syria infrastructure investment",
+          "portfolio_impact": "-10 to -14% on GLD position (~1.6 to 2.2% portfolio-level loss), with additional -2 to -3% from forc",
+          "time_horizon": "MEDIUM"
         },
         {
           "scenario_id": "PM_GLD_003",
-          "description": "Industrial commodity outperformance versus gold (driven by AI infrastructure capex and critical minerals demand) triggers a violent rotation out of GLD as the gold narrative is crowded out by a more compelling commodity story.",
+          "description": "The gold options contrarian-bullish skew becomes a crowding trap \u2014 institutional investors pile into gold calls expecting the put-heavy positioning to create a short-squeeze, but the squeeze fails to materialize as central bank buying slows and ETF inflows reverse, triggering a momentum unwind that drops GLD 12-18%.",
           "failure_category": "LIQUIDITY_FLOW",
           "probability_label": "MEDIUM",
-          "reasoning": "THR_COMMODITIES_20260506_001 (conviction 4.8, THREATENING, aligned with forward_guidance, howell, jeff_snider) explicitly identifies industrial commodities \u2014 especially copper \u2014 outperforming gold and silver as the more favored trade. Combined with the zerohedge Allied coordination frameworks (Pax Silica, Critical Minerals Ministerial) creating a 'friendshoring' supply-chain narrative, capital could rotate from GLD into copper, uranium, and rare earth plays. The macro_alf contrarian-bullish opti",
+          "reasoning": "THR_POSITIONING_20260526_001 (macro_alf, conviction 6.1) explicitly highlights the contrarian-bullish signal from gold options skew, but by the time this signal is broadly distributed across IC channels and incorporated into systematic strategies, it has already been partially front-run. Paradoxically, once institutional underinvestment is identified and advertised as a 'wall of money incoming,' the marginal buyer accelerates purchases \u2014 creating a positioning overhang. In LATE_EXPANSION regimes",
           "ic_evidence_for": [
-            "THR_COMMODITIES_20260506_001 (forward_guidance, howell, jeff_snider, conviction 4.8, THREATENING): Industrial commodities explicitly flagged to outperform gold in current environment",
-            "zerohedge (BULLISH, novelty 9): Allied 'friendshored' critical minerals supply chains (Pax Silica) creating structural demand for copper, lithium, rare earths \u2014 not gold",
-            "THR_TECH_AI_20260326_001 (conviction 5.4, CONFIRMING for tech/industrial): AI infrastructure capex boom drives copper and aluminum demand, not precious metals",
-            "howell (BULLISH, novelty 9): Risk appetite rotating into Developed Markets \u2014 late-cycle DM rotation historically favors industrial commodities over gold"
+            "macro_alf (BULLISH, novelty 7): Gold options contrarian-bullish positioning is now publicly circulated \u2014 the signal's novelty decays rapidly once distributed through IC channels, accelerating the crow",
+            "howell (BULLISH, novelty 9): Risk appetite rotating into Developed Markets signals risk-on \u2014 the very environment in which 'contrarian gold longs' get squeezed out as growth assets outperform",
+            "THR_POSITIONING_20260415_001 (howell, conviction 5.1, FADING): Risk appetite has recovered to pre-conflict levels \u2014 gold's fear premium was already partially priced out before the options skew signal "
           ],
           "ic_evidence_against": [
-            "macro_alf (BULLISH, novelty 7): Gold options skew turning contrarian-bullish specifically suggests institutional re-entry into gold is imminent, not rotation away",
-            "THR_FED_POLICY_20260508_001 (conviction 7.2): If lower rates no longer stimulate, industrial commodity demand thesis is weaker than it appears \u2014 reducing rotation incentive",
-            "THR_RECESSION_20260327_001 (conviction 4.9, FADING but present): Residual recession tail risk would favor gold over industrial commodities in any growth scare"
+            "macro_alf (BULLISH, novelty 7): Downside puts more expensive than upside calls \u2014 this structural feature means dealer hedging flows are net-positive for gold on any upside move, creating genuine gamma",
+            "THR_DOLLAR_20260410_001 (conviction 5.4): De-dollarization structural bid (central bank purchases from EM) is not options-market-driven and would not unwind with a positioning squeeze",
+            "THR_FED_POLICY_20260508_001 (conviction 7.2): Fed impotence narrative limits the competing asset (bonds) from absorbing flows out of gold \u2014 reduces the destination for any unwind"
           ],
-          "early_warning_indicator": "Copper/Gold ratio (HG1/GC1) breaks above its 6-month high with a weekly close, accompanied by GLD ETF net outflows exceeding $800M in a single week per ETF.com flow data",
-          "early_warning_source": "CME copper vs. COMEX gold ratio (Bloomberg); ETF.com or State Street GLD weekly flow reports; DBC vs. GLD relative performance on TradingView",
-          "portfolio_impact": "-10% to -16% on GLD position (-1.6% to -2.6% portfolio-level); correlated DBC gain partially offsets",
+          "early_warning_indicator": "Gold ETF (GLD) weekly outflows exceed $1.5B for two consecutive weeks while CFTC non-commercial net long positioning drops more than 20,000 contracts from peak; simultaneously, S&P 500 makes new all-time high confirming risk-on rotation absorbing the liquidation",
+          "early_warning_source": "CFTC Commitment of Traders report (gold futures, non-commercial net), GLD ETF AUM weekly change (Bloomberg), V16 cross-asset flow monitoring layer",
+          "portfolio_impact": "-12 to -18% on GLD position (~1.9 to 2.9% portfolio-level loss); compounded by simultaneous HYG spre",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_GLD_004",
-          "description": "A correlated portfolio unwind \u2014 triggered by HYG credit stress spilling into forced selling of the entire risk-reduction sleeve (GLD + XLU + XLP) \u2014 creates a non-fundamental liquidation cascade that drives GLD down 10-15% despite no change in the gold-specific thesis.",
-          "failure_category": "CORRELATION_BREAK",
-          "probability_label": "MEDIUM",
-          "reasoning": "The V16 portfolio is heavily concentrated in defensive/commodity assets: HYG 29.7%, DBC 19.8%, XLU 18.0%, XLP 16.5%, GLD 16.0% \u2014 a total of 100% in assets that all carry the same late-cycle hedge narrative. If THR_RECESSION_20260327_001 (fading but not dead) reignites and HYG spreads blow out, fund-level redemptions could force simultaneous liquidation across all five positions. The historical correlation between HYG spread widening and GLD performance breaks down precisely in liquidity crises \u2014",
+          "description": "A sudden Hormuz diplomatic resolution brokered via back-channel Trump-Iran negotiations collapses the energy-geopolitical premium across all hard assets simultaneously, hitting GLD, DBC, and XLU in a correlated drawdown that exposes the portfolio's dangerous concentration in inflation/crisis hedges \u2014 with GLD losing 10-15% as the safe-haven premium evaporates.",
+          "failure_category": "EXTERNAL_SHOCK",
+          "probability_label": "LOW",
+          "reasoning": "The Hormuz closure is the backbone of multiple ESTABLISHED narrative threads (conviction 7.2-7.3) supporting gold's geopolitical bid. A surprise diplomatic resolution \u2014 historically precedented with Iran in 2015 (JCPOA) and plausible under a Trump transactional framework \u2014 would simultaneously collapse the energy shock premium, the de-dollarization narrative, and the inflation-hedge rationale. The catastrophic portfolio risk here is correlation: at the moment this shock hits, GLD (16%), DBC (19.",
           "ic_evidence_for": [
-            "THR_RECESSION_20260327_001 (luke_gromen, jeff_snider, howell, conviction 4.9, THREATENING): Multi-layered crisis scenario (Hormuz + private credit stress + AI job losses) not fully dismissed",
-            "forward_guidance (MIXED, novelty 6): AI infrastructure bull market concentration risk in mega-cap could trigger broader deleveraging that bleeds into all liquid assets including gold ETFs",
-            "THR_FED_POLICY_20260508_001 (conviction 7.2): If lower rates no longer stimulate, private credit stress could accelerate without a Fed backstop \u2014 HYG blow-up scenario more credible"
+            "zerohedge (MIXED, novelty 6): Syria's emergence as G7-recognized alternative hub signals Western diplomatic engagement in the region \u2014 precondition for a broader conflict de-escalation framework",
+            "THR_ENERGY_20260317_001 (conviction 8.4, FADING): Oil markets have been 'efficiently pricing geopolitical risk with muted response' \u2014 suggesting the financial premium above physical disruption reality",
+            "THR_RECESSION_20260327_001 (conviction 4.9, FADING): Recession narrative fading removes the second support pillar for gold, making it more dependent on the geopolitical premium alone \u2014 concentrated si"
           ],
           "ic_evidence_against": [
-            "howell (BULLISH, novelty 9): Risk appetite rotating into DM \u2014 suggests deleveraging cycle is not imminent; flow dynamics currently supportive",
-            "THR_POSITIONING_20260526_001 (macro_alf, conviction 6.6): Institutional underinvestment in gold means forced selling pressure is lower than at a crowded long",
-            "No IC coverage: No analyst explicitly models a same-direction GLD/HYG correlation break in the current context"
+            "zerohedge (BULLISH, novelty 7): Full oil flow restoration structurally impossible before Q1-Q2 2027 due to infrastructure damage \u2014 physical reality limits how fast premium can collapse even with diplo",
+            "THR_ENERGY_20260413_001 (crescat, jeff_snider, conviction 7.2, ESTABLISHED): Iran war-driven closure creates persistent energy shock \u2014 multiple well-sourced analysts with high conviction explicitly re",
+            "hidden_forces (BEARISH, novelty 7): Autonomous drone technology democratizing lethal force makes ceasefire enforcement structurally more fragile \u2014 reduces probability of durable resolution holding"
           ],
-          "early_warning_indicator": "HYG drops more than 3% in 10 trading days while GLD also declines (rather than rising as expected in a risk-off move), with the HYG/GLD rolling 20-day correlation flipping positive above 0.4",
-          "early_warning_source": "Bloomberg HYG vs. GLD 20-day rolling correlation; ICE BofA HY OAS spread (FRED); ETF redemption data from State Street and iShares",
-          "portfolio_impact": "-10% to -15% on GLD position (-1.6% to -2.4% portfolio-level); simultaneous HYG losses amplify total",
+          "early_warning_indicator": "Brent crude front-month futures drop more than 8% in a single week on credible ceasefire/diplomatic news; Iran Hormuz-related geopolitical risk index (GS or JPM) compresses by more than 30% from current elevated reading; GLD/DBC correlation (rolling 10-day) exceeds 0.85, confirming that both are mov",
+          "early_warning_source": "Brent crude futures daily settlement (ICE), geopolitical risk indices on V16 external data feed, GLD/DBC rolling correlation monitor, State Department/diplomatic newswire for Iran negotiations",
+          "portfolio_impact": "-10 to -15% on GLD position (~1.6 to 2.4% GLD-specific loss); total portfolio impact potentially -6 ",
           "time_horizon": "IMMEDIATE"
         }
       ],
@@ -104,189 +103,185 @@
       "v16_weight": 0.165144,
       "v16_weight_pct": 16.5,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-05-28",
-      "evidence_last_updated": "2026-05-28",
+      "generated_at": "2026-05-29",
+      "evidence_last_updated": "2026-05-29",
       "failure_scenarios": [
         {
           "scenario_id": "PM_XLP_001",
-          "description": "Risk appetite rotation from defensive sectors into cyclicals accelerates as reindustrialization/AI boom narrative dominates, causing XLP's defensive premium to collapse as capital flows chase growth over safety.",
-          "failure_category": "LIQUIDITY_FLOW",
-          "probability_label": "MEDIUM",
-          "reasoning": "Howell explicitly flags risk appetite rotating from Emerging Markets into Developed Markets (US), and ZeroHedge/ZH confirm a genuine US private sector investment boom driven by deregulation and tax policy. In a LATE_EXPANSION regime where growth remains resilient (four consecutive months of strong private-sector job creation per ZeroHedge), institutional flows systematically de-emphasize defensive sectors like XLP. If the AI/data center capex boom (THR_TECH_AI_20260513_001, Building, conviction ",
+          "description": "Energy-driven stagflation squeezes consumer staples margins as Hormuz closure sustains elevated input costs (packaging, transport, agricultural commodities), while XLP companies cannot fully pass through costs into a consumer already stressed by higher gas prices.",
+          "failure_category": "MACRO_REGIME_SHIFT",
+          "probability_label": "HIGH",
+          "reasoning": "Two ESTABLISHED narrative threads (THR_ENERGY_20260313_001, conviction 7.3 and THR_ENERGY_20260413_001, conviction 7.2) confirm a persistent energy price shock from the Hormuz closure. Consumer staples companies are simultaneously hit on the cost side (energy-intensive logistics, petrochemical-based packaging, fertilizer inputs) and the demand side (real consumer purchasing power eroded by higher fuel costs). In a LATE_EXPANSION regime, this combination is particularly toxic for XLP because the ",
           "ic_evidence_for": [
-            "howell (BULLISH, novelty 9): 'Risk appetite rotating from crowded Emerging Markets into Developed Markets, particularly US \u2014 geographic reallocation rather than risk-off move' directly argues against ",
-            "zerohedge (BULLISH, novelty 9): 'Four consecutive months of strong private-sector job creation under Trump \u2014 economy not derailed by geopolitical shocks' undermines the recession/defensive thesis for ",
-            "zerohedge (BULLISH, novelty 9): 'US private sector investment boom driven by deregulation, energy liberalization, and tax policy generating genuine reindustrialization momentum' creates cyclical earni"
+            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): 'Strait of Hormuz closure triggering asymmetric energy shock' \u2014 sources include jeff_snider, howell, doomberg, crescat, all of whom ",
+            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2, THREATENING): 'Iran war-driven closure creating persistent energy price shock' \u2014 multi-source confirmation of duration, not a transitory spike",
+            "doomberg (BULLISH on energy, novelty 6): Energy policy and supply disruptions are structural, not cyclical, implying sustained input cost pressure on XLP constituents for multiple quarters"
           ],
           "ic_evidence_against": [
-            "THR_RECESSION_20260327_001 (THREATENING, conviction 4.9): Multi-layered crisis narrative, even while fading, provides a floor for defensive demand.",
-            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2, THREATENING): If Fed policy loses effectiveness as a stimulus tool, the economy may not be as robust as the job data suggests, preserving some",
-            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Hormuz shock remains live \u2014 a reescalation could instantly reverse risk-on rotation back into defensives."
+            "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9, NEUTRAL): 'Trump likely to impose US crude oil export restriction to suppress domestic gasoline prices' \u2014 if implemented, this caps US retail ener",
+            "THR_ENERGY_20260320_001 (FADING, conviction 8.4, CONFIRMING): 'Fortress North America energy self-sufficiency' narrative, while fading, suggests US staples companies with domestic supply chains are pa",
+            "zerohedge (BULLISH, novelty 9): 'Four consecutive months of strong private-sector job creation' suggests nominal consumer income remains supportive, limiting demand-side damage to staples"
           ],
-          "early_warning_indicator": "XLP/XLK relative performance turns negative by >5% over a rolling 10-day window while SPX makes new highs and HYG spread tightens below 280bps \u2014 confirming sector rotation out of defensives into growth.",
-          "early_warning_source": "Bloomberg sector relative performance dashboard; HYG OAS spread via FRED or Bloomberg credit monitor; V16 flow layer tracking sector ETF fund flows.",
-          "portfolio_impact": "-10 to -18% on XLP position",
+          "early_warning_indicator": "XLP constituent gross margin guidance cuts in Q2 earnings calls (specifically Procter & Gamble, Colgate-Palmolive) combined with DBC rising >8% over 6 weeks while XLP underperforms XLU by more than 4 percentage points",
+          "early_warning_source": "Bloomberg earnings revision tracker for XLP constituents; DBC daily price vs. XLP relative performance (V16 layer: commodity/staples spread monitor)",
+          "portfolio_impact": "-12 to -18% on XLP position",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_XLP_002",
-          "description": "A US crude oil export restriction (THR_ENERGY_20260430_001) suppresses domestic gasoline prices but simultaneously triggers a commodity input cost spike for XLP constituents via agricultural commodity contagion and USD disruption, breaking the assumed 'energy shock = defensive bid' correlation.",
-          "failure_category": "CORRELATION_BREAK",
+          "description": "Private credit stress cascades into consumer spending contraction: a software-loan-driven private credit seizure (jeff_snider's 'subprime mortgage equivalent') triggers a broad credit tightening that hits middle-income consumers, collapsing the volume growth assumptions embedded in XLP valuations.",
+          "failure_category": "EXTERNAL_SHOCK",
           "probability_label": "MEDIUM",
-          "reasoning": "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9) indicates Trump is likely to impose a US crude export restriction to suppress domestic gasoline prices. The superficial read is that cheaper domestic energy relieves input cost pressure on staples \u2014 but the second-order effect is more dangerous: an export ban would spike global oil prices (benefiting DBC, already at 19.8% in this portfolio), weaken petrodollar recycling flows, and potentially trigger retaliatory agricultural trade restriction",
+          "reasoning": "Jeff Snider explicitly flags software loans becoming the private credit market's equivalent of subprime mortgages, representing a sector-specific catalyst for broader credit market stress. If this crystallizes, the transmission mechanism to XLP is via consumer credit tightening: banks and private lenders retrench, HELOC and credit card availability shrinks, and middle-income household discretionary-to-staples trade-down (which normally benefits XLP) is overwhelmed by outright volume contraction ",
           "ic_evidence_for": [
-            "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9, NEUTRAL): 'Trump likely to impose US crude oil export restriction to suppress domestic gasoline prices' \u2014 creates asymmetric global vs. domestic e",
-            "forward_guidance (contributor to THR_ENERGY_20260430_001): Policy intervention risk is explicitly flagged as a live scenario with multiple sources confirming.",
-            "doomberg (BULLISH, novelty 6): UK energy policy reversals show how rapidly political intervention can reshape energy market structure \u2014 analogous risk exists in US policy surprise."
+            "jeff_snider (BEARISH, novelty 7): 'Software loans are becoming private credit's equivalent of subprime mortgages \u2014 transitioning from premium assets to stigmatized exposure \u2014 threatening sector-specif",
+            "THR_RECESSION_20260327_001 (THREATENING, conviction 4.9, FADING): Multi-layered crisis narrative (Hormuz + private credit stress + AI job losses) confirms the transmission chain even as headline convi",
+            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2, THREATENING): 'Lower Fed funds rates may no longer stimulate the economy because private sector has become a net saver' \u2014 if Fed cannot offset"
           ],
           "ic_evidence_against": [
-            "THR_ENERGY_20260320_001 (FADING, conviction 8.3, CONFIRMING): 'Fortress North America' energy self-sufficiency narrative, if intact, could insulate US agricultural supply chains from global commodity ",
-            "zerohedge (BULLISH, novelty 9): Strong US labor market and private investment boom suggests domestic consumption can absorb moderate cost shocks without demand destruction at the staples level.",
-            "DBC at 19.8% in portfolio partially offsets: correlation break may hurt XLP but DBC gains provide portfolio-level cushion."
+            "zerohedge (BULLISH, novelty 9): 'Four consecutive months of strong private-sector job creation' \u2014 employment resilience is the primary buffer against consumer credit stress cascading into staples volu",
+            "howell (BULLISH, novelty 9): 'Risk appetite rotating into Developed Markets, particularly US' \u2014 foreign capital inflows into US assets could stabilize credit conditions and prevent the private credit ",
+            "THR_RECESSION_20260327_001 status is FADING (conviction dropping), suggesting the market is currently discounting this failure path"
           ],
-          "early_warning_indicator": "Brent-WTI spread widens beyond $12/barrel while CBOT corn and soybean futures rally >8% within a 3-week window \u2014 signaling global agricultural commodity contagion from energy policy intervention.",
-          "early_warning_source": "CME Group commodity futures dashboard (CL1 vs. CO1 spread); CBOT agricultural complex (ZC, ZS); V16 macro regime layer monitoring commodity cross-correlations.",
-          "portfolio_impact": "-11 to -16% on XLP position",
-          "time_horizon": "SHORT"
+          "early_warning_indicator": "HYG (29.7% of portfolio) credit spreads widen >120bps over 3 weeks simultaneously with XLP forward P/E compressing below 18x \u2014 confirming credit stress is transmitting into staples multiple contraction rather than being absorbed as a defensive rotation",
+          "early_warning_source": "HYG OAS spread via Bloomberg; XLP NTM P/E via FactSet consensus; jeff_snider's Eurodollar/funding market commentary for leading credit stress signals",
+          "portfolio_impact": "-15 to -22% on XLP position",
+          "time_horizon": "MEDIUM"
         },
         {
           "scenario_id": "PM_XLP_003",
-          "description": "New Fed Chair Warsh, managing a Speculation regime, executes a hawkish surprise (rate hold or hike) citing persistent Hormuz-driven inflation, causing a violent duration selloff that reprices XLP's dividend-yield premium and triggers simultaneous XLP/XLU correlation spike, amplifying portfolio drawdown.",
-          "failure_category": "MACRO_REGIME_SHIFT",
+          "description": "Defensive sector crowding unwind: XLP and XLU together represent 34.5% of the V16 portfolio, and if institutional conviction in the LATE_EXPANSION defensive allocation simultaneously reverses \u2014 triggered by a Fed pivot toward hawkishness under new Chair Warsh \u2014 both positions sell off together, amplifying losses beyond what XLP alone would imply.",
+          "failure_category": "LIQUIDITY_FLOW",
           "probability_label": "MEDIUM",
-          "reasoning": "Howell (BEARISH, novelty 6) explicitly flags that incoming Fed Chair Kevin Warsh faces the Speculation regime as the hardest policy environment for a new chair to manage, with a high probability of a policy misstep. XLP, like XLU (18.0% of the portfolio), is a bond-proxy sector whose valuation is directly sensitive to the risk-free rate. THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2) argues lower rates may not stimulate, which could embolden Warsh to hold rates higher for longer to re",
+          "reasoning": "Howell flags that incoming Fed Chair Kevin Warsh faces the historically hardest policy environment (Speculation regime), and if Warsh signals hawkish credibility-building (rate hike or extended hold), the rate-sensitive defensive trade in both XLP and XLU unwinds simultaneously. The portfolio's combined 34.5% defensive equity weight (XLP + XLU) means a correlated selloff in rate-sensitive defensives creates a portfolio-level loss that is 2x what XLP's weight alone suggests. In a LATE_EXPANSION r",
           "ic_evidence_for": [
-            "howell (BEARISH, novelty 6): 'New Fed Chair Kevin Warsh taking office during Speculation regime \u2014 historically the hardest regime for a new Fed chair to manage' \u2014 explicitly raises probability of poli",
-            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2, THREATENING): 'Lower Fed funds rates may no longer stimulate economy' \u2014 creates conditions where Warsh opts for hawkish credibility-building r",
-            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2, THREATENING): Persistent Hormuz energy shock provides the inflation data Warsh would need to justify a hold/hike surprise."
+            "howell (BEARISH, novelty 6): 'New Fed Chair Kevin Warsh faces exceptionally difficult policy environment \u2014 taking office during Speculation regime, historically hardest for new Fed chair to manage' \u2014 ",
+            "howell (BULLISH, novelty 9): 'Risk appetite rotating from Emerging Markets into Developed Markets' \u2014 the same rotation that reduces XLP demand also reduces global defensive allocation as risk appetite",
+            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2, THREATENING): 'Lower Fed funds rates may no longer stimulate' \u2014 paradoxically, if Warsh holds rates higher-for-longer to combat this, long-dur"
           ],
           "ic_evidence_against": [
-            "THR_RECESSION_20260327_001 (FADING, conviction 4.9, THREATENING): Even a fading recession narrative constrains how hawkish Warsh can be without political backlash from the Trump administration.",
-            "zerohedge (BULLISH, novelty 9): Strong private-sector job creation and investment boom gives Warsh political cover to keep rates stable rather than hiking, reducing tail risk of a shock hike.",
-            "forward_guidance (MIXED): AI infrastructure buildout sustaining US growth \u2014 a growing economy reduces the urgency of hawkish policy correction."
+            "THR_ENERGY_20260313_001 and THR_ENERGY_20260413_001 (both ESTABLISHED, THREATENING): Persistent energy shock could force Warsh to prioritize growth support over hawkishness, preventing the rate-hiking",
+            "zerohedge (BULLISH, novelty 9): US reindustrialization momentum suggests earnings growth is broad-based enough that defensive crowding unwind would be gradual rather than disorderly",
+            "No IC coverage explicitly addressing XLP/XLU correlation break or simultaneous unwinding of the combined defensive allocation"
           ],
-          "early_warning_indicator": "US 10-year Treasury yield rises above 5.10% within 15 trading days of a Warsh Fed meeting statement, while Fed Funds futures reprice to imply <2 cuts in the next 12 months \u2014 confirming the bond-proxy derating mechanism is activating.",
-          "early_warning_source": "CME FedWatch tool (Fed Funds futures curve); TLT price action and TNX yield; V16 rates layer monitoring duration sensitivity of defensive equity sectors.",
-          "portfolio_impact": "-13 to -22% on XLP position (amplified by simultaneous XLU stress at 18.0% weight)",
+          "early_warning_indicator": "XLU drops >5% in a 10-day window while 10-year Treasury yield rises >25bps \u2014 confirming rate-driven defensive sector rotation is underway and XLP is next given its 0.75+ historical beta to XLU in rising-rate selloffs",
+          "early_warning_source": "XLU daily price vs. TNX (10-year yield) spread; Federal Reserve communications and Warsh speech cadence; V16 correlation matrix between XLP and XLU",
+          "portfolio_impact": "-10 to -16% on XLP position (amplified to -7 to -11% portfolio-level when XLU co-movement is include",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_XLP_004",
-          "description": "AI-driven structural consumer behavior shift accelerates private-label and direct-to-consumer substitution faster than consensus expects, collapsing the brand-premium moat that underpins the valuation of XLP's largest constituents (PG, KO, PM, COST) within 12-18 months.",
+          "description": "AI-driven consumer behavior disruption collapses brand moat premium: accelerating AI-powered price comparison, private-label optimization, and autonomous grocery purchasing eliminates the pricing power and brand loyalty that justifies XLP's elevated valuation multiple, causing a multi-year P/E de-rating that begins as a 'narrative collapse' rather than an earnings miss.",
           "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "LOW",
-          "reasoning": "This is the non-obvious contrarian scenario: the IC intelligence repeatedly references AI systems succeeding at pattern recognition 'beyond formal logic' (hidden_forces, novelty 9) and the AI/data center capex boom as a structural force (THR_TECH_AI_20260513_001). The underappreciated second-order effect is that AI-powered private label formulation (CPG companies can now reverse-engineer branded products at scale), algorithmic consumer preference mapping, and direct-to-consumer logistics optimiz",
+          "reasoning": "This is the non-obvious, contrarian failure mode. The hidden_forces note on AI systems succeeding through pattern recognition beyond formal logic hints at a broader structural disruption: as AI-powered shopping agents optimize household purchasing in real time, the brand switching costs that underpin Procter & Gamble, Colgate, and Mondelez valuations erode structurally. Investors begin to reprice XLP's 'earnings quality and brand moat' premium \u2014 not because of a near-term earnings miss, but beca",
           "ic_evidence_for": [
-            "hidden_forces (BULLISH on AI, novelty 9): 'Neural network AI systems succeed at pattern recognition beyond formal logic through trial-and-error' \u2014 directly applicable to private-label product formulat",
-            "THR_TECH_AI_20260513_001 (BUILDING, conviction 4.4): AI/data center capex boom described as 'primary engine sustaining US growth' \u2014 capital flowing into AI applications that could commoditize branded ",
-            "forward_guidance (MIXED): AI infrastructure buildout 'has not yet reached its mania phase' \u2014 implying disruptive AI applications to consumer markets are still in early innings."
+            "hidden_forces (BULLISH on AI, novelty 9): 'Neural network-based AI systems succeed at pattern recognition beyond formal logic' \u2014 directly applicable to AI agents disrupting consumer brand loyalty thro",
+            "THR_TECH_AI_20260513_001 (BUILDING, conviction 3.8, NEUTRAL): 'AI/data center capex boom is primary engine sustaining US growth' \u2014 the same AI infrastructure buildout that drives growth is the platfor"
           ],
           "ic_evidence_against": [
-            "No IC coverage: No source explicitly connects AI disruption to CPG brand erosion in the current intelligence set \u2014 this remains a speculative extrapolation.",
-            "zerohedge (BULLISH, novelty 9): Strong US labor market supports consumer spending on branded goods, providing near-term buffer against trade-down dynamics.",
-            "THR_RECESSION_20260327_001 (FADING): Trade-down to private label is already partially priced into staples valuations \u2014 the incremental AI-acceleration thesis is not yet in consensus forecasts."
+            "No IC coverage explicitly addressing AI disruption of consumer staples brand moats or XLP multiple de-rating from this cause \u2014 this scenario lacks near-term consensus validation",
+            "zerohedge (BULLISH, novelty 9): Strong labor market and reindustrialization momentum suggests consumer spending power supports premium brand spending, not trade-down to private label",
+            "THR_TECH_AI_20260513_001 conviction is only 3.8 (BUILDING but weak) \u2014 insufficient narrative momentum to trigger institutional re-rating of XLP in the near term"
           ],
-          "early_warning_indicator": "Nielsen/Circana syndicated data shows private label market share in food/HPC categories gaining >150bps in a single quarter while PG or KO guides down on organic volume growth \u2014 confirming brand erosion is inflecting beyond cyclical trade-down.",
-          "early_warning_source": "Nielsen IQ / Circana monthly retail scanner data; XLP constituent earnings calls (PG, KO, CL volume guidance); V16 narrative layer monitoring consumer sector disruption themes.",
-          "portfolio_impact": "-10 to -20% on XLP position over 6-12 month horizon",
+          "early_warning_indicator": "Major retailer (Walmart, Amazon Fresh) announces AI-powered 'autonomous household replenishment' subscription reaching >5 million households, triggering sell-side notes questioning XLP constituent brand premium sustainability \u2014 observable via XLP forward P/E compression to below 17.5x without a corr",
+          "early_warning_source": "FactSet XLP NTM P/E trend; retail earnings call transcripts for AI/private-label commentary; hidden_forces and forward_guidance coverage of AI consumer adoption curves",
+          "portfolio_impact": "-10 to -20% on XLP position (P/E de-rating from ~20x to ~16-17x over 6-12 months)",
           "time_horizon": "MEDIUM"
         }
       ],
       "scenario_count": 4,
-      "aggregate_risk": "MEDIUM"
+      "aggregate_risk": "HIGH"
     },
     "XLU": {
       "asset": "XLU",
       "v16_weight": 0.180418,
       "v16_weight_pct": 18.0,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-05-28",
-      "evidence_last_updated": "2026-05-28",
+      "generated_at": "2026-05-29",
+      "evidence_last_updated": "2026-05-29",
       "failure_scenarios": [
         {
           "scenario_id": "PM_XLU_001",
-          "description": "Kevin Warsh's Fed delivers a surprise 50bps hike in response to Hormuz-driven inflation entrenchment, 10Y yields spike through 5.8-6.2%, and XLU suffers a bond-proxy unwind of 18-25% within 4-8 weeks as defensive positioning collapses.",
-          "failure_category": "MACRO_REGIME_SHIFT",
+          "description": "The 'Fortress North America' energy narrative drives a macro regime rotation out of defensive utilities into energy and industrial equities, collapsing the defensive premium embedded in XLU as risk appetite surges into reindustrialization plays.",
+          "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "HIGH",
-          "reasoning": "THR_FED_POLICY_20260330_001 is ESTABLISHED at conviction 7.1 and explicitly THREATENING to XLU \u2014 bond markets are already pricing rate hikes contrary to consensus. Howell's warning that Warsh inherits the 'Speculation regime' (the hardest environment for a new chair) dramatically raises policy error risk, including an overshoot hike to establish credibility. Utilities carry duration exposure equivalent to 20-30Y bonds; historical analysis shows a 100bps rapid yield spike reprices XLU down 15-25%",
+          "reasoning": "THR_ENERGY_20260320_001 (CONFIRMING, conviction 8.4) is the highest-conviction CONFIRMING thread in the portfolio \u2014 but it confirms reindustrialization and energy self-sufficiency, NOT utilities defensiveness. ZeroHedge's bullish framing of U.S. deregulation and energy liberalization directly supports capital rotation into energy producers and industrials rather than rate-sensitive utilities. In a LATE_EXPANSION regime, investors seeking inflation protection will favor DBC/energy equities over X",
           "ic_evidence_for": [
-            "howell (BEARISH, novelty 6): New Fed Chair Kevin Warsh faces the historically hardest policy environment \u2014 the Speculation regime \u2014 raising the probability of a credibility-establishing overcorrection",
-            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1, THREATENING): Bond markets explicitly signaling imminent rate hikes contrary to mainstream consensus, validating rate shock risk",
-            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2, THREATENING): Iran war-driven Hormuz closure creating persistent energy price shock that structurally prevents rate cuts and may force hikes",
-            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Asymmetric Hormuz energy shock pushing imported inflation into US CPI via energy and freight channels, complicating Fed's disinflati"
+            "zerohedge (BULLISH, novelty 9): U.S. private sector investment boom driven by deregulation and energy liberalization generating genuine reindustrialization momentum \u2014 capital flows toward producers, n",
+            "THR_ENERGY_20260320_001 (CONFIRMING, conviction 8.4, FADING): Fortress North America narrative favors energy self-sufficiency plays \u2014 utilities are beneficiaries only at the margin, while upstream ene",
+            "howell (BULLISH, novelty 9): Risk appetite rotating from EM into Developed Markets signals a risk-ON reallocation, the exact environment where defensive XLU underperforms cyclicals by 10-20%",
+            "zerohedge (BULLISH, novelty 7): Strong U.S. labor market for four consecutive months undermines the recession/defensive thesis that justifies a large XLU allocation in the first place"
           ],
           "ic_evidence_against": [
-            "THR_RECESSION_20260327_001 (FADING, conviction 4.9): If recession fears still carry any weight, Warsh may hold rather than hike into economic weakness, limiting yield spike severity",
-            "zerohedge (BULLISH, novelty 9): Four consecutive months of strong private-sector job creation suggests economy can absorb higher rates without forcing an emergency policy pivot that would reverse yiel",
-            "THR_ENERGY_20260320_001 (FADING, conviction 8.3, CONFIRMING for XLU): Fortress North America energy narrative implies US energy insulation could suppress domestic inflation, reducing Fed's impetus to "
+            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1, THREATENING): If rate hike fears persist, risk-off episodes will periodically refresh demand for XLU as a defensive bond-proxy, limiting susta",
+            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Hormuz-driven energy shock could trigger enough economic uncertainty to keep defensive allocations elevated, slowing the rotation aw"
           ],
-          "early_warning_indicator": "10Y Treasury yield closes above 5.65% on consecutive sessions while TIPS breakevens rise above 3.1% simultaneously \u2014 confirming the market is pricing a 'hike into inflation' scenario rather than a growth-driven rate move",
-          "early_warning_source": "10Y UST yield (Bloomberg/TLT inversion), 5Y5Y TIPS breakeven forward (Fed H.15 data), CME FedWatch 2-meeting forward probability shift",
-          "portfolio_impact": "-18 to -25% on XLU position",
+          "early_warning_indicator": "XLE or XLI outperforms XLU by more than 8% over a rolling 3-week window while the S&P 500 makes new highs \u2014 confirming pro-cyclical rotation rather than broad risk-off",
+          "early_warning_source": "Relative performance dashboards (XLE/XLU ratio), V16 regime monitor for transition from LATE_EXPANSION toward cyclical growth regime, Howell liquidity flow data",
+          "portfolio_impact": "-12 to -20% on XLU position",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_XLU_002",
-          "description": "The U.S. reindustrialization boom triggers a LATE_EXPANSION-to-EARLY_RECOVERY regime transition as capex surges and animal spirits return, rotating capital violently out of defensive sectors (XLU, XLP) and into industrials/tech, causing XLU to underperform by 12-18% relative to the market within 8-14 weeks.",
-          "failure_category": "NARRATIVE_COLLAPSE",
+          "description": "Hormuz-driven energy cost inflation structurally impairs utility sector earnings as natural gas and power input costs spike faster than regulators allow rate increases to pass through, triggering a 15-22% EPS-driven repricing of XLU over 2-3 months.",
+          "failure_category": "MACRO_REGIME_SHIFT",
           "probability_label": "MEDIUM",
-          "reasoning": "Zerohedge (BULLISH, novelty 9) flags genuine reindustrialization momentum from deregulation, energy liberalization, and tax policy \u2014 exactly the conditions that historically end defensive positioning cycles. If risk appetite continues rotating from EM into US Developed Markets (Howell, novelty 9) and the AI infrastructure buildout (forward_guidance) accelerates capex, the defensive 'late cycle' thesis underpinning XLU's inclusion collapses. In a LATE_EXPANSION regime, if the cycle extends rather",
+          "reasoning": "Both THR_ENERGY_20260313_001 and THR_ENERGY_20260413_001 (both ESTABLISHED, convictions 7.3 and 7.2) identify a persistent energy price shock lasting potentially through Q1-Q2 2027. U.S. utilities are large consumers of natural gas for power generation; if nat gas prices remain elevated due to LNG demand displacement from the Hormuz closure, utility input costs rise materially. Regulatory lag \u2014 the gap between cost increases and approved rate recovery \u2014 can compress utility margins for 12-18 mon",
           "ic_evidence_for": [
-            "zerohedge (BULLISH, novelty 9): U.S. private sector investment boom \u2014 deregulation, energy liberalization, tax policy \u2014 generating genuine reindustrialization momentum inconsistent with defensive posi",
-            "zerohedge (BULLISH, novelty 9): Four consecutive months of strong private-sector job creation suggests the economy has durably extended the cycle, undermining the defensive allocation thesis",
-            "howell (BULLISH, novelty 9): Risk appetite rotating from crowded EM into Developed Markets/US \u2014 a risk-on geographic reallocation that historically drains capital from defensives",
-            "forward_guidance (MIXED, novelty 6): AI infrastructure buildout is self-reinforcing structural bull market not yet at mania phase \u2014 if accurate, this absorbs capital that would otherwise sit in defens"
+            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2, THREATENING): Iran war-driven Hormuz closure creates persistent energy price shock \u2014 natural gas displacement demand from Europe and Asia pushes U",
+            "zerohedge (BULLISH, novelty 7): Full oil/gas flow restoration unlikely before Q1-Q2 2027 \u2014 the duration of supply disruption is long enough to trigger regulatory rate cases that may not resolve in tim",
+            "doomberg (BULLISH, novelty 6): UK energy policy destroying North Sea gas industry illustrates how regulatory environments can structurally impair energy economics \u2014 a similar regulatory lag dynamic ap",
+            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Asymmetric energy shock pushing imported inflation into CPI complicates utility regulators' willingness to approve rapid rate increa"
           ],
           "ic_evidence_against": [
-            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1, THREATENING): Rate hike signals remain a structural support for defensive positioning \u2014 defensives rarely collapse when rate risk is elevated",
-            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Hormuz shock creates genuine macro uncertainty that supports defensive holdings regardless of domestic reindustrialization narrative",
-            "No IC coverage explicitly argues that the LATE_EXPANSION regime will transition imminently to growth acceleration rather than contraction"
+            "THR_ENERGY_20260320_001 (CONFIRMING, conviction 8.4): Fortress North America narrative implies U.S. energy self-sufficiency \u2014 domestic nat gas availability may buffer input cost spike for U.S. utiliti",
+            "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9, NEUTRAL): Trump's potential crude export restriction to suppress domestic energy prices would, if implemented, also cap domestic nat gas pricing, "
           ],
-          "early_warning_indicator": "XLK or XLI outperforms XLU by more than 8% over a rolling 15-day window while ISM Manufacturing PMI prints above 53 for a second consecutive month, confirming regime extension rather than rollover",
-          "early_warning_source": "Sector ETF relative performance (XLU vs XLI, XLK on Bloomberg), ISM Manufacturing PMI monthly release, V16 regime probability distribution shift away from LATE_EXPANSION toward EARLY_RECOVERY",
-          "portfolio_impact": "-12 to -18% on XLU position (relative underperformance + potential outright decline)",
+          "early_warning_indicator": "Henry Hub natural gas futures front-month contract rises above $5.50/MMBtu and holds for 10+ consecutive trading days while XLU fails to participate in any broader market rally \u2014 confirming cost-squeeze margin compression thesis",
+          "early_warning_source": "CME Henry Hub futures strip, XLU earnings revision tracking (FactSet/Bloomberg consensus EPS), utility regulatory filing calendar for rate case submissions",
+          "portfolio_impact": "-10 to -18% on XLU position",
           "time_horizon": "MEDIUM"
         },
         {
           "scenario_id": "PM_XLU_003",
-          "description": "A Hormuz-driven energy price spike dramatically increases utilities' fuel and input costs faster than regulated rate recovery allows, compressing sector earnings by 15-20% and triggering a fundamental repricing of XLU independent of interest rate dynamics.",
-          "failure_category": "CORRELATION_BREAK",
+          "description": "The portfolio's defensive cluster \u2014 XLU (18%), XLP (16.5%), GLD (16%) \u2014 becomes dangerously correlated in a simultaneous unwind event as risk-parity and multi-asset funds reduce defensive exposure in unison when recession fears fade, generating a crowded-exit liquidity event that overwhelms XLU's typical defensive bid.",
+          "failure_category": "LIQUIDITY_FLOW",
           "probability_label": "MEDIUM",
-          "reasoning": "XLU is typically held as an interest rate/defensive play, but under THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2) the Hormuz closure creates a non-standard scenario where utilities face severe input cost inflation. Natural gas and power generation fuel costs are directly sensitive to energy shocks; regulated utilities cannot pass through cost increases instantaneously, creating an earnings squeeze. This breaks the standard 'utilities are defensive when rates are stable' correlation \u2014 the",
+          "reasoning": "Baldur Creek's current portfolio concentrates 50.5% of NAV in three defensive/inflation-hedge assets (XLU + XLP + GLD) \u2014 an unusually high defensive concentration for a LATE_EXPANSION regime where macro momentum is tilting risk-on per Howell's DM rotation call. THR_RECESSION_20260327_001's FADING status (conviction dropping to 4.9) signals that the recession narrative underpinning defensive allocations is weakening. When multiple systematic funds holding similar defensive clusters simultaneously",
           "ic_evidence_for": [
-            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2, THREATENING): Iran war-driven Hormuz closure creating persistent energy price shock directly threatening utility fuel input costs",
-            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Asymmetric Hormuz energy shock \u2014 if LNG and natural gas prices spike, gas-fired utility generators face unrecoverable near-term cost",
-            "doomberg (BULLISH, novelty 6): UK energy policy analysis demonstrates how energy price shocks interact with regulated utility economics \u2014 a template for US utility margin compression under sustained h"
+            "howell (BULLISH, novelty 9): Risk appetite rotating from EM into DM signals a risk-ON reallocation \u2014 systematic funds will reduce defensive cluster weights, with XLU as primary target given its rate s",
+            "THR_RECESSION_20260327_001 (FADING, conviction 4.9, THREATENING): Fading recession narrative removes the primary justification for 50%+ defensive portfolio concentration, increasing the probability of",
+            "zerohedge (BULLISH, novelty 9): Four consecutive months of strong private-sector job creation directly contradicts the recession thesis \u2014 a fifth strong jobs print could be the coordinated de-risking "
           ],
           "ic_evidence_against": [
-            "THR_ENERGY_20260320_001 (FADING, conviction 8.3, CONFIRMING for XLU): Fortress North America narrative implies US domestic energy insulation \u2014 Henry Hub gas prices may decouple from international LNG,",
-            "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9, NEUTRAL): Trump crude oil export restriction would suppress domestic energy prices, which would actually reduce utility input costs and benefit XL",
-            "zerohedge (BULLISH, novelty 9): Deregulation and energy liberalization narrative suggests US utilities may gain faster regulatory cost pass-through ability, limiting earnings compression duration"
+            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1, THREATENING): Active rate hike fears provide a persistent reason to hold defensive duration proxies like XLU, counteracting pure risk-on rotat",
+            "THR_VOLATILITY_20260427_001 (FADING, conviction 5.8, CONFIRMING): Treasury buyback volatility suppression, if implemented, reduces the bond-proxy unwind risk that typically accompanies defensive crowd"
           ],
-          "early_warning_indicator": "Henry Hub natural gas spot price rises above $5.50/MMBtu for 10 consecutive trading days while XLU forward P/E compresses below 14x on analyst earnings revision downgrades \u2014 confirming cost-push margin squeeze is being priced fundamentally",
-          "early_warning_source": "Henry Hub natural gas spot (EIA/Bloomberg), XLU sector earnings revision breadth (FactSet/Bloomberg EEO), utility sector forward EPS consensus trend",
-          "portfolio_impact": "-10 to -20% on XLU position",
+          "early_warning_indicator": "XLU + XLP + GLD all decline more than 2% in the same 5-day window while HYG rises more than 1% \u2014 confirming a coordinated defensive unwind rather than isolated sector rotation",
+          "early_warning_source": "V16 intra-portfolio correlation monitor, 13F/ETF flow data (ICI weekly flows into XLU), put/call ratio on XLU normalizing from elevated defensive positioning",
+          "portfolio_impact": "-10 to -16% on XLU position (amplified by simultaneous XLP and GLD pressure reducing portfolio hedgi",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_XLU_004",
-          "description": "The entire V16 portfolio's defensive cluster (XLU 18% + XLP 16.5% = 34.5% combined) becomes a crowded institutional 'stagflation hedge' trade that unwinds simultaneously when a single positive macro datapoint breaks the stagflation narrative, triggering correlated forced selling and a 10-15% loss on XLU driven by liquidity/flow dynamics rather than fundamentals.",
-          "failure_category": "LIQUIDITY_FLOW",
-          "probability_label": "MEDIUM",
-          "reasoning": "The V16 portfolio holds XLU and XLP as a combined 34.5% defensive allocation alongside HYG (29.7%) in what is structurally a 'stagflation/late cycle' positioning cluster. If THR_RECESSION_20260327_001 continues fading and a strong datapoint (e.g., CPI print at 2.8% or below, or a Hormuz reopening headline) catalyzes an abrupt narrative shift, institutional managers running similar defensive clusters will exit simultaneously. XLU is particularly vulnerable because it is the most rate-sensitive co",
+          "description": "Kevin Warsh's Fed delivers a surprise rate hike of 50bps within 60 days of taking office to establish anti-inflation credibility against the Hormuz energy shock, driving 10Y yields through 5.8%, and XLU collapses 18-25% as the bond-proxy unwind accelerates \u2014 a scenario elevated from the prior pre-mortem given Warsh's formal assumption of the chairmanship.",
+          "failure_category": "EXTERNAL_SHOCK",
+          "probability_label": "HIGH",
+          "reasoning": "This scenario was flagged as HIGH probability in PM_XLU_001 and the underlying evidence has not weakened \u2014 THR_FED_POLICY_20260330_001 remains ESTABLISHED at conviction 7.1 and THREATENING to XLU. Howell's explicit warning that Warsh inherits the 'Speculation regime' \u2014 the historically most difficult environment for a new Fed chair \u2014 substantially raises the probability of a credibility-signaling overtightening in the first 90 days. New Fed chairs have historically been more hawkish in their ina",
           "ic_evidence_for": [
-            "THR_RECESSION_20260327_001 (FADING, conviction 4.9): The recession narrative is already losing conviction \u2014 any further erosion removes the primary justification for defensive positioning and could ca",
-            "THR_POSITIONING_20260415_001 (FADING, conviction 5.1, NEUTRAL): Risk appetite has already recovered to pre-conflict levels \u2014 this suggests positioning is less defensive than it was, and any remaining ",
-            "howell (BULLISH, novelty 9): Risk appetite rotating from EM to DM US \u2014 if this rotation accelerates and risk-on narratives dominate, defensive sectors face simultaneous outflows across institutional p"
+            "howell (BEARISH, novelty 6): New Fed Chair Kevin Warsh takes office during the Speculation regime \u2014 historically the hardest for a new chair \u2014 raising probability of a credibility-establishing policy ",
+            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1, THREATENING): Bond markets already signaling imminent rate hikes contrary to mainstream consensus, meaning a Warsh hike would validate rather ",
+            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2, THREATENING): Persistent Hormuz energy shock provides Warsh with concrete CPI data justifying a hike narrative, removing the political constraint ",
+            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Asymmetric energy shock pushing inflation into U.S. CPI creates the exact macro cover a new hawkish Fed chair needs to justify a cre"
           ],
           "ic_evidence_against": [
-            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1, THREATENING): As long as rate hike risk remains elevated and ESTABLISHED, institutional demand for rate-sensitive defensives like XLU is struc",
-            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Hormuz narrative remaining ESTABLISHED prevents a clean 'all-clear' macro signal that would catalyze a full defensive unwind",
-            "No IC coverage suggests XLU specifically is in crowded positioning territory \u2014 the flow reversal risk is inferred from portfolio concentration rather than direct positioning data"
+            "THR_RECESSION_20260327_001 (FADING, conviction 4.9, THREATENING): Even fading recession fears provide political/institutional cover for Warsh to pause rather than hike \u2014 hiking into any economic weakn",
+            "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9, NEUTRAL): If Trump implements crude oil export restrictions to cap domestic energy prices, CPI prints may come in lower than expected, removing Wa"
           ],
-          "early_warning_indicator": "XLU ETF records net outflows exceeding $800M in a single week (as reported by ETF.com or Bloomberg fund flow data) while XLI and XLK record simultaneous inflows above $1.2B, confirming a coordinated institutional rotation out of defensives",
-          "early_warning_source": "ETF weekly fund flow data (ETF.com, Bloomberg ETFG), XLU put/call ratio shift, CFTC non-commercial futures positioning on utility sector proxies",
-          "portfolio_impact": "-10 to -15% on XLU position, with additional correlated losses on XLP creating portfolio-level impac",
+          "early_warning_indicator": "2Y Treasury yield rises above 5.5% and the 2Y-10Y spread inverts further (steepens inverted) within a 2-week window following any Warsh public speech \u2014 confirming market is pricing a front-loaded hike cycle, not a pause",
+          "early_warning_source": "CME FedWatch tool (implied hike probability for next 2 meetings), 2Y Treasury real-time yield, XLU vs TLT correlation tracker (should break down sharply as XLU underperforms even TLT in a rate shock)",
+          "portfolio_impact": "-18 to -25% on XLU position",
           "time_horizon": "IMMEDIATE"
         }
       ],
@@ -298,87 +293,92 @@
       "v16_weight": 0.297155,
       "v16_weight_pct": 29.7,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-05-28",
-      "evidence_last_updated": "2026-05-28",
+      "generated_at": "2026-05-29",
+      "evidence_last_updated": "2026-05-29",
       "failure_scenarios": [
         {
           "scenario_id": "PM_HYG_001",
-          "description": "Incoming Fed Chair Warsh delivers a hawkish regime reset that collapses the 'Fed put' on credit, driving HY spreads 200-300 bps wider within 6-8 weeks as leveraged loan refinancing windows close and the private credit stack cracks.",
-          "failure_category": "MACRO_REGIME_SHIFT",
+          "description": "Private credit contagion from software-loan deterioration triggers a systemic repricing of high-yield spreads, with HYG losing 12-18% as redemption pressure and mark-to-market losses cascade from private credit into public HY markets within 8-12 weeks.",
+          "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "HIGH",
-          "reasoning": "Three ESTABLISHED narrative threads (THR_FED_POLICY_20260513_001, THR_FED_POLICY_20260330_001, THR_FED_POLICY_20260508_001, all conviction 7.1-7.2) converge on a single message: Warsh cannot deliver cuts, bond markets are already pricing hikes, and rate transmission to the private sector is broken. HYG at 29.7% of the portfolio is the direct casualty \u2014 LATE_EXPANSION regimes historically terminate via credit spread blowout when the Fed pivots hawkish rather than accommodative. Howell explicitly ",
+          "reasoning": "Jeff Snider's explicit warning that software loans are becoming 'the private credit market's equivalent of subprime mortgages' (novelty 7, BEARISH) identifies a sector-specific catalyst that would first appear in private credit NAV writedowns before spilling into liquid HY instruments like HYG. As the largest, most liquid HY ETF, HYG becomes the exit vehicle of choice when institutional holders need to reduce credit exposure quickly \u2014 meaning it absorbs outsized selling pressure relative to the ",
           "ic_evidence_for": [
-            "THR_FED_POLICY_20260513_001 (ESTABLISHED, conviction 7.2, THREATENING): Warsh cannot credibly deliver cuts via 'golden age' productivity narrative \u2014 removes the implicit Fed backstop that compresses H",
-            "howell (BEARISH, novelty 6): New Fed Chair faces hardest policy environment historically \u2014 Speculation regime makes any credibility-building hawkish signal disproportionately destabilizing to risk ass",
-            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1, THREATENING): Bond markets already signaling imminent rate hikes \u2014 Warsh appointment accelerates timeline for spread normalization toward hist",
-            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2, THREATENING): Rate cuts no longer stimulate private sector \u2014 traditional reflationary HY backstop structurally impaired even if Warsh eventual"
+            "jeff_snider (BEARISH, novelty 7): Software loans transitioning from premium to stigmatized private credit assets \u2014 sector-specific catalyst for broader HY repricing as leveraged structures face margin",
+            "THR_RECESSION_20260327_001 (THREATENING, conviction 4.9): Multi-layered crisis including private credit stress explicitly named as a recession trigger \u2014 even at fading status, the private credit vecto",
+            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2, THREATENING): Rate cuts no longer stimulate private sector \u2014 removes the 'extend and pretend' refinancing mechanism that historically cushione"
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): Four consecutive months of strong private-sector job creation under Trump suggests the economy has absorbed geopolitical shocks \u2014 strong labor markets historically dela",
-            "THR_POSITIONING_20260528_001 (ESTABLISHED, conviction 6.0, CONFIRMING): Risk appetite rotating INTO Developed Markets/US \u2014 incremental bid for US HY from EM de-risking flows provides a near-term techn"
+            "zerohedge (BULLISH, novelty 9): Four consecutive months of strong private-sector job creation suggests fundamental credit quality for most HY issuers remains intact \u2014 defaults not yet rising",
+            "howell (BULLISH, novelty 9): Risk appetite rotating INTO Developed Markets including US \u2014 net buying flow in US credit instruments offsets specific sector deterioration in software loans",
+            "THR_CREDIT_20260515_001 (FADING, conviction 5.4, CONFIRMING): Hyperscaler debt issuance is becoming a major HY component \u2014 these are investment-grade-adjacent issuers whose presence structurally impro"
           ],
-          "early_warning_indicator": "ICE BofA US High Yield Option-Adjusted Spread (OAS) breaches 450 bps on a weekly close AND 10-year Treasury yield surges >30 bps in a single week following any Warsh Fed communication; simultaneously watch for HYG daily volume exceeding 3x 90-day average on a down day",
-          "early_warning_source": "FRED (BAMLH0A0HYM2 series) for OAS; Bloomberg HYG volume data; Fed meeting minutes and Warsh speech transcripts via Federal Reserve website",
-          "portfolio_impact": "-12 to -22% on HYG position; given 29.7% weight, portfolio-level drag of -3.6 to -6.5%",
+          "early_warning_indicator": "BKLN (leveraged loan ETF) drops >3% in a single week while HYG/LQD spread ratio widens above 1.8x its 30-day average, confirming private-to-public credit contagion pathway is open",
+          "early_warning_source": "BKLN vs HYG relative performance spread (Bloomberg/TradingView); CDX HY Index 5Y spread crossing 450bps",
+          "portfolio_impact": "-12 to -18% on HYG position",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_HYG_002",
-          "description": "A persistent Hormuz-closure energy shock drives a stagflationary wedge into EBITDA margins for energy-intensive HY issuers, triggering a wave of covenant breaches and rating downgrades that forces passive outflows from HYG as fallen angels exit the index.",
-          "failure_category": "NARRATIVE_COLLAPSE",
+          "description": "Persistent Hormuz-driven energy inflation forces Warsh's Fed into a stagflationary tightening posture, crushing the duration-sensitive component of HYG while simultaneously spiking default probabilities in energy-consuming HY sectors, causing a -15 to -22% loss over 10-16 weeks.",
+          "failure_category": "MACRO_REGIME_SHIFT",
           "probability_label": "MEDIUM",
-          "reasoning": "THR_ENERGY_20260313_001 and THR_ENERGY_20260413_001 (both ESTABLISHED, conviction 7.2-7.3, THREATENING) describe a persistent energy price shock, not a transitory spike. HY indices carry disproportionate exposure to energy, transportation, and consumer discretionary sectors \u2014 all of which face direct margin compression when input costs are structurally elevated. The current HYG thesis (LATE_EXPANSION, tight spreads) implicitly assumes energy costs normalize; if the Hormuz closure proves durable ",
+          "reasoning": "Two ESTABLISHED energy shock narratives (THR_ENERGY_20260313_001 conviction 7.3; THR_ENERGY_20260413_001 conviction 7.2) both conclude Hormuz supply disruption persists into Q1-Q2 2027. If energy price elevation becomes embedded in CPI prints over the next two quarters, Warsh inherits an inflation problem that forecloses any accommodation \u2014 creating a 1970s-style stagflation trap where HY spreads widen (recession risk) AND rates stay high (duration pressure), attacking HYG from both vectors simu",
           "ic_evidence_for": [
-            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2, THREATENING): Iran war-driven Hormuz closure creating persistent energy price shock \u2014 structural margin headwind for energy-intensive HY issuers, ",
-            "THR_RECESSION_20260327_001 (FADING, conviction 4.9, THREATENING): Multi-layered crisis combining Hormuz closure with private credit stress explicitly flagged as a HY default risk catalyst by luke_grom",
-            "THR_ENERGY_20260317_002 (ESTABLISHED, conviction 8.5, NEUTRAL): Unexplained resilience of oil prices despite supply disruption suggests structural pricing shift \u2014 HY energy sector valuations may be bu"
+            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3, THREATENING): Hormuz closure triggering asymmetric energy shock to Europe and Asia \u2014 persistent supply disruption embeds inflationary pressure int",
+            "zerohedge (BULLISH on energy shock persistence, novelty 7): Full oil flow restoration unlikely before Q1-Q2 2027 even if Iran-Hormuz conflict resolves \u2014 multi-quarter inflation overhang structurally p",
+            "THR_FED_POLICY_20260513_001 (ESTABLISHED, conviction 6.9, THREATENING): Warsh cannot deliver cuts via productivity narrative \u2014 stagflation scenario removes even the theoretical easing optionality that",
+            "howell (BEARISH, novelty 6): Speculation regime makes new Fed Chair's credibility-building signals disproportionately destabilizing \u2014 any Warsh inflation-fighting rhetoric triggers outsized risk asset"
           ],
           "ic_evidence_against": [
-            "THR_ENERGY_20260320_001 (FADING, conviction 8.3, CONFIRMING): 'Fortress North America' energy self-sufficiency narrative \u2014 US domestic energy producers in HY index actually benefit from sustained high",
-            "zerohedge (BULLISH, novelty 9): US private sector investment boom driven by deregulation and energy liberalization generates reindustrialization momentum \u2014 higher nominal revenue growth provides buffe"
+            "THR_ENERGY_20260320_001 (FADING, conviction 8.4, CONFIRMING): 'Fortress North America' energy self-sufficiency narrative \u2014 US domestic energy production insulates US HY issuers from Hormuz shock, limi",
+            "zerohedge (BULLISH, novelty 9): US private sector investment boom and reindustrialization momentum \u2014 energy-intensive domestic sectors may actually benefit from higher energy prices if they are produc",
+            "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9, NEUTRAL): Trump likely to impose crude export restrictions to suppress domestic gasoline prices \u2014 policy intervention caps domestic energy inflati"
           ],
-          "early_warning_indicator": "HY energy sector OAS widens >100 bps relative to HY ex-energy OAS over a 3-week window, AND Moody's or S&P publishes a negative outlook revision on >3 energy or transportation HY issuers in a single month",
-          "early_warning_source": "Bloomberg BNKH (HY energy sub-index) vs. BAMLH0A0HYM2; Moody's/S&P credit action feeds; EIA weekly crude inventory reports for supply normalization signals",
-          "portfolio_impact": "-10 to -18% on HYG position; portfolio-level drag of -3.0 to -5.3%",
+          "early_warning_indicator": "Core CPI month-over-month print exceeds 0.4% for two consecutive months while 2Y Treasury yield rises above 5.25%, confirming stagflation regime transition that closes the Fed easing window",
+          "early_warning_source": "BLS CPI release (monthly); CME FedWatch 2Y rate pricing; HYG 30-day implied volatility (options market)",
+          "portfolio_impact": "-15 to -22% on HYG position",
           "time_horizon": "MEDIUM"
         },
         {
           "scenario_id": "PM_HYG_003",
-          "description": "A crowded unwind of the 'US Developed Market rotation' trade forces simultaneous liquidation of HYG alongside XLU and XLP (collectively 64.2% of the portfolio), creating a self-reinforcing correlation spike that amplifies losses beyond what any single position would imply.",
+          "description": "A crowding-driven liquidity air pocket develops as risk-rotation flows that have been supporting HY suddenly reverse when EM stabilization attracts capital back out of US credit, leaving HYG with a -10 to -14% drawdown over 3-5 weeks as ETF redemptions overwhelm market maker capacity.",
           "failure_category": "LIQUIDITY_FLOW",
           "probability_label": "MEDIUM",
-          "reasoning": "THR_POSITIONING_20260528_001 (ESTABLISHED, conviction 6.0, CONFIRMING) describes risk rotating INTO US Developed Markets \u2014 this is explicitly the thesis underpinning the current V16 portfolio construction. But crowded trades that confirm the thesis create the most dangerous unwind dynamics: when the rotation narrative reverses (e.g., a geopolitical de-escalation restoring EM appeal, or a US-specific credit event), HYG, XLU, and XLP all face simultaneous outflows from the same rotation trade unwi",
+          "reasoning": "Howell's BULLISH narrative (THR_POSITIONING_20260528_001, conviction 6.0) explicitly attributes recent DM strength to a GEOGRAPHIC ROTATION from crowded EM into US assets \u2014 meaning HYG's recent performance is partly flow-driven rather than fundamentals-driven. If the EM dislocation that triggered this rotation begins to stabilize (e.g., Asian EM stress resolves per THR_POSITIONING_20260513_001), the rotation reverses and HYG loses its marginal buyer precisely when it is most overweight in system",
           "ic_evidence_for": [
-            "howell (BULLISH, novelty 9): Risk appetite rotating from crowded EM into DM/US \u2014 explicitly describes the trade as a 'geographic reallocation,' signaling this is a momentum/flow-driven positioning eve",
-            "THR_POSITIONING_20260415_001 (FADING, conviction 5.1, NEUTRAL): Risk appetite recovered to pre-conflict levels with DM leading \u2014 recovery already priced in, reducing forward return potential while inc",
-            "THR_POSITIONING_20260513_001 (ESTABLISHED, conviction 4.7, THREATENING): Stretched risk exposure in Asian EM/Japan signals forced deleveraging already underway globally \u2014 contagion to DM credit via cr"
+            "howell (BULLISH, novelty 9): Risk rotation explicitly FROM EM INTO DM/US is the driver \u2014 this is flow-based support, not fundamental repricing, making it reversible on short notice",
+            "THR_POSITIONING_20260513_001 (ESTABLISHED, conviction 4.7, THREATENING): Risk exposure in Asian EM and Japan is stretched and vulnerable to correction \u2014 a forced EM unwind could paradoxically pull cap",
+            "THR_POSITIONING_20260415_001 (FADING, conviction 5.1, NEUTRAL): Risk appetite already recovering to pre-conflict levels in DM/Asian EM \u2014 suggests the rotation trade may already be mature and therefore"
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): US labor market sustained four consecutive months of strong job creation \u2014 fundamental backdrop provides genuine support for the DM rotation thesis beyond pure position",
-            "forward_guidance (MIXED, novelty 6): AI infrastructure buildout self-reinforcing structural bull \u2014 ongoing capex cycle creates real HY issuance demand from creditworthy hyperscalers, providing a funda"
+            "zerohedge (BULLISH, novelty 9): US reindustrialization momentum is a structural, multi-year theme \u2014 not a short-term flow trade, suggesting fundamental buyers will absorb any rotation-driven selling",
+            "howell (BULLISH, novelty 9): DM rotation described as geographic reallocation 'rather than risk-off' \u2014 implies sustainable repositioning, not a momentum chase that snaps back",
+            "THR_VOLATILITY_20260427_001 (FADING, conviction 5.8, CONFIRMING): Treasury buybacks reducing bond market volatility \u2014 lower vol regime structurally suppresses HY spread volatility and limits the sever"
           ],
-          "early_warning_indicator": "HYG, XLU, and XLP all decline >2% on the same day on volume >2x their respective 20-day averages, AND MSCI EM ETF (EEM) simultaneously rallies >1.5% \u2014 confirming rotation reversal rather than broad risk-off",
-          "early_warning_source": "Bloomberg cross-asset flow data; EPFR fund flow weekly reports for US HY vs. EM equity; options market put/call ratio on HYG crossing 1.2 threshold",
-          "portfolio_impact": "-14 to -20% on HYG position with correlated losses in XLU/XLP amplifying total portfolio impact to -",
+          "early_warning_indicator": "HYG weekly net ETF outflows exceeding $800M for two consecutive weeks while EEM simultaneously records inflows >$500M, confirming the rotation reversal and identifying HYG as the specific exit vehicle",
+          "early_warning_source": "ETF.com weekly flow data; Bloomberg ETF flow tracker; HYG bid-ask spread widening above 0.08% intraday (liquidity stress signal)",
+          "portfolio_impact": "-10 to -14% on HYG position",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_HYG_004",
-          "description": "Commercially accessible autonomous drone technology triggers an unforeseen insurance/liability crisis across HY-rated industrials, logistics, and infrastructure issuers, causing a rapid repricing of tail risk in HY credit that the OAS spread models have not yet incorporated.",
-          "failure_category": "EXTERNAL_SHOCK",
+          "description": "A non-obvious correlation break emerges as HYG fails to benefit from falling Treasury yields during a risk-off event because credit spreads simultaneously blow out \u2014 the traditional 'yield down = HYG up' relationship inverts when autonomous drone/geopolitical shock creates an idiosyncratic fear premium in corporate debt that Treasuries cannot offset.",
+          "failure_category": "CORRELATION_BREAK",
           "probability_label": "LOW",
-          "reasoning": "This is the contrarian/non-obvious scenario. Hidden Forces (BEARISH, novelty 7) specifically flags that within roughly two years, commercially accessible drone technology will enable individuals to field autonomous drone swarms, fundamentally undermining state security monopolies. HY issuers in logistics (trucking, last-mile delivery), energy infrastructure (pipelines, refineries), and industrial manufacturing face acute physical asset vulnerability to drone interdiction that is currently unpric",
+          "reasoning": "The Hidden Forces BEARISH claim (novelty 7) about commercially accessible autonomous drone swarms within two years democratizing lethal force represents a genuinely novel tail risk that existing credit models do not price. HYG's duration-adjusted return historically benefits when rates fall during risk-off because the rate relief partially offsets spread widening. However, if the shock is perceived as a structural security risk to physical infrastructure and supply chains \u2014 rather than a convent",
           "ic_evidence_for": [
-            "hidden_forces (BEARISH, novelty 7): Within roughly two years, commercially accessible drone swarms will fundamentally democratize lethal force and undermine state security monopolies \u2014 creates a novel",
-            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2, THREATENING): Iran war context has already demonstrated state-level willingness to weaponize infrastructure interdiction \u2014 establishes the geopoli"
+            "hidden_forces (BEARISH, novelty 7): Autonomous drone swarms within ~2 years will undermine state security monopoly \u2014 creates novel, uninsurable physical-infrastructure risk not captured in current HY ",
+            "THR_ENERGY_20260317_002 (ESTABLISHED, conviction 8.5, NEUTRAL): 'Unexplained resilience' of oil prices despite extreme supply disruption \u2014 suggests markets are already pricing novel risk premia that b",
+            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2, THREATENING): Rate cuts no longer stimulate private sector \u2014 confirms that the traditional 'rates down = credit spreads tight' transmission me"
           ],
           "ic_evidence_against": [
-            "No IC coverage directly arguing against drone risk to HY credit spreads \u2014 the scenario is structurally under-researched by credit market analysts",
-            "zerohedge (BULLISH, novelty 9): US reindustrialization momentum and deregulation suggests political will to rapidly adapt regulatory and insurance frameworks for drone threats, potentially limiting th"
+            "No IC coverage of autonomous drone risk specifically affecting corporate credit markets or HYG spread dynamics",
+            "zerohedge (BULLISH, novelty 9): Four consecutive months of strong private-sector job creation \u2014 resilient labor markets are the single strongest predictor of HY default suppression, overriding novel r",
+            "THR_ENERGY_20260320_001 (FADING, conviction 8.4, CONFIRMING): Fortress North America thesis implies US physical infrastructure is relatively insulated from Middle East-origin geopolitical shocks inclu"
           ],
-          "early_warning_indicator": "A confirmed drone attack on a publicly traded HY issuer's physical infrastructure (pipeline, warehouse, refinery) causes that issuer's bonds to trade >200 bps wider within 48 hours, AND reinsurance market quotes for industrial physical asset coverage spike >30% in the subsequent two weeks",
-          "early_warning_source": "Bloomberg credit default swap (CDS) single-name monitors for HY industrial/energy issuers; Lloyd's of London reinsurance market commentary; DHS/CISA infrastructure threat bulletins",
-          "portfolio_impact": "-10 to -15% on HYG position; portfolio-level drag of -3.0 to -4.5%, with asymmetric tail risk if con",
+          "early_warning_indicator": "30Y Treasury yield drops >25bps in a 2-week window (flight to quality) while CDX HY 5Y spread SIMULTANEOUSLY widens >50bps \u2014 the two metrics moving in opposite directions confirms the correlation break scenario is live",
+          "early_warning_source": "Bloomberg CDX HY Index vs TLT price correlation (rolling 10-day); MOVE Index vs HY spread correlation breakdown monitoring",
+          "portfolio_impact": "-11 to -16% on HYG position",
           "time_horizon": "MEDIUM"
         }
       ],
@@ -390,100 +390,99 @@
       "v16_weight": 0.197644,
       "v16_weight_pct": 19.8,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-05-28",
-      "evidence_last_updated": "2026-05-28",
+      "generated_at": "2026-05-29",
+      "evidence_last_updated": "2026-05-29",
       "failure_scenarios": [
         {
           "scenario_id": "PM_DBC_001",
-          "description": "A surprise Hormuz diplomatic resolution or unilateral US naval operation to force reopening collapses the energy risk premium in DBC's oil/energy components by 20-30% within weeks, while the broader commodity basket follows down as the geopolitical narrative unwinds.",
-          "failure_category": "NARRATIVE_COLLAPSE",
-          "probability_label": "MEDIUM",
-          "reasoning": "Two ESTABLISHED threads (THR_ENERGY_20260313_001 and THR_ENERGY_20260413_001, conviction 7.2-7.3) identify the Hormuz closure as the primary driver of DBC's energy premium. However, THR_ENERGY_20260317_002 (conviction 8.5, ESTABLISHED) explicitly notes 'unexplained resilience of oil prices despite extreme supply disruption,' suggesting the market has already priced significant fear. If a ceasefire, Trump-brokered deal with Iran, or successful US Navy escort operation reopens the strait, the ener",
+          "description": "A Trump executive order restricting or banning US crude oil exports, paired with emergency SPR releases, collapses domestic oil prices 15-25% within 4-6 weeks, dragging DBC's energy-heavy components down even as Hormuz remains closed.",
+          "failure_category": "EXTERNAL_SHOCK",
+          "probability_label": "HIGH",
+          "reasoning": "THR_ENERGY_20260430_001 is ESTABLISHED with conviction 7.9 and supported by seven IC sources including doomberg, zerohedge, forward_guidance, and macro_alf \u2014 making this arguably the single highest-probability near-term policy shock to DBC. Trump's political incentive to suppress domestic gasoline prices before midterm cycles is well-documented. An export ban would decouple US benchmark crude (WTI) from global Brent, directly hammering DBC which holds US-listed energy futures. The policy could b",
           "ic_evidence_for": [
-            "THR_ENERGY_20260317_002 (ESTABLISHED, conviction 8.5): 'Unexplained resilience of oil prices despite extreme supply disruption' \u2014 asymmetric downside if disruption resolves",
-            "THR_ENERGY_20260317_001 (FADING, conviction 8.4): 'Oil markets are efficiently pricing geopolitical risk and the muted price response signals markets do not believe disruption is permanent' \u2014 limited ",
-            "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9): Trump crude export ban/restriction narrative \u2014 domestic policy tool that could pair with diplomatic resolution to hammer energy prices from both ",
-            "zerohedge (MIXED, novelty 6): Syria's inclusion in G7 as alternative supply hub signals Western diplomatic engagement in the region, potentially a precursor to broader Hormuz-adjacent deal-making"
+            "THR_ENERGY_20260430_001 (ESTABLISHED, conviction 7.9, sources: forward_guidance, zerohedge, doomberg, hidden_forces, jeff_snider, howell, macro_alf): Broad multi-source consensus that Trump crude expo",
+            "zerohedge (BULLISH on reindustrialization, novelty 9): US energy liberalization narrative could paradoxically accelerate domestic oversupply if export outlets are blocked, pressuring WTI",
+            "THR_ENERGY_20260320_001 (FADING but conviction 8.4): 'Fortress North America' energy self-sufficiency framing is the ideological cover for an export ban \u2014 the narrative scaffolding already exists"
           ],
           "ic_evidence_against": [
-            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3): Multiple sources including crescat, jeff_snider, doomberg treating the Hormuz closure as a persistent, structural shock \u2014 not a transient event",
-            "THR_ENERGY_20260413_001 (ESTABLISHED, conviction 7.2): Iran war-driven closure framing implies military escalation rather than diplomatic tractability",
-            "THR_ENERGY_20260320_001 (FADING, conviction 8.3): 'Fortress North America' narrative suggests US is partially insulated from Hormuz resolution effects, which could limit but not eliminate commodity do"
+            "zerohedge (BULLISH, novelty 9): US private-sector investment boom and energy liberalization suggest the administration favors producer-friendly policy, not export restrictions",
+            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3): Global Hormuz supply shock so severe that even an export ban may not fully offset upward price pressure on global benchmarks, limiting DBC downsi",
+            "THR_DOLLAR_20260410_001 (ESTABLISHED, conviction 5.4): Dollar weakness from de-dollarization provides commodity price floor, cushioning DBC from full export-ban impact"
           ],
-          "early_warning_indicator": "Brent crude falls >8% in a 5-trading-day window while geopolitical news wires carry Iran diplomatic contacts or UN-brokered ceasefire language; simultaneously, DBC's 20-day rolling correlation with VIX turns negative (risk-off unwind).",
-          "early_warning_source": "Brent crude spot (ICE), DBC daily NAV, VIX, and State Department/UN press wire monitoring",
-          "portfolio_impact": "-14 to -22% on DBC position",
+          "early_warning_indicator": "WTI-Brent spread widens beyond -$8/barrel (WTI discount) within a 5-day window, or White House sources leak export restriction language via Reuters/Bloomberg energy wires",
+          "early_warning_source": "WTI/Brent spread on Bloomberg commodity monitor; White House trade/energy policy wires; doomberg subscriber alerts",
+          "portfolio_impact": "-12 to -20% on DBC position",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_DBC_002",
-          "description": "A global recession materializes faster than the LATE_EXPANSION regime implies, driven by the compound shock of Hormuz-induced stagflation destroying demand, and DBC's industrial commodities (copper, aluminum, agriculture) reprice sharply lower as the growth narrative breaks.",
+          "description": "A LATE_EXPANSION regime tipping into recession \u2014 triggered by the private credit stress cascade identified in THR_RECESSION_20260327_001 \u2014 collapses industrial commodity demand expectations, driving DBC's non-energy components (copper, agriculture, base metals) down 15-20% and offsetting any residual energy premium.",
           "failure_category": "MACRO_REGIME_SHIFT",
           "probability_label": "MEDIUM",
-          "reasoning": "THR_RECESSION_20260327_001 (FADING, conviction 4.9) identifies a 'multi-layered crisis' scenario combining Hormuz closure, private credit stress, and AI-driven job losses \u2014 while currently fading, conviction at 4.9 means it is not dismissed. The LATE_EXPANSION regime designation is the critical vulnerability: if the regime shifts to CONTRACTION, DBC's industrial commodity components (copper ~7%, zinc, aluminum) would lead the drawdown as forward demand expectations collapse. THR_COMMODITIES_2026",
+          "reasoning": "DBC is a diversified commodity basket where energy is roughly 50-55% of weight, but industrial metals and agriculture constitute the remainder. A recession scenario \u2014 even if the Hormuz energy shock persists \u2014 would destroy forward demand expectations for copper and industrial inputs. jeff_snider's software loan/private credit warning (novelty 7) parallels the THR_RECESSION thread (conviction 4.9, FADING but still active). The LATE_EXPANSION regime designation itself signals proximity to the inf",
           "ic_evidence_for": [
-            "THR_RECESSION_20260327_001 (FADING, conviction 4.9): 'Multi-layered crisis including Hormuz + private credit stress + AI job losses' \u2014 even at reduced conviction, compound shock scenario remains plaus",
-            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2): 'Lower Fed funds rates may no longer stimulate because private sector is a net creditor/saver' \u2014 traditional policy tools ineffective, limiti",
-            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1): 'Bond markets signaling imminent rate hikes and risk-off shift' \u2014 if rate hikes materialize into slowing growth, demand destruction hits comm",
-            "howell (BULLISH, novelty 9): Risk appetite rotating FROM Emerging Markets \u2014 EM demand destruction for industrial commodities would reduce global commodity demand significantly"
+            "jeff_snider (BEARISH, novelty 7): Software loans becoming 'private credit's equivalent of subprime mortgages' \u2014 a sector-specific credit event that could cascade into broad risk-off and demand destruc",
+            "THR_RECESSION_20260327_001 (FADING but conviction 4.9): Multi-layered crisis framing (Hormuz + private credit + AI job displacement) still active across luke_gromen, jeff_snider, howell, crescat",
+            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2): 'Lower Fed funds rates may no longer stimulate the economy because the private sector has become a net saver' \u2014 monetary policy impotence in ",
+            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1): Bond markets signaling imminent rate hikes \u2014 if the Fed tightens into weakness, it accelerates recession risk and hammers industrial commodit"
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): 'US labor market sustained four consecutive months of strong private-sector job creation' \u2014 hard data does not support imminent demand collapse",
-            "zerohedge (BULLISH, novelty 9): 'US private sector investment boom driven by deregulation and energy liberalization generating genuine reindustrialization momentum' \u2014 domestic demand for industrial co",
-            "THR_ENERGY_20260320_001 (FADING, conviction 8.3): 'Fortress North America energy self-sufficiency' \u2014 US insulation from Hormuz shock limits stagflationary demand destruction domestically"
+            "zerohedge (BULLISH, novelty 9): Four consecutive months of strong private-sector job creation under Trump suggests the economy has not broken down despite geopolitical shocks",
+            "howell (BULLISH, novelty 9): Risk appetite rotating into Developed Markets rather than into risk-off \u2014 geographic reallocation, not demand collapse",
+            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3): Energy supply shock provides commodity price floor even in mild recession scenarios \u2014 DBC energy components insulate the basket"
           ],
-          "early_warning_indicator": "LME copper spot price breaks below its 200-day moving average by >3% AND US ISM Manufacturing PMI prints below 47 in consecutive months, while HYG credit spreads widen >80bps from current levels.",
-          "early_warning_source": "LME copper spot, ISM Manufacturing PMI monthly release, HYG OAS spread (Bloomberg/ICE BofA index)",
-          "portfolio_impact": "-12 to -18% on DBC position",
+          "early_warning_indicator": "LME Copper falls below $8,500/tonne AND US ISM Manufacturing index prints below 47.5 in the same month, signaling synchronized industrial demand deterioration",
+          "early_warning_source": "LME Copper spot price (Bloomberg); ISM Manufacturing PMI monthly release; jeff_snider Eurodollar University credit stress indicators",
+          "portfolio_impact": "-10 to -18% on DBC position",
           "time_horizon": "MEDIUM"
         },
         {
           "scenario_id": "PM_DBC_003",
-          "description": "The 'friendshored' critical minerals supply chain buildout (Pax Silica, Critical Minerals Ministerial) accelerates faster than expected, flooding industrial commodity markets with new Allied-bloc supply and collapsing the scarcity premium that supports DBC's metals components.",
-          "failure_category": "NARRATIVE_COLLAPSE",
-          "probability_label": "LOW",
-          "reasoning": "This is the contrarian failure mode: the bullish structural narrative itself becomes the bearish catalyst. ZeroHedge (BULLISH, novelty 9) highlights Allied coordination frameworks actively building 'friendshored' critical minerals supply chains that 'reduce Chinese pricing power.' If these frameworks execute faster than markets expect \u2014 potentially accelerated by the Hormuz crisis creating urgency for energy/minerals security \u2014 the result is a supply surge into industrial and precious metals mar",
+          "description": "DBC suffers a liquidity/crowding unwind as systematic macro funds simultaneously de-risk from commodities when the HYG position (29.7% of portfolio) triggers a correlated risk-off signal, compressing DBC through forced selling rather than any fundamental commodity development.",
+          "failure_category": "LIQUIDITY_FLOW",
+          "probability_label": "MEDIUM",
+          "reasoning": "The current V16 portfolio has a notably defensive/commodity-heavy tilt (HYG 29.7% + DBC 19.8% + XLU 18% + XLP 16.5% + GLD 16%) \u2014 a configuration that many systematic macro and risk-parity funds are likely running simultaneously given the Hormuz narrative. If HYG \u2014 the portfolio's largest position and a credit stress barometer \u2014 cracks due to the private credit deterioration flagged by jeff_snider, the portfolio's internal correlation structure breaks down: funds that hold HYG+DBC together will s",
           "ic_evidence_for": [
-            "zerohedge (BULLISH, novelty 9): 'Allied coordination frameworks (Pax Silica, Critical Minerals Ministerial) are actively building friendshored supply chains that reduce Chinese pricing power' \u2014 supply",
-            "zerohedge (BULLISH, novelty 6): 'Domestic e-waste processing of Pentagon stockpiles is fastest viable pathway to satisfy 2027 DFARS critical minerals compliance deadline' \u2014 policy-driven supply accele",
-            "THR_COMMODITIES_20260506_001 (ESTABLISHED, conviction 4.8): 'Industrial commodities will outperform' thesis depends on constrained supply \u2014 if supply constraint resolves, the thesis inverts"
+            "jeff_snider (BEARISH, novelty 7): Private credit stress in software loans threatens to be 'sector-specific catalyst' for broader credit event \u2014 directly threatens HYG and the correlated commodity unwi",
+            "THR_RECESSION_20260327_001 (FADING, conviction 4.9): Multi-source recession framing suggests crowded defensive positioning across hedge fund community, creating systemic unwind risk",
+            "howell (BULLISH on EM-to-DM rotation, novelty 9): Flow rotation narratives that drive crowding also create the conditions for sudden reversal when positioning becomes consensus"
           ],
           "ic_evidence_against": [
-            "No IC coverage of friendshoring supply timelines being faster than 3-5 years for greenfield mining",
-            "zerohedge (BULLISH, novelty 9): US reindustrialization boom creates domestic demand that would absorb new supply, preventing price collapse",
-            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3): Hormuz closure structurally disrupts global energy-intensive metals smelting capacity, constraining refined metals supply regardless of raw mater"
+            "howell (BULLISH, novelty 9): Risk appetite rotating into DM rather than out of risk assets entirely \u2014 suggests flows are directional reallocations, not panic unwinds",
+            "macro_alf (BULLISH, novelty 7): Gold options positioning turning contrarian-bullish with institutional underinvestment in commodities \u2014 argues against crowding in commodity complex",
+            "THR_ENERGY_20260313_001 (ESTABLISHED, conviction 7.3): Persistent Hormuz supply shock provides fundamental anchor that limits pure flow-driven selloffs \u2014 buyers emerge on dips"
           ],
-          "early_warning_indicator": "LME copper 3-month forward price drops below spot (contango flips to backwardation collapse) AND Chilean/Australian mining capex announcements exceed $5B in a single quarter, signaling supply pipeline acceleration.",
-          "early_warning_source": "LME forward curve (Bloomberg), S&P Global Metals & Mining capex tracker, US DFARS compliance filings",
-          "portfolio_impact": "-10 to -15% on DBC position",
-          "time_horizon": "MEDIUM"
+          "early_warning_indicator": "HYG ETF experiences >$800M single-day outflow AND DBC open interest drops >8% in the same 3-day window, signaling correlated systematic de-risking rather than isolated commodity move",
+          "early_warning_source": "ETF flow data (Bloomberg ETF monitor / flowfromalpha.com); CME/ICE commodity futures open interest reports; V16 regime transition signals",
+          "portfolio_impact": "-8 to -15% on DBC position",
+          "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_DBC_004",
-          "description": "A simultaneous crowding reversal occurs across the portfolio's defensive/commodity cluster \u2014 HYG credit spreads widen sharply, triggering systematic risk-off deleveraging that forces liquidation of commodity positions including DBC, compounding losses as correlated selling pressure overrides fundamental support.",
-          "failure_category": "LIQUIDITY_FLOW",
-          "probability_label": "MEDIUM",
-          "reasoning": "The current portfolio is structurally concentrated in a single macro regime bet: HYG (29.7%) + DBC (19.8%) + XLU (18%) + XLP (16.5%) represents a LATE_EXPANSION/inflation-hedge cluster where all positions benefit from the same 'real assets + yield' narrative. THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1) warns bond markets signal imminent rate hikes \u2014 if rate hike expectations crystallize, HYG credit spreads would widen (credit stress), which historically triggers systematic fund del",
+          "description": "The historical correlation between a weakening US dollar and rising commodity prices breaks down as de-dollarization accelerates \u2014 Asian buyers settle oil trades in yuan at discounted prices, meaning DBC's USD-denominated futures fail to capture the actual commodity price moves occurring in non-dollar markets.",
+          "failure_category": "CORRELATION_BREAK",
+          "probability_label": "LOW",
+          "reasoning": "This is the contrarian scenario. THR_DOLLAR_20260410_001 (ESTABLISHED, conviction 5.4) explicitly flags de-dollarization of commodity markets as a structural force. If Middle Eastern producers price oil in yuan or euros with Chinese/Indian buyers, WTI futures (which dominate DBC's energy exposure) become increasingly disconnected from the actual global clearing price. DBC holds US-listed futures contracts \u2014 if the physical oil market bifurcates into a discounted dollar-denominated market and a p",
           "ic_evidence_for": [
-            "THR_FED_POLICY_20260330_001 (ESTABLISHED, conviction 7.1): 'Bond markets signaling imminent rate hikes and clear risk-off shift' \u2014 rate hike shock would simultaneously hit HYG and force commodity dele",
-            "THR_FED_POLICY_20260508_001 (ESTABLISHED, conviction 7.2): 'Lower Fed funds rates may no longer stimulate' \u2014 policy impotence means a credit shock has no effective backstop, amplifying liquidation cas",
-            "THR_RECESSION_20260327_001 (FADING, conviction 4.9): Private credit stress explicitly identified as one leg of the multi-layered crisis \u2014 HYG widening is a direct manifestation of this risk"
+            "THR_DOLLAR_20260410_001 (ESTABLISHED, conviction 5.4): 'Dollar faces structural downside pressure as Hormuz disruption accelerates de-dollarization of commodity markets' \u2014 forward_guidance, doomberg, ",
+            "zerohedge (MIXED, novelty 6): Syria's emergence as alternative supply chain hub amid Hormuz crisis signals new trade routing that bypasses traditional dollar-settlement infrastructure",
+            "hidden_forces (BEARISH, novelty 7): Democratization of lethal force via drone swarms undermines state security monopoly \u2014 geopolitical fragmentation that accelerates parallel non-dollar commodity mark"
           ],
           "ic_evidence_against": [
-            "howell (BULLISH, novelty 9): Risk appetite rotating INTO Developed Markets \u2014 this flow supports both credit and commodity positions simultaneously, arguing against a correlated reversal",
-            "zerohedge (BULLISH, novelty 9): Strong US labor market and private investment boom reduce probability of abrupt credit deterioration",
-            "macro_alf (BULLISH, novelty 7): Gold options positioning turning contrarian-bullish suggests institutional underinvestment in commodities \u2014 crowding risk may be less acute than it appears"
+            "zerohedge (BULLISH, novelty 9): US reindustrialization and energy liberalization strengthen dollar's role as energy pricing currency \u2014 Fortress North America narrative reinforces petrodollar",
+            "THR_ENERGY_20260320_001 (FADING but conviction 8.4): 'Fortress North America' energy self-sufficiency means US energy markets remain the global marginal price setter, keeping WTI relevant",
+            "No IC coverage of WTI futures basis risk or ETF tracking error in de-dollarization scenario specifically"
           ],
-          "early_warning_indicator": "HYG OAS credit spread widens >100bps over 10 trading days while DBC's 30-day realized volatility spikes above 25% AND CFTC net long positioning in WTI/copper futures drops >15% in a single weekly COT report.",
-          "early_warning_source": "ICE BofA HYG OAS spread (daily), CFTC Commitments of Traders report (weekly, Tuesday release), DBC 30-day realized vol calculation",
-          "portfolio_impact": "-11 to -19% on DBC position",
-          "time_horizon": "SHORT"
+          "early_warning_indicator": "Brent-WTI spread widens beyond $12/barrel sustained for 10+ trading days, combined with CNH-denominated crude futures (Shanghai INE) trading at >5% premium to WTI USD equivalent",
+          "early_warning_source": "Shanghai INE crude futures vs. WTI spread (Bloomberg); CNH/USD cross rate vs. DBC NAV premium/discount tracking",
+          "portfolio_impact": "-10 to -16% on DBC position (underperformance vs. physical commodity)",
+          "time_horizon": "MEDIUM"
         }
       ],
       "scenario_count": 4,
-      "aggregate_risk": "MEDIUM"
+      "aggregate_risk": "HIGH"
     }
   },
-  "last_updated": "2026-05-28",
-  "last_generated": "2026-05-28"
+  "last_updated": "2026-05-29",
+  "last_generated": "2026-05-29"
 }
