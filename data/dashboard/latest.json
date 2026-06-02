@@ -1,18 +1,18 @@
 {
   "schema_version": "2.0",
-  "date": "2026-06-01",
-  "weekday": "Monday",
-  "generated_at": "2026-06-01T11:14:27Z",
+  "date": "2026-06-02",
+  "weekday": "Tuesday",
+  "generated_at": "2026-06-02T10:10:19Z",
   "degradation_level": "PARTIAL",
   "degradation_banner": "Pipeline Phase 1: Nur V16-Daten. Agenten-Pipeline noch nicht aktiv.",
   "header": {
-    "date": "2026-06-01",
-    "weekday": "Monday",
-    "briefing_type": "ACTION",
-    "system_conviction": "LOW",
+    "date": "2026-06-02",
+    "weekday": "Tuesday",
+    "briefing_type": "ROUTINE",
+    "system_conviction": "N/A",
     "risk_ampel": "GREEN",
-    "fragility_state": "HEALTHY",
-    "v16_regime": "SOFT_LANDING",
+    "fragility_state": "N/A",
+    "v16_regime": "LATE_EXPANSION",
     "data_quality": "PARTIAL",
     "pipeline_status": "PHASE_1",
     "f6_positions_count": 0,
@@ -20,18 +20,18 @@
     "divergences_count": 0,
     "action_items_act_count": 0,
     "action_items_review_count": 0,
-    "action_items_watch_count": 10,
-    "da_challenges_total": 5,
-    "da_accepted": 3,
-    "da_noted": 1,
-    "da_rejected": 1,
+    "action_items_watch_count": 0,
+    "da_challenges_total": 0,
+    "da_accepted": 0,
+    "da_noted": 0,
+    "da_rejected": 0,
     "fact_check_corrections": 0,
     "is_draft_fallback": false
   },
   "digest": {
-    "line_1_type_and_delta": "ACTION — V16 Regime: SOFT_LANDING. Conviction: LOW. Risk: GREEN.",
-    "line_2_actions": "Keine Action Items. System stabil.",
-    "line_3_confidence": "Conviction: LOW. Fragility: HEALTHY. Data: DEGRADED."
+    "line_1_type_and_delta": "ROUTINE — V16 Regime: LATE_EXPANSION (State 3: LATE_EXPANSION)",
+    "line_2_actions": "V16 DD-Protect: 0 Assets. Growth=1, Liq=-1, Stress=0.",
+    "line_3_confidence": "Pipeline Phase 1 (nur V16). CAGR=0.0%, Sharpe=0. Agenten-Pipeline noch nicht aktiv."
   },
   "deltas": {
     "has_yesterday": false
@@ -261,7 +261,7 @@
   },
   "layers": {
     "status": "AVAILABLE",
-    "system_regime": "SELECTIVE",
+    "system_regime": "LATE_EXPANSION",
     "regime_stability_pct": null,
     "fragility_state": "HEALTHY",
     "fragility_data": {},
@@ -406,11 +406,11 @@
   },
   "v16": {
     "status": "AVAILABLE",
-    "regime": "SOFT_LANDING",
+    "regime": "LATE_EXPANSION",
     "regime_confidence": null,
-    "macro_state_num": 7,
-    "macro_state_name": "SOFT_LANDING",
-    "growth_signal": 0,
+    "macro_state_num": 3,
+    "macro_state_name": "LATE_EXPANSION",
+    "growth_signal": 1,
     "liq_direction": -1,
     "stress_score": 0,
     "dd_protect_status": "INACTIVE",
@@ -418,60 +418,6 @@
     "current_drawdown": 0.0,
     "dd_protect_threshold": -10.0,
     "current_weights": {
-      "GLD": 0.228599,
-      "SLV": 0.113609,
-      "GDX": 0.0,
-      "GDXJ": 0.0,
-      "SIL": 0.0,
-      "SPY": 0.0,
-      "XLY": 0.0,
-      "XLI": 0.0,
-      "XLF": 0.0,
-      "XLE": 0.0,
-      "IWM": 0.0,
-      "XLK": 0.0,
-      "XLV": 0.0,
-      "XLP": 0.0,
-      "XLU": 0.0,
-      "VNQ": 0.0,
-      "EEM": 0.0,
-      "VGK": 0.0,
-      "TLT": 0.280612,
-      "TIP": 0.123127,
-      "LQD": 0.0,
-      "HYG": 0.0,
-      "DBC": 0.254053,
-      "BTC": 0.0,
-      "ETH": 0.0
-    },
-    "target_weights": {
-      "GLD": 0.228599,
-      "SLV": 0.113609,
-      "GDX": 0.0,
-      "GDXJ": 0.0,
-      "SIL": 0.0,
-      "SPY": 0.0,
-      "XLY": 0.0,
-      "XLI": 0.0,
-      "XLF": 0.0,
-      "XLE": 0.0,
-      "IWM": 0.0,
-      "XLK": 0.0,
-      "XLV": 0.0,
-      "XLP": 0.0,
-      "XLU": 0.0,
-      "VNQ": 0.0,
-      "EEM": 0.0,
-      "VGK": 0.0,
-      "TLT": 0.280612,
-      "TIP": 0.123127,
-      "LQD": 0.0,
-      "HYG": 0.0,
-      "DBC": 0.254053,
-      "BTC": 0.0,
-      "ETH": 0.0
-    },
-    "previous_weights": {
       "GLD": 0.159639,
       "SLV": 0.0,
       "GDX": 0.0,
@@ -498,87 +444,140 @@
       "BTC": 0.0,
       "ETH": 0.0
     },
+    "target_weights": {
+      "GLD": 0.159639,
+      "SLV": 0.0,
+      "GDX": 0.0,
+      "GDXJ": 0.0,
+      "SIL": 0.0,
+      "SPY": 0.0,
+      "XLY": 0.0,
+      "XLI": 0.0,
+      "XLF": 0.0,
+      "XLE": 0.0,
+      "IWM": 0.0,
+      "XLK": 0.0,
+      "XLV": 0.0,
+      "XLP": 0.165144,
+      "XLU": 0.180418,
+      "VNQ": 0.0,
+      "EEM": 0.0,
+      "VGK": 0.0,
+      "TLT": 0.0,
+      "TIP": 0.0,
+      "LQD": 0.0,
+      "HYG": 0.297155,
+      "DBC": 0.197644,
+      "BTC": 0.0,
+      "ETH": 0.0
+    },
+    "previous_weights": {
+      "GLD": 0.228599,
+      "SLV": 0.113609,
+      "GDX": 0.0,
+      "GDXJ": 0.0,
+      "SIL": 0.0,
+      "SPY": 0.0,
+      "XLY": 0.0,
+      "XLI": 0.0,
+      "XLF": 0.0,
+      "XLE": 0.0,
+      "IWM": 0.0,
+      "XLK": 0.0,
+      "XLV": 0.0,
+      "XLP": 0.0,
+      "XLU": 0.0,
+      "VNQ": 0.0,
+      "EEM": 0.0,
+      "VGK": 0.0,
+      "TLT": 0.280612,
+      "TIP": 0.123127,
+      "LQD": 0.0,
+      "HYG": 0.0,
+      "DBC": 0.254053,
+      "BTC": 0.0,
+      "ETH": 0.0
+    },
     "top_5_weights": [
       {
-        "ticker": "TLT",
-        "weight": 0.280612
+        "ticker": "HYG",
+        "weight": 0.297155
       },
       {
         "ticker": "DBC",
-        "weight": 0.254053
+        "weight": 0.197644
+      },
+      {
+        "ticker": "XLU",
+        "weight": 0.180418
+      },
+      {
+        "ticker": "XLP",
+        "weight": 0.165144
       },
       {
         "ticker": "GLD",
-        "weight": 0.228599
-      },
-      {
-        "ticker": "TIP",
-        "weight": 0.123127
-      },
-      {
-        "ticker": "SLV",
-        "weight": 0.113609
+        "weight": 0.159639
       }
     ],
     "cluster_weights": {
-      "PM": 0.3422,
+      "PM": 0.1596,
       "EQ_CYCL": 0.0,
-      "EQ_DEFN": 0.0,
+      "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.4037,
-      "CREDIT": 0.0,
-      "COMMOD": 0.2541,
+      "BOND": 0.2972,
+      "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
     "weight_deltas": {
       "top_increases": [
         {
-          "ticker": "TLT",
-          "delta": 28.06
+          "ticker": "HYG",
+          "delta": 29.72
         },
         {
-          "ticker": "TIP",
-          "delta": 12.31
+          "ticker": "XLU",
+          "delta": 18.04
         },
         {
-          "ticker": "SLV",
-          "delta": 11.36
-        },
-        {
-          "ticker": "GLD",
-          "delta": 6.9
-        },
-        {
-          "ticker": "DBC",
-          "delta": 5.64
+          "ticker": "XLP",
+          "delta": 16.51
         }
       ],
       "top_decreases": [
         {
-          "ticker": "HYG",
-          "delta": -29.72
+          "ticker": "TLT",
+          "delta": -28.06
         },
         {
-          "ticker": "XLU",
-          "delta": -18.04
+          "ticker": "TIP",
+          "delta": -12.31
         },
         {
-          "ticker": "XLP",
-          "delta": -16.51
+          "ticker": "SLV",
+          "delta": -11.36
+        },
+        {
+          "ticker": "GLD",
+          "delta": -6.9
+        },
+        {
+          "ticker": "DBC",
+          "delta": -5.64
         }
       ],
       "rotation_needed": true,
       "max_delta_pct": 29.72,
       "new_positions": [
-        "SLV",
-        "TLT",
-        "TIP"
+        "XLU",
+        "XLP",
+        "HYG"
       ],
       "exited_positions": [
-        "XLU",
-        "HYG",
-        "XLP"
+        "SLV",
+        "TIP",
+        "TLT"
       ],
       "total_turnover_pct": 64.27,
       "has_previous": true
@@ -5431,14 +5430,14 @@
     }
   ],
   "temporal_map": {
-    "market_data_as_of": "2026-06-01T21:00:00Z",
-    "v16_regime_based_on": "2026-06-01 close",
-    "dashboard_rendered_at": "2026-06-01T11:14:27Z"
+    "market_data_as_of": "2026-06-02T21:00:00Z",
+    "v16_regime_based_on": "2026-06-02 close",
+    "dashboard_rendered_at": "2026-06-02T10:10:19Z"
   },
   "agent_r_context": {
-    "date": "2026-06-01",
+    "date": "2026-06-02",
     "briefing_type": "ROUTINE",
-    "regime": "SOFT_LANDING",
+    "regime": "LATE_EXPANSION",
     "regime_transition": false,
     "conviction": "N/A",
     "risk_ampel": "GREEN",
@@ -5453,10 +5452,10 @@
     "regime_stability_pct": null
   },
   "timeseries_row": {
-    "date": "2026-06-01",
-    "regime": "SOFT_LANDING",
-    "macro_state": 7,
-    "growth": 0,
+    "date": "2026-06-02",
+    "regime": "LATE_EXPANSION",
+    "macro_state": 3,
+    "growth": 1,
     "liq_dir": -1,
     "stress": 0,
     "dd_protect_count": 0,
