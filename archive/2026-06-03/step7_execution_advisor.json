@@ -1,0 +1,1402 @@
+{
+  "date": "2026-06-03",
+  "run_timestamp": "2026-06-03T11:21:30.413864Z",
+  "execution_assessment": {
+    "total_score": 9,
+    "raw_score": 9,
+    "max_possible": 18,
+    "execution_level": "WAIT",
+    "veto_applied": false,
+    "veto_reason": null,
+    "dimensions": {
+      "event_risk": {
+        "score": 2,
+        "max": 3,
+        "label": "Employment Situation (May) — NFP",
+        "detail": {
+          "events_48h_high": [
+            "Employment Situation (May) — NFP"
+          ],
+          "events_48h_medium": [],
+          "events_14d_high_count": 2,
+          "convergence_weeks": [
+            {
+              "start": "2026-06-04",
+              "end": "2026-06-11",
+              "events": [
+                "Employment Situation (May) — NFP",
+                "CPI (May)"
+              ],
+              "risk_level": "ELEVATED"
+            },
+            {
+              "start": "2026-06-16",
+              "end": "2026-06-20",
+              "events": [
+                "FOMC Rate Decision (June) — SEP/Dot Plot",
+                "Quad Witching"
+              ],
+              "risk_level": "ELEVATED"
+            }
+          ],
+          "in_convergence_week": false
+        }
+      },
+      "positioning_conflict": {
+        "score": 3,
+        "max": 3,
+        "label": "COT DBC -52.6%",
+        "detail": {
+          "conflicts": [
+            {
+              "asset": "DBC",
+              "weight": 0.254053,
+              "cot_field": "COT_GOLD_COMM_NET",
+              "cot_value": -52.5521,
+              "direction": "long",
+              "severity": "EXTREME"
+            },
+            {
+              "asset": "GLD",
+              "weight": 0.228599,
+              "cot_field": "COT_GOLD_COMM_NET",
+              "cot_value": -52.5521,
+              "direction": "long",
+              "severity": "EXTREME"
+            },
+            {
+              "asset": "SLV",
+              "weight": 0.113609,
+              "cot_field": "COT_GOLD_COMM_NET",
+              "cot_value": -52.5521,
+              "direction": "long",
+              "severity": "EXTREME"
+            }
+          ],
+          "confirmations": [
+            {
+              "asset": "TLT",
+              "weight": 0.280612,
+              "cot_field": "COT_TREASURY_COMM_NET",
+              "cot_value": 14.9254,
+              "direction": "long",
+              "severity": "NONE"
+            }
+          ],
+          "fund_flows": -0.2,
+          "flow_conflict": false,
+          "extreme_count": 3,
+          "elevated_count": 0
+        }
+      },
+      "liquidity_risk": {
+        "score": 3,
+        "max": 3,
+        "label": "amihud: ILLIQUID, vix_term: BACKWARDATION",
+        "detail": {
+          "signals": {
+            "amihud": {
+              "value": 85.17,
+              "assessment": "ILLIQUID",
+              "score": 2
+            },
+            "sofr_ffr": {
+              "value": 3.0,
+              "assessment": "NORMAL",
+              "score": 0
+            },
+            "fin_stress": {
+              "value": -0.7611,
+              "assessment": "RELAXED",
+              "score": 0
+            },
+            "vix_term": {
+              "value": 0.8091,
+              "assessment": "BACKWARDATION",
+              "score": 2
+            },
+            "avg_corr": {
+              "value": 0.6175,
+              "assessment": "HIGH_CORRELATION",
+              "score": 1
+            }
+          }
+        }
+      },
+      "cross_asset_confirmation": {
+        "score": 1,
+        "max": 3,
+        "label": "GOLD_REAL_YIELD_DIVERGENCE",
+        "detail": {
+          "divergences": [
+            {
+              "type": "GOLD_REAL_YIELD_DIVERGENCE",
+              "detail": "V16 hat 34% Gold aber Real Yields Rising — Gegenwind",
+              "severity": "ELEVATED"
+            }
+          ],
+          "confirmations": [
+            {
+              "type": "GOLD_DXY_NORMAL",
+              "detail": "Gold -0.7%, DXY +0.8% — normale Relation"
+            },
+            {
+              "type": "COMMODITY_COPPER_CONFIRMED",
+              "detail": "V16 60% Commodity + Copper Rising — bestätigt"
+            }
+          ],
+          "high_count": 0,
+          "elevated_count": 1
+        }
+      },
+      "gex_regime": {
+        "score": 0,
+        "max": 3,
+        "label": "GEX $0.02B — POSITIVE_STABILIZING",
+        "detail": {
+          "gex": 0.0211,
+          "assessment": "POSITIVE_STABILIZING",
+          "has_imminent_event": true,
+          "note": "Positive GEX = Dealer dampen moves. Negative = Dealer amplify moves."
+        }
+      },
+      "sentiment_extreme": {
+        "score": 0,
+        "max": 3,
+        "label": "Neutral",
+        "detail": {
+          "signals": {
+            "cnn_fg": {
+              "value": 56.97,
+              "assessment": "NEUTRAL",
+              "warning": false
+            },
+            "vix": {
+              "value": 16.05,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "pcr": {
+              "value": 0.701,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "insider": {
+              "value": 2.5,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "move": {
+              "value": 73.43,
+              "assessment": "NORMAL",
+              "warning": false
+            }
+          },
+          "warning_count": 0
+        }
+      }
+    }
+  },
+  "confirming_conflicting": {
+    "confirming": [
+      {
+        "signal": "COT TLT bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_TREASURY_COMM_NET = 14.9% — kein Conflict"
+      },
+      {
+        "signal": "sofr_ffr: NORMAL",
+        "source": "DW_L5",
+        "detail": "Wert: 3.0"
+      },
+      {
+        "signal": "fin_stress: RELAXED",
+        "source": "DW_L5",
+        "detail": "Wert: -0.7611"
+      },
+      {
+        "signal": "GOLD_DXY_NORMAL",
+        "source": "DW_L7",
+        "detail": "Gold -0.7%, DXY +0.8% — normale Relation"
+      },
+      {
+        "signal": "COMMODITY_COPPER_CONFIRMED",
+        "source": "DW_L7",
+        "detail": "V16 60% Commodity + Copper Rising — bestätigt"
+      },
+      {
+        "signal": "GEX positiv ($0.02B)",
+        "source": "DW_L4_GEX",
+        "detail": "Dealer-Hedging dämpft Moves — stabilisierend"
+      },
+      {
+        "signal": "cnn_fg: NEUTRAL",
+        "source": "DW_L2",
+        "detail": "Wert: 56.97"
+      },
+      {
+        "signal": "vix: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 16.05"
+      },
+      {
+        "signal": "pcr: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 0.701"
+      },
+      {
+        "signal": "insider: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 2.5"
+      },
+      {
+        "signal": "move: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 73.43"
+      }
+    ],
+    "conflicting": [
+      {
+        "signal": "Employment Situation (May) — NFP in 48h",
+        "source": "EVENT_CALENDAR",
+        "detail": "HIGH-Impact Event kann Richtung und Liquidität verändern"
+      },
+      {
+        "signal": "COT DBC Conflict (EXTREME)",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = -52.6% — Smart Money gegen DBC (25% im Portfolio)"
+      },
+      {
+        "signal": "COT GLD Conflict (EXTREME)",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = -52.6% — Smart Money gegen GLD (23% im Portfolio)"
+      },
+      {
+        "signal": "COT SLV Conflict (EXTREME)",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = -52.6% — Smart Money gegen SLV (11% im Portfolio)"
+      },
+      {
+        "signal": "amihud: ILLIQUID",
+        "source": "DW_L5",
+        "detail": "Wert: 85.17 — Liquiditäts-Risiko"
+      },
+      {
+        "signal": "vix_term: BACKWARDATION",
+        "source": "DW_L5",
+        "detail": "Wert: 0.8091 — Liquiditäts-Risiko"
+      },
+      {
+        "signal": "avg_corr: HIGH_CORRELATION",
+        "source": "DW_L5",
+        "detail": "Wert: 0.6175 — Liquiditäts-Risiko"
+      },
+      {
+        "signal": "GOLD_REAL_YIELD_DIVERGENCE",
+        "source": "DW_L7",
+        "detail": "V16 hat 34% Gold aber Real Yields Rising — Gegenwind"
+      },
+      {
+        "signal": "Router Proximity 79%",
+        "source": "STEP2_SIGNAL_GENERATOR",
+        "detail": "Router nähert sich Trigger (CHINA_STIMULUS)"
+      },
+      {
+        "signal": "V16: 4 materielle Trades",
+        "source": "STEP2_V16",
+        "detail": "Umfangreiches Rebalancing — erhöhtes Slippage-Risiko bei schlechten Bedingungen"
+      }
+    ],
+    "confirming_count": 11,
+    "conflicting_count": 10,
+    "net_assessment": "MILDLY_CONFIRMING"
+  },
+  "recommendation": {
+    "action": "WAIT_FOR_CLARITY",
+    "reasoning": "Kein materielles Rebalancing nötig — alle Positionen HOLD.",
+    "specific_actions": [],
+    "would_change_my_mind": {
+      "execute_if": [
+        "VIX fällt unter 14.0 UND VIX Term Structure steigt über 0.95 (Backwardation löst sich)",
+        "COT Gold Commercial steigt über -40% (Smart Money reduziert Short-Position um >20%)"
+      ],
+      "hold_if": [
+        "VIX steigt über 22.0 vor NFP-Release (Stress-Regime)",
+        "Amihud steigt über 100 ODER Router Proximity springt über 90% (Liquiditäts-Kollaps oder unmittelbarer Regime-Wechsel)"
+      ]
+    }
+  },
+  "event_window": {
+    "next_48h": [
+      {
+        "event": "Employment Situation (May) — NFP",
+        "date": "2026-06-05",
+        "days_until": 2,
+        "hours_until": 48,
+        "impact": "HIGH",
+        "type": "NFP",
+        "themes": [
+          "FED_POLICY",
+          "RECESSION",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      }
+    ],
+    "next_14d": [
+      {
+        "event": "Employment Situation (May) — NFP",
+        "date": "2026-06-05",
+        "days_until": 2,
+        "hours_until": 48,
+        "impact": "HIGH",
+        "type": "NFP",
+        "themes": [
+          "FED_POLICY",
+          "RECESSION",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "OPEC+ 41st Ministerial Meeting",
+        "date": "2026-06-07",
+        "days_until": 4,
+        "hours_until": 96,
+        "impact": "MEDIUM",
+        "type": "OPEC",
+        "themes": [
+          "ENERGY",
+          "COMMODITIES",
+          "INFLATION"
+        ]
+      },
+      {
+        "event": "CPI (May)",
+        "date": "2026-06-10",
+        "days_until": 7,
+        "hours_until": 168,
+        "impact": "HIGH",
+        "type": "CPI",
+        "themes": [
+          "INFLATION",
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "China Monthly Data (May) — IP & Retail Sales",
+        "date": "2026-06-16",
+        "days_until": 13,
+        "hours_until": 312,
+        "impact": "MEDIUM",
+        "type": "CHINA_DATA",
+        "themes": [
+          "CHINA_EM",
+          "RECESSION",
+          "COMMODITIES"
+        ]
+      },
+      {
+        "event": "FOMC Rate Decision (June) — SEP/Dot Plot",
+        "date": "2026-06-17",
+        "days_until": 14,
+        "hours_until": 336,
+        "impact": "HIGH",
+        "type": "FOMC",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY",
+          "LIQUIDITY"
+        ]
+      },
+      {
+        "event": "BoJ Monetary Policy Meeting Decision (June)",
+        "date": "2026-06-17",
+        "days_until": 14,
+        "hours_until": 336,
+        "impact": "MEDIUM",
+        "type": "BOJ",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      }
+    ],
+    "convergence_weeks": [
+      {
+        "start": "2026-06-04",
+        "end": "2026-06-11",
+        "events": [
+          "Employment Situation (May) — NFP",
+          "CPI (May)"
+        ],
+        "risk_level": "ELEVATED"
+      },
+      {
+        "start": "2026-06-16",
+        "end": "2026-06-20",
+        "events": [
+          "FOMC Rate Decision (June) — SEP/Dot Plot",
+          "Quad Witching"
+        ],
+        "risk_level": "ELEVATED"
+      }
+    ],
+    "event_density_14d": 6,
+    "calendar_upcoming": [
+      {
+        "event": "Employment Situation (May) — NFP",
+        "date": "2026-06-05",
+        "days_until": 2,
+        "hours_until": 48,
+        "impact": "HIGH",
+        "type": "NFP",
+        "themes": [
+          "FED_POLICY",
+          "RECESSION",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "OPEC+ 41st Ministerial Meeting",
+        "date": "2026-06-07",
+        "days_until": 4,
+        "hours_until": 96,
+        "impact": "MEDIUM",
+        "type": "OPEC",
+        "themes": [
+          "ENERGY",
+          "COMMODITIES",
+          "INFLATION"
+        ]
+      },
+      {
+        "event": "CPI (May)",
+        "date": "2026-06-10",
+        "days_until": 7,
+        "hours_until": 168,
+        "impact": "HIGH",
+        "type": "CPI",
+        "themes": [
+          "INFLATION",
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "China Monthly Data (May) — IP & Retail Sales",
+        "date": "2026-06-16",
+        "days_until": 13,
+        "hours_until": 312,
+        "impact": "MEDIUM",
+        "type": "CHINA_DATA",
+        "themes": [
+          "CHINA_EM",
+          "RECESSION",
+          "COMMODITIES"
+        ]
+      },
+      {
+        "event": "FOMC Rate Decision (June) — SEP/Dot Plot",
+        "date": "2026-06-17",
+        "days_until": 14,
+        "hours_until": 336,
+        "impact": "HIGH",
+        "type": "FOMC",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY",
+          "LIQUIDITY"
+        ]
+      }
+    ],
+    "calendar_monthly": [
+      {
+        "date": "2026-06-01",
+        "event": "ISM Manufacturing PMI (May)",
+        "type": "ISM_MFG",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-05",
+        "event": "Employment Situation (May) — NFP",
+        "type": "NFP",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-06-07",
+        "event": "OPEC+ 41st Ministerial Meeting",
+        "type": "OPEC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-10",
+        "event": "CPI (May)",
+        "type": "CPI",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-06-16",
+        "event": "China Monthly Data (May) — IP & Retail Sales",
+        "type": "CHINA_DATA",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-17",
+        "event": "FOMC Rate Decision (June) — SEP/Dot Plot",
+        "type": "FOMC",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-06-17",
+        "event": "BoJ Monetary Policy Meeting Decision (June)",
+        "type": "BOJ",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-19",
+        "event": "Quad Witching",
+        "type": "OPEX",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-06-20",
+        "event": "PBoC LPR Announcement (June)",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-22",
+        "event": "PBoC LPR Announcement (June) — postponed from Jun 20",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      }
+    ]
+  },
+  "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 9/18) ===\n\nCONFIRMING:\n• COT Treasury +14.9%: Smart Money unterstützt TLT (28% Portfolio) — kein Positionierungs-Konflikt\n• SOFR-FFR Spread 3.0bps: Normale Geldmarkt-Funktion — kein Stress-Signal\n• OFR Financial Stress -0.76: Entspanntes Systemrisiko — strukturell günstig\n• GEX +$0.02B: Positives Dealer-Gamma dämpft Volatilität — stabilisierendes Umfeld\n• VIX 16.05: Normale Volatilität — kein Panik-Regime\n• CNN Fear & Greed 56.97: Neutrale Sentiment-Lage — keine Extreme\n• Copper Rising + SPY Rising: Makro-Trends bestätigen V16's Soft-Landing-Positionierung\n• Gold/DXY-Relation normal: Gold -0.7%, DXY +0.8% — keine ungewöhnliche Divergenz\n• Put/Call 0.70: Normale Options-Positionierung — kein Hedging-Stress\n• MOVE 73.43: Normale Bond-Volatilität — TLT-Execution nicht gefährdet\n• Insider Buy/Sell 2.5: Neutrale Corporate-Signale\n\nCONFLICTING:\n• NFP Employment Report in 48h (Freitag): HIGH-Impact Event kann Yields, Dollar und Commodities stark bewegen — direktes Risiko für alle Top-5 Positionen\n• COT Gold Commercial -52.6%: EXTREME Positionierung gegen DBC (25%), GLD (23%), SLV (11%) — Smart Money massiv short\n• Amihud 85.17 (ILLIQUID): Erhöhtes Slippage-Risiko bei größeren Orders\n• VIX Term Structure 0.81 (BACKWARDATION): Markt preist kurzfristige Unsicherheit — Liquiditäts-Warnsignal\n• Avg Correlation 0.62 (HIGH): Positionen bewegen sich gleichzeitig — Diversifikations-Verlust bei Stress\n• Real Yields Rising: Struktureller Gegenwind für 34% Gold-Exposure (GLD+SLV)\n• Router Proximity 79%: CHINA_STIMULUS-Trigger nahe — potentieller Regime-Wechsel in Sicht\n• Gold Return 20d -0.67%: Edelmetalle bereits unter Druck trotz Soft-Landing-Regime\n\nNETTO: 11 Confirming vs 8 Conflicting. Strukturell ruhig, aber NFP-Event und extreme COT-Positionierung gegen 59% des Portfolios (Commodities+Gold) erzwingen Warteposition.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig — alle Positionen HOLD. Falls V16 morgen Regime wechselt: Warte bis nach NFP (Freitag 08:30 ET). Die extreme COT-Positionierung (-52.6% gegen Gold/Commodities) und Backwardation-Signal zeigen fragiles Umfeld. Bei unverändertem SOFT_LANDING-Regime: Nutze Freitag-Nachmittag für Execution nach NFP-Verdauung. TLT und TIP haben normale Liquidität (MOVE 73.43), aber DBC/GLD/SLV: Limit-Orders mit 10-15bps Puffer setzen wegen Amihud-Warnung. Beobachte Router-Proximity — bei Sprung über 85% sofort eskalieren.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 14.0 UND VIX Term Structure steigt über 0.95 (Backwardation löst sich)\n• Execute sofort wenn: COT Gold Commercial steigt über -40% (Smart Money reduziert Short-Position um >20%)\n• Eskaliere zu Hold wenn: VIX steigt über 22.0 vor NFP-Release (Stress-Regime)\n• Eskaliere zu Hold wenn: Amihud steigt über 100 ODER Router Proximity springt über 90% (Liquiditäts-Kollaps oder unmittelbarer Regime-Wechsel)",
+  "v16_context": {
+    "regime": "SOFT_LANDING",
+    "top5": [
+      {
+        "asset": "TLT",
+        "weight": 0.280612
+      },
+      {
+        "asset": "DBC",
+        "weight": 0.254053
+      },
+      {
+        "asset": "GLD",
+        "weight": 0.228599
+      },
+      {
+        "asset": "TIP",
+        "weight": 0.123127
+      },
+      {
+        "asset": "SLV",
+        "weight": 0.113609
+      }
+    ],
+    "material_rebalance_trades": 0,
+    "total_weight": 1.0
+  },
+  "pipeline_context": {
+    "risk_ampel": "UNKNOWN",
+    "cio_conviction": "UNKNOWN",
+    "cio_briefing_type": "ACTION",
+    "fragility_state": "UNKNOWN",
+    "router_state": "US_DOMESTIC",
+    "router_max_proximity": 0.7865
+  },
+  "rotation": {
+    "date": "2026-06-03",
+    "status": "BIG_ROTATION",
+    "mode": "STATE_TRANSITION",
+    "total_absolute_delta_pp": 128.6,
+    "material_shifts_count": 5,
+    "days_since_material_rotation": 0,
+    "days_since_state_change": 0,
+    "trigger": {
+      "type": "STATE_CHANGE",
+      "label": "State 3 → 7: SOFT_LANDING",
+      "detail": "Growth: NEUTRAL, Liquidity: TIGHTENING"
+    },
+    "dd_protect": {
+      "active": false,
+      "threshold": -10.0,
+      "current_drawdown": 0.0
+    },
+    "cluster_current": {
+      "BOND": {
+        "weight": 0.4037,
+        "display_name": "Government & IG Bonds"
+      },
+      "PM": {
+        "weight": 0.3422,
+        "display_name": "Precious Metals"
+      },
+      "COMMOD": {
+        "weight": 0.2541,
+        "display_name": "Commodities"
+      }
+    },
+    "cluster_deltas": {
+      "BOND": {
+        "delta_1d": 0.4037,
+        "delta_1w": 0.4037,
+        "delta_1m": 0.4037,
+        "delta_3m": 0.4037,
+        "materiality": "RED",
+        "direction": "RISING"
+      },
+      "PM": {
+        "delta_1d": 0.1826,
+        "delta_1w": 0.1826,
+        "delta_1m": 0.1826,
+        "delta_3m": 0.162,
+        "materiality": "RED",
+        "direction": "RISING"
+      },
+      "COMMOD": {
+        "delta_1d": 0.0565,
+        "delta_1w": 0.0565,
+        "delta_1m": 0.0565,
+        "delta_3m": 0.0358,
+        "materiality": "ORANGE",
+        "direction": "RISING"
+      },
+      "EQ_DEFN": {
+        "delta_1d": -0.3455,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "RED",
+        "direction": "FALLING"
+      },
+      "CREDIT": {
+        "delta_1d": -0.2972,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": null,
+        "materiality": "RED",
+        "direction": "FALLING"
+      }
+    },
+    "asset_details": {
+      "TLT": {
+        "weight": 0.2806,
+        "cluster": "BOND",
+        "cluster_name": "Government & IG Bonds",
+        "delta_1d": 0.2806,
+        "delta_1w": 0.2806,
+        "delta_1m": 0.2806,
+        "delta_3m": 0.2806,
+        "materiality": "RED",
+        "direction": "RISING",
+        "label": "NEW"
+      },
+      "DBC": {
+        "weight": 0.2541,
+        "cluster": "COMMOD",
+        "cluster_name": "Commodities",
+        "delta_1d": 0.0565,
+        "delta_1w": 0.0565,
+        "delta_1m": 0.0565,
+        "delta_3m": 0.0358,
+        "materiality": "ORANGE",
+        "direction": "RISING",
+        "label": "SHIFT"
+      },
+      "GLD": {
+        "weight": 0.2286,
+        "cluster": "PM",
+        "cluster_name": "Precious Metals",
+        "delta_1d": 0.069,
+        "delta_1w": 0.069,
+        "delta_1m": 0.069,
+        "delta_3m": 0.0484,
+        "materiality": "ORANGE",
+        "direction": "RISING",
+        "label": "SHIFT"
+      },
+      "TIP": {
+        "weight": 0.1231,
+        "cluster": "BOND",
+        "cluster_name": "Government & IG Bonds",
+        "delta_1d": 0.1231,
+        "delta_1w": 0.1231,
+        "delta_1m": 0.1231,
+        "delta_3m": 0.1231,
+        "materiality": "RED",
+        "direction": "RISING",
+        "label": "NEW"
+      },
+      "SLV": {
+        "weight": 0.1136,
+        "cluster": "PM",
+        "cluster_name": "Precious Metals",
+        "delta_1d": 0.1136,
+        "delta_1w": 0.1136,
+        "delta_1m": 0.1136,
+        "delta_3m": 0.1136,
+        "materiality": "RED",
+        "direction": "RISING",
+        "label": "NEW"
+      },
+      "HYG": {
+        "weight": 0.0,
+        "cluster": "CREDIT",
+        "cluster_name": "High Yield Credit",
+        "delta_1d": -0.2972,
+        "delta_1w": -0.2972,
+        "delta_1m": -0.2972,
+        "delta_3m": -0.2726,
+        "materiality": "RED",
+        "direction": "FALLING",
+        "label": "EXIT"
+      },
+      "XLP": {
+        "weight": 0.0,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": -0.1651,
+        "delta_1w": -0.1651,
+        "delta_1m": -0.1651,
+        "delta_3m": -0.1493,
+        "materiality": "RED",
+        "direction": "FALLING",
+        "label": "EXIT"
+      },
+      "XLU": {
+        "weight": 0.0,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": -0.1804,
+        "delta_1w": -0.1804,
+        "delta_1m": -0.1804,
+        "delta_3m": -0.1796,
+        "materiality": "RED",
+        "direction": "FALLING",
+        "label": "EXIT"
+      }
+    },
+    "new_positions": [
+      {
+        "asset": "TLT",
+        "cluster": "BOND",
+        "cluster_name": "Government & IG Bonds",
+        "weight": 0.2806
+      },
+      {
+        "asset": "TIP",
+        "cluster": "BOND",
+        "cluster_name": "Government & IG Bonds",
+        "weight": 0.1231
+      },
+      {
+        "asset": "SLV",
+        "cluster": "PM",
+        "cluster_name": "Precious Metals",
+        "weight": 0.1136
+      }
+    ],
+    "exited_positions": [
+      {
+        "asset": "HYG",
+        "cluster": "CREDIT",
+        "cluster_name": "High Yield Credit",
+        "prev_weight": 0.2972
+      },
+      {
+        "asset": "XLP",
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "prev_weight": 0.1651
+      },
+      {
+        "asset": "XLU",
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "prev_weight": 0.1804
+      }
+    ],
+    "sparkline_data": {
+      "BOND": {
+        "dates": [
+          "2026-04-23",
+          "2026-04-24",
+          "2026-04-27",
+          "2026-04-28",
+          "2026-04-29",
+          "2026-04-30",
+          "2026-05-01",
+          "2026-05-04",
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03"
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.4037,
+          0.0,
+          0.4037
+        ]
+      },
+      "COMMOD": {
+        "dates": [
+          "2026-04-23",
+          "2026-04-24",
+          "2026-04-27",
+          "2026-04-28",
+          "2026-04-29",
+          "2026-04-30",
+          "2026-05-01",
+          "2026-05-04",
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03"
+        ],
+        "values": [
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.2541,
+          0.1976,
+          0.2541
+        ]
+      },
+      "CREDIT": {
+        "dates": [
+          "2026-04-23",
+          "2026-04-24",
+          "2026-04-27",
+          "2026-04-28",
+          "2026-04-29",
+          "2026-04-30",
+          "2026-05-01",
+          "2026-05-04",
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03"
+        ],
+        "values": [
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.0,
+          0.2972,
+          0.0
+        ]
+      },
+      "EQ_DEFN": {
+        "dates": [
+          "2026-04-23",
+          "2026-04-24",
+          "2026-04-27",
+          "2026-04-28",
+          "2026-04-29",
+          "2026-04-30",
+          "2026-05-01",
+          "2026-05-04",
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03"
+        ],
+        "values": [
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.0,
+          0.3455,
+          0.0
+        ]
+      },
+      "PM": {
+        "dates": [
+          "2026-04-23",
+          "2026-04-24",
+          "2026-04-27",
+          "2026-04-28",
+          "2026-04-29",
+          "2026-04-30",
+          "2026-05-01",
+          "2026-05-04",
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03"
+        ],
+        "values": [
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.3422,
+          0.1596,
+          0.3422
+        ]
+      }
+    },
+    "sparkline_state_changes": [
+      {
+        "date": "2026-06-01",
+        "from_state": 0,
+        "to_state": 7,
+        "from_name": "",
+        "to_name": "SOFT_LANDING"
+      },
+      {
+        "date": "2026-06-02",
+        "from_state": 0,
+        "to_state": 3,
+        "from_name": "",
+        "to_name": "LATE_EXPANSION"
+      },
+      {
+        "date": "2026-06-03",
+        "from_state": 0,
+        "to_state": 7,
+        "from_name": "",
+        "to_name": "SOFT_LANDING"
+      }
+    ],
+    "state_history": [
+      {
+        "date": "2026-06-03",
+        "from_state": 3,
+        "to_state": 7,
+        "from_name": "LATE_EXPANSION",
+        "to_name": "SOFT_LANDING",
+        "snapshot_before": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        },
+        "snapshot_after": {
+          "PM": 0.3422,
+          "BOND": 0.4037,
+          "COMMOD": 0.2541
+        },
+        "new_clusters": [
+          "Government & IG Bonds"
+        ],
+        "exited_clusters": [
+          "Defensive Equities",
+          "High Yield Credit"
+        ],
+        "trigger_reason": "Growth Signal: POSITIVE → NEUTRAL"
+      },
+      {
+        "date": "2026-06-02",
+        "from_state": 7,
+        "to_state": 3,
+        "from_name": "SOFT_LANDING",
+        "to_name": "LATE_EXPANSION",
+        "snapshot_before": {
+          "PM": 0.3422,
+          "BOND": 0.4037,
+          "COMMOD": 0.2541
+        },
+        "snapshot_after": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        },
+        "new_clusters": [
+          "Defensive Equities",
+          "High Yield Credit"
+        ],
+        "exited_clusters": [
+          "Government & IG Bonds"
+        ],
+        "trigger_reason": "Growth Signal: NEUTRAL → POSITIVE"
+      },
+      {
+        "date": "2026-06-01",
+        "from_state": 3,
+        "to_state": 7,
+        "from_name": "LATE_EXPANSION",
+        "to_name": "SOFT_LANDING",
+        "snapshot_before": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        },
+        "snapshot_after": {
+          "PM": 0.3422,
+          "BOND": 0.4037,
+          "COMMOD": 0.2541
+        },
+        "new_clusters": [
+          "Government & IG Bonds"
+        ],
+        "exited_clusters": [
+          "Defensive Equities",
+          "High Yield Credit"
+        ],
+        "trigger_reason": "Growth Signal: POSITIVE → NEUTRAL"
+      },
+      {
+        "date": "2026-04-02",
+        "from_state": 4,
+        "to_state": 3,
+        "from_name": "FULL_EXPANSION",
+        "to_name": "LATE_EXPANSION",
+        "snapshot_before": {
+          "PM": 0.0561,
+          "EQ_DEFN": 0.0644,
+          "BOND": 0.0974,
+          "CRYPTO": 0.0821
+        },
+        "snapshot_after": {
+          "PM": 0.1689,
+          "EQ_DEFN": 0.34,
+          "CREDIT": 0.2883,
+          "COMMOD": 0.2027
+        },
+        "new_clusters": [
+          "High Yield Credit",
+          "Commodities"
+        ],
+        "exited_clusters": [
+          "Government & IG Bonds",
+          "Crypto"
+        ],
+        "trigger_reason": "Macro State Wechsel"
+      },
+      {
+        "date": "2026-03-31",
+        "from_state": 3,
+        "to_state": 4,
+        "from_name": "LATE_EXPANSION",
+        "to_name": "FULL_EXPANSION",
+        "snapshot_before": {
+          "PM": 0.1689,
+          "EQ_DEFN": 0.34,
+          "CREDIT": 0.2883,
+          "COMMOD": 0.2027
+        },
+        "snapshot_after": {
+          "PM": 0.0561,
+          "EQ_DEFN": 0.0644,
+          "BOND": 0.0974,
+          "CRYPTO": 0.0821
+        },
+        "new_clusters": [
+          "Government & IG Bonds",
+          "Crypto"
+        ],
+        "exited_clusters": [
+          "High Yield Credit",
+          "Commodities"
+        ],
+        "trigger_reason": "Macro State Wechsel"
+      }
+    ],
+    "comparison_snapshots": {
+      "1d": {
+        "date": "2026-06-02",
+        "weights": {
+          "GLD": 0.1596,
+          "XLP": 0.1651,
+          "XLU": 0.1804,
+          "HYG": 0.2972,
+          "DBC": 0.1976
+        },
+        "cluster_weights": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        }
+      },
+      "1w": {
+        "date": "2026-05-27",
+        "weights": {
+          "GLD": 0.1596,
+          "XLP": 0.1651,
+          "XLU": 0.1804,
+          "HYG": 0.2972,
+          "DBC": 0.1976
+        },
+        "cluster_weights": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        }
+      },
+      "1m": {
+        "date": "2026-05-04",
+        "weights": {
+          "GLD": 0.1596,
+          "XLP": 0.1651,
+          "XLU": 0.1804,
+          "HYG": 0.2972,
+          "DBC": 0.1976
+        },
+        "cluster_weights": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        }
+      },
+      "3m": {
+        "date": "2026-03-09",
+        "weights": {
+          "GLD": 0.1802,
+          "XLP": 0.1493,
+          "XLU": 0.1796,
+          "HYG": 0.2726,
+          "DBC": 0.2183
+        },
+        "cluster_weights": {
+          "PM": 0.1802,
+          "EQ_DEFN": 0.3289,
+          "CREDIT": 0.2726,
+          "COMMOD": 0.2183
+        }
+      },
+      "6m": null,
+      "9m": null,
+      "1y": null
+    }
+  },
+  "meta": {
+    "execution_path": "FULL",
+    "degraded": false,
+    "degraded_reasons": [],
+    "llm_model": "claude-sonnet-4-5-20250929",
+    "llm_used": true,
+    "llm_fallback": false,
+    "engine_time_seconds": 27.95,
+    "total_time_seconds": 28.0
+  }
+}
