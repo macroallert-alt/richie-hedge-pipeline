@@ -1,11 +1,11 @@
 {
   "version": "yield_router V1.0",
-  "timestamp": "2026-05-31T08:12:13.849359+00:00",
-  "date": "2026-05-31",
+  "timestamp": "2026-06-07T08:22:18.833303+00:00",
+  "date": "2026-06-07",
   "inputs": {
-    "ensemble": 0.25,
-    "cash_pct": 0.75,
-    "cash_eur": 7500.0,
+    "ensemble": 0.0,
+    "cash_pct": 1.0,
+    "cash_eur": 10000.0,
     "total_capital_eur": 10000
   },
   "depeg_status": {
@@ -30,26 +30,19 @@
       "deviation": 0.0
     }
   },
-  "regime": "CAUTIOUS",
+  "regime": "BEAR",
   "capital_tier": "STANDARD",
   "tier_weights": {
-    "T0": 0.3,
+    "T0": 0.2,
     "T1": 0.5,
-    "T2": 0.2
+    "T2": 0.3
   },
   "recommendations": {
     "T0": [
       {
         "coin": "USDC",
-        "weight": 0.6,
-        "amount_eur": 1350.0,
-        "tier": "T0",
-        "apy": 0.0
-      },
-      {
-        "coin": "USDT",
-        "weight": 0.4,
-        "amount_eur": 900.0,
+        "weight": 1.0,
+        "amount_eur": 2000.0,
         "tier": "T0",
         "apy": 0.0
       }
@@ -58,7 +51,7 @@
       {
         "product": "USDY",
         "weight": 0.6,
-        "amount_eur": 2250.0,
+        "amount_eur": 3000.0,
         "apy": 3.55,
         "apy_source": "LIVE",
         "issuer": "Ondo Finance",
@@ -68,7 +61,7 @@
       {
         "product": "sDAI",
         "weight": 0.4,
-        "amount_eur": 1500.0,
+        "amount_eur": 2000.0,
         "apy": 3.6,
         "apy_source": "LIVE",
         "issuer": "MakerDAO DSR",
@@ -78,29 +71,29 @@
     ],
     "T2": [
       {
-        "pool_id": "54e9b138-3146-4c1f-8dce-1cb948f5ef96",
-        "project": "sparklend",
-        "symbol": "USDS",
-        "coin": "USDS",
-        "chain": "Ethereum",
-        "tvl_usd": 824790160,
-        "effective_apy": 3.67,
-        "risk_adj_apy": 3.47,
-        "weight": 0.5,
-        "amount_eur": 750.0,
-        "tier": "T2"
-      },
-      {
         "pool_id": "c5c74dd1-995c-4445-9d84-3e710bad7d52",
         "project": "spark-savings",
         "symbol": "USDC",
         "coin": "USDC",
         "chain": "Ethereum",
-        "tvl_usd": 304894162,
+        "tvl_usd": 289763650,
         "effective_apy": 3.6,
         "risk_adj_apy": 3.4,
         "weight": 0.5,
-        "amount_eur": 750.0,
+        "amount_eur": 1500.0,
+        "tier": "T2"
+      },
+      {
+        "pool_id": "54e9b138-3146-4c1f-8dce-1cb948f5ef96",
+        "project": "sparklend",
+        "symbol": "USDS",
+        "coin": "USDS",
+        "chain": "Ethereum",
+        "tvl_usd": 596933443,
+        "effective_apy": 3.58,
+        "risk_adj_apy": 3.38,
+        "weight": 0.5,
+        "amount_eur": 1500.0,
         "tier": "T2"
       }
     ]
@@ -133,17 +126,17 @@
   },
   "t2_qualified_pools": 14,
   "basis_trade_info": {
-    "typical_apy": "3-8%",
+    "typical_apy": "0-3%",
     "note": "Für fortgeschrittene Nutzer mit dediziertem CEX-Setup"
   },
   "apy": {
-    "weighted_total": 2.47,
+    "weighted_total": 2.8,
     "t1_weighted": 3.57,
-    "t2_weighted": 3.44,
-    "annual_yield_eur": 185.25
+    "t2_weighted": 3.39,
+    "annual_yield_eur": 280.0
   },
   "rebalancing": {
-    "last_date": "2026-05-31",
+    "last_date": "2026-06-07",
     "next_review": null,
     "triggers": []
   }
