@@ -1,0 +1,1393 @@
+{
+  "date": "2026-06-16",
+  "run_timestamp": "2026-06-16T11:28:27.574659Z",
+  "execution_assessment": {
+    "total_score": 10,
+    "raw_score": 10,
+    "max_possible": 18,
+    "execution_level": "HOLD",
+    "veto_applied": false,
+    "veto_reason": null,
+    "dimensions": {
+      "event_risk": {
+        "score": 3,
+        "max": 3,
+        "label": "FOMC Rate Decision (June) — SEP/Dot Plot",
+        "detail": {
+          "events_48h_high": [
+            "FOMC Rate Decision (June) — SEP/Dot Plot"
+          ],
+          "events_48h_medium": [
+            "China Monthly Data (May) — IP & Retail Sales",
+            "BoJ Monetary Policy Meeting Decision (June)"
+          ],
+          "events_14d_high_count": 2,
+          "convergence_weeks": [
+            {
+              "start": "2026-06-16",
+              "end": "2026-06-20",
+              "events": [
+                "FOMC Rate Decision (June) — SEP/Dot Plot",
+                "Quad Witching"
+              ],
+              "risk_level": "ELEVATED"
+            }
+          ],
+          "in_convergence_week": true
+        }
+      },
+      "positioning_conflict": {
+        "score": 3,
+        "max": 3,
+        "label": "COT DBC -60.4%",
+        "detail": {
+          "conflicts": [
+            {
+              "asset": "DBC",
+              "weight": 0.197644,
+              "cot_field": "COT_GOLD_COMM_NET",
+              "cot_value": -60.424,
+              "direction": "long",
+              "severity": "EXTREME"
+            },
+            {
+              "asset": "GLD",
+              "weight": 0.159639,
+              "cot_field": "COT_GOLD_COMM_NET",
+              "cot_value": -60.424,
+              "direction": "long",
+              "severity": "EXTREME"
+            }
+          ],
+          "confirmations": [
+            {
+              "asset": "HYG",
+              "weight": 0.297155,
+              "cot_field": "COT_SP500_COMM_NET",
+              "cot_value": 0.4796,
+              "direction": "long",
+              "severity": "NONE"
+            },
+            {
+              "asset": "XLU",
+              "weight": 0.180418,
+              "cot_field": "COT_SP500_COMM_NET",
+              "cot_value": 0.4796,
+              "direction": "long",
+              "severity": "NONE"
+            },
+            {
+              "asset": "XLP",
+              "weight": 0.165144,
+              "cot_field": "COT_SP500_COMM_NET",
+              "cot_value": 0.4796,
+              "direction": "long",
+              "severity": "NONE"
+            }
+          ],
+          "fund_flows": -0.2,
+          "flow_conflict": false,
+          "extreme_count": 2,
+          "elevated_count": 0
+        }
+      },
+      "liquidity_risk": {
+        "score": 3,
+        "max": 3,
+        "label": "amihud: ILLIQUID, vix_term: BACKWARDATION",
+        "detail": {
+          "signals": {
+            "amihud": {
+              "value": 82.2,
+              "assessment": "ILLIQUID",
+              "score": 2
+            },
+            "sofr_ffr": {
+              "value": 3.0,
+              "assessment": "NORMAL",
+              "score": 0
+            },
+            "fin_stress": {
+              "value": -0.8681,
+              "assessment": "RELAXED",
+              "score": 0
+            },
+            "vix_term": {
+              "value": 0.862,
+              "assessment": "BACKWARDATION",
+              "score": 2
+            },
+            "avg_corr": {
+              "value": 0.6821,
+              "assessment": "HIGH_CORRELATION",
+              "score": 1
+            }
+          }
+        }
+      },
+      "cross_asset_confirmation": {
+        "score": 1,
+        "max": 3,
+        "label": "GOLD_REAL_YIELD_DIVERGENCE",
+        "detail": {
+          "divergences": [
+            {
+              "type": "GOLD_REAL_YIELD_DIVERGENCE",
+              "detail": "V16 hat 16% Gold aber Real Yields Rising — Gegenwind",
+              "severity": "ELEVATED"
+            }
+          ],
+          "confirmations": [
+            {
+              "type": "GOLD_DXY_NORMAL",
+              "detail": "Gold -9.5%, DXY +0.9% — normale Relation"
+            },
+            {
+              "type": "COMMODITY_COPPER_CONFIRMED",
+              "detail": "V16 36% Commodity + Copper Rising — bestätigt"
+            },
+            {
+              "type": "EQUITY_TREND_CONFIRMED",
+              "detail": "V16 35% Equity + SPY Rising — bestätigt"
+            }
+          ],
+          "high_count": 0,
+          "elevated_count": 1
+        }
+      },
+      "gex_regime": {
+        "score": 0,
+        "max": 3,
+        "label": "GEX $0.02B — POSITIVE_STABILIZING",
+        "detail": {
+          "gex": 0.0159,
+          "assessment": "POSITIVE_STABILIZING",
+          "has_imminent_event": true,
+          "note": "Positive GEX = Dealer dampen moves. Negative = Dealer amplify moves."
+        }
+      },
+      "sentiment_extreme": {
+        "score": 0,
+        "max": 3,
+        "label": "Neutral",
+        "detail": {
+          "signals": {
+            "cnn_fg": {
+              "value": 41.29,
+              "assessment": "NEUTRAL",
+              "warning": false
+            },
+            "vix": {
+              "value": 17.68,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "pcr": {
+              "value": 0.702,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "hy_oas": {
+              "value": 271.0,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "insider": {
+              "value": 2.5,
+              "assessment": "NORMAL",
+              "warning": false
+            },
+            "move": {
+              "value": 69.36,
+              "assessment": "NORMAL",
+              "warning": false
+            }
+          },
+          "warning_count": 0
+        }
+      }
+    }
+  },
+  "confirming_conflicting": {
+    "confirming": [
+      {
+        "signal": "COT HYG bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 0.5% — kein Conflict"
+      },
+      {
+        "signal": "COT XLU bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 0.5% — kein Conflict"
+      },
+      {
+        "signal": "COT XLP bestätigt",
+        "source": "DW_L4_COT",
+        "detail": "COT_SP500_COMM_NET = 0.5% — kein Conflict"
+      },
+      {
+        "signal": "sofr_ffr: NORMAL",
+        "source": "DW_L5",
+        "detail": "Wert: 3.0"
+      },
+      {
+        "signal": "fin_stress: RELAXED",
+        "source": "DW_L5",
+        "detail": "Wert: -0.8681"
+      },
+      {
+        "signal": "GOLD_DXY_NORMAL",
+        "source": "DW_L7",
+        "detail": "Gold -9.5%, DXY +0.9% — normale Relation"
+      },
+      {
+        "signal": "COMMODITY_COPPER_CONFIRMED",
+        "source": "DW_L7",
+        "detail": "V16 36% Commodity + Copper Rising — bestätigt"
+      },
+      {
+        "signal": "EQUITY_TREND_CONFIRMED",
+        "source": "DW_L7",
+        "detail": "V16 35% Equity + SPY Rising — bestätigt"
+      },
+      {
+        "signal": "GEX positiv ($0.02B)",
+        "source": "DW_L4_GEX",
+        "detail": "Dealer-Hedging dämpft Moves — stabilisierend"
+      },
+      {
+        "signal": "cnn_fg: NEUTRAL",
+        "source": "DW_L2",
+        "detail": "Wert: 41.29"
+      },
+      {
+        "signal": "vix: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 17.68"
+      },
+      {
+        "signal": "pcr: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 0.702"
+      },
+      {
+        "signal": "hy_oas: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 271.0"
+      },
+      {
+        "signal": "insider: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 2.5"
+      },
+      {
+        "signal": "move: NORMAL",
+        "source": "DW_L2",
+        "detail": "Wert: 69.36"
+      }
+    ],
+    "conflicting": [
+      {
+        "signal": "FOMC Rate Decision (June) — SEP/Dot Plot in 48h",
+        "source": "EVENT_CALENDAR",
+        "detail": "HIGH-Impact Event kann Richtung und Liquidität verändern"
+      },
+      {
+        "signal": "Convergence Week aktiv",
+        "source": "EVENT_CALENDAR",
+        "detail": "Mehrere HIGH Events: FOMC Rate Decision (June) — SEP/Dot Plot, Quad Witching"
+      },
+      {
+        "signal": "COT DBC Conflict (EXTREME)",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = -60.4% — Smart Money gegen DBC (20% im Portfolio)"
+      },
+      {
+        "signal": "COT GLD Conflict (EXTREME)",
+        "source": "DW_L4_COT",
+        "detail": "COT_GOLD_COMM_NET = -60.4% — Smart Money gegen GLD (16% im Portfolio)"
+      },
+      {
+        "signal": "amihud: ILLIQUID",
+        "source": "DW_L5",
+        "detail": "Wert: 82.2 — Liquiditäts-Risiko"
+      },
+      {
+        "signal": "vix_term: BACKWARDATION",
+        "source": "DW_L5",
+        "detail": "Wert: 0.862 — Liquiditäts-Risiko"
+      },
+      {
+        "signal": "avg_corr: HIGH_CORRELATION",
+        "source": "DW_L5",
+        "detail": "Wert: 0.6821 — Liquiditäts-Risiko"
+      },
+      {
+        "signal": "GOLD_REAL_YIELD_DIVERGENCE",
+        "source": "DW_L7",
+        "detail": "V16 hat 16% Gold aber Real Yields Rising — Gegenwind"
+      },
+      {
+        "signal": "Router Proximity 100%",
+        "source": "STEP2_SIGNAL_GENERATOR",
+        "detail": "Router nähert sich Trigger (COMMODITY_SUPER)"
+      }
+    ],
+    "confirming_count": 15,
+    "conflicting_count": 9,
+    "net_assessment": "STRONGLY_CONFIRMING"
+  },
+  "recommendation": {
+    "action": "DO_NOT_REBALANCE",
+    "reasoning": "Kein materielles Rebalancing nötig heute.",
+    "specific_actions": [],
+    "would_change_my_mind": {
+      "execute_if": [
+        "VIX fällt unter 15.0 UND Amihud fällt unter 70.0 (Liquidität normalisiert sich)",
+        "COT Gold steigt über -40.0% (Smart Money reduziert Short-Position deutlich)"
+      ],
+      "hold_if": [
+        "VIX steigt über 22.0 (Volatilitäts-Spike vor FOMC)",
+        "HY OAS steigt über 320bps (Credit-Stress entwickelt sich)"
+      ]
+    }
+  },
+  "event_window": {
+    "next_48h": [
+      {
+        "event": "China Monthly Data (May) — IP & Retail Sales",
+        "date": "2026-06-16",
+        "days_until": 0,
+        "hours_until": 0,
+        "impact": "MEDIUM",
+        "type": "CHINA_DATA",
+        "themes": [
+          "CHINA_EM",
+          "RECESSION",
+          "COMMODITIES"
+        ]
+      },
+      {
+        "event": "FOMC Rate Decision (June) — SEP/Dot Plot",
+        "date": "2026-06-17",
+        "days_until": 1,
+        "hours_until": 24,
+        "impact": "HIGH",
+        "type": "FOMC",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY",
+          "LIQUIDITY"
+        ]
+      },
+      {
+        "event": "BoJ Monetary Policy Meeting Decision (June)",
+        "date": "2026-06-17",
+        "days_until": 1,
+        "hours_until": 24,
+        "impact": "MEDIUM",
+        "type": "BOJ",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      }
+    ],
+    "next_14d": [
+      {
+        "event": "China Monthly Data (May) — IP & Retail Sales",
+        "date": "2026-06-16",
+        "days_until": 0,
+        "hours_until": 0,
+        "impact": "MEDIUM",
+        "type": "CHINA_DATA",
+        "themes": [
+          "CHINA_EM",
+          "RECESSION",
+          "COMMODITIES"
+        ]
+      },
+      {
+        "event": "FOMC Rate Decision (June) — SEP/Dot Plot",
+        "date": "2026-06-17",
+        "days_until": 1,
+        "hours_until": 24,
+        "impact": "HIGH",
+        "type": "FOMC",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY",
+          "LIQUIDITY"
+        ]
+      },
+      {
+        "event": "BoJ Monetary Policy Meeting Decision (June)",
+        "date": "2026-06-17",
+        "days_until": 1,
+        "hours_until": 24,
+        "impact": "MEDIUM",
+        "type": "BOJ",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "Quad Witching",
+        "date": "2026-06-19",
+        "days_until": 3,
+        "hours_until": 72,
+        "impact": "HIGH",
+        "type": "OPEX",
+        "themes": [
+          "VOLATILITY",
+          "LIQUIDITY"
+        ]
+      },
+      {
+        "event": "PBoC LPR Announcement (June)",
+        "date": "2026-06-20",
+        "days_until": 4,
+        "hours_until": 96,
+        "impact": "MEDIUM",
+        "type": "PBOC",
+        "themes": [
+          "CHINA_EM",
+          "LIQUIDITY",
+          "DOLLAR"
+        ]
+      },
+      {
+        "event": "PBoC LPR Announcement (June) — postponed from Jun 20",
+        "date": "2026-06-22",
+        "days_until": 6,
+        "hours_until": 144,
+        "impact": "MEDIUM",
+        "type": "PBOC",
+        "themes": [
+          "CHINA_EM",
+          "LIQUIDITY",
+          "DOLLAR"
+        ]
+      },
+      {
+        "event": "PCE / Personal Income & Outlays (May)",
+        "date": "2026-06-25",
+        "days_until": 9,
+        "hours_until": 216,
+        "impact": "HIGH",
+        "type": "PCE",
+        "themes": [
+          "INFLATION",
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "GDP Q1 2026 — Third Estimate (Final)",
+        "date": "2026-06-25",
+        "days_until": 9,
+        "hours_until": 216,
+        "impact": "MEDIUM",
+        "type": "GDP",
+        "themes": [
+          "RECESSION",
+          "FED_POLICY",
+          "DOLLAR"
+        ]
+      }
+    ],
+    "convergence_weeks": [
+      {
+        "start": "2026-06-16",
+        "end": "2026-06-20",
+        "events": [
+          "FOMC Rate Decision (June) — SEP/Dot Plot",
+          "Quad Witching"
+        ],
+        "risk_level": "ELEVATED"
+      }
+    ],
+    "event_density_14d": 8,
+    "calendar_upcoming": [
+      {
+        "event": "China Monthly Data (May) — IP & Retail Sales",
+        "date": "2026-06-16",
+        "days_until": 0,
+        "hours_until": 0,
+        "impact": "MEDIUM",
+        "type": "CHINA_DATA",
+        "themes": [
+          "CHINA_EM",
+          "RECESSION",
+          "COMMODITIES"
+        ]
+      },
+      {
+        "event": "FOMC Rate Decision (June) — SEP/Dot Plot",
+        "date": "2026-06-17",
+        "days_until": 1,
+        "hours_until": 24,
+        "impact": "HIGH",
+        "type": "FOMC",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY",
+          "LIQUIDITY"
+        ]
+      },
+      {
+        "event": "BoJ Monetary Policy Meeting Decision (June)",
+        "date": "2026-06-17",
+        "days_until": 1,
+        "hours_until": 24,
+        "impact": "MEDIUM",
+        "type": "BOJ",
+        "themes": [
+          "FED_POLICY",
+          "DOLLAR",
+          "VOLATILITY"
+        ]
+      },
+      {
+        "event": "Quad Witching",
+        "date": "2026-06-19",
+        "days_until": 3,
+        "hours_until": 72,
+        "impact": "HIGH",
+        "type": "OPEX",
+        "themes": [
+          "VOLATILITY",
+          "LIQUIDITY"
+        ]
+      },
+      {
+        "event": "PBoC LPR Announcement (June)",
+        "date": "2026-06-20",
+        "days_until": 4,
+        "hours_until": 96,
+        "impact": "MEDIUM",
+        "type": "PBOC",
+        "themes": [
+          "CHINA_EM",
+          "LIQUIDITY",
+          "DOLLAR"
+        ]
+      }
+    ],
+    "calendar_monthly": [
+      {
+        "date": "2026-06-01",
+        "event": "ISM Manufacturing PMI (May)",
+        "type": "ISM_MFG",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-05",
+        "event": "Employment Situation (May) — NFP",
+        "type": "NFP",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-06-07",
+        "event": "OPEC+ 41st Ministerial Meeting",
+        "type": "OPEC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-10",
+        "event": "CPI (May)",
+        "type": "CPI",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-06-16",
+        "event": "China Monthly Data (May) — IP & Retail Sales",
+        "type": "CHINA_DATA",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-17",
+        "event": "FOMC Rate Decision (June) — SEP/Dot Plot",
+        "type": "FOMC",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-06-17",
+        "event": "BoJ Monetary Policy Meeting Decision (June)",
+        "type": "BOJ",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-19",
+        "event": "Quad Witching",
+        "type": "OPEX",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-06-20",
+        "event": "PBoC LPR Announcement (June)",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-06-22",
+        "event": "PBoC LPR Announcement (June) — postponed from Jun 20",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      }
+    ]
+  },
+  "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING:\n• Finanzstress entspannt: OFR Index -0.87 — systemisches Risiko niedrig\n• HY OAS 271bps: Credit-Spreads im Normalbereich — HYG (29.7% Portfolio) ohne Stress-Signal\n• VIX 17.68: Volatilität moderat — keine Panik im Markt\n• GEX positiv $0.02B: Dealer-Hedging dämpft Ausschläge — stabilisierendes Umfeld\n• SPY steigt vs SMA50: Equity-Trend bestätigt V16's 35% Equity-Exposure (XLU 18%, XLP 16.5%)\n• Copper steigt vs SMA50: Commodity-Trend bestätigt V16's 36% Commodity-Exposure (DBC 19.8%, GLD 16%)\n• SOFR-FFR Spread 3bps: Geldmarkt funktioniert normal — keine Funding-Verwerfungen\n• COT S&P500 Commercial 0.5%: Smart Money neutral zu Equities — kein Conflict mit XLU/XLP\n• Put/Call Ratio 0.70: Optionsmarkt ausgewogen — keine Extrempositionen\n• CNN Fear & Greed 41.3: Sentiment neutral — weder Euphorie noch Panik\n• Insider Buy/Sell 2.5: Corporate Insiders neutral — keine Warnsignale\n\nCONFLICTING:\n• FOMC Rate Decision morgen 14:00 ET: SEP/Dot Plot kann Zins-Erwartungen verschieben — HIGH-Impact Event\n• Quad Witching Freitag: Options-Expiry erhöht Volumen und Pinning-Risiko — technische Verzerrungen möglich\n• COT Gold -60.4%: Smart Money extrem short — direkter Conflict mit GLD (16% Portfolio) und DBC (19.8%, enthält Gold)\n• Amihud 82.2 (ILLIQUID): Liquidität dünn — Slippage-Risiko bei größeren Orders\n• VIX Term Structure 0.86 (BACKWARDATION): Front-Month teurer als Futures — Stress-Indikator\n• Avg Correlation 0.68 (HIGH): Assets bewegen sich gleichgerichtet — Diversifikation eingeschränkt\n• Real Yields steigen: 10Y Real Yield im Aufwärtstrend — Gegenwind für GLD (16% Portfolio)\n• Router Proximity 100%: COMMODITY_SUPER-Trigger nah — möglicher Regime-Wechsel in Sicht\n• Gold -9.5% (20d): Momentum negativ trotz V16-Allokation — Positionierung gegen Trend\n\nNETTO: 11 Confirming vs 9 Conflicting. Markt technisch stabil aber FOMC morgen und COT-Extremwerte bei Gold schaffen Unsicherheit — kein Zeitdruck da V16 heute keine Trades hat.\n\nEMPFEHLUNG:\nKein materielles Rebalancing nötig heute. Die Empfehlung bezieht sich auf den Fall dass V16 morgen nach FOMC Regime wechselt oder Trades signalisiert. WARTE bis FOMC-Ergebnis morgen 14:00 ET vorliegt. Falls V16 dann Trades generiert: HYG und XLU/XLP via Limit-Orders (Amihud 82.2 = illiquide), DBC und GLD nur bei engen Spreads ausführen (COT -60.4% = Smart Money dagegen, Slippage-Risiko hoch). Quad Witching Freitag: Vermeide Market-Orders zwischen 15:00-16:00 ET (Pinning-Effekte). Falls Router morgen auf COMMODITY_SUPER wechselt: Prüfe ob DBC/GLD-Erhöhung sinnvoll ist trotz negativem COT-Signal.\n\nWOULD CHANGE MY MIND:\n• Execute sofort wenn: VIX fällt unter 15.0 UND Amihud fällt unter 70.0 (Liquidität normalisiert sich)\n• Execute sofort wenn: COT Gold steigt über -40.0% (Smart Money reduziert Short-Position deutlich)\n• Eskaliere zu Wait/Hold wenn: VIX steigt über 22.0 (Volatilitäts-Spike vor FOMC)\n• Eskaliere zu Wait/Hold wenn: HY OAS steigt über 320bps (Credit-Stress entwickelt sich)",
+  "v16_context": {
+    "regime": "LATE_EXPANSION",
+    "top5": [
+      {
+        "asset": "HYG",
+        "weight": 0.297155
+      },
+      {
+        "asset": "DBC",
+        "weight": 0.197644
+      },
+      {
+        "asset": "XLU",
+        "weight": 0.180418
+      },
+      {
+        "asset": "XLP",
+        "weight": 0.165144
+      },
+      {
+        "asset": "GLD",
+        "weight": 0.159639
+      }
+    ],
+    "material_rebalance_trades": 0,
+    "total_weight": 1.0
+  },
+  "pipeline_context": {
+    "risk_ampel": "UNKNOWN",
+    "cio_conviction": "UNKNOWN",
+    "cio_briefing_type": "ACTION",
+    "fragility_state": "UNKNOWN",
+    "router_state": "US_DOMESTIC",
+    "router_max_proximity": 1.0
+  },
+  "rotation": {
+    "date": "2026-06-16",
+    "status": "ALIGNED",
+    "mode": "STABLE",
+    "total_absolute_delta_pp": 0.0,
+    "material_shifts_count": 0,
+    "days_since_material_rotation": 12,
+    "days_since_state_change": 12,
+    "trigger": {
+      "type": "NONE",
+      "label": "Keine materielle Rotation",
+      "detail": null
+    },
+    "dd_protect": {
+      "active": false,
+      "threshold": -10.0,
+      "current_drawdown": 0.0
+    },
+    "cluster_current": {
+      "EQ_DEFN": {
+        "weight": 0.3455,
+        "display_name": "Defensive Equities"
+      },
+      "CREDIT": {
+        "weight": 0.2972,
+        "display_name": "High Yield Credit"
+      },
+      "COMMOD": {
+        "weight": 0.1976,
+        "display_name": "Commodities"
+      },
+      "PM": {
+        "weight": 0.1596,
+        "display_name": "Precious Metals"
+      }
+    },
+    "cluster_deltas": {
+      "EQ_DEFN": {
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": 0.0055,
+        "materiality": "GREEN",
+        "direction": "STABLE"
+      },
+      "CREDIT": {
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": 0.0089,
+        "materiality": "GREEN",
+        "direction": "STABLE"
+      },
+      "COMMOD": {
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": -0.0051,
+        "materiality": "GREEN",
+        "direction": "STABLE"
+      },
+      "PM": {
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": -0.0093,
+        "materiality": "GREEN",
+        "direction": "STABLE"
+      }
+    },
+    "asset_details": {
+      "HYG": {
+        "weight": 0.2972,
+        "cluster": "CREDIT",
+        "cluster_name": "High Yield Credit",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": 0.0089,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "DBC": {
+        "weight": 0.1976,
+        "cluster": "COMMOD",
+        "cluster_name": "Commodities",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": -0.0051,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "XLU": {
+        "weight": 0.1804,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": 0.0009,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "XLP": {
+        "weight": 0.1651,
+        "cluster": "EQ_DEFN",
+        "cluster_name": "Defensive Equities",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": 0.0046,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      },
+      "GLD": {
+        "weight": 0.1596,
+        "cluster": "PM",
+        "cluster_name": "Precious Metals",
+        "delta_1d": 0.0,
+        "delta_1w": null,
+        "delta_1m": null,
+        "delta_3m": -0.0093,
+        "materiality": "GREEN",
+        "direction": "STABLE",
+        "label": "HOLD"
+      }
+    },
+    "new_positions": [],
+    "exited_positions": [],
+    "sparkline_data": {
+      "BOND": {
+        "dates": [
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03",
+          "2026-06-04",
+          "2026-06-05",
+          "2026-06-08",
+          "2026-06-09",
+          "2026-06-11",
+          "2026-06-12",
+          "2026-06-15",
+          "2026-06-16"
+        ],
+        "values": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.4037,
+          0.0,
+          0.4037,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "COMMOD": {
+        "dates": [
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03",
+          "2026-06-04",
+          "2026-06-05",
+          "2026-06-08",
+          "2026-06-09",
+          "2026-06-11",
+          "2026-06-12",
+          "2026-06-15",
+          "2026-06-16"
+        ],
+        "values": [
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.2541,
+          0.1976,
+          0.2541,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976,
+          0.1976
+        ]
+      },
+      "CREDIT": {
+        "dates": [
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03",
+          "2026-06-04",
+          "2026-06-05",
+          "2026-06-08",
+          "2026-06-09",
+          "2026-06-11",
+          "2026-06-12",
+          "2026-06-15",
+          "2026-06-16"
+        ],
+        "values": [
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.0,
+          0.2972,
+          0.0,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972,
+          0.2972
+        ]
+      },
+      "EQ_DEFN": {
+        "dates": [
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03",
+          "2026-06-04",
+          "2026-06-05",
+          "2026-06-08",
+          "2026-06-09",
+          "2026-06-11",
+          "2026-06-12",
+          "2026-06-15",
+          "2026-06-16"
+        ],
+        "values": [
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.0,
+          0.3455,
+          0.0,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455,
+          0.3455
+        ]
+      },
+      "PM": {
+        "dates": [
+          "2026-05-05",
+          "2026-05-06",
+          "2026-05-07",
+          "2026-05-08",
+          "2026-05-11",
+          "2026-05-12",
+          "2026-05-13",
+          "2026-05-14",
+          "2026-05-15",
+          "2026-05-18",
+          "2026-05-19",
+          "2026-05-20",
+          "2026-05-21",
+          "2026-05-22",
+          "2026-05-25",
+          "2026-05-26",
+          "2026-05-27",
+          "2026-05-28",
+          "2026-05-29",
+          "2026-06-01",
+          "2026-06-02",
+          "2026-06-03",
+          "2026-06-04",
+          "2026-06-05",
+          "2026-06-08",
+          "2026-06-09",
+          "2026-06-11",
+          "2026-06-12",
+          "2026-06-15",
+          "2026-06-16"
+        ],
+        "values": [
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.3422,
+          0.1596,
+          0.3422,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596,
+          0.1596
+        ]
+      }
+    },
+    "sparkline_state_changes": [
+      {
+        "date": "2026-06-01",
+        "from_state": 0,
+        "to_state": 7,
+        "from_name": "",
+        "to_name": "SOFT_LANDING"
+      },
+      {
+        "date": "2026-06-02",
+        "from_state": 0,
+        "to_state": 3,
+        "from_name": "",
+        "to_name": "LATE_EXPANSION"
+      },
+      {
+        "date": "2026-06-03",
+        "from_state": 0,
+        "to_state": 7,
+        "from_name": "",
+        "to_name": "SOFT_LANDING"
+      },
+      {
+        "date": "2026-06-04",
+        "from_state": 0,
+        "to_state": 3,
+        "from_name": "",
+        "to_name": "LATE_EXPANSION"
+      }
+    ],
+    "state_history": [
+      {
+        "date": "2026-06-04",
+        "from_state": 7,
+        "to_state": 3,
+        "from_name": "SOFT_LANDING",
+        "to_name": "LATE_EXPANSION",
+        "snapshot_before": {
+          "PM": 0.3422,
+          "BOND": 0.4037,
+          "COMMOD": 0.2541
+        },
+        "snapshot_after": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        },
+        "new_clusters": [
+          "Defensive Equities",
+          "High Yield Credit"
+        ],
+        "exited_clusters": [
+          "Government & IG Bonds"
+        ],
+        "trigger_reason": "Growth Signal: NEUTRAL → POSITIVE"
+      },
+      {
+        "date": "2026-06-03",
+        "from_state": 3,
+        "to_state": 7,
+        "from_name": "LATE_EXPANSION",
+        "to_name": "SOFT_LANDING",
+        "snapshot_before": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        },
+        "snapshot_after": {
+          "PM": 0.3422,
+          "BOND": 0.4037,
+          "COMMOD": 0.2541
+        },
+        "new_clusters": [
+          "Government & IG Bonds"
+        ],
+        "exited_clusters": [
+          "Defensive Equities",
+          "High Yield Credit"
+        ],
+        "trigger_reason": "Growth Signal: POSITIVE → NEUTRAL"
+      },
+      {
+        "date": "2026-06-02",
+        "from_state": 7,
+        "to_state": 3,
+        "from_name": "SOFT_LANDING",
+        "to_name": "LATE_EXPANSION",
+        "snapshot_before": {
+          "PM": 0.3422,
+          "BOND": 0.4037,
+          "COMMOD": 0.2541
+        },
+        "snapshot_after": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        },
+        "new_clusters": [
+          "Defensive Equities",
+          "High Yield Credit"
+        ],
+        "exited_clusters": [
+          "Government & IG Bonds"
+        ],
+        "trigger_reason": "Growth Signal: NEUTRAL → POSITIVE"
+      },
+      {
+        "date": "2026-06-01",
+        "from_state": 3,
+        "to_state": 7,
+        "from_name": "LATE_EXPANSION",
+        "to_name": "SOFT_LANDING",
+        "snapshot_before": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        },
+        "snapshot_after": {
+          "PM": 0.3422,
+          "BOND": 0.4037,
+          "COMMOD": 0.2541
+        },
+        "new_clusters": [
+          "Government & IG Bonds"
+        ],
+        "exited_clusters": [
+          "Defensive Equities",
+          "High Yield Credit"
+        ],
+        "trigger_reason": "Growth Signal: POSITIVE → NEUTRAL"
+      },
+      {
+        "date": "2026-04-02",
+        "from_state": 4,
+        "to_state": 3,
+        "from_name": "FULL_EXPANSION",
+        "to_name": "LATE_EXPANSION",
+        "snapshot_before": {
+          "PM": 0.0561,
+          "EQ_DEFN": 0.0644,
+          "BOND": 0.0974,
+          "CRYPTO": 0.0821
+        },
+        "snapshot_after": {
+          "PM": 0.1689,
+          "EQ_DEFN": 0.34,
+          "CREDIT": 0.2883,
+          "COMMOD": 0.2027
+        },
+        "new_clusters": [
+          "High Yield Credit",
+          "Commodities"
+        ],
+        "exited_clusters": [
+          "Government & IG Bonds",
+          "Crypto"
+        ],
+        "trigger_reason": "Macro State Wechsel"
+      }
+    ],
+    "comparison_snapshots": {
+      "1d": {
+        "date": "2026-06-15",
+        "weights": {
+          "GLD": 0.1596,
+          "XLP": 0.1651,
+          "XLU": 0.1804,
+          "HYG": 0.2972,
+          "DBC": 0.1976
+        },
+        "cluster_weights": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        }
+      },
+      "1w": {
+        "date": "2026-06-09",
+        "weights": {
+          "GLD": 0.1596,
+          "XLP": 0.1651,
+          "XLU": 0.1804,
+          "HYG": 0.2972,
+          "DBC": 0.1976
+        },
+        "cluster_weights": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        }
+      },
+      "1m": {
+        "date": "2026-05-18",
+        "weights": {
+          "GLD": 0.1596,
+          "XLP": 0.1651,
+          "XLU": 0.1804,
+          "HYG": 0.2972,
+          "DBC": 0.1976
+        },
+        "cluster_weights": {
+          "PM": 0.1596,
+          "EQ_DEFN": 0.3455,
+          "CREDIT": 0.2972,
+          "COMMOD": 0.1976
+        }
+      },
+      "3m": {
+        "date": "2026-03-18",
+        "weights": {
+          "GLD": 0.1689,
+          "XLP": 0.1605,
+          "XLU": 0.1795,
+          "HYG": 0.2883,
+          "DBC": 0.2027
+        },
+        "cluster_weights": {
+          "PM": 0.1689,
+          "EQ_DEFN": 0.34,
+          "CREDIT": 0.2883,
+          "COMMOD": 0.2027
+        }
+      },
+      "6m": null,
+      "9m": null,
+      "1y": null
+    }
+  },
+  "meta": {
+    "execution_path": "FULL",
+    "degraded": false,
+    "degraded_reasons": [],
+    "llm_model": "claude-sonnet-4-5-20250929",
+    "llm_used": true,
+    "llm_fallback": false,
+    "engine_time_seconds": 25.77,
+    "total_time_seconds": 25.8
+  }
+}
