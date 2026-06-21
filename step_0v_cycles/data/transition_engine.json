@@ -1,5 +1,5 @@
 {
- "computed_at": "2026-06-14T06:27:13.318903+00:00",
+ "computed_at": "2026-06-21T06:44:48.281815+00:00",
  "engine_version": "1.1",
  "transition_matrices": {
   "LIQUIDITY": {
@@ -919,10 +919,10 @@
   "BUSINESS": {
    "phases": {
     "EARLY_RECOVERY": {
-     "n_occurrences": 12,
+     "n_occurrences": 13,
      "duration_months": {
-      "median": 2,
-      "mean": 2.2,
+      "median": 1,
+      "mean": 2.1,
       "min": 1,
       "max": 4,
       "std": 1.3,
@@ -938,7 +938,8 @@
        1,
        1,
        4,
-       3
+       3,
+       1
       ]
      },
      "transitions_to": {
@@ -1057,11 +1058,11 @@
      "transitions_to": {
       "EXPANSION": {
        "count": 22,
-       "probability": 0.957
+       "probability": 0.917
       },
       "EARLY_RECOVERY": {
-       "count": 1,
-       "probability": 0.043
+       "count": 2,
+       "probability": 0.083
       }
      }
     },
@@ -1135,7 +1136,7 @@
      }
     }
    },
-   "total_transitions": 85
+   "total_transitions": 86
   },
   "FED_RATES": {
    "phases": {
@@ -1836,22 +1837,26 @@
    }
   },
   "BUSINESS": {
-   "current_phase": "LATE_EXPANSION",
-   "current_duration_months": 4,
+   "current_phase": "EARLY_RECOVERY",
+   "current_duration_months": 1,
    "median_duration": 1,
-   "phase_position_pct": 400,
-   "remaining_median": 0,
-   "remaining_p25": 0,
-   "remaining_p75": 0,
+   "phase_position_pct": 100,
+   "remaining_median": 3,
+   "remaining_p25": 2,
+   "remaining_p75": 3,
    "status": "EXTENDED",
    "transitions_ahead": {
     "EXPANSION": {
-     "count": 22,
-     "probability": 0.957
+     "count": 5,
+     "probability": 0.417
     },
-    "EARLY_RECOVERY": {
+    "LATE_EXPANSION": {
+     "count": 6,
+     "probability": 0.5
+    },
+    "TROUGH": {
      "count": 1,
-     "probability": 0.043
+     "probability": 0.083
     }
    }
   },
@@ -5467,7 +5472,7 @@
   "interpretation": "Mehrheitlich bullish, aber nicht einstimmig. Vorsichtig Risk-On."
  },
  "overall_assessment": {
-  "n_significant_returns": 2510,
+  "n_significant_returns": 2511,
   "n_total_returns": 7662,
   "pct_significant": 32.8,
   "cascade_severity": "MODERATE",
@@ -5481,9 +5486,9 @@
   "verdict": "MODERATE BULLISH — Majority positive but not unanimous. WATCH: CHINA_CREDIT, BUSINESS, TRADE extended beyond median duration."
  },
  "cycle_narrative": {
-  "generated_at": "2026-06-14T06:27:30.786547+00:00",
+  "generated_at": "2026-06-21T06:45:10.329446+00:00",
   "model": "claude-sonnet-4-6",
-  "text": "**BALDUR CREEK CAPITAL — ZYKLEN-ANALYSE | 14. Juni 2026**\n\nDie Zyklen-Engine signalisiert MODERATE BULLISH mit breiter, aber nicht einstimmiger Unterstützung. Sechs von neun Zyklen zeigen bullische Phasen; LIQUIDITY und COMMODITY haben frisch gedreht. Der kritische Vorbehalt: BUSINESS und TRADE laufen bei 400% bzw. 300% über ihre Median-Duration — statistische Erschöpfung, keine Prognose, aber ein klares Warnsignal.\n\nCHINA_CREDIT (100% Position, ~1 Mo verbleibend) ist der unmittelbarste Druckpunkt. Ein Kippen dieses Zyklus in den nächsten vier Wochen wäre der erste dominoartige Übergang. BUSINESS bei LATE_EXPANSION mit ~0 Monaten Restlaufzeit deutet auf bevorstehenden Phasenwechsel; TRADE im TROUGH ebenfalls extended. Stabilisierend wirken FED_RATES (EASING, frühe Phase, ~29 Mo Runway) und EARNINGS (EXPANSION, ~11 Mo) — beide liefern strukturellen Rückenwind. DOLLAR in früher WEAKENING-Phase (~3 Mo) begünstigt Rohstoffe und internationale Risikoanlagen.\n\nDie V16-Transition zeigt 94,2% Wahrscheinlichkeit für Growth-Szenario bei aktuellem State CREDIT_BULLISH/REAL_BULLISH — das ist ein starkes Signal. Crash-Daten für CREDIT_BULLISH/BUSINESS_BULLISH fehlen (n=?), was die Tail-Risk-Kalibrierung einschränkt. Die historischen Analogien 2019–2021 divergieren stark: GLD +17–22% und TLT +17% (2019/2020) stehen gegen SPY +16%, GLD -3% (2021) — die Verteilung ist bimodal, nicht unimodal. Eskalation droht, wenn CHINA_CREDIT und BUSINESS gleichzeitig kippen und der Cascade Speed anzieht.\n\nBevorzugt: GLD und Rohstoff-Exposure (COMMODITY in früher Bull-Phase, DOLLAR schwach) sowie selektives Equity-Risiko über SPY mit kurzem Zeithorizont. TLT bleibt als Absicherung attraktiv angesichts der bimodalen Analogie-Verteilung. Meiden: ungesicherte Positionen in spätzyklischen Industriewerten und hochverschuldeten Credit-Spreads — BUSINESS-Extension macht Timing-Fehler teuer. Gesamthaltung: Long Risiko, aber mit definierten Stops, solange CHINA_CREDIT stabil hält.",
-  "word_count": 243
+  "text": "GESAMTLAGE: Die Zyklen-Engine zeigt ein moderat bullisches Bild mit Confirmation Score 4 und 6 von 9 Zyklen in bullischer Phase. Kritischer Vorbehalt: CHINA_CREDIT, BUSINESS und TRADE stehen alle bei 100–300% ihrer medianen Zyklusdauer – historisch ein Signal für erhöhte Wendepunkt-Anfälligkeit, nicht für unmittelbaren Crash. FED_RATES-Easing (nur 18% absolviert, ~29 Monate Laufbahn) und DOLLAR-Schwäche (Early Phase, ~3 Monate) bilden das strukturelle Fundament.\n\nZYKLEN-DETAIL: TRADE bei 300% Überausdehnung mit ~0 Monaten verbleibend ist der dringlichste Warnpunkt – eine Transition steht unmittelbar bevor. BUSINESS-Zyklus in EARLY_RECOVERY ebenfalls stark ausgedehnt, bleibt aber strukturell supportiv für Risikoaktiva solange kein Phasenbruch eintritt. LIQUIDITY (50%, MID_PHASE, ~3 Mo) und EARNINGS (50%, ~11 Mo) stabilisieren das Gesamtbild ohne akute Stresssignale. COMMODITY und DOLLAR befinden sich beide in der Early Phase – frische Impulse, die Rohstoff- und Emerging-Market-Exposure begünstigen.\n\nRISIKO: V16-Transition aus LATE_EXPANSION mit Dual-State CREDIT_BULLISH/REAL_BULLISH: Growth-Wahrscheinlichkeit 94.3%, Stress 2.3%, Crisis 3.4% – Tail-Risiko gering, aber nicht null. Die drei extended Zyklen können gemeinsam kippen und eine Cascade-Beschleunigung auslösen (aktuell Speed 0.333, MODERATE); ein synchrones Reversal von TRADE + CHINA_CREDIT wäre das Haupteskalationsszenario. Historische Analogien sind gespalten: 2021-01 zeigt SPY +15.8%, während 2019-11 und 2020-01 auf GLD +17–22% und TLT +16–17% verweisen – das Spread zwischen den Szenarien ist ungewöhnlich hoch.\n\nPOSITIONIERUNG: Die Datenlage bevorzugt SPY/Aktien-Long primär gestützt durch FED_RATES-Rückenwind und EARNINGS-Expansion, jedoch mit reduzierter Conviction angesichts der Analogien-Divergenz. GLD profitiert von Dollar-Schwäche (EARLY_PHASE, ~3 Mo) und bleibt als Hedge gegen das 2019/2020-Analogie-Szenario attraktiv – Übergewichtung gegenüber TLT gerechtfertigt. Meiden: direktionale TRADE-Exposure und China-lastige EM-Assets (EEM, FXI) bis CHINA_CREDIT-Transition bestätigt ist; das 300%-Overextension-Signal ist kein Einstiegszeitpunkt.",
+  "word_count": 257
  }
 }
