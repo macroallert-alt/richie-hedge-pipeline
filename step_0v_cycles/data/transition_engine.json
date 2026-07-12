@@ -1,5 +1,5 @@
 {
- "computed_at": "2026-07-05T05:57:23.854732+00:00",
+ "computed_at": "2026-07-12T05:20:23.822673+00:00",
  "engine_version": "1.1",
  "transition_matrices": {
   "LIQUIDITY": {
@@ -815,10 +815,10 @@
      }
     },
     "STRENGTHENING": {
-     "n_occurrences": 31,
+     "n_occurrences": 32,
      "duration_months": {
       "median": 3,
-      "mean": 3.9,
+      "mean": 3.8,
       "min": 1,
       "max": 9,
       "std": 2.7,
@@ -853,7 +853,8 @@
        5,
        1,
        1,
-       3
+       3,
+       1
       ]
      },
      "transitions_to": {
@@ -908,13 +909,13 @@
      },
      "transitions_to": {
       "STRENGTHENING": {
-       "count": 31,
+       "count": 32,
        "probability": 1.0
       }
      }
     }
    },
-   "total_transitions": 63
+   "total_transitions": 64
   },
   "BUSINESS": {
    "phases": {
@@ -1821,16 +1822,16 @@
    }
   },
   "DOLLAR": {
-   "current_phase": "WEAKENING",
-   "current_duration_months": 1,
+   "current_phase": "STRENGTHENING",
+   "current_duration_months": 0,
    "median_duration": 3,
-   "phase_position_pct": 33,
-   "remaining_median": 2,
+   "phase_position_pct": 0,
+   "remaining_median": 3,
    "remaining_p25": 2,
    "remaining_p75": 7,
    "status": "EARLY_PHASE",
    "transitions_ahead": {
-    "STRENGTHENING": {
+    "WEAKENING": {
      "count": 31,
      "probability": 1.0
     }
@@ -5449,11 +5450,10 @@
   }
  },
  "confirmation_counter": {
-  "bullish_count": 7,
+  "bullish_count": 6,
   "bearish_count": 2,
-  "neutral_count": 0,
+  "neutral_count": 1,
   "bullish_cycles": [
-   "LIQUIDITY",
    "CREDIT",
    "CHINA_CREDIT",
    "DOLLAR",
@@ -5465,16 +5465,18 @@
    "COMMODITY",
    "BUSINESS"
   ],
-  "neutral_cycles": [],
-  "confirmation_score": 5,
-  "interpretation": "Starker Konsens bullish. Risk-On."
+  "neutral_cycles": [
+   "LIQUIDITY"
+  ],
+  "confirmation_score": 4,
+  "interpretation": "Mehrheitlich bullish, aber nicht einstimmig. Vorsichtig Risk-On."
  },
  "overall_assessment": {
   "n_significant_returns": 2517,
   "n_total_returns": 7663,
   "pct_significant": 32.8,
   "cascade_severity": "CALM",
-  "confirmation_score": 5,
+  "confirmation_score": 4,
   "extended_cycles": [
    "CREDIT",
    "CHINA_CREDIT",
@@ -5482,12 +5484,6 @@
    "TRADE"
   ],
   "late_cycles": [],
-  "verdict": "BULLISH — Strong consensus. Risk-on positioning supported. WATCH: CREDIT, CHINA_CREDIT, BUSINESS, TRADE extended beyond median duration."
- },
- "cycle_narrative": {
-  "generated_at": "2026-07-05T05:57:40.082931+00:00",
-  "model": "claude-sonnet-4-6",
-  "text": "GESAMTLAGE: Die Zyklen-Engine zeigt starken Bullish-Konsens mit einem Confirmation Score von 5 (7 bullish, 2 bearish). LIQUIDITY befindet sich mit 67% Positionierung im Mid-Phase, FED_RATES erst bei 27% mit ~34 Monaten verbleibender Lockerung – das gibt dem Zyklus strukturellen Rückenwind. LATE_EXPANSION-Phase mit V16-State deutet auf reifes, aber noch intaktes Regime hin.\n\nZYKLEN-DETAIL: Kritisch ist die Häufung verlängerter Zyklen: CREDIT bei 100% Position mit nur ~1 Monat verbleibend, BUSINESS bei 200%, TRADE bei 400% mit ~0 Monaten – technisch überfällig für Umkehr. CHINA_CREDIT mit 150% und ~4 Monaten ist ebenfalls extended, aber noch mit Puffer. EARNINGS auf 60% mit ~10 Monaten verbleibend und DOLLAR erst bei 33% WEAKENING-Phase (~2 Mo) sind die stabilisierenden Elemente. Cascade Speed bei 0.167 signalisiert CALM-Regime, nur 1 Transition in 6 Monaten – kein systemischer Stress sichtbar.\n\nRISIKO: V16-Transition aus CREDIT_BULLISH/REAL_BULLISH (n=91) zeigt 94.3% Growth-Wahrscheinlichkeit, Stress nur 2.3%, Crisis 3.4% – historisch solides Bild. Das Haupt-Tail-Risiko ist synchrones Kippen von CREDIT, BUSINESS und TRADE innerhalb der nächsten 4-8 Wochen, was eine rasche Regime-Verschiebung triggern könnte. Historische Analogien sind heterogen: 2021-01 zeigt SPY +15.8%/GLD -2.7%, aber 2019-11 und 2020-01 zeigen GLD +17-22% und TLT +17% – pre-COVID-Warnsignal nicht ignorieren.\n\nPOSITIONIERUNG: Primär SPY long gerechtfertigt bei aktuellem Konsens, aber die 2019/2020-Analogien mit Similarity 1.0 mahnen zur Absicherung via GLD. TLT profitiert bei Eskalation des CREDIT-Zyklus-Endes und unterstützt FED_RATES-Lockerungspfad (~34 Mo). TRADE-Zyklus bei 400%/~0 Mo und CREDIT bei ~1 Mo: Exposure in zyklischen Industrials und EM-Credit reduzieren, Hedges via GLD aufbauen – das asymmetrische Chance/Risiko liegt derzeit bei Gold, nicht bei Duration.",
-  "word_count": 252
+  "verdict": "MODERATE BULLISH — Majority positive but not unanimous. WATCH: CREDIT, CHINA_CREDIT, BUSINESS, TRADE extended beyond median duration."
  }
 }
