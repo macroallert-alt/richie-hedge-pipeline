@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -3531,9 +3532,9 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-07-13",
+    "date": "2026-07-14",
     "execution_level": "HOLD",
-    "total_score": 10,
+    "total_score": 11,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
@@ -3558,9 +3559,9 @@
         "label": "GOLD_REAL_YIELD_DIVERGENCE"
       },
       "gex_regime": {
-        "score": 1,
+        "score": 2,
         "max": 3,
-        "label": "GEX $-0.33B — SLIGHTLY_NEGATIVE"
+        "label": "GEX $-0.66B — NEGATIVE_PLUS_EVENT"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -3587,8 +3588,8 @@
     "event_window": {
       "next_48h_count": 2,
       "next_48h_events": [
-        "Consumer Price Index (June 2026) — CPI (24h)",
-        "China GDP Q2 2026 + Industrial Production + Retail Sales (June 2026) (48h)"
+        "Consumer Price Index (June 2026) — CPI (0h)",
+        "China GDP Q2 2026 + Industrial Production + Retail Sales (June 2026) (24h)"
       ],
       "next_14d_count": 5,
       "convergence_week": true,
@@ -3599,31 +3600,31 @@
         "date": "2026-07-14",
         "event": "Consumer Price Index (June 2026) — CPI",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-07-15",
         "event": "China GDP Q2 2026 + Industrial Production + Retail Sales (June 2026)",
         "impact": "MEDIUM",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-07-17",
         "event": "Monthly Options Expiry",
         "impact": "MEDIUM",
-        "days_until": 4
+        "days_until": 3
       },
       {
         "date": "2026-07-20",
         "event": "PBoC Loan Prime Rate Announcement (July 2026)",
         "impact": "MEDIUM",
-        "days_until": 7
+        "days_until": 6
       },
       {
         "date": "2026-07-23",
         "event": "ECB Governing Council Monetary Policy Meeting (July 2026)",
         "impact": "MEDIUM",
-        "days_until": 10
+        "days_until": 9
       }
     ],
     "calendar_monthly": [
@@ -3688,20 +3689,20 @@
         "impact": "HIGH"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING (14):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 6.9% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 6.9% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 6.9% — kein Conflict\n  • sofr_ffr: NORMAL: Wert: -9.0\n  • fin_stress: RELAXED: Wert: -0.7246\n\nCONFLICTING (9):\n  • Consumer Price Index (June 2026) — CPI in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -59.8% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -59.8% — Smart Money gegen GLD (16% im Portfolio)\n  • amihud: ILLIQUID: Wert: 93.64 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8094 — Liquiditäts-Risiko\n\nNETTO: 14 Confirming vs 9 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 11/18) ===\n\nCONFIRMING (14):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 6.9% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 6.9% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 6.9% — kein Conflict\n  • sofr_ffr: NORMAL: Wert: -7.0\n  • fin_stress: RELAXED: Wert: -0.7246\n\nCONFLICTING (9):\n  • Consumer Price Index (June 2026) — CPI in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -59.8% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -59.8% — Smart Money gegen GLD (16% im Portfolio)\n  • amihud: ILLIQUID: Wert: 91.53 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8094 — Liquiditäts-Risiko\n\nNETTO: 14 Confirming vs 9 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-07-13",
+    "date": "2026-07-14",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 39,
-    "days_since_state_change": 39,
+    "days_since_material_rotation": 40,
+    "days_since_state_change": 40,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -3831,7 +3832,6 @@
     "sparkline_data": {
       "BOND": {
         "dates": [
-          "2026-06-01",
           "2026-06-02",
           "2026-06-03",
           "2026-06-04",
@@ -3860,12 +3860,13 @@
           "2026-07-08",
           "2026-07-09",
           "2026-07-10",
-          "2026-07-13"
+          "2026-07-13",
+          "2026-07-14"
         ],
         "values": [
-          0.4037,
           0.0,
           0.4037,
+          0.0,
           0.0,
           0.0,
           0.0,
@@ -3897,7 +3898,6 @@
       },
       "COMMOD": {
         "dates": [
-          "2026-06-01",
           "2026-06-02",
           "2026-06-03",
           "2026-06-04",
@@ -3926,12 +3926,13 @@
           "2026-07-08",
           "2026-07-09",
           "2026-07-10",
-          "2026-07-13"
+          "2026-07-13",
+          "2026-07-14"
         ],
         "values": [
-          0.2541,
           0.1976,
           0.2541,
+          0.1976,
           0.1976,
           0.1976,
           0.1976,
@@ -3963,7 +3964,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-06-01",
           "2026-06-02",
           "2026-06-03",
           "2026-06-04",
@@ -3992,12 +3992,13 @@
           "2026-07-08",
           "2026-07-09",
           "2026-07-10",
-          "2026-07-13"
+          "2026-07-13",
+          "2026-07-14"
         ],
         "values": [
-          0.0,
           0.2972,
           0.0,
+          0.2972,
           0.2972,
           0.2972,
           0.2972,
@@ -4029,7 +4030,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-06-01",
           "2026-06-02",
           "2026-06-03",
           "2026-06-04",
@@ -4058,12 +4058,13 @@
           "2026-07-08",
           "2026-07-09",
           "2026-07-10",
-          "2026-07-13"
+          "2026-07-13",
+          "2026-07-14"
         ],
         "values": [
-          0.0,
           0.3455,
           0.0,
+          0.3455,
           0.3455,
           0.3455,
           0.3455,
@@ -4095,7 +4096,6 @@
       },
       "PM": {
         "dates": [
-          "2026-06-01",
           "2026-06-02",
           "2026-06-03",
           "2026-06-04",
@@ -4124,12 +4124,13 @@
           "2026-07-08",
           "2026-07-09",
           "2026-07-10",
-          "2026-07-13"
+          "2026-07-13",
+          "2026-07-14"
         ],
         "values": [
-          0.3422,
           0.1596,
           0.3422,
+          0.1596,
           0.1596,
           0.1596,
           0.1596,
@@ -4161,13 +4162,6 @@
       }
     },
     "sparkline_state_changes": [
-      {
-        "date": "2026-06-01",
-        "from_state": 0,
-        "to_state": 7,
-        "from_name": "",
-        "to_name": "SOFT_LANDING"
-      },
       {
         "date": "2026-06-02",
         "from_state": 0,
@@ -4342,7 +4336,7 @@
         }
       },
       "1w": {
-        "date": "2026-07-06",
+        "date": "2026-07-07",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -4358,7 +4352,7 @@
         }
       },
       "1m": {
-        "date": "2026-06-12",
+        "date": "2026-06-15",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -4374,7 +4368,7 @@
         }
       },
       "3m": {
-        "date": "2026-04-14",
+        "date": "2026-04-15",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
