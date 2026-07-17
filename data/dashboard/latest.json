@@ -5338,38 +5338,42 @@
   },
   "newsletter": {
     "schema_version": "1.2",
-    "date": "2026-07-16",
-    "weekday": "Thursday",
-    "format": "DAILY",
-    "generated_at": "2026-07-16T08:08:10.591815+00:00",
-    "one_thing": "Composite 79.9 CALM. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
+    "date": "2026-07-17",
+    "weekday": "Friday",
+    "format": "DAILY_CONTRARIAN",
+    "generated_at": "2026-07-17T08:04:30.317788+00:00",
+    "one_thing": "Composite 76.8 CALM. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
     "composite_scores": {
       "tactical": {
-        "score": 79.9,
+        "score": 76.8,
         "zone": "CALM",
-        "velocity": -0.1,
-        "acceleration": -5.3
+        "velocity": -3.1,
+        "acceleration": -3.0
       },
       "positional": {
-        "score": 66.9,
+        "score": 63.8,
         "zone": "ELEVATED",
-        "velocity": -0.1,
-        "acceleration": -0.3
+        "velocity": -3.1,
+        "acceleration": -3.0
       },
       "structural": {
-        "score": 47.0,
+        "score": 43.6,
         "zone": "STRESS",
-        "velocity": 0.1,
-        "acceleration": -0.5
+        "velocity": -3.4,
+        "acceleration": -3.5
       }
     },
     "data_integrity": {
-      "score": 85,
+      "score": 77,
       "total_feeds": 13,
-      "active_feeds": 11,
+      "active_feeds": 10,
       "stale_feeds": [
         {
           "name": "CU_AU",
+          "type": "indicator"
+        },
+        {
+          "name": "MOVE",
           "type": "indicator"
         },
         {
@@ -5466,9 +5470,9 @@
         {
           "key": "HY_OAS",
           "name": "High Yield Credit Spreads (OAS)",
-          "value": 272.0,
+          "value": 271.0,
           "unit_label": "bps",
-          "normalized": 95.1,
+          "normalized": 95.3,
           "weight": 0.2,
           "status": "OK",
           "alert": false,
@@ -5522,7 +5526,7 @@
         {
           "key": "NET_LIQ",
           "name": "Netto-Liquiditaet (Fed Reserve Drain Proxy)",
-          "value": 18190000000.0,
+          "value": 109280000000.0,
           "unit_label": "$",
           "normalized": 0.0,
           "weight": 0.1,
@@ -5538,9 +5542,9 @@
         {
           "key": "2Y10Y",
           "name": "Yield Curve 10Y-2Y (Zinsstrukturkurve)",
-          "value": 0.42,
+          "value": 0.41,
           "unit_label": "%",
-          "normalized": 53.0,
+          "normalized": 52.6,
           "weight": 0.08,
           "status": "OK",
           "alert": false,
@@ -5552,11 +5556,11 @@
         {
           "key": "MOVE",
           "name": "MOVE Index (Bond-Volatilitaet)",
-          "value": 69.55,
+          "value": null,
           "unit_label": "Index",
-          "normalized": 100.0,
+          "normalized": null,
           "weight": 0.1,
-          "status": "OK",
+          "status": "MISSING",
           "alert": false,
           "what": "Der 'VIX fuer Anleihen' — erwartete Volatilitaet am US-Treasury-Markt. Hohe Werte = Unsicherheit ueber Zinsentwicklung und Fed-Politik. Seit 2022 besonders bedeutend, weil die Fed der dominante Markt-Treiber ist.",
           "thresholds": "Unter 80 = ruhig (selten seit 2022). 80-120 = erhoehte Basisvol (neue Normalitaet). 120-150 = Stress. Ueber 150 = akute Anleihen-Krise. 180+ = Panik (Maerz 2023, Sept 2022).",
@@ -5626,7 +5630,7 @@
         "date": "2026-07-17",
         "event": "Monthly Options Expiry",
         "impact": "MEDIUM",
-        "hours_until": 24
+        "hours_until": 0
       }
     ],
     "intelligence_digest": {
@@ -5649,9 +5653,9 @@
     "breaking_news": [
       {
         "category": "GEOPOLITIK",
-        "title": "US resumes blockade on Iran, launches strikes after attacks in Strait of Hormuz | Live Updates from Fox News Digital",
+        "title": "US attacks oil tanker in strait of Hormuz as strikes reported in Tehran | US-Israel war on Iran | The Guardian",
         "impact": "HIGH",
-        "source": "www.foxnews.com",
+        "source": "www.theguardian.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -5672,9 +5676,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "U.S. fires a new wave of strikes on Iran and hits a tanker trying to skirt its blockade",
+        "title": "Iran reports fresh strikes near Qeshm Island and accuses US over ‘barbaric’ hospital attack – as it happened | US-Israel war on Iran | The Guardian",
         "impact": "HIGH",
-        "source": "www.npr.org",
+        "source": "www.theguardian.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -5695,7 +5699,30 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Trump says Iran wants to meet as U.S. fires more strikes; analysts warn of 'forever war' risk",
+        "title": "Here’s Where the U.S. and Iran Have Launched Attacks as the War Escalates - The New York Times",
+        "impact": "HIGH",
+        "source": "www.nytimes.com",
+        "portfolio_transmission": {
+          "DBC": {
+            "direction": "BULLISH",
+            "mechanism": "Geopolitical risk → commodity bid",
+            "exposure_pct": 19.8
+          },
+          "HYG": {
+            "direction": "BEARISH",
+            "mechanism": "Risk-off → credit spread widening",
+            "exposure_pct": 29.7
+          },
+          "GLD": {
+            "direction": "BULLISH",
+            "mechanism": "Safe haven flows",
+            "exposure_pct": 16.0
+          }
+        }
+      },
+      {
+        "category": "GEOPOLITIK",
+        "title": "Iran warns U.S. of Hormuz ‘red line,’ says it will retaliate if Trump carries out threats",
         "impact": "HIGH",
         "source": "www.cnbc.com",
         "portfolio_transmission": {
@@ -5718,32 +5745,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Iran War Latest: U.S. disables ship that allegedly tried to sail to Kharg Island as feud over Strait of Hormuz escalates",
+        "title": "Strait of Hormuz Crisis Threatens Global Trade, IEA’s Birol Says - Bloomberg",
         "impact": "HIGH",
-        "source": "www.cbsnews.com",
-        "portfolio_transmission": {
-          "DBC": {
-            "direction": "BULLISH",
-            "mechanism": "Geopolitical risk → commodity bid",
-            "exposure_pct": 19.8
-          },
-          "HYG": {
-            "direction": "BEARISH",
-            "mechanism": "Risk-off → credit spread widening",
-            "exposure_pct": 29.7
-          },
-          "GLD": {
-            "direction": "BULLISH",
-            "mechanism": "Safe haven flows",
-            "exposure_pct": 16.0
-          }
-        }
-      },
-      {
-        "category": "GEOPOLITIK",
-        "title": "U.S. Strikes Hit Greater Tunb Island in Strait of Hormuz - The New York Times",
-        "impact": "HIGH",
-        "source": "www.nytimes.com",
+        "source": "www.bloomberg.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -5763,7 +5767,7 @@
         }
       }
     ],
-    "breaking_news_summary": "BREAKING: US resumes blockade on Iran, launches strikes after attacks in Strait of Hormuz ",
+    "breaking_news_summary": "BREAKING: US attacks oil tanker in strait of Hormuz as strikes reported in Tehran | US-Isr",
     "warning_triggers": [],
     "contrarian_check": null,
     "prediction_log": {
@@ -5772,8 +5776,8 @@
     "anchor_type": "CRITICAL",
     "crypto_briefing": {
       "available": true,
-      "date": "2026-07-16",
-      "btc_price": 64143.0,
+      "date": "2026-07-17",
+      "btc_price": 62750.0,
       "ensemble_daily": 0.0,
       "ensemble_weekly": null,
       "ensemble_changed": "False",
@@ -5782,9 +5786,9 @@
       "mom_6M": false,
       "mom_12M": false,
       "below_200wma": false,
-      "wma_200": 61424.9,
+      "wma_200": 61453.39,
       "below_wma_changed": false,
-      "btc_dominance": 56.09,
+      "btc_dominance": 56.1,
       "phase": null,
       "phase_name": null,
       "weekly_alloc_total": null,
