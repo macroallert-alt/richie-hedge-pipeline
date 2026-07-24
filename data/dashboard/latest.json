@@ -5354,38 +5354,42 @@
   },
   "newsletter": {
     "schema_version": "1.2",
-    "date": "2026-07-23",
-    "weekday": "Thursday",
-    "format": "DAILY",
-    "generated_at": "2026-07-23T08:24:10.485947+00:00",
-    "one_thing": "Composite 75.1 CALM. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
+    "date": "2026-07-24",
+    "weekday": "Friday",
+    "format": "DAILY_CONTRARIAN",
+    "generated_at": "2026-07-24T08:19:36.005086+00:00",
+    "one_thing": "Composite 71.2 CALM. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
     "composite_scores": {
       "tactical": {
-        "score": 75.1,
+        "score": 71.2,
         "zone": "CALM",
-        "velocity": 0.0,
-        "acceleration": -0.1
+        "velocity": -3.9,
+        "acceleration": -3.9
       },
       "positional": {
-        "score": 62.1,
+        "score": 58.2,
         "zone": "ELEVATED",
-        "velocity": 0.0,
-        "acceleration": -0.1
+        "velocity": -3.9,
+        "acceleration": -3.9
       },
       "structural": {
-        "score": 44.2,
+        "score": 40.5,
         "zone": "STRESS",
-        "velocity": -0.2,
-        "acceleration": -0.2
+        "velocity": -3.7,
+        "acceleration": -3.5
       }
     },
     "data_integrity": {
-      "score": 85,
+      "score": 77,
       "total_feeds": 13,
-      "active_feeds": 11,
+      "active_feeds": 10,
       "stale_feeds": [
         {
           "name": "CU_AU",
+          "type": "indicator"
+        },
+        {
+          "name": "MOVE",
           "type": "indicator"
         },
         {
@@ -5482,9 +5486,9 @@
         {
           "key": "HY_OAS",
           "name": "High Yield Credit Spreads (OAS)",
-          "value": 269.0,
+          "value": 268.0,
           "unit_label": "bps",
-          "normalized": 95.8,
+          "normalized": 96.0,
           "weight": 0.2,
           "status": "OK",
           "alert": false,
@@ -5538,7 +5542,7 @@
         {
           "key": "NET_LIQ",
           "name": "Netto-Liquiditaet (Fed Reserve Drain Proxy)",
-          "value": 109280000000.0,
+          "value": 110730000000.0,
           "unit_label": "$",
           "normalized": 0.0,
           "weight": 0.1,
@@ -5554,9 +5558,9 @@
         {
           "key": "2Y10Y",
           "name": "Yield Curve 10Y-2Y (Zinsstrukturkurve)",
-          "value": 0.36,
+          "value": 0.34,
           "unit_label": "%",
-          "normalized": 50.4,
+          "normalized": 49.6,
           "weight": 0.08,
           "status": "OK",
           "alert": false,
@@ -5568,11 +5572,11 @@
         {
           "key": "MOVE",
           "name": "MOVE Index (Bond-Volatilitaet)",
-          "value": 70.88,
+          "value": null,
           "unit_label": "Index",
-          "normalized": 100.0,
+          "normalized": null,
           "weight": 0.1,
-          "status": "OK",
+          "status": "MISSING",
           "alert": false,
           "what": "Der 'VIX fuer Anleihen' — erwartete Volatilitaet am US-Treasury-Markt. Hohe Werte = Unsicherheit ueber Zinsentwicklung und Fed-Politik. Seit 2022 besonders bedeutend, weil die Fed der dominante Markt-Treiber ist.",
           "thresholds": "Unter 80 = ruhig (selten seit 2022). 80-120 = erhoehte Basisvol (neue Normalitaet). 120-150 = Stress. Ueber 150 = akute Anleihen-Krise. 180+ = Panik (Maerz 2023, Sept 2022).",
@@ -5604,7 +5608,7 @@
         "ic_consensus": "NEUTRAL",
         "risk_officer": "GREEN",
         "cio": "ROUTINE",
-        "execution_advisor": "CAUTION"
+        "execution_advisor": "WAIT"
       },
       "divergences": []
     },
@@ -5620,7 +5624,7 @@
       "inaction_tracker": {
         "status": "WARTEN_IST_STRATEGIE"
       },
-      "system_action": "CAUTION"
+      "system_action": "WAIT"
     },
     "against_you": {
       "positions": [],
@@ -5637,14 +5641,7 @@
         "regime_age_days": 1
       }
     },
-    "catalysts_48h": [
-      {
-        "date": "2026-07-23",
-        "event": "ECB Governing Council Monetary Policy Meeting (July 2026)",
-        "impact": "MEDIUM",
-        "hours_until": 0
-      }
-    ],
+    "catalysts_48h": [],
     "intelligence_digest": {
       "ic_net_direction": "NEUTRAL",
       "ic_net_score": -1,
@@ -5665,7 +5662,30 @@
     "breaking_news": [
       {
         "category": "GEOPOLITIK",
-        "title": "Iran’s foreign minister describes moment of attack that killed Khamenei | Iran | The Guardian",
+        "title": "Exclusive: Trump \"close\" to decision on \"massive attack\" on Iran",
+        "impact": "HIGH",
+        "source": "www.axios.com",
+        "portfolio_transmission": {
+          "DBC": {
+            "direction": "BULLISH",
+            "mechanism": "Geopolitical risk → commodity bid",
+            "exposure_pct": 19.8
+          },
+          "HYG": {
+            "direction": "BEARISH",
+            "mechanism": "Risk-off → credit spread widening",
+            "exposure_pct": 29.7
+          },
+          "GLD": {
+            "direction": "BULLISH",
+            "mechanism": "Safe haven flows",
+            "exposure_pct": 16.0
+          }
+        }
+      },
+      {
+        "category": "GEOPOLITIK",
+        "title": "Donald Trump says decision on ‘massive attack’ against Iran is close | US-Israel war on Iran | The Guardian",
         "impact": "HIGH",
         "source": "www.theguardian.com",
         "portfolio_transmission": {
@@ -5688,9 +5708,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "U.S.-Iran attacks continue as tensions mount on the Red Sea : NPR",
+        "title": "Trump says U.S. will hold Iran responsible for Houthi attacks after oil tankers targeted in Red Sea",
         "impact": "HIGH",
-        "source": "www.npr.org",
+        "source": "www.cnbc.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -5711,9 +5731,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Iran war updates: US says new strikes under way; Trump threatens bridges | US-Israel war on Iran News | Al Jazeera",
+        "title": "Evolution, Not Revolution: Why China Isn’t Pushing Its Cleantech Advantage in the Hormuz Crisis | Council on Foreign Relations",
         "impact": "HIGH",
-        "source": "www.aljazeera.com",
+        "source": "www.cfr.org",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -5734,32 +5754,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Tehran responds after Trump warns US will strike bridges, power plants over Hormuz attacks | Live Updates from Fox News Digital",
+        "title": "US continues strikes against Iran, maintains Hormuz remains open to all despite recent attacks",
         "impact": "HIGH",
-        "source": "www.foxnews.com",
-        "portfolio_transmission": {
-          "DBC": {
-            "direction": "BULLISH",
-            "mechanism": "Geopolitical risk → commodity bid",
-            "exposure_pct": 19.8
-          },
-          "HYG": {
-            "direction": "BEARISH",
-            "mechanism": "Risk-off → credit spread widening",
-            "exposure_pct": 29.7
-          },
-          "GLD": {
-            "direction": "BULLISH",
-            "mechanism": "Safe haven flows",
-            "exposure_pct": 16.0
-          }
-        }
-      },
-      {
-        "category": "GEOPOLITIK",
-        "title": "Iran warns of ‘eye for an eye’ response if US follows through on Trump’s threats to destroy infrastructure – as it happened | US-Israel war on Iran | The Guardian",
-        "impact": "HIGH",
-        "source": "www.theguardian.com",
+        "source": "www.jpost.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -5779,7 +5776,7 @@
         }
       }
     ],
-    "breaking_news_summary": "BREAKING: Iran’s foreign minister describes moment of attack that killed Khamenei | Iran |",
+    "breaking_news_summary": "BREAKING: Exclusive: Trump \"close\" to decision on \"massive attack\" on Iran",
     "warning_triggers": [],
     "contrarian_check": null,
     "prediction_log": {
@@ -5788,8 +5785,8 @@
     "anchor_type": "CRITICAL",
     "crypto_briefing": {
       "available": true,
-      "date": "2026-07-23",
-      "btc_price": 65549.0,
+      "date": "2026-07-24",
+      "btc_price": 65401.0,
       "ensemble_daily": 0.25,
       "ensemble_weekly": null,
       "ensemble_changed": "False",
@@ -5798,9 +5795,9 @@
       "mom_6M": false,
       "mom_12M": false,
       "below_200wma": false,
-      "wma_200": 61574.6,
+      "wma_200": 61604.76,
       "below_wma_changed": false,
-      "btc_dominance": 56.62,
+      "btc_dominance": 56.78,
       "phase": null,
       "phase_name": null,
       "weekly_alloc_total": null,
