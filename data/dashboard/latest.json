@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -2773,7 +2774,7 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-07-28",
+    "date": "2026-07-29",
     "execution_level": "WAIT",
     "total_score": 7,
     "max_score": 18,
@@ -2802,7 +2803,7 @@
       "gex_regime": {
         "score": 2,
         "max": 3,
-        "label": "GEX $-0.68B — NEGATIVE_PLUS_EVENT"
+        "label": "GEX $-0.66B — NEGATIVE_PLUS_EVENT"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -2827,13 +2828,14 @@
     "recommendation_short": "Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 3,
+      "next_48h_count": 4,
       "next_48h_events": [
-        "FOMC Rate Decision (July 2026) (24h)",
-        "GDP Advance Estimate Q2 2026 (48h)",
-        "PCE Price Index (June 2026) — Personal Income & Outlays (48h)"
+        "FOMC Rate Decision (July 2026) (0h)",
+        "GDP Advance Estimate Q2 2026 (24h)",
+        "PCE Price Index (June 2026) — Personal Income & Outlays (24h)",
+        "Bank of Japan Monetary Policy Meeting Decision (July 2026) (48h)"
       ],
-      "next_14d_count": 6,
+      "next_14d_count": 7,
       "convergence_week": true,
       "event_density_label": "HIGH"
     },
@@ -2842,31 +2844,31 @@
         "date": "2026-07-29",
         "event": "FOMC Rate Decision (July 2026)",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-07-30",
         "event": "GDP Advance Estimate Q2 2026",
         "impact": "MEDIUM",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-07-30",
         "event": "PCE Price Index (June 2026) — Personal Income & Outlays",
         "impact": "HIGH",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-07-31",
         "event": "Bank of Japan Monetary Policy Meeting Decision (July 2026)",
         "impact": "MEDIUM",
-        "days_until": 3
+        "hours_until": 48
       },
       {
         "date": "2026-08-03",
         "event": "ISM Manufacturing PMI (July 2026)",
         "impact": "MEDIUM",
-        "days_until": 6
+        "days_until": 5
       }
     ],
     "calendar_monthly": [
@@ -2931,20 +2933,20 @@
         "impact": "HIGH"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 7/18) ===\n\nCONFIRMING (17):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 5.2% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 5.2% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 5.2% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (8):\n  • FOMC Rate Decision (July 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • PCE Price Index (June 2026) — Personal Income & Outlays in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • Convergence Week aktiv: Mehrere HIGH Events: FOMC Rate Decision (July 2026), PCE Price Index (June 2026) — Personal Income & Outlays, Employment Situation (July 2026) — NFP\n  • amihud: MODERATE: Wert: 78.81 — Liquiditäts-Risiko\n  • vix_term: FLAT: Wert: 0.9243 — Liquiditäts-Risiko\n\nNETTO: 17 Confirming vs 8 Conflicting.\n\nEMPFEHLUNG: Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 7/18) ===\n\nCONFIRMING (17):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 5.2% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 5.2% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 5.2% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (8):\n  • FOMC Rate Decision (July 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • PCE Price Index (June 2026) — Personal Income & Outlays in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • Convergence Week aktiv: Mehrere HIGH Events: FOMC Rate Decision (July 2026), PCE Price Index (June 2026) — Personal Income & Outlays, Employment Situation (July 2026) — NFP\n  • amihud: MODERATE: Wert: 68.64 — Liquiditäts-Risiko\n  • vix_term: FLAT: Wert: 0.9169 — Liquiditäts-Risiko\n\nNETTO: 17 Confirming vs 8 Conflicting.\n\nEMPFEHLUNG: Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-07-28",
+    "date": "2026-07-29",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 54,
-    "days_since_state_change": 54,
+    "days_since_material_rotation": 55,
+    "days_since_state_change": 55,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -3074,7 +3076,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-06-17",
           "2026-06-18",
           "2026-06-19",
           "2026-06-22",
@@ -3103,7 +3104,8 @@
           "2026-07-23",
           "2026-07-24",
           "2026-07-27",
-          "2026-07-28"
+          "2026-07-28",
+          "2026-07-29"
         ],
         "values": [
           0.1976,
@@ -3140,7 +3142,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-06-17",
           "2026-06-18",
           "2026-06-19",
           "2026-06-22",
@@ -3169,7 +3170,8 @@
           "2026-07-23",
           "2026-07-24",
           "2026-07-27",
-          "2026-07-28"
+          "2026-07-28",
+          "2026-07-29"
         ],
         "values": [
           0.2972,
@@ -3206,7 +3208,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-06-17",
           "2026-06-18",
           "2026-06-19",
           "2026-06-22",
@@ -3235,7 +3236,8 @@
           "2026-07-23",
           "2026-07-24",
           "2026-07-27",
-          "2026-07-28"
+          "2026-07-28",
+          "2026-07-29"
         ],
         "values": [
           0.3455,
@@ -3272,7 +3274,6 @@
       },
       "PM": {
         "dates": [
-          "2026-06-17",
           "2026-06-18",
           "2026-06-19",
           "2026-06-22",
@@ -3301,7 +3302,8 @@
           "2026-07-23",
           "2026-07-24",
           "2026-07-27",
-          "2026-07-28"
+          "2026-07-28",
+          "2026-07-29"
         ],
         "values": [
           0.1596,
@@ -3474,7 +3476,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-07-27",
+        "date": "2026-07-28",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -3490,7 +3492,7 @@
         }
       },
       "1w": {
-        "date": "2026-07-21",
+        "date": "2026-07-22",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -3522,7 +3524,7 @@
         }
       },
       "3m": {
-        "date": "2026-04-29",
+        "date": "2026-04-30",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
