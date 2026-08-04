@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -2773,7 +2774,7 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-08-03",
+    "date": "2026-08-04",
     "execution_level": "CAUTION",
     "total_score": 5,
     "max_score": 18,
@@ -2782,7 +2783,7 @@
       "event_risk": {
         "score": 1,
         "max": 3,
-        "label": "ISM Manufacturing PMI (July 2026)"
+        "label": "2 HIGH events in 14d"
       },
       "positioning_conflict": {
         "score": 0,
@@ -2802,7 +2803,7 @@
       "gex_regime": {
         "score": 0,
         "max": 3,
-        "label": "GEX $-0.02B — SLIGHTLY_NEGATIVE"
+        "label": "GEX $0.11B — POSITIVE_STABILIZING"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -2810,8 +2811,8 @@
         "label": "Neutral"
       }
     },
-    "confirming_count": 17,
-    "conflicting_count": 5,
+    "confirming_count": 18,
+    "conflicting_count": 4,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
       "COT HYG bestätigt — COT_SP500_COMM_NET = 4.8% — kein Conflict",
@@ -2819,7 +2820,7 @@
       "COT XLU bestätigt — COT_SP500_COMM_NET = 4.8% — kein Conflict"
     ],
     "top_conflicting": [
-      "amihud: ILLIQUID — Wert: 92.37 — Liquiditäts-Risiko",
+      "amihud: ILLIQUID — Wert: 88.98 — Liquiditäts-Risiko",
       "vix_term: BACKWARDATION — Wert: 0.8407 — Liquiditäts-Risiko",
       "GOLD_REAL_YIELD_DIVERGENCE — V16 hat 16% Gold aber Real Yields Rising — Gegenwind"
     ],
@@ -2827,42 +2828,40 @@
     "recommendation_short": "Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 1,
-      "next_48h_events": [
-        "ISM Manufacturing PMI (July 2026) (0h)"
-      ],
-      "next_14d_count": 4,
+      "next_48h_count": 0,
+      "next_48h_events": [],
+      "next_14d_count": 3,
       "convergence_week": true,
       "event_density_label": "ELEVATED"
     },
     "calendar_upcoming": [
       {
-        "date": "2026-08-03",
-        "event": "ISM Manufacturing PMI (July 2026)",
-        "impact": "MEDIUM",
-        "hours_until": 0
-      },
-      {
         "date": "2026-08-07",
         "event": "Employment Situation (July 2026) — NFP",
         "impact": "HIGH",
-        "days_until": 4
+        "days_until": 3
       },
       {
         "date": "2026-08-12",
         "event": "Consumer Price Index (July 2026) — CPI",
         "impact": "HIGH",
-        "days_until": 9
+        "days_until": 8
       },
       {
         "date": "2026-08-17",
         "event": "China Industrial Production + Retail Sales (July 2026)",
         "impact": "MEDIUM",
-        "days_until": 14
+        "days_until": 13
       },
       {
         "date": "2026-08-20",
         "event": "PBoC Loan Prime Rate Announcement (August 2026)",
+        "impact": "MEDIUM",
+        "days_until": 16
+      },
+      {
+        "date": "2026-08-21",
+        "event": "Monthly Options Expiry",
         "impact": "MEDIUM",
         "days_until": 17
       }
@@ -2929,20 +2928,20 @@
         "impact": "HIGH"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING (17):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 4.8% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 4.8% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 4.8% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (5):\n  • amihud: ILLIQUID: Wert: 92.37 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8407 — Liquiditäts-Risiko\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n  • GEX negativ ($-0.02B) — SLIGHTLY_NEGATIVE: Dealer-Hedging verstärkt Moves — erhöhte Volatilität\n  • Router Proximity 100%: Router nähert sich Trigger (COMMODITY_SUPER)\n\nNETTO: 17 Confirming vs 5 Conflicting.\n\nEMPFEHLUNG: Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING (18):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 4.8% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 4.8% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 4.8% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (4):\n  • amihud: ILLIQUID: Wert: 88.98 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8407 — Liquiditäts-Risiko\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n  • Router Proximity 100%: Router nähert sich Trigger (COMMODITY_SUPER)\n\nNETTO: 18 Confirming vs 4 Conflicting.\n\nEMPFEHLUNG: Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-08-03",
+    "date": "2026-08-04",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 60,
-    "days_since_state_change": 60,
+    "days_since_material_rotation": 61,
+    "days_since_state_change": 61,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -3072,7 +3071,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-06-23",
           "2026-06-24",
           "2026-06-25",
           "2026-06-26",
@@ -3101,7 +3099,8 @@
           "2026-07-29",
           "2026-07-30",
           "2026-07-31",
-          "2026-08-03"
+          "2026-08-03",
+          "2026-08-04"
         ],
         "values": [
           0.1976,
@@ -3138,7 +3137,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-06-23",
           "2026-06-24",
           "2026-06-25",
           "2026-06-26",
@@ -3167,7 +3165,8 @@
           "2026-07-29",
           "2026-07-30",
           "2026-07-31",
-          "2026-08-03"
+          "2026-08-03",
+          "2026-08-04"
         ],
         "values": [
           0.2972,
@@ -3204,7 +3203,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-06-23",
           "2026-06-24",
           "2026-06-25",
           "2026-06-26",
@@ -3233,7 +3231,8 @@
           "2026-07-29",
           "2026-07-30",
           "2026-07-31",
-          "2026-08-03"
+          "2026-08-03",
+          "2026-08-04"
         ],
         "values": [
           0.3455,
@@ -3270,7 +3269,6 @@
       },
       "PM": {
         "dates": [
-          "2026-06-23",
           "2026-06-24",
           "2026-06-25",
           "2026-06-26",
@@ -3299,7 +3297,8 @@
           "2026-07-29",
           "2026-07-30",
           "2026-07-31",
-          "2026-08-03"
+          "2026-08-03",
+          "2026-08-04"
         ],
         "values": [
           0.1596,
@@ -3488,7 +3487,7 @@
         }
       },
       "1w": {
-        "date": "2026-07-27",
+        "date": "2026-07-28",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -3504,7 +3503,7 @@
         }
       },
       "1m": {
-        "date": "2026-07-03",
+        "date": "2026-07-06",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -3520,7 +3519,7 @@
         }
       },
       "3m": {
-        "date": "2026-05-05",
+        "date": "2026-05-06",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
