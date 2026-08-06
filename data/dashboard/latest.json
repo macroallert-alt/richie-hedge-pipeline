@@ -5361,36 +5361,40 @@
   },
   "newsletter": {
     "schema_version": "1.2",
-    "date": "2026-08-05",
-    "weekday": "Wednesday",
+    "date": "2026-08-06",
+    "weekday": "Thursday",
     "format": "DAILY",
-    "generated_at": "2026-08-05T08:31:23.694749+00:00",
-    "one_thing": "Composite 74.2 CALM. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
+    "generated_at": "2026-08-06T08:28:55.684984+00:00",
+    "one_thing": "Composite 68.3 ELEVATED. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
     "composite_scores": {
       "tactical": {
-        "score": 74.2,
-        "zone": "CALM",
-        "velocity": -0.3,
-        "acceleration": -0.2
+        "score": 68.3,
+        "zone": "ELEVATED",
+        "velocity": -5.9,
+        "acceleration": -5.6
       },
       "positional": {
-        "score": 61.2,
+        "score": 55.3,
         "zone": "ELEVATED",
-        "velocity": -0.3,
-        "acceleration": -0.2
+        "velocity": -5.9,
+        "acceleration": -5.6
       },
       "structural": {
-        "score": 42.6,
+        "score": 36.9,
         "zone": "STRESS",
-        "velocity": -0.3,
-        "acceleration": 0.0
+        "velocity": -5.7,
+        "acceleration": -5.4
       }
     },
     "data_integrity": {
-      "score": 77,
+      "score": 69,
       "total_feeds": 13,
-      "active_feeds": 10,
+      "active_feeds": 9,
       "stale_feeds": [
+        {
+          "name": "BREADTH",
+          "type": "indicator"
+        },
         {
           "name": "CU_AU",
           "type": "indicator"
@@ -5493,9 +5497,9 @@
         {
           "key": "HY_OAS",
           "name": "High Yield Credit Spreads (OAS)",
-          "value": 278.0,
+          "value": 273.0,
           "unit_label": "bps",
-          "normalized": 93.8,
+          "normalized": 94.9,
           "weight": 0.2,
           "status": "OK",
           "alert": false,
@@ -5507,11 +5511,11 @@
         {
           "key": "BREADTH",
           "name": "Marktbreite (Advance/Decline Proxy)",
-          "value": 2.5,
+          "value": null,
           "unit_label": "Ratio",
-          "normalized": 100.0,
+          "normalized": null,
           "weight": 0.15,
-          "status": "OK",
+          "status": "MISSING",
           "alert": false,
           "what": "Misst wie breit eine Rallye oder ein Sell-Off getragen wird. Hohe Breadth = viele Aktien steigen (gesunde Rallye). Niedrige Breadth = nur wenige Mega-Caps tragen den Index (fragil).",
           "thresholds": "Ueber 1.5 = sehr gesund. 1.0-1.5 = normal. 0.5-1.0 = schwaecher. Unter 0.5 fuer 3+ Tage = Breadth Collapse (-10 Punkte Composite Penalty).",
@@ -5535,9 +5539,9 @@
         {
           "key": "VIX_TERM",
           "name": "VIX Term Structure (VIX/VIX3M Ratio)",
-          "value": 0.8532,
+          "value": 0.8343,
           "unit_label": "Ratio",
-          "normalized": 84.8,
+          "normalized": 90.2,
           "weight": 0.12,
           "status": "OK",
           "alert": false,
@@ -5565,9 +5569,9 @@
         {
           "key": "2Y10Y",
           "name": "Yield Curve 10Y-2Y (Zinsstrukturkurve)",
-          "value": 0.43,
+          "value": 0.45,
           "unit_label": "%",
-          "normalized": 53.5,
+          "normalized": 54.3,
           "weight": 0.08,
           "status": "OK",
           "alert": false,
@@ -5653,7 +5657,7 @@
         "date": "2026-08-07",
         "event": "Employment Situation (July 2026) — NFP",
         "impact": "HIGH",
-        "hours_until": 48
+        "hours_until": 24
       }
     ],
     "intelligence_digest": {
@@ -5676,7 +5680,30 @@
     "breaking_news": [
       {
         "category": "GEOPOLITIK",
-        "title": "Iran war updates: Tehran says Oman talks on Hormuz advancing ‘positively’ | US-Israel war on Iran News | Al Jazeera",
+        "title": "Live Updates: Trump says Strait of Hormuz deal could happen soon amid Iran-Oman talks",
+        "impact": "HIGH",
+        "source": "www.cbsnews.com",
+        "portfolio_transmission": {
+          "DBC": {
+            "direction": "BULLISH",
+            "mechanism": "Geopolitical risk → commodity bid",
+            "exposure_pct": 19.8
+          },
+          "HYG": {
+            "direction": "BEARISH",
+            "mechanism": "Risk-off → credit spread widening",
+            "exposure_pct": 29.7
+          },
+          "GLD": {
+            "direction": "BULLISH",
+            "mechanism": "Safe haven flows",
+            "exposure_pct": 16.0
+          }
+        }
+      },
+      {
+        "category": "GEOPOLITIK",
+        "title": "Iran war updates: Tehran, Oman agree on route coordinates in Hormuz Strait | US-Israel war on Iran News | Al Jazeera",
         "impact": "HIGH",
         "source": "www.aljazeera.com",
         "portfolio_transmission": {
@@ -5699,30 +5726,7 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Did Iran hack water systems in seven US states?",
-        "impact": "HIGH",
-        "source": "www.bbc.com",
-        "portfolio_transmission": {
-          "DBC": {
-            "direction": "BULLISH",
-            "mechanism": "Geopolitical risk → commodity bid",
-            "exposure_pct": 19.8
-          },
-          "HYG": {
-            "direction": "BEARISH",
-            "mechanism": "Risk-off → credit spread widening",
-            "exposure_pct": 29.7
-          },
-          "GLD": {
-            "direction": "BULLISH",
-            "mechanism": "Safe haven flows",
-            "exposure_pct": 16.0
-          }
-        }
-      },
-      {
-        "category": "GEOPOLITIK",
-        "title": "Iran-US war latest: Trump warns Tehran will be ‘hit very hard’ unless Hormuz reopens | The Independent",
+        "title": "Iran-US war latest: Tehran on brink of deal to open Hormuz after threatening new attacks against Trump | The Independent",
         "impact": "HIGH",
         "source": "www.independent.co.uk",
         "portfolio_transmission": {
@@ -5745,9 +5749,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Iran and Oman make progress on a deal to reopen the Strait of Hormuz, officials say",
+        "title": "Avoid These States in the Next Fuel Crisis - Ask a Prepper",
         "impact": "HIGH",
-        "source": "apnews.com",
+        "source": "askaprepper.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -5768,9 +5772,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Qatar says whole region engaged in stopping war escalation, but no direct talks yet | Euronews",
+        "title": "Abdul El-Sayed leads anti-war sweep in Michigan; Israel raids Qalandia refugee camp; Russian strikes kill 17 in Kyiv",
         "impact": "HIGH",
-        "source": "www.euronews.com",
+        "source": "dropsitenews.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -5790,7 +5794,7 @@
         }
       }
     ],
-    "breaking_news_summary": "BREAKING: Iran war updates: Tehran says Oman talks on Hormuz advancing ‘positively’ | US-I",
+    "breaking_news_summary": "BREAKING: Live Updates: Trump says Strait of Hormuz deal could happen soon amid Iran-Oman ",
     "warning_triggers": [],
     "contrarian_check": null,
     "prediction_log": {
@@ -5799,8 +5803,8 @@
     "anchor_type": "CRITICAL",
     "crypto_briefing": {
       "available": true,
-      "date": "2026-08-04",
-      "btc_price": 63563.0,
+      "date": "2026-08-06",
+      "btc_price": 64751.0,
       "ensemble_daily": 0.25,
       "ensemble_weekly": null,
       "ensemble_changed": "False",
@@ -5809,9 +5813,9 @@
       "mom_6M": false,
       "mom_12M": false,
       "below_200wma": false,
-      "wma_200": 61803.8,
+      "wma_200": 61861.6,
       "below_wma_changed": false,
-      "btc_dominance": 56.39,
+      "btc_dominance": 56.72,
       "phase": null,
       "phase_name": null,
       "weekly_alloc_total": null,
