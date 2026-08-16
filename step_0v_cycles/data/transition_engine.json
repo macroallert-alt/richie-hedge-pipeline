@@ -1,5 +1,5 @@
 {
- "computed_at": "2026-08-09T03:25:49.746682+00:00",
+ "computed_at": "2026-08-16T02:53:17.643655+00:00",
  "engine_version": "1.1",
  "transition_matrices": {
   "LIQUIDITY": {
@@ -821,10 +821,10 @@
      "n_occurrences": 32,
      "duration_months": {
       "median": 3,
-      "mean": 3.8,
+      "mean": 3.9,
       "min": 1,
       "max": 9,
-      "std": 2.7,
+      "std": 2.6,
       "all_durations": [
        2,
        1,
@@ -857,7 +857,7 @@
        1,
        1,
        3,
-       1
+       2
       ]
      },
      "transitions_to": {
@@ -1148,10 +1148,10 @@
      "n_occurrences": 9,
      "duration_months": {
       "median": 11,
-      "mean": 21.6,
+      "mean": 21.4,
       "min": 1,
       "max": 62,
-      "std": 20.8,
+      "std": 20.9,
       "all_durations": [
        1,
        31,
@@ -1161,21 +1161,21 @@
        3,
        37,
        42,
-       4
+       3
       ]
      },
      "transitions_to": {
       "NEUTRAL": {
-       "count": 8,
+       "count": 9,
        "probability": 1.0
       }
      }
     },
     "NEUTRAL": {
-     "n_occurrences": 14,
+     "n_occurrences": 15,
      "duration_months": {
       "median": 3,
-      "mean": 5.2,
+      "mean": 4.9,
       "min": 1,
       "max": 17,
       "std": 4.6,
@@ -1193,7 +1193,8 @@
        1,
        3,
        2,
-       17
+       17,
+       1
       ]
      },
      "transitions_to": {
@@ -1231,7 +1232,7 @@
      }
     }
    },
-   "total_transitions": 27
+   "total_transitions": 28
   },
   "EARNINGS": {
    "phases": {
@@ -1606,10 +1607,10 @@
      }
     },
     "RECOVERY": {
-     "n_occurrences": 41,
+     "n_occurrences": 42,
      "duration_months": {
       "median": 2,
-      "mean": 2.1,
+      "mean": 2.0,
       "min": 1,
       "max": 7,
       "std": 1.5,
@@ -1653,6 +1654,7 @@
        2,
        3,
        2,
+       1,
        1,
        1
       ]
@@ -1710,21 +1712,21 @@
      },
      "transitions_to": {
       "RECOVERY": {
-       "count": 11,
-       "probability": 0.55
+       "count": 12,
+       "probability": 0.571
       },
       "EXPANSION": {
        "count": 2,
-       "probability": 0.1
+       "probability": 0.095
       },
       "CONTRACTION": {
        "count": 7,
-       "probability": 0.35
+       "probability": 0.333
       }
      }
     }
    },
-   "total_transitions": 111
+   "total_transitions": 112
   }
  },
  "phase_positions": {
@@ -1830,7 +1832,7 @@
    "median_duration": 3,
    "phase_position_pct": 33,
    "remaining_median": 3,
-   "remaining_p25": 2,
+   "remaining_p25": 1,
    "remaining_p75": 6,
    "status": "EARLY_PHASE",
    "transitions_ahead": {
@@ -1865,18 +1867,22 @@
    }
   },
   "FED_RATES": {
-   "current_phase": "EASING",
-   "current_duration_months": 4,
-   "median_duration": 11,
-   "phase_position_pct": 36,
-   "remaining_median": 33,
-   "remaining_p25": 27,
-   "remaining_p75": 38,
+   "current_phase": "NEUTRAL",
+   "current_duration_months": 1,
+   "median_duration": 3,
+   "phase_position_pct": 33,
+   "remaining_median": 4,
+   "remaining_p25": 2,
+   "remaining_p75": 9,
    "status": "EARLY_PHASE",
    "transitions_ahead": {
-    "NEUTRAL": {
-     "count": 8,
-     "probability": 1.0
+    "EASING": {
+     "count": 9,
+     "probability": 0.643
+    },
+    "RESTRICTIVE": {
+     "count": 5,
+     "probability": 0.357
     }
    }
   },
@@ -1905,26 +1911,30 @@
    }
   },
   "TRADE": {
-   "current_phase": "TROUGH",
-   "current_duration_months": 5,
-   "median_duration": 1,
-   "phase_position_pct": 500,
-   "remaining_median": 0,
-   "remaining_p25": 0,
-   "remaining_p75": 0,
-   "status": "EXTENDED",
+   "current_phase": "RECOVERY",
+   "current_duration_months": 1,
+   "median_duration": 2,
+   "phase_position_pct": 50,
+   "remaining_median": 1,
+   "remaining_p25": 1,
+   "remaining_p75": 2,
+   "status": "MID_PHASE",
    "transitions_ahead": {
-    "RECOVERY": {
-     "count": 11,
-     "probability": 0.55
+    "COLLAPSE": {
+     "count": 1,
+     "probability": 0.024
     },
     "EXPANSION": {
-     "count": 2,
-     "probability": 0.1
+     "count": 21,
+     "probability": 0.512
     },
     "CONTRACTION": {
-     "count": 7,
-     "probability": 0.35
+     "count": 10,
+     "probability": 0.244
+    },
+    "TROUGH": {
+     "count": 9,
+     "probability": 0.22
     }
    }
   }
@@ -2098,8 +2108,8 @@
  },
  "cascade_speed": {
   "current": {
-   "cascade_speed": 0.333,
-   "n_transitions": 2,
+   "cascade_speed": 0.167,
+   "n_transitions": 1,
    "lookback_months": 6,
    "transitioned_cycles": [
     {
@@ -2107,24 +2117,19 @@
      "month": "2026-06",
      "from": "BULLISH",
      "to": "NEUTRAL_MIXED"
-    },
-    {
-     "cycle": "CHINA_CREDIT",
-     "month": "2026-08",
-     "from": "BULLISH",
-     "to": "NEUTRAL_MIXED"
     }
    ],
    "not_yet_transitioned": [
     "CREDIT",
     "COMMODITY",
+    "CHINA_CREDIT",
     "DOLLAR",
     "BUSINESS",
     "FED_RATES",
     "EARNINGS",
     "TRADE"
    ],
-   "severity": "MODERATE"
+   "severity": "CALM"
   },
   "historical_cascade_speeds": [
    {
@@ -5433,7 +5438,7 @@
    },
    {
     "month": "2026-08",
-    "speed": 0.333
+    "speed": 0.167
    }
   ],
   "calibration": {
@@ -5441,13 +5446,13 @@
     "label": "CALM",
     "v16_stays_growth_pct": 63,
     "avg_spy_6m": 0.0459,
-    "n_months": 714
+    "n_months": 715
    },
    "speed_0.2_to_0.5": {
     "label": "MODERATE",
     "v16_stays_growth_pct": 71,
     "avg_spy_6m": 0.0628,
-    "n_months": 74
+    "n_months": 73
    },
    "speed_above_0.5": {
     "label": "CASCADE",
@@ -5462,12 +5467,13 @@
   }
  },
  "confirmation_counter": {
-  "bullish_count": 6,
+  "bullish_count": 7,
   "bearish_count": 2,
-  "neutral_count": 1,
+  "neutral_count": 0,
   "bullish_cycles": [
    "LIQUIDITY",
    "CREDIT",
+   "CHINA_CREDIT",
    "DOLLAR",
    "FED_RATES",
    "EARNINGS",
@@ -5477,26 +5483,23 @@
    "COMMODITY",
    "BUSINESS"
   ],
-  "neutral_cycles": [
-   "CHINA_CREDIT"
-  ],
-  "confirmation_score": 4,
-  "interpretation": "Mehrheitlich bullish, aber nicht einstimmig. Vorsichtig Risk-On."
+  "neutral_cycles": [],
+  "confirmation_score": 5,
+  "interpretation": "Starker Konsens bullish. Risk-On."
  },
  "overall_assessment": {
-  "n_significant_returns": 2518,
+  "n_significant_returns": 2519,
   "n_total_returns": 7663,
   "pct_significant": 32.9,
-  "cascade_severity": "MODERATE",
-  "confirmation_score": 4,
+  "cascade_severity": "CALM",
+  "confirmation_score": 5,
   "extended_cycles": [
    "CHINA_CREDIT",
-   "BUSINESS",
-   "TRADE"
+   "BUSINESS"
   ],
   "late_cycles": [
    "EARNINGS"
   ],
-  "verdict": "MODERATE BULLISH — Majority positive but not unanimous. WATCH: CHINA_CREDIT, BUSINESS, TRADE extended beyond median duration."
+  "verdict": "BULLISH — Strong consensus. Risk-on positioning supported. WATCH: CHINA_CREDIT, BUSINESS extended beyond median duration."
  }
 }
