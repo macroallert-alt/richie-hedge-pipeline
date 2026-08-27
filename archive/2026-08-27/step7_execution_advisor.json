@@ -1,6 +1,6 @@
 {
   "date": "2026-08-27",
-  "run_timestamp": "2026-08-27T10:06:00.904502Z",
+  "run_timestamp": "2026-08-27T17:24:16.684556Z",
   "execution_assessment": {
     "total_score": 10,
     "raw_score": 10,
@@ -93,16 +93,16 @@
       "liquidity_risk": {
         "score": 3,
         "max": 3,
-        "label": "amihud: MODERATE, vix_term: BACKWARDATION",
+        "label": "amihud: ILLIQUID, vix_term: BACKWARDATION",
         "detail": {
           "signals": {
             "amihud": {
-              "value": 69.49,
-              "assessment": "MODERATE",
-              "score": 1
+              "value": 93.25,
+              "assessment": "ILLIQUID",
+              "score": 2
             },
             "sofr_ffr": {
-              "value": 3.0,
+              "value": 1.0,
               "assessment": "NORMAL",
               "score": 0
             },
@@ -112,12 +112,12 @@
               "score": 0
             },
             "vix_term": {
-              "value": 0.8455,
+              "value": 0.8235,
               "assessment": "BACKWARDATION",
               "score": 2
             },
             "avg_corr": {
-              "value": 0.515,
+              "value": 0.5131,
               "assessment": "NORMAL",
               "score": 0
             }
@@ -172,22 +172,22 @@
         "detail": {
           "signals": {
             "cnn_fg": {
-              "value": 55.11,
+              "value": 59.11,
               "assessment": "NEUTRAL",
               "warning": false
             },
             "vix": {
-              "value": 15.45,
+              "value": 15.21,
               "assessment": "NORMAL",
               "warning": false
             },
             "pcr": {
-              "value": 0.686,
+              "value": 0.681,
               "assessment": "NORMAL",
               "warning": false
             },
             "hy_oas": {
-              "value": 270.0,
+              "value": 267.0,
               "assessment": "NORMAL",
               "warning": false
             },
@@ -232,7 +232,7 @@
       {
         "signal": "sofr_ffr: NORMAL",
         "source": "DW_L5",
-        "detail": "Wert: 3.0"
+        "detail": "Wert: 1.0"
       },
       {
         "signal": "fin_stress: RELAXED",
@@ -242,7 +242,7 @@
       {
         "signal": "avg_corr: NORMAL",
         "source": "DW_L5",
-        "detail": "Wert: 0.515"
+        "detail": "Wert: 0.5131"
       },
       {
         "signal": "GOLD_DXY_NORMAL",
@@ -262,22 +262,22 @@
       {
         "signal": "cnn_fg: NEUTRAL",
         "source": "DW_L2",
-        "detail": "Wert: 55.11"
+        "detail": "Wert: 59.11"
       },
       {
         "signal": "vix: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 15.45"
+        "detail": "Wert: 15.21"
       },
       {
         "signal": "pcr: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 0.686"
+        "detail": "Wert: 0.681"
       },
       {
         "signal": "hy_oas: NORMAL",
         "source": "DW_L2",
-        "detail": "Wert: 270.0"
+        "detail": "Wert: 267.0"
       },
       {
         "signal": "insider: NORMAL",
@@ -307,14 +307,14 @@
         "detail": "COT_GOLD_COMM_NET = -63.6% — Smart Money gegen GLD (16% im Portfolio)"
       },
       {
-        "signal": "amihud: MODERATE",
+        "signal": "amihud: ILLIQUID",
         "source": "DW_L5",
-        "detail": "Wert: 69.49 — Liquiditäts-Risiko"
+        "detail": "Wert: 93.25 — Liquiditäts-Risiko"
       },
       {
         "signal": "vix_term: BACKWARDATION",
         "source": "DW_L5",
-        "detail": "Wert: 0.8455 — Liquiditäts-Risiko"
+        "detail": "Wert: 0.8235 — Liquiditäts-Risiko"
       },
       {
         "signal": "GOLD_REAL_YIELD_DIVERGENCE",
@@ -590,7 +590,7 @@
       }
     ]
   },
-  "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING (16):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 3.1% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 3.1% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 3.1% — kein Conflict\n  • Fund Flows positiv (+0.16% AUM): Geld fließt in Aktien — bestätigt V16 Equity-Exposure\n  • sofr_ffr: NORMAL: Wert: 3.0\n\nCONFLICTING (8):\n  • PCE Price Index (July 2026) — Personal Income & Outlays in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -63.6% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -63.6% — Smart Money gegen GLD (16% im Portfolio)\n  • amihud: MODERATE: Wert: 69.49 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8455 — Liquiditäts-Risiko\n\nNETTO: 16 Confirming vs 8 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
+  "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 10/18) ===\n\nCONFIRMING (16):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 3.1% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 3.1% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 3.1% — kein Conflict\n  • Fund Flows positiv (+0.16% AUM): Geld fließt in Aktien — bestätigt V16 Equity-Exposure\n  • sofr_ffr: NORMAL: Wert: 1.0\n\nCONFLICTING (8):\n  • PCE Price Index (July 2026) — Personal Income & Outlays in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -63.6% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -63.6% — Smart Money gegen GLD (16% im Portfolio)\n  • amihud: ILLIQUID: Wert: 93.25 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8235 — Liquiditäts-Risiko\n\nNETTO: 16 Confirming vs 8 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
   "v16_context": {
     "regime": "LATE_EXPANSION",
     "top5": [
@@ -1240,7 +1240,7 @@
     "llm_model": "claude-sonnet-4-5-20250929",
     "llm_used": false,
     "llm_fallback": true,
-    "engine_time_seconds": 0.04,
+    "engine_time_seconds": 0.03,
     "total_time_seconds": 0.0
   }
 }
