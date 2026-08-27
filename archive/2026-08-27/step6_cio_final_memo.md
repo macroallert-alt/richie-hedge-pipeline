@@ -5,7 +5,7 @@ LLM NICHT VERFUEGBAR — Deterministisches Fallback-Briefing.
 ## S1: DELTA
 
 V16: LATE_EXPANSION. DD-Protect: Inaktiv.
-Market Analyst: {'regime': 'NEUTRAL', 'reason': 'Most layers near zero — no strong directional signal', 'positive_layers': ['Earnings & Fundamentals (L3)'], 'negative_layers': []}. Fragility: {'state': 'HEALTHY', 'triggers_active': [], 'indicators': {'hhi': None, 'breadth_pct': 95.0, 'spy_rsp_6m_delta': None, 'ai_capex_revenue_gap': None}}.
+Market Analyst: {'regime': 'SELECTIVE', 'lean': 'POSITIVE', 'reason': '2 positive, 0 negative — opportunities in specific areas', 'positive_layers': ['Earnings & Fundamentals (L3)', 'Tail Risk & Black Swan (L8)'], 'negative_layers': []}. Fragility: {'state': 'HEALTHY', 'triggers_active': [], 'indicators': {'hhi': None, 'breadth_pct': 95.0, 'spy_rsp_6m_delta': None, 'ai_capex_revenue_gap': None}}.
 Keine neuen oder eskalierenden Alerts.
 IC Novelty 7: forward_guidance: Oil and commodity markets face a severe structural supply-demand imbalance driven by prolonged Strai
 IC Novelty 9: forward_guidance: Dollar weakness from Treasury debasement policy is a structural headwind for US equity returns for f
