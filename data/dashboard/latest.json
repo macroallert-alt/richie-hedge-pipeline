@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -4548,9 +4549,9 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-08-31",
+    "date": "2026-09-01",
     "execution_level": "CAUTION",
-    "total_score": 5,
+    "total_score": 4,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
@@ -4565,9 +4566,9 @@
         "label": "No conflicts"
       },
       "liquidity_risk": {
-        "score": 3,
+        "score": 2,
         "max": 3,
-        "label": "amihud: MODERATE, vix_term: BACKWARDATION"
+        "label": "vix_term: BACKWARDATION"
       },
       "cross_asset_confirmation": {
         "score": 1,
@@ -4577,7 +4578,7 @@
       "gex_regime": {
         "score": 0,
         "max": 3,
-        "label": "GEX $-0.13B — SLIGHTLY_NEGATIVE"
+        "label": "GEX $-0.33B — SLIGHTLY_NEGATIVE"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -4585,8 +4586,8 @@
         "label": "Neutral"
       }
     },
-    "confirming_count": 18,
-    "conflicting_count": 5,
+    "confirming_count": 19,
+    "conflicting_count": 4,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
       "COT HYG bestätigt — COT_SP500_COMM_NET = 3.5% — kein Conflict",
@@ -4594,9 +4595,9 @@
       "COT XLU bestätigt — COT_SP500_COMM_NET = 3.5% — kein Conflict"
     ],
     "top_conflicting": [
-      "amihud: MODERATE — Wert: 61.02 — Liquiditäts-Risiko",
-      "vix_term: BACKWARDATION — Wert: 0.8255 — Liquiditäts-Risiko",
-      "GOLD_REAL_YIELD_DIVERGENCE — V16 hat 16% Gold aber Real Yields Rising — Gegenwind"
+      "vix_term: BACKWARDATION — Wert: 0.8511 — Liquiditäts-Risiko",
+      "GOLD_REAL_YIELD_DIVERGENCE — V16 hat 16% Gold aber Real Yields Rising — Gegenwind",
+      "GEX negativ ($-0.33B) — SLIGHTLY_NEGATIVE — Dealer-Hedging verstärkt Moves — erhöhte Volatilität"
     ],
     "recommendation_action": "EXECUTE_WITH_LIMITS",
     "recommendation_short": "Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.",
@@ -4604,7 +4605,7 @@
     "event_window": {
       "next_48h_count": 1,
       "next_48h_events": [
-        "ISM Manufacturing PMI (August 2026) (24h)"
+        "ISM Manufacturing PMI (August 2026) (0h)"
       ],
       "next_14d_count": 4,
       "convergence_week": true,
@@ -4615,82 +4616,34 @@
         "date": "2026-09-01",
         "event": "ISM Manufacturing PMI (August 2026)",
         "impact": "MEDIUM",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-09-04",
         "event": "Employment Situation (August 2026) — NFP",
         "impact": "HIGH",
-        "days_until": 4
+        "days_until": 3
       },
       {
         "date": "2026-09-10",
         "event": "ECB Governing Council Monetary Policy Meeting (September 2026)",
         "impact": "MEDIUM",
-        "days_until": 10
+        "days_until": 9
       },
       {
         "date": "2026-09-11",
         "event": "Consumer Price Index (August 2026) — CPI",
         "impact": "HIGH",
-        "days_until": 11
+        "days_until": 10
       },
       {
         "date": "2026-09-16",
         "event": "FOMC Rate Decision + SEP/Dot Plot (September 2026)",
         "impact": "HIGH",
-        "days_until": 16
+        "days_until": 15
       }
     ],
     "calendar_monthly": [
-      {
-        "date": "2026-08-03",
-        "event": "ISM Manufacturing PMI (July 2026)",
-        "type": "ISM_MFG",
-        "impact": "MEDIUM"
-      },
-      {
-        "date": "2026-08-07",
-        "event": "Employment Situation (July 2026) — NFP",
-        "type": "NFP",
-        "impact": "HIGH"
-      },
-      {
-        "date": "2026-08-12",
-        "event": "Consumer Price Index (July 2026) — CPI",
-        "type": "CPI",
-        "impact": "HIGH"
-      },
-      {
-        "date": "2026-08-17",
-        "event": "China Industrial Production + Retail Sales (July 2026)",
-        "type": "CHINA_DATA",
-        "impact": "MEDIUM"
-      },
-      {
-        "date": "2026-08-20",
-        "event": "PBoC Loan Prime Rate Announcement (August 2026)",
-        "type": "PBOC",
-        "impact": "MEDIUM"
-      },
-      {
-        "date": "2026-08-21",
-        "event": "Monthly Options Expiry",
-        "type": "OPEX",
-        "impact": "MEDIUM"
-      },
-      {
-        "date": "2026-08-27",
-        "event": "GDP Second Estimate Q2 2026",
-        "type": "GDP",
-        "impact": "MEDIUM"
-      },
-      {
-        "date": "2026-08-27",
-        "event": "PCE Price Index (July 2026) — Personal Income & Outlays",
-        "type": "PCE",
-        "impact": "HIGH"
-      },
       {
         "date": "2026-09-01",
         "event": "ISM Manufacturing PMI (August 2026)",
@@ -4702,22 +4655,70 @@
         "event": "Employment Situation (August 2026) — NFP",
         "type": "NFP",
         "impact": "HIGH"
+      },
+      {
+        "date": "2026-09-10",
+        "event": "ECB Governing Council Monetary Policy Meeting (September 2026)",
+        "type": "ECB",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-09-11",
+        "event": "Consumer Price Index (August 2026) — CPI",
+        "type": "CPI",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-09-16",
+        "event": "FOMC Rate Decision + SEP/Dot Plot (September 2026)",
+        "type": "FOMC",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-09-18",
+        "event": "Bank of Japan Monetary Policy Meeting Decision (September 2026)",
+        "type": "BOJ",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-09-18",
+        "event": "Quad Witching",
+        "type": "OPEX",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-09-21",
+        "event": "PBoC Loan Prime Rate Announcement (September 2026)",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-09-25",
+        "event": "China Industrial Production + Retail Sales (August 2026)",
+        "type": "CHINA_DATA",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-09-30",
+        "event": "GDP Third Estimate Q2 2026 + BEA Annual Update",
+        "type": "GDP",
+        "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING (18):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 3.5% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 3.5% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 3.5% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (5):\n  • amihud: MODERATE: Wert: 61.02 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8255 — Liquiditäts-Risiko\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n  • GEX negativ ($-0.13B) — SLIGHTLY_NEGATIVE: Dealer-Hedging verstärkt Moves — erhöhte Volatilität\n  • Router Proximity 100%: Router nähert sich Trigger (COMMODITY_SUPER)\n\nNETTO: 18 Confirming vs 5 Conflicting.\n\nEMPFEHLUNG: Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 4/18) ===\n\nCONFIRMING (19):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 3.5% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 3.5% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 3.5% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (4):\n  • vix_term: BACKWARDATION: Wert: 0.8511 — Liquiditäts-Risiko\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n  • GEX negativ ($-0.33B) — SLIGHTLY_NEGATIVE: Dealer-Hedging verstärkt Moves — erhöhte Volatilität\n  • Router Proximity 100%: Router nähert sich Trigger (COMMODITY_SUPER)\n\nNETTO: 19 Confirming vs 4 Conflicting.\n\nEMPFEHLUNG: Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-08-31",
+    "date": "2026-09-01",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 88,
-    "days_since_state_change": 88,
+    "days_since_material_rotation": 89,
+    "days_since_state_change": 89,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -4751,7 +4752,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": 0.3455,
         "materiality": "GREEN",
         "direction": "STABLE"
       },
@@ -4759,7 +4760,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": 0.2972,
         "materiality": "GREEN",
         "direction": "STABLE"
       },
@@ -4767,7 +4768,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": -0.0565,
         "materiality": "GREEN",
         "direction": "STABLE"
       },
@@ -4775,7 +4776,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": -0.1826,
         "materiality": "GREEN",
         "direction": "STABLE"
       }
@@ -4788,7 +4789,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": 0.2972,
         "materiality": "GREEN",
         "direction": "STABLE",
         "label": "HOLD"
@@ -4800,7 +4801,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": -0.0565,
         "materiality": "GREEN",
         "direction": "STABLE",
         "label": "HOLD"
@@ -4812,7 +4813,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": 0.1804,
         "materiality": "GREEN",
         "direction": "STABLE",
         "label": "HOLD"
@@ -4824,7 +4825,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": 0.1651,
         "materiality": "GREEN",
         "direction": "STABLE",
         "label": "HOLD"
@@ -4836,7 +4837,7 @@
         "delta_1d": 0.0,
         "delta_1w": null,
         "delta_1m": null,
-        "delta_3m": null,
+        "delta_3m": -0.069,
         "materiality": "GREEN",
         "direction": "STABLE",
         "label": "HOLD"
@@ -4847,7 +4848,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-07-21",
           "2026-07-22",
           "2026-07-23",
           "2026-07-24",
@@ -4876,7 +4876,8 @@
           "2026-08-26",
           "2026-08-27",
           "2026-08-28",
-          "2026-08-31"
+          "2026-08-31",
+          "2026-09-01"
         ],
         "values": [
           0.1976,
@@ -4913,7 +4914,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-07-21",
           "2026-07-22",
           "2026-07-23",
           "2026-07-24",
@@ -4942,7 +4942,8 @@
           "2026-08-26",
           "2026-08-27",
           "2026-08-28",
-          "2026-08-31"
+          "2026-08-31",
+          "2026-09-01"
         ],
         "values": [
           0.2972,
@@ -4979,7 +4980,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-07-21",
           "2026-07-22",
           "2026-07-23",
           "2026-07-24",
@@ -5008,7 +5008,8 @@
           "2026-08-26",
           "2026-08-27",
           "2026-08-28",
-          "2026-08-31"
+          "2026-08-31",
+          "2026-09-01"
         ],
         "values": [
           0.3455,
@@ -5045,7 +5046,6 @@
       },
       "PM": {
         "dates": [
-          "2026-07-21",
           "2026-07-22",
           "2026-07-23",
           "2026-07-24",
@@ -5074,7 +5074,8 @@
           "2026-08-26",
           "2026-08-27",
           "2026-08-28",
-          "2026-08-31"
+          "2026-08-31",
+          "2026-09-01"
         ],
         "values": [
           0.1596,
@@ -5263,7 +5264,7 @@
         }
       },
       "1w": {
-        "date": "2026-08-24",
+        "date": "2026-08-25",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5279,7 +5280,7 @@
         }
       },
       "1m": {
-        "date": "2026-07-31",
+        "date": "2026-08-03",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5295,19 +5296,18 @@
         }
       },
       "3m": {
-        "date": "2026-06-02",
+        "date": "2026-06-03",
         "weights": {
-          "GLD": 0.1596,
-          "XLP": 0.1651,
-          "XLU": 0.1804,
-          "HYG": 0.2972,
-          "DBC": 0.1976
+          "GLD": 0.2286,
+          "SLV": 0.1136,
+          "TLT": 0.2806,
+          "TIP": 0.1231,
+          "DBC": 0.2541
         },
         "cluster_weights": {
-          "PM": 0.1596,
-          "EQ_DEFN": 0.3455,
-          "CREDIT": 0.2972,
-          "COMMOD": 0.1976
+          "PM": 0.3422,
+          "BOND": 0.4037,
+          "COMMOD": 0.2541
         }
       },
       "6m": {
