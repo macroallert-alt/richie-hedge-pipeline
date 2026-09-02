@@ -32,12 +32,12 @@ howell (Novelty 9): Rising US Treasury yields threaten to break the debt-refinan
 forward_guidance (Novelty 9): The debasement trade in gold and Bitcoin is structurally supported regardless of yield direction, because government intervention to suppress yields i
 zerohedge (Novelty 9): The BLS annual benchmark revision will revise nonfarm payrolls higher for the first time since 2022, suggesting the labor market has been stronger tha
 zerohedge (Novelty 9): Copper is in a sustained bullish trend driven by near-term Chinese stimulus expectations, with three-month LME futures nearing record highs on a ninth
+forward_guidance (Novelty 9): Gold and Bitcoin are the core debasement hedges for a modern portfolio, with gold providing stability and Bitcoin offering asymmetric upside, and thei
 zerohedge (Novelty 8): The U.S. is on the verge of securing 100-year leases on 17 Venezuelan oil fields, effectively bringing Venezuela's vast reserves under American corpor
 zerohedge (Novelty 7): Proposed US-Israel mutual defense treaty and permanent military basing in Israel would dramatically increase the risk of US entanglement in future Mid
 zerohedge (Novelty 7): The cost of living comfortably in the United States is extremely high across all states, with even the most affordable state requiring nearly $190,000
 zerohedge (Novelty 7): Right-wing populist parties are poised to make significant electoral gains across major European nations over the next 18 months, with AfD commanding 
 zerohedge (Novelty 7): Venezuela is actively discussing OPEC withdrawal with U.S. officials, which would be symbolically and strategically significant as it would further fr
-zerohedge (Novelty 7): The U.S. Strategic Petroleum Reserve has reached a 40-year low, dramatically increasing Washington's urgency to secure alternative long-term crude sup
 
 ## S6: PORTFOLIO CONTEXT
 
