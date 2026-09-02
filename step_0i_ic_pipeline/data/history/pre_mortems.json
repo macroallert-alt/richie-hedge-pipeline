@@ -5,123 +5,89 @@
       "v16_weight": 0.159639,
       "v16_weight_pct": 16.0,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-08-31",
-      "evidence_last_updated": "2026-09-01",
+      "generated_at": "2026-09-02",
+      "evidence_last_updated": "2026-09-02",
       "failure_scenarios": [
         {
           "scenario_id": "PM_GLD_001",
-          "description": "Rising US Treasury yields breach a critical threshold that forces broad risk-asset deleveraging, causing gold to sell off violently as leveraged funds liquidate GLD to meet margin calls across their books, despite gold's safe-haven narrative.",
-          "failure_category": "LIQUIDITY_FLOW",
-          "probability_label": "HIGH",
-          "reasoning": "Howell's BEARISH thesis (novelty 9) explicitly warns that rising Treasury yields threaten to break debt-refinancing machinery and force broad repricing of risk assets. In a portfolio holding 29.7% HYG and 19.8% DBC alongside GLD, a yield-driven deleveraging event creates a correlation break where gold \u2014 typically a safe haven \u2014 gets sold to fund margin calls on the larger, more leveraged positions. History shows that in the acute phase of liquidity crises (March 2020, Q4 2018), gold drops 5-15% ",
+          "description": "BLS benchmark payroll revision surprises with a historically large upward number, triggering a hawkish Fed repricing that sends real yields sharply higher and crushes gold through a classic rate-driven selloff.",
+          "failure_category": "MACRO_REGIME_SHIFT",
+          "probability_label": "MEDIUM",
+          "reasoning": "ZeroHedge (novelty 9) flags that the BLS annual benchmark revision will revise nonfarm payrolls HIGHER for the first time since 2022, directly contradicting the labor-market-softening narrative that has partly supported gold as a hedge against policy error. If the revision is large (e.g., +500K+ jobs), the Fed loses any political cover for rate cuts, real yields on 10Y TIPS could spike 30-50bps, and gold \u2014 which has been priced for imminent easing \u2014 faces a textbook repricing. In LATE_EXPANSION ",
           "ic_evidence_for": [
-            "howell (BEARISH, novelty 9): Rising US Treasury yields threaten to break debt-refinancing machinery of modern finance, forcing a broad repricing of risk assets \u2014 gold is not immune in the liquidation ",
-            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, conviction 7.6): Multi-source thread from howell, jeff_snider, damped_spring, and zerohedge confirms the yield-breaking-machinery thesis has consensus backing.",
-            "Portfolio context: HYG at 29.7% represents the most yield-sensitive, liquid credit instrument \u2014 if credit spreads widen violently, the portfolio faces simultaneous drawdowns requiring GLD liquidation ",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "zerohedge (BULLISH framing, novelty 9): BLS benchmark revision expected to revise payrolls higher for first time since 2022 \u2014 paradoxically BEARISH for GLD because it removes the soft-landing narrativ",
+            "howell (BEARISH, novelty 9): Rising Treasury yields threaten broad repricing; a labor market revision reinforces the 'yields stay higher for longer' scenario that pressures gold.",
+            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, conviction 7.7): Multi-source thread confirms the yield-breaking-machinery risk is live \u2014 a hawkish data surprise accelerates this dynamic."
           ],
           "ic_evidence_against": [
-            "forward_guidance (BULLISH, novelty 9): Debasement trade is structurally supported regardless of yield direction \u2014 government yield suppression is itself inflationary, giving gold a bid even in a risin",
-            "THR_LIQUIDITY_20260828_001 (CONFIRMING, conviction 8.3): The structural debasement case has multi-source backing and is explicitly framed as yield-direction-agnostic, which would limit GLD downside if",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue",
-            "zerohedge: Financial markets no longer reflexively fear right-wing populist victories in Europe, as investors now view fiscal prudence of right-wing parties as b"
+            "forward_guidance (BULLISH, novelty 9): The debasement trade is structurally supported regardless of yield direction because government yield suppression is itself inflationary \u2014 gold may decouple from",
+            "THR_LIQUIDITY_20260828_001 (CONFIRMING, conviction 8.5): The debasement narrative thread has the highest conviction score in the IC stack, suggesting even a hawkish surprise may be absorbed by structu"
           ],
-          "early_warning_indicator": "10-year Treasury yield rises >30bps in a single week while HYG credit spreads widen >80bps simultaneously \u2014 confirming a coordinated risk-off deleveraging rather than an orderly rate adjustment.",
-          "early_warning_source": "Bloomberg/TradingView: TNX (10Y yield) daily candles + HYG/LQD spread differential; cross-reference with CFTC COT report for gold futures net long positioning reduction.",
-          "portfolio_impact": "-12 to -20% on GLD position",
-          "time_horizon": "IMMEDIATE"
+          "early_warning_indicator": "10Y TIPS real yield rises above +2.20% within 5 trading days of the BLS revision release date, while GLD fails to hold the $220 technical support level on elevated volume (>20M shares/day).",
+          "early_warning_source": "FRED TIPS yield series (DGS10 minus T10YIE) and GLD daily volume/price via V16 price feed; cross-reference with CME FedWatch tool for rate cut probability repricing.",
+          "portfolio_impact": "-12 to -18% on GLD position",
+          "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_GLD_002",
-          "description": "US energy dominance via 100-year Venezuelan oil field leases triggers a USD supply shock that strengthens the dollar materially, collapsing the commodity-debasement narrative underpinning gold and delivering a -10 to -16% drawdown in GLD.",
-          "failure_category": "EXTERNAL_SHOCK",
-          "probability_label": "LOW",
-          "reasoning": "ZeroHedge reports (BEARISH, novelty 8) that the US is on the verge of securing 100-year leases on 17 Venezuelan oil fields \u2014 a geopolitical energy coup that would dramatically expand USD-denominated petrodollar recycling, strengthen the dollar's reserve currency standing, and reduce the fiscal debasement pressure that drives the gold thesis. If this deal closes and markets interpret it as structurally bullish for the USD's energy-backed credibility, the debasement narrative that THR_LIQUIDITY_20",
+          "description": "US-Venezuela oil deal structurally redirects dollar liquidity into energy assets and petrostate dollar recycling, triggering a risk-on commodity rotation out of gold and into crude/copper as the dominant debasement hedge.",
+          "failure_category": "NARRATIVE_COLLAPSE",
+          "probability_label": "MEDIUM",
+          "reasoning": "The US securing 100-year leases on 17 Venezuelan oil fields (ZeroHedge, novelty 8; Doomberg, novelty 7) represents a geopolitical shift that could simultaneously: (1) suppress energy price volatility \u2014 a key driver of gold's inflation-hedge demand \u2014 by bringing Venezuelan barrels under controlled US supply management; and (2) redirect the 'debasement trade' narrative away from gold toward commodities with harder industrial demand anchors like copper (ZeroHedge copper narrative, novelty 9) and en",
           "ic_evidence_for": [
-            "zerohedge (BEARISH, novelty 8): US securing 100-year leases on Venezuelan oil fields would reinforce petrodollar dominance and reduce the debasement urgency that gold prices in \u2014 a structural USD bull",
-            "zerohedge (BEARISH, novelty 7): China's oil demand has structurally peaked due to EV transition \u2014 reduces global commodity demand and weakens the inflationary commodity-supercycle narrative supporting",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "zerohedge (BEARISH, novelty 8): US on verge of securing 100-year leases on 17 Venezuelan oil fields \u2014 a supply-side energy event that could dampen the inflationary impulse gold is priced to hedge.",
+            "zerohedge (BEARISH, novelty 7): Venezuela discussing OPEC withdrawal with US officials \u2014 OPEC fracture reduces cartel pricing power, suppressing oil-driven inflation expectations that gold hedges.",
+            "zerohedge (BULLISH for DBC, novelty 9): Copper in sustained bullish trend on Chinese stimulus expectations \u2014 capital may rotate from gold to industrial commodity proxies as the 'real' debasement hedge",
+            "THR_ENERGY_20260824_001 (THREATENING to GLD via narrative substitution, conviction 7.5): Energy narrative dominance could crowd out gold's role as primary inflation hedge in the portfolio."
           ],
           "ic_evidence_against": [
-            "forward_guidance (BULLISH, novelty 9): Debasement trade is explicitly framed as yield-direction and energy-supply agnostic \u2014 the mechanism is government fiscal policy, not commodity pricing, making th",
-            "THR_LIQUIDITY_20260828_001 (CONFIRMING, conviction 8.3): Conviction level suggests the multi-source debasement thesis would require more than a single geopolitical energy deal to reverse.",
-            "THR_ENERGY_20260824_001 (ESTABLISHED, conviction 7.5): Physical diesel tightness from Ukraine/Iran wars is an independent inflationary vector that persists regardless of Venezuelan oil field timeline.",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue",
-            "zerohedge: Financial markets no longer reflexively fear right-wing populist victories in Europe, as investors now view fiscal prudence of right-wing parties as b"
+            "doomberg (BULLISH, novelty 7): Venezuela deal framed as Pentagon/State Dept strategic play against Chinese influence \u2014 geopolitical tension of this magnitude historically supports gold as a safe-haven",
+            "forward_guidance (BULLISH, novelty 9): Debasement trade structurally supported regardless of yield direction \u2014 even energy disinflation may not undermine the sovereign debt debasement angle that drive"
           ],
-          "early_warning_indicator": "DXY breaks above 106.5 on a weekly close while GLD fails to reclaim its 50-day moving average following any rebound attempt \u2014 confirming dollar-strength-driven gold selling rather than a temporary technical flush.",
-          "early_warning_source": "DXY daily chart (ICE/Bloomberg) cross-referenced with GLD 50-day SMA; monitor State Department / Venezuelan government press releases as leading indicator.",
-          "portfolio_impact": "-10 to -16% on GLD position",
+          "early_warning_indicator": "DBC ETF outperforms GLD by more than 8% over a 4-week rolling window while COMEX gold net speculative longs (COT report) decline by more than 40,000 contracts from peak, signaling a narrative rotation away from gold.",
+          "early_warning_source": "CFTC Commitments of Traders report (gold futures, non-commercial net position); DBC vs. GLD relative performance ratio on V16 price feed.",
+          "portfolio_impact": "-10 to -15% on GLD position",
           "time_horizon": "MEDIUM"
         },
         {
           "scenario_id": "PM_GLD_003",
-          "description": "Gold's positioning becomes dangerously crowded as the debasement narrative achieves consensus status, and a coordinated ETF outflow episode \u2014 triggered by a single large sovereign seller or options expiry unwind \u2014 causes a flash liquidity event with -15 to -22% drawdown.",
+          "description": "Portfolio-level forced deleveraging triggered by HYG credit spread blowout causes gold to be sold as the most liquid, least-encumbered asset, producing a correlation-1 drawdown in GLD despite a fundamentally bullish gold macro environment.",
           "failure_category": "LIQUIDITY_FLOW",
-          "probability_label": "MEDIUM",
-          "reasoning": "THR_LIQUIDITY_20260828_001 (conviction 8.3) is supported by forward_guidance, luke_gromen, and howell \u2014 three prominent macro voices simultaneously bullish on gold's debasement thesis. When a thesis achieves this level of multi-source consensus, it often signals peak positioning rather than peak opportunity. Jeff Snider's reporting on forced deleveraging by insurer-affiliated entities (novelty 7) suggests that large institutional holders may be quietly reducing exposure in ways not yet visible i",
+          "probability_label": "HIGH",
+          "reasoning": "With HYG at 29.7% of the portfolio \u2014 the single largest position \u2014 any credit event that widens high-yield spreads by 150bps+ will generate mark-to-market losses that trigger risk limits and force rebalancing. GLD at 16% is the most liquid, exchange-traded, non-levered position in the book and would be the first asset liquidated to fund redemptions or meet risk budget constraints. This is not a thesis about gold being wrong \u2014 it is a plumbing scenario where gold is sold because it CAN be sold in",
           "ic_evidence_for": [
-            "jeff_snider (BEARISH, novelty 7): Mark Walter's accelerated asset sales at record valuations are consistent with forced deleveraging by insurer-affiliated entities \u2014 a pattern that historically preced",
-            "THR_LIQUIDITY_20260828_001 (CONFIRMING, conviction 8.3): High conviction multi-source consensus on debasement trade signals potential crowding \u2014 the same sources that confirm the thesis are the ones w",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "howell (BEARISH, novelty 9): Rising Treasury yields threaten to break debt-refinancing machinery, forcing broad repricing \u2014 HYG is the most direct victim and GLD becomes collateral damage via liquidat",
+            "jeff_snider (BEARISH, novelty 7): Mark Walter's accelerated asset sales consistent with forced deleveraging to reduce insurer-affiliated exposure \u2014 suggests institutional actors are already in pre-del",
+            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, conviction 7.7): Multi-source thread from howell, jeff_snider, damped_spring, zerohedge \u2014 the highest-conviction THREATENING thread in the IC stack specificall"
           ],
           "ic_evidence_against": [
-            "forward_guidance (BULLISH, novelty 9): Structural nature of the debasement thesis (fiscal deficits, yield suppression) suggests persistent underlying demand from central banks and sovereign wealth fun",
-            "zerohedge (BULLISH, novelty 9): BLS payroll revision being upward for first time since 2022 actually supports a 'stronger for longer' economy that generates more fiscal spending and debasement pressur",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue",
-            "zerohedge: Financial markets no longer reflexively fear right-wing populist victories in Europe, as investors now view fiscal prudence of right-wing parties as b"
+            "THR_LIQUIDITY_20260828_001 (CONFIRMING, conviction 8.5): Debasement trade structurally supported \u2014 central bank and sovereign gold buying has historically provided a price floor even during risk-off e",
+            "forward_guidance (BULLISH, novelty 9): Government intervention to suppress yields is itself inflationary, meaning any yield crisis triggers the very monetary response that supports gold \u2014 the selloff "
           ],
-          "early_warning_indicator": "GLD daily volume spikes >3x 30-day average on a down day while COMEX gold futures open interest drops >25,000 contracts in a single session \u2014 confirming forced liquidation rather than orderly profit-taking.",
-          "early_warning_source": "COMEX gold futures COT report (weekly, CFTC) for net managed money positioning; GLD ETF share creation/redemption data via Bloomberg; cross-reference with World Gold Council ETF flow tracker.",
-          "portfolio_impact": "-15 to -22% on GLD position",
-          "time_horizon": "SHORT"
+          "early_warning_indicator": "HYG falls more than 3.5% in any rolling 10-day window while the ICE BofA US High Yield OAS widens above 500bps \u2014 at that threshold, GLD volume spikes above 30M shares/day indicating institutional liquidation rather than directional selling.",
+          "early_warning_source": "ICE BofA US High Yield Option-Adjusted Spread (BAMLH0A0HYM2, FRED); HYG price and GLD volume on V16 real-time feed; cross-reference with SOFR-OIS spread for interbank stress.",
+          "portfolio_impact": "-14 to -22% on GLD position",
+          "time_horizon": "IMMEDIATE"
         },
         {
           "scenario_id": "PM_GLD_004",
-          "description": "AI-driven productivity gains in logistics, advertising, and market systematization (damped_spring thesis) deliver a non-inflationary growth surprise that makes the debasement narrative look premature, causing real yields to rise as fiscal deficits narrow and gold to re-price to a non-crisis multiple.",
+          "description": "A non-obvious AI-driven productivity shock compresses inflation expectations structurally and permanently, invalidating the debasement/inflation-hedge thesis that underpins gold's valuation premium at current prices.",
           "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "LOW",
-          "reasoning": "Damped_spring (BULLISH on AI, novelty 9) argues that AI's real economic value lies in domain-specific inference applications that drive meaningful productivity gains in logistics, advertising, and market systematization \u2014 sectors that are large enough to generate a genuine disinflationary impulse. If AI productivity gains compress structural inflation expectations while simultaneously reducing government borrowing needs (via higher tax revenues from stronger nominal growth), the fiscal debasemen",
+          "reasoning": "Luke Gromen (BEARISH, novelty 7) warns about AI-driven disruption of the US labor market at scale, but the contrarian read is that AI-driven productivity acceleration \u2014 not just displacement \u2014 could structurally suppress the wage-price spiral and long-run inflation expectations that have justified gold at elevated levels since 2020. If AI delivers a genuine productivity impulse (e.g., CPI prints at sub-2% for 3+ consecutive quarters), the 'debasement is inevitable' narrative that THR_LIQUIDITY_2",
           "ic_evidence_for": [
-            "damped_spring (BULLISH on AI, novelty 9): AI's primary economic value in logistics, advertising, and market systematization could deliver a meaningful disinflationary productivity impulse \u2014 directly u",
-            "zerohedge (BULLISH on economy, novelty 9): BLS payroll revision upward for first time since 2022 suggests the labor market is generating real economic output \u2014 consistent with a productivity-driven no",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "luke_gromen (BEARISH framing, novelty 7): AI-driven disruption of US healthcare sector as systemic risk \u2014 same AI disruption force, if applied to productivity rather than unemployment, is deflationary",
+            "No IC coverage: No analyst in the current IC stack is explicitly modeling AI productivity as a deflationary suppressor of gold's inflation premium \u2014 this is an uncovered tail risk."
           ],
           "ic_evidence_against": [
-            "zerohedge (BEARISH, novelty 7): Nvidia's AI server price hikes of 15%+ signal that AI infrastructure is becoming inflationary rather than deflationary \u2014 contradicting the productivity-disinflation sce",
-            "THR_ENERGY_20260824_001 (ESTABLISHED, conviction 7.5): Physical energy market tightness from geopolitical conflict is an independent inflationary variable that AI productivity gains cannot offset in t",
-            "forward_guidance (BULLISH, novelty 9): Government fiscal intervention to suppress yields is itself inflationary regardless of private-sector productivity \u2014 the debasement mechanism is political, not p",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue",
-            "zerohedge: Financial markets no longer reflexively fear right-wing populist victories in Europe, as investors now view fiscal prudence of right-wing parties as b"
+            "forward_guidance (BULLISH, novelty 9): Debasement trade structurally supported regardless of yield direction \u2014 even a productivity shock does not address the debt-stock problem that makes gold a sover",
+            "THR_LIQUIDITY_20260828_001 (CONFIRMING, conviction 8.5): The debasement narrative is explicitly yield-direction-agnostic, meaning it survives disinflationary scenarios as long as debt levels remain el",
+            "howell (BEARISH on rates, but gold-supportive in aggregate): The debt-refinancing stress framework implies fiscal dominance persists regardless of productivity trends."
           ],
-          "early_warning_indicator": "10-year TIPS real yield rises above +2.5% on a sustained basis (3+ consecutive weekly closes) while core PCE prints below 2.0% for two consecutive months \u2014 confirming non-inflationary growth that structurally undermines gold's crisis premium.",
-          "early_warning_source": "FRED TIPS real yield series (daily); BEA PCE release (monthly); cross-reference with GLD's rolling 90-day correlation to TIP ETF \u2014 if correlation inverts from historical positive, narrative shift is u",
-          "portfolio_impact": "-10 to -18% on GLD position",
-          "time_horizon": "MEDIUM"
+          "early_warning_indicator": "Three consecutive monthly US CPI prints below 1.8% YoY while 5Y5Y inflation breakevens (a forward inflation expectation gauge) fall below 2.0% \u2014 indicating the market is pricing out the structural inflation premium embedded in current gold prices.",
+          "early_warning_source": "BLS CPI release (monthly); Federal Reserve 5Y5Y forward inflation expectation series (T5YIFR, FRED); COMEX gold implied volatility skew for downside puts as early institutional hedging signal.",
+          "portfolio_impact": "-15 to -25% on GLD position",
+          "time_horizon": "LONG"
         }
       ],
       "scenario_count": 4,
@@ -132,242 +98,183 @@
       "v16_weight": 0.197644,
       "v16_weight_pct": 19.8,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-08-31",
-      "evidence_last_updated": "2026-09-01",
+      "generated_at": "2026-09-02",
+      "evidence_last_updated": "2026-09-02",
       "failure_scenarios": [
         {
           "scenario_id": "PM_DBC_001",
-          "description": "Rising US Treasury yields trigger a broad risk-asset repricing that collapses commodity demand expectations, dragging DBC down 12-18% within 45 days as growth fears displace inflation fears.",
-          "failure_category": "MACRO_REGIME_SHIFT",
-          "probability_label": "HIGH",
-          "reasoning": "Howell's warning that rising Treasury yields threaten to break the debt-refinancing machinery is directly relevant to DBC: a credit crunch would compress industrial activity and oil demand simultaneously, reversing the Late Expansion commodity bid. DBC's energy-heavy weighting (historically 50-60%) is acutely sensitive to demand-destruction narratives \u2014 if 10Y yields breach 5.25-5.5% and credit spreads widen materially, speculative longs in crude and copper would unwind aggressively. This is amp",
+          "description": "Venezuelan oil supply shock materializes as US-Venezuela deal floods markets with previously sanctioned barrels, collapsing crude prices and dragging DBC's energy-heavy weighting down 15-22% within 60 days.",
+          "failure_category": "EXTERNAL_SHOCK",
+          "probability_label": "MEDIUM",
+          "reasoning": "The IC intelligence reveals a highly specific and under-priced bearish catalyst: the US is securing 100-year leases on 17 Venezuelan oil fields simultaneously as Venezuela discusses OPEC withdrawal. If even 500k-1M bpd of Venezuelan crude re-enters global markets under US corporate control \u2014 outside OPEC quota discipline \u2014 the supply shock would be acute. DBC is approximately 55-60% energy-weighted; a WTI crude move from ~$75 to ~$58-62 (consistent with a 15-20% price decline on surprise supply ",
           "ic_evidence_for": [
-            "howell (BEARISH, novelty 9): 'Rising US Treasury yields threaten to break the debt-refinancing machinery of modern finance, forcing a broad repricing of risk assets' \u2014 commodities are risk assets in a",
-            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, Conviction 7.6): 'Rising US Treasury yields threaten to break the debt-refinancing machinery' \u2014 directly threatening to DBC via demand destruction.",
-            "jeff_snider (BEARISH, novelty 7): Mark Walter's forced deleveraging signals stress in insurer-affiliated balance sheets, consistent with early-stage credit deterioration that historically precedes com",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "zerohedge (BEARISH, novelty 8): 'The U.S. is on the verge of securing 100-year leases on 17 Venezuelan oil fields, effectively bringing Venezuela's vast reserves under American corporate control' \u2014 di",
+            "zerohedge (BEARISH, novelty 7): 'Venezuela is actively discussing OPEC withdrawal with U.S. officials, which would be symbolically and strategically significant as it would further fracture OPEC cohes",
+            "THR_ENERGY_20260824_001 (THREATENING, Conviction 7.5): Diesel tightness narrative would be directly undermined by Venezuelan heavy crude additions which yield high distillate fractions."
           ],
           "ic_evidence_against": [
-            "THR_LIQUIDITY_20260828_001 (CONFIRMING, Conviction 8.3): 'The debasement trade in gold and Bitcoin is structurally supported regardless of yield direction' \u2014 if the debasement narrative dominates, gol",
-            "forward_guidance (BULLISH, novelty 9): Government suppression of yields is itself inflationary and self-reinforcing \u2014 if yields rise and then the Fed intervenes, the inflation bid in commodities reass",
-            "zerohedge (BULLISH, novelty 9): BLS payroll revision higher suggests underlying demand strength that could sustain commodity consumption even in a higher-yield environment.",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "doomberg (BULLISH, novelty 7): 'The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control' \u2014 framing suggests supply is ",
+            "THR_ENERGY_20260824_001: Established diesel tightness in war-affected markets (Ukraine/Iran) provides a structural floor that absorbs incremental Venezuelan barrels before price collapse.",
+            "No IC coverage: Venezuelan production ramp timeline \u2014 fields are deteriorated and would require 18-36 months of capex before meaningful volume increments, limiting near-term supply shock severity."
           ],
-          "early_warning_indicator": "US 10Y yield closes above 5.30% while HYG falls more than 2% in a single week and WTI crude breaks below its 50-day moving average (~$72-74/bbl range).",
-          "early_warning_source": "10Y Treasury yield (Bloomberg/TradingView), HYG daily price action, WTI front-month futures \u2014 cross-reference against V16 liquidity layer and THR_LIQUIDITY thread conviction score.",
-          "portfolio_impact": "-12% to -18% on DBC position",
+          "early_warning_indicator": "WTI front-month futures break below $68/barrel on a weekly close while Venezuelan crude tanker AIS tracking data (via Bloomberg shipping analytics) shows >3 vessels loaded at Maracaibo within a 14-day window; simultaneously, OPEC+ compliance monitoring shows Saudi Arabia maintaining rather than cutt",
+          "early_warning_source": "EIA Weekly Petroleum Status Report (crude import origin breakdown) + Bloomberg commodity futures term structure (contango steepening in WTI 1M-6M spread beyond -$2.50)",
+          "portfolio_impact": "-15 to -22% on DBC position (~-3.0% to -4.4% at portfolio level)",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_DBC_002",
-          "description": "Chinese oil demand peak thesis is validated by hard data, collapsing the commodity supercycle narrative and causing CTAs and systematic funds to simultaneously liquidate crowded DBC-equivalent longs.",
+          "description": "Chinese stimulus expectations in copper fail to materialize into actual demand, triggering a speculative long unwind in base metals that cascades across DBC's diversified commodity basket as nine weeks of positioning reverses.",
           "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "MEDIUM",
-          "reasoning": "ZeroHedge reports China's oil demand has structurally peaked due to EV adoption and clean energy transition \u2014 if this is confirmed by Q3 Chinese import data showing sustained YoY declines, the entire Late Expansion commodity bull case unravels. DBC's energy weighting means a structural demand-peak narrative in China (consuming ~16% of global oil) could reset WTI fair value by $10-15/bbl. The copper bull thesis (currently bid on Chinese stimulus expectations) would also reverse if stimulus proves",
+          "reasoning": "ZeroHedge explicitly flags copper's nine consecutive weekly gains and LME futures nearing record highs driven by 'near-term Chinese stimulus expectations' \u2014 this is textbook positioning-overhang risk. When the actual stimulus data (PMI, credit impulse, property transaction volumes) fails to confirm the expected demand surge, speculative longs accumulated over nine weeks unwind rapidly. Copper's sensitivity to Chinese property sector demand means a single weak Caixin PMI or PBOC disappointment co",
           "ic_evidence_for": [
-            "zerohedge (BEARISH, novelty 7): 'China's oil demand has structurally peaked, driven by EV adoption and clean energy transition, ending earlier than previously forecast' \u2014 if confirmed by hard data, th",
-            "zerohedge (BEARISH, novelty 8): US securing Venezuelan oil leases adds supply precisely as Chinese demand is peaking \u2014 a supply/demand double-shock to crude pricing.",
-            "THR_ENERGY_20260824_001 (THREATENING, Conviction 7.5): The diesel tightness narrative depends on sustained demand; a structural Chinese demand peak would directly undermine the physical tightness stor",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "zerohedge (BULLISH, novelty 9): 'Copper is in a sustained bullish trend driven by near-term Chinese stimulus expectations, with three-month LME futures nearing record highs on a ninth consecutive week",
+            "howell (BEARISH, novelty 9): 'Rising US Treasury yields threaten to break the debt-refinancing machinery' \u2014 a USD strengthening event concurrent with yield rises would suppress CNY and reduce PBOC's s",
+            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, Conviction 7.7): Broad risk repricing forced by yield dynamics would hit commodity speculative positioning before physical demand adjusts."
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): 'Copper is in a sustained bullish trend driven by near-term Chinese stimulus expectations' \u2014 Chinese fiscal stimulus could temporarily re-ignite commodity demand and de",
-            "THR_ENERGY_20260824_001 (ESTABLISHED): Twin wars in Ukraine and Iran sustaining acute physical diesel tightness \u2014 European and Asian demand ex-China may absorb the slack.",
-            "damped_spring (BULLISH, novelty 9): AI-driven logistics and industrial systematization could create new incremental commodity demand channels that partially offset Chinese structural decline.",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "zerohedge (BULLISH, novelty 9): BLS benchmark revision showing stronger-than-expected US labor market could sustain industrial demand narrative independently of China.",
+            "THR_LIQUIDITY_20260828_001 (CONFIRMING, Conviction 8.5): Debasement trade structurally supports hard assets including metals regardless of short-term demand fluctuations \u2014 GLD/DBC correlation provides",
+            "No IC coverage: Actual Chinese grid infrastructure and EV battery manufacturing orders (physical copper demand) which may be genuinely accelerating independent of speculative narrative."
           ],
-          "early_warning_indicator": "Chinese crude oil imports fall below 9.5 mb/d on a 3-month rolling average (vs. ~10.5 mb/d current), and LME copper fails to hold the $9,500/tonne level despite additional PBoC stimulus announcements.",
-          "early_warning_source": "China General Administration of Customs monthly import data (released ~10th of each month), LME copper spot price, and Mysteel/Bloomberg China commodity demand trackers.",
-          "portfolio_impact": "-14% to -20% on DBC position",
-          "time_horizon": "MEDIUM"
-        },
-        {
-          "scenario_id": "PM_DBC_003",
-          "description": "DBC's correlation with GLD breaks down as the debasement trade bifurcates \u2014 gold rallies as a monetary hedge while industrial commodities sell off on recession fears, making DBC the worst of both worlds.",
-          "failure_category": "CORRELATION_BREAK",
-          "probability_label": "MEDIUM",
-          "reasoning": "The current portfolio holds 19.8% DBC alongside 16.0% GLD, implicitly assuming both benefit from the same debasement/inflation regime. However, in a stagflationary growth scare, gold historically decouples from industrial commodities: gold rallies on monetary fear while crude, copper, and agricultural commodities sell off on demand destruction. DBC's composition (predominantly energy and base metals) means it participates in the cyclical commodity selloff while GLD captures the flight-to-safety ",
-          "ic_evidence_for": [
-            "howell (BEARISH, novelty 9): Rising Treasury yields forcing broad repricing \u2014 in prior cycles (2015, 2018), this caused industrial commodities to sell off while gold initially fell but then recovered ",
-            "forward_guidance (BULLISH, novelty 9): 'Debasement trade in gold is structurally supported regardless of yield direction' \u2014 this is explicitly a gold-specific claim that does NOT extend to industrial ",
-            "No IC coverage: No analyst has explicitly addressed the GLD/DBC correlation breakdown risk in the current IC set.",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
-          ],
-          "ic_evidence_against": [
-            "THR_LIQUIDITY_20260828_001 (CONFIRMING, Conviction 8.3): If debasement is the dominant narrative, it could lift all hard assets including DBC's energy and metals components alongside gold.",
-            "zerohedge (BULLISH, novelty 9): Copper nearing record highs on a ninth consecutive weekly gain \u2014 if industrial metals are in a genuine structural bull market, DBC's metals component could track gold u",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
-          ],
-          "early_warning_indicator": "GLD gains more than 4% over a 3-week period while DBC declines more than 3% over the same window, confirming the intra-commodity correlation break in real time.",
-          "early_warning_source": "GLD vs. DBC relative performance ratio (V16 cross-asset correlation layer), combined with WTI/Gold ratio falling below 0.035 (crude underperforming gold on a ratio basis).",
-          "portfolio_impact": "-10% to -16% on DBC position",
+          "early_warning_indicator": "LME 3-month copper falls more than 4% in a single week while LME copper warehouse stocks (cancelled warrants ratio) rise above 35% AND Caixin Manufacturing PMI prints below 50.0 \u2014 confirming both speculative exit and fundamental disappointment simultaneously.",
+          "early_warning_source": "LME daily inventory reports + Caixin/Markit PMI release (first business day of each month) + CFTC Commitments of Traders report showing managed money net long reduction >15,000 contracts in copper",
+          "portfolio_impact": "-10 to -17% on DBC position (~-2.0% to -3.4% at portfolio level)",
           "time_horizon": "SHORT"
         },
         {
-          "scenario_id": "PM_DBC_004",
-          "description": "US-Canada 50% tariff escalation triggers a North American industrial recession signal, causing systematic CTA funds to simultaneously exit commodity longs across energy and metals, creating a liquidity air pocket in DBC.",
-          "failure_category": "LIQUIDITY_FLOW",
-          "probability_label": "LOW",
-          "reasoning": "ZeroHedge flags that US-Canada trade war escalation to 50% tariffs represents a durable geopolitical risk underestimated by markets. Canada is the largest supplier of crude oil to the US (approximately 4 mb/d); 50% tariffs on Canadian energy imports would create a bizarre scenario where US refiners face supply cost shocks while global crude prices might actually fall due to rerouted Canadian barrels. The net effect on DBC is ambiguous directionally but highly dangerous from a volatility/flow per",
+          "scenario_id": "PM_DBC_003",
+          "description": "DBC and HYG experience simultaneous correlation collapse as the portfolio's 49.5% combined risk concentration becomes the source of forced selling when credit spreads widen, triggering a liquidity-driven commodity drawdown that exceeds fundamental justification by 8-12 percentage points.",
+          "failure_category": "CORRELATION_BREAK",
+          "probability_label": "MEDIUM",
+          "reasoning": "The V16 portfolio has 49.5% concentrated across DBC and HYG \u2014 two assets that are both historically correlated to risk appetite but through different transmission mechanisms (credit spreads vs. commodity demand). In a Late Expansion regime tipping toward contraction, both assets reprice simultaneously rather than providing diversification. Critically, if HYG faces redemption pressure (credit fund outflows during spread widening), fund managers liquidate liquid commodities holdings (including DBC",
           "ic_evidence_for": [
-            "zerohedge (BEARISH, novelty 7): 'US-Canada trade war escalation to 50% tariffs represents a meaningful new geopolitical risk that could be more durable than markets expect' \u2014 durable tariffs on Canada",
-            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, Conviction 7.6): Broader liquidity stress environment means CTA deleveraging could be more severe and synchronized than in benign conditions.",
-            "jeff_snider (BEARISH, novelty 7): Forced deleveraging signals in insurer-affiliated accounts suggest broader institutional stress that could amplify any commodity selloff trigger.",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "jeff_snider (BEARISH, novelty 6): 'The Guggenheim/Mark Walter scandal is a flashlight illuminating systemic undisclosed affiliated-party risk inside insurance-backed private credit, suggesting industr",
+            "howell (BEARISH, novelty 9): 'Rising US Treasury yields threaten to break the debt-refinancing machinery of modern finance, forcing a broad repricing of risk assets' \u2014 both HYG and DBC are risk assets",
+            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, Conviction 7.7): The liquidity threat narrative is explicitly THREATENING to DBC \u2014 confirming the flow-driven risk."
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): 'Copper is in a sustained bullish trend' \u2014 if base metals remain bid independently of energy, DBC's diversified commodity exposure cushions a crude-specific flow revers",
-            "THR_ENERGY_20260824_001 (ESTABLISHED, Conviction 7.5): Physical diesel tightness from Ukraine/Iran conflicts would likely absorb rerouted Canadian crude and limit the net bearish price impact.",
-            "zerohedge (BULLISH, novelty 9): BLS payroll revision higher suggests the US economy is strong enough to absorb a trade shock without triggering the recessionary demand destruction that would cause a f",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "THR_LIQUIDITY_20260828_001 (CONFIRMING, Conviction 8.5): Debasement trade supporting GLD (16% of portfolio) could partially offset DBC losses if the credit shock is perceived as inflationary/monetary ",
+            "forward_guidance (BULLISH, novelty 9): Government intervention to suppress yields is 'itself inflationary and self-reinforcing' \u2014 policy response to credit stress could be commodity-positive rather th",
+            "No IC coverage: DBC ETF-specific redemption pressure data or commodity futures open interest positioning suggesting crowded institutional long \u2014 would need CFTC data to confirm crowding severity."
           ],
-          "early_warning_indicator": "OVX (Crude Oil Volatility Index) spikes above 38 within 5 trading days of a formal 50% tariff announcement on Canadian energy, accompanied by DBC volume exceeding 3x its 30-day average daily volume.",
-          "early_warning_source": "CBOE OVX index, DBC daily volume on NYSE Arca, Canadian crude (WCS) discount to WTI widening beyond -$25/bbl.",
-          "portfolio_impact": "-10% to -15% on DBC position",
+          "early_warning_indicator": "HYG falls more than 2.5% in a 5-day window while DBC simultaneously falls more than 3% AND the HYG-DBC 20-day rolling correlation rises above 0.85 (confirming regime correlation lock-up rather than diversification); additionally, DBC ETF share redemption volume exceeds 2x average daily volume for 3 ",
+          "early_warning_source": "Bloomberg ETF flow data (DBC daily creation/redemption units) + ICE BofA US High Yield Index OAS spread (alert at >450bps) + V16 correlation matrix update showing HYG-DBC 20-day correlation",
+          "portfolio_impact": "-12 to -19% on DBC position (~-2.4% to -3.8% at portfolio level, with concurrent HYG losses amplifyi",
           "time_horizon": "IMMEDIATE"
+        },
+        {
+          "scenario_id": "PM_DBC_004",
+          "description": "A non-obvious Labor Market Strength Paradox emerges where the BLS benchmark revision confirming stronger payrolls accelerates Fed hawkishness, causing a USD spike that mechanically crushes dollar-denominated commodity prices across DBC's entire basket regardless of physical supply/demand fundamentals.",
+          "failure_category": "MACRO_REGIME_SHIFT",
+          "probability_label": "LOW",
+          "reasoning": "ZeroHedge flags the BLS annual benchmark revision will revise nonfarm payrolls HIGHER for the first time since 2022 \u2014 this is a contrarian failure mode because it is bullish news that kills a commodity-positive thesis. A stronger labor market revision forces Fed repricing toward higher-for-longer, driving DXY above 108-110. Since commodities trade inversely to dollar strength (structural relationship), a 3-4% DXY move would compress DBC by 8-14% through pure currency translation effects on globa",
+          "ic_evidence_for": [
+            "zerohedge (BULLISH, novelty 9): 'The BLS annual benchmark revision will revise nonfarm payrolls higher for the first time since 2022, suggesting the labor market has been stronger than previously repo",
+            "howell (BEARISH, novelty 9): Treasury yield pressure is already present \u2014 a positive payroll revision would add fuel to this fire, pushing 10Y yields toward 5.5%+ and DXY above 108.",
+            "No IC coverage: Current DXY-DBC regression sensitivity analysis \u2014 historical 1% DXY move has implied approximately -2.5% to -3.5% DBC move depending on energy weighting."
+          ],
+          "ic_evidence_against": [
+            "THR_LIQUIDITY_20260828_001 (CONFIRMING, Conviction 8.5): Debasement trade narrative argues commodities and gold decouple from dollar during fiscal dominance regimes \u2014 if yields rise because of fiscal ",
+            "forward_guidance (BULLISH, novelty 9): 'Government intervention to suppress yields is itself inflationary' \u2014 Fed response to any tightening shock would ultimately be dovish, limiting the DXY spike dur",
+            "zerohedge (BULLISH, novelty 6): Right-wing populist electoral victories now viewed as fiscally prudent \u2014 political context may limit dollar strengthening if fiscal credibility concerns override rate d"
+          ],
+          "early_warning_indicator": "DXY breaks above 107.50 on a weekly close within 5 days of the BLS benchmark revision announcement, concurrent with CME FedWatch showing probability of any 2026 rate cut falling below 40% \u2014 confirming the Fed repricing channel is the driver rather than growth optimism.",
+          "early_warning_source": "CME FedWatch Tool (Fed funds futures implied probability) + DXY weekly chart (107.50 as technical trigger level) + Bloomberg WIRP function for Fed meeting-by-meeting pricing",
+          "portfolio_impact": "-8 to -14% on DBC position (~-1.6% to -2.8% at portfolio level)",
+          "time_horizon": "SHORT"
         }
       ],
       "scenario_count": 4,
-      "aggregate_risk": "HIGH"
+      "aggregate_risk": "MEDIUM"
     },
     "XLP": {
       "asset": "XLP",
       "v16_weight": 0.165144,
       "v16_weight_pct": 16.5,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-08-31",
-      "evidence_last_updated": "2026-09-01",
+      "generated_at": "2026-09-02",
+      "evidence_last_updated": "2026-09-02",
       "failure_scenarios": [
         {
           "scenario_id": "PM_XLP_001",
-          "description": "A sustained Treasury yield spike above 5.5% driven by Howell's debt-refinancing stress mechanism forces a violent rotation out of bond-proxy defensives, with XLP losing 13-20% as institutional investors flee staples for higher-yielding alternatives.",
+          "description": "A surprise upward BLS payroll revision combined with sticky CPI prints pushes 10Y Treasury yields above 5.5%, triggering a violent unwind of bond-proxy defensives as XLP's dividend yield becomes uncompetitive versus risk-free alternatives.",
           "failure_category": "MACRO_REGIME_SHIFT",
           "probability_label": "HIGH",
-          "reasoning": "Howell's core thesis \u2014 that rising yields will break debt-refinancing machinery and force broad risk asset repricing \u2014 is directly lethal to XLP's bond-proxy premium. XLP constituents (Procter & Gamble, Costco, Walmart) carry elevated P/E multiples that are only justified when the risk-free rate is suppressed; at 5.5%+ 10Y yields, their 2.2% average dividend yield becomes deeply uncompetitive. The Zerohedge claim that the Treasury buyback program is insufficient to suppress long-end yields confi",
+          "reasoning": "The Zerohedge claim that BLS will revise nonfarm payrolls higher for the first time since 2022 directly undermines the defensive allocation rationale for XLP \u2014 a stronger-than-reported labor market signals no imminent recession, removing the only justification for paying 22-25x earnings for consumer staples with 2.2% dividend yields. Howell's warning that rising Treasury yields will break debt-refinancing machinery compounds this: if 10Y yields breach 5.5%, institutional portfolio optimizers wil",
           "ic_evidence_for": [
-            "howell (BEARISH, novelty 9): Explicitly warns rising US Treasury yields will force a broad repricing of risk assets \u2014 XLP's bond-proxy constituents are among the most rate-sensitive equity instruments",
-            "zerohedge (BEARISH, novelty 6): Treasury bond buyback program using the General Account is insufficient to sustainably suppress long-end yields, confirming the yield pressure on XLP's valuation premiu",
-            "zerohedge (BULLISH on economy, novelty 9): BLS upward payroll revision removes the recessionary justification for defensive allocation to XLP \u2014 fund managers have no macro cover to hold expensive stap",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "howell (BEARISH, novelty 9): Explicitly warns rising US Treasury yields will force broad repricing of risk assets \u2014 XLP bond-proxy constituents are among the most rate-sensitive equity instruments",
+            "zerohedge (BULLISH on economy, novelty 9): BLS upward payroll revision removes the recessionary cover for defensive staples allocation \u2014 fund managers have no macro justification to hold expensive XLP",
+            "forward_guidance (BEARISH, novelty 6): Post-midterm gridlock scenario exposes latent debt ceiling crisis, which could cause a Treasury supply shock and disorderly yield spike"
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): Stronger-than-expected labor market sustains consumer spending on staples, potentially delivering earnings upside that partially offsets multiple compression.",
-            "No IC coverage: No source argues that XLP's current valuation is cheap enough to absorb a 150bps yield shock without meaningful multiple compression.",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "zerohedge (BULLISH, novelty 6): Right-wing populist electoral victories now viewed as fiscally prudent \u2014 could imply eventual deficit discipline that moderates yield pressure",
+            "No IC coverage directly defending XLP's current valuation premium in a higher-for-longer rate environment"
           ],
-          "early_warning_indicator": "10Y Treasury yield closes above 5.25% on consecutive trading days while XLP underperforms SPY by more than 3% in a single week, with TLT put open interest rising sharply.",
-          "early_warning_source": "CME FedWatch rate curve + TLT options flow via CBOE + V16 cross-asset momentum layer",
+          "early_warning_indicator": "10Y Treasury yield closes above 5.25% for 3 consecutive sessions while XLP/SPY ratio breaks below its 50-day moving average; simultaneously, 2Y-10Y spread narrows toward zero or uninverts, signaling markets pricing out near-term recession",
+          "early_warning_source": "TradingView 10Y yield (^TNX) daily close + XLP/SPY ratio chart; V16 regime monitor for LATE_EXPANSION \u2192 EARLY_CONTRACTION transition signal",
           "portfolio_impact": "-13 to -20% on XLP position",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_XLP_002",
-          "description": "AI-driven disruption of healthcare and logistics embedded in XLP's supply chain raises input costs faster than staples companies can pass through to consumers, triggering a margin compression earnings shock that breaks the narrative of defensive earnings stability.",
+          "description": "AI-driven mass displacement in US healthcare employment \u2014 the largest employment sector in most US states \u2014 triggers a consumer spending shock that causes XLP constituents to miss earnings by 8-12% as household staples purchases compress.",
           "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "MEDIUM",
-          "reasoning": "The damped_spring source identifies AI's primary economic value as being embedded in logistics, advertising, and systematization \u2014 directly threatening XLP's constituent companies whose competitive moats rest on supply chain efficiency and distribution scale. Simultaneously, Zerohedge's claim that Nvidia's AI server price hikes of 15%+ are making AI infrastructure inflationary rather than deflationary creates a cost-side shock: XLP companies adopting AI infrastructure to stay competitive face hi",
+          "reasoning": "Luke Gromen's claim that aggressive AI disruption of US healthcare carries systemic financial risk due to healthcare employment dominance is a non-obvious but potent threat to XLP's core thesis: that consumer staples demand is non-discretionary and recession-resistant. If healthcare employment \u2014 which is broadly distributed across all income quintiles \u2014 undergoes rapid AI-driven displacement, the resulting consumption shock would hit XLP constituents (food, beverage, household products) from the",
           "ic_evidence_for": [
-            "damped_spring (BULLISH on AI, novelty 9): AI embedded in logistics and supply chain systematization threatens the operational moats of major XLP constituents like Procter & Gamble and Walmart who have",
-            "zerohedge (MIXED, novelty 7): Nvidia AI server price hikes of 15%+ signal that AI infrastructure is becoming inflationary \u2014 XLP companies forced to adopt AI infrastructure face meaningfully higher tec",
-            "luke_gromen (BEARISH, novelty 7): AI disruption of healthcare employment carries systemic financial risk, directly threatening CVS and Walgreens which comprise a significant weight in XLP and are alre",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "luke_gromen (BEARISH, novelty 7): Explicitly identifies AI-driven healthcare displacement as carrying serious systemic financial risk via consumer spending cascades \u2014 directly threatens XLP revenue st",
+            "forward_guidance (BEARISH, novelty 6): Post-midterm gridlock exposes latent crises including AI sector stress currently being papered over \u2014 regulatory inaction could accelerate rather than slow displ"
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): BLS upward payroll revision and strong labor market means consumer staples volume demand remains resilient, providing a revenue buffer against margin compression.",
-            "No IC coverage: No source argues XLP constituents have successfully hedged AI infrastructure cost exposure or that their pricing power is sufficient to absorb 15%+ technology cost inflation.",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "zerohedge (BULLISH, novelty 9): BLS upward payroll revision suggests labor market has been stronger than reported \u2014 near-term employment shock may be less severe than feared",
+            "No IC coverage suggesting healthcare AI displacement is imminent within a 6-month horizon rather than multi-year structural shift"
           ],
-          "early_warning_indicator": "Two consecutive quarters where XLP constituent gross margins contract by more than 75bps versus consensus estimates, combined with management commentary citing 'technology investment headwinds' on earnings calls; watch CVS or Walgreens as the canary.",
-          "early_warning_source": "Earnings transcript NLP monitoring + V16 fundamental earnings revision layer + BloombergIntelligence consumer staples margin tracker",
+          "early_warning_indicator": "US healthcare sector monthly job losses exceed 50,000 for two consecutive months (BLS JOLTS report) while XLP constituent same-store-sales guidance is revised down more than 3% in any single quarter",
+          "early_warning_source": "BLS monthly Employment Situation report (healthcare subsector) + individual XLP constituent earnings call transcripts (PG, KO, WMT forward guidance language)",
           "portfolio_impact": "-10 to -16% on XLP position",
           "time_horizon": "MEDIUM"
         },
         {
           "scenario_id": "PM_XLP_003",
-          "description": "A US-Canada trade war escalation to 50% tariffs creates a cost-of-goods shock for XLP's North American supply chain-dependent constituents, while simultaneously triggering retaliatory tariffs on US consumer goods exports, compressing revenues and margins simultaneously.",
-          "failure_category": "EXTERNAL_SHOCK",
+          "description": "Insurance-affiliated private credit deleveraging triggered by Guggenheim/Mark Walter-style forced regulatory disclosures causes a liquidity shock that forces institutional redemptions from defensive equity allocations including XLP, as annuity-backed capital suddenly becomes unavailable for equity positioning.",
+          "failure_category": "LIQUIDITY_FLOW",
           "probability_label": "MEDIUM",
-          "reasoning": "Zerohedge's claim that US-Canada trade war escalation to 50% tariffs is more durable than markets expect is directly threatening to XLP's constituents, many of whom (Procter & Gamble, Kimberly-Clark, Colgate-Palmolive) source raw materials and packaging from Canada or operate cross-border supply chains. Canadian lumber, pulp, and paper \u2014 critical for consumer goods packaging \u2014 are exposed to these tariffs. Unlike technology companies that can reroute supply chains quickly, staples manufacturers ",
+          "reasoning": "Jeff Snider's two separate bearish claims \u2014 that the Guggenheim scandal is a 'flashlight' on systemic undisclosed affiliated-party risk in insurance-backed private credit, and that forced regulatory disclosure will trigger capital reallocation away from insurance annuity premiums as a funding source \u2014 represent a specific and underappreciated liquidity threat to XLP. Insurance companies are among the largest holders of defensive equity ETFs like XLP as part of their asset-liability matching stra",
           "ic_evidence_for": [
-            "zerohedge (BEARISH, novelty 7): US-Canada trade war escalation to 50% tariffs described as more durable than markets expect \u2014 Canadian raw materials (pulp, lumber, grain) are critical inputs for XLP s",
-            "THR_ENERGY_20260824_001 (THREATENING, conviction 7.5): Twin wars creating diesel market tightness adds a compounding logistics cost shock on top of tariff-driven input cost inflation \u2014 XLP constituent",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "jeff_snider (BEARISH, novelty 6): Guggenheim scandal illuminates systemic undisclosed affiliated-party risk inside insurance-backed private credit \u2014 industry-wide capital reallocation shock risk is re",
+            "jeff_snider (BEARISH, novelty 6): Forced regulatory disclosure will trigger reallocation shock as insurance annuity premiums \u2014 the industry's most stable funding source \u2014 face scrutiny, removing a key",
+            "jeff_snider (BEARISH, novelty 7): Mark Walter's accelerated asset sales consistent with forced deleveraging to reduce insurer-affiliated exposure \u2014 pattern suggests systemic rather than idiosyncratic "
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): Strong US labor market from BLS revision supports consumer spending resilience, potentially allowing some tariff cost pass-through to consumers without volume destructi",
-            "No IC coverage: No source has specifically modeled the Canadian input cost exposure of individual XLP constituents or assessed whether their pricing power is sufficient to absorb a 50% tariff passthro",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "No IC coverage suggesting regulators are prepared to move rapidly enough to trigger a near-term shock rather than multi-year investigation",
+            "zerohedge (BULLISH, novelty 6): Markets currently viewing populist electoral outcomes as non-threatening to financial stability \u2014 risk appetite may be more resilient than Snider's thesis implies"
           ],
-          "early_warning_indicator": "XLP constituent earnings pre-announcements citing tariff-related COGS increases exceeding 200bps, combined with Canadian dollar weakening below 0.68 USD/CAD confirming trade war severity, within 30 days of a tariff escalation announcement.",
-          "early_warning_source": "Trade policy monitoring (USTR announcements) + CAD/USD spot rate + XLP constituent earnings guidance via Bloomberg event tracker",
-          "portfolio_impact": "-10 to -18% on XLP position",
+          "early_warning_indicator": "XLP ETF share outstanding drops more than 8% over any rolling 10-trading-day window (indicating institutional redemption pressure) while HYG simultaneously widens more than 60bps \u2014 confirming a correlated defensive equity and credit deleveraging event",
+          "early_warning_source": "ETF.com or Bloomberg XLP shares outstanding daily tracker + ICE BofA HY OAS spread (FRED H15); also monitor SEC EDGAR for insurance sector 8-K affiliated transaction disclosures",
+          "portfolio_impact": "-10 to -15% on XLP position; correlated HYG (29.7%) and XLU (18.0%) positions could amplify total po",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_XLP_004",
-          "description": "Crowded defensive positioning across XLP (16.5%), XLU (18%), and GLD (16%) within this portfolio creates a correlated unwind where a single macro catalyst triggers simultaneous outflows from all three, with XLP suffering disproportionate liquidation as the least-liquid defensive leg.",
-          "failure_category": "LIQUIDITY_FLOW",
-          "probability_label": "MEDIUM",
-          "reasoning": "The current portfolio carries 50.5% in pure defensive/inflation-hedge assets (XLP + XLU + GLD), with HYG (29.7%) providing credit exposure that historically correlates with risk-off events. If a 'no-landing' macro confirmation \u2014 such as the BLS payroll upward revision materializing \u2014 causes systematic funds to simultaneously exit defensive positioning, XLP is exposed to a double penalty: sector-specific outflows AND portfolio-level rebalancing pressure. In LATE_EXPANSION regimes, systematic macr",
+          "description": "Diesel market tightness from the Ukraine/Iran twin-war energy shock transmits into a cost-of-goods-sold crisis for XLP constituents via trucking, packaging, and agricultural input costs, compressing margins by 200-350bps and causing a P/E multiple derating even as nominal revenues hold.",
+          "failure_category": "EXTERNAL_SHOCK",
+          "probability_label": "LOW",
+          "reasoning": "The established narrative thread THR_ENERGY_20260824_001 identifies acute physical tightness in US diesel markets driven by twin wars in Ukraine and Iran. XLP's consumer staples constituents are deeply embedded in diesel-dependent supply chains \u2014 Walmart, Costco, and P&G all rely on over-the-road trucking for distribution, while food producers face agricultural input cost pressures from diesel-linked fertilizer and machinery costs. A sustained diesel price spike above $6/gallon would compress gr",
           "ic_evidence_for": [
-            "jeff_snider (BEARISH, novelty 7): Mark Walter's accelerated asset sales consistent with forced deleveraging \u2014 institutional deleveraging events historically create correlated selling across defensive ",
-            "zerohedge (BULLISH, novelty 9): BLS upward payroll revision removes recessionary justification for defensive overweights \u2014 a simultaneous macro regime reclassification would trigger systematic strateg",
-            "howell (BEARISH, novelty 9): Rising Treasury yields create a macro environment where holding three correlated defensive positions (XLP, XLU, GLD) simultaneously amplifies drawdown risk \u2014 the portfolio",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "THR_ENERGY_20260824_001 (ESTABLISHED, conviction 7.5, THREATENING): Twin wars in Ukraine and Iran creating acute physical tightness in diesel markets \u2014 directly threatens XLP constituent cost structur",
+            "doomberg (BULLISH, novelty 7): US-Venezuela oil deal framed as geopolitical strategy, implying current supply tightness is structural and not quickly resolved by market mechanisms",
+            "luke_gromen (BEARISH, novelty 7): Systemic financial stress scenarios increasingly plausible \u2014 energy shocks compound rather than offset equity-side risks for defensive sectors"
           ],
           "ic_evidence_against": [
-            "No IC coverage: No source argues that current institutional positioning in XLP is already light, which would reduce crowding risk.",
-            "zerohedge (BULLISH, novelty 9): If copper and commodity strength (DBC at 19.8%) continues, the portfolio's DBC leg may offset defensive leg losses, partially cushioning overall drawdown through intern",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "doomberg (BULLISH, novelty 7): US-Venezuela oil deal may incrementally relieve physical supply tightness in Atlantic Basin diesel markets within 3-6 months",
+            "zerohedge (BULLISH, novelty 9): Copper bull trend driven by Chinese stimulus expectations suggests global industrial demand recovery \u2014 could incentivize supply-side energy investment that partially of"
           ],
-          "early_warning_indicator": "XLP and XLU both fall more than 2.5% in the same trading session while GLD drops simultaneously, with total portfolio defensive leg (XLP+XLU+GLD) losing more than 4% in aggregate within a single week \u2014 confirming correlated unwind rather than sector rotation.",
-          "early_warning_source": "V16 cross-position correlation monitor + EPFR sector flow data (weekly defensive ETF outflows) + Bloomberg portfolio-level drawdown attribution",
-          "portfolio_impact": "-11 to -17% on XLP position (amplified by correlated XLU and GLD simultaneous drawdown)",
-          "time_horizon": "IMMEDIATE"
+          "early_warning_indicator": "ULSD (Ultra Low Sulfur Diesel) front-month futures rise above $3.50/gallon for 4 consecutive weeks while XLP constituent earnings pre-announcements include explicit margin guidance cuts citing 'elevated logistics costs' \u2014 watch specifically for Walmart or Costco management commentary in monthly sale",
+          "early_warning_source": "CME ULSD futures (HO contract) daily settlement + XLP constituent investor relations press releases and 8-K filings; cross-reference with ATA Truck Tonnage Index for demand confirmation",
+          "portfolio_impact": "-10 to -14% on XLP position",
+          "time_horizon": "MEDIUM"
         }
       ],
       "scenario_count": 4,
@@ -378,121 +285,89 @@
       "v16_weight": 0.180418,
       "v16_weight_pct": 18.0,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-08-31",
-      "evidence_last_updated": "2026-09-01",
+      "generated_at": "2026-09-02",
+      "evidence_last_updated": "2026-09-02",
       "failure_scenarios": [
         {
           "scenario_id": "PM_XLU_001",
-          "description": "Treasury yields breach 5.25% driven by Howell's debt-refinancing crisis narrative combined with the BLS NFP upward revision cementing Fed hawkishness, causing XLU to reprice -18 to -22% as bond-proxy premium collapses and institutional rotations into T-bills accelerate.",
+          "description": "Treasury yields spike above 5.5% in a disorderly fashion as the BLS NFP revision cements Fed hawkishness and Howell's debt-refinancing crisis materializes, causing XLU to collapse -18 to -24% as bond-proxy premium evaporates and institutional capital flees to T-bills yielding risk-free 5%+.",
           "failure_category": "MACRO_REGIME_SHIFT",
           "probability_label": "HIGH",
-          "reasoning": "Howell's thesis (novelty 9, BEARISH) explicitly frames rising Treasury yields as threatening to break debt-refinancing machinery \u2014 implying a non-linear, disorderly yield spike rather than a controlled grind. The BLS NFP upward revision (ZeroHedge, novelty 9) eliminates the last credible catalyst for Fed easing, leaving XLU's ~3.3% dividend yield structurally uncompetitive against a 5%+ 10Y in a LATE_EXPANSION regime where capital rotates to risk assets, not defensives. The Treasury buyback prog",
+          "reasoning": "Howell's thesis (novelty 9, BEARISH, THR_LIQUIDITY conviction 7.7) explicitly frames rising Treasury yields as capable of breaking debt-refinancing machinery in a non-linear, disorderly fashion \u2014 not a controlled grind. The BLS NFP upward revision (ZeroHedge, novelty 9) eliminates the last credible catalyst for Fed pivot, locking in an extended high-rate environment structurally hostile to XLU's ~3.3% dividend yield competing against 5%+ risk-free T-bills. In a LATE_EXPANSION regime, utilities a",
           "ic_evidence_for": [
-            "howell (BEARISH, novelty 9): Rising Treasury yields threatening debt-refinancing machinery implies potential for disorderly yield spike that would crush XLU's bond-proxy valuation multiple",
-            "zerohedge (BULLISH on labor, novelty 9): BLS NFP upward revision removes labor weakness narrative, cementing extended high-rate environment that is structurally hostile to rate-sensitive utilities",
-            "zerohedge (BEARISH, novelty 6): Treasury buyback program insufficient to sustainably suppress long-end yields \u2014 removes the institutional yield ceiling mechanism",
-            "THR_LIQUIDITY_20260827_001 (THREATENING, conviction 7.6): Rising Treasury yields threatening debt-refinancing machinery is an established narrative with multi-source corroboration specifically threate",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "howell (BEARISH, novelty 9): Rising US Treasury yields threatening to break debt-refinancing machinery implies potential for disorderly, non-linear yield spike that crushes XLU's bond-proxy valuation ",
+            "THR_LIQUIDITY_20260827_001 (THREATENING, conviction 7.7): Established multi-source narrative confirming yield-driven liquidity stress directly threatens rate-sensitive sectors like utilities",
+            "zerohedge (BULLISH on labor, novelty 9): BLS NFP upward revision removes the labor weakness narrative that was the primary dovish Fed catalyst, cementing the high-rate environment hostile to XLU",
+            "forward_guidance (BEARISH, novelty 6): Post-midterm gridlock scenario would expose latent debt ceiling crisis, potentially triggering a disorderly Treasury selloff that spikes long-end yields"
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): Copper's sustained bullish trend on Chinese stimulus expectations could signal a global growth reflation that paradoxically supports risk assets including utilities via",
-            "No IC coverage: No explicit analyst claim addressing whether AI-driven energy demand (data center load growth) provides a fundamental earnings floor for utility companies that could partially offset m",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "zerohedge (BULLISH, novelty 9): Strong labor market data could signal resilient corporate earnings, temporarily supporting risk-on sentiment that paradoxically reduces safe-haven yield spike risk",
+            "No IC coverage: No explicit analyst claim arguing Treasury yields will remain contained or decline from current levels"
           ],
-          "early_warning_indicator": "10Y Treasury yield closes above 5.10% on two consecutive sessions while TLT put/call ratio rises above 1.8 \u2014 confirming institutional hedging against further yield spike rather than mean-reversion buying",
-          "early_warning_source": "TLT options flow (CBOE), 10Y Treasury yield (Bloomberg), Fed Funds futures strip (CME FedWatch)",
-          "portfolio_impact": "-18 to -22% on this position",
+          "early_warning_indicator": "10Y Treasury yield closes above 5.25% for two consecutive sessions while XLU underperforms SPY by more than 2% in a single week; simultaneously, TLT put/call ratio rises above 1.8",
+          "early_warning_source": "Bloomberg yield curve monitor (10Y UST), XLU vs SPY relative strength on V16 price layer, TLT options flow on CBOE",
+          "portfolio_impact": "-18 to -24% on XLU position",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_XLU_002",
-          "description": "LATE_EXPANSION regime rotates into risk-on acceleration as copper's record ninth consecutive weekly gain and Chinese stimulus narrative pull institutional flows into cyclicals and industrials, causing XLU to underperform as defensive positioning unwinds \u2014 a crowding-reversal scenario amplified by the portfolio's own 18% XLU weight alongside 16.5% XLP creating defensive cluster risk.",
+          "description": "Insurance-sector capital reallocation shock triggered by forced regulatory disclosure of affiliated private credit transactions causes institutional redemptions from utility-heavy income funds, creating an idiosyncratic liquidity event that pushes XLU down -12 to -17% independent of rate moves.",
           "failure_category": "LIQUIDITY_FLOW",
           "probability_label": "MEDIUM",
-          "reasoning": "The current V16 portfolio holds 34.5% in pure defensives (XLU + XLP) simultaneously \u2014 an unusually high defensive cluster for a LATE_EXPANSION regime where copper at near-record highs and Chinese stimulus expectations are signaling a cyclical pulse. If risk appetite re-accelerates on commodity strength, institutional momentum systems will rotate aggressively out of bond-proxy defensives into materials, industrials, and energy, creating a simultaneous unwind of XLU AND XLP positions. The correlat",
+          "reasoning": "Jeff Snider's dual claims (novelty 6-7, BEARISH) specifically identify insurance annuity premiums as the 'most stable funding source' for private credit, and forced disclosure of affiliated-party risk would trigger capital reallocation away from insurance-backed vehicles. Insurance companies are among the largest institutional holders of utility equity and debt (utilities' stable cash flows and regulated returns make them natural insurance portfolio anchors), so a regulatory-driven insurance sec",
           "ic_evidence_for": [
-            "zerohedge (BULLISH, novelty 9): Copper at near-record highs on ninth consecutive weekly gain driven by Chinese stimulus expectations signals a cyclical re-acceleration narrative forming that is direct",
-            "zerohedge (BULLISH, novelty 9): BLS NFP upward revision consistent with stronger-than-expected growth environment \u2014 confirms LATE_EXPANSION is not tipping to contraction, removing the recession-hedge ",
-            "damped_spring (BULLISH, novelty 9): AI infrastructure driving meaningful economic value in logistics and advertising suggests productivity-led growth that would favor cyclicals over defensives",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "jeff_snider (BEARISH, novelty 7): Mark Walter's accelerated asset sales consistent with forced deleveraging to reduce insurer-affiliated exposure \u2014 signals insurance sector stress that could force uti",
+            "jeff_snider (BEARISH, novelty 6): Forced regulatory disclosure of affiliated private credit at insurers will trigger capital reallocation shock, threatening the most stable funding source for income-o",
+            "jeff_snider (BEARISH, novelty 6): Guggenheim/Mark Walter scandal as systemic industry-wide loss concealment indicator, not isolated \u2014 suggests broad insurance sector deleveraging wave"
           ],
           "ic_evidence_against": [
-            "howell (BEARISH, novelty 9): Debt-refinancing machinery risk could trigger a risk-off flight that paradoxically supports defensive positioning in XLU as a perceived safe haven during a credit event",
-            "THR_LIQUIDITY_20260827_001 (THREATENING, conviction 7.6): A genuine liquidity/yield crisis scenario would reverse the cyclical rotation narrative and extend the defensive bid for XLU",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "No IC coverage: No analyst explicitly quantifies insurance sector's utility equity exposure or argues the reallocation shock would bypass XLU specifically",
+            "zerohedge (BULLISH, novelty 6): Right-wing populist electoral victories viewed as fiscally prudent may reduce regulatory pressure on financial sector, potentially delaying or softening forced disclosu"
           ],
-          "early_warning_indicator": "XLB (Materials ETF) or XLI (Industrials ETF) gains >4% in a 10-day window while XLU/SPY ratio breaks below its 20-day moving average \u2014 confirming institutional rotation out of defensives into cyclicals is underway",
-          "early_warning_source": "Sector ETF relative performance (Bloomberg), XLU/SPY ratio (TradingView), CFTC COT reports for commodity-linked equity futures",
-          "portfolio_impact": "-10 to -15% on this position",
+          "early_warning_indicator": "Abnormal XLU volume spike (>2x 20-day average) on a down day without corresponding broad market selloff, combined with insurance sector ETF (KIE) dropping more than 3% in a single week as regulatory disclosure headlines hit wires",
+          "early_warning_source": "XLU volume and flow data on V16 price/flow layer; KIE price action; SEC EDGAR for affiliated-transaction disclosure filings; Bloomberg insurance sector credit spreads",
+          "portfolio_impact": "-12 to -17% on XLU position",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_XLU_003",
-          "description": "AI infrastructure buildout creates a paradoxical utility sector stress scenario: hyperscalers demand unprecedented grid capacity at regulated rates, but Nvidia's 15%+ AI server price hikes make data center buildout inflationary, triggering regulatory backlash against utility rate increases and compressing utility ROE expectations \u2014 causing XLU to lose the 'AI electricity demand tailwind' narrative that has partially supported its valuation.",
-          "failure_category": "NARRATIVE_COLLAPSE",
+          "description": "Diesel market tightness from the Ukraine/Iran conflict narrative drives energy input costs sharply higher for utilities, simultaneously crushing utility operating margins while driving capital rotation INTO energy (DBC) and OUT of defensives, creating a double-compression event for XLU of -10 to -15%.",
+          "failure_category": "CORRELATION_BREAK",
           "probability_label": "MEDIUM",
-          "reasoning": "XLU bulls have partly justified the sector's resilience on AI data center electricity demand being a structural earnings growth catalyst for utilities. However, ZeroHedge's observation (novelty 7) that Nvidia's AI server price hikes signal AI infrastructure becoming inflationary rather than deflationary creates a second-order risk: if AI buildout inflation triggers broader political/regulatory scrutiny of technology sector costs, utility regulators may face pressure to deny rate increase applica",
+          "reasoning": "THR_ENERGY_20260824_001 (ESTABLISHED, conviction 7.5, THREATENING) identifies acute physical diesel market tightness from the twin Ukraine/Iran wars \u2014 utilities are significant consumers of diesel and natural gas for peaking power generation, and a sustained energy price spike directly compresses their regulated-return margins in states where regulators lag cost pass-throughs by 12-24 months. Critically, this creates a correlation break: XLU is held in the portfolio alongside DBC (19.8%) as a di",
           "ic_evidence_for": [
-            "zerohedge (MIXED, novelty 7): Nvidia AI server price hikes of 15%+ signal AI infrastructure becoming inflationary \u2014 creates political economy risk that regulators deny utility rate increases tied to d",
-            "luke_gromen (BEARISH, novelty 7): AI-driven disruption carrying systemic financial risk suggests the AI infrastructure buildout may face political/regulatory friction that utility companies cannot eas",
-            "damped_spring (BULLISH, novelty 9): AI's primary value in domain-specific inference rather than consumer chatbots suggests AI electricity demand may be more geographically concentrated and negotiable ",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "THR_ENERGY_20260824_001 (THREATENING, conviction 7.5, ESTABLISHED): Twin wars in Ukraine and Iran creating acute physical diesel tightness \u2014 utilities are net energy consumers, directly exposed to inp",
+            "doomberg (BULLISH on energy, novelty 7): US-Venezuela oil deal suggests State Department/Pentagon geopolitical maneuvering around oil supply \u2014 elevated geopolitical premium in energy markets that coul",
+            "zerohedge (BULLISH on copper, novelty 9): Chinese stimulus driving commodity complex higher broadly \u2014 generalized commodity inflation would squeeze utility margins across multiple input categories sim"
           ],
           "ic_evidence_against": [
-            "No IC coverage: No analyst explicitly challenges the AI electricity demand thesis for utilities or quantifies regulatory rejection risk on data center rate applications",
-            "damped_spring (BULLISH, novelty 9): AI embedding in logistics and advertising confirms broad AI adoption trajectory that sustains electricity demand growth regardless of regulatory friction at the mar",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "doomberg (BULLISH, novelty 7): US-Venezuela oil deal reasserting American control over Venezuelan oil resources could ultimately increase supply and cap diesel price spikes, limiting margin compressio",
+            "No IC coverage: No analyst explicitly models the utility sector's fuel cost sensitivity to diesel market tightness or identifies regulatory lag as a current risk factor"
           ],
-          "early_warning_indicator": "A major state public utility commission (e.g., Virginia, Texas, Georgia) rejects or materially reduces a utility rate increase application explicitly citing hyperscaler load concerns \u2014 or a utility company (e.g., Dominion, Duke) guides down earnings citing data center contract renegotiation",
-          "early_warning_source": "State PUC filings and press releases, utility company 8-K filings (SEC EDGAR), sell-side utility sector analyst notes",
-          "portfolio_impact": "-10 to -16% on this position",
+          "early_warning_indicator": "ULSD (Ultra-Low Sulfur Diesel futures) rises more than 15% over 30 days while XLU/XLE relative performance ratio drops below its 6-month low, and utility sector forward EPS estimates are revised down by analysts citing fuel costs",
+          "early_warning_source": "NYMEX ULSD front-month futures; XLU vs XLE relative strength on V16 price layer; Bloomberg utility sector earnings revision tracker; THR_ENERGY_20260824_001 conviction score trajectory",
+          "portfolio_impact": "-10 to -15% on XLU position",
           "time_horizon": "MEDIUM"
         },
         {
           "scenario_id": "PM_XLU_004",
-          "description": "US-Canada 50% tariff escalation triggers a regional energy supply shock that paradoxically raises natural gas input costs for US utilities dependent on Canadian pipeline gas, compressing utility margins just as diesel-driven CPI re-acceleration prevents the Fed from offering rate relief \u2014 creating a simultaneous earnings miss and multiple compression event.",
-          "failure_category": "EXTERNAL_SHOCK",
+          "description": "A contrarian AI-driven healthcare displacement shock (Gromen's systemic risk thesis) triggers a deflationary demand collapse scenario where the Fed pivots dovish, yields fall, but XLU still loses -10 to -13% because the deflationary shock destroys electricity demand growth narratives and forces rate-base write-downs at regulated utilities.",
+          "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "LOW",
-          "reasoning": "ZeroHedge (novelty 7) explicitly identifies the US-Canada 50% tariff escalation as more durable than markets expect, with implications for industrial sectors. A less-analyzed second-order effect is that Canadian natural gas imports \u2014 which supply a meaningful share of US Northeast and Midwest utility generation \u2014 could face retaliatory Canadian export restrictions or Canadian government-mandated price controls that disrupt US utility fuel supply chains. Combined with THR_ENERGY_20260824_001's di",
+          "reasoning": "Luke Gromen's thesis (novelty 7, BEARISH) identifies AI-driven healthcare employment displacement as carrying 'serious systemic financial risk' because healthcare is the dominant employer in most US states \u2014 a mass displacement event would trigger a consumer-led demand recession that is deflationary, not inflationary. The contrarian failure here is that this scenario superficially appears BULLISH for XLU (yields fall as Fed pivots dovish, utilities re-rate higher as bond proxies), but the mechan",
           "ic_evidence_for": [
-            "zerohedge (BEARISH, novelty 7): US-Canada 50% tariff escalation described as more durable than markets expect \u2014 creates sustained pipeline for Canadian energy supply disruption beyond initial market s",
-            "THR_ENERGY_20260824_001 (THREATENING, conviction 7.5): Twin wars in Ukraine and Iran creating diesel market tightness \u2014 signals broader energy input cost inflation environment that would compound Cana",
-            "jeff_snider (BEARISH, novelty 7): Forced deleveraging signals across institutional actors suggest financial system stress that would amplify any utility earnings miss into a larger sector re-rating",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: Left-wing economic policies \u2014 particularly deindustrialization, high energy costs, and mass migration \u2014 are the primary structural threat to European ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "luke_gromen (BEARISH, novelty 7): AI-driven disruption of US healthcare carries systemic financial risk through mass employment displacement \u2014 a demand recession would collapse electricity consumption",
+            "forward_guidance (BEARISH, novelty 6): Post-midterm gridlock exposing latent AI sector stress would undermine the data center electricity demand growth narrative that has been a primary utility sector",
+            "jeff_snider (BEARISH, novelty 6): Systemic private credit stress from insurance sector could cut off the financing pipeline for utility capital expenditure programs, impairing rate-base growth project"
           ],
           "ic_evidence_against": [
-            "No IC coverage: No analyst explicitly traces the tariff escalation transmission mechanism through to Canadian natural gas import disruption or utility fuel cost exposure",
-            "zerohedge (BULLISH, novelty 9): Copper strength on Chinese stimulus suggests global commodity demand conditions that may provide alternative LNG sourcing routes for affected utilities, limiting the su",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue"
+            "zerohedge (BULLISH on labor, novelty 9): BLS NFP upward revision suggests labor market is actually stronger than feared, making Gromen's mass displacement scenario less imminent and reducing probabili",
+            "No IC coverage: No analyst argues that electricity demand growth would specifically collapse in a healthcare employment shock, as utilities serve diversified demand bases"
           ],
-          "early_warning_indicator": "Henry Hub spot natural gas price spikes >20% within 15 trading days while Northeast basis differentials (Algonquin Citygate) widen to >$2.00/MMBtu above Henry Hub \u2014 confirming Canadian pipeline supply disruption is hitting US utility input costs",
-          "early_warning_source": "Henry Hub spot price (EIA), Algonquin Citygate basis (CME/ICE), Canadian NEB pipeline flow data, utility company Q filings for hedging disclosures",
-          "portfolio_impact": "-10 to -14% on this position",
-          "time_horizon": "SHORT"
+          "early_warning_indicator": "XLU's forward P/E multiple contracts below 15x (from current ~18x) despite a concurrent 50bps+ drop in 10Y Treasury yields \u2014 the decoupling of XLU from its traditional inverse-yield relationship would confirm a growth-narrative collapse rather than a rate-driven selloff",
+          "early_warning_source": "Bloomberg XLU sector P/E forward multiple tracker; 10Y UST yield on V16 macro layer; utility sector earnings revision momentum from sell-side consensus data",
+          "portfolio_impact": "-10 to -13% on XLU position",
+          "time_horizon": "MEDIUM"
         }
       ],
       "scenario_count": 4,
@@ -503,117 +378,87 @@
       "v16_weight": 0.297155,
       "v16_weight_pct": 29.7,
       "regime": "LATE_EXPANSION",
-      "generated_at": "2026-08-31",
-      "evidence_last_updated": "2026-09-01",
+      "generated_at": "2026-09-02",
+      "evidence_last_updated": "2026-09-02",
       "failure_scenarios": [
         {
           "scenario_id": "PM_HYG_001",
-          "description": "Treasury yield spike above 5.5% triggers forced selling in HYG by insurance/pension allocators simultaneously deleveraging across the portfolio, amplified by HYG's 29.7% portfolio weight creating a self-reinforcing drawdown of 14-20%.",
-          "failure_category": "LIQUIDITY_FLOW",
+          "description": "A Treasury yield spike through 5.5% in the next 4-8 weeks, driven by a stronger-than-expected BLS payroll revision, triggers a nonlinear repricing of high-yield credit spreads as refinancing machinery seizes, causing HYG to lose 14-18% while the 29.7% portfolio weight amplifies total drawdown.",
+          "failure_category": "MACRO_REGIME_SHIFT",
           "probability_label": "HIGH",
-          "reasoning": "THR_LIQUIDITY_20260827_001 is ESTABLISHED with conviction 7.6 and Howell explicitly frames rising yields as threatening to break the debt-refinancing machinery \u2014 not a gradual stress but a nonlinear break. Jeff Snider's forced deleveraging signal (Mark Walter/insurer-affiliated exposure) suggests institutional sellers are already pre-positioning. With HYG at 29.7% of a portfolio that also holds defensive equity (XLU 18%, XLP 16.5%) and commodities (DBC 19.8%), a correlated risk-off flush could h",
+          "reasoning": "THR_LIQUIDITY_20260827_001 is ESTABLISHED with conviction 7.7, with Howell explicitly framing yield rises as a nonlinear break rather than gradual stress. The paradox here is that ZeroHedge's bullish payroll revision signal \u2014 if realized \u2014 actually accelerates this failure: a positive surprise reduces Fed cut expectations, pushes the long end higher, and compresses HYG's spread cushion precisely when refinancing walls are most acute. LATE_EXPANSION regime historically sees credit spreads compres",
           "ic_evidence_for": [
-            "howell (BEARISH, novelty 9): Rising US Treasury yields explicitly identified as threatening to break the debt-refinancing machinery of modern finance \u2014 implies abrupt, nonlinear repricing rather than ",
-            "jeff_snider (BEARISH, novelty 7): Mark Walter accelerated asset sales consistent with forced deleveraging to reduce insurer-affiliated exposure \u2014 institutional sellers are identifiable and active",
-            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, conviction 7.6): Multi-source thread with Howell, Snider, damped_spring, zerohedge confirms credit stress machinery is under active pressure",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "howell (BEARISH, novelty 9): Rising US Treasury yields explicitly threaten to break the debt-refinancing machinery of modern finance \u2014 implies abrupt, nonlinear repricing rather than gradual spread wi",
+            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, conviction 7.7): Multi-source thread with Howell, jeff_snider, damped_spring, zerohedge confirms active credit stress pressure with broad institutional consens",
+            "zerohedge (BULLISH, novelty 9): BLS annual benchmark payroll revision higher would reduce probability of near-term Fed cuts, removing the key rate relief valve for leveraged credit",
+            "jeff_snider (BEARISH, novelty 7): Mark Walter accelerated asset sales consistent with forced deleveraging of insurer-affiliated exposure \u2014 institutional sellers are identifiable and already active"
           ],
           "ic_evidence_against": [
-            "forward_guidance (BULLISH, novelty 9): Government yield suppression intervention anticipated as structural backstop \u2014 extreme yield levels historically trigger Fed/Treasury re-engagement, capping spre",
-            "zerohedge (BULLISH, novelty 9): BLS payroll upward revision suggests labor market stronger than reported, supporting HY issuer fundamentals and reducing probability of mass default cascade",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue",
-            "zerohedge: Financial markets no longer reflexively fear right-wing populist victories in Europe, as investors now view fiscal prudence of right-wing parties as b"
+            "zerohedge (BULLISH, novelty 9): Stronger labor market data could argue for soft-landing resilience, keeping default rates low and supporting HYG fundamentals even if yields rise",
+            "forward_guidance (BULLISH, novelty 9): Government intervention to suppress yields remains a structural backstop \u2014 if yields approach systemic break levels, Fed policy pivot becomes more likely, not le"
           ],
-          "early_warning_indicator": "US 10Y yield closes above 5.40% for 3 consecutive sessions while HYG OAS (ICE BofA HY Index) widens more than 40bps in a single week AND HYG daily volume exceeds 1.5x its 20-day average \u2014 signaling forced institutional liquidation rather than orderly repricing",
-          "early_warning_source": "ICE BofA US High Yield Option-Adjusted Spread (FRED: BAMLH0A0HYM2), HYG volume via Bloomberg/ETF flow data, US 10Y CMT yield",
-          "portfolio_impact": "-14 to -20% on HYG position",
+          "early_warning_indicator": "10-year Treasury yield closes above 5.25% on two consecutive days while HYG/LQD spread ratio widens more than 15% in a single week, or CDX HY Index moves above 450bps",
+          "early_warning_source": "V16 Layer: THR_LIQUIDITY_20260827_001 signal feed; Monitor TLT daily close, CDX HY 5-year index, and HYG implied vol via options chain",
+          "portfolio_impact": "-14 to -18% on HYG position; at 29.7% weight, total portfolio drag of -4.2% to -5.3%",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_HYG_002",
-          "description": "US-Canada 50% tariff escalation metastasizes into a broader multi-front trade war, compressing HY issuer EBITDA in manufacturing, energy, and logistics sectors by 8-15%, causing earnings-driven spread widening of 130-180bps and a 10-16% HYG drawdown within 60 days.",
+          "description": "A diesel/energy price shock from the Ukraine-Iran twin-war supply squeeze ignites a stagflationary impulse that simultaneously crushes high-yield issuer cash flows (energy-intensive sectors) and forces the Fed to hold rates higher for longer, widening HYG spreads 250-350bps over 6-10 weeks.",
           "failure_category": "EXTERNAL_SHOCK",
           "probability_label": "MEDIUM",
-          "reasoning": "Zerohedge flags US-Canada 50% tariff escalation as 'more durable than markets expect,' and the HYG index carries heavy exposure to US industrials, energy, and consumer cyclicals \u2014 exactly the sectors facing margin compression from input cost inflation via tariffs. In LATE_EXPANSION, HY issuers carry elevated leverage ratios from the 2021-2022 cheap-money era; even a modest EBITDA shock of 8-12% can flip covenant ratios and trigger technical defaults or rating downgrades that ETF benchmarks must ",
+          "reasoning": "THR_ENERGY_20260824_001 is ESTABLISHED with conviction 7.5, with five separate sources (doomberg, zerohedge, jeff_snider, damped_spring, luke_gromen) flagging acute physical tightness in diesel markets due to twin wars. HYG has ~15-18% energy sector exposure historically; a diesel shock that raises input costs across transportation, retail, and manufacturing sectors simultaneously increases default probability for the CCC-rated tail of the high-yield index while removing the soft-landing narrati",
           "ic_evidence_for": [
-            "zerohedge (BEARISH, novelty 7): US-Canada trade war escalation to 50% tariffs identified as more durable than markets expect, directly pressuring industrial and energy sector credits that dominate HYG",
-            "zerohedge (BEARISH, novelty 8): US Venezuela oil field 100-year lease scenario implies geopolitical supply realignment that could structurally disadvantage high-cost HY-rated E&P operators currently p",
-            "THR_ENERGY_20260824_001 (ESTABLISHED, conviction 7.5): Diesel market tightness from twin wars creating cost pressure on logistics-heavy HY issuers with thin margins",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "THR_ENERGY_20260824_001 (ESTABLISHED, conviction 7.5): Five-source consensus on acute diesel market tightness from Ukraine and Iran twin wars \u2014 supply shock is not priced into current HY spreads",
+            "luke_gromen (BEARISH, novelty 7): AI-driven healthcare disruption causing mass displacement would compound a stagflationary shock by triggering consumer credit deterioration, directly expanding HYG de",
+            "jeff_snider (BEARISH, novelty 7): Forced institutional deleveraging signals suggest balance sheet stress is already present before any energy shock lands"
           ],
           "ic_evidence_against": [
-            "zerohedge (BULLISH, novelty 9): Copper's ninth consecutive weekly gain driven by Chinese stimulus signals global demand reflation that could offset tariff-driven margin compression for commodity-produ",
-            "zerohedge (BULLISH, novelty 9): BLS upward payroll revision supports consumer spending backdrop that underpins consumer-facing HY issuer revenue, partially insulating against tariff shock",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue",
-            "zerohedge: Financial markets no longer reflexively fear right-wing populist victories in Europe, as investors now view fiscal prudence of right-wing parties as b"
+            "doomberg (BULLISH, novelty 7): US-Venezuela oil deal as deliberate strategy to expand Western supply \u2014 if successful, this partially offsets twin-war diesel tightness over a 3-6 month horizon",
+            "zerohedge (BEARISH, novelty 8): Venezuela deal is about geopolitical control, not near-term supply boost \u2014 100-year leases imply long development timelines, not immediate relief for diesel markets"
           ],
-          "early_warning_indicator": "Bloomberg US High Yield Industrial/Energy sub-index OAS widens more than 60bps relative to the broad HYG OAS in a 2-week window, while US-Canada tariff news generates retaliatory measures from Canada affecting >$50B in bilateral trade flows",
-          "early_warning_source": "Bloomberg Sector-Level HY OAS tracking, US Trade Representative tariff announcements, Bank of Canada trade impact statements",
-          "portfolio_impact": "-10 to -16% on HYG position",
+          "early_warning_indicator": "US diesel futures (ULSD) rise more than 20% over 3 weeks, or WTI crude closes above $95/barrel while 5-year breakeven inflation exceeds 2.7% \u2014 signaling stagflation regime shift that removes Fed easing option",
+          "early_warning_source": "V16 Layer: THR_ENERGY_20260824_001 signal feed; Monitor ULSD front-month futures, 5Y5Y inflation swaps, and HYG energy-sector sub-index spread vs. IG energy",
+          "portfolio_impact": "-10 to -16% on HYG position; at 29.7% weight, total portfolio drag of -3.0% to -4.7%; partially offs",
           "time_horizon": "SHORT"
         },
         {
           "scenario_id": "PM_HYG_003",
-          "description": "AI infrastructure cost inflation (Nvidia server price hikes 15%+) triggers a hyperscaler credit deterioration wave, as heavily levered AI-adjacent HY issuers face unexpected capex blowouts and margin inversion, causing a targeted but contagious spread widening of 90-140bps in the tech-adjacent HY cohort that spills into broad HYG repricing of 10-14%.",
-          "failure_category": "NARRATIVE_COLLAPSE",
+          "description": "The high-yield market becomes dangerously overcrowded as soft-landing consensus attracts passive inflows into HYG through late-cycle, and a single large institutional redemption event \u2014 triggered by insurer-affiliated forced selling \u2014 creates a liquidity air pocket, gapping HYG down 10-14% within days as bid-ask spreads in underlying bonds blow out.",
+          "failure_category": "LIQUIDITY_FLOW",
           "probability_label": "MEDIUM",
-          "reasoning": "Zerohedge flags Nvidia's 15%+ AI server price hikes as making AI infrastructure inflationary rather than deflationary \u2014 a direct inversion of the thesis driving HY capital formation in AI-adjacent sectors (data centers, telecom buildout, cloud logistics). HY issuers in these categories raised debt under models assuming deflationary compute costs; if capex curves steepen sharply and revenue lags, the interest coverage ratios supporting current HY ratings erode faster than consensus expects. This ",
+          "reasoning": "Jeff Snider's forced deleveraging signal (insurer-affiliated exposure reduction via accelerated asset sales) is a rare and specific early warning of institutional balance sheet stress that typically precedes disorderly fund flows. HYG as an ETF wrapper creates a dangerous illusion of liquidity \u2014 the underlying CCC/B-rated bonds it holds can become illiquid in hours during a risk-off episode, while ETF shares continue to trade at widening discounts to NAV. At 29.7% portfolio weight, any rapid exi",
           "ic_evidence_for": [
-            "zerohedge (MIXED, novelty 7): Nvidia AI server price hikes of 15%+ explicitly identified as making AI infrastructure inflationary rather than deflationary, with negative implications for hyperscaler c",
-            "damped_spring (BULLISH, novelty 9): AI value concentration in domain-specific logistics/advertising/search inference implies only a narrow set of HY issuers will capture AI productivity gains, leaving",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "jeff_snider (BEARISH, novelty 7): Mark Walter's accelerated asset sales at record valuations (Lakers $12.5B) are consistent with forced deleveraging to reduce insurer-affiliated exposure \u2014 this is a c",
+            "howell (BEARISH, novelty 9): Debt-refinancing machinery under threat implies that leveraged credit vehicles (HYG primary among them) face structural buyer withdrawal, not just price decline",
+            "THR_LIQUIDITY_20260827_001 (ESTABLISHED, conviction 7.7): Multi-source confirmation that credit stress machinery is actively pressured"
           ],
           "ic_evidence_against": [
-            "damped_spring (BULLISH, novelty 9): AI-driven systematization in logistics and advertising could improve operational efficiency for the HY issuers best positioned, selectively improving credit quality",
-            "No IC coverage: No analyst has explicitly modeled the HY default probability impact of sustained AI capex inflation at the issuer-level \u2014 scenario is currently under-covered in IC intelligence",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue",
-            "zerohedge: Financial markets no longer reflexively fear right-wing populist victories in Europe, as investors now view fiscal prudence of right-wing parties as b"
+            "zerohedge (BULLISH, novelty 6): Right-wing populist electoral victories now viewed as fiscally prudent by markets \u2014 if this narrative holds, risk appetite remains elevated and HYG inflows continue, su",
+            "zerohedge (BULLISH, novelty 9): Stronger payrolls data supports low default rate expectations, which is the primary fundamental anchor for HYG valuations"
           ],
-          "early_warning_indicator": "CCC-rated tech/datacenter HY sub-index OAS widens more than 80bps in 3 weeks while BB-rated tech HY remains flat, signaling bottom-of-capital-stack stress in AI-adjacent issuers before broad contagion; simultaneously, 2 or more data center/cloud HY issuers miss earnings guidance citing capex overrun",
-          "early_warning_source": "ICE BofA CCC and Lower US High Yield Index (FRED: BAMLH0A3HYC), earnings calls for HY-rated datacenter/telecom operators, Nvidia earnings guidance commentary",
-          "portfolio_impact": "-10 to -14% on HYG position",
-          "time_horizon": "MEDIUM"
+          "early_warning_indicator": "HYG ETF premium/discount to NAV flips to a discount exceeding -0.5% for three consecutive sessions, or HYG daily volume exceeds 3x its 20-day average on a down day \u2014 indicating forced institutional exit rather than orderly rebalancing",
+          "early_warning_source": "Bloomberg ETF flow data and HYG NAV premium/discount tracker; secondary confirmation via TRACE high-yield bond transaction volume spike in CCC-rated issues",
+          "portfolio_impact": "-10 to -14% on HYG position; at 29.7% weight, total portfolio drag of -3.0% to -4.2%; XLU and XLP po",
+          "time_horizon": "IMMEDIATE"
         },
         {
           "scenario_id": "PM_HYG_004",
-          "description": "HYG's correlation with defensive equity holdings (XLU, XLP totaling 34.5%) breaks down in a simultaneous risk-off and inflation shock scenario, eliminating the portfolio's assumed diversification buffer and converting a manageable HYG drawdown into a whole-portfolio cascade loss exceeding 18% on the HYG position alone.",
-          "failure_category": "CORRELATION_BREAK",
+          "description": "The AI-driven healthcare employment disruption thesis materializes faster than consensus expects, triggering consumer credit deterioration in healthcare-dependent US states, which cascades into rising HYG default rates among healthcare and consumer discretionary issuers \u2014 collapsing the soft-landing narrative that underpins current tight spreads.",
+          "failure_category": "NARRATIVE_COLLAPSE",
           "probability_label": "LOW",
-          "reasoning": "The current portfolio construction implicitly assumes that defensive equities (XLU, XLP) and commodities (DBC, GLD) provide negative or low correlation ballast to HYG credit risk in a risk-off scenario. However, in a stagflationary shock \u2014 where diesel tightness (THR_ENERGY_20260824_001) drives input costs higher while Treasury yields rise (THR_LIQUIDITY_20260827_001) \u2014 utilities and consumer staples face earnings compression from energy costs AND rate headwinds simultaneously, causing them to s",
+          "reasoning": "Luke Gromen explicitly frames AI disruption of US healthcare as a systemic financial risk because healthcare employment dominates most US states' job bases \u2014 this is a non-consensus, non-obvious failure mode for HYG that the market has not priced. HYG has meaningful exposure to healthcare issuers (typically 8-12% of the index), and a rapid employment shock in this sector would simultaneously hit consumer spending (XLP exposure compounds this), reduce tax revenue supporting state-level bond issue",
           "ic_evidence_for": [
-            "THR_ENERGY_20260824_001 (ESTABLISHED, conviction 7.5): Diesel market tightness affects XLU (utility fuel costs), XLP (logistics/packaging costs), and HYG (energy sector issuers) simultaneously \u2014 the i",
-            "howell (BEARISH, novelty 9): Rising yields threaten broad repricing of risk assets \u2014 in a yield-driven risk-off, XLU and XLP lose their defensive premium as rate-sensitive proxies while HYG spreads wi",
-            "zerohedge: NATO-Russia military tensions in the Arctic are escalating, raising the risk of armed confrontation with potentially severe consequences for regional ",
-            "zerohedge: US intelligence assessments that Russia is losing in Ukraine are fundamentally wrong and dangerously misleading, as Russia is methodically advancing a",
-            "zerohedge: The risk of a wider war with Russia over Ukraine is being dangerously underestimated by Trump's current advisers, who are too relaxed about escalation",
-            "zerohedge: Germany is edging toward a comprehensive wealth register as a precursor to introducing a wealth tax, targeting middle-class savings rather than the tr",
-            "zerohedge: Germany's fiscal position is deteriorating sharply, with a \u20ac71.3B deficit in H1 2026 and declining cyclically sensitive tax revenues pointing toward a",
-            "zerohedge: Wealth taxes in Europe will fail to capture elite wealth due to geographic mobility, instead primarily burdening the immobile middle class and small b"
+            "luke_gromen (BEARISH, novelty 7): AI-driven disruption of US healthcare carries serious systemic financial risk because healthcare employment is dominant in most US states \u2014 mass displacement would tr",
+            "jeff_snider (BEARISH, novelty 7): Forced deleveraging by insurer-affiliated entities is consistent with early positioning against healthcare sector credit exposure, suggesting smart money is already r"
           ],
           "ic_evidence_against": [
-            "forward_guidance (BULLISH, novelty 9): GLD's debasement trade support regardless of yield direction provides genuine portfolio offset \u2014 gold's structural bid may be the only true diversifier in the po",
-            "No IC coverage: No analyst has explicitly modeled the cross-asset correlation breakdown between HYG and XLU/XLP under a simultaneous inflation + credit stress regime specific to this portfolio constru",
-            "doomberg: The US-Venezuela oil deal represents a deliberate geopolitical strategy by the State Department and Pentagon to reassert American control over Venezue",
-            "zerohedge: Financial markets no longer reflexively fear right-wing populist victories in Europe, as investors now view fiscal prudence of right-wing parties as b"
+            "No IC coverage: No source in the current intelligence feed specifically argues that AI healthcare disruption is imminent enough to drive HYG defaults within a 3-6 month horizon",
+            "zerohedge (BULLISH, novelty 9): BLS payroll revision higher suggests aggregate labor market remains stronger than feared \u2014 healthcare employment resilience would be consistent with this reading"
           ],
-          "early_warning_indicator": "20-day rolling correlation between HYG daily returns and XLU daily returns shifts from negative or near-zero to +0.65 or higher, while both assets decline more than 2% in the same week AND WTI diesel crack spread exceeds $45/bbl \u2014 confirming the energy-inflation channel is driving concurrent drawdow",
-          "early_warning_source": "Bloomberg cross-asset correlation matrix (HYG vs XLU, XLP), EIA weekly diesel crack spread data, portfolio-level drawdown attribution via risk system",
-          "portfolio_impact": "-15 to -22% on HYG position (amplified by lack of portfolio offset)",
+          "early_warning_indicator": "Monthly JOLTS data shows healthcare sector job openings falling more than 15% year-over-year for two consecutive months, OR a major healthcare system (100,000+ employees) announces AI-driven workforce reduction exceeding 10% \u2014 watch for HYG healthcare sub-sector spread widening of 75bps+ relative to",
+          "early_warning_source": "BLS JOLTS monthly healthcare subsector data; HYG healthcare issuer CDS spreads via Markit; V16 monitoring of THR_LIQUIDITY_20260827_001 for healthcare-specific extensions",
+          "portfolio_impact": "-10 to -20% on HYG position over 3-6 months; at 29.7% weight, total portfolio drag of -3.0% to -5.9%",
           "time_horizon": "MEDIUM"
         }
       ],
@@ -621,6 +466,6 @@
       "aggregate_risk": "HIGH"
     }
   },
-  "last_updated": "2026-09-01",
-  "last_generated": "2026-08-31"
+  "last_updated": "2026-09-02",
+  "last_generated": "2026-09-02"
 }
