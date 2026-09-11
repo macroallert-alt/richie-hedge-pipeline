@@ -485,10 +485,10 @@
     "status": "AVAILABLE",
     "consensus": {
       "FED_POLICY": {
-        "score": 2.0,
-        "direction": "BULLISH",
-        "sources": 1,
-        "confidence": 0.4
+        "score": 0.56,
+        "direction": "NEUTRAL",
+        "sources": 3,
+        "confidence": 0.65
       },
       "CREDIT": {
         "score": -1.8,
@@ -497,10 +497,10 @@
         "confidence": 0.65
       },
       "RECESSION": {
-        "score": -3.0,
+        "score": -4.67,
         "direction": "BEARISH",
-        "sources": 1,
-        "confidence": 0.4
+        "sources": 2,
+        "confidence": 0.65
       },
       "INFLATION": {
         "score": -1.0,
@@ -514,8 +514,14 @@
         "sources": 1,
         "confidence": 0.4
       },
+      "CHINA_EM": {
+        "score": -3.0,
+        "direction": "BEARISH",
+        "sources": 1,
+        "confidence": 0.4
+      },
       "GEOPOLITICS": {
-        "score": 0.4,
+        "score": -0.06,
         "direction": "NEUTRAL",
         "sources": 3,
         "confidence": 0.65
@@ -531,6 +537,12 @@
         "direction": "BULLISH",
         "sources": 3,
         "confidence": 0.65
+      },
+      "POSITIONING": {
+        "score": 6.0,
+        "direction": "BULLISH",
+        "sources": 1,
+        "confidence": 0.4
       }
     },
     "divergences": [],
@@ -540,7 +552,7 @@
         "source": "zerohedge",
         "claim": "Russia is not planning to attack NATO and its resilience should not be underestimated, making a negotiated settlement without Ukrainian territorial recovery the most likely conflict outcome.",
         "novelty": 9,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-04",
         "freshness": "FRESH"
@@ -558,7 +570,7 @@
         "source": "howell",
         "claim": "Rising US bond yields reflect stronger nominal economic growth rather than a loss of confidence in US assets or fiscal dysfunction.",
         "novelty": 9,
-        "signal": -3.0,
+        "signal": -4.7,
         "theme": "RECESSION",
         "date": "2026-09-04",
         "freshness": "FRESH"
@@ -573,21 +585,30 @@
         "freshness": "FRESH"
       },
       {
+        "source": "forward_guidance",
+        "claim": "A credibility-driven, one-and-done Fed rate hike is increasingly likely at the upcoming FOMC, and based on historical precedent when term premium (not inflation expectations) is driving long yields higher, such a hike may paradoxically cause long-end yields to fall.",
+        "novelty": 9,
+        "signal": 0.6,
+        "theme": "FED_POLICY",
+        "date": "2026-09-11",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "China's return to crude buying — driven by irresistibly high diesel refining margins — is a demand catalyst of greater magnitude than geopolitical supply disruptions in the Gulf.",
+        "novelty": 9,
+        "signal": 6.6,
+        "theme": "ENERGY",
+        "date": "2026-09-11",
+        "freshness": "FRESH"
+      },
+      {
         "source": "howell",
         "claim": "PBoC liquidity changes appear to lead Bitcoin price movements by approximately 3 months despite China's formal ban on crypto, suggesting indirect transmission mechanisms are operative.",
         "novelty": 8,
         "signal": 0.0,
         "theme": "CRYPTO",
         "date": "2026-09-06",
-        "freshness": "FRESH"
-      },
-      {
-        "source": "zerohedge",
-        "claim": "Ukraine has effectively exhausted its Patriot interceptor stockpile, leaving cities critically vulnerable to Russian ballistic missile attacks with no near-term resupply solution in sight.",
-        "novelty": 7,
-        "signal": 0.4,
-        "theme": "GEOPOLITICS",
-        "date": "2026-09-03",
         "freshness": "FRESH"
       },
       {
@@ -645,15 +666,6 @@
         "freshness": "FRESH"
       },
       {
-        "source": "jeff_snider",
-        "claim": "Trade finance fraud in commodity markets (Radiant World iron ore case) is a late-cycle collateral quality problem, indicating that fraudulent invoice-based borrowing flourished during the credit boom and is now being exposed as money tightens.",
-        "novelty": 7,
-        "signal": -1.8,
-        "theme": "CREDIT",
-        "date": "2026-09-03",
-        "freshness": "FRESH"
-      },
-      {
         "source": "howell",
         "claim": "Bitcoin exhibits meaningful sensitivity to Treasury QE (real-economy liquidity injection), suggesting it behaves partly as a real asset rather than purely a financial one, and may be near a cyclical price floor.",
         "novelty": 7,
@@ -693,7 +705,7 @@
         "source": "zerohedge",
         "claim": "China's economic model is structurally broken — a collapsing property sector (25% of GDP), demographic decline, and local government insolvency are creating a slow-motion crisis that will accelerate.",
         "novelty": 7,
-        "signal": 0.0,
+        "signal": -3.0,
         "theme": "CHINA_EM",
         "date": "2026-09-07",
         "freshness": "FRESH"
@@ -702,7 +714,7 @@
         "source": "doomberg",
         "claim": "The Falklands oil dispute is geopolitically far more consequential than the size of the hydrocarbon prize alone, potentially signaling a broader rearrangement of power across the Western Hemisphere.",
         "novelty": 7,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-09",
         "freshness": "FRESH"
@@ -738,7 +750,7 @@
         "source": "zerohedge",
         "claim": "Volkswagen's structural cost crisis — driven by labor, energy, and regulatory overburden — represents a controlled collapse rather than a managed turnaround, signaling systemic decline for German industrial manufacturing.",
         "novelty": 7,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-09",
         "freshness": "FRESH"
@@ -756,7 +768,7 @@
         "source": "zerohedge",
         "claim": "Hormuz Strait supply disruptions are structurally constraining global LNG availability, reducing European supply flexibility and amplifying upside price risk heading into winter.",
         "novelty": 7,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-09",
         "freshness": "FRESH"
@@ -765,7 +777,7 @@
         "source": "jeff_snider",
         "claim": "Chinese insurance companies are likely concealing risky-asset losses analogous to Western private credit and private equity reaching-for-yield behavior, representing a second systemic risk layer beyond bank NPLs.",
         "novelty": 7,
-        "signal": 0.0,
+        "signal": -3.0,
         "theme": "CHINA_EM",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -774,7 +786,7 @@
         "source": "zerohedge",
         "claim": "The US government may soon formally outsource offensive cyberwarfare operations to private contractors, representing a structural expansion of the private cybersecurity sector's role in national defense.",
         "novelty": 7,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-10",
         "freshness": "FRESH"
@@ -783,7 +795,7 @@
         "source": "zerohedge",
         "claim": "Russian drone activity is escalating in European airspace beyond Ukraine, including near-miss incidents involving high-value targets, signaling a broadening of hybrid warfare tactics.",
         "novelty": 7,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-10",
         "freshness": "FRESH"
@@ -807,6 +819,51 @@
         "freshness": "FRESH"
       },
       {
+        "source": "forward_guidance",
+        "claim": "The debasement trade (long commodities, gold, real assets) remains intact as the fundamental thesis but faces significant path risk and tactical volatility into the Fed meeting, with dips being buying opportunities rather than thesis changes.",
+        "novelty": 7,
+        "signal": 1.3,
+        "theme": "COMMODITIES",
+        "date": "2026-09-11",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Years of underinvestment in physical commodity supply capacity are driving a structural inflation cycle that markets are underestimating as transitory.",
+        "novelty": 7,
+        "signal": -1.0,
+        "theme": "INFLATION",
+        "date": "2026-09-11",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Surging maritime transport costs represent a new, persistent layer of inflationary pressure that will filter through to consumer goods prices, complicating central bank policy.",
+        "novelty": 7,
+        "signal": -1.0,
+        "theme": "INFLATION",
+        "date": "2026-09-11",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "Hormuz flow disruption is only partially mitigated by ship-to-ship transfer workarounds, meaning the bottleneck is structural rather than easily bypassed.",
+        "novelty": 7,
+        "signal": 6.6,
+        "theme": "ENERGY",
+        "date": "2026-09-11",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "jeff_snider",
+        "claim": "The Federal Reserve is committing a policy error by treating an energy-driven necessity price shock as evidence requiring hawkish policy, when its own data shows consumer demand destruction and rising unemployment anxiety.",
+        "novelty": 7,
+        "signal": 0.6,
+        "theme": "FED_POLICY",
+        "date": "2026-09-10",
+        "freshness": "FRESH"
+      },
+      {
         "source": "zerohedge",
         "claim": "Ukrainian drone strikes on Russian refineries and export terminals are simultaneously reducing Russia's refining capacity and its ability to redirect surplus crude to export markets, creating a structural production and logistics squeeze.",
         "novelty": 6,
@@ -825,19 +882,10 @@
         "freshness": "FRESH"
       },
       {
-        "source": "jeff_snider",
-        "claim": "Private credit stress is now geographically contagious, with Australian property developer insolvency triggering fund redemption restrictions — demonstrating a global late-cycle credit pattern rather than a US-specific phenomenon.",
-        "novelty": 6,
-        "signal": -1.8,
-        "theme": "CREDIT",
-        "date": "2026-09-03",
-        "freshness": "FRESH"
-      },
-      {
         "source": "zerohedge",
         "claim": "The AfD's historic 43.8% result in Saxony-Anhalt signals a structural collapse of Germany's mainstream political center, threatening governance stability and Merz's chancellorship.",
         "novelty": 6,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -846,7 +894,7 @@
         "source": "doomberg",
         "claim": "The prospect of significant oil production from the Sea Lion oilfield near the Falkland Islands is reigniting the UK-Argentina sovereignty dispute, with Milei threatening economic sanctions against firms involved in exploration.",
         "novelty": 6,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-09",
         "freshness": "FRESH"
@@ -889,11 +937,11 @@
       },
       {
         "source": "zerohedge",
-        "claim": "EU funding for Ukrainian Patriot purchases faces political deadlock, making any near-term multilateral resupply through European channels unlikely.",
-        "novelty": 5,
-        "signal": 0.4,
-        "theme": "GEOPOLITICS",
-        "date": "2026-09-03",
+        "claim": "Middle East military escalation has driven supertanker rates to historically extreme levels, making crude transport prohibitively expensive and structurally altering shipping economics.",
+        "novelty": 6,
+        "signal": 6.6,
+        "theme": "ENERGY",
+        "date": "2026-09-11",
         "freshness": "FRESH"
       },
       {
@@ -912,15 +960,6 @@
         "signal": 6.6,
         "theme": "ENERGY",
         "date": "2026-09-04",
-        "freshness": "FRESH"
-      },
-      {
-        "source": "jeff_snider",
-        "claim": "Triple-C junk bond spreads reaching post-tariff-shock highs signal that investors in the most vulnerable public credit tier are pricing in meaningful default and refinancing risk, contradicting the soft-landing consensus.",
-        "novelty": 5,
-        "signal": -1.8,
-        "theme": "CREDIT",
-        "date": "2026-09-03",
         "freshness": "FRESH"
       },
       {
@@ -954,7 +993,7 @@
         "source": "zerohedge",
         "claim": "South Korea's energy dependence on Hormuz (61% of crude imports, 54% of naphtha) means the country faces severe economic self-interest pressure against joining the coalition, creating a political deadlock between US alliance obligations and economic vulnerability.",
         "novelty": 5,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-07",
         "freshness": "FRESH"
@@ -963,7 +1002,7 @@
         "source": "jeff_snider",
         "claim": "International labor market deterioration (Canada, UK) confirms the employment weakness is a global cyclical phenomenon driven by the same 'mini-cycle' dynamic, not a US-specific idiosyncratic event.",
         "novelty": 5,
-        "signal": -3.0,
+        "signal": -4.7,
         "theme": "RECESSION",
         "date": "2026-09-06",
         "freshness": "FRESH"
@@ -990,7 +1029,7 @@
         "source": "zerohedge",
         "claim": "The UK's wealth tax escalation is triggering a structural exodus of high-net-worth individuals and top taxpayers, creating a self-defeating fiscal dynamic for Labour's government.",
         "novelty": 5,
-        "signal": -3.0,
+        "signal": -4.7,
         "theme": "RECESSION",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -999,7 +1038,7 @@
         "source": "zerohedge",
         "claim": "Ukraine remains structurally dependent on Chinese drone components despite the conflict, with Chinese parts representing over three-quarters of the prior year's import volume in the first half of 2026 alone.",
         "novelty": 5,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -1008,7 +1047,7 @@
         "source": "zerohedge",
         "claim": "Russia benefits from China's dual-track strategy because Chinese demand for sanctioned Russian energy at discounted prices prevents the Russian economic collapse that Western sanctions were designed to trigger.",
         "novelty": 5,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -1017,7 +1056,7 @@
         "source": "zerohedge",
         "claim": "Europe's automotive sector is in a structural decline driven by Chinese competition, tariffs, and geopolitical disruption, triggering cascading job losses across the industry.",
         "novelty": 5,
-        "signal": 0.0,
+        "signal": -3.0,
         "theme": "CHINA_EM",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -1026,7 +1065,7 @@
         "source": "zerohedge",
         "claim": "The European auto sector's contraction is creating a negative multiplier effect on upstream industrial suppliers, risking broader manufacturing base erosion including defense-relevant capacity.",
         "novelty": 5,
-        "signal": -3.0,
+        "signal": -4.7,
         "theme": "RECESSION",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -1035,7 +1074,7 @@
         "source": "hidden_forces",
         "claim": "Russia is likely to attempt a limited military strike or hybrid attack on NATO-adjacent infrastructure within the next one to two years, exploiting perceived Western disunity and Trump's ambiguous commitment to Article 5.",
         "novelty": 5,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-07",
         "freshness": "FRESH"
@@ -1044,7 +1083,7 @@
         "source": "hidden_forces",
         "claim": "Ukraine's institutional anti-corruption framework, operating independently of presidential control, represents a meaningful differentiation from other wartime aid recipients and partially undermines the narrative that Western aid is being systematically looted.",
         "novelty": 5,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-07",
         "freshness": "FRESH"
@@ -1053,7 +1092,7 @@
         "source": "howell",
         "claim": "Investor risk appetite is elevated and rotating toward select developed markets and commodity-linked emerging markets, suggesting a preference for real-asset and growth-adjacent exposure over broad risk-off assets.",
         "novelty": 5,
-        "signal": 0.0,
+        "signal": 6.0,
         "theme": "POSITIONING",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -1062,7 +1101,7 @@
         "source": "zerohedge",
         "claim": "Germany's industrial base is in structural deindustrialization, as demonstrated by ArcelorMittal's closure of its Duisburg steelworks, reflecting a broader retreat of capital from an uncompetitive energy and regulatory environment.",
         "novelty": 5,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-09",
         "freshness": "FRESH"
@@ -1080,7 +1119,7 @@
         "source": "zerohedge",
         "claim": "Geopolitical vulnerability is rising as Germany loses domestic control over strategic raw materials and primary industrial products like steel, increasing dependence on foreign supply chains.",
         "novelty": 5,
-        "signal": 0.4,
+        "signal": -0.1,
         "theme": "GEOPOLITICS",
         "date": "2026-09-09",
         "freshness": "FRESH"
@@ -1116,7 +1155,7 @@
         "source": "jeff_snider",
         "claim": "China's repeated bank recapitalizations — now extended to insurance companies — signal a worsening, slow-motion financial crisis rather than a growth stimulus, as each successive bazooka fails to reverse credit contraction.",
         "novelty": 5,
-        "signal": 0.0,
+        "signal": -3.0,
         "theme": "CHINA_EM",
         "date": "2026-09-08",
         "freshness": "FRESH"
@@ -1125,7 +1164,43 @@
         "source": "zerohedge",
         "claim": "Critical infrastructure systems in the United States are operating beyond design limits and approaching systemic failure, making geographic relocation to resilient regions an urgent priority.",
         "novelty": 5,
-        "signal": -3.0,
+        "signal": -4.7,
+        "theme": "RECESSION",
+        "date": "2026-09-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "China is the primary strategic beneficiary of the Russo-Ukrainian war, using it to drain U.S. military resources and reduce American deterrence capacity in the Pacific.",
+        "novelty": 5,
+        "signal": -0.1,
+        "theme": "GEOPOLITICS",
+        "date": "2026-09-11",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "zerohedge",
+        "claim": "China's use of fentanyl as chemical warfare against the U.S. population represents a deliberate, ongoing asymmetric attack on American social and economic stability.",
+        "novelty": 5,
+        "signal": -0.1,
+        "theme": "GEOPOLITICS",
+        "date": "2026-09-11",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "jeff_snider",
+        "claim": "Consumer labor market anxiety has reached pandemic-era levels, driving defensive household behavior that will produce demand destruction rather than inflation.",
+        "novelty": 5,
+        "signal": -4.7,
+        "theme": "RECESSION",
+        "date": "2026-09-10",
+        "freshness": "FRESH"
+      },
+      {
+        "source": "jeff_snider",
+        "claim": "The housing market's continued weakness despite rising inventory proves the labor market — not mortgage rates or supply — is the true constraint on home sales.",
+        "novelty": 5,
+        "signal": -4.7,
         "theme": "RECESSION",
         "date": "2026-09-10",
         "freshness": "FRESH"
@@ -1133,19 +1208,9 @@
     ],
     "catalyst_timeline": [
       {
-        "event": "Confirmation or denial of Jizan facility strike damage and Saudi production impact",
-        "date": "2026-09-10",
-        "days_until": 0,
-        "impact": "MEDIUM",
-        "themes": [
-          "ENERGY",
-          "GEOPOLITICS"
-        ]
-      },
-      {
         "event": "CAISO peak demand readings Wednesday and Thursday; if demand approaches or exceeds 52,061 MW record, grid stress becomes acute",
         "date": "2026-09-11",
-        "days_until": 1,
+        "days_until": 0,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1153,9 +1218,19 @@
         ]
       },
       {
+        "event": "September CPI print (next day from recording) and September FOMC decision",
+        "date": "2026-09-12",
+        "days_until": 1,
+        "impact": "MEDIUM",
+        "themes": [
+          "FED_POLICY",
+          "VOLATILITY"
+        ]
+      },
+      {
         "event": "Weekly CFTC Commitments of Traders report updates showing continuation or reversal of speculative fuel longs",
         "date": "2026-09-15",
-        "days_until": 5,
+        "days_until": 4,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1165,7 +1240,7 @@
       {
         "event": "U.S. EIA weekly petroleum inventory report showing continued gasoline/diesel draws",
         "date": "2026-09-17",
-        "days_until": 7,
+        "days_until": 6,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1174,9 +1249,30 @@
         ]
       },
       {
+        "event": "September FOMC meeting and subsequent 30-year auction",
+        "date": "2026-09-20",
+        "days_until": 9,
+        "impact": "MEDIUM",
+        "themes": [
+          "FED_POLICY",
+          "LIQUIDITY"
+        ]
+      },
+      {
+        "event": "September FOMC outcome; CPI print; midterm election results",
+        "date": "2026-09-20",
+        "days_until": 9,
+        "impact": "MEDIUM",
+        "themes": [
+          "COMMODITIES",
+          "INFLATION",
+          "POSITIONING"
+        ]
+      },
+      {
         "event": "Berlin and Mecklenburg-Vorpommern state elections within two weeks; potential CDU leadership review",
         "date": "2026-09-22",
-        "days_until": 12,
+        "days_until": 11,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS",
@@ -1184,28 +1280,9 @@
         ]
       },
       {
-        "event": "Next EU Council summit or emergency foreign ministers session on Ukraine defense funding",
-        "date": "2026-10",
-        "days_until": 21,
-        "impact": "MEDIUM",
-        "themes": [
-          "GEOPOLITICS"
-        ]
-      },
-      {
-        "event": "Raytheon/RTX Patriot production update or US DoD quarterly defense industrial base report",
-        "date": "2026-10",
-        "days_until": 21,
-        "impact": "MEDIUM",
-        "themes": [
-          "GEOPOLITICS",
-          "COMMODITIES"
-        ]
-      },
-      {
         "event": "Ferrari full-year earnings or next monthly Ferrari Residual Value Index release could confirm or deny continued divergence",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "EQUITY_VALUATION",
@@ -1215,7 +1292,7 @@
       {
         "event": "Next monthly Goldman Sachs Ferrari Residual Value Index release",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "EQUITY_VALUATION"
@@ -1224,7 +1301,7 @@
       {
         "event": "Monthly Russian oil revenue data release (September 2026 figures); Urals spot price trajectory",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1234,7 +1311,7 @@
       {
         "event": "Russian federal budget update; ruble exchange rate movements; Russian fuel export policy changes",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1244,7 +1321,7 @@
       {
         "event": "Thailand and Indonesia planting season rainfall data; FAO crop monitoring updates for Southeast Asia",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "COMMODITIES",
@@ -1253,39 +1330,9 @@
         ]
       },
       {
-        "event": "Q3 2026 BDC redemption and fundraising data release",
-        "date": "2026-10",
-        "days_until": 21,
-        "impact": "MEDIUM",
-        "themes": [
-          "CREDIT",
-          "LIQUIDITY"
-        ]
-      },
-      {
-        "event": "Bathla Group insolvency administrator findings and Australian private credit fund disclosure of loss reserves",
-        "date": "2026-10",
-        "days_until": 21,
-        "impact": "MEDIUM",
-        "themes": [
-          "CREDIT",
-          "GEOPOLITICS"
-        ]
-      },
-      {
-        "event": "London High Court proceedings and additional bank exposure disclosures related to Radiant World/Sapphire Minet",
-        "date": "2026-10",
-        "days_until": 21,
-        "impact": "MEDIUM",
-        "themes": [
-          "CREDIT",
-          "COMMODITIES"
-        ]
-      },
-      {
         "event": "BRICS summit announcement of new payment system or further reduction in dollar share of global FX reserves",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "DOLLAR",
@@ -1296,7 +1343,7 @@
       {
         "event": "CPI print divergence from PCE or major household financial stress survey",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "INFLATION",
@@ -1307,7 +1354,7 @@
       {
         "event": "South Korean National Assembly vote on naval deployment authorization",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS",
@@ -1317,7 +1364,7 @@
       {
         "event": "BLS benchmark revision or subsequent monthly payroll revisions showing August 2026 print revised sharply lower",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "RECESSION",
@@ -1327,7 +1374,7 @@
       {
         "event": "Q3 2026 retail sales and consumer spending data; ISM new orders continuing to roll over",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "RECESSION",
@@ -1338,7 +1385,7 @@
       {
         "event": "UK September labor market report; further G7 employment data over next 60 days",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "RECESSION",
@@ -1349,7 +1396,7 @@
       {
         "event": "October 2026 ISM reports showing new orders trajectory; Q3 earnings from manufacturers on inventory commentary",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "RECESSION",
@@ -1360,7 +1407,7 @@
       {
         "event": "UK Autumn Budget or OBR fiscal forecast revising tax receipt projections downward",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "RECESSION",
@@ -1371,7 +1418,7 @@
       {
         "event": "Q3 2026 European auto sales data and further OEM earnings releases",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "CHINA_EM",
@@ -1382,7 +1429,7 @@
       {
         "event": "European PMI manufacturing data and supplier-sector earnings warnings",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "RECESSION",
@@ -1393,7 +1440,7 @@
       {
         "event": "Chinese seaborne crude import data returning to or exceeding pre-conflict levels (~11-12 mbpd)",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1404,7 +1451,7 @@
       {
         "event": "Chinese refinery throughput and net product export data for September 2026",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1414,7 +1461,7 @@
       {
         "event": "Resolution or escalation of US copper tariffs; August/September Chinese industrial production data",
         "date": "2026-10",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "COMMODITIES",
@@ -1423,9 +1470,53 @@
         ]
       },
       {
+        "event": "Chinese crude import data or refinery utilization reports for September/October 2026",
+        "date": "2026-10",
+        "days_until": 20,
+        "impact": "MEDIUM",
+        "themes": [
+          "ENERGY",
+          "CHINA_EM",
+          "COMMODITIES"
+        ]
+      },
+      {
+        "event": "September/October payroll revisions and NY Fed consumer survey updates",
+        "date": "2026-10",
+        "days_until": 20,
+        "impact": "MEDIUM",
+        "themes": [
+          "RECESSION",
+          "CREDIT",
+          "INFLATION"
+        ]
+      },
+      {
+        "event": "Monthly NY Fed Consumer Expectations Survey releases; CPI prints for August-October 2026",
+        "date": "2026-10",
+        "days_until": 20,
+        "impact": "MEDIUM",
+        "themes": [
+          "INFLATION",
+          "FED_POLICY",
+          "RECESSION"
+        ]
+      },
+      {
+        "event": "September and October existing home sales reports; next NY Fed survey",
+        "date": "2026-10",
+        "days_until": 20,
+        "impact": "MEDIUM",
+        "themes": [
+          "RECESSION",
+          "CREDIT",
+          "POSITIONING"
+        ]
+      },
+      {
         "event": "Start of European heating season and EU gas storage weekly updates from GIE AGSI",
         "date": "2026-10-01",
-        "days_until": 21,
+        "days_until": 20,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1436,7 +1527,7 @@
       {
         "event": "Saxony-Anhalt coalition negotiations and government formation vote",
         "date": "2026-10-15",
-        "days_until": 35,
+        "days_until": 34,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS",
@@ -1444,9 +1535,20 @@
         ]
       },
       {
+        "event": "Next US CPI print showing energy/transportation services re-acceleration",
+        "date": "2026-10-15",
+        "days_until": 34,
+        "impact": "MEDIUM",
+        "themes": [
+          "INFLATION",
+          "FED_POLICY",
+          "ENERGY"
+        ]
+      },
+      {
         "event": "Rystad Energy updated Russian production forecast; Russian Deputy PM Novak statements on refinery restart timelines",
         "date": "2026-11",
-        "days_until": 52,
+        "days_until": 51,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1454,19 +1556,9 @@
         ]
       },
       {
-        "event": "Q3 2026 BDC NAV reports and non-accrual/PIK disclosures showing acceleration of portfolio deterioration",
-        "date": "2026-11",
-        "days_until": 52,
-        "impact": "MEDIUM",
-        "themes": [
-          "CREDIT",
-          "RECESSION"
-        ]
-      },
-      {
         "event": "VW's next earnings release showing cash flow and debt metrics; any additional asset sale announcements",
         "date": "2026-11",
-        "days_until": 52,
+        "days_until": 51,
         "impact": "MEDIUM",
         "themes": [
           "CREDIT",
@@ -1476,7 +1568,7 @@
       {
         "event": "Additional BDC non-accrual disclosures in Q3 2026 earnings season or further Chapter 11 filings in private credit portfolio companies",
         "date": "2026-11",
-        "days_until": 52,
+        "days_until": 51,
         "impact": "MEDIUM",
         "themes": [
           "CREDIT",
@@ -1486,7 +1578,7 @@
       {
         "event": "Q3 2026 BDC earnings with non-accrual disclosures; any major BDC dividend cut announcement",
         "date": "2026-11",
-        "days_until": 52,
+        "days_until": 51,
         "impact": "MEDIUM",
         "themes": [
           "CREDIT",
@@ -1494,9 +1586,31 @@
         ]
       },
       {
+        "event": "October CPI print showing energy pass-through; midterm election outcome",
+        "date": "2026-11-10",
+        "days_until": 60,
+        "impact": "MEDIUM",
+        "themes": [
+          "INFLATION",
+          "ENERGY",
+          "FED_POLICY"
+        ]
+      },
+      {
+        "event": "Midterm election results; post-election budget/debt ceiling negotiations; AI capex guidance from hyperscalers",
+        "date": "2026-11-10",
+        "days_until": 60,
+        "impact": "MEDIUM",
+        "themes": [
+          "RECESSION",
+          "TECH_AI",
+          "EQUITY_VALUATION"
+        ]
+      },
+      {
         "event": "E3 (Britain, France, Germany) resumption of dialogue with Russia or Finnish/Intermarium diplomatic outreach to Moscow",
         "date": "2026-12",
-        "days_until": 82,
+        "days_until": 81,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS",
@@ -1506,7 +1620,7 @@
       {
         "event": "End-of-year rice futures settlement confirming annual gain magnitude; monsoon season final rainfall totals for India/Southeast Asia",
         "date": "2026-12",
-        "days_until": 82,
+        "days_until": 81,
         "impact": "MEDIUM",
         "themes": [
           "COMMODITIES",
@@ -1517,7 +1631,7 @@
       {
         "event": "Start of Sea Lion oilfield exploration work by British-Israeli joint venture and any formal US policy statement on Falklands sovereignty",
         "date": "2026-12",
-        "days_until": 82,
+        "days_until": 81,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS",
@@ -1527,7 +1641,7 @@
       {
         "event": "Further Chinese financial regulatory announcements; any forced disclosure of insurance company asset quality; additional insurance firms added to recapitalization list",
         "date": "2026-12",
-        "days_until": 82,
+        "days_until": 81,
         "impact": "MEDIUM",
         "themes": [
           "CHINA_EM",
@@ -1538,7 +1652,7 @@
       {
         "event": "Senate-House reconciliation of the 2027 National Defense Authorization Act (NDAA)",
         "date": "2026-12",
-        "days_until": 82,
+        "days_until": 81,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS",
@@ -1548,7 +1662,7 @@
       {
         "event": "Continued record US corporate issuance in European markets through Q4 2026; any high-yield or leveraged loan market dislocation event",
         "date": "2026-12",
-        "days_until": 82,
+        "days_until": 81,
         "impact": "MEDIUM",
         "themes": [
           "LIQUIDITY",
@@ -1559,7 +1673,7 @@
       {
         "event": "Court proceedings in Radiant World/Sapphire Mid Metals case; potential regulatory scrutiny of trade finance lending practices",
         "date": "2026-12",
-        "days_until": 82,
+        "days_until": 81,
         "impact": "MEDIUM",
         "themes": [
           "CREDIT",
@@ -1569,7 +1683,7 @@
       {
         "event": "Ferrari Luce delivery timeline announcements or production order data",
         "date": "2027-01",
-        "days_until": 113,
+        "days_until": 112,
         "impact": "MEDIUM",
         "themes": [
           "TECH_AI",
@@ -1579,7 +1693,7 @@
       {
         "event": "IMF World Food Price Index updates; EM central bank policy meetings in net rice-importing nations",
         "date": "2027-01",
-        "days_until": 113,
+        "days_until": 112,
         "impact": "MEDIUM",
         "themes": [
           "INFLATION",
@@ -1590,7 +1704,7 @@
       {
         "event": "US debt ceiling negotiations or Treasury auction failure",
         "date": "2027-01",
-        "days_until": 113,
+        "days_until": 112,
         "impact": "MEDIUM",
         "themes": [
           "CREDIT",
@@ -1601,7 +1715,7 @@
       {
         "event": "IEA or EIA supply/demand outlook update showing demand exceeding sustainable supply",
         "date": "2027-01",
-        "days_until": 113,
+        "days_until": 112,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1612,7 +1726,7 @@
       {
         "event": "EU Green Deal mid-term review or CBAM enforcement data release",
         "date": "2027-01",
-        "days_until": 113,
+        "days_until": 112,
         "impact": "MEDIUM",
         "themes": [
           "ENERGY",
@@ -1622,7 +1736,7 @@
       {
         "event": "Formal announcement of E3-Russia talks or Stubb/Intermarium diplomatic contact with Moscow",
         "date": "2027-03",
-        "days_until": 172,
+        "days_until": 171,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS"
@@ -1631,7 +1745,7 @@
       {
         "event": "Continued expansion of Treasury QE through T-bill issuance and state spending, with a 6-month lag manifesting in Bitcoin price movement",
         "date": "2027-03",
-        "days_until": 172,
+        "days_until": 171,
         "impact": "MEDIUM",
         "themes": [
           "CRYPTO",
@@ -1642,7 +1756,7 @@
       {
         "event": "Results from next drilling season at Filo Sur with expanded program targeting Macho Muerto fault corridor",
         "date": "2027-03",
-        "days_until": 172,
+        "days_until": 171,
         "impact": "MEDIUM",
         "themes": [
           "COMMODITIES",
@@ -1652,7 +1766,7 @@
       {
         "event": "Kazakhstan resource update and initial Montana drill results expected within 6-12 months",
         "date": "2027-03",
-        "days_until": 172,
+        "days_until": 171,
         "impact": "MEDIUM",
         "themes": [
           "COMMODITIES",
@@ -1662,7 +1776,7 @@
       {
         "event": "North Rhine-Westphalia state election — a major western German state where Wüst governs and where AfD's performance would test whether the eastern surge is spreading westward.",
         "date": "2027-04",
-        "days_until": 203,
+        "days_until": 202,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS"
@@ -1671,7 +1785,7 @@
       {
         "event": "Drill results from next season within the 15-month Rio Tinto exclusivity window",
         "date": "2027-06",
-        "days_until": 264,
+        "days_until": 263,
         "impact": "MEDIUM",
         "themes": [
           "COMMODITIES",
@@ -1681,7 +1795,7 @@
       {
         "event": "Major Chinese local government bond default or developer contagion event reaching state-owned banks",
         "date": "2027-06",
-        "days_until": 264,
+        "days_until": 263,
         "impact": "MEDIUM",
         "themes": [
           "CHINA_EM",
@@ -1692,7 +1806,7 @@
       {
         "event": "VW site-by-site allocation decisions due by end of June 2027",
         "date": "2027-06",
-        "days_until": 264,
+        "days_until": 263,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS",
@@ -1702,7 +1816,7 @@
       {
         "event": "ArcelorMittal formal plant closure commencement at Duisburg",
         "date": "2027-10",
-        "days_until": 386,
+        "days_until": 385,
         "impact": "MEDIUM",
         "themes": [
           "GEOPOLITICS",
@@ -1717,12 +1831,12 @@
         "tier": "CORE",
         "active_claims": 10,
         "freshness_breakdown": {
-          "FRESH": 2,
-          "AGING": 5,
+          "FRESH": 0,
+          "AGING": 7,
           "FADING": 3
         },
         "latest_content_date": "2026-09-08",
-        "days_since_content": 2,
+        "days_since_content": 3,
         "stale_warning": false,
         "direction": "BULLISH",
         "intensity": 6,
@@ -1809,7 +1923,7 @@
           },
           {
             "claim_text": "Investor risk appetite is elevated and rotating toward select developed markets and commodity-linked emerging markets, suggesting a preference for real-asset and growth-adjacent exposure over broad risk-off assets.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "POSITIONING",
@@ -1848,7 +1962,7 @@
           },
           {
             "claim_text": "Global liquidity is superficially supported by low volatility reducing funding costs, but genuine liquidity creation remains impaired as shadow money supply growth stays negative.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "LIQUIDITY",
@@ -1874,6 +1988,102 @@
         ]
       },
       {
+        "source_id": "forward_guidance",
+        "source_name": "Forward Guidance (Jack Farley)",
+        "tier": "CORE",
+        "active_claims": 5,
+        "freshness_breakdown": {
+          "FRESH": 5,
+          "AGING": 0,
+          "FADING": 0
+        },
+        "latest_content_date": "2026-09-11",
+        "days_since_content": 0,
+        "stale_warning": false,
+        "direction": "MIXED",
+        "intensity": 6,
+        "bias_adjusted_signal": 0,
+        "known_bias": 0,
+        "top_claim": "A credibility-driven, one-and-done Fed rate hike is increasingly likely at the upcoming FOMC, and based on historical precedent when term premium (not inflation expectations) is driving long yields hi",
+        "claims": [
+          {
+            "claim_text": "A credibility-driven, one-and-done Fed rate hike is increasingly likely at the upcoming FOMC, and based on historical precedent when term premium (not inflation expectations) is driving long yields higher, such a hike may paradoxically cause long-end yields to fall.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "FED_POLICY",
+              "VOLATILITY"
+            ],
+            "novelty_score": 9,
+            "direction": "MIXED",
+            "intensity": 6
+          },
+          {
+            "claim_text": "The debasement trade (long commodities, gold, real assets) remains intact as the fundamental thesis but faces significant path risk and tactical volatility into the Fed meeting, with dips being buying opportunities rather than thesis changes.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "COMMODITIES",
+              "INFLATION",
+              "POSITIONING"
+            ],
+            "novelty_score": 7,
+            "direction": "BULLISH",
+            "intensity": 6
+          },
+          {
+            "claim_text": "The bond market is calling Bessant's bluff on yield suppression, with fair-value on the 10-year closer to 5.8% given nominal GDP running at ~6.6%, and $6B in buybacks is insufficient to hold the line.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "FED_POLICY",
+              "LIQUIDITY"
+            ],
+            "novelty_score": 4,
+            "direction": "BEARISH",
+            "intensity": 7
+          },
+          {
+            "claim_text": "Growth is peaking and will decelerate into next year as AI infrastructure investment rate-of-change slows, lagged effects of restrictive real rates bite, post-midterm fiscal impulse fades, and political headwinds to the AI/data center build-out intensify.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "RECESSION",
+              "TECH_AI",
+              "EQUITY_VALUATION"
+            ],
+            "novelty_score": 3,
+            "direction": "BEARISH",
+            "intensity": 6
+          },
+          {
+            "claim_text": "Energy-driven inflation creates a policy trap where neither hiking nor stimulating is the right response, and current policy (stimulating into an energy supply shock) risks embedding structurally higher inflation of 4-6% over the next one to two years.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "INFLATION",
+              "ENERGY",
+              "FED_POLICY"
+            ],
+            "novelty_score": 2,
+            "direction": "BEARISH",
+            "intensity": 7
+          }
+        ],
+        "topics": [
+          "COMMODITIES",
+          "ENERGY",
+          "EQUITY_VALUATION",
+          "FED_POLICY",
+          "INFLATION",
+          "LIQUIDITY",
+          "POSITIONING",
+          "RECESSION",
+          "TECH_AI",
+          "VOLATILITY"
+        ]
+      },
+      {
         "source_id": "lyn_alden",
         "source_name": "Lyn Alden",
         "tier": "CORE",
@@ -1884,7 +2094,7 @@
           "FADING": 0
         },
         "latest_content_date": "2026-07-15",
-        "days_since_content": 57,
+        "days_since_content": 58,
         "stale_warning": true,
         "direction": "",
         "intensity": 0,
@@ -1905,33 +2115,12 @@
           "FADING": 0
         },
         "latest_content_date": "2024-04-28",
-        "days_since_content": 865,
+        "days_since_content": 866,
         "stale_warning": true,
         "direction": "",
         "intensity": 0,
         "bias_adjusted_signal": 0,
         "known_bias": 3,
-        "top_claim": "",
-        "claims": [],
-        "topics": []
-      },
-      {
-        "source_id": "forward_guidance",
-        "source_name": "Forward Guidance (Jack Farley)",
-        "tier": "CORE",
-        "active_claims": 0,
-        "freshness_breakdown": {
-          "FRESH": 0,
-          "AGING": 0,
-          "FADING": 0
-        },
-        "latest_content_date": "2026-09-02",
-        "days_since_content": 8,
-        "stale_warning": false,
-        "direction": "",
-        "intensity": 0,
-        "bias_adjusted_signal": 0,
-        "known_bias": 0,
         "top_claim": "",
         "claims": [],
         "topics": []
@@ -1947,7 +2136,7 @@
           "FADING": 0
         },
         "latest_content_date": "2026-07-13",
-        "days_since_content": 59,
+        "days_since_content": 60,
         "stale_warning": true,
         "direction": "",
         "intensity": 0,
@@ -1968,7 +2157,7 @@
           "FADING": 0
         },
         "latest_content_date": "2026-09-01",
-        "days_since_content": 9,
+        "days_since_content": 10,
         "stale_warning": false,
         "direction": "",
         "intensity": 0,
@@ -1989,7 +2178,7 @@
           "FADING": 0
         },
         "latest_content_date": "2026-08-28",
-        "days_since_content": 13,
+        "days_since_content": 14,
         "stale_warning": false,
         "direction": "",
         "intensity": 0,
@@ -2006,21 +2195,34 @@
         "active_claims": 20,
         "freshness_breakdown": {
           "FRESH": 10,
-          "AGING": 5,
-          "FADING": 5
+          "AGING": 10,
+          "FADING": 0
         },
-        "latest_content_date": "2026-09-09",
+        "latest_content_date": "2026-09-10",
         "days_since_content": 1,
         "stale_warning": false,
         "direction": "BEARISH",
-        "intensity": 7,
-        "bias_adjusted_signal": -4,
+        "intensity": 8,
+        "bias_adjusted_signal": -5,
         "known_bias": -3,
-        "top_claim": "Trade finance fraud in commodity markets (Radiant World iron ore case) is a late-cycle collateral quality problem, indicating that fraudulent invoice-based borrowing flourished during the credit boom ",
+        "top_claim": "Chinese insurance companies are likely concealing risky-asset losses analogous to Western private credit and private equity reaching-for-yield behavior, representing a second systemic risk layer beyon",
         "claims": [
           {
-            "claim_text": "Chinese insurance companies are likely concealing risky-asset losses analogous to Western private credit and private equity reaching-for-yield behavior, representing a second systemic risk layer beyond bank NPLs.",
+            "claim_text": "The Federal Reserve is committing a policy error by treating an energy-driven necessity price shock as evidence requiring hawkish policy, when its own data shows consumer demand destruction and rising unemployment anxiety.",
             "freshness": "FRESH",
+            "content_date": "2026-09-10",
+            "topics": [
+              "FED_POLICY",
+              "INFLATION",
+              "RECESSION"
+            ],
+            "novelty_score": 7,
+            "direction": "BEARISH",
+            "intensity": 7
+          },
+          {
+            "claim_text": "Chinese insurance companies are likely concealing risky-asset losses analogous to Western private credit and private equity reaching-for-yield behavior, representing a second systemic risk layer beyond bank NPLs.",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "CHINA_EM",
@@ -2030,18 +2232,6 @@
             "novelty_score": 7,
             "direction": "BEARISH",
             "intensity": 8
-          },
-          {
-            "claim_text": "Trade finance fraud in commodity markets (Radiant World iron ore case) is a late-cycle collateral quality problem, indicating that fraudulent invoice-based borrowing flourished during the credit boom and is now being exposed as money tightens.",
-            "freshness": "FADING",
-            "content_date": "2026-09-03",
-            "topics": [
-              "CREDIT",
-              "COMMODITIES"
-            ],
-            "novelty_score": 7,
-            "direction": "BEARISH",
-            "intensity": 7
           },
           {
             "claim_text": "The mass migration of US corporate borrowers into European and non-dollar bond markets signals that dollar credit markets are becoming structurally congested by AI/hyperscaler debt issuance, crowding out lower-quality borrowers.",
@@ -2058,7 +2248,7 @@
           },
           {
             "claim_text": "The copper-to-gold ratio's recent apparent reflationary signal is misleading — copper's rise is a US tariff-driven supply distortion, not genuine global demand recovery, and the ratio will revert to confirm China's deflationary reality.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "COMMODITIES",
@@ -2070,20 +2260,34 @@
             "intensity": 7
           },
           {
-            "claim_text": "Private credit stress is now geographically contagious, with Australian property developer insolvency triggering fund redemption restrictions — demonstrating a global late-cycle credit pattern rather than a US-specific phenomenon.",
-            "freshness": "FADING",
-            "content_date": "2026-09-03",
+            "claim_text": "Consumer labor market anxiety has reached pandemic-era levels, driving defensive household behavior that will produce demand destruction rather than inflation.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-10",
             "topics": [
+              "RECESSION",
               "CREDIT",
-              "GEOPOLITICS"
+              "INFLATION"
             ],
-            "novelty_score": 6,
+            "novelty_score": 5,
+            "direction": "BEARISH",
+            "intensity": 8
+          },
+          {
+            "claim_text": "The housing market's continued weakness despite rising inventory proves the labor market — not mortgage rates or supply — is the true constraint on home sales.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-10",
+            "topics": [
+              "RECESSION",
+              "CREDIT",
+              "POSITIONING"
+            ],
+            "novelty_score": 5,
             "direction": "BEARISH",
             "intensity": 7
           },
           {
             "claim_text": "China's repeated bank recapitalizations — now extended to insurance companies — signal a worsening, slow-motion financial crisis rather than a growth stimulus, as each successive bazooka fails to reverse credit contraction.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "CHINA_EM",
@@ -2108,18 +2312,6 @@
             "intensity": 6
           },
           {
-            "claim_text": "Triple-C junk bond spreads reaching post-tariff-shock highs signal that investors in the most vulnerable public credit tier are pricing in meaningful default and refinancing risk, contradicting the soft-landing consensus.",
-            "freshness": "FADING",
-            "content_date": "2026-09-03",
-            "topics": [
-              "CREDIT",
-              "RECESSION"
-            ],
-            "novelty_score": 5,
-            "direction": "BEARISH",
-            "intensity": 7
-          },
-          {
             "claim_text": "Private credit valuations are systematically fraudulent, with loans marked near par until sudden 100-to-zero collapses reveal that hidden impairments have been accumulating throughout the credit boom.",
             "freshness": "FRESH",
             "content_date": "2026-09-09",
@@ -2141,6 +2333,32 @@
             ],
             "novelty_score": 4,
             "direction": "BULLISH",
+            "intensity": 6
+          },
+          {
+            "claim_text": "The energy price shock will not generate a self-reinforcing inflation spiral because consumers lack the income, credit, and confidence required to validate economy-wide price increases.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-10",
+            "topics": [
+              "INFLATION",
+              "FED_POLICY",
+              "RECESSION"
+            ],
+            "novelty_score": 2,
+            "direction": "BEARISH",
+            "intensity": 7
+          },
+          {
+            "claim_text": "The bond market's flat yield curve and contained inflation breakevens validate the demand-destruction interpretation of the energy shock, not the Fed's inflation-spiral interpretation.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-10",
+            "topics": [
+              "LIQUIDITY",
+              "INFLATION",
+              "FED_POLICY"
+            ],
+            "novelty_score": 2,
+            "direction": "BEARISH",
             "intensity": 6
           },
           {
@@ -2181,7 +2399,7 @@
           },
           {
             "claim_text": "Chinese interest rates are falling for fundamental deflationary reasons — not policy choice — creating a self-reinforcing debt trap that squeezes bank and insurance company profitability, making recovery structurally impossible without outside resolution.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "CHINA_EM",
@@ -2194,7 +2412,7 @@
           },
           {
             "claim_text": "Chinese household and consumer spending have nearly dried up in nominal terms, reflecting a self-reinforcing deflationary trap driven by three years of falling home prices that is now spilling into manufacturing and infrastructure investment contraction.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "CHINA_EM",
@@ -2242,30 +2460,6 @@
             "novelty_score": 2,
             "direction": "BEARISH",
             "intensity": 6
-          },
-          {
-            "claim_text": "The private credit cycle has durably shifted from expansion to contraction, evidenced by persistent redemption pressure, collapsed fundraising, and shrinking BDC portfolios — the stress has not resolved, it has spread.",
-            "freshness": "FADING",
-            "content_date": "2026-09-03",
-            "topics": [
-              "CREDIT",
-              "LIQUIDITY"
-            ],
-            "novelty_score": 2,
-            "direction": "BEARISH",
-            "intensity": 8
-          },
-          {
-            "claim_text": "The absence of a dramatic crash in private credit is not evidence of stabilization — the sector was specifically designed to absorb stress slowly through NAV opacity, gating, and PIK interest, masking a deterioration that will ultimately transmit into lower credit availability for the real economy.",
-            "freshness": "FADING",
-            "content_date": "2026-09-03",
-            "topics": [
-              "CREDIT",
-              "RECESSION"
-            ],
-            "novelty_score": 2,
-            "direction": "BEARISH",
-            "intensity": 8
           }
         ],
         "topics": [
@@ -2275,7 +2469,6 @@
           "ENERGY",
           "EQUITY_VALUATION",
           "FED_POLICY",
-          "GEOPOLITICS",
           "INFLATION",
           "LIQUIDITY",
           "POSITIONING",
@@ -2291,11 +2484,11 @@
         "active_claims": 5,
         "freshness_breakdown": {
           "FRESH": 2,
-          "AGING": 3,
-          "FADING": 0
+          "AGING": 0,
+          "FADING": 3
         },
         "latest_content_date": "2026-09-09",
-        "days_since_content": 1,
+        "days_since_content": 2,
         "stale_warning": false,
         "direction": "MIXED",
         "intensity": 6,
@@ -2329,7 +2522,7 @@
           },
           {
             "claim_text": "Aggregate primary energy consumption is a secular uptrend that cannot be sustainably reversed by political, social, or economic disruptions.",
-            "freshness": "AGING",
+            "freshness": "FADING",
             "content_date": "2026-09-05",
             "topics": [
               "ENERGY",
@@ -2341,7 +2534,7 @@
           },
           {
             "claim_text": "Permian Basin produced water management is the current critical constraint on crude output growth, but innovation will solve it before production peaks.",
-            "freshness": "AGING",
+            "freshness": "FADING",
             "content_date": "2026-09-05",
             "topics": [
               "ENERGY",
@@ -2353,7 +2546,7 @@
           },
           {
             "claim_text": "Energy pessimism about resource scarcity reliably predicts the area where the next major innovation breakthrough will occur, making bearish resource calls self-defeating.",
-            "freshness": "AGING",
+            "freshness": "FADING",
             "content_date": "2026-09-05",
             "topics": [
               "ENERGY",
@@ -2381,7 +2574,7 @@
           "FADING": 0
         },
         "latest_content_date": "2026-09-07",
-        "days_since_content": 3,
+        "days_since_content": 4,
         "stale_warning": false,
         "direction": "BEARISH",
         "intensity": 7,
@@ -2462,11 +2655,11 @@
         "active_claims": 3,
         "freshness_breakdown": {
           "FRESH": 0,
-          "AGING": 3,
-          "FADING": 0
+          "AGING": 0,
+          "FADING": 3
         },
         "latest_content_date": "2026-09-05",
-        "days_since_content": 5,
+        "days_since_content": 6,
         "stale_warning": false,
         "direction": "BULLISH",
         "intensity": 7,
@@ -2476,7 +2669,7 @@
         "claims": [
           {
             "claim_text": "Rio Tinto's strategic investment in Mogotes at a significant premium to market, combined with a 15-month project-level exclusivity clause, signals major mining company validation of the Filo Sur asset and creates a potential M&A optionality for shareholders.",
-            "freshness": "AGING",
+            "freshness": "FADING",
             "content_date": "2026-09-05",
             "topics": [
               "COMMODITIES",
@@ -2488,7 +2681,7 @@
           },
           {
             "claim_text": "The Vicuña district in the central Chilean-Argentine Andes represents one of the world's premier copper-gold exploration addresses, and Mogotes Metals' Filo Sur project is positioned within it adjacent to the largest copper greenfield discovery in 30 years.",
-            "freshness": "AGING",
+            "freshness": "FADING",
             "content_date": "2026-09-05",
             "topics": [
               "COMMODITIES",
@@ -2500,7 +2693,7 @@
           },
           {
             "claim_text": "Mogotes Metals' multi-project portfolio across Argentina, Kazakhstan, and Montana provides diversified copper-gold exploration optionality that meaningfully increases pounds and ounces in the ground without diluting focus on the flagship Filo Sur project.",
-            "freshness": "AGING",
+            "freshness": "FADING",
             "content_date": "2026-09-05",
             "topics": [
               "COMMODITIES",
@@ -2527,7 +2720,7 @@
           "FADING": 0
         },
         "latest_content_date": "2026-09-07",
-        "days_since_content": 3,
+        "days_since_content": 4,
         "stale_warning": false,
         "direction": "BEARISH",
         "intensity": 5,
@@ -2570,13 +2763,13 @@
         "source_id": "zerohedge",
         "source_name": "ZeroHedge (Top Stories)",
         "tier": "NOISE_FILTER",
-        "active_claims": 55,
+        "active_claims": 62,
         "freshness_breakdown": {
-          "FRESH": 32,
-          "AGING": 7,
-          "FADING": 16
+          "FRESH": 34,
+          "AGING": 15,
+          "FADING": 13
         },
-        "latest_content_date": "2026-09-10",
+        "latest_content_date": "2026-09-11",
         "days_since_content": 0,
         "stale_warning": false,
         "direction": "NEUTRAL",
@@ -2585,6 +2778,19 @@
         "known_bias": -5,
         "top_claim": "Russia is not planning to attack NATO and its resilience should not be underestimated, making a negotiated settlement without Ukrainian territorial recovery the most likely conflict outcome.",
         "claims": [
+          {
+            "claim_text": "China's return to crude buying — driven by irresistibly high diesel refining margins — is a demand catalyst of greater magnitude than geopolitical supply disruptions in the Gulf.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "ENERGY",
+              "CHINA_EM",
+              "COMMODITIES"
+            ],
+            "novelty_score": 9,
+            "direction": "BULLISH",
+            "intensity": 7
+          },
           {
             "claim_text": "Russia is not planning to attack NATO and its resilience should not be underestimated, making a negotiated settlement without Ukrainian territorial recovery the most likely conflict outcome.",
             "freshness": "FADING",
@@ -2607,6 +2813,45 @@
             "novelty_score": 9,
             "direction": "BULLISH",
             "intensity": 4
+          },
+          {
+            "claim_text": "Years of underinvestment in physical commodity supply capacity are driving a structural inflation cycle that markets are underestimating as transitory.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "INFLATION",
+              "COMMODITIES",
+              "ENERGY"
+            ],
+            "novelty_score": 7,
+            "direction": "BULLISH",
+            "intensity": 8
+          },
+          {
+            "claim_text": "Surging maritime transport costs represent a new, persistent layer of inflationary pressure that will filter through to consumer goods prices, complicating central bank policy.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "INFLATION",
+              "FED_POLICY",
+              "ENERGY"
+            ],
+            "novelty_score": 7,
+            "direction": "BEARISH",
+            "intensity": 6
+          },
+          {
+            "claim_text": "Hormuz flow disruption is only partially mitigated by ship-to-ship transfer workarounds, meaning the bottleneck is structural rather than easily bypassed.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "ENERGY",
+              "GEOPOLITICS",
+              "COMMODITIES"
+            ],
+            "novelty_score": 7,
+            "direction": "BEARISH",
+            "intensity": 5
           },
           {
             "claim_text": "The US government may soon formally outsource offensive cyberwarfare operations to private contractors, representing a structural expansion of the private cybersecurity sector's role in national defense.",
@@ -2823,14 +3068,14 @@
             "intensity": 6
           },
           {
-            "claim_text": "Ukraine has effectively exhausted its Patriot interceptor stockpile, leaving cities critically vulnerable to Russian ballistic missile attacks with no near-term resupply solution in sight.",
-            "freshness": "FADING",
-            "content_date": "2026-09-03",
+            "claim_text": "Middle East military escalation has driven supertanker rates to historically extreme levels, making crude transport prohibitively expensive and structurally altering shipping economics.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
             "topics": [
-              "GEOPOLITICS",
-              "COMMODITIES"
+              "ENERGY",
+              "GEOPOLITICS"
             ],
-            "novelty_score": 7,
+            "novelty_score": 6,
             "direction": "BEARISH",
             "intensity": 7
           },
@@ -2860,7 +3105,7 @@
           },
           {
             "claim_text": "The AfD's historic 43.8% result in Saxony-Anhalt signals a structural collapse of Germany's mainstream political center, threatening governance stability and Merz's chancellorship.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "GEOPOLITICS",
@@ -2894,6 +3139,30 @@
             "novelty_score": 6,
             "direction": "BULLISH",
             "intensity": 7
+          },
+          {
+            "claim_text": "China is the primary strategic beneficiary of the Russo-Ukrainian war, using it to drain U.S. military resources and reduce American deterrence capacity in the Pacific.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "GEOPOLITICS",
+              "CHINA_EM"
+            ],
+            "novelty_score": 5,
+            "direction": "BEARISH",
+            "intensity": 7
+          },
+          {
+            "claim_text": "China's use of fentanyl as chemical warfare against the U.S. population represents a deliberate, ongoing asymmetric attack on American social and economic stability.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "GEOPOLITICS",
+              "CHINA_EM"
+            ],
+            "novelty_score": 5,
+            "direction": "BEARISH",
+            "intensity": 6
           },
           {
             "claim_text": "Critical infrastructure systems in the United States are operating beyond design limits and approaching systemic failure, making geographic relocation to resilient regions an urgent priority.",
@@ -2982,7 +3251,7 @@
           },
           {
             "claim_text": "The UK's wealth tax escalation is triggering a structural exodus of high-net-worth individuals and top taxpayers, creating a self-defeating fiscal dynamic for Labour's government.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "RECESSION",
@@ -2995,7 +3264,7 @@
           },
           {
             "claim_text": "Ukraine remains structurally dependent on Chinese drone components despite the conflict, with Chinese parts representing over three-quarters of the prior year's import volume in the first half of 2026 alone.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "GEOPOLITICS",
@@ -3007,7 +3276,7 @@
           },
           {
             "claim_text": "Russia benefits from China's dual-track strategy because Chinese demand for sanctioned Russian energy at discounted prices prevents the Russian economic collapse that Western sanctions were designed to trigger.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "GEOPOLITICS",
@@ -3019,7 +3288,7 @@
           },
           {
             "claim_text": "Europe's automotive sector is in a structural decline driven by Chinese competition, tariffs, and geopolitical disruption, triggering cascading job losses across the industry.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "CHINA_EM",
@@ -3032,7 +3301,7 @@
           },
           {
             "claim_text": "The European auto sector's contraction is creating a negative multiplier effect on upstream industrial suppliers, risking broader manufacturing base erosion including defense-relevant capacity.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "RECESSION",
@@ -3080,27 +3349,16 @@
             "intensity": 6
           },
           {
-            "claim_text": "EU funding for Ukrainian Patriot purchases faces political deadlock, making any near-term multilateral resupply through European channels unlikely.",
-            "freshness": "FADING",
-            "content_date": "2026-09-03",
-            "topics": [
-              "GEOPOLITICS"
-            ],
-            "novelty_score": 5,
-            "direction": "BEARISH",
-            "intensity": 5
-          },
-          {
-            "claim_text": "Global Patriot missile production backlogs, compounded by Iran-war drawdowns and allied stockpiling demand, mean that even if Ukraine secures funding, physical resupply within the critical winter window is structurally constrained.",
-            "freshness": "FADING",
-            "content_date": "2026-09-03",
+            "claim_text": "China has strategically secured its northern and western flanks via Russia and Central Asia, creating conditions for imminent kinetic escalation on its southern (India) and eastern (Taiwan, Japan) flanks.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
             "topics": [
               "GEOPOLITICS",
-              "COMMODITIES"
+              "CHINA_EM"
             ],
-            "novelty_score": 4,
+            "novelty_score": 3,
             "direction": "BEARISH",
-            "intensity": 6
+            "intensity": 8
           },
           {
             "claim_text": "Calls by CDU's Wüst to initiate a formal AfD ban process represent an anti-democratic overcorrection that could backfire by further delegitimizing establishment parties and accelerating AfD's growth.",
@@ -3115,7 +3373,7 @@
           },
           {
             "claim_text": "The AfD is positioned to lead a state government in Saxony-Anhalt for the first time, marking a structural normalization of far-right governance in Germany.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "GEOPOLITICS",
@@ -3127,7 +3385,7 @@
           },
           {
             "claim_text": "China deliberately maintains 'active neutrality' in the Ukraine conflict by supplying drone components to Ukraine while absorbing sanctioned Russian energy, as this strategy serves Beijing's long-term interests in delaying the US pivot to Asia and extracting discounted Russian resources.",
-            "freshness": "FRESH",
+            "freshness": "AGING",
             "content_date": "2026-09-08",
             "topics": [
               "GEOPOLITICS",
@@ -3172,6 +3430,31 @@
             "novelty_score": 3,
             "direction": "NEUTRAL",
             "intensity": 3
+          },
+          {
+            "claim_text": "Brent crude's rally above $107 is showing signs of structural staying power rather than being a transient shock, as reflected in rising longer-dated oil prices and equity market recognition.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "ENERGY",
+              "EQUITY_VALUATION",
+              "INFLATION"
+            ],
+            "novelty_score": 2,
+            "direction": "BULLISH",
+            "intensity": 7
+          },
+          {
+            "claim_text": "China (PRC/CCP) is the primary architect of a global conflict against the U.S. and the West, using Russia, economic warfare, and covert influence as instruments of strategic dominance.",
+            "freshness": "FRESH",
+            "content_date": "2026-09-11",
+            "topics": [
+              "GEOPOLITICS",
+              "CHINA_EM"
+            ],
+            "novelty_score": 2,
+            "direction": "BEARISH",
+            "intensity": 8
           },
           {
             "claim_text": "The AfD's near-absolute majority in Saxony-Anhalt represents a historic democratic surge for the far-right party, signaling deep structural realignment in German politics that establishment parties cannot ignore.",
@@ -3294,7 +3577,7 @@
           "POSITIONING",
           "VOLATILITY"
         ],
-        "detected_at": "2026-09-10"
+        "detected_at": "2026-09-11"
       },
       {
         "source_id": "howell",
@@ -3317,7 +3600,7 @@
           "RECESSION",
           "VOLATILITY"
         ],
-        "detected_at": "2026-09-10"
+        "detected_at": "2026-09-11"
       }
     ],
     "active_threads": [
@@ -3326,7 +3609,7 @@
         "core_hypothesis": "Twin wars in Ukraine and Iran have created an acute physical tightness in diesel markets, with US diesel crack spreads hitting a record $102/barrel, signaling a genuine supply shortage rather than a s",
         "status": "ESTABLISHED",
         "challenged": false,
-        "conviction": 6.4,
+        "conviction": 6.5,
         "direction": "BEARISH",
         "topics": [
           "ENERGY",
@@ -3341,7 +3624,8 @@
           "LIQUIDITY",
           "CREDIT",
           "TECH_AI",
-          "DOLLAR"
+          "DOLLAR",
+          "CHINA_EM"
         ],
         "sources": [
           "doomberg",
@@ -3349,9 +3633,10 @@
           "jeff_snider",
           "damped_spring",
           "luke_gromen",
-          "hidden_forces"
+          "hidden_forces",
+          "forward_guidance"
         ],
-        "source_count": 6,
+        "source_count": 7,
         "affected_assets": [
           "DBC",
           "GLD",
@@ -3361,7 +3646,7 @@
           "TIP"
         ],
         "created_at": "2026-08-24",
-        "last_evidence_date": "2026-09-10",
+        "last_evidence_date": "2026-09-11",
         "portfolio_alignment": "THREATENING",
         "portfolio_relevance_score": 100.0,
         "threatened_positions": [
@@ -3423,7 +3708,7 @@
           "FXI"
         ],
         "created_at": "2026-08-27",
-        "last_evidence_date": "2026-09-08",
+        "last_evidence_date": "2026-09-10",
         "portfolio_alignment": "THREATENING",
         "portfolio_relevance_score": 83.5,
         "threatened_positions": [
@@ -3450,7 +3735,7 @@
         "core_hypothesis": "The debasement trade in gold and Bitcoin is structurally supported regardless of yield direction, because government intervention to suppress yields is itself inflationary and self-reinforcing.",
         "status": "ESTABLISHED",
         "challenged": false,
-        "conviction": 7.3,
+        "conviction": 7.6,
         "direction": "BULLISH",
         "topics": [
           "LIQUIDITY",
@@ -3474,7 +3759,7 @@
           "SLV (SILVER PROXY)"
         ],
         "created_at": "2026-08-28",
-        "last_evidence_date": "2026-09-02",
+        "last_evidence_date": "2026-09-11",
         "portfolio_alignment": "CONFIRMING",
         "portfolio_relevance_score": 10.7,
         "threatened_positions": []
@@ -3511,41 +3796,41 @@
         "asset": "HYG",
         "v16_weight_pct": 29.7,
         "regime": "LATE_EXPANSION",
-        "generated_at": "2026-09-10",
+        "generated_at": "2026-09-11",
         "aggregate_risk": "HIGH",
         "scenario_count": 4,
         "failure_scenarios": [
           {
             "scenario_id": "PM_HYG_001",
-            "description": "THR_LIQUIDITY_20260827_001 re-accelerates: a fiscal credibility shock drives 10Y Treasury yields above 5.50% within 3-5 weeks, collapsing HY demand as the 'yields-reflect-growth' narrative breaks and ",
+            "description": "A 'one-and-done' Fed hike surprises markets by being interpreted as a policy error rather than credibility-enhancing, triggering simultaneous HY spread widening (+300-400bps) and duration losses that ",
             "failure_category": "NARRATIVE_COLLAPSE",
             "probability_label": "HIGH",
-            "early_warning_indicator": "US 10Y Treasury yield closes above 5.40% on a weekly basis while HY OAS (ICE BofA index) widens more than 80bps in the same 2-week window, AND a 3Y or 7Y Treasury auction prints with bid-to-cover belo",
-            "portfolio_impact": "-15 to -22% on HYG position; given 29.7% weight, portfolio-level impact approximately -4.5% to -6.5%"
+            "early_warning_indicator": "FOMC statement language shifts from 'data-dependent' to 'one meeting at a time' framing while the CDX HY index widens more than 40bps intraday on the hike announcement day — confirming market reads it",
+            "portfolio_impact": "-12 to -18% on HYG position; given 29.7% weight, approximately -3.6% to -5.3% on total portfolio"
           },
           {
             "scenario_id": "PM_HYG_002",
-            "description": "An energy price shock driven by THR_ENERGY_20260824_001 (diesel/Iran/Ukraine tightness) triggers a stagflationary repricing: the Fed is forced to hold or hike into slowing growth, compressing HY margi",
+            "description": "THR_ENERGY_20260824_001 energy shock metastasizes into a cost-push margin squeeze for HY-rated energy consumers and industrials, driving default rate expectations from ~3% to 6-8% within 60 days and w",
             "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "NYMEX Ultra-Low Sulfur Diesel futures front-month rises more than 20% over a 3-week period while the 2Y-10Y Treasury spread flattens or inverts further — confirming simultaneous inflationary and growt",
-            "portfolio_impact": "-10 to -16% on HYG position; portfolio-level impact approximately -3.0% to -4.8%, partially offset b"
+            "early_warning_indicator": "US diesel retail price rises above $5.50/gallon sustained for 10+ trading days, coinciding with HY energy-sector sub-index spreads widening more than 75bps relative to investment grade energy spreads ",
+            "portfolio_impact": "-14 to -20% on HYG position; partially offset by DBC gains; net portfolio impact approximately -3.0%"
           },
           {
             "scenario_id": "PM_HYG_003",
-            "description": "Chinese systemic credit stress (hidden insurance-sector losses per jeff_snider) propagates through global dollar funding markets, causing a sudden USD liquidity squeeze that forces EM and Asian HY hol",
-            "failure_category": "EXTERNAL_SHOCK",
+            "description": "HYG crowding unwind: systematic and risk-parity funds simultaneously exit HY credit as the LATE_EXPANSION signal causes model-driven de-risking, amplified by thin summer liquidity, creating a 10-15% p",
+            "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "CNH/USD 3-month basis swap spread widens more than 40bps in a single week (indicating offshore USD funding stress from Chinese entities) while HYG daily volume exceeds 3x its 20-day average — confirmi",
-            "portfolio_impact": "-10 to -14% on HYG position; portfolio-level impact approximately -3.0% to -4.2%; GLD position (+16%"
+            "early_warning_indicator": "HYG ETF shares outstanding decline by more than 8% in a 5-day rolling window (indicating large-scale redemptions) while the HYG price-to-NAV discount widens beyond -1.5% — confirming AP arbitrage is b",
+            "portfolio_impact": "-10 to -15% on HYG position; approximately -3.0% to -4.5% on total portfolio with limited offset fro"
           },
           {
             "scenario_id": "PM_HYG_004",
-            "description": "Crowding unwind: LATE_EXPANSION defensive rotation into HYG (as a yield-carry substitute for equities) reverses abruptly when a single month of strong payroll data (+280K+) re-ignites 'higher for long",
-            "failure_category": "LIQUIDITY_FLOW",
-            "probability_label": "MEDIUM",
-            "early_warning_indicator": "CFTC COT report shows net speculative long position in HY credit futures at or above 90th percentile of 2-year range, AND NFP prints above 270K with unemployment below 4.0% — both conditions must be p",
-            "portfolio_impact": "-10 to -13% on HYG position; portfolio-level impact approximately -3.0% to -3.9%; XLU and XLP positi"
+            "description": "A non-obvious correlation break: GLD and HYG — both held as 'late cycle' complements — simultaneously sell off as a dollar funding squeeze forces institutional liquidation of liquid assets across the ",
+            "failure_category": "CORRELATION_BREAK",
+            "probability_label": "LOW",
+            "early_warning_indicator": "3-month EUR/USD cross-currency basis swap widens beyond -40bps (indicating offshore dollar scarcity) simultaneously with GLD falling more than 3% in a week — confirming that gold is being sold for dol",
+            "portfolio_impact": "-10 to -16% on HYG position; simultaneous GLD drawdown of -5 to -8% means total portfolio impact of "
           }
         ]
       },
@@ -3553,33 +3838,41 @@
         "asset": "DBC",
         "v16_weight_pct": 19.8,
         "regime": "LATE_EXPANSION",
-        "generated_at": "2026-09-10",
+        "generated_at": "2026-09-11",
         "aggregate_risk": "HIGH",
-        "scenario_count": 3,
+        "scenario_count": 4,
         "failure_scenarios": [
           {
             "scenario_id": "PM_DBC_001",
-            "description": "Rising US Treasury yields trigger a global liquidity crunch (THR_LIQUIDITY_20260827_001) that forces commodity futures liquidation as dollar funding costs spike, crushing DBC by 12-20% over 4-8 weeks ",
-            "failure_category": "LIQUIDITY_FLOW",
+            "description": "A credibility-driven 'one-and-done' Fed rate hike triggers a sharp dollar rally and synchronized commodity selloff, unwinding DBC's energy-heavy positions as the growth narrative collapses under tight",
+            "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "HIGH",
-            "early_warning_indicator": "DXY rises above 106 while Bloomberg Commodity Index (BCOM) drops >3% in a single week, accompanied by a spike in 3-month LIBOR/SOFR basis spread above 25bps — signaling dollar funding stress bleeding ",
-            "portfolio_impact": "-12 to -20% on DBC position"
+            "early_warning_indicator": "DXY index rallies >2.5% in a 5-trading-day window following the FOMC announcement while the Bloomberg Commodity Index (BCOM) falls >3% in the same window, confirming dollar-commodity inverse correlati",
+            "portfolio_impact": "-12 to -18% on DBC position"
           },
           {
             "scenario_id": "PM_DBC_002",
-            "description": "Kazakhstan crude export disruption (CPC terminal damage from Ukrainian drone strikes) initially appears bullish for DBC energy components but inverts as insurance/shipping market seizure triggers a br",
-            "failure_category": "CORRELATION_BREAK",
+            "description": "A Russia-Ukraine negotiated settlement (the most likely conflict outcome per IC consensus) removes the geopolitical supply premium from energy and agricultural commodities, collapsing the diesel tight",
+            "failure_category": "NARRATIVE_COLLAPSE",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "DBC underperforms a pure-energy ETF (e.g., DBE) by more than 4 percentage points over a 2-week window during a period when crude oil rises >3% — indicating non-energy components are dragging the baske",
-            "portfolio_impact": "-10 to -15% on DBC position"
+            "early_warning_indicator": "Brent crude front-month futures fall >5% within 10 trading days of any credible public ceasefire negotiation announcement, while CBOT wheat futures drop >4% simultaneously, confirming multi-commodity ",
+            "portfolio_impact": "-10 to -16% on DBC position"
           },
           {
             "scenario_id": "PM_DBC_003",
-            "description": "A macro regime transition from LATE_EXPANSION to CONTRACTION — triggered by a Chinese financial system shock (concealed insurance company losses materializing) — collapses industrial commodity demand ",
-            "failure_category": "MACRO_REGIME_SHIFT",
+            "description": "DBC becomes dangerously crowded as a defensive 'real asset' hedge alongside GLD (16%) in a portfolio already concentrated in defensive sectors (XLU 18%, XLP 16.5%), and a correlated unwind of the deba",
+            "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "Dr. Copper (LME 3-month copper) breaks below $8,500/tonne while Chinese iron ore futures (DCE) fall >8% in a single month, accompanied by a widening of Chinese onshore credit spreads (AA-rated corpora",
-            "portfolio_impact": "-18 to -25% on DBC position"
+            "early_warning_indicator": "GLD drops >3% in a single week while DBC drops >4% in the same week, with commodity futures open interest declining >8% month-over-month — confirming simultaneous real-asset position liquidation rathe",
+            "portfolio_impact": "-14 to -22% on DBC position; secondary contagion risk to GLD position amplifies total portfolio impa"
+          },
+          {
+            "scenario_id": "PM_DBC_004",
+            "description": "Hidden systemic losses at Chinese insurance companies and shadow financial institutions (flagged by Jeff Snider) trigger an abrupt Chinese demand shock that collapses the crude and industrial metals b",
+            "failure_category": "EXTERNAL_SHOCK",
+            "probability_label": "LOW",
+            "early_warning_indicator": "Chinese crude import volumes (via tanker tracking data such as Kpler or Vortexa) decline >10% month-over-month for two consecutive weeks, while Chinese 5-year CDS spreads widen >25bps in the same peri",
+            "portfolio_impact": "-10 to -20% on DBC position; correlated risk to HYG (29.7%) if EM credit spreads widen on China shoc"
           }
         ]
       },
@@ -3587,41 +3880,41 @@
         "asset": "XLU",
         "v16_weight_pct": 18.0,
         "regime": "LATE_EXPANSION",
-        "generated_at": "2026-09-10",
+        "generated_at": "2026-09-11",
         "aggregate_risk": "HIGH",
         "scenario_count": 4,
         "failure_scenarios": [
           {
             "scenario_id": "PM_XLU_001",
-            "description": "Nominal growth surprise accelerates Fed hawkishness into H1 2027, driving the 10Y past 5.50% and compressing XLU's dividend yield spread to near-zero, triggering systematic rotation out of the entire ",
+            "description": "A 'one-and-done' Fed hike triggers a disorderly term premium spike past 5.50% on the 10Y, collapsing XLU's dividend spread premium and igniting simultaneous liquidation across the entire defensive sle",
             "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "HIGH",
-            "early_warning_indicator": "US 10Y yield closes above 5.35% for three consecutive sessions while XLU underperforms SPY by more than 2.5% in the same week; additionally, watch for XLU implied vol (via utility ETF options skew) ju",
-            "portfolio_impact": "-14 to -22% on XLU position; amplified to -8 to -12% book-level drag given XLP correlation in simult"
+            "early_warning_indicator": "US 10Y yield closes above 5.35% on 3 consecutive days while the 2Y-10Y spread steepens more than 15bps in a single week, combined with XLU's 30-day realized correlation to TLT exceeding 0.70 (confirmi",
+            "portfolio_impact": "-14 to -21% on XLU position; amplified by simultaneous XLP pressure creating -9 to -13% drag on tota"
           },
           {
             "scenario_id": "PM_XLU_002",
-            "description": "A diesel/energy supply shock stemming from Ukraine-Iran conflict escalation causes energy input costs for utilities to spike sharply, simultaneously compressing utility operating margins and triggerin",
-            "failure_category": "EXTERNAL_SHOCK",
+            "description": "A diesel/energy price surge driven by Ukrainian strikes on CPC pipeline infrastructure and Iran supply disruptions materially raises input costs for gas-fired power utilities, compressing margins and ",
+            "failure_category": "NARRATIVE_COLLAPSE",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "NYMEX Ultra-Low Sulfur Diesel front-month futures rise more than 18% over a 3-week window while Henry Hub natural gas simultaneously spikes above $4.50/MMBtu; watch for utility sector earnings guidanc",
-            "portfolio_impact": "-10 to -18% on XLU position; note DBC (19.8% book weight) would likely gain, providing partial portf"
+            "early_warning_indicator": "Henry Hub natural gas futures front-month contract rises more than 30% over 4 weeks while XLU's forward P/E expands above 20x simultaneously (market not yet pricing margin compression), followed by fi",
+            "portfolio_impact": "-10 to -16% on XLU position; partial offset from DBC (19.8%) benefiting from the same energy spike, "
           },
           {
             "scenario_id": "PM_XLU_003",
-            "description": "Crowded defensive positioning in a LATE_EXPANSION portfolio (XLU+XLP+GLD = 50.5% of book) unwinds violently when a surprise positive macro data print triggers risk-on rotation, with XLU suffering ampl",
+            "description": "A systematic crowding unwind in the defensive-yield trade — where XLU and XLP together represent 34.5% of the book — triggers a correlated liquidation cascade as multi-strategy funds simultaneously ex",
             "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "XLU daily volume exceeds 2.5x its 30-day average on a down day while SPY rises more than 1.2% intraday; simultaneously, IWM (small-cap) outperforms XLU by more than 3.5% in a single session, signaling",
-            "portfolio_impact": "-11 to -17% on XLU position; correlated selling in XLP (-8 to -14%) and GLD (-5 to -9%) would compou"
+            "early_warning_indicator": "XLU's short interest drops below 1.5% of float while options put/call ratio falls under 0.60 within the same week, combined with a 3-day consecutive inflow reversal in XLU ETF AUM exceeding $400M in o",
+            "portfolio_impact": "-10 to -18% on XLU position; simultaneous XLP pressure adds additional -8 to -12% drag, total defens"
           },
           {
             "scenario_id": "PM_XLU_004",
-            "description": "The historical inverse correlation between XLU and credit spreads breaks down as HYG (29.7% book weight) and XLU sell off simultaneously — driven by utility-sector credit stress from rising refinancin",
+            "description": "A systemic Chinese insurance sector credit event — analogous to a Eurozone peripheral shock — triggers global risk-off contagion but paradoxically destroys XLU's safe-haven premium because the associa",
             "failure_category": "CORRELATION_BREAK",
             "probability_label": "LOW",
-            "early_warning_indicator": "HYG credit spread (OAS) widens more than 60bps in a 4-week window WHILE XLU simultaneously falls more than 5% — both moving in the same adverse direction on a rolling 10-day basis, breaking the typica",
-            "portfolio_impact": "-10 to -16% on XLU position; simultaneous HYG drawdown of -6 to -10% would amplify book-level impact"
+            "early_warning_indicator": "CNY/USD offshore rate (CNH) weakens past 7.45 while China CDS spreads (5Y sovereign) widen more than 40bps in two weeks AND cross-currency basis swap spread (USD/CNH 3M) inverts beyond -80bps — signal",
+            "portfolio_impact": "-12 to -22% on XLU position in the phase-two liquidation; partially offset by GLD (16.0%) acting as "
           }
         ]
       },
@@ -3629,41 +3922,41 @@
         "asset": "XLP",
         "v16_weight_pct": 16.5,
         "regime": "LATE_EXPANSION",
-        "generated_at": "2026-09-10",
+        "generated_at": "2026-09-11",
         "aggregate_risk": "HIGH",
         "scenario_count": 4,
         "failure_scenarios": [
           {
             "scenario_id": "PM_XLP_001",
-            "description": "A 'melt-up' in risk assets driven by resilient nominal growth causes a violent rotation out of defensive consumer staples into cyclicals, collapsing XLP's bond-proxy premium precisely as real yields r",
+            "description": "A Fed 'one-and-done' credibility hike triggers a sharp re-rating of XLP's dividend yield relative to short-duration Treasuries, causing institutional outflows from consumer staples as cash and T-bills",
             "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "HIGH",
-            "early_warning_indicator": "XLP/SPY relative strength ratio breaks below its 200-day moving average while IWM (Russell 2000) posts 3 consecutive weekly gains above 1%, signaling a broad cyclical rotation underway",
-            "portfolio_impact": "-12 to -18% on XLP position"
+            "early_warning_indicator": "2-year Treasury yield closes above 5.50% for 5 consecutive sessions while XLP's 30-day implied volatility rises above 16 and the XLP/TLT correlation turns negative (staples decoupling from the bond-pr",
+            "portfolio_impact": "-12 to -18% on this position"
           },
           {
             "scenario_id": "PM_XLP_002",
-            "description": "Diesel/energy cost passthrough failures — driven by the twin-war diesel tightness narrative — compress consumer staples operating margins faster than consensus models assume, triggering a wave of earn",
+            "description": "An acute diesel/energy cost spike driven by the Ukraine-Iran twin-war supply shock crushes consumer staples margins across food production, packaging, and logistics, causing a wave of earnings guidanc",
             "failure_category": "NARRATIVE_COLLAPSE",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "US diesel wholesale price (EIA weekly data) rises above $4.25/gallon for 3 consecutive weeks, concurrent with any XLP top-5 constituent pre-announcing or issuing a profit warning citing input/logistic",
-            "portfolio_impact": "-15 to -22% on XLP position"
+            "early_warning_indicator": "NYMEX ultra-low sulfur diesel futures (HO1) rise more than 15% over any rolling 3-week period while Kraft Heinz or General Mills issues an intra-quarter cost guidance revision citing freight/logistics",
+            "portfolio_impact": "-10 to -16% on this position"
           },
           {
             "scenario_id": "PM_XLP_003",
-            "description": "Portfolio-level crowding in defensive income proxies (XLP + XLU = 34.5% of V16) creates a reflexive unwind when a single catalyst causes simultaneous de-risking from both positions, amplifying XLP los",
+            "description": "A crowded defensive positioning unwind — driven by simultaneous XLU, XLP, and GLD selling as risk sentiment sharply improves — causes a correlated liquidation cascade that hits XLP disproportionately ",
             "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "XLP and XLU both decline more than 2% on the same session on above-average volume (>150% of 20-day ADV), while HYG simultaneously falls more than 0.5% — indicating a cross-asset systematic de-risking ",
-            "portfolio_impact": "-10 to -16% on XLP position (amplified by concurrent XLU drawdown reducing overall portfolio buffer)"
+            "early_warning_indicator": "XLU and XLP both decline more than 2.5% in the same week while HYG (also 29.7% of portfolio) tightens by more than 20bps — indicating risk-on rotation is broad enough to simultaneously pressure all th",
+            "portfolio_impact": "-11 to -20% on this position (amplified by concurrent XLU weakness reducing any within-portfolio off"
           },
           {
             "scenario_id": "PM_XLP_004",
-            "description": "A geopolitical de-escalation shock — specifically a Russia-Ukraine negotiated settlement — removes the key flight-to-safety premium embedded in defensive staples allocations globally, triggering repat",
-            "failure_category": "EXTERNAL_SHOCK",
+            "description": "A non-obvious failure: consumer staples companies face a structural private-label market share acceleration as a lagged consequence of prolonged inflation, permanently compressing branded-goods pricin",
+            "failure_category": "NARRATIVE_COLLAPSE",
             "probability_label": "LOW",
-            "early_warning_indicator": "EUR/USD rallies above 1.12 on 2 consecutive weekly closes while European defense stocks (EUAD ETF or Rheinmetall) fall more than 8% in a 10-day window, signaling market pricing of a genuine peace prem",
-            "portfolio_impact": "-10 to -14% on XLP position"
+            "early_warning_indicator": "Walmart or Costco quarterly earnings transcripts contain explicit commentary that private-label unit volumes exceeded branded alternatives by more than 10 percentage points in food categories, followe",
+            "portfolio_impact": "-10 to -15% on this position over a multi-quarter re-rating"
           }
         ]
       },
@@ -3671,132 +3964,132 @@
         "asset": "GLD",
         "v16_weight_pct": 16.0,
         "regime": "LATE_EXPANSION",
-        "generated_at": "2026-09-10",
+        "generated_at": "2026-09-11",
         "aggregate_risk": "MEDIUM",
         "scenario_count": 4,
         "failure_scenarios": [
           {
             "scenario_id": "PM_GLD_001",
-            "description": "A negotiated Ukraine ceasefire removes the geopolitical risk premium from gold simultaneously with a Howell-predicted nominal growth surge pushing real TIPS yields to 2.4%+, triggering a dual-catalyst",
-            "failure_category": "EXTERNAL_SHOCK",
+            "description": "A 'one-and-done' Fed credibility hike surprises markets by holding at restrictive rates longer than expected, driving real TIPS yields above 2.5% and collapsing GLD 15-22% as the opportunity cost of h",
+            "failure_category": "MACRO_REGIME_SHIFT",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "GLD spot breaks below $2,850/oz on a closing basis while the MOVE index drops below 95 and the 10Y TIPS real yield closes above 2.25% in the same week — confirming simultaneous geopolitical premium co",
-            "portfolio_impact": "-13 to -20% on GLD position"
+            "early_warning_indicator": "TIPS 10-year real yield closes above 2.40% for three consecutive sessions while GLD fails to hold $2,800/oz on a weekly close; simultaneously, DXY rallies above 107 on the Fed hike repricing",
+            "portfolio_impact": "-15 to -22% on GLD position"
           },
           {
             "scenario_id": "PM_GLD_002",
-            "description": "The debasement narrative collapses as Howell's thesis that Fed/Treasury policy is preserving liquidity (not suppressing yields) becomes consensus, causing institutional rotation out of GLD and into ri",
-            "failure_category": "NARRATIVE_COLLAPSE",
+            "description": "A catastrophic portfolio-level correlation break occurs when HYG (29.7%) and DBC (19.8%) sell off simultaneously on recession fears, forcing systematic de-risking that liquidates GLD as the most liqui",
+            "failure_category": "CORRELATION_BREAK",
             "probability_label": "MEDIUM",
-            "early_warning_indicator": "CFTC net speculative long positioning in COMEX gold futures falls by more than 40,000 contracts over a 3-week period while GLD ETF AUM declines >$4B, confirming institutional distribution rather than ",
-            "portfolio_impact": "-10 to -15% on GLD position"
+            "early_warning_indicator": "HYG drops more than 3% in a 5-day window while GLD fails to rally (or drops) simultaneously — a breakdown of the expected risk-off/gold correlation; watch for GLD 30-day correlation with SPY turning p",
+            "portfolio_impact": "-10 to -18% on GLD position; compounded by simultaneous -15 to -25% on HYG and -10 to -20% on DBC cr"
           },
           {
             "scenario_id": "PM_GLD_003",
-            "description": "Portfolio-level crowding creates a correlated liquidation event where HYG (29.7%) credit spread widening forces risk-off redemptions, and GLD is sold alongside DBC and XLP as the entire defensive/comm",
-            "failure_category": "LIQUIDITY_FLOW",
-            "probability_label": "MEDIUM",
-            "early_warning_indicator": "HY OAS (ICE BofA HY index) widens more than 80bps in 10 trading days while GLD fails to rally above its 20-day moving average despite a >1.5% SPX decline — confirming gold is no longer acting as a saf",
-            "portfolio_impact": "-10 to -17% on GLD position (amplified by portfolio-level margin call dynamics)"
+            "description": "A Ukraine peace deal catalyzes a rapid unwind of the geopolitical risk premium and energy-crisis narrative simultaneously, while China's crude demand surge (a key macro tailwind cited by ZeroHedge) fa",
+            "failure_category": "NARRATIVE_COLLAPSE",
+            "probability_label": "LOW",
+            "early_warning_indicator": "Spot gold breaks below $2,750/oz within 10 days of a formal Ukraine ceasefire announcement, confirmed by CFTC COT report showing net speculative longs in COMEX gold futures dropping by more than 40,00",
+            "portfolio_impact": "-13 to -20% on GLD position"
           },
           {
             "scenario_id": "PM_GLD_004",
-            "description": "PBoC liquidity tightening — the same mechanism Howell identifies as leading Bitcoin by 3 months — simultaneously deflates Chinese gold demand and signals a global liquidity contraction, breaking the s",
-            "failure_category": "CORRELATION_BREAK",
+            "description": "Bitcoin and crypto assets absorb the structural debasement/monetary disorder bid that currently supports GLD, as PBoC liquidity transmission (flagged by Howell) drives a major crypto rally that cannib",
+            "failure_category": "LIQUIDITY_FLOW",
             "probability_label": "LOW",
-            "early_warning_indicator": "Shanghai Gold Exchange (SGE) premium to COMEX gold flips to a discount of more than $5/oz for 10+ consecutive trading days, concurrent with a CNY depreciation of >1.5% against USD in the same period —",
-            "portfolio_impact": "-10 to -14% on GLD position"
+            "early_warning_indicator": "Bitcoin rises more than 25% over 6 weeks while GLD underperforms flat or declines more than 5% in the same window; GLD ETF (SPDR) weekly outflows exceed $800M for two consecutive weeks while crypto fu",
+            "portfolio_impact": "-10 to -15% on GLD position"
           }
         ]
       }
     ],
     "belief_state": {
       "LIQUIDITY": {
-        "belief": 4.3,
+        "belief": 4.2,
         "direction": "BEARISH",
         "uncertainty": 0.1,
-        "evidence_count": 298,
-        "last_evidence_date": "2026-09-10",
+        "evidence_count": 300,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "FED_POLICY": {
-        "belief": 4.3,
+        "belief": 4.2,
         "direction": "BEARISH",
-        "uncertainty": 0.24,
-        "evidence_count": 267,
-        "last_evidence_date": "2026-09-09",
+        "uncertainty": 0.1,
+        "evidence_count": 274,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "CREDIT": {
         "belief": 4.5,
         "direction": "NEUTRAL",
         "uncertainty": 0.1,
-        "evidence_count": 264,
-        "last_evidence_date": "2026-09-10",
+        "evidence_count": 266,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "RECESSION": {
         "belief": 4.4,
         "direction": "BEARISH",
         "uncertainty": 0.1,
-        "evidence_count": 329,
-        "last_evidence_date": "2026-09-10",
+        "evidence_count": 334,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "INFLATION": {
         "belief": 4.6,
         "direction": "NEUTRAL",
-        "uncertainty": 0.1,
-        "evidence_count": 236,
-        "last_evidence_date": "2026-09-09",
+        "uncertainty": 0.15,
+        "evidence_count": 245,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "EQUITY_VALUATION": {
         "belief": 4.8,
         "direction": "NEUTRAL",
-        "uncertainty": 0.36,
-        "evidence_count": 272,
-        "last_evidence_date": "2026-09-10",
+        "uncertainty": 0.39,
+        "evidence_count": 274,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "CHINA_EM": {
         "belief": 4.6,
         "direction": "NEUTRAL",
-        "uncertainty": 0.12,
-        "evidence_count": 190,
-        "last_evidence_date": "2026-09-09",
+        "uncertainty": 0.1,
+        "evidence_count": 195,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "GEOPOLITICS": {
         "belief": 4.6,
         "direction": "NEUTRAL",
-        "uncertainty": 0.21,
-        "evidence_count": 839,
-        "last_evidence_date": "2026-09-10",
+        "uncertainty": 0.1,
+        "evidence_count": 845,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "ENERGY": {
         "belief": 4.6,
         "direction": "NEUTRAL",
-        "uncertainty": 0.48,
-        "evidence_count": 523,
-        "last_evidence_date": "2026-09-10",
+        "uncertainty": 0.56,
+        "evidence_count": 530,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "COMMODITIES": {
         "belief": 5.4,
         "direction": "NEUTRAL",
-        "uncertainty": 0.88,
-        "evidence_count": 250,
-        "last_evidence_date": "2026-09-10",
+        "uncertainty": 0.87,
+        "evidence_count": 254,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "TECH_AI": {
         "belief": 4.8,
         "direction": "NEUTRAL",
-        "uncertainty": 0.6,
-        "evidence_count": 209,
-        "last_evidence_date": "2026-09-10",
+        "uncertainty": 0.58,
+        "evidence_count": 210,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "CRYPTO": {
@@ -3810,7 +4103,7 @@
       "DOLLAR": {
         "belief": 4.7,
         "direction": "NEUTRAL",
-        "uncertainty": 0.26,
+        "uncertainty": 0.27,
         "evidence_count": 180,
         "last_evidence_date": "2026-09-07",
         "stale_warning": false
@@ -3819,16 +4112,16 @@
         "belief": 4.4,
         "direction": "BEARISH",
         "uncertainty": 0.1,
-        "evidence_count": 188,
-        "last_evidence_date": "2026-09-10",
+        "evidence_count": 189,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       },
       "POSITIONING": {
         "belief": 4.6,
         "direction": "NEUTRAL",
-        "uncertainty": 0.18,
-        "evidence_count": 174,
-        "last_evidence_date": "2026-09-10",
+        "uncertainty": 0.21,
+        "evidence_count": 176,
+        "last_evidence_date": "2026-09-11",
         "stale_warning": false
       }
     },
@@ -3837,21 +4130,21 @@
     "cross_system": [
       {
         "topic": "LIQUIDITY",
-        "ic_belief": 4.3,
+        "ic_belief": 4.2,
         "ic_direction": "BEARISH",
         "ic_uncertainty": 0.1,
-        "v16_layers": "L1=-1, L7=1",
-        "v16_avg_score": 0.0,
+        "v16_layers": "L1=0, L7=1",
+        "v16_avg_score": 0.5,
         "v16_direction": "NEUTRAL",
         "alignment": "DIVERGING"
       },
       {
         "topic": "FED_POLICY",
-        "ic_belief": 4.3,
+        "ic_belief": 4.2,
         "ic_direction": "BEARISH",
-        "ic_uncertainty": 0.24,
-        "v16_layers": "L1=-1, L2=0, L7=1",
-        "v16_avg_score": 0.0,
+        "ic_uncertainty": 0.1,
+        "v16_layers": "L1=0, L2=1, L7=1",
+        "v16_avg_score": 0.7,
         "v16_direction": "NEUTRAL",
         "alignment": "DIVERGING"
       },
@@ -3860,16 +4153,26 @@
         "ic_belief": 4.4,
         "ic_direction": "BEARISH",
         "ic_uncertainty": 0.1,
-        "v16_layers": "L2=0, L3=3, L5=0",
-        "v16_avg_score": 1.0,
+        "v16_layers": "L2=1, L3=3, L5=0",
+        "v16_avg_score": 1.3,
         "v16_direction": "NEUTRAL",
+        "alignment": "DIVERGING"
+      },
+      {
+        "topic": "CHINA_EM",
+        "ic_belief": 4.6,
+        "ic_direction": "NEUTRAL",
+        "ic_uncertainty": 0.1,
+        "v16_layers": "L4=1, L6=3",
+        "v16_avg_score": 2.0,
+        "v16_direction": "BULLISH",
         "alignment": "DIVERGING"
       },
       {
         "topic": "ENERGY",
         "ic_belief": 4.6,
         "ic_direction": "NEUTRAL",
-        "ic_uncertainty": 0.48,
+        "ic_uncertainty": 0.56,
         "v16_layers": "L3=3, L6=3",
         "v16_avg_score": 3.0,
         "v16_direction": "BULLISH",
@@ -3879,7 +4182,7 @@
         "topic": "COMMODITIES",
         "ic_belief": 5.4,
         "ic_direction": "NEUTRAL",
-        "ic_uncertainty": 0.88,
+        "ic_uncertainty": 0.87,
         "v16_layers": "L3=3, L6=3",
         "v16_avg_score": 3.0,
         "v16_direction": "BULLISH",
@@ -3890,8 +4193,8 @@
         "ic_belief": 4.4,
         "ic_direction": "BEARISH",
         "ic_uncertainty": 0.1,
-        "v16_layers": "L5=0, L8=1",
-        "v16_avg_score": 0.5,
+        "v16_layers": "L5=0, L8=0",
+        "v16_avg_score": 0.0,
         "v16_direction": "NEUTRAL",
         "alignment": "DIVERGING"
       },
@@ -3900,8 +4203,8 @@
         "ic_belief": 4.5,
         "ic_direction": "NEUTRAL",
         "ic_uncertainty": 0.1,
-        "v16_layers": "L2=0, L5=0",
-        "v16_avg_score": 0.0,
+        "v16_layers": "L2=1, L5=0",
+        "v16_avg_score": 0.5,
         "v16_direction": "NEUTRAL",
         "alignment": "CONFIRMING"
       },
@@ -3909,19 +4212,9 @@
         "topic": "INFLATION",
         "ic_belief": 4.6,
         "ic_direction": "NEUTRAL",
-        "ic_uncertainty": 0.1,
-        "v16_layers": "L2=0, L7=1",
-        "v16_avg_score": 0.5,
-        "v16_direction": "NEUTRAL",
-        "alignment": "CONFIRMING"
-      },
-      {
-        "topic": "CHINA_EM",
-        "ic_belief": 4.6,
-        "ic_direction": "NEUTRAL",
-        "ic_uncertainty": 0.12,
-        "v16_layers": "L4=0, L6=3",
-        "v16_avg_score": 1.5,
+        "ic_uncertainty": 0.15,
+        "v16_layers": "L2=1, L7=1",
+        "v16_avg_score": 1.0,
         "v16_direction": "NEUTRAL",
         "alignment": "CONFIRMING"
       },
@@ -3929,9 +4222,9 @@
         "topic": "DOLLAR",
         "ic_belief": 4.7,
         "ic_direction": "NEUTRAL",
-        "ic_uncertainty": 0.26,
-        "v16_layers": "L4=0, L6=3, L7=1",
-        "v16_avg_score": 1.3,
+        "ic_uncertainty": 0.27,
+        "v16_layers": "L4=1, L6=3, L7=1",
+        "v16_avg_score": 1.7,
         "v16_direction": "NEUTRAL",
         "alignment": "CONFIRMING"
       },
@@ -3939,14 +4232,38 @@
         "topic": "POSITIONING",
         "ic_belief": 4.6,
         "ic_direction": "NEUTRAL",
-        "ic_uncertainty": 0.18,
-        "v16_layers": "L5=0, L8=1",
-        "v16_avg_score": 0.5,
+        "ic_uncertainty": 0.21,
+        "v16_layers": "L5=0, L8=0",
+        "v16_avg_score": 0.0,
         "v16_direction": "NEUTRAL",
         "alignment": "CONFIRMING"
       }
     ],
     "expert_disagreements": [
+      {
+        "topic": "FED_POLICY",
+        "side_a": {
+          "source_id": "howell",
+          "direction": "BULLISH",
+          "expertise": 7,
+          "intensity": 5,
+          "claim_text": "Current US Treasury and Federal Reserve policy is designed to limit volatility and preserve market liquidity rather than constitute disguised yield curve control.",
+          "conviction_trend": "STABLE",
+          "supporter_count": 1
+        },
+        "side_b": {
+          "source_id": "forward_guidance",
+          "direction": "BEARISH",
+          "expertise": 10,
+          "intensity": 7,
+          "claim_text": "The bond market is calling Bessant's bluff on yield suppression, with fair-value on the 10-year closer to 5.8% given nominal GDP running at ~6.6%, and $6B in buybacks is insufficient to hold the line.",
+          "conviction_trend": "RISING",
+          "supporter_count": 1
+        },
+        "v16_alignment": "NEUTRAL",
+        "portfolio_exposure": "MEDIUM",
+        "second_derivative_signal": "forward_guidance's conviction RISING — bearish side strengthening"
+      },
       {
         "topic": "EQUITY_VALUATION",
         "side_a": {
@@ -3975,7 +4292,31 @@
     "silence_map": [],
     "intelligence_gaps": [
       {
-        "gap_id": "GAP_DISSENT_EQUITY_VALUATION_2026-09-10",
+        "gap_id": "GAP_DISSENT_FED_POLICY_2026-09-11",
+        "question": "FED POLICY: howell says BULLISH vs forward_guidance says BEARISH. Who is right?",
+        "generated_by": "disagreement",
+        "priority": "HIGH",
+        "topics": [
+          "FED_POLICY"
+        ],
+        "assigned_sources": [
+          {
+            "source_id": "forward_guidance",
+            "expertise": 10
+          },
+          {
+            "source_id": "lyn_alden",
+            "expertise": 8
+          },
+          {
+            "source_id": "macro_alf",
+            "expertise": 8
+          }
+        ],
+        "detail": "Portfolio exposure: MEDIUM | forward_guidance's conviction RISING — bearish side strengthening"
+      },
+      {
+        "gap_id": "GAP_DISSENT_EQUITY_VALUATION_2026-09-11",
         "question": "EQUITY VALUATION: crescat says BULLISH vs hussman says BEARISH. Who is right?",
         "generated_by": "disagreement",
         "priority": "MEDIUM",
@@ -4014,8 +4355,8 @@
       },
       "step_0b_ic": {
         "status": "OK",
-        "completed_at": "2026-09-10T10:36:35Z",
-        "summary": "100 active claims (100 new + carry-forward), 0 divergences, 66 high-novelty, 2 cadence anomalies, 4 threads, 5 pre-mortems"
+        "completed_at": "2026-09-11T10:39:41Z",
+        "summary": "112 active claims (112 new + carry-forward), 0 divergences, 73 high-novelty, 2 cadence anomalies, 4 threads, 5 pre-mortems"
       },
       "step_1_market_analyst": {
         "status": "OK",
