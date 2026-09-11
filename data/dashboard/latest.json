@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -4444,7 +4445,7 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-09-10",
+    "date": "2026-09-11",
     "execution_level": "HOLD",
     "total_score": 12,
     "max_score": 18,
@@ -4463,7 +4464,7 @@
       "liquidity_risk": {
         "score": 3,
         "max": 3,
-        "label": "amihud: MODERATE, vix_term: BACKWARDATION"
+        "label": "amihud: ILLIQUID, vix_term: FLAT"
       },
       "cross_asset_confirmation": {
         "score": 1,
@@ -4473,7 +4474,7 @@
       "gex_regime": {
         "score": 2,
         "max": 3,
-        "label": "GEX $-0.53B — NEGATIVE_PLUS_EVENT"
+        "label": "GEX $-0.52B — NEGATIVE_PLUS_EVENT"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -4498,10 +4499,9 @@
     "recommendation_short": "Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 2,
+      "next_48h_count": 1,
       "next_48h_events": [
-        "ECB Governing Council Monetary Policy Meeting (September 2026) (0h)",
-        "Consumer Price Index (August 2026) — CPI (24h)"
+        "Consumer Price Index (August 2026) — CPI (0h)"
       ],
       "next_14d_count": 6,
       "convergence_week": true,
@@ -4509,34 +4509,34 @@
     },
     "calendar_upcoming": [
       {
-        "date": "2026-09-10",
-        "event": "ECB Governing Council Monetary Policy Meeting (September 2026)",
-        "impact": "MEDIUM",
-        "hours_until": 0
-      },
-      {
         "date": "2026-09-11",
         "event": "Consumer Price Index (August 2026) — CPI",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-09-16",
         "event": "FOMC Rate Decision + SEP/Dot Plot (September 2026)",
         "impact": "HIGH",
-        "days_until": 6
+        "days_until": 5
       },
       {
         "date": "2026-09-18",
         "event": "Bank of Japan Monetary Policy Meeting Decision (September 2026)",
         "impact": "MEDIUM",
-        "days_until": 8
+        "days_until": 7
       },
       {
         "date": "2026-09-18",
         "event": "Quad Witching",
         "impact": "HIGH",
-        "days_until": 8
+        "days_until": 7
+      },
+      {
+        "date": "2026-09-21",
+        "event": "PBoC Loan Prime Rate Announcement (September 2026)",
+        "impact": "MEDIUM",
+        "days_until": 10
       }
     ],
     "calendar_monthly": [
@@ -4601,20 +4601,20 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 12/18) ===\n\nCONFIRMING (16):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 2.8% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 2.8% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 2.8% — kein Conflict\n  • Fund Flows positiv (+0.16% AUM): Geld fließt in Aktien — bestätigt V16 Equity-Exposure\n  • sofr_ffr: NORMAL: Wert: 1.0\n\nCONFLICTING (9):\n  • Consumer Price Index (August 2026) — CPI in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • Convergence Week aktiv: Mehrere HIGH Events: Consumer Price Index (August 2026) — CPI, FOMC Rate Decision + SEP/Dot Plot (September 2026), FOMC Rate Decision + SEP/Dot Plot (September 2026)\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -63.8% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -63.8% — Smart Money gegen GLD (16% im Portfolio)\n  • amihud: MODERATE: Wert: 76.27 — Liquiditäts-Risiko\n\nNETTO: 16 Confirming vs 9 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: HOLD (Score: 12/18) ===\n\nCONFIRMING (16):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 2.8% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 2.8% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 2.8% — kein Conflict\n  • Fund Flows positiv (+0.16% AUM): Geld fließt in Aktien — bestätigt V16 Equity-Exposure\n  • sofr_ffr: NORMAL: Wert: 1.0\n\nCONFLICTING (9):\n  • Consumer Price Index (August 2026) — CPI in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • Convergence Week aktiv: Mehrere HIGH Events: Consumer Price Index (August 2026) — CPI, FOMC Rate Decision + SEP/Dot Plot (September 2026), FOMC Rate Decision + SEP/Dot Plot (September 2026)\n  • COT DBC Conflict (EXTREME): COT_GOLD_COMM_NET = -63.8% — Smart Money gegen DBC (20% im Portfolio)\n  • COT GLD Conflict (EXTREME): COT_GOLD_COMM_NET = -63.8% — Smart Money gegen GLD (16% im Portfolio)\n  • amihud: ILLIQUID: Wert: 85.59 — Liquiditäts-Risiko\n\nNETTO: 16 Confirming vs 9 Conflicting.\n\nEMPFEHLUNG: Aktiv NICHT rebalancen. Mehrere Risikofaktoren aktiv.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-09-10",
+    "date": "2026-09-11",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 98,
-    "days_since_state_change": 98,
+    "days_since_material_rotation": 99,
+    "days_since_state_change": 99,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -4744,7 +4744,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-07-31",
           "2026-08-03",
           "2026-08-04",
           "2026-08-05",
@@ -4773,7 +4772,8 @@
           "2026-09-07",
           "2026-09-08",
           "2026-09-09",
-          "2026-09-10"
+          "2026-09-10",
+          "2026-09-11"
         ],
         "values": [
           0.1976,
@@ -4810,7 +4810,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-07-31",
           "2026-08-03",
           "2026-08-04",
           "2026-08-05",
@@ -4839,7 +4838,8 @@
           "2026-09-07",
           "2026-09-08",
           "2026-09-09",
-          "2026-09-10"
+          "2026-09-10",
+          "2026-09-11"
         ],
         "values": [
           0.2972,
@@ -4876,7 +4876,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-07-31",
           "2026-08-03",
           "2026-08-04",
           "2026-08-05",
@@ -4905,7 +4904,8 @@
           "2026-09-07",
           "2026-09-08",
           "2026-09-09",
-          "2026-09-10"
+          "2026-09-10",
+          "2026-09-11"
         ],
         "values": [
           0.3455,
@@ -4942,7 +4942,6 @@
       },
       "PM": {
         "dates": [
-          "2026-07-31",
           "2026-08-03",
           "2026-08-04",
           "2026-08-05",
@@ -4971,7 +4970,8 @@
           "2026-09-07",
           "2026-09-08",
           "2026-09-09",
-          "2026-09-10"
+          "2026-09-10",
+          "2026-09-11"
         ],
         "values": [
           0.1596,
@@ -5144,7 +5144,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-09-09",
+        "date": "2026-09-10",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5160,7 +5160,7 @@
         }
       },
       "1w": {
-        "date": "2026-09-03",
+        "date": "2026-09-04",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5176,7 +5176,7 @@
         }
       },
       "1m": {
-        "date": "2026-08-11",
+        "date": "2026-08-12",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5208,7 +5208,7 @@
         }
       },
       "6m": {
-        "date": "2026-03-13",
+        "date": "2026-03-16",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
