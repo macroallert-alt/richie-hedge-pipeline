@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -5060,7 +5061,7 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-09-15",
+    "date": "2026-09-16",
     "execution_level": "WAIT",
     "total_score": 9,
     "max_score": 18,
@@ -5089,7 +5090,7 @@
       "gex_regime": {
         "score": 2,
         "max": 3,
-        "label": "GEX $-0.63B — NEGATIVE_PLUS_EVENT"
+        "label": "GEX $-0.74B — NEGATIVE_PLUS_EVENT"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -5097,8 +5098,8 @@
         "label": "Neutral"
       }
     },
-    "confirming_count": 19,
-    "conflicting_count": 6,
+    "confirming_count": 18,
+    "conflicting_count": 8,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
       "COT HYG bestätigt — COT_SP500_COMM_NET = 1.3% — kein Conflict",
@@ -5107,18 +5108,20 @@
     ],
     "top_conflicting": [
       "FOMC Rate Decision + SEP/Dot Plot (September 2026) in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
-      "Convergence Week aktiv — Mehrere HIGH Events: FOMC Rate Decision + SEP/Dot Plot (September 2026), Quad Witching, PCE Price Index (August 2026) — Personal Income & Outlays",
-      "amihud: ILLIQUID — Wert: 87.71 — Liquiditäts-Risiko"
+      "Quad Witching in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
+      "Convergence Week aktiv — Mehrere HIGH Events: FOMC Rate Decision + SEP/Dot Plot (September 2026), Quad Witching, PCE Price Index (August 2026) — Personal Income & Outlays"
     ],
     "recommendation_action": "WAIT_FOR_CLARITY",
     "recommendation_short": "Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 1,
+      "next_48h_count": 3,
       "next_48h_events": [
-        "FOMC Rate Decision + SEP/Dot Plot (September 2026) (24h)"
+        "FOMC Rate Decision + SEP/Dot Plot (September 2026) (0h)",
+        "Bank of Japan Monetary Policy Meeting Decision (September 2026) (48h)",
+        "Quad Witching (48h)"
       ],
-      "next_14d_count": 5,
+      "next_14d_count": 7,
       "convergence_week": true,
       "event_density_label": "HIGH"
     },
@@ -5127,31 +5130,31 @@
         "date": "2026-09-16",
         "event": "FOMC Rate Decision + SEP/Dot Plot (September 2026)",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-09-18",
         "event": "Bank of Japan Monetary Policy Meeting Decision (September 2026)",
         "impact": "MEDIUM",
-        "days_until": 3
+        "hours_until": 48
       },
       {
         "date": "2026-09-18",
         "event": "Quad Witching",
         "impact": "HIGH",
-        "days_until": 3
+        "hours_until": 48
       },
       {
         "date": "2026-09-21",
         "event": "PBoC Loan Prime Rate Announcement (September 2026)",
         "impact": "MEDIUM",
-        "days_until": 6
+        "days_until": 5
       },
       {
         "date": "2026-09-25",
         "event": "China Industrial Production + Retail Sales (August 2026)",
         "impact": "MEDIUM",
-        "days_until": 10
+        "days_until": 9
       }
     ],
     "calendar_monthly": [
@@ -5216,20 +5219,20 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 9/18) ===\n\nCONFIRMING (19):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 1.3% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 9.2% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 1.3% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 1.3% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 9.2% — kein Conflict\n\nCONFLICTING (6):\n  • FOMC Rate Decision + SEP/Dot Plot (September 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • Convergence Week aktiv: Mehrere HIGH Events: FOMC Rate Decision + SEP/Dot Plot (September 2026), Quad Witching, PCE Price Index (August 2026) — Personal Income & Outlays\n  • amihud: ILLIQUID: Wert: 87.71 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8869 — Liquiditäts-Risiko\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n\nNETTO: 19 Confirming vs 6 Conflicting.\n\nEMPFEHLUNG: Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 9/18) ===\n\nCONFIRMING (18):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = 1.3% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 9.2% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = 1.3% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = 1.3% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 9.2% — kein Conflict\n\nCONFLICTING (8):\n  • FOMC Rate Decision + SEP/Dot Plot (September 2026) in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • Quad Witching in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • Convergence Week aktiv: Mehrere HIGH Events: FOMC Rate Decision + SEP/Dot Plot (September 2026), Quad Witching, PCE Price Index (August 2026) — Personal Income & Outlays\n  • amihud: ILLIQUID: Wert: 84.75 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.8884 — Liquiditäts-Risiko\n\nNETTO: 18 Confirming vs 8 Conflicting.\n\nEMPFEHLUNG: Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-09-15",
+    "date": "2026-09-16",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 103,
-    "days_since_state_change": 103,
+    "days_since_material_rotation": 104,
+    "days_since_state_change": 104,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -5359,7 +5362,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-08-05",
           "2026-08-06",
           "2026-08-07",
           "2026-08-10",
@@ -5388,7 +5390,8 @@
           "2026-09-10",
           "2026-09-11",
           "2026-09-14",
-          "2026-09-15"
+          "2026-09-15",
+          "2026-09-16"
         ],
         "values": [
           0.1976,
@@ -5425,7 +5428,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-08-05",
           "2026-08-06",
           "2026-08-07",
           "2026-08-10",
@@ -5454,7 +5456,8 @@
           "2026-09-10",
           "2026-09-11",
           "2026-09-14",
-          "2026-09-15"
+          "2026-09-15",
+          "2026-09-16"
         ],
         "values": [
           0.2972,
@@ -5491,7 +5494,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-08-05",
           "2026-08-06",
           "2026-08-07",
           "2026-08-10",
@@ -5520,7 +5522,8 @@
           "2026-09-10",
           "2026-09-11",
           "2026-09-14",
-          "2026-09-15"
+          "2026-09-15",
+          "2026-09-16"
         ],
         "values": [
           0.3455,
@@ -5557,7 +5560,6 @@
       },
       "PM": {
         "dates": [
-          "2026-08-05",
           "2026-08-06",
           "2026-08-07",
           "2026-08-10",
@@ -5586,7 +5588,8 @@
           "2026-09-10",
           "2026-09-11",
           "2026-09-14",
-          "2026-09-15"
+          "2026-09-15",
+          "2026-09-16"
         ],
         "values": [
           0.1596,
@@ -5759,7 +5762,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-09-14",
+        "date": "2026-09-15",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5775,7 +5778,7 @@
         }
       },
       "1w": {
-        "date": "2026-09-08",
+        "date": "2026-09-09",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5807,7 +5810,7 @@
         }
       },
       "3m": {
-        "date": "2026-06-17",
+        "date": "2026-06-18",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5823,7 +5826,7 @@
         }
       },
       "6m": {
-        "date": "2026-03-19",
+        "date": "2026-03-20",
         "weights": {
           "GLD": 0.1689,
           "XLP": 0.1605,
