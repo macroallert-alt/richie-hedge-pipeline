@@ -7836,29 +7836,29 @@
   },
   "newsletter": {
     "schema_version": "1.2",
-    "date": "2026-09-29",
-    "weekday": "Tuesday",
+    "date": "2026-09-30",
+    "weekday": "Wednesday",
     "format": "DAILY",
-    "generated_at": "2026-09-29T12:18:13.443249+00:00",
-    "one_thing": "Composite 72.0 CALM. Regime LATE_EXPANSION. LLM nicht verfuegbar — manueller Check empfohlen.",
+    "generated_at": "2026-09-30T12:04:17.604563+00:00",
+    "one_thing": "Das Buch steht auf GREEN, aber drei Composite-Scores fallen gleichzeitig — Strukturstress und Netto-Liquidität auf Null sind die größte latente Gefahr für HYG und DBC heute.",
     "composite_scores": {
       "tactical": {
-        "score": 72.0,
-        "zone": "CALM",
-        "velocity": -4.1,
-        "acceleration": -6.0
+        "score": 60.8,
+        "zone": "ELEVATED",
+        "velocity": -11.2,
+        "acceleration": -7.1
       },
       "positional": {
-        "score": 54.0,
+        "score": 52.8,
         "zone": "ELEVATED",
-        "velocity": -4.1,
-        "acceleration": -6.0
+        "velocity": -1.2,
+        "acceleration": 2.9
       },
       "structural": {
-        "score": 51.9,
-        "zone": "ELEVATED",
-        "velocity": -2.5,
-        "acceleration": -8.9
+        "score": 41.7,
+        "zone": "STRESS",
+        "velocity": -10.2,
+        "acceleration": -7.7
       }
     },
     "data_integrity": {
@@ -7886,7 +7886,7 @@
         "available": false
       }
     },
-    "regime_interpretation": "V16 Regime: LATE_EXPANSION. Keine LLM-Interpretation verfuegbar.",
+    "regime_interpretation": "Das System klassifiziert den Markt als LATE_EXPANSION — eine Phase, in der Wachstum noch läuft, aber die Triebkräfte nachlassen. Das Regime gilt erst seit einem Tag, was bedeutet: die Einordnung ist frisch und unbestätigt, die Conviction ist explizit LOW. Gleichzeitig fallen alle drei Composite-Scores mit negativer Geschwindigkeit, was auf eine bevorstehende Regime-Transition hindeuten kann — ein klassisches Warnsignal am späten Zyklus.",
     "portfolio_attribution": {
       "total_pnl_pct": null,
       "positions": [
@@ -7957,23 +7957,33 @@
           "INDIREKT"
         ]
       ],
-      "assessments": {}
+      "assessments": {
+        "HYG__Credit Spreads": "DIREKTE Exposition. Bei 302 bps OAS und Score 88.4 ist die Richtung entscheidend: PCE-Überraschung heute kann Spreads auf 340-360 bps treiben, was HYG ca. -1 bis -1.5% kostet. Das ist bei 29.7% Gewicht der größte Einzelrisikofaktor im Portfolio heute.",
+        "HYG__Oil/Iran": "INDIREKTE Exposition. Ein Ölschock durch Iran-Eskalation verteuert Kosten für energieintensive High-Yield-Emittenten und erhöht Ausfallwahrscheinlichkeiten im HYG-Universum. Kein direkter Mechanismus, aber Spread-Ausweitung folgt typischerweise mit 1-3 Tagen Verzögerung.",
+        "HYG__Fed Policy": "DIREKTE Exposition. NET_LIQ bei Score 0 zeigt: die Fed gibt keinen Rückenwind. Wenn PCE heute heiß kommt, ist Zinssenkung off the table — HYG verliert seinen wichtigsten Unterstützungsfaktor. Das ist das realistischste Szenario-B-Risiko für heute.",
+        "DBC__Credit Spreads": "INDIREKTE Exposition. DBC hält physische Rohstoffe und Rohstoff-Futures — Credit Spreads treffen DBC nicht direkt, aber eine Risk-Off-Bewegung durch Spread-Ausweitung kann auch Rohstoff-Long-Positionen drücken, wenn Leveraged-Investoren Positionen liquidieren.",
+        "DBC__Oil/Iran": "DIREKTE Exposition. Das ist DBCs wichtigster Treiber heute. Energie hat hohes Gewicht im DBC-Basket. Iran-Eskalation (Strait of Hormuz) wäre ein direkter Preistreiber nach oben. Gleichzeitig: Trump-Deeskalationssignal kann diese Prämie schnell wegfallen lassen — Volatilität in beide Richtungen ist erhöht.",
+        "DBC__Fed Policy": "INDIREKTE Exposition. Ein strafferer Fed-Kurs stärkt den Dollar, was Rohstoffpreise in USD-Terms drückt. Bei NET_LIQ auf Null ist das Risiko real. Für DBC bedeutet ein 2% Dollar-Anstieg typischerweise -1 bis -1.5% Rohstoffkorrektur.",
+        "XLU__Credit Spreads": "INDIREKTE Exposition. Utilities sind kapitalintensiv und refinanzieren sich über den Kreditmarkt. Steigende Spreads erhöhen ihre Refinanzierungskosten — das ist ein fundamentaler, aber langsamer Mechanismus. Heute kein akuter Handlungsbedarf, aber relevant für das nächste Quartal.",
+        "XLU__Oil/Iran": "MINIMALE Exposition. Utilities nutzen Erdgas und Strom, nicht direkt Öl. Ein Iran-Schock hätte nur marginale direkte Auswirkungen auf XLU. Der Hedge-Charakter von XLU als Defensiv-Sektor überwiegt heute.",
+        "XLU__Fed Policy": "INDIREKTE Exposition. XLU ist der zinssensitivste Sektor im Portfolio — bei PCE-Überraschung und steigenden 2Y-Renditen gibt XLU typischerweise 0.5-1.5% nach. Angesichts des heutigen PCE-Events ist das die relevanteste Tagesrisk für diese Position."
+      }
     },
     "indicators": {
       "core": [
         {
           "key": "HY_OAS",
           "name": "High Yield Credit Spreads (OAS)",
-          "value": 293.0,
+          "value": 302.0,
           "unit_label": "bps",
-          "normalized": 90.4,
+          "normalized": 88.4,
           "weight": 0.2,
           "status": "OK",
           "alert": false,
           "what": "Der Risikoaufschlag, den Unternehmen mit schwacher Bonitaet gegenueber Staatsanleihen zahlen muessen. Misst den Grad an Credit-Stress im Markt — je hoeher der Spread, desto mehr Angst vor Zahlungsausfaellen.",
           "thresholds": "Unter 300 bps = entspannt (Maerkte sorglos). 300-450 bps = normal. 450-600 bps = erhoehte Vorsicht. Ueber 600 bps = akuter Stress (2008: 2000+ bps).",
           "why_it_matters": "HYG ist die direkteste Verbindung — jede Spread-Ausweitung um 50 bps kostet ca. 2-3% im HYG-Preis. Auch DBC und Rohstoffe leiden indirekt, weil hohe Spreads Rezessionsangst signalisieren.",
-          "current_assessment": ""
+          "current_assessment": "302 bps ist absolut betrachtet niedrig — historische Krisenlevels liegen bei 600-900 bps. Der Score von 88.4/100 zeigt aber, dass sich die Spreads bereits merklich von ihren Tiefständen entfernt haben. Für HYG (29.7% des Buchs) bedeutet das: kein akuter Stress, aber die Richtung zählt mehr als der absolute Level. Jede weitere Ausweitung ab hier trifft direkt den NAV."
         },
         {
           "key": "BREADTH",
@@ -7987,7 +7997,7 @@
           "what": "Misst wie breit eine Rallye oder ein Sell-Off getragen wird. Hohe Breadth = viele Aktien steigen (gesunde Rallye). Niedrige Breadth = nur wenige Mega-Caps tragen den Index (fragil).",
           "thresholds": "Ueber 1.5 = sehr gesund. 1.0-1.5 = normal. 0.5-1.0 = schwaecher. Unter 0.5 fuer 3+ Tage = Breadth Collapse (-10 Punkte Composite Penalty).",
           "why_it_matters": "Fallende Breadth in LATE_EXPANSION ist ein klassisches Zyklusende-Signal. Wenn nur 5-10 Mega-Caps den Markt tragen, steigt das Risiko eines breiten Sell-Offs der alle Positionen trifft.",
-          "current_assessment": ""
+          "current_assessment": "Advance/Decline Ratio von 2.5 mit Score 100/100 signalisiert, dass extrem viele Aktien steigen — das klingt bullish, ist aber ein Kontraindikator. Maximale Breite markiert oft kurzfristige Tops. Für das Portfolio bedeutet das: Rückenwind existiert heute, aber Vorsicht bei neuen Long-Positionen in Risk-Assets."
         },
         {
           "key": "CU_AU",
@@ -8006,16 +8016,16 @@
         {
           "key": "VIX_TERM",
           "name": "VIX Term Structure (VIX/VIX3M Ratio)",
-          "value": 0.8815,
+          "value": 0.8867,
           "unit_label": "Ratio",
-          "normalized": 76.7,
+          "normalized": 75.2,
           "weight": 0.12,
           "status": "OK",
           "alert": false,
           "what": "Verhaeltnis zwischen kurzfristiger (30d) und mittelfristiger (90d) erwarteter Aktienvolatilitaet. Normalerweise ist kurzfristige Vol niedriger (Ratio unter 1.0). Wenn das Ratio ueber 1.0 steigt (Inversion), erwarten Haendler JETZT mehr Turbulenzen als in 3 Monaten — ein Panik-Signal.",
           "thresholds": "Unter 0.85 = sehr ruhig. 0.85-0.95 = normal. 0.95-1.0 = erhoehte Wachsamkeit. Ueber 1.0 = INVERTIERT — automatisch -15 Punkte Composite Penalty.",
           "why_it_matters": "Inversion trifft alle Risk-On-Positionen (HYG, DBC). GLD profitiert typischerweise als Safe Haven. Einer der zuverlaessigsten Stress-Indikatoren ueberhaupt.",
-          "current_assessment": ""
+          "current_assessment": "VIX/VIX3M Ratio von 0.887 mit Score 75.2/100 bedeutet: die Termstruktur ist leicht invers (kurzfristige Volatilität billiger als mittelfristige). Das ist kein Alarmsignal, aber deutet darauf hin, dass der Markt für die nächsten Wochen mehr Unsicherheit einpreist als für heute. Angesichts NFP morgen und Iran-Lage ist das konsistent — kein Handlungsbedarf, aber im Auge behalten."
         },
         {
           "key": "NET_LIQ",
@@ -8029,37 +8039,37 @@
           "what": "Verfuegbare Liquiditaet im Finanzsystem: Fed-Bilanz minus Treasury General Account minus Reverse Repo. Steigende Liquiditaet hebt alle Risiko-Assets. Fallende Liquiditaet drueckt alles.",
           "thresholds": "Ueber $6.5T = reichlich. $5.5-6.5T = normal. Unter $5.5T = restriktiv. Unter $5.0T = Stress. Die Richtung (steigend/fallend) ist wichtiger als das Niveau.",
           "why_it_matters": "Liquiditaet ist der wichtigste Makro-Treiber fuer ALLE Assets im Portfolio. Steigende Liq hebt DBC, GLD und HYG gleichzeitig. Fallende Liq drueckt alles — kein Versteck ausser Cash und kurze Treasuries.",
-          "current_assessment": ""
+          "current_assessment": "Score 0/100 bei 5.26 Milliarden Dollar ist das beunruhigendste Signal im heutigen Datensatz. Die Fed entzieht dem System aktiv Liquidität — das ist strukturell negativ für alle Risk-Assets. Bei gleichzeitig fallenden Composite-Scores bedeutet das: der Puffer, der Marktkorrekturen abfedert, ist minimal. Für HYG ist das besonders relevant, weil Credit-Märkte auf Liquiditätsentzug schneller reagieren als Aktien."
         }
       ],
       "regime_sensitive": [
         {
           "key": "2Y10Y",
           "name": "Yield Curve 10Y-2Y (Zinsstrukturkurve)",
-          "value": 0.32,
+          "value": 0.37,
           "unit_label": "%",
-          "normalized": 48.7,
+          "normalized": 50.9,
           "weight": 0.08,
           "status": "OK",
           "alert": false,
           "what": "Differenz zwischen 10-Jahres- und 2-Jahres-US-Staatsanleihenrendite. Negativ = invertiert — historisch der zuverlaessigste Rezessions-Indikator. Jede US-Rezession seit 1970 wurde vorhergesagt (Vorlauf 6-18 Monate).",
           "thresholds": "Ueber +1.0% = steil (Erholung). 0 bis +1.0% = normal. -0.5 bis 0% = flach/leicht invertiert (Warnsignal). Unter -0.5% = tief invertiert (Rezession wahrscheinlich). ACHTUNG: Re-Steepening (zurueck zu positiv) ist oft die gefaehrlichste Phase — signalisiert unmittelbar bevorstehende Rezession.",
           "why_it_matters": "Direkte Implikation fuer V16-Regime: Reinversion oder schnelles Steepening kann Regime-Wechsel ausloesen. HYG besonders verwundbar bei Shift zu CONTRACTION.",
-          "current_assessment": ""
+          "current_assessment": "Yield Curve bei +0.37% mit Score 50.9/100 — die Kurve ist leicht positiv, also nicht mehr invertiert. Das ist technisch ein Zeichen für nachlassende Rezessionsangst. Aber: eine Kurve, die sich von Inversion erholt, signalisiert oft einen Übergang in eine schwächere Wachstumsphase, nicht Stärke. XLU und XLP als Defensiv-Allokationen bleiben dadurch berechtigt."
         },
         {
           "key": "MOVE",
           "name": "MOVE Index (Bond-Volatilitaet)",
-          "value": 101.82,
+          "value": 106.6,
           "unit_label": "Index",
-          "normalized": 78.2,
+          "normalized": 73.4,
           "weight": 0.1,
           "status": "OK",
           "alert": false,
           "what": "Der 'VIX fuer Anleihen' — erwartete Volatilitaet am US-Treasury-Markt. Hohe Werte = Unsicherheit ueber Zinsentwicklung und Fed-Politik. Seit 2022 besonders bedeutend, weil die Fed der dominante Markt-Treiber ist.",
           "thresholds": "Unter 80 = ruhig (selten seit 2022). 80-120 = erhoehte Basisvol (neue Normalitaet). 120-150 = Stress. Ueber 150 = akute Anleihen-Krise. 180+ = Panik (Maerz 2023, Sept 2022).",
           "why_it_matters": "Hohe Bond-Vol strahlt auf alle Assets: HYG leidet direkt (Spreads), DBC indirekt (Dollar-Vol), GLD kann profitieren (Safe Haven) oder leiden (steigende Real Yields). MOVE ueber 150 = systemisches Warnsignal.",
-          "current_assessment": ""
+          "current_assessment": "MOVE Index bei 106.6 mit Score 73.4/100 zeigt erhöhte Bond-Volatilität — normal wären Werte unter 90. Das bedeutet: der Rentenmarkt ist nervös, was Zinssensitive Positionen (XLU, HYG) belastet. Angesichts PCE heute und NFP morgen ist das nachvollziehbar. Fällt MOVE unter 95, wäre das ein Entlastungssignal für das Buch."
         },
         {
           "key": "HYG_FLOWS",
@@ -8079,18 +8089,48 @@
       "watchlist_triggered": []
     },
     "pipeline_coherence": {
-      "score": 82,
+      "score": 67,
       "subsystems": {
         "v16": "LATE_EXPANSION",
         "market_analyst": "NEUTRAL",
         "ic_consensus": "BEARISH",
-        "risk_officer": "YELLOW",
-        "cio": "ACTION",
+        "risk_officer": "GREEN",
+        "cio": "WATCH",
         "execution_advisor": "WAIT"
       },
-      "divergences": []
+      "divergences": [
+        {
+          "type": "REGIME_CONFLICT",
+          "detail": "V16 LATE_EXPANSION vs MA NEUTRAL"
+        }
+      ]
     },
-    "scenarios": [],
+    "scenarios": [
+      {
+        "id": "A",
+        "probability_pct": 45,
+        "description": "PCE und NFP kommen im Rahmen der Erwartungen, Iran-Konflikt deeskaliert verbal (Trump-Aussage 'very soon' schafft kurzfristig Beruhigung). Markt verdaut die Daten ohne Schock. Risk-On bleibt fragil aber stabil.",
+        "portfolio_impact": "HYG profitiert von stabilen Spreads (aktuell 302 bps — historisch noch niedrig genug für keine Panik). DBC könnte leicht geben, wenn Ölpreis-Prämie wegen Iran-Deeskalation abbaut. XLU und XLP halten sich als defensive Anker.",
+        "composite_impact": "+2 bis +4 Punkte Tactical",
+        "action": "NONE"
+      },
+      {
+        "id": "B",
+        "probability_pct": 35,
+        "description": "PCE überraschend hoch (Inflationsdruck bleibt), Fed muss Zinssenkungserwartungen zurücknehmen. Gleichzeitig bleibt Iran-Lage ungelöst, Ölpreis-Prämie hält an. Credit Spreads weiten sich moderat aus.",
+        "portfolio_impact": "HYG (29.7%) unter direktem Druck: Spread-Ausweitung von +30-50 bps kostet ca. 1-2% NAV direkt. DBC hält sich wegen Öl. XLU leidet unter steigenden Zinserwartungen (zinssensitiv). Portfolio-Gesamtschaden: -2 bis -3% bei heutiger Allokation.",
+        "composite_impact": "-5 bis -8 Punkte Tactical",
+        "action": "MONITOR"
+      },
+      {
+        "id": "C",
+        "probability_pct": 20,
+        "description": "Strait of Hormuz wird operativ eingeschränkt (Iran eskaliert), Ölpreis schießt +8-12%, PCE schockt nach oben, NFP zeigt Schwäche. Simultaner Liquidity-Drain (NET_LIQ bereits bei 0) löst Risk-Off Kaskade aus.",
+        "portfolio_impact": "HYG Spread-Ausweitung scharf (+80-120 bps möglich), Kursverlust -3 bis -5%. DBC profitiert kurzfristig von Öl, aber Credit-Ansteckung trifft Energieanleihen. GLD steigt als Safe-Haven. Portfolio netto: -2 bis -4% wegen HYG-Dominanz im Buch.",
+        "composite_impact": "-12 bis -18 Punkte Composite",
+        "action": "TRADE"
+      }
+    ],
     "behavioral": {
       "anchoring_alerts": [
         {
@@ -8105,15 +8145,38 @@
       "system_action": "WAIT"
     },
     "against_you": {
-      "positions": [],
-      "if_wrong_summary": "LLM nicht verfuegbar — keine Szenario-Analyse."
+      "positions": [
+        {
+          "asset": "HYG",
+          "top_risk": "Netto-Liquidität bei null trifft auf potenziell steigenden PCE — Fed kann nicht retten",
+          "probability_pct": 35,
+          "mechanism": "NET_LIQ Score 0/100 bedeutet: die Fed entzieht dem System aktiv Liquidität. Wenn PCE heute hoch kommt, ist eine Lockerung vom Tisch. HYG-Investoren haben keine Unterstützung durch fallende Zinsen — Spread-Ausweitung trifft ungedämpft. Bei 29.7% Portfoliogewicht ist das der größte Einzelhebel im Buch."
+        },
+        {
+          "asset": "DBC",
+          "top_risk": "Iran-Deeskalation kann Öl-Prämie schlagartig wegfallen lassen",
+          "probability_pct": 30,
+          "mechanism": "DBC ist direkt exponiert gegenüber Energiepreisen. Trumps 'very soon'-Aussage kann — wenn ernst genommen — Öl-Future-Positionen auflösen. Ein Rückgang von 5-8% im Rohöl zieht DBC entsprechend. Gleichzeitig würde der Rohstoff-Hedge des Portfolios wegfallen, ohne dass andere Positionen kompensieren."
+        },
+        {
+          "asset": "XLU",
+          "top_risk": "Steigende Zinserwartungen durch heißes PCE drücken Bewertungen",
+          "probability_pct": 28,
+          "mechanism": "Utilities sind strukturell zinssensitiv — sie werden wie lange Anleihen gehandelt. Ein überraschend hoher PCE heute würde 2Y-Renditen treiben, was XLU-Bewertungen direkt belastet. Indirekte Spread-Ausweitung durch HYG-Druck verschärft das Bild zusätzlich."
+        }
+      ],
+      "if_wrong_summary": "Wenn Szenario C eintritt und die Iran-Situation eskaliert während PCE heiß kommt, verliert das Buch durch HYG allein ca. -1.0 bis -1.5% NAV an einem Tag — bei 29.7% Gewicht und einer realistischen Kurskorrektur von -3.5%. Gesamtportfolio-Schaden ohne Gegenbewegung bei GLD: -2 bis -3% intraday."
     },
     "epistemic_status": {
       "data_quality": "PARTIAL",
       "system_conviction": "LOW",
       "stale_sources": [],
       "blind_spots": [
-        "LLM-Analyse nicht verfuegbar"
+        "NET_LIQ bei Score 0/100 ist das systemisch gefährlichste Signal — aber das Modell hält RISK AMPEL auf GREEN. Dieser Widerspruch ist nicht aufgelöst.",
+        "Das Regime gilt erst seit 1 Tag — das System hat keine Zeit gehabt, es zu validieren. Ein Revert auf SLOWDOWN wäre bei den fallenden Composite-Scores möglich.",
+        "Pipeline Coherence nur 67% — 33% der Signale sind inkohärent. Das bedeutet: das System ist sich selbst unsicher, was in der Ampel-Farbe nicht sichtbar ist.",
+        "Iran-Strait-of-Hormuz-Eskalation ist ein geopolitischer Tail-Risk, den kein quantitatives Modell rechtzeitig einpreist — der Markt hat das noch nicht vollständig eskaliert.",
+        "BREADTH bei 100/100 (perfekter Score) klingt gut, ist aber ein Warnsignal: extreme Werte in Mean-Reversion-Indikatoren bedeuten oft, dass die Spitze bereits erreicht ist."
       ],
       "signal_freshness": {
         "regime_age_days": 1
@@ -8124,25 +8187,31 @@
         "date": "2026-09-30",
         "event": "GDP Third Estimate Q2 2026 + BEA Annual Update",
         "impact": "MEDIUM",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-09-30",
         "event": "PCE Price Index (August 2026) — Personal Income & Outlays",
         "impact": "HIGH",
-        "hours_until": 24
+        "hours_until": 0
       },
       {
         "date": "2026-10-01",
         "event": "ISM Manufacturing PMI (September 2026)",
         "impact": "MEDIUM",
+        "hours_until": 24
+      },
+      {
+        "date": "2026-10-02",
+        "event": "Employment Situation (September 2026) — NFP",
+        "impact": "HIGH",
         "hours_until": 48
       }
     ],
     "intelligence_digest": {
       "ic_net_direction": "BEARISH",
-      "ic_net_score": -5,
-      "pre_mortem_high_count": 5,
+      "ic_net_score": -3,
+      "pre_mortem_high_count": 4,
       "active_threads": 9,
       "threatening_threads": 3,
       "cadence_anomalies": 2,
@@ -8159,9 +8228,9 @@
     "breaking_news": [
       {
         "category": "GEOPOLITIK",
-        "title": "Counter-terror police investigate Iran link over suspected bomb plot at RAF base used by US | UK news | The Guardian",
+        "title": "Iran live updates: Trump says war will be over 'very soon,' but offers no details - ABC News",
         "impact": "HIGH",
-        "source": "www.theguardian.com",
+        "source": "abcnews.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -8182,9 +8251,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "5 men arrested near a U.S.-run base bailed as UK police probe if there's an Iran link",
+        "title": "How the War is Changing the Geography of Iran’s Influence",
         "impact": "HIGH",
-        "source": "www.npr.org",
+        "source": "time.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -8205,9 +8274,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Tehran tells Trump negotiations are the only way to break deadlock in Strait of Hormuz | The Independent",
+        "title": "Iranian regime slams Trump over Strait of Hormuz, nuclear program | Live Updates from Fox News Digital",
         "impact": "HIGH",
-        "source": "www.independent.co.uk",
+        "source": "foxnews.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -8228,9 +8297,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "U.S. Strategic Petroleum Reserve Falls to Lowest Level Since 1982 | OilPrice.com",
+        "title": "Iranian regime slams Trump over Strait of Hormuz, nuclear program | Live Updates from Fox News Digital",
         "impact": "HIGH",
-        "source": "oilprice.com",
+        "source": "www.foxnews.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -8251,9 +8320,9 @@
       },
       {
         "category": "GEOPOLITIK",
-        "title": "Why Nobody Can End the War in Ukraine",
+        "title": "Iran loses grip on Strait of Hormuz as US as Tehran calls on Americans to vote out Trump | Live Updates from Fox News Digital",
         "impact": "HIGH",
-        "source": "foreignpolicy.com",
+        "source": "www.foxnews.com",
         "portfolio_transmission": {
           "DBC": {
             "direction": "BULLISH",
@@ -8273,17 +8342,34 @@
         }
       }
     ],
-    "breaking_news_summary": "BREAKING: Counter-terror police investigate Iran link over suspected bomb plot at RAF base",
-    "warning_triggers": [],
+    "breaking_news_summary": "BREAKING: Iran live updates: Trump says war will be over 'very soon,' but offers no detail",
+    "warning_triggers": [
+      {
+        "id": "REGIME_CONFLICT",
+        "description": "V16 vs Market Analyst Regime-Konflikt",
+        "penalty": -5
+      }
+    ],
     "contrarian_check": null,
     "prediction_log": {
-      "todays_predictions": []
+      "todays_predictions": [
+        {
+          "prediction": "PCE und NFP kommen im Rahmen der Erwartungen, Iran-Konflikt deeskaliert verbal (Trump-Aussage 'very soon' schafft kurzfristig Beruhigung). Markt verdaut die Daten ohne Schock. Risk-On bleibt fragil aber stabil.",
+          "probability_pct": 45,
+          "basis": "Scenario A"
+        },
+        {
+          "prediction": "PCE überraschend hoch (Inflationsdruck bleibt), Fed muss Zinssenkungserwartungen zurücknehmen. Gleichzeitig bleibt Iran-Lage ungelöst, Ölpreis-Prämie hält an. Credit Spreads weiten sich moderat aus.",
+          "probability_pct": 35,
+          "basis": "Scenario B"
+        }
+      ]
     },
     "anchor_type": "CRITICAL",
     "crypto_briefing": {
       "available": true,
-      "date": "2026-09-28",
-      "btc_price": 83402.0,
+      "date": "2026-09-30",
+      "btc_price": 83844.0,
       "ensemble_daily": 0.75,
       "ensemble_weekly": null,
       "ensemble_changed": "False",
@@ -8292,9 +8378,9 @@
       "mom_6M": true,
       "mom_12M": false,
       "below_200wma": false,
-      "wma_200": 63275.48,
+      "wma_200": 63368.08,
       "below_wma_changed": false,
-      "btc_dominance": 58.58,
+      "btc_dominance": 58.27,
       "phase": null,
       "phase_name": null,
       "weekly_alloc_total": null,
