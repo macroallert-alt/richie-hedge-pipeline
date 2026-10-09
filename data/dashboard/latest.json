@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -4731,9 +4732,9 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-10-08",
+    "date": "2026-10-09",
     "execution_level": "CAUTION",
-    "total_score": 4,
+    "total_score": 5,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
@@ -4758,9 +4759,9 @@
         "label": "GOLD_POSITION_VS_DXY"
       },
       "gex_regime": {
-        "score": 0,
+        "score": 1,
         "max": 3,
-        "label": "GEX $-0.10B — SLIGHTLY_NEGATIVE"
+        "label": "GEX $-0.57B — NEGATIVE"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -4777,8 +4778,8 @@
       "COT DBC bestätigt — COT_GOLD_COMM_NET = 7.9% — kein Conflict"
     ],
     "top_conflicting": [
-      "vix_term: BACKWARDATION — Wert: 0.851 — Liquiditäts-Risiko",
-      "GOLD_POSITION_VS_DXY — V16 hat 16% Gold/Silber aber DXY steigt +3.5%",
+      "vix_term: BACKWARDATION — Wert: 0.8523 — Liquiditäts-Risiko",
+      "GOLD_POSITION_VS_DXY — V16 hat 16% Gold/Silber aber DXY steigt +3.1%",
       "GOLD_REAL_YIELD_DIVERGENCE — V16 hat 16% Gold aber Real Yields Rising — Gegenwind"
     ],
     "recommendation_action": "EXECUTE_WITH_LIMITS",
@@ -4788,7 +4789,7 @@
       "next_48h_count": 0,
       "next_48h_events": [],
       "next_14d_count": 4,
-      "convergence_week": false,
+      "convergence_week": true,
       "event_density_label": "ELEVATED"
     },
     "calendar_upcoming": [
@@ -4796,31 +4797,31 @@
         "date": "2026-10-14",
         "event": "Consumer Price Index (September 2026) — CPI",
         "impact": "HIGH",
-        "days_until": 6
+        "days_until": 5
       },
       {
         "date": "2026-10-15",
         "event": "China GDP Q3 2026 + Industrial Production + Retail Sales (September 2026)",
         "impact": "MEDIUM",
-        "days_until": 7
+        "days_until": 6
       },
       {
         "date": "2026-10-16",
         "event": "Monthly Options Expiry",
         "impact": "MEDIUM",
-        "days_until": 8
+        "days_until": 7
       },
       {
         "date": "2026-10-20",
         "event": "PBoC Loan Prime Rate Announcement (October 2026)",
         "impact": "MEDIUM",
-        "days_until": 12
+        "days_until": 11
       },
       {
         "date": "2026-10-28",
         "event": "FOMC Rate Decision (October 2026)",
         "impact": "HIGH",
-        "days_until": 20
+        "days_until": 19
       }
     ],
     "calendar_monthly": [
@@ -4885,20 +4886,20 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 4/18) ===\n\nCONFIRMING (20):\n  • Keine HIGH-Impact Events in 48h: Nächste 14d: 1 HIGH Events\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 7.9% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n\nCONFLICTING (5):\n  • vix_term: BACKWARDATION: Wert: 0.851 — Liquiditäts-Risiko\n  • GOLD_POSITION_VS_DXY: V16 hat 16% Gold/Silber aber DXY steigt +3.5%\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n  • GEX negativ ($-0.10B) — SLIGHTLY_NEGATIVE: Dealer-Hedging verstärkt Moves — erhöhte Volatilität\n  • Router Proximity 98%: Router nähert sich Trigger (COMMODITY_SUPER)\n\nNETTO: 20 Confirming vs 5 Conflicting.\n\nEMPFEHLUNG: Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING (20):\n  • Keine HIGH-Impact Events in 48h: Nächste 14d: 1 HIGH Events\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 7.9% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n\nCONFLICTING (5):\n  • vix_term: BACKWARDATION: Wert: 0.8523 — Liquiditäts-Risiko\n  • GOLD_POSITION_VS_DXY: V16 hat 16% Gold/Silber aber DXY steigt +3.1%\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n  • GEX negativ ($-0.57B) — NEGATIVE: Dealer-Hedging verstärkt Moves — erhöhte Volatilität\n  • Router Proximity 100%: Router nähert sich Trigger (COMMODITY_SUPER)\n\nNETTO: 20 Confirming vs 5 Conflicting.\n\nEMPFEHLUNG: Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-10-08",
+    "date": "2026-10-09",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 126,
-    "days_since_state_change": 126,
+    "days_since_material_rotation": 127,
+    "days_since_state_change": 127,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -5028,7 +5029,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-08-28",
           "2026-08-31",
           "2026-09-01",
           "2026-09-02",
@@ -5057,7 +5057,8 @@
           "2026-10-05",
           "2026-10-06",
           "2026-10-07",
-          "2026-10-08"
+          "2026-10-08",
+          "2026-10-09"
         ],
         "values": [
           0.1976,
@@ -5094,7 +5095,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-08-28",
           "2026-08-31",
           "2026-09-01",
           "2026-09-02",
@@ -5123,7 +5123,8 @@
           "2026-10-05",
           "2026-10-06",
           "2026-10-07",
-          "2026-10-08"
+          "2026-10-08",
+          "2026-10-09"
         ],
         "values": [
           0.2972,
@@ -5160,7 +5161,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-08-28",
           "2026-08-31",
           "2026-09-01",
           "2026-09-02",
@@ -5189,7 +5189,8 @@
           "2026-10-05",
           "2026-10-06",
           "2026-10-07",
-          "2026-10-08"
+          "2026-10-08",
+          "2026-10-09"
         ],
         "values": [
           0.3455,
@@ -5226,7 +5227,6 @@
       },
       "PM": {
         "dates": [
-          "2026-08-28",
           "2026-08-31",
           "2026-09-01",
           "2026-09-02",
@@ -5255,7 +5255,8 @@
           "2026-10-05",
           "2026-10-06",
           "2026-10-07",
-          "2026-10-08"
+          "2026-10-08",
+          "2026-10-09"
         ],
         "values": [
           0.1596,
@@ -5428,7 +5429,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-10-07",
+        "date": "2026-10-08",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5444,7 +5445,7 @@
         }
       },
       "1w": {
-        "date": "2026-10-01",
+        "date": "2026-10-02",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5460,7 +5461,7 @@
         }
       },
       "1m": {
-        "date": "2026-09-08",
+        "date": "2026-09-09",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
