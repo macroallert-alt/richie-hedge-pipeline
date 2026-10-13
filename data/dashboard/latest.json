@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -4632,7 +4633,7 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-10-12",
+    "date": "2026-10-13",
     "execution_level": "WAIT",
     "total_score": 7,
     "max_score": 18,
@@ -4661,7 +4662,7 @@
       "gex_regime": {
         "score": 1,
         "max": 3,
-        "label": "GEX $-0.40B — SLIGHTLY_NEGATIVE"
+        "label": "GEX $-0.46B — SLIGHTLY_NEGATIVE"
       },
       "sentiment_extreme": {
         "score": 0,
@@ -4669,26 +4670,27 @@
         "label": "Neutral"
       }
     },
-    "confirming_count": 20,
+    "confirming_count": 19,
     "conflicting_count": 5,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
-      "COT HYG bestätigt — COT_SP500_COMM_NET = -0.2% — kein Conflict",
-      "COT DBC bestätigt — COT_GOLD_COMM_NET = 7.9% — kein Conflict",
-      "COT XLU bestätigt — COT_SP500_COMM_NET = -0.2% — kein Conflict"
+      "COT HYG bestätigt — COT_SP500_COMM_NET = -0.1% — kein Conflict",
+      "COT DBC bestätigt — COT_GOLD_COMM_NET = 0.0% — kein Conflict",
+      "COT XLU bestätigt — COT_SP500_COMM_NET = -0.1% — kein Conflict"
     ],
     "top_conflicting": [
       "Consumer Price Index (September 2026) — CPI in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
-      "vix_term: BACKWARDATION — Wert: 0.856 — Liquiditäts-Risiko",
+      "vix_term: BACKWARDATION — Wert: 0.8483 — Liquiditäts-Risiko",
       "GOLD_POSITION_VS_DXY — V16 hat 16% Gold/Silber aber DXY steigt +3.1%"
     ],
     "recommendation_action": "WAIT_FOR_CLARITY",
     "recommendation_short": "Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 1,
+      "next_48h_count": 2,
       "next_48h_events": [
-        "Consumer Price Index (September 2026) — CPI (48h)"
+        "Consumer Price Index (September 2026) — CPI (24h)",
+        "China GDP Q3 2026 + Industrial Production + Retail Sales (September 2026) (48h)"
       ],
       "next_14d_count": 4,
       "convergence_week": true,
@@ -4699,31 +4701,31 @@
         "date": "2026-10-14",
         "event": "Consumer Price Index (September 2026) — CPI",
         "impact": "HIGH",
-        "hours_until": 48
+        "hours_until": 24
       },
       {
         "date": "2026-10-15",
         "event": "China GDP Q3 2026 + Industrial Production + Retail Sales (September 2026)",
         "impact": "MEDIUM",
-        "days_until": 3
+        "hours_until": 48
       },
       {
         "date": "2026-10-16",
         "event": "Monthly Options Expiry",
         "impact": "MEDIUM",
-        "days_until": 4
+        "days_until": 3
       },
       {
         "date": "2026-10-20",
         "event": "PBoC Loan Prime Rate Announcement (October 2026)",
         "impact": "MEDIUM",
-        "days_until": 8
+        "days_until": 7
       },
       {
         "date": "2026-10-28",
         "event": "FOMC Rate Decision (October 2026)",
         "impact": "HIGH",
-        "days_until": 16
+        "days_until": 15
       }
     ],
     "calendar_monthly": [
@@ -4788,20 +4790,20 @@
         "impact": "MEDIUM"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 7/18) ===\n\nCONFIRMING (20):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 7.9% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -0.2% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 7.9% — kein Conflict\n\nCONFLICTING (5):\n  • Consumer Price Index (September 2026) — CPI in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • vix_term: BACKWARDATION: Wert: 0.856 — Liquiditäts-Risiko\n  • GOLD_POSITION_VS_DXY: V16 hat 16% Gold/Silber aber DXY steigt +3.1%\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n  • GEX negativ ($-0.40B) — SLIGHTLY_NEGATIVE: Dealer-Hedging verstärkt Moves — erhöhte Volatilität\n\nNETTO: 20 Confirming vs 5 Conflicting.\n\nEMPFEHLUNG: Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 7/18) ===\n\nCONFIRMING (19):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (5):\n  • Consumer Price Index (September 2026) — CPI in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • vix_term: BACKWARDATION: Wert: 0.8483 — Liquiditäts-Risiko\n  • GOLD_POSITION_VS_DXY: V16 hat 16% Gold/Silber aber DXY steigt +3.1%\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n  • GEX negativ ($-0.46B) — SLIGHTLY_NEGATIVE: Dealer-Hedging verstärkt Moves — erhöhte Volatilität\n\nNETTO: 19 Confirming vs 5 Conflicting.\n\nEMPFEHLUNG: Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-10-12",
+    "date": "2026-10-13",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 130,
-    "days_since_state_change": 130,
+    "days_since_material_rotation": 131,
+    "days_since_state_change": 131,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -4931,7 +4933,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-09-01",
           "2026-09-02",
           "2026-09-03",
           "2026-09-04",
@@ -4960,7 +4961,8 @@
           "2026-10-07",
           "2026-10-08",
           "2026-10-09",
-          "2026-10-12"
+          "2026-10-12",
+          "2026-10-13"
         ],
         "values": [
           0.1976,
@@ -4997,7 +4999,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-09-01",
           "2026-09-02",
           "2026-09-03",
           "2026-09-04",
@@ -5026,7 +5027,8 @@
           "2026-10-07",
           "2026-10-08",
           "2026-10-09",
-          "2026-10-12"
+          "2026-10-12",
+          "2026-10-13"
         ],
         "values": [
           0.2972,
@@ -5063,7 +5065,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-09-01",
           "2026-09-02",
           "2026-09-03",
           "2026-09-04",
@@ -5092,7 +5093,8 @@
           "2026-10-07",
           "2026-10-08",
           "2026-10-09",
-          "2026-10-12"
+          "2026-10-12",
+          "2026-10-13"
         ],
         "values": [
           0.3455,
@@ -5129,7 +5131,6 @@
       },
       "PM": {
         "dates": [
-          "2026-09-01",
           "2026-09-02",
           "2026-09-03",
           "2026-09-04",
@@ -5158,7 +5159,8 @@
           "2026-10-07",
           "2026-10-08",
           "2026-10-09",
-          "2026-10-12"
+          "2026-10-12",
+          "2026-10-13"
         ],
         "values": [
           0.1596,
@@ -5347,7 +5349,7 @@
         }
       },
       "1w": {
-        "date": "2026-10-05",
+        "date": "2026-10-06",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5363,7 +5365,7 @@
         }
       },
       "1m": {
-        "date": "2026-09-11",
+        "date": "2026-09-14",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5379,7 +5381,7 @@
         }
       },
       "3m": {
-        "date": "2026-07-14",
+        "date": "2026-07-15",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5395,7 +5397,7 @@
         }
       },
       "6m": {
-        "date": "2026-04-15",
+        "date": "2026-04-16",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
