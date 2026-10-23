@@ -1,24 +1,24 @@
 {
   "version": "daily_risk_check V2.0",
-  "timestamp": "2026-10-22T11:12:41.302553+00:00",
-  "date": "2026-10-22",
-  "btc_price": 81926.0,
+  "timestamp": "2026-10-23T11:11:59.325826+00:00",
+  "date": "2026-10-23",
+  "btc_price": 81535.0,
   "ensemble": {
-    "daily": 0.75,
+    "daily": 0.5,
     "previous": 0.75,
-    "changed": "False",
-    "mom_1M": true,
+    "changed": "True",
+    "mom_1M": false,
     "mom_3M": true,
     "mom_6M": true,
     "mom_12M": false
   },
   "bottom_bonus": {
     "active": false,
-    "wma_200": 64097.74,
+    "wma_200": 64142.36,
     "changed": false
   },
   "btc_dominance": {
-    "daily": 60.03,
+    "daily": 60.02,
     "thirty_d_ago": null,
     "change_30d": 0.0
   },
@@ -33,13 +33,13 @@
     }
   },
   "allocation": {
-    "total": 0.75,
-    "btc": 0.3375,
-    "eth": 0.2625,
-    "sol": 0.15,
-    "cash": 0.25
+    "total": 0.5,
+    "btc": 0.225,
+    "eth": 0.175,
+    "sol": 0.1,
+    "cash": 0.5
   },
-  "action": "HOLD",
+  "action": "REBALANCE",
   "previous_allocation": {
     "total": 0.75,
     "btc": 0.3375,
@@ -47,7 +47,15 @@
     "sol": 0.15,
     "cash": 0.25
   },
-  "alerts": [],
-  "alert_count": 0,
+  "alerts": [
+    {
+      "type": "ENSEMBLE_CHANGE",
+      "message": "Ensemble ↓ 0.75 → 0.50 (Allokation ändert sich)",
+      "severity": "MEDIUM",
+      "previous": 0.75,
+      "daily": 0.5
+    }
+  ],
+  "alert_count": 1,
   "telegram_sent": false
 }
