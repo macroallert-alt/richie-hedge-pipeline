@@ -1,11 +1,11 @@
 {
   "version": "yield_router V1.0",
-  "timestamp": "2026-10-18T09:18:24.858374+00:00",
-  "date": "2026-10-18",
+  "timestamp": "2026-10-25T09:32:35.518587+00:00",
+  "date": "2026-10-25",
   "inputs": {
-    "ensemble": 0.75,
-    "cash_pct": 0.25,
-    "cash_eur": 2500.0,
+    "ensemble": 0.5,
+    "cash_pct": 0.5,
+    "cash_eur": 5000.0,
     "total_capital_eur": 10000
   },
   "depeg_status": {
@@ -30,12 +30,12 @@
       "deviation": 0.0
     }
   },
-  "regime": "BULL",
-  "capital_tier": "MICRO",
+  "regime": "MODERATE",
+  "capital_tier": "STANDARD",
   "tier_weights": {
-    "T0": 0.8,
-    "T1": 0.2,
-    "T2": 0.0
+    "T0": 0.4,
+    "T1": 0.4,
+    "T2": 0.2
   },
   "recommendations": {
     "T0": [
@@ -51,7 +51,7 @@
       {
         "product": "sDAI",
         "weight": 1.0,
-        "amount_eur": 500.0,
+        "amount_eur": 2000.0,
         "apy": 3.8,
         "apy_source": "LIVE",
         "issuer": "MakerDAO DSR",
@@ -59,11 +59,38 @@
         "tier": "T1"
       }
     ],
-    "T2": []
+    "T2": [
+      {
+        "pool_id": "54e9b138-3146-4c1f-8dce-1cb948f5ef96",
+        "project": "sparklend",
+        "symbol": "USDS",
+        "coin": "USDS",
+        "chain": "Ethereum",
+        "tvl_usd": 557427722,
+        "effective_apy": 4.46,
+        "risk_adj_apy": 4.26,
+        "weight": 0.5,
+        "amount_eur": 500.0,
+        "tier": "T2"
+      },
+      {
+        "pool_id": "f4d5b566-e815-4ca2-bb07-7bcd8bc797f1",
+        "project": "compound-v3",
+        "symbol": "USDT",
+        "coin": "USDT",
+        "chain": "Ethereum",
+        "tvl_usd": 15752180,
+        "effective_apy": 3.8,
+        "risk_adj_apy": 3.8,
+        "weight": 0.5,
+        "amount_eur": 500.0,
+        "tier": "T2"
+      }
+    ]
   },
   "t1_products": {
     "USDY": {
-      "apy": 3.69,
+      "apy": 3.73,
       "apy_source": "LIVE",
       "issuer": "Ondo Finance",
       "chain": "Ethereum",
@@ -89,17 +116,17 @@
   },
   "t2_qualified_pools": 13,
   "basis_trade_info": {
-    "typical_apy": "8-15%",
+    "typical_apy": "3-8%",
     "note": "Für fortgeschrittene Nutzer mit dediziertem CEX-Setup"
   },
   "apy": {
-    "weighted_total": 0.76,
+    "weighted_total": 2.33,
     "t1_weighted": 3.8,
-    "t2_weighted": 0.0,
-    "annual_yield_eur": 19.0
+    "t2_weighted": 4.03,
+    "annual_yield_eur": 116.5
   },
   "rebalancing": {
-    "last_date": "2026-10-18",
+    "last_date": "2026-10-25",
     "next_review": null,
     "triggers": []
   }
