@@ -1,11 +1,11 @@
 {
   "version": "yield_router V1.0",
-  "timestamp": "2026-10-25T09:32:35.518587+00:00",
-  "date": "2026-10-25",
+  "timestamp": "2026-11-01T11:37:50.403936+00:00",
+  "date": "2026-11-01",
   "inputs": {
-    "ensemble": 0.5,
-    "cash_pct": 0.5,
-    "cash_eur": 5000.0,
+    "ensemble": 0.25,
+    "cash_pct": 0.75,
+    "cash_eur": 7500.0,
     "total_capital_eur": 10000
   },
   "depeg_status": {
@@ -30,28 +30,45 @@
       "deviation": 0.0
     }
   },
-  "regime": "MODERATE",
+  "regime": "CAUTIOUS",
   "capital_tier": "STANDARD",
   "tier_weights": {
-    "T0": 0.4,
-    "T1": 0.4,
+    "T0": 0.3,
+    "T1": 0.5,
     "T2": 0.2
   },
   "recommendations": {
     "T0": [
       {
         "coin": "USDC",
-        "weight": 1.0,
-        "amount_eur": 2000.0,
+        "weight": 0.6,
+        "amount_eur": 1350.0,
+        "tier": "T0",
+        "apy": 0.0
+      },
+      {
+        "coin": "USDT",
+        "weight": 0.4,
+        "amount_eur": 900.0,
         "tier": "T0",
         "apy": 0.0
       }
     ],
     "T1": [
       {
+        "product": "USDY",
+        "weight": 0.6,
+        "amount_eur": 2250.0,
+        "apy": 3.75,
+        "apy_source": "LIVE",
+        "issuer": "Ondo Finance",
+        "chain": "Ethereum",
+        "tier": "T1"
+      },
+      {
         "product": "sDAI",
-        "weight": 1.0,
-        "amount_eur": 2000.0,
+        "weight": 0.4,
+        "amount_eur": 1500.0,
         "apy": 3.8,
         "apy_source": "LIVE",
         "issuer": "MakerDAO DSR",
@@ -61,36 +78,36 @@
     ],
     "T2": [
       {
-        "pool_id": "54e9b138-3146-4c1f-8dce-1cb948f5ef96",
-        "project": "sparklend",
-        "symbol": "USDS",
-        "coin": "USDS",
-        "chain": "Ethereum",
-        "tvl_usd": 557427722,
-        "effective_apy": 4.46,
-        "risk_adj_apy": 4.26,
-        "weight": 0.5,
-        "amount_eur": 500.0,
-        "tier": "T2"
-      },
-      {
         "pool_id": "f4d5b566-e815-4ca2-bb07-7bcd8bc797f1",
         "project": "compound-v3",
         "symbol": "USDT",
         "coin": "USDT",
         "chain": "Ethereum",
-        "tvl_usd": 15752180,
-        "effective_apy": 3.8,
-        "risk_adj_apy": 3.8,
+        "tvl_usd": 14635613,
+        "effective_apy": 5.62,
+        "risk_adj_apy": 5.62,
         "weight": 0.5,
-        "amount_eur": 500.0,
+        "amount_eur": 750.0,
+        "tier": "T2"
+      },
+      {
+        "pool_id": "aa70268e-4b52-42bf-a116-608b370f9501",
+        "project": "aave-v3",
+        "symbol": "USDC",
+        "coin": "USDC",
+        "chain": "Ethereum",
+        "tvl_usd": 132095852,
+        "effective_apy": 4.09,
+        "risk_adj_apy": 4.09,
+        "weight": 0.5,
+        "amount_eur": 750.0,
         "tier": "T2"
       }
     ]
   },
   "t1_products": {
     "USDY": {
-      "apy": 3.73,
+      "apy": 3.75,
       "apy_source": "LIVE",
       "issuer": "Ondo Finance",
       "chain": "Ethereum",
@@ -120,13 +137,13 @@
     "note": "Für fortgeschrittene Nutzer mit dediziertem CEX-Setup"
   },
   "apy": {
-    "weighted_total": 2.33,
-    "t1_weighted": 3.8,
-    "t2_weighted": 4.03,
-    "annual_yield_eur": 116.5
+    "weighted_total": 2.86,
+    "t1_weighted": 3.77,
+    "t2_weighted": 4.86,
+    "annual_yield_eur": 214.5
   },
   "rebalancing": {
-    "last_date": "2026-10-25",
+    "last_date": "2026-11-01",
     "next_review": null,
     "triggers": []
   }
