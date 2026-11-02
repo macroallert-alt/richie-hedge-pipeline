@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -4956,16 +4957,16 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-10-30",
-    "execution_level": "WAIT",
-    "total_score": 8,
+    "date": "2026-11-02",
+    "execution_level": "CAUTION",
+    "total_score": 6,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
       "event_risk": {
-        "score": 2,
+        "score": 1,
         "max": 3,
-        "label": "PCE Price Index (September 2026) — Personal Income & Outlays"
+        "label": "ISM Manufacturing PMI (October 2026)"
       },
       "positioning_conflict": {
         "score": 0,
@@ -4975,7 +4976,7 @@
       "liquidity_risk": {
         "score": 3,
         "max": 3,
-        "label": "amihud: ILLIQUID, vix_term: BACKWARDATION"
+        "label": "amihud: ILLIQUID, vix_term: FLAT"
       },
       "cross_asset_confirmation": {
         "score": 2,
@@ -4983,7 +4984,7 @@
         "label": "COMMODITY_VS_COPPER"
       },
       "gex_regime": {
-        "score": 1,
+        "score": 0,
         "max": 3,
         "label": "GEX $-0.11B — SLIGHTLY_NEGATIVE"
       },
@@ -5002,131 +5003,130 @@
       "COT XLU bestätigt — COT_SP500_COMM_NET = -0.1% — kein Conflict"
     ],
     "top_conflicting": [
-      "PCE Price Index (September 2026) — Personal Income & Outlays in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
-      "amihud: ILLIQUID — Wert: 97.46 — Liquiditäts-Risiko",
-      "vix_term: BACKWARDATION — Wert: 0.888 — Liquiditäts-Risiko"
+      "amihud: ILLIQUID — Wert: 99.58 — Liquiditäts-Risiko",
+      "vix_term: FLAT — Wert: 0.9346 — Liquiditäts-Risiko",
+      "COMMODITY_VS_COPPER — V16 hat 36% Commodity-Exposure aber Copper SMA50 Falling"
     ],
-    "recommendation_action": "WAIT_FOR_CLARITY",
-    "recommendation_short": "Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.",
+    "recommendation_action": "EXECUTE_WITH_LIMITS",
+    "recommendation_short": "Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 2,
+      "next_48h_count": 1,
       "next_48h_events": [
-        "Bank of Japan Monetary Policy Meeting Decision (October 2026) (0h)",
-        "PCE Price Index (September 2026) — Personal Income & Outlays (0h)"
+        "ISM Manufacturing PMI (October 2026) (0h)"
       ],
-      "next_14d_count": 5,
+      "next_14d_count": 4,
       "convergence_week": false,
-      "event_density_label": "HIGH"
+      "event_density_label": "ELEVATED"
     },
     "calendar_upcoming": [
-      {
-        "date": "2026-10-30",
-        "event": "Bank of Japan Monetary Policy Meeting Decision (October 2026)",
-        "impact": "MEDIUM",
-        "hours_until": 0
-      },
-      {
-        "date": "2026-10-30",
-        "event": "PCE Price Index (September 2026) — Personal Income & Outlays",
-        "impact": "HIGH",
-        "hours_until": 0
-      },
       {
         "date": "2026-11-02",
         "event": "ISM Manufacturing PMI (October 2026)",
         "impact": "MEDIUM",
-        "days_until": 3
+        "hours_until": 0
       },
       {
         "date": "2026-11-06",
         "event": "Employment Situation (October 2026) — NFP",
         "impact": "HIGH",
-        "days_until": 7
+        "days_until": 4
       },
       {
         "date": "2026-11-12",
         "event": "Consumer Price Index (October 2026) — CPI",
         "impact": "HIGH",
-        "days_until": 13
+        "days_until": 10
+      },
+      {
+        "date": "2026-11-16",
+        "event": "China Industrial Production + Retail Sales (October 2026)",
+        "impact": "MEDIUM",
+        "days_until": 14
+      },
+      {
+        "date": "2026-11-20",
+        "event": "PBoC Loan Prime Rate Announcement (November 2026)",
+        "impact": "MEDIUM",
+        "days_until": 18
       }
     ],
     "calendar_monthly": [
       {
-        "date": "2026-10-01",
-        "event": "ISM Manufacturing PMI (September 2026)",
+        "date": "2026-11-02",
+        "event": "ISM Manufacturing PMI (October 2026)",
         "type": "ISM_MFG",
         "impact": "MEDIUM"
       },
       {
-        "date": "2026-10-02",
-        "event": "Employment Situation (September 2026) — NFP",
+        "date": "2026-11-06",
+        "event": "Employment Situation (October 2026) — NFP",
         "type": "NFP",
         "impact": "HIGH"
       },
       {
-        "date": "2026-10-14",
-        "event": "Consumer Price Index (September 2026) — CPI",
+        "date": "2026-11-12",
+        "event": "Consumer Price Index (October 2026) — CPI",
         "type": "CPI",
         "impact": "HIGH"
       },
       {
-        "date": "2026-10-15",
-        "event": "China GDP Q3 2026 + Industrial Production + Retail Sales (September 2026)",
+        "date": "2026-11-16",
+        "event": "China Industrial Production + Retail Sales (October 2026)",
         "type": "CHINA_DATA",
         "impact": "MEDIUM"
       },
       {
-        "date": "2026-10-16",
+        "date": "2026-11-20",
+        "event": "PBoC Loan Prime Rate Announcement (November 2026)",
+        "type": "PBOC",
+        "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-11-20",
         "event": "Monthly Options Expiry",
         "type": "OPEX",
         "impact": "MEDIUM"
       },
       {
-        "date": "2026-10-20",
-        "event": "PBoC Loan Prime Rate Announcement (October 2026)",
-        "type": "PBOC",
-        "impact": "MEDIUM"
-      },
-      {
-        "date": "2026-10-28",
-        "event": "FOMC Rate Decision (October 2026)",
-        "type": "FOMC",
-        "impact": "HIGH"
-      },
-      {
-        "date": "2026-10-29",
-        "event": "ECB Governing Council Monetary Policy Meeting (October 2026)",
-        "type": "ECB",
-        "impact": "MEDIUM"
-      },
-      {
-        "date": "2026-10-29",
-        "event": "GDP Advance Estimate Q3 2026",
+        "date": "2026-11-25",
+        "event": "GDP Second Estimate Q3 2026",
         "type": "GDP",
         "impact": "MEDIUM"
       },
       {
-        "date": "2026-10-30",
-        "event": "Bank of Japan Monetary Policy Meeting Decision (October 2026)",
-        "type": "BOJ",
+        "date": "2026-11-25",
+        "event": "PCE Price Index (October 2026) — Personal Income & Outlays",
+        "type": "PCE",
+        "impact": "HIGH"
+      },
+      {
+        "date": "2026-12-01",
+        "event": "ISM Manufacturing PMI (November 2026)",
+        "type": "ISM_MFG",
         "impact": "MEDIUM"
+      },
+      {
+        "date": "2026-12-04",
+        "event": "Employment Situation (November 2026) — NFP",
+        "type": "NFP",
+        "impact": "HIGH"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 8/18) ===\n\nCONFIRMING (16):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (7):\n  • PCE Price Index (September 2026) — Personal Income & Outlays in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • amihud: ILLIQUID: Wert: 97.46 — Liquiditäts-Risiko\n  • vix_term: BACKWARDATION: Wert: 0.888 — Liquiditäts-Risiko\n  • COMMODITY_VS_COPPER: V16 hat 36% Commodity-Exposure aber Copper SMA50 Falling\n  • EQUITY_TREND_DIVERGENCE: V16 hat 35% Equity aber SPY SMA50 Falling\n\nNETTO: 16 Confirming vs 7 Conflicting.\n\nEMPFEHLUNG: Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 6/18) ===\n\nCONFIRMING (16):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (7):\n  • amihud: ILLIQUID: Wert: 99.58 — Liquiditäts-Risiko\n  • vix_term: FLAT: Wert: 0.9346 — Liquiditäts-Risiko\n  • COMMODITY_VS_COPPER: V16 hat 36% Commodity-Exposure aber Copper SMA50 Falling\n  • EQUITY_TREND_DIVERGENCE: V16 hat 35% Equity aber SPY SMA50 Falling\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n\nNETTO: 16 Confirming vs 7 Conflicting.\n\nEMPFEHLUNG: Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-10-30",
+    "date": "2026-11-02",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 148,
-    "days_since_state_change": 148,
+    "days_since_material_rotation": 151,
+    "days_since_state_change": 151,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -5256,7 +5256,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-09-21",
           "2026-09-22",
           "2026-09-23",
           "2026-09-24",
@@ -5285,7 +5284,8 @@
           "2026-10-27",
           "2026-10-28",
           "2026-10-29",
-          "2026-10-30"
+          "2026-10-30",
+          "2026-11-02"
         ],
         "values": [
           0.1976,
@@ -5322,7 +5322,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-09-21",
           "2026-09-22",
           "2026-09-23",
           "2026-09-24",
@@ -5351,7 +5350,8 @@
           "2026-10-27",
           "2026-10-28",
           "2026-10-29",
-          "2026-10-30"
+          "2026-10-30",
+          "2026-11-02"
         ],
         "values": [
           0.2972,
@@ -5388,7 +5388,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-09-21",
           "2026-09-22",
           "2026-09-23",
           "2026-09-24",
@@ -5417,7 +5416,8 @@
           "2026-10-27",
           "2026-10-28",
           "2026-10-29",
-          "2026-10-30"
+          "2026-10-30",
+          "2026-11-02"
         ],
         "values": [
           0.3455,
@@ -5454,7 +5454,6 @@
       },
       "PM": {
         "dates": [
-          "2026-09-21",
           "2026-09-22",
           "2026-09-23",
           "2026-09-24",
@@ -5483,7 +5482,8 @@
           "2026-10-27",
           "2026-10-28",
           "2026-10-29",
-          "2026-10-30"
+          "2026-10-30",
+          "2026-11-02"
         ],
         "values": [
           0.1596,
@@ -5656,7 +5656,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-10-29",
+        "date": "2026-11-02",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5672,7 +5672,7 @@
         }
       },
       "1w": {
-        "date": "2026-10-23",
+        "date": "2026-10-26",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5688,7 +5688,7 @@
         }
       },
       "1m": {
-        "date": "2026-09-30",
+        "date": "2026-10-02",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5704,7 +5704,7 @@
         }
       },
       "3m": {
-        "date": "2026-07-31",
+        "date": "2026-08-04",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -5720,7 +5720,7 @@
         }
       },
       "6m": {
-        "date": "2026-05-04",
+        "date": "2026-05-06",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
