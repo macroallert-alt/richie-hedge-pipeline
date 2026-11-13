@@ -370,7 +370,8 @@
       "EQ_DEFN": 0.3456,
       "EQ_GROW": 0.0,
       "EQ_INTL": 0.0,
-      "BOND": 0.2972,
+      "BOND": 0.0,
+      "CREDIT": 0.2972,
       "COMMOD": 0.1976,
       "CRYPTO": 0.0
     },
@@ -5523,16 +5524,16 @@
     "errors": []
   },
   "execution": {
-    "date": "2026-11-12",
-    "execution_level": "WAIT",
-    "total_score": 8,
+    "date": "2026-11-13",
+    "execution_level": "CAUTION",
+    "total_score": 5,
     "max_score": 18,
     "veto_applied": false,
     "dimensions": {
       "event_risk": {
-        "score": 2,
+        "score": 0,
         "max": 3,
-        "label": "Consumer Price Index (October 2026) — CPI"
+        "label": "1 HIGH events in 14d"
       },
       "positioning_conflict": {
         "score": 0,
@@ -5550,7 +5551,7 @@
         "label": "COMMODITY_VS_COPPER"
       },
       "gex_regime": {
-        "score": 1,
+        "score": 0,
         "max": 3,
         "label": "GEX $-0.11B — SLIGHTLY_NEGATIVE"
       },
@@ -5560,61 +5561,59 @@
         "label": "Neutral"
       }
     },
-    "confirming_count": 17,
-    "conflicting_count": 7,
+    "confirming_count": 18,
+    "conflicting_count": 6,
     "net_assessment": "STRONGLY_CONFIRMING",
     "top_confirming": [
+      "Keine HIGH-Impact Events in 48h — Nächste 14d: 1 HIGH Events",
       "COT HYG bestätigt — COT_SP500_COMM_NET = -0.1% — kein Conflict",
-      "COT DBC bestätigt — COT_GOLD_COMM_NET = 0.0% — kein Conflict",
-      "COT XLU bestätigt — COT_SP500_COMM_NET = -0.1% — kein Conflict"
+      "COT DBC bestätigt — COT_GOLD_COMM_NET = 0.0% — kein Conflict"
     ],
     "top_conflicting": [
-      "Consumer Price Index (October 2026) — CPI in 48h — HIGH-Impact Event kann Richtung und Liquidität verändern",
       "amihud: ILLIQUID — Wert: 99.58 — Liquiditäts-Risiko",
-      "vix_term: FLAT — Wert: 0.909 — Liquiditäts-Risiko"
+      "vix_term: FLAT — Wert: 0.9322 — Liquiditäts-Risiko",
+      "COMMODITY_VS_COPPER — V16 hat 36% Commodity-Exposure aber Copper SMA50 Falling"
     ],
-    "recommendation_action": "WAIT_FOR_CLARITY",
-    "recommendation_short": "Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.",
+    "recommendation_action": "EXECUTE_WITH_LIMITS",
+    "recommendation_short": "Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.",
     "specific_actions": [],
     "event_window": {
-      "next_48h_count": 1,
-      "next_48h_events": [
-        "Consumer Price Index (October 2026) — CPI (0h)"
-      ],
-      "next_14d_count": 6,
+      "next_48h_count": 0,
+      "next_48h_events": [],
+      "next_14d_count": 5,
       "convergence_week": false,
       "event_density_label": "HIGH"
     },
     "calendar_upcoming": [
       {
-        "date": "2026-11-12",
-        "event": "Consumer Price Index (October 2026) — CPI",
-        "impact": "HIGH",
-        "hours_until": 0
-      },
-      {
         "date": "2026-11-16",
         "event": "China Industrial Production + Retail Sales (October 2026)",
         "impact": "MEDIUM",
-        "days_until": 4
+        "days_until": 3
       },
       {
         "date": "2026-11-20",
         "event": "PBoC Loan Prime Rate Announcement (November 2026)",
         "impact": "MEDIUM",
-        "days_until": 8
+        "days_until": 7
       },
       {
         "date": "2026-11-20",
         "event": "Monthly Options Expiry",
         "impact": "MEDIUM",
-        "days_until": 8
+        "days_until": 7
       },
       {
         "date": "2026-11-25",
         "event": "GDP Second Estimate Q3 2026",
         "impact": "MEDIUM",
-        "days_until": 13
+        "days_until": 12
+      },
+      {
+        "date": "2026-11-25",
+        "event": "PCE Price Index (October 2026) — Personal Income & Outlays",
+        "impact": "HIGH",
+        "days_until": 12
       }
     ],
     "calendar_monthly": [
@@ -5679,20 +5678,20 @@
         "impact": "HIGH"
       }
     ],
-    "briefing_text": "=== EXECUTION ASSESSMENT: WAIT (Score: 8/18) ===\n\nCONFIRMING (17):\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT GLD bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n\nCONFLICTING (7):\n  • Consumer Price Index (October 2026) — CPI in 48h: HIGH-Impact Event kann Richtung und Liquidität verändern\n  • amihud: ILLIQUID: Wert: 99.58 — Liquiditäts-Risiko\n  • vix_term: FLAT: Wert: 0.909 — Liquiditäts-Risiko\n  • COMMODITY_VS_COPPER: V16 hat 36% Commodity-Exposure aber Copper SMA50 Falling\n  • EQUITY_TREND_DIVERGENCE: V16 hat 35% Equity aber SPY SMA50 Falling\n\nNETTO: 17 Confirming vs 7 Conflicting.\n\nEMPFEHLUNG: Nicht heute rebalancen. Warte auf Event-Aufloesung oder Positioning-Shift.\n\n(Fallback-Text — LLM nicht verfügbar)",
+    "briefing_text": "=== EXECUTION ASSESSMENT: CAUTION (Score: 5/18) ===\n\nCONFIRMING (18):\n  • Keine HIGH-Impact Events in 48h: Nächste 14d: 1 HIGH Events\n  • COT HYG bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT DBC bestätigt: COT_GOLD_COMM_NET = 0.0% — kein Conflict\n  • COT XLU bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n  • COT XLP bestätigt: COT_SP500_COMM_NET = -0.1% — kein Conflict\n\nCONFLICTING (6):\n  • amihud: ILLIQUID: Wert: 99.58 — Liquiditäts-Risiko\n  • vix_term: FLAT: Wert: 0.9322 — Liquiditäts-Risiko\n  • COMMODITY_VS_COPPER: V16 hat 36% Commodity-Exposure aber Copper SMA50 Falling\n  • EQUITY_TREND_DIVERGENCE: V16 hat 35% Equity aber SPY SMA50 Falling\n  • GOLD_REAL_YIELD_DIVERGENCE: V16 hat 16% Gold aber Real Yields Rising — Gegenwind\n\nNETTO: 18 Confirming vs 6 Conflicting.\n\nEMPFEHLUNG: Ausfuehren mit Limit-Orders. Position-Size pruefen vor Execution.\n\n(Fallback-Text — LLM nicht verfügbar)",
     "would_change_my_mind": {
       "execute_if": [],
       "hold_if": []
     }
   },
   "rotation": {
-    "date": "2026-11-12",
+    "date": "2026-11-13",
     "status": "ALIGNED",
     "mode": "STABLE",
     "total_absolute_delta_pp": 0.0,
     "material_shifts_count": 0,
-    "days_since_material_rotation": 161,
-    "days_since_state_change": 161,
+    "days_since_material_rotation": 162,
+    "days_since_state_change": 162,
     "trigger": {
       "type": "NONE",
       "label": "Keine materielle Rotation",
@@ -5822,7 +5821,6 @@
     "sparkline_data": {
       "COMMOD": {
         "dates": [
-          "2026-10-02",
           "2026-10-05",
           "2026-10-06",
           "2026-10-07",
@@ -5851,7 +5849,8 @@
           "2026-11-09",
           "2026-11-10",
           "2026-11-11",
-          "2026-11-12"
+          "2026-11-12",
+          "2026-11-13"
         ],
         "values": [
           0.1976,
@@ -5888,7 +5887,6 @@
       },
       "CREDIT": {
         "dates": [
-          "2026-10-02",
           "2026-10-05",
           "2026-10-06",
           "2026-10-07",
@@ -5917,7 +5915,8 @@
           "2026-11-09",
           "2026-11-10",
           "2026-11-11",
-          "2026-11-12"
+          "2026-11-12",
+          "2026-11-13"
         ],
         "values": [
           0.2972,
@@ -5954,7 +5953,6 @@
       },
       "EQ_DEFN": {
         "dates": [
-          "2026-10-02",
           "2026-10-05",
           "2026-10-06",
           "2026-10-07",
@@ -5983,7 +5981,8 @@
           "2026-11-09",
           "2026-11-10",
           "2026-11-11",
-          "2026-11-12"
+          "2026-11-12",
+          "2026-11-13"
         ],
         "values": [
           0.3455,
@@ -6020,7 +6019,6 @@
       },
       "PM": {
         "dates": [
-          "2026-10-02",
           "2026-10-05",
           "2026-10-06",
           "2026-10-07",
@@ -6049,7 +6047,8 @@
           "2026-11-09",
           "2026-11-10",
           "2026-11-11",
-          "2026-11-12"
+          "2026-11-12",
+          "2026-11-13"
         ],
         "values": [
           0.1596,
@@ -6222,7 +6221,7 @@
     ],
     "comparison_snapshots": {
       "1d": {
-        "date": "2026-11-11",
+        "date": "2026-11-12",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -6238,7 +6237,7 @@
         }
       },
       "1w": {
-        "date": "2026-11-05",
+        "date": "2026-11-06",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -6254,7 +6253,7 @@
         }
       },
       "1m": {
-        "date": "2026-10-13",
+        "date": "2026-10-14",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
@@ -6286,7 +6285,7 @@
         }
       },
       "6m": {
-        "date": "2026-05-15",
+        "date": "2026-05-18",
         "weights": {
           "GLD": 0.1596,
           "XLP": 0.1651,
