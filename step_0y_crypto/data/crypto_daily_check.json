@@ -1,8 +1,8 @@
 {
   "version": "daily_risk_check V2.0",
-  "timestamp": "2026-11-13T14:04:35.959426+00:00",
-  "date": "2026-11-13",
-  "btc_price": 69420.0,
+  "timestamp": "2026-11-16T14:50:27.504933+00:00",
+  "date": "2026-11-16",
+  "btc_price": 65070.0,
   "ensemble": {
     "daily": 0.25,
     "previous": 0.25,
@@ -13,12 +13,12 @@
     "mom_12M": false
   },
   "bottom_bonus": {
-    "active": false,
-    "wma_200": 64757.82,
-    "changed": false
+    "active": true,
+    "wma_200": 64788.97,
+    "changed": true
   },
   "btc_dominance": {
-    "daily": 58.98,
+    "daily": 58.53,
     "thirty_d_ago": null,
     "change_30d": 0.0
   },
@@ -33,13 +33,13 @@
     }
   },
   "allocation": {
-    "total": 0.25,
-    "btc": 0.1125,
-    "eth": 0.0875,
-    "sol": 0.05,
-    "cash": 0.75
+    "total": 0.75,
+    "btc": 0.3375,
+    "eth": 0.2625,
+    "sol": 0.15,
+    "cash": 0.25
   },
-  "action": "HOLD",
+  "action": "REBALANCE",
   "previous_allocation": {
     "total": 0.25,
     "btc": 0.1125,
@@ -47,7 +47,13 @@
     "sol": 0.05,
     "cash": 0.75
   },
-  "alerts": [],
-  "alert_count": 0,
+  "alerts": [
+    {
+      "type": "BELOW_200WMA",
+      "message": "BTC unter 200WMA gefallen! BTC=$65,070, 200WMA=$64,789 → Bottom Bonus aktiv",
+      "severity": "HIGH"
+    }
+  ],
+  "alert_count": 1,
   "telegram_sent": false
 }
