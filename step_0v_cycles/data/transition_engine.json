@@ -1,5 +1,5 @@
 {
- "computed_at": "2026-11-15T08:39:57.856072+00:00",
+ "computed_at": "2026-11-22T09:06:51.676459+00:00",
  "engine_version": "1.1",
  "transition_matrices": {
   "LIQUIDITY": {
@@ -268,7 +268,7 @@
      }
     },
     "EXPANSION": {
-     "n_occurrences": 25,
+     "n_occurrences": 26,
      "duration_months": {
       "median": 2,
       "mean": 2.8,
@@ -300,6 +300,7 @@
        4,
        1,
        3,
+       1,
        1
       ]
      },
@@ -325,7 +326,7 @@
       "mean": 1.6,
       "min": 1,
       "max": 4,
-      "std": 1.0,
+      "std": 0.9,
       "all_durations": [
        4,
        1,
@@ -340,17 +341,17 @@
        3,
        2,
        1,
-       3
+       2
       ]
      },
      "transitions_to": {
       "EXPANSION": {
-       "count": 12,
-       "probability": 0.923
+       "count": 13,
+       "probability": 0.929
       },
       "DETERIORATION": {
        "count": 1,
-       "probability": 0.077
+       "probability": 0.071
       }
      }
     },
@@ -430,7 +431,7 @@
      }
     }
    },
-   "total_transitions": 91
+   "total_transitions": 92
   },
   "COMMODITY": {
    "phases": {
@@ -972,7 +973,7 @@
      "n_occurrences": 34,
      "duration_months": {
       "median": 3,
-      "mean": 4.8,
+      "mean": 4.9,
       "min": 1,
       "max": 31,
       "std": 6.2,
@@ -1010,7 +1011,7 @@
        1,
        1,
        1,
-       1
+       2
       ]
      },
      "transitions_to": {
@@ -1766,22 +1767,26 @@
    }
   },
   "CREDIT": {
-   "current_phase": "LATE_EXPANSION",
-   "current_duration_months": 2,
-   "median_duration": 1,
-   "phase_position_pct": 200,
-   "remaining_median": 1,
+   "current_phase": "EXPANSION",
+   "current_duration_months": 0,
+   "median_duration": 2,
+   "phase_position_pct": 0,
+   "remaining_median": 2,
    "remaining_p25": 1,
-   "remaining_p75": 2,
-   "status": "EXTENDED",
+   "remaining_p75": 4,
+   "status": "EARLY_PHASE",
    "transitions_ahead": {
-    "EXPANSION": {
-     "count": 12,
-     "probability": 0.923
+    "RECOVERY": {
+     "count": 7,
+     "probability": 0.28
     },
     "DETERIORATION": {
-     "count": 1,
-     "probability": 0.077
+     "count": 4,
+     "probability": 0.16
+    },
+    "LATE_EXPANSION": {
+     "count": 14,
+     "probability": 0.56
     }
    }
   },
@@ -5537,17 +5542,16 @@
   "cascade_severity": "CRISIS",
   "confirmation_score": -4,
   "extended_cycles": [
-   "CREDIT",
    "CHINA_CREDIT",
    "EARNINGS"
   ],
   "late_cycles": [],
-  "verdict": "WARNING — Cascade Speed CRISIS. 5 cycles transitioning. Defensive positioning recommended. WATCH: CREDIT, CHINA_CREDIT, EARNINGS extended beyond median duration."
+  "verdict": "WARNING — Cascade Speed CRISIS. 5 cycles transitioning. Defensive positioning recommended. WATCH: CHINA_CREDIT, EARNINGS extended beyond median duration."
  },
  "cycle_narrative": {
-  "generated_at": "2026-11-15T08:40:16.168748+00:00",
+  "generated_at": "2026-11-22T09:07:08.948836+00:00",
   "model": "claude-sonnet-4-6",
-  "text": "GESAMTLAGE. Die Zyklen-Engine meldet Cascade Speed CRISIS: 5 Transitions in 6 Monaten, Confirmation Score -4. Damit überwiegen die bearischen Signale klar, obwohl der V16-State LATE_EXPANSION mit 94,3% Growth-Wahrscheinlichkeit noch kein unmittelbares Rezessionsszenario anzeigt. Das ist der zentrale Widerspruch dieser Woche – strukturelle Warnsignale bei gleichzeitig noch intakter Wachstumsdynamik.\n\nZYKLEN-DETAIL. Drei Zyklen sind extended und damit das kritische Cluster: CREDIT bei Position 200% mit nur ~1 Monat verbleibendem Runway, CHINA_CREDIT bei 350% mit ~3 Monaten, EARNINGS bei 100% mit ~15 Monaten. CREDIT ist der akuteste Risikofaktor – bei Median-Überschreitung auf diesem Niveau ist eine Phasen-Rotation in Richtung CONTRACTION statistisch überfällig. LIQUIDITY hingegen gibt Rückendeckung: EARLY_PHASE mit ~3 Monaten, was historisch SPY-Drawdowns begrenzt. DOLLAR STRENGTHENING bei 67% Position ist neutral-bearish für Commodities, belastet GLD kurzfristig trotz MID_BULL im Commodity-Zyklus. FED_RATES EASING mit 27% und ~34 Monaten Runway ist das stabilisierende Element für TLT.\n\nRISIKO. Die Crash/Korrektur-Daten für CREDIT_BULLISH__BUSINESS_BULLISH fehlen (n=?), was die Downside-Kalibrierung einschränkt – echte Unsicherheit hier, keine Modellstärke. Eskalation tritt ein, wenn CREDIT in die nächsten 4 Wochen in CONTRACTION kippt und CHINA_CREDIT synchron dreht: dann würde der Confirmation Score auf -6 bis -7 fallen, Cascade Speed weiter steigen. Stress-Wahrscheinlichkeit aktuell bei 2,3% – niedrig, aber die historischen Analogien zeigen eine Spanne von -8,9% bis +18,0% für SPY, was eine breite Verteilung signalisiert.\n\nPOSITIONIERUNG. TLT bevorzugt: FED_RATES EASING Early-Phase mit 34 Monaten Runway und 2009-12-Analogie (+14,4%) stützen die Duration-These. GLD neutral bis leicht underweight, solange DOLLAR STRENGTHENING anhält. SPY defensiv gewichten – nicht aussteigen, aber Tail-Hedges rechtfertigen sich bei Cascade Speed 0,833. CREDIT-Spreadprodukte (HYG, JNK) meiden: CREDIT extended bei 200% ist die spezifischste Warnung dieser Analyse, und das Chance-Risiko-Verhältnis ist asymmetrisch negativ.",
-  "word_count": 272
+  "text": "**BALDUR Creek Capital | Zyklen-Analyse | KW47 2026**\n\nDie Zyklen-Engine sendet ein klares Warnsignal: 5 von 9 Zyklen haben innerhalb von 6 Monaten getippt – Cascade Speed 0.833, klassifiziert als CRISIS. Der Confirmation Score von -4 (1 bullisch, 5 bärisch, 3 neutral) bestätigt die Schieflage. Dennoch bleibt der V16-State LATE_EXPANSION mit 94.3% Growth-Wahrscheinlichkeit – ein widersprüchliches Bild, das Vorsicht erzwingt, nicht Panik.\n\nCHINA_CREDIT ist der kritischste Faktor: Position 350%, weit beyond Median-Duration, verbleibendes Runway ~3 Monate. Jede Verschlechterung dort wirkt direkt auf globale Risikobereitschaft. EARNINGS steht bei 100% Position, ebenfalls extended, mit ~15 Monaten Restlaufzeit – länger ausgedehnt, aber anfälliger für Revisionen. LIQUIDITY und CREDIT befinden sich beide in EARLY_PHASE mit je 0% Position, was strukturell konstruktiv ist, aber noch keine Tragfähigkeit aufgebaut hat. FED_RATES EASING mit ~34 Monaten Restlaufzeit bildet den einzig robusten langfristigen Rückenwind.\n\nDas V16-Modell zeigt mit 2.3% Stress und 3.4% Crisis-Wahrscheinlichkeit keine akute Crash-Gefahr – historisch würden n=92 Analogperioden mehrheitlich auf Erholung deuten. Eskalation droht, wenn CHINA_CREDIT kippt und gleichzeitig EARNINGS-Revisionen nach unten drehen: Das würde Cascade Speed weiter erhöhen und den Confirmation Score tiefer in negatives Territorium treiben. Die fehlenden Crash/Korrektur-Daten für CREDIT_BULLISH__BUSINESS_BULLISH sind eine Datenlücke – wir arbeiten ohne Tail-Risk-Kalibrierung.\n\nDie historischen Analogien (2009-12, 2016-04, 2020-06, Similarity je 0.528) sind heterogen: SPY-Returns reichen von -8.9% bis +18.0%. TLT-Performance war in zwei von drei Perioden positiv, GLD konsistent konstruktiv. Positionierung: TLT und GLD als defensiver Kern, da Dollar STRENGTHENING GLD kurzfristig bremst, aber EASING-Zyklus dominiert mittelfristig. SPY untergewichten bis LIQUIDITY und CREDIT reifere Phasenpositionen aufgebaut haben. CHINA_CREDIT-Exposure aktiv hedgen.",
+  "word_count": 254
  }
 }
